@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
 import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ast.CenterCameraOnOperation;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.ThisInstanceFactory;
@@ -58,7 +59,7 @@ import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
-import org.lgna.croquet.event.ValueEvent;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.views.Panel;
@@ -70,6 +71,7 @@ import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.SGround;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -93,6 +95,7 @@ import java.awt.LayoutManager2;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
@@ -230,9 +233,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
       if (indexOfFirstComponentThatFails != -1) {
         if (indexOfFirstComponentThatFails > 0) {
           for (int i = indexOfFirstComponentThatFails - 1; i < (nChildren - 1); i++) {
-            if (i == indexOfSelectedComponent) {
-              //pass
-            } else {
+            if (i != indexOfSelectedComponent) {
               parent.getComponent(i).setSize(0, 0);
             }
           }
@@ -306,7 +307,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
 
           Composite prevComposite = g2.getComposite();
 
-          Composite nextComposite = prevComposite;
+          Composite nextComposite;
           float alpha;
           if (model.isSelected()) {
             if (model.isRollover()) {
@@ -314,7 +315,6 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
             } else {
               alpha = 0.9f;
             }
-            nextComposite = prevComposite;
           } else {
             if (model.isRollover()) {
               alpha = 0.5f;
@@ -333,6 +333,18 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
         }
       };
       rv.setOpaque(false);
+      rv.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+          if (e.getClickCount() > 1) {
+            if (!StorytellingSceneEditor.getInstance().isStartingCameraView()) {
+              UserField field = StorytellingSceneEditor.getInstance().getSelectedField();
+              if (!field.getValueType().isAssignableTo(SGround.class) && field != StorytellingSceneEditor.getInstance().getActiveSceneField()) {
+                CenterCameraOnOperation.getInstance(field).fire(MouseEventTrigger.createUserActivity(e));
+              }
+            }
+          }
+        }
+      });
 
       rv.setLayout(new BoxLayout(rv, BoxLayout.LINE_AXIS));
       Expression expression = this.instanceFactory.createTransientExpression();
@@ -432,11 +444,11 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
     this.getAwtComponent().setOpaque(false);
   }
 
-  public UserType getType() {
+  public UserType<?> getType() {
     return this.type;
   }
 
-  public void setType(UserType type) {
+  public void setType(UserType<?> type) {
     if (this.type != type) {
       if (this.type != null) {
         this.type.fields.removeListPropertyListener(this.fieldsListener);
@@ -461,15 +473,11 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
     super.handleUndisplayable();
   }
 
-  private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
-    @Override
-    public void valueChanged(ValueEvent<InstanceFactory> e) {
-      InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
-    }
-  };
+  private final ValueListener<InstanceFactory> instanceFactoryListener =
+      e -> InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 
-  private UserType type;
-  private ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
+  private UserType<?> type;
+  private final ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<>() {
     @Override
     protected void changed(ListPropertyEvent<UserField> e) {
       InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
