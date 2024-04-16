@@ -333,15 +333,11 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
   public void union(AxisAlignedBox other) {
     assert other != null;
     if (isNaN()) {
-      if (other.isNaN()) {
-        //pass
-      } else {
+      if (!other.isNaN()) {
         set(other);
       }
     } else {
-      if (other.isNaN()) {
-        //pass
-      } else {
+      if (!other.isNaN()) {
         this.minimum.x = Math.min(this.minimum.x, other.minimum.x);
         this.minimum.y = Math.min(this.minimum.y, other.minimum.y);
         this.minimum.z = Math.min(this.minimum.z, other.minimum.z);

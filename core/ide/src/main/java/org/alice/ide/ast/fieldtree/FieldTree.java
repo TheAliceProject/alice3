@@ -106,9 +106,7 @@ public class FieldTree {
     private TypeNode getTypeNode(AbstractType<?, ?, ?> type) {
       if (type != null) {
         TypeNode typeNode = map.get(type);
-        if (typeNode != null) {
-          //pass
-        } else {
+        if (typeNode == null) {
           TypeNode superTypeNode = getTypeNode(type.getSuperType());
           int collapseThreshold = superTypeNode.getCollapseThresholdForDescendants();
           typeNode = TypeNode.createAndAddToParent(superTypeNode, type, collapseThreshold, collapseThreshold);

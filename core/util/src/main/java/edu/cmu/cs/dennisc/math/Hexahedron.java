@@ -134,16 +134,12 @@ public class Hexahedron {
 
   private boolean isEqual(Hexahedron otherHexahedron) {
     for (int i = 0; i < this.points.length; i++) {
-      if (this.points[i].equals(otherHexahedron.points[i])) {
-        // pass
-      } else {
+      if (!this.points[i].equals(otherHexahedron.points[i])) {
         return false;
       }
     }
     for (int i = 0; i < this.normals.length; i++) {
-      if (this.normals[i].equals(otherHexahedron.normals[i])) {
-        // pass
-      } else {
+      if (!this.normals[i].equals(otherHexahedron.normals[i])) {
         return false;
       }
     }

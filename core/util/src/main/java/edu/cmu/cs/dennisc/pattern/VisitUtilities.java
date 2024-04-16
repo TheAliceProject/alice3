@@ -68,9 +68,7 @@ public abstract class VisitUtilities {
     visitable.accept(new Visitor() {
       @Override
       public void visit(Visitable visitable) {
-        if (buffer[0] != null) {
-          //pass
-        } else {
+        if (buffer[0] == null) {
           if (cls.isAssignableFrom(visitable.getClass())) {
             buffer[0] = (E) visitable;
             //todo: break

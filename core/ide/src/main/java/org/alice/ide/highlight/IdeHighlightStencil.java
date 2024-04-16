@@ -187,9 +187,7 @@ public class IdeHighlightStencil extends HighlightStencil {
         @Override
         public TrackableShape getResolved() {
           AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-          if (component != null) {
-            //pass
-          } else {
+          if (component == null) {
             Logger.errln("cannot resolve first component for", model);
           }
           return component;
@@ -250,9 +248,7 @@ public class IdeHighlightStencil extends HighlightStencil {
       @Override
       public TrackableShape getResolved() {
         AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-        if (component != null) {
-          //pass
-        } else {
+        if (component == null) {
           Logger.errln("cannot resolve first component for", model);
         }
         return component;

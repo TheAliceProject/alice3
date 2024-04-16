@@ -115,9 +115,7 @@ public class TypeManager {
           argumentExpressionI = argumentExpressions[i];
         } else {
           String parameterName = javaParameterI.getName(); //todo?
-          if (parameterName != null) {
-            //pass
-          } else {
+          if (parameterName == null) {
             parameterName = "p" + i;
           }
           AbstractType<?, ?, ?> parameterTypeI;
@@ -343,7 +341,7 @@ public class TypeManager {
 
     //Find a previously created matching type
     //Dave: Why aren't we just checking names? All of our types need to be unique names, so this should be an easy check
-    //These criterions are checking type and referenced fields and at no point are names checked. Sigh.
+    //These criteria are checking type and referenced fields and at no point are names checked. Sigh.
     //Let's try just checking names
     Criterion<NamedUserType> criterion = new MatchesNameTypeCriterion(name);
     //    if( argumentField != null ) {

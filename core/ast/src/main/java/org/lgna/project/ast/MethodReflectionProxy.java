@@ -104,9 +104,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
           varArgsMthd = null;
         } else {
           varArgsMthd = findVarArgsVersion(cls, original.name, parameterTypes);
-          if (varArgsMthd != null) {
-            //pass
-          } else {
+          if (varArgsMthd == null) {
             if (parameterTypes.length > 0) {
               Class<?> lastParameterType = parameterTypes[parameterTypes.length - 1];
               if (lastParameterType != null) {

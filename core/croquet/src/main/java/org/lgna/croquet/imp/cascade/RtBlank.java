@@ -211,9 +211,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
     if (parent instanceof RtFillIn<?, ?>) {
       RtFillIn<?, ?> parentFillIn = (RtFillIn<?, ?>) parent;
       for (RtBlank blank : parentFillIn.getBlankChildren()) {
-        if (blank.rtSelectedFillIn != null) {
-          //pass
-        } else {
+        if (blank.rtSelectedFillIn == null) {
           return;
         }
       }

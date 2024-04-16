@@ -56,15 +56,11 @@ public final class ClippedPlane {
 
   private boolean isEqual(ClippedPlane other) {
     for (int i = 0; i < this.points.length; i++) {
-      if (this.points[i].equals(other.points[i])) {
-        // pass
-      } else {
+      if (!this.points[i].equals(other.points[i])) {
         return false;
       }
     }
-    if (this.normal.equals(other.normal)) {
-      // pass
-    } else {
+    if (!this.normal.equals(other.normal)) {
       return false;
     }
     return true;

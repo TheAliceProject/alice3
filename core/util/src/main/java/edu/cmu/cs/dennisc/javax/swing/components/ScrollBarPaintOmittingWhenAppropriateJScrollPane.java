@@ -66,9 +66,7 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends J
         Graphics2D g2 = (Graphics2D) g;
         Shape clip = g.getClip();
         Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
-        if (component != null) {
-          //pass
-        } else {
+        if (component == null) {
           component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
         }
         g2.setPaint(component.getBackground());

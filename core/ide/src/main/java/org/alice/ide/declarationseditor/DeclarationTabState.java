@@ -258,9 +258,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
         if (declaration instanceof UserCode) {
           UserCode code = (UserCode) declaration;
           UserType<?> declaringType = code.getDeclaringType();
-          if (declaringType != null) {
-            //pass
-          } else {
+          if (declaringType == null) {
             orphans.add(composite);
           }
         }

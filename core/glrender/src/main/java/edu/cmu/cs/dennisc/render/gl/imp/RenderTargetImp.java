@@ -320,7 +320,7 @@ public class RenderTargetImp {
               cameraAdapterI.performClearAndRenderOffscreen(this.renderContext, this.drawableWidth, this.drawableHeight);
               this.reusableLookingGlassRenderEvent.prologue();
               try {
-                //Pass the screen size to post render because operations like speech bubbles use the screen size as a reference rather than the drawable size
+                // Pass the screen size to post render because operations like speech bubbles use the screen size as a reference rather than the drawable size
                 cameraAdapterI.postRender(this.renderContext, this.screenWidth, this.screenHeight, rt, this.reusableLookingGlassRenderEvent.getGraphics2D());
               } finally {
                 this.reusableLookingGlassRenderEvent.epilogue();

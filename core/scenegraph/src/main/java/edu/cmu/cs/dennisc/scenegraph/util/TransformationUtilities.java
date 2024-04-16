@@ -78,9 +78,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Vector4 transformToAbsolute_AffectReturnValuePassedIn(Vector4 rv, Component sgFrom) {
-    if (isAbsolute(sgFrom)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgFrom)) {
       AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
       m.transform(rv);
     }
@@ -98,9 +96,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Vector4 transformFromAbsolute_AffectReturnValuePassedIn(Vector4 rv, Component sgTo) {
-    if (isAbsolute(sgTo)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgTo)) {
       AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
       m.transform(rv);
     }
@@ -135,9 +131,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Vector3 transformToAbsolute_AffectReturnValuePassedIn(Vector3 rv, Component sgFrom) {
-    if (isAbsolute(sgFrom)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgFrom)) {
       AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
       m.transform(rv);
     }
@@ -155,9 +149,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Vector3 transformFromAbsolute_AffectReturnValuePassedIn(Vector3 rv, Component sgTo) {
-    if (isAbsolute(sgTo)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgTo)) {
       AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
       m.transform(rv);
     }
@@ -192,9 +184,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Point3 transformToAbsolute_AffectReturnValuePassedIn(Point3 rv, Component sgFrom) {
-    if (isAbsolute(sgFrom)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgFrom)) {
       AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
       m.transform(rv);
     }
@@ -212,9 +202,7 @@ public abstract class TransformationUtilities {
   }
 
   public static Point3 transformFromAbsolute_AffectReturnValuePassedIn(Point3 rv, Component sgTo) {
-    if (isAbsolute(sgTo)) {
-      //pass
-    } else {
+    if (!isAbsolute(sgTo)) {
       AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
       m.transform(rv);
     }

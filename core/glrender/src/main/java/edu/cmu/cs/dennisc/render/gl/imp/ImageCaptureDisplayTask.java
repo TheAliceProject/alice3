@@ -155,9 +155,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
             if (error == GL_NO_ERROR) {
               break;
             } else {
-              if (errors != null) {
-                //pass
-              } else {
+              if (errors == null) {
                 errors = new LinkedList<Integer>();
               }
               errors.add(error);

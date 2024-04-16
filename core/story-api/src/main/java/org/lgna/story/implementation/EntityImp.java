@@ -243,9 +243,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
         //However I don't know what is. Therefore this is what I do for now.
         rv = getEntityImpForSgObject(sgVehicle);
         Logger.severe("No instance found for sgVehicle " + sgVehicle + ". Searched parent and got " + rv);
-        if (rv != null) {
-          //pass
-        } else {
+        if (rv == null) {
           Logger.severe(this, sgVehicle);
         }
       }

@@ -348,9 +348,7 @@ public abstract class AstI18nFactory extends I18nFactory {
               }
             }
           }
-          if (rv != null) {
-            //pass
-          } else {
+          if (rv == null) {
             AbstractType<?, ?, ?> type = typeExpression.value.getValue();
             rv = new LineAxisPanel(new DeclarationNameLabel(type), new Label("."));
           }

@@ -371,13 +371,9 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
           boolean isSelected = button.isSelected();
           boolean isRollover = button.getModel().isArmed();
           Color color = button.getBackground();
-          if (isSelected) {
-            // pass
-          } else {
+          if (!isSelected) {
             color = color.darker();
-            if (isRollover) {
-              // pass
-            } else {
+            if (!isRollover) {
               color = color.darker();
             }
           }

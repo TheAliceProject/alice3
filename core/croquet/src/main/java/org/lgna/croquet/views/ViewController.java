@@ -77,9 +77,7 @@ public abstract class ViewController<J extends JComponent, M extends Model> exte
   }
 
   public final void setPopupPrepModel(PopupPrepModel popupMenuPrepModel) {
-    if (this.getAwtComponent().getParent() == null) {
-      //pass
-    } else {
+    if (this.getAwtComponent().getParent() != null) {
       PrintUtilities.println("warning: setPopupMenuOperation");
     }
     if (this.popupPrepModel != null) {

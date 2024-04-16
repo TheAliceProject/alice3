@@ -260,9 +260,7 @@ public class JImageEditorView extends JComponent {
 
     Rectangle selection = this.imageEditorFrame.getCropSelectHolder().getValue();
     if (selection != null) {
-      if (cropShape != null) {
-        // pass
-      } else {
+      if (cropShape == null) {
         cropShape = selection;
       }
     }
@@ -315,9 +313,7 @@ public class JImageEditorView extends JComponent {
     if ((width != this.scaledImageWidth) || (height != this.scaledImageHeight)) {
       this.scaledImage = null;
     }
-    if (this.scaledImage != null) {
-      //pass
-    } else {
+    if (this.scaledImage == null) {
       this.scaledImageWidth = width;
       this.scaledImageHeight = height;
       this.scaledImage = image.getScaledInstance(this.scaledImageWidth, this.scaledImageHeight, Image.SCALE_SMOOTH);

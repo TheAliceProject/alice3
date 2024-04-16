@@ -72,9 +72,7 @@ public class SceneIcon extends AbstractIcon {
   protected void paintIcon(Component c, Graphics2D g2) {
     if (this.isDirty) {
       try {
-        if (this.thumbnailGenerator != null) {
-          //pass
-        } else {
+        if (this.thumbnailGenerator == null) {
           this.thumbnailGenerator = new ThumbnailGenerator(this.getIconWidth(), this.getIconHeight());
         }
         this.image = this.thumbnailGenerator.createThumbnail();
