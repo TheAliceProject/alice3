@@ -52,97 +52,83 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Search for Gallery items that match all terms in the search string.
+ * User input is split into terms along spaces and any non-alphanumeric characters.
+ * Case is ignored when searching.
+ * Logic is similar to (Abstract)FindComposite and should seem the same to users.
  * @author Dennis Cosgrove
  */
 public class SearchGalleryWorker extends WorkerWithProgress<List<ResourceNode>, ResourceNode> {
-  private static enum Criterion {
-    STARTS_WITH {
-      @Override
-      public boolean accept(String lcName, String lcFilter) {
-        return lcName.startsWith(lcFilter);
-      }
-    }, CONTAINS_BUT_DOES_NOT_START_WITH {
-      @Override
-      public boolean accept(String lcName, String lcFilter) {
-        return (lcName.startsWith(lcFilter) == false) && lcName.contains(lcFilter);
-      }
-    };
-
-    public abstract boolean accept(String lcName, String lcFilter);
-  }
 
   public SearchGalleryWorker(String filter, SearchTabView searchTabView) {
-    this.filter = filter;
+    // Split into lowercase terms by spaces and any non word characters.
+    // Search for each term then AND the results together.
+    terms = filter.toLowerCase().replaceAll("\\W|_", " ").split("\\s+");
     this.searchTabView = searchTabView;
   }
 
-  private void appendIfMatch(List<ResourceNode> rv, ResourceNode node, String lcFilter, Criterion criterion, String text) {
-    if (rv.contains(node)) {
-      //pass
-    } else {
-      String lcName = text.toLowerCase();
-      if (criterion.accept(lcName, lcFilter)) {
-        rv.add(node);
-        this.publish(node);
-      }
-    }
-  }
-
-  private void appendMatches(List<ResourceNode> matches, ResourceNode node, String lcFilter, Criterion criterion, boolean isTag) {
-    if (this.isCancelled()) {
-      //pass
-    } else {
-      if (isTag) {
-        String[] tags = node.getResourceKey().getTags();
-        if ((tags != null) && (tags.length > 0)) {
-          for (String tag : tags) {
-            appendIfMatch(matches, node, lcFilter, criterion, tag);
-          }
-        }
-      } else {
-        String searchText = node.getResourceKey().getSearchText();
-        if ((searchText != null) && (searchText.length() > 0)) {
-          appendIfMatch(matches, node, lcFilter, criterion, searchText);
-        }
-      }
-      if (node.getResourceKey().isLeaf()) {
-        //pass
-      } else {
-        for (ResourceNode child : node.getNodeChildren()) {
-          appendMatches(matches, child, lcFilter, criterion, isTag);
-        }
-      }
-    }
-  }
-
   @Override
-  protected List<ResourceNode> do_onBackgroundThread() throws Exception {
-    if (filter.length() > 0) {
-      ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
-      List<ResourceNode> matchingNodes = Lists.newLinkedList();
-      String lcFilter = filter.toLowerCase();
-      for (boolean isTag : new boolean[] {false, true}) {
-        appendMatches(matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag);
-        if (lcFilter.length() > 2) {
-          appendMatches(matchingNodes, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag);
-        }
-      }
-      return matchingNodes;
-    } else {
+  protected List<ResourceNode> do_onBackgroundThread() {
+    if (terms.length == 0) {
       return Collections.emptyList();
     }
+    List<ResourceNode> matchingNodes = Lists.newLinkedList();
+    appendMatches(matchingNodes, TreeUtilities.getTreeBasedOnClassHierarchy());
+    return matchingNodes;
   }
 
   @Override
   protected void handleProcess_onEventDispatchThread(List<ResourceNode> chunks) {
-    this.searchTabView.addGalleryDragComponents(chunks);
+    searchTabView.addGalleryDragComponents(chunks);
   }
 
   @Override
   protected void handleDone_onEventDispatchThread(List<ResourceNode> matchingNodes) {
-    this.searchTabView.setComponentsToGalleryDragComponents(this.filter, matchingNodes);
+    searchTabView.setComponentsToGalleryDragComponents(terms, matchingNodes);
   }
 
-  private final String filter;
+  private void appendMatches(List<ResourceNode> matches, ResourceNode node) {
+    if (isCancelled()) {
+      return;
+    }
+    if (!matches.contains(node) && allTermsMatch(node)) {
+      matches.add(node);
+      publish(node);
+    }
+    if (!node.getResourceKey().isLeaf()) {
+      for (ResourceNode child : node.getNodeChildren()) {
+        appendMatches(matches, child);
+      }
+    }
+  }
+
+  private boolean allTermsMatch(ResourceNode node) {
+    for (String term : terms) {
+      boolean termFound = false;
+      String[] tags = node.getResourceKey().getTags();
+      if (tags != null) {
+        for (String tag : tags) {
+          if (tag.toLowerCase().contains(term)) {
+            termFound = true;
+            break;
+          }
+        }
+      }
+      if (termFound) {
+        // A tag matched. Go to the next term.
+        continue;
+      }
+      // No tag matched. Check in search text.
+      String searchText = node.getResourceKey().getSearchText();
+      if (searchText == null || searchText.isEmpty() || !searchText.toLowerCase().contains(term)) {
+        // This term was not found, so this node does not match.
+        return false;
+      }
+    }
+    // All terms found on this node.
+    return true;
+  }
+
+  private final String[] terms;
   private final SearchTabView searchTabView;
 }

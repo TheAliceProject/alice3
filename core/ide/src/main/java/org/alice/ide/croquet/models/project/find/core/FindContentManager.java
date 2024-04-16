@@ -42,8 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -106,9 +105,7 @@ public class FindContentManager {
   }
 
   private void tunnelSuper(AbstractType parent) {
-    if ((parent != null) && !superTypeList.contains(parent)) {
-      //pass
-    } else {
+    if ((parent == null) || superTypeList.contains(parent)) {
       return;
     }
     superTypeList.add(parent);
@@ -161,94 +158,59 @@ public class FindContentManager {
     return null;
   }
 
-  public List<SearchResult> getResultsForString(String nextValue) {
-    List<SearchResult> rv = Lists.newArrayList();
-    String check = nextValue;
-    //all these characters break regex
-    check = check.replaceAll("\\*", ".*");
-    check = check.replaceAll("\\(", "");
-    check = check.replaceAll("\\)", "");
-    check = check.replaceAll("\\[", "");
-    check = check.replaceAll("\\]", "");
-    check = check.replaceAll("\\{", "");
-    check = check.replaceAll("\\}", "");
-    check = check.replaceAll("\\\\", "");
-    //    if( check.length() == 0 ) {
-    //      return rv;
-    //    }
-    while (true) {
-      try {
-        Pattern pattern = Pattern.compile(check.toLowerCase());
-        System.out.println(objectList);
-        for (SearchResult o : objectList) {
-          String name = o.getName();
-          Matcher matcher = pattern.matcher(name.toLowerCase());
-          if (matcher.find()) {
-            if (o.getReferences().size() > 0) {
-              rv.add(o);
-            }
-          }
+  public List<SearchResult> getSearchResults(String[] terms) throws PatternSyntaxException {
+    List<SearchResult> matches = Lists.newArrayList();
+    List<Pattern> patterns = new ArrayList<>();
+    for (String term : terms) {
+      patterns.add(Pattern.compile(term.toLowerCase()));
+    }
+    for (SearchResult o : objectList) {
+      if (o.getReferences().isEmpty()) {
+        continue;
+      }
+      String toSearch = o.getName().toLowerCase();
+      boolean allMatch = true;
+      for (Pattern pattern : patterns) {
+        Matcher matcher = pattern.matcher(toSearch);
+        if (!matcher.find()) {
+          allMatch = false;
+          break;
         }
-        break;
-      } catch (PatternSyntaxException pse) {
-        throw pse;
+      }
+      if (allMatch) {
+        matches.add(o);
       }
     }
-    rv = sortByRelevance(nextValue, rv);
-    return rv;
+    return sortByRelevance(terms, matches);
   }
 
-  public List<SearchResult> getResultsForField(UserField field) {
-    List<SearchResult> resultsForString = getResultsForString(field.getName());
-    List<SearchResult> rv = Lists.newArrayList();
-    for (SearchResult obj : resultsForString) {
-      if (obj.getDeclaration().equals(field)) {
-        rv.add(obj);
-      }
-    }
-    if (rv.size() < 1) {
-      return resultsForString;
-    } else {
-      return rv;
-    }
-  }
-
-  private List<SearchResult> sortByRelevance(String string, List<SearchResult> searchResults) {
+  private List<SearchResult> sortByRelevance(String[] terms, List<SearchResult> searchResults) {
     List<SearchResult> unsortedList = Lists.newArrayList(searchResults);
-    List<SearchResult> rv = Lists.newArrayList();
     Map<SearchResult, Double> scoreMap = Maps.newHashMap();
     for (SearchResult obj : unsortedList) {
-      scoreMap.put(obj, score(obj, string));
+      scoreMap.put(obj, score(obj, terms));
     }
-    //n^2 sort O:-)
-    while (!unsortedList.isEmpty()) {
-      double max = Double.NEGATIVE_INFINITY;
-      SearchResult maxObj = null;
-      for (SearchResult o : unsortedList) {
-        if (scoreMap.get(o) > max) {
-          max = scoreMap.get(o);
-          maxObj = o;
-        }
-      }
-      assert maxObj != null : unsortedList.size();
-      rv.add(unsortedList.remove(unsortedList.indexOf(maxObj)));
-    }
-    return rv;
+    unsortedList.sort(Comparator.comparing(scoreMap::get));
+    return unsortedList;
   }
 
-  private Double score(SearchResult obj, String string) {
-    double rv = 0;
-    if (obj.getName().equals(string)) {
-      rv += 2;
+  // Produce a zero or negative score.
+  // Hitting more criteria means a lower number, so it sorts to the front of the list.
+  private Double score(SearchResult obj, String[]terms) {
+    double score = 0;
+    for (String term : terms) {
+      if (obj.getName().equals(term)) {
+        score -= 2;
+      }
+      if (obj.getName().contains(term)) {
+        score -= 1;
+      }
+      if (obj.getName().toLowerCase().startsWith(term)) {
+        score -= 1;
+      }
     }
-    if (obj.getName().contains(string)) {
-      rv += 1;
-    }
-    if (obj.getName().toLowerCase().startsWith(string.toLowerCase())) {
-      rv += 1;
-    }
-    rv += obj.getReferences().size() / 10.0;
-    return rv;
+    score -= obj.getReferences().size() / 10.0;
+    return score;
   }
 
   public void refresh(UserType sceneType, List<Criterion> criteria) {
@@ -256,8 +218,4 @@ public class FindContentManager {
     superTypeList.clear();
     initialize(sceneType, criteria);
   }
-
-  //  public boolean isInitialized() {
-  //    return sceneType != null;
-  //  }
 }

@@ -43,9 +43,9 @@
 package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
+import java.util.TreeMap;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
@@ -68,8 +68,7 @@ public class SearchResultListCellRenderer extends ListCellRenderer<SearchResult>
   protected JLabel getListCellRendererComponent(JLabel rv, JList list, SearchResult value, int index, boolean isSelected, boolean cellHasFocus) {
     StringBuilder sb = new StringBuilder();
     sb.append("<HTML>");
-    String finalValue = getNameString(value.getName(), composite.getSearchState().getValue());
-    sb.append(finalValue);
+    sb.append(getHighlightedName(value.getName(), composite.getSearchTerms()));
     sb.append(" (");
     sb.append(value.getReferences().size());
     sb.append(")");
@@ -79,40 +78,56 @@ public class SearchResultListCellRenderer extends ListCellRenderer<SearchResult>
     return rv;
   }
 
-  private String getNameString(String name, String value) {
-    String rv = name;
-    String unparsed = value.toLowerCase();
-    ArrayList<String> list = Lists.newArrayList();
-    while (true) {
-      if (unparsed.length() == 0) {
-        break;
-      } else if (unparsed.contains("*")) {
-        int starIndex = unparsed.indexOf("*");
-        if (starIndex != unparsed.length()) {
-          list.add(unparsed.substring(0, starIndex));
-          unparsed = unparsed.substring(starIndex + 1);
-        }
+  private String getHighlightedName(String name, String[] terms) {
+    TreeMap<Integer, Integer> highlights = findAllTerms(terms, name.toLowerCase());
+    collapseOverlaps(highlights);
+    return highlightedTerms(name, highlights);
+  }
+
+  private static TreeMap<Integer, Integer> findAllTerms(String[] terms, String toSearch) {
+    TreeMap<Integer, Integer> highlights = new TreeMap<>();
+    for (String term : terms) {
+      // Each term was already found by search in FindContentManager, so they will be in the string.
+      int start = toSearch.indexOf(term.toLowerCase());
+      int end = start + term.length();
+      highlights.put(start, end);
+    }
+    return highlights;
+  }
+
+  private static void collapseOverlaps(TreeMap<Integer, Integer> highlights) {
+    // Copy keys to avoid ConcurrentModificationException
+    List<Integer> starts = new ArrayList<>(highlights.navigableKeySet());
+    int lastEnd = -1;
+    int lastStart = -1;
+    for (Integer start : starts) {
+      if (start > lastEnd) {
+        // No overlap. Keep checking
+        lastStart = start;
+        lastEnd = highlights.get(start);
       } else {
-        list.add(unparsed);
-        break;
+        // The two strings found overlap.
+        // Collapse into last highlight.
+        Integer end = highlights.get(start);
+        lastEnd = lastEnd > end ? lastEnd : end;
+        highlights.put(lastStart, lastEnd);
+        // And remove the one just checked.
+        highlights.remove(start);
       }
     }
-    String temp = name.toLowerCase();
-    Stack<Integer> stack = new Stack<Integer>();
-    int itr = 0;
-    for (String str : list) {
-      int start = temp.indexOf(str);
-      stack.push(itr + start);
-      stack.push(itr + start + str.length());
-      itr = itr + start + str.length();
-      temp = temp.substring(itr);
+  }
+
+  private static String highlightedTerms(String name, TreeMap<Integer, Integer> highlights) {
+    int lastStop = 0;
+    StringBuilder html = new StringBuilder();
+    for (Integer start : highlights.navigableKeySet()) {
+      html.append(name, lastStop, start)
+          .append("<strong>")
+          .append(name, start, highlights.get(start))
+          .append("</strong>");
+      lastStop = highlights.get(start);
     }
-    while (!stack.isEmpty()) {
-      Integer index = stack.pop();
-      rv = rv.substring(0, index) + "</strong>" + rv.substring(index);
-      index = stack.pop();
-      rv = rv.substring(0, index) + "<strong>" + rv.substring(index);
-    }
-    return rv;
+    html.append(name, lastStop, name.length());
+    return html.toString();
   }
 }

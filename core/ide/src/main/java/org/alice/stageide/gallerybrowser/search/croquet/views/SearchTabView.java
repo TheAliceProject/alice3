@@ -117,11 +117,11 @@ public class SearchTabView extends GalleryTabView {
     this.filteredResourcesView.revalidateAndRepaint();
   }
 
-  public void setComponentsToGalleryDragComponents(String filter, List<ResourceNode> resourceNodes) {
+  public void setComponentsToGalleryDragComponents(String[] terms, List<ResourceNode> resourceNodes) {
     synchronized (this.getTreeLock()) {
       this.filteredResourcesView.removeAllComponents();
-      if (filter.length() > 0) {
-        if (resourceNodes.size() > 0) {
+      if (terms.length > 0) {
+        if (!resourceNodes.isEmpty()) {
           for (ResourceNode resourceNode : resourceNodes) {
             this.filteredResourcesView.addComponent(this.getGalleryDragComponent(resourceNode, TreeUtilities.getClassTreeState()));
           }

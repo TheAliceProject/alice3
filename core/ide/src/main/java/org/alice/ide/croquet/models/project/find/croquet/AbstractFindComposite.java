@@ -82,6 +82,11 @@ import org.lgna.project.ast.UserType;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
+ * Search for code elements that match all terms in the search string.
+ * User input is split into terms along spaces and any non-alphanumeric characters.
+ * Case is ignored when searching, but considered when weighting matches and ordering results.
+ * Logic is similar to SearchGalleryWorker and should seem the same to users.
+ * TODO Collapse this class and its only subclass, FindComposite.
  * @author Matt May
  */
 public abstract class AbstractFindComposite extends FrameCompositeWithInternalIsShowingState<FindView> {
@@ -186,7 +191,7 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
   }
 
   protected List<SearchResult> setSearchResults() {
-    return manager.getResultsForString(searchState.getValue());
+    return manager.getSearchResults(getSearchTerms());
   }
 
   @Override
@@ -221,6 +226,13 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
 
   public StringState getSearchState() {
     return this.searchState;
+  }
+
+  public String[] getSearchTerms() {
+    // Split into terms by spaces or any non word characters.
+    // Search for each term then AND the results together.
+    // Case will be ignored when searching, but is considered when weighting and ordering.
+    return searchState.getValue().replaceAll("\\W|_", " ").split("\\s+");
   }
 
   public RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
