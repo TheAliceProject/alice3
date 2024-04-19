@@ -114,6 +114,7 @@ import org.lgna.croquet.*;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.InputEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Button;
@@ -438,6 +439,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   public void centerCameraOn(UserField field) {
     mainCameraViewTracker.centerMarkersOn(field);
+  }
+
+  public void centerMainCameraOnField(UserActivity activity, UserField field) {
+    mainCameraViewTracker.centerMainCameraOnField(activity, movableSceneCameraImp, field);
   }
 
   @Override
