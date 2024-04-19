@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
 import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.IDE;
-import org.alice.ide.croquet.models.ast.CenterCameraOnOperation;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.ThisInstanceFactory;
@@ -71,9 +70,6 @@ import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.SCamera;
-import org.lgna.story.SGround;
-import org.lgna.story.SVRUser;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -338,18 +334,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
       rv.addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
           if (e.getClickCount() > 1) {
-            StorytellingSceneEditor editor = StorytellingSceneEditor.getInstance();
-            UserField field = editor.getSelectedField();
-            if (!field.getValueType().isAssignableTo(SGround.class) && field != editor.getActiveSceneField()) {
-              if (editor.isStartingCameraView()) {
-                // Don't move the main camera to look at itself
-                if (!field.getValueType().isAssignableTo(SCamera.class) && !field.getValueType().isAssignableTo(SVRUser.class)) {
-                  editor.centerMainCameraOnField(MouseEventTrigger.createUserActivity(e), field);
-                }
-              } else {
-                CenterCameraOnOperation.getInstance(field).fire(MouseEventTrigger.createUserActivity(e));
-              }
-            }
+            StorytellingSceneEditor.getInstance().centerCameraOnSelectedField(MouseEventTrigger.createUserActivity(e));
           }
         }
       });

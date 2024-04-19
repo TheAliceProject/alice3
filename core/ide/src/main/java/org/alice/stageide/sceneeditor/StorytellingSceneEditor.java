@@ -437,12 +437,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  public void centerCameraOn(UserField field) {
-    mainCameraViewTracker.centerMarkersOn(field);
-  }
-
-  public void centerMainCameraOnField(UserActivity activity, UserField field) {
-    mainCameraViewTracker.centerMainCameraOnField(activity, movableSceneCameraImp, field);
+  public void centerCameraOnSelectedField(UserActivity activity) {
+    mainCameraViewTracker.centerCameraOnField(activity, movableSceneCameraImp, getSelectedField());
   }
 
   @Override

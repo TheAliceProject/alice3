@@ -164,7 +164,18 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     startingCameraConfig.intializeOnStartingCamera(startingCamera);
   }
 
-  public void centerMarkersOn(UserField field) {
+  public void centerCameraOnField(UserActivity activity, TransformableImp movableCamera, UserField field) {
+    if (activeMarker == startingCameraConfig) {
+      // Don't move the main camera to look at itself
+      if (!field.getValueType().isAssignableTo(SCamera.class) && !field.getValueType().isAssignableTo(SVRUser.class)) {
+        centerMainCameraOnField(activity, movableCamera, field);
+      }
+    } else {
+      centerMarkersOn(field);
+    }
+  }
+
+    private void centerMarkersOn(UserField field) {
     // Changes the markers for the layout camera and the 3 ortho camera views, not just whatever marker is active.
     AxisAlignedBox alignedBox = getBoundingBox(field);
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
@@ -174,7 +185,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     activeMarker.updateCameraToNewMarkerLocation();
   }
 
-  public void centerMainCameraOnField(UserActivity activity, TransformableImp movableCamera, UserField field) {
+  private void centerMainCameraOnField(UserActivity activity, TransformableImp movableCamera, UserField field) {
     AffineMatrix4x4 end = startingCameraConfig.getViewingPerspective(getBoundingBox(field));
     MoveTransformableEdit edit = new MoveTransformableEdit(activity, movableCamera, end);
     new EditOperation(edit).fire(activity);
