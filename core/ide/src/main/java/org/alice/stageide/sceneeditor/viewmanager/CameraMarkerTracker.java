@@ -451,6 +451,16 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return m;
     }
 
+    protected void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
+      if (!sceneEditor.isVrActive()) {
+        return;
+      }
+      super.adjustForVRIfNeeded(layoutTransform);
+      // Level the VRUser, for their own health.
+      OrthogonalMatrix3x3 stoodup = OrthogonalMatrix3x3.createFromStandUp(layoutTransform.orientation);
+      layoutTransform.orientation.setValue(stoodup);
+    }
+
     @Override
     protected void startTrackingCamera() {
       super.startTrackingCamera();
