@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite;
-import org.alice.stageide.icons.SphereIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SSphere;
 
 import java.util.UUID;
@@ -58,8 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SphereDragModel extends ShapeDragModel {
-  private static final SSphere sModel = new SSphere();
-
   private static class SingletonHolder {
     private static SphereDragModel instance = new SphereDragModel();
   }
@@ -69,26 +63,14 @@ public class SphereDragModel extends ShapeDragModel {
   }
 
   private SphereDragModel() {
-    super(UUID.fromString("cd4d23c2-c4ae-4c07-a402-f8b1cc62991a"));
+    super(UUID.fromString("cd4d23c2-c4ae-4c07-a402-f8b1cc62991a"), new SSphere());
   }
 
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
 
-  @Override
-  public boolean placeOnGround() {
-    return true;
-  }
 
   @Override
   public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
     return AddSphereManagedFieldComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return SphereIconFactory.getInstance();
-  }
-}
+ }

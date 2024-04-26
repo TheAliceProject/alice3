@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite;
-import org.alice.stageide.icons.DiscIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SDisc;
 
 import java.util.UUID;
@@ -58,8 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DiscDragModel extends ShapeDragModel {
-  private static final SDisc sModel = new SDisc();
-
   private static class SingletonHolder {
     private static DiscDragModel instance = new DiscDragModel();
   }
@@ -69,26 +63,13 @@ public class DiscDragModel extends ShapeDragModel {
   }
 
   private DiscDragModel() {
-    super(UUID.fromString("461b82ed-0e75-4549-90ff-6e34a809fb2c"));
+    super(UUID.fromString("461b82ed-0e75-4549-90ff-6e34a809fb2c"), new SDisc());
   }
 
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
-  }
 
   @Override
   public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
     return AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return DiscIconFactory.getInstance();
-  }
 }

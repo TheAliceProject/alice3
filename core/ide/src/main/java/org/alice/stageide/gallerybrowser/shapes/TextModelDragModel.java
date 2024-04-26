@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite;
-import org.alice.stageide.icons.TextModelIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.STextModel;
 
 import java.util.UUID;
@@ -58,8 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TextModelDragModel extends ShapeDragModel {
-  private static final STextModel sModel = new STextModel();
-
   private static class SingletonHolder {
     private static TextModelDragModel instance = new TextModelDragModel();
   }
@@ -69,17 +63,7 @@ public class TextModelDragModel extends ShapeDragModel {
   }
 
   private TextModelDragModel() {
-    super(UUID.fromString("ac8a92e6-ebb7-49b2-bdec-6b17668e4398"));
-  }
-
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
+    super(UUID.fromString("ac8a92e6-ebb7-49b2-bdec-6b17668e4398"), new STextModel());
   }
 
   @Override
@@ -87,8 +71,4 @@ public class TextModelDragModel extends ShapeDragModel {
     return AddTextModelManagedFieldOperationComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return TextModelIconFactory.getInstance();
-  }
-}
+ }

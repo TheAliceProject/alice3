@@ -42,23 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite;
-import org.alice.stageide.icons.BillboardIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBillboard;
 
 import java.util.UUID;
+
+// generic drag models.
+
+
 
 /**
  * @author Dennis Cosgrove
  */
 public class BillboardDragModel extends ShapeDragModel {
-  private static final SBillboard sModel = new SBillboard();
 
   private static class SingletonHolder {
     private static BillboardDragModel instance = new BillboardDragModel();
@@ -69,26 +68,12 @@ public class BillboardDragModel extends ShapeDragModel {
   }
 
   private BillboardDragModel() {
-    super(UUID.fromString("32148b19-0314-4ae5-807e-894f4af1c581"));
+    super(UUID.fromString("32148b19-0314-4ae5-807e-894f4af1c581"), new SBillboard());
   }
 
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
-  }
 
   @Override
   public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
     return AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
-  }
-
-  @Override
-  public IconFactory getIconFactory() {
-    return BillboardIconFactory.getInstance();
   }
 }
