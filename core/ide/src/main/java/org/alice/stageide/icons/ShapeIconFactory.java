@@ -43,7 +43,7 @@
 package org.alice.stageide.icons;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 
 import java.awt.*;
 import java.lang.reflect.Constructor;
@@ -52,7 +52,7 @@ import java.lang.reflect.Constructor;
  * @author Jen Smith
  */
 
-public class ShapeIconFactory extends ResolutionIndependantIconFactory {
+public class ShapeIconFactory extends ResolutionIndependentIconFactory {
   Constructor<? extends ShapeIcon> iconConstructor;
 
   public ShapeIconFactory(Class<? extends ShapeIcon> cls)  {

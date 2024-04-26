@@ -45,12 +45,12 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResolutionIndependantIconFactory extends AbstractIconFactory {
-  public ResolutionIndependantIconFactory(IsCachingDesired isCachingDesired) {
+public abstract class ResolutionIndependentIconFactory extends AbstractIconFactory {
+  public ResolutionIndependentIconFactory(IsCachingDesired isCachingDesired) {
     super(isCachingDesired);
   }
 
-  public ResolutionIndependantIconFactory() {
+  public ResolutionIndependentIconFactory() {
     this(IsCachingDesired.FALSE);
   }
 }

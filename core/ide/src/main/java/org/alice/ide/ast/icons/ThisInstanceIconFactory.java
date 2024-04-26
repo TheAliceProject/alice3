@@ -45,7 +45,7 @@ package org.alice.ide.ast.icons;
 import org.alice.ide.IDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 import org.lgna.project.ast.AbstractType;
 
 import javax.swing.Icon;
@@ -56,7 +56,7 @@ import java.awt.Graphics;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceIconFactory extends ResolutionIndependantIconFactory {
+public class ThisInstanceIconFactory extends ResolutionIndependentIconFactory {
   private static class SingletonHolder {
     private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
   }

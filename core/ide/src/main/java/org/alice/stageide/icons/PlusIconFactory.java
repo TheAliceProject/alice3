@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
-import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 
 import javax.swing.Icon;
 import java.awt.Dimension;
@@ -50,7 +50,7 @@ import java.awt.Dimension;
 /**
  * @author Dennis Cosgrove
  */
-public class PlusIconFactory extends ResolutionIndependantIconFactory {
+public class PlusIconFactory extends ResolutionIndependentIconFactory {
   private static class SingletonHolder {
     private static PlusIconFactory instance = new PlusIconFactory();
   }
