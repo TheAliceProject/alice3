@@ -50,10 +50,6 @@ import org.lgna.story.SBillboard;
 
 import java.util.UUID;
 
-// generic drag models.
-
-
-
 /**
  * @author Dennis Cosgrove
  */
