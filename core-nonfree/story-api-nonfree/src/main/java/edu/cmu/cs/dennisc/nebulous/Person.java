@@ -72,7 +72,11 @@ public class Person extends Model {
       Logger.severe("NOT INITIALIZING PERSON: lifeStage=null");
     } else {
       synchronized (renderLock) {
-        initialize(o);
+        try {
+          initialize(o);
+        } catch (RuntimeException re) {
+          throw new RuntimeException("Person initialization failed for " + o, re);
+        }
       }
     }
   }
