@@ -90,7 +90,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
     return formatter.galleryLabelFor(this);
   }

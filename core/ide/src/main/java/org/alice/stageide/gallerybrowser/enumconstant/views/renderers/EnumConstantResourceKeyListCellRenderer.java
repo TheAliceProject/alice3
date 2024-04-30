@@ -58,7 +58,7 @@ public class EnumConstantResourceKeyListCellRenderer extends ListCellRenderer<En
   @Override
   protected JLabel getListCellRendererComponent(JLabel rv, JList list, EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus) {
     if (value != null) {
-      rv.setText(value.getLocalizedDisplayText());
+      rv.setText(value.getLocalizedCreationText());
       IconFactory iconFactory = value.getIconFactory();
       rv.setIcon(iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE));
       rv.setHorizontalTextPosition(SwingConstants.CENTER);

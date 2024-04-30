@@ -81,7 +81,7 @@ public class RootResourceKey extends ResourceKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     Class cls = GalleryComposite.class;
     String bundleName = cls.getPackage().getName() + ".croquet";
     try {

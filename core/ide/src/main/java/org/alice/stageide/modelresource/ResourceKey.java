@@ -61,9 +61,13 @@ import java.util.Set;
 public abstract class ResourceKey {
   public abstract String getSearchText();
 
+  // The class name without localization. Not for display to the user.
   public abstract String getInternalText();
 
-  public abstract String getLocalizedDisplayText();
+  // The text for the creation of an instance using localized versions of the class name and `new`.
+  // (e.g. `new Alice( WONDERLAND )` or `nova Galinha( MEAN_CHICKEN )`)
+  // The enum values are not localized.
+  public abstract String getLocalizedCreationText();
 
   public abstract IconFactory getIconFactory();
 

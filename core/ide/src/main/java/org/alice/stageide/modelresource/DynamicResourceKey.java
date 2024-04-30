@@ -40,7 +40,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
     return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
   }

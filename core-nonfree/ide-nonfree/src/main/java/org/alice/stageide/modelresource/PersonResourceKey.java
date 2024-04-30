@@ -182,7 +182,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
     String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
 
@@ -261,6 +261,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   protected void appendRep(StringBuilder sb) {
-    sb.append(this.getLocalizedDisplayText());
+    sb.append(this.getLocalizedCreationText());
   }
 }

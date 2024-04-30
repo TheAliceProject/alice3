@@ -280,7 +280,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
       if ((modelResourceCls != null) && modelResourceCls.isInterface()) {
         this.text = typeName;
       } else {
-        this.text = resourceKey.getLocalizedDisplayText();
+        this.text = resourceKey.getLocalizedCreationText();
       }
     } else {
       Formatter formatter = FormatterState.getInstance().getValue();

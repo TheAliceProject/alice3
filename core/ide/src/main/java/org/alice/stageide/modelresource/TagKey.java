@@ -82,13 +82,13 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     return AliceResourceUtilities.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
   }
 
   @Override
   public String getSearchText() {
-    return this.getLocalizedDisplayText();
+    return this.getLocalizedCreationText();
   }
 
   @Override
@@ -133,6 +133,6 @@ public abstract class TagKey extends ResourceKey {
 
   @Override
   protected void appendRep(StringBuilder sb) {
-    sb.append(this.getLocalizedDisplayText());
+    sb.append(this.getLocalizedCreationText());
   }
 }

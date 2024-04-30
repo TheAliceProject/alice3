@@ -106,7 +106,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     String simpleName = AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
     String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 

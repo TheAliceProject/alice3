@@ -138,7 +138,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 
   @Override
   public String getText() {
-    return this.resourceKey.getLocalizedDisplayText();
+    return this.resourceKey.getLocalizedCreationText();
   }
 
   @Override
