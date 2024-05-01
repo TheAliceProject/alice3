@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SThing;
 
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
+
 public abstract class ShapeDragModel extends GalleryDragModel {
   private String text;
+  // sModel can't be a SShape because there is a drag model for ground (I keep trying though, so here's a comment.)
+  private SThing sModel;
 
-  public ShapeDragModel(UUID migrationId) {
+  public ShapeDragModel(UUID migrationId, SThing model) {
     super(migrationId);
+    this.sModel = model;
   }
 
   @Override
@@ -79,6 +88,18 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   @Override
   public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
     return this.getLeftButtonClickOperation(null);
+  }
+
+  public boolean placeOnGround() {
+    return true;
+  }
+
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
+
+  public IconFactory getIconFactory() {
+    return org.alice.stageide.icons.IconFactoryManager.getRegisteredIconFactory(JavaType.getInstance(sModel.getClass()));
   }
 
 }

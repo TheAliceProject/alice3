@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite;
-import org.alice.stageide.icons.BoxIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBox;
 
 import java.util.UUID;
@@ -58,8 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BoxDragModel extends ShapeDragModel {
-  private static final SBox sModel = new SBox();
-
   private static class SingletonHolder {
     private static BoxDragModel instance = new BoxDragModel();
   }
@@ -69,17 +63,7 @@ public class BoxDragModel extends ShapeDragModel {
   }
 
   private BoxDragModel() {
-    super(UUID.fromString("d8c23a3c-d510-43e4-a26f-26b565f18c0f"));
-  }
-
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
+    super(UUID.fromString("d8c23a3c-d510-43e4-a26f-26b565f18c0f"), new SBox());
   }
 
   @Override
@@ -87,8 +71,4 @@ public class BoxDragModel extends ShapeDragModel {
     return AddBoxManagedFieldComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return BoxIconFactory.getInstance();
-  }
 }

@@ -40,30 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
-
-import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
-
-import javax.swing.Icon;
-import java.awt.Dimension;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointIconFactory extends ResolutionIndependantIconFactory {
-  private static class SingletonHolder {
-    private static JointIconFactory instance = new JointIconFactory();
+public abstract class ResolutionIndependentIconFactory extends AbstractIconFactory {
+  public ResolutionIndependentIconFactory(IsCachingDesired isCachingDesired) {
+    super(isCachingDesired);
   }
 
-  public static JointIconFactory getInstance() {
-    return SingletonHolder.instance;
-  }
-
-  private JointIconFactory() {
-  }
-
-  @Override
-  protected Icon createIcon(Dimension size) {
-    return new JointIcon(size);
+  public ResolutionIndependentIconFactory() {
+    this(IsCachingDesired.FALSE);
   }
 }

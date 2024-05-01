@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite;
-import org.alice.stageide.icons.TorusIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.STorus;
 
 import java.util.UUID;
@@ -58,8 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TorusDragModel extends ShapeDragModel {
-  private static final STorus sModel = new STorus();
-
   private static class SingletonHolder {
     private static TorusDragModel instance = new TorusDragModel();
   }
@@ -69,17 +63,7 @@ public class TorusDragModel extends ShapeDragModel {
   }
 
   private TorusDragModel() {
-    super(UUID.fromString("d86ba308-7869-4c9c-a5d6-93635c8159a6"));
-  }
-
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
+    super(UUID.fromString("d86ba308-7869-4c9c-a5d6-93635c8159a6"), new STorus());
   }
 
   @Override
@@ -87,8 +71,4 @@ public class TorusDragModel extends ShapeDragModel {
     return AddTorusManagedFieldComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return TorusIconFactory.getInstance();
-  }
 }

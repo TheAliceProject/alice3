@@ -42,14 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite;
-import org.alice.stageide.icons.CylinderIconFactory;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCylinder;
 
 import java.util.UUID;
@@ -58,7 +54,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CylinderDragModel extends ShapeDragModel {
-  private static final SCylinder sModel = new SCylinder();
 
   private static class SingletonHolder {
     private static CylinderDragModel instance = new CylinderDragModel();
@@ -69,26 +64,13 @@ public class CylinderDragModel extends ShapeDragModel {
   }
 
   private CylinderDragModel() {
-    super(UUID.fromString("cc99d029-9efc-4418-80bf-49fa71281b34"));
+    super(UUID.fromString("cc99d029-9efc-4418-80bf-49fa71281b34"), new SCylinder());
   }
 
-  @Override
-  public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
-  }
-
-  @Override
-  public boolean placeOnGround() {
-    return true;
-  }
 
   @Override
   public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
     return AddCylinderManagedFieldComposite.getInstance().getLaunchOperation();
   }
 
-  @Override
-  public IconFactory getIconFactory() {
-    return CylinderIconFactory.getInstance();
-  }
 }

@@ -50,7 +50,7 @@ import java.awt.Graphics;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyIconFactory extends ResolutionIndependantIconFactory {
+public class EmptyIconFactory extends ResolutionIndependentIconFactory {
   private static class SingletonHolder {
     private static EmptyIconFactory instance = new EmptyIconFactory();
   }
