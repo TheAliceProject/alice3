@@ -35,8 +35,13 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getSearchText() {
+  public String getLocalizedName() {
     return dynamicResource.getModelClassName();
+  }
+
+  @Override
+  public String getSearchText() {
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override

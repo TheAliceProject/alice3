@@ -81,8 +81,8 @@ public class RootResourceKey extends ResourceKey {
   }
 
   @Override
-  public String getLocalizedCreationText() {
-    Class cls = GalleryComposite.class;
+  public String getLocalizedName() {
+    Class<GalleryComposite> cls = GalleryComposite.class;
     String bundleName = cls.getPackage().getName() + ".croquet";
     try {
       ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
@@ -91,6 +91,12 @@ public class RootResourceKey extends ResourceKey {
       Logger.severe(cls, this.keyText);
       return this.defaultDisplayText;
     }
+  }
+
+  @Override
+  public String getLocalizedCreationText() {
+    // Root resources (e.g `All Classes`) are not created.
+    return getLocalizedName();
   }
 
   @Override

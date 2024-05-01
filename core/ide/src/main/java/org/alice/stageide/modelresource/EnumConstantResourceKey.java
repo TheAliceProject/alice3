@@ -100,18 +100,21 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
   }
 
   @Override
+  public String getLocalizedName() {
+    return AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+  }
+
+  @Override
   public String getSearchText() {
-    return enumConstant.name() + " "
-        + AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    return enumConstant.name() + " " + getInternalName() + " " + getLocalizedName();
   }
 
   @Override
   public String getLocalizedCreationText() {
-    String simpleName = AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
     String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), simpleName, params);
+    return String.format(formatter.getNewFormat(), getLocalizedName(), params);
   }
 
   @Override

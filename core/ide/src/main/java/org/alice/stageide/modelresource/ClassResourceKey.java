@@ -85,8 +85,13 @@ public final class ClassResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getSearchText() {
+  public String getLocalizedName() {
     return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, JComponent.getDefaultLocale());
+  }
+
+  @Override
+  public String getSearchText() {
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override

@@ -82,13 +82,19 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
+  public String getLocalizedName() {
+    return AliceResourceUtilities.getLocalizedTag(getInternalName(), JComponent.getDefaultLocale());
+  }
+
+  @Override
   public String getLocalizedCreationText() {
-    return AliceResourceUtilities.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
+    // Tags are not instantiated, simply referenced.
+    return getLocalizedName();
   }
 
   @Override
   public String getSearchText() {
-    return this.getLocalizedCreationText();
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override

@@ -73,6 +73,9 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
+
+  public static final String PERSON = "Person";
+
   private static IconFactory createIconFactory(String subPath) {
     return new TrimmedImageIconFactory(PersonResourceKey.class.getResource("images/" + subPath + ".png"), 160, 120);
   }
@@ -166,14 +169,12 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   public String getInternalName() {
-    StringBuilder sb = new StringBuilder();
-    if (this.lifeStage != null) {
-      sb.append(this.lifeStage.getDisplayText());
-    } else {
-      sb.append("Person");
-    }
+    return (lifeStage == null ? PERSON : lifeStage.getDisplayText());
+  }
 
-    return sb.toString();
+  @Override
+  public String getLocalizedName() {
+    return (lifeStage == null) ? PERSON : lifeStage.getLocalizedDisplayText();
   }
 
   @Override
@@ -184,9 +185,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   @Override
   public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
-
-    return String.format(formatter.getNewFormat(), className, "…");
+    return String.format(formatter.getNewFormat(), getLocalizedName(), "…");
   }
 
   @Override
