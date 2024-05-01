@@ -51,6 +51,7 @@ import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
@@ -75,10 +76,10 @@ public class OneShotUtilities {
       ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
       UserField field = thisFieldAccessFactory.getField();
       models.add(RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
+      AbstractType<?, ?, ?> fieldType = field.getValueType();
+      boolean isNotTargetingCamera = !fieldType.isAssignableTo(SCamera.class) && !fieldType.isAssignableTo(SVRUser.class);
       //Prevent users from deleting the camera or the scene
-      if (!field.getValueType().isAssignableTo(SCamera.class)
-          && !field.getValueType().isAssignableTo(SVRUser.class)
-          && !field.getValueType().isAssignableTo(SScene.class)) {
+      if (isNotTargetingCamera && !fieldType.isAssignableTo(SScene.class)) {
         models.add(DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
       }
       //      if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
@@ -87,12 +88,9 @@ public class OneShotUtilities {
       //      }
       models.add(RevertFieldOperation.getInstance(field).getMenuItemPrepModel());
 
-      if (!StorytellingSceneEditor.getInstance().isStartingCameraView()) {
-        if (!field.getValueType().isAssignableTo(SGround.class)) {
-          models.add(CenterCameraOnOperation.getInstance(field).getMenuItemPrepModel());
-        }
-      } else {
-        // TODO can we use the GetAGoodLookAt logic here to do something similar for the StartingCamera?
+      boolean cameraIsNotTargetingItself = !StorytellingSceneEditor.getInstance().isStartingCameraView() || isNotTargetingCamera;
+      if (!fieldType.isAssignableTo(SGround.class) && cameraIsNotTargetingItself) {
+        models.add(new CenterCameraOnOperation().getMenuItemPrepModel());
       }
     }
     return models;

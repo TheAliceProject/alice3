@@ -1,13 +1,10 @@
 package org.alice.ide.croquet.models.ast;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.UserField;
 
-import java.util.Map;
 import java.util.UUID;
 
 /*******************************************************************************
@@ -58,30 +55,12 @@ import java.util.UUID;
  *
  */
 public class CenterCameraOnOperation extends ActionOperation {
-    private static Map<UserField, CenterCameraOnOperation> map = Maps.newHashMap();
-
-    public static synchronized CenterCameraOnOperation getInstance(UserField field) {
-        CenterCameraOnOperation rv = map.get(field);
-        if (rv == null) {
-            rv = new CenterCameraOnOperation(field);
-            map.put(field, rv);
-        }
-        return rv;
-    }
-
-    private UserField field;
-
-    public CenterCameraOnOperation(UserField field) {
+    public CenterCameraOnOperation() {
         super(Application.PROJECT_GROUP, UUID.fromString("84f45a6e-e17f-4d64-b4a1-8182fdc1a546"));
-        this.field = field;
-    }
-
-    public UserField getField() {
-        return this.field;
     }
 
     @Override
     protected void perform(UserActivity activity) {
-        StorytellingSceneEditor.getInstance().centerCameraOn(this.field);
+        StorytellingSceneEditor.getInstance().centerCameraOnSelectedField(activity);
     }
 }
