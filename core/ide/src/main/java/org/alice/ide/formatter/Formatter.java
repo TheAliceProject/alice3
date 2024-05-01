@@ -105,7 +105,7 @@ public abstract class Formatter {
   private final String repr;
 
   public String galleryLabelFor(ClassResourceKey key) {
-    String className = key.getSearchText();
+    String className = key.getLocalizedName();
     if (key.getType().isEnum()) {
       String params = key.isLeaf() ? "" : "␣";
       return String.format(getNewFormat(), className, params);

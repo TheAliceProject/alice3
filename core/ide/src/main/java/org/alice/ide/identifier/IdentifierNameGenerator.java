@@ -114,7 +114,7 @@ public enum IdentifierNameGenerator {
       }
 
       // Otherwise use translated resource
-      String localizedName = key.getSearchText();
+      String localizedName = key.getLocalizedName();
       if (localizedName != null) {
         return convertFirstCharacterToLowerCase(localizedName);
       }

@@ -221,6 +221,6 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
   }
 
   public String getSimpleClassName() {
-    return getResourceKey().getSearchText();
+    return getResourceKey().getLocalizedName();
   }
 }
