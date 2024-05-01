@@ -63,6 +63,7 @@ import edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation;
 import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.pattern.DefaultPool;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 
 /**
  * @author Dennis Cosgrove
@@ -816,7 +817,8 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   private void setPositionOnly(EntityImp target, Point3 offset) {
-    this.getSgComposite().setTranslationOnly(offset != null ? offset : Point3.ORIGIN, target.getSgComposite());
+    this.getSgComposite().setTranslationOnly(offset != null ? offset : Point3.ORIGIN,
+                                             target != null ? target.getSgComposite() : AsSeenBy.SCENE);
   }
 
   void setPositionOnly(EntityImp target) {
