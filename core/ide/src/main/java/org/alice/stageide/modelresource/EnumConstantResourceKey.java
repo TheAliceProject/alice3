@@ -95,7 +95,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), null);
   }
 

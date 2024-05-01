@@ -76,7 +76,7 @@ public class RootResourceKey extends ResourceKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return this.defaultDisplayText;
   }
 

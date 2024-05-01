@@ -165,7 +165,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     StringBuilder sb = new StringBuilder();
     if (this.lifeStage != null) {
       sb.append(this.lifeStage.getDisplayText());
@@ -178,7 +178,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   public String getSearchText() {
-    return getInternalText();
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override

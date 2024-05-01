@@ -80,7 +80,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, null);
   }
 

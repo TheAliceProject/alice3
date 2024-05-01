@@ -70,7 +70,7 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     String tagValue;
     int lastIndex = tag.lastIndexOf(TagKey.SEPARATOR);
     if (lastIndex != -1) {

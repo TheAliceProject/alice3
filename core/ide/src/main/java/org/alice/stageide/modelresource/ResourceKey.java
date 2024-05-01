@@ -61,8 +61,8 @@ import java.util.Set;
 public abstract class ResourceKey {
   public abstract String getSearchText();
 
-  // The class name without localization. Not for display to the user.
-  public abstract String getInternalText();
+  // The class name without localization (e.g. `Alice` or `Chicken`). Not for display to the user.
+  public abstract String getInternalName();
 
   // The text for the creation of an instance using localized versions of the class name and `new`.
   // (e.g. `new Alice( WONDERLAND )` or `nova Galinha( MEAN_CHICKEN )`)

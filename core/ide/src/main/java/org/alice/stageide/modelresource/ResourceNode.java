@@ -117,7 +117,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
   }
 
   boolean isSubclassableAndDoesNotRequirePoses() {
-    return !resourceKey.getInternalText().equals("Slitherer") && !resourceKey.getInternalText().equals("Flyer") && isSubclassable();
+    return !resourceKey.getInternalName().equals("Slitherer") && !resourceKey.getInternalName().equals("Flyer") && isSubclassable();
   }
 
   @Override

@@ -30,7 +30,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return dynamicResource.getInternalModelClassName();
   }
 
