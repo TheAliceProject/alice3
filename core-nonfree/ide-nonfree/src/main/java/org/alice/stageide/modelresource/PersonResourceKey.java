@@ -88,12 +88,12 @@ public class PersonResourceKey extends InstanceCreatorKey {
   private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
 
   private static class SingletonHolder {
-    private static PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
-    private static PersonResourceKey adultInstance = new PersonResourceKey(LifeStage.ADULT);
-    private static PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
-    private static PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
-    private static PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
-    private static PersonResourceKey personInstance = new PersonResourceKey(null);
+    private static final PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
+    private static final PersonResourceKey adultInstance = new PersonResourceKey(LifeStage.ADULT);
+    private static final PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
+    private static final PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
+    private static final PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
+    private static final PersonResourceKey personInstance = new PersonResourceKey(null);
   }
 
   public static PersonResourceKey getElderInstance() {
