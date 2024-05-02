@@ -220,7 +220,7 @@ public class SnapUtilities {
     return boundingBox;
   }
 
-  public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition, ReferenceFrame referenceFrame) {
+  public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition) {
 
     Point3 returnSnapPosition = new Point3(newPosition);
 
@@ -399,7 +399,7 @@ public class SnapUtilities {
     if (dragAdapter != null) {
       //Try snapping to various snaps
       if (dragAdapter.shouldSnapToGround()) {
-        snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
+        snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition);
       }
       if (dragAdapter.shouldSnapToGrid()) {
         snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getGridSpacing(), referenceFrame);
