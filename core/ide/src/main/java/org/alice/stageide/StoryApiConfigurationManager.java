@@ -159,7 +159,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon.class));
 
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/160x120/Camera.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/256x256/Camera.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new ImageIconFactory(Icons.class.getResource("images/VRUser.png")));
