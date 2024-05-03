@@ -30,17 +30,22 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return dynamicResource.getInternalModelClassName();
   }
 
   @Override
-  public String getSearchText() {
+  public String getLocalizedName() {
     return dynamicResource.getModelClassName();
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getSearchText() {
+    return getInternalName() + " " + getLocalizedName();
+  }
+
+  @Override
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
     return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
   }

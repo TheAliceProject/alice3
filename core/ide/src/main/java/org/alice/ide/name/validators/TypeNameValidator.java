@@ -78,7 +78,7 @@ public class TypeNameValidator extends NodeNameValidator {
   }
 
   private boolean hasNodeNamed(ResourceNode node, String name) {
-    if (name.equals(node.getResourceKey().getSearchText())) {
+    if (name.equals(node.getResourceKey().getInternalName())) {
       return true;
     }
     return node.getNodeChildren().stream().anyMatch(child -> hasNodeNamed(child, name));

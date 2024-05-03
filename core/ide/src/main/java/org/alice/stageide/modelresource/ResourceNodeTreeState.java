@@ -118,7 +118,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 
   @Override
   protected String getTextForNode(ResourceNode node) {
-    return node.getResourceKey().getLocalizedDisplayText();
+    return node.getResourceKey().getLocalizedCreationText();
   }
 
   @Override

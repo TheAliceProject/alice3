@@ -70,7 +70,7 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     String tagValue;
     int lastIndex = tag.lastIndexOf(TagKey.SEPARATOR);
     if (lastIndex != -1) {
@@ -82,13 +82,19 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
-  public String getLocalizedDisplayText() {
-    return AliceResourceUtilities.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
+  public String getLocalizedName() {
+    return AliceResourceUtilities.getLocalizedTag(getInternalName(), JComponent.getDefaultLocale());
+  }
+
+  @Override
+  public String getLocalizedCreationText() {
+    // Tags are not instantiated, simply referenced.
+    return getLocalizedName();
   }
 
   @Override
   public String getSearchText() {
-    return this.getLocalizedDisplayText();
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override
@@ -133,6 +139,6 @@ public abstract class TagKey extends ResourceKey {
 
   @Override
   protected void appendRep(StringBuilder sb) {
-    sb.append(this.getLocalizedDisplayText());
+    sb.append(this.getLocalizedCreationText());
   }
 }

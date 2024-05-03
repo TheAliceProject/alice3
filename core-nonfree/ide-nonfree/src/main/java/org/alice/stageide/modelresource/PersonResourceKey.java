@@ -73,6 +73,9 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
+
+  public static final String PERSON = "Person";
+
   private static IconFactory createIconFactory(String subPath) {
     return new TrimmedImageIconFactory(PersonResourceKey.class.getResource("images/" + subPath + ".png"), 160, 120);
   }
@@ -85,12 +88,12 @@ public class PersonResourceKey extends InstanceCreatorKey {
   private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
 
   private static class SingletonHolder {
-    private static PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
-    private static PersonResourceKey adultInstance = new PersonResourceKey(LifeStage.ADULT);
-    private static PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
-    private static PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
-    private static PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
-    private static PersonResourceKey personInstance = new PersonResourceKey(null);
+    private static final PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
+    private static final PersonResourceKey adultInstance = new PersonResourceKey(LifeStage.ADULT);
+    private static final PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
+    private static final PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
+    private static final PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
+    private static final PersonResourceKey personInstance = new PersonResourceKey(null);
   }
 
   public static PersonResourceKey getElderInstance() {
@@ -165,28 +168,24 @@ public class PersonResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
-    StringBuilder sb = new StringBuilder();
-    if (this.lifeStage != null) {
-      sb.append(this.lifeStage.getDisplayText());
-    } else {
-      sb.append("Person");
-    }
+  public String getInternalName() {
+    return (lifeStage == null ? PERSON : lifeStage.getDisplayText());
+  }
 
-    return sb.toString();
+  @Override
+  public String getLocalizedName() {
+    return (lifeStage == null) ? PERSON : lifeStage.getLocalizedDisplayText();
   }
 
   @Override
   public String getSearchText() {
-    return getInternalText();
+    return getInternalName() + " " + getLocalizedName();
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
-
-    return String.format(formatter.getNewFormat(), className, "…");
+    return String.format(formatter.getNewFormat(), getLocalizedName(), "…");
   }
 
   @Override
@@ -261,6 +260,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   protected void appendRep(StringBuilder sb) {
-    sb.append(this.getLocalizedDisplayText());
+    sb.append(this.getLocalizedCreationText());
   }
 }

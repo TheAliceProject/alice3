@@ -69,6 +69,6 @@ public enum ResourceNodeCodec implements ItemCodec<ResourceNode> {
 
   @Override
   public void appendRepresentation(StringBuilder sb, ResourceNode value) {
-    sb.append(value != null ? value.getResourceKey().getLocalizedDisplayText() : null);
+    sb.append(value != null ? value.getResourceKey().getLocalizedCreationText() : null);
   }
 }
