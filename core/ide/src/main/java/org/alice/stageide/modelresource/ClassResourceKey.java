@@ -80,17 +80,22 @@ public final class ClassResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public String getInternalText() {
+  public String getInternalName() {
     return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, null);
   }
 
   @Override
-  public String getSearchText() {
+  public String getLocalizedName() {
     return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, JComponent.getDefaultLocale());
   }
 
   @Override
-  public String getLocalizedDisplayText() {
+  public String getSearchText() {
+    return getInternalName() + " " + getLocalizedName();
+  }
+
+  @Override
+  public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
     return formatter.galleryLabelFor(this);
   }

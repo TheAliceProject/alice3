@@ -764,39 +764,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
     Color skinColor = EmployeesOnly.createColor(awtSkinColor);
 
     EyeColor eyeColor = this.getBaseEyeColorState().getValue();
-    Outfit outfit = null;
-    boolean topsAndBottomsAvailable = (this.topAndBottomTab.getBottomPieceData().getItemCount() > 0) && (this.topAndBottomTab.getTopPieceData().getItemCount() > 0);
-    if (!topsAndBottomsAvailable || (this.lastActiveOutfitTab == this.bodyTab)) {
-      outfit = this.getFullBodyOutfitState().getValue();
-    } else if (this.lastActiveOutfitTab == this.topAndBottomTab) {
-      if (lifeStage == LifeStage.CHILD) {
-        if (gender == Gender.MALE) {
-          outfit = new MaleChildTopAndBottomOutfit((MaleChildTopPiece) this.getTopPieceState().getValue(), (MaleChildBottomPiece) this.getBottomPieceState().getValue());
-        } else if (gender == Gender.FEMALE) {
-          outfit = new FemaleChildTopAndBottomOutfit((FemaleChildTopPiece) this.getTopPieceState().getValue(), (FemaleChildBottomPiece) this.getBottomPieceState().getValue());
-        }
-      } else if (lifeStage == LifeStage.TEEN) {
-        if (gender == Gender.MALE) {
-          outfit = new MaleTeenTopAndBottomOutfit((MaleTeenTopPiece) this.getTopPieceState().getValue(), (MaleTeenBottomPiece) this.getBottomPieceState().getValue());
-        } else if (gender == Gender.FEMALE) {
-          outfit = new FemaleTeenTopAndBottomOutfit((FemaleTeenTopPiece) this.getTopPieceState().getValue(), (FemaleTeenBottomPiece) this.getBottomPieceState().getValue());
-        }
-      } else if (lifeStage == LifeStage.ADULT) {
-        if (gender == Gender.MALE) {
-          outfit = new MaleAdultTopAndBottomOutfit((MaleAdultTopPiece) this.getTopPieceState().getValue(), (MaleAdultBottomPiece) this.getBottomPieceState().getValue());
-        } else if (gender == Gender.FEMALE) {
-          outfit = new FemaleAdultTopAndBottomOutfit((FemaleAdultTopPiece) this.getTopPieceState().getValue(), (FemaleAdultBottomPiece) this.getBottomPieceState().getValue());
-        }
-      } else if (lifeStage == LifeStage.ELDER) {
-        if (gender == Gender.MALE) {
-          outfit = new MaleElderTopAndBottomOutfit((MaleElderTopPiece) this.getTopPieceState().getValue(), (MaleElderBottomPiece) this.getBottomPieceState().getValue());
-        } else if (gender == Gender.FEMALE) {
-          outfit = new FemaleElderTopAndBottomOutfit((FemaleElderTopPiece) this.getTopPieceState().getValue(), (FemaleElderBottomPiece) this.getBottomPieceState().getValue());
-        }
-      }
-    } else {
-      outfit = this.getFullBodyOutfitState().getValue();
-    }
+    Outfit outfit = getOutfit(lifeStage, gender);
     HairHatStyle hairHatStyle = this.getHairHatStyleState().getValue();
     HairColorName hairColorName = this.getHairColorNameState().getValue();
     Hair hair = hairHatStyle != null ? hairHatStyle.getHair(hairColorName) : null;
@@ -807,6 +775,38 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
     } else {
       return null;
     }
+  }
+
+  private Outfit getOutfit(LifeStage lifeStage, Gender gender) {
+    boolean topsAndBottomsAvailable = (topAndBottomTab.getBottomPieceData().getItemCount() > 0)
+                                   && (topAndBottomTab.getTopPieceData().getItemCount() > 0);
+    Outfit fullbody = getFullBodyOutfitState().getValue();
+    if ((!topsAndBottomsAvailable || lastActiveOutfitTab != topAndBottomTab) && fullbody != null) {
+      return fullbody;
+    }
+
+    final TopPiece top = getTopPieceState().getValue();
+    final BottomPiece bottom = getBottomPieceState().getValue();
+    return switch (lifeStage) {
+      // TODDLER does not have tops and bottom options so this should not be reached. Here to cover all cases.
+      case TODDLER -> fullbody;
+      case CHILD -> switch (gender) {
+        case MALE -> new MaleChildTopAndBottomOutfit((MaleChildTopPiece) top, (MaleChildBottomPiece) bottom);
+        case FEMALE -> new FemaleChildTopAndBottomOutfit((FemaleChildTopPiece) top, (FemaleChildBottomPiece) bottom);
+      };
+      case TEEN -> switch (gender) {
+        case MALE -> new MaleTeenTopAndBottomOutfit((MaleTeenTopPiece) top, (MaleTeenBottomPiece) bottom);
+        case FEMALE -> new FemaleTeenTopAndBottomOutfit((FemaleTeenTopPiece) top, (FemaleTeenBottomPiece) bottom);
+      };
+      case ADULT -> switch (gender) {
+        case MALE -> new MaleAdultTopAndBottomOutfit((MaleAdultTopPiece) top, (MaleAdultBottomPiece) bottom);
+        case FEMALE -> new FemaleAdultTopAndBottomOutfit((FemaleAdultTopPiece) top, (FemaleAdultBottomPiece) bottom);
+      };
+      case ELDER -> switch (gender) {
+        case MALE -> new MaleElderTopAndBottomOutfit((MaleElderTopPiece) top, (MaleElderBottomPiece) bottom);
+        case FEMALE -> new FemaleElderTopAndBottomOutfit((FemaleElderTopPiece) top, (FemaleElderBottomPiece) bottom);
+      };
+    };
   }
 
   public void setStates(PersonResource personResource) {

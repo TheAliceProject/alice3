@@ -60,7 +60,7 @@ public class ThemeIcon extends AbstractIcon {
 
   public ThemeIcon(Dimension size, ResourceKey key) {
     super(size);
-    this.icon = IconUtilities.createImageIcon(ThemeIcon.class.getResource("themes/" + key.getInternalText() + ".png"));
+    this.icon = IconUtilities.createImageIcon(ThemeIcon.class.getResource("themes/" + key.getInternalName() + ".png"));
   }
 
   @Override

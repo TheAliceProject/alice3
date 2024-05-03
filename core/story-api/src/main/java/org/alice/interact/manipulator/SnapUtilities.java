@@ -220,7 +220,7 @@ public class SnapUtilities {
     return boundingBox;
   }
 
-  public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition, ReferenceFrame referenceFrame) {
+  public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition) {
 
     Point3 returnSnapPosition = new Point3(newPosition);
 
@@ -255,12 +255,12 @@ public class SnapUtilities {
   public static void showHorizontalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame) {
     Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
     Point3 linePosition = new Point3(snapPosition);
-    AffineMatrix4x4 snapTransform = referenceFrame.getAbsoluteTransformation();
+    AffineMatrix4x4 snapTransform = getFrameTransform(referenceFrame);
     Vector3 xSnapLine = snapTransform.orientation.right;
     Vector3 zSnapLine = snapTransform.orientation.backward;
     Vector3 ySnapLine = snapTransform.orientation.up;
 
-    referenceFrame.getInverseAbsoluteTransformation().transform(snapVector);
+    getFrameInverseTransform(referenceFrame).transform(snapVector);
 
     //If we're looking edge on, use a vertical line to draw the snap
     if (isEdgeOn(camera, snapTransform.orientation.up)) {
@@ -290,8 +290,8 @@ public class SnapUtilities {
 
   public static void showVerticalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame) {
     Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
-    AffineMatrix4x4 snapTransform = referenceFrame.getAbsoluteTransformation();
-    referenceFrame.getInverseAbsoluteTransformation().transform(snapVector);
+    AffineMatrix4x4 snapTransform = getFrameTransform(referenceFrame);
+    getFrameInverseTransform(referenceFrame).transform(snapVector);
 
     //    if (isEdgeOn(camera, snapTransform.orientation.up, .9)) {
     if (Math.abs(snapVector.y) > MIN_SNAP_DELTA) {
@@ -316,8 +316,8 @@ public class SnapUtilities {
   }
 
   public static Point3 snapObjectToGrid(AbstractTransformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame) {
-    AffineMatrix4x4 toReferenceFrame = referenceFrame.getInverseAbsoluteTransformation();
-    AffineMatrix4x4 backToScene = referenceFrame.getAbsoluteTransformation();
+    AffineMatrix4x4 toReferenceFrame = getFrameInverseTransform(referenceFrame);
+    AffineMatrix4x4 backToScene = getFrameTransform(referenceFrame);
     Point3 originalPosition = new Point3(originalPositionIn);
     toReferenceFrame.transform(originalPosition);
     Point3 returnSnapPosition = new Point3(originalPosition);
@@ -386,12 +386,20 @@ public class SnapUtilities {
 
   }
 
+  private static AffineMatrix4x4 getFrameTransform(ReferenceFrame referenceFrame) {
+    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getAbsoluteTransformation();
+  }
+
+  private static AffineMatrix4x4 getFrameInverseTransform(ReferenceFrame referenceFrame) {
+    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getInverseAbsoluteTransformation();
+  }
+
   public static Point3 doMovementSnapping(AbstractTransformable t, Point3 currentPosition, DragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera) {
     Point3 snapPosition = new Point3(currentPosition);
     if (dragAdapter != null) {
       //Try snapping to various snaps
       if (dragAdapter.shouldSnapToGround()) {
-        snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
+        snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition);
       }
       if (dragAdapter.shouldSnapToGrid()) {
         snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getGridSpacing(), referenceFrame);
