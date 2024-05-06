@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -118,6 +119,9 @@ class ProjectFileUtilities {
       return;
     }
     Path backupDir = backupDirectory(saved);
+    if (backupDir == null) {
+      return;
+    }
     File backupFile = backupFile(BACKUP_SAVE, backupDir);
 
     copyFile(saved, backupFile);
@@ -145,6 +149,9 @@ class ProjectFileUtilities {
       return;
     }
     Path backupDir = backupDirectory(saved);
+    if (backupDir == null) {
+      return;
+    }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
     saveCopyOfProjectTo(backupFile);
@@ -162,8 +169,7 @@ class ProjectFileUtilities {
       try {
         Files.createDirectory(backupDir);
       } catch (IOException e) {
-        Logger.throwable(e, "Unable to create directory for backups.");
-        e.printStackTrace();
+        Dialogs.showWarning("Unable to Save Backups", "Backup directory `" + backupDir + "` could not be created.");
         return null;
       }
     }
