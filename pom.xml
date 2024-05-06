@@ -82,7 +82,7 @@
     <alice.build.version>3.9.0.0</alice.build.version>
     <alice.build.prerelease></alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
-    <alice.build.metadata>+build.local</alice.build.metadata>
+    <alice.build.metadata>-rc.1</alice.build.metadata>
 
     <netbeans.version>RELEASE180</netbeans.version>
     <guava.version>30.1.1-jre</guava.version>
