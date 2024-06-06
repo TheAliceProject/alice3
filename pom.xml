@@ -6,7 +6,7 @@
   <groupId>org.alice</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>9.0.0-SNAPSHOT</version>
+  <version>9.0.0</version>
 
   <name>Alice</name>
   <url>http://www.alice.org/</url>
@@ -82,7 +82,7 @@
     <alice.build.version>3.9.0.0</alice.build.version>
     <alice.build.prerelease></alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
-    <alice.build.metadata>-rc.1</alice.build.metadata>
+    <alice.build.metadata></alice.build.metadata>
 
     <netbeans.version>RELEASE180</netbeans.version>
     <guava.version>30.1.1-jre</guava.version>
@@ -130,90 +130,90 @@
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>util</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>ast</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>croquet</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>image-editor</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>scenegraph</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>glrender</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>issue-reporting</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>story-api</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>story-api-migration</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>resources</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>ide</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>i18n</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>alice-ide</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>model-loading</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>tweedle</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
 
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>netbeans</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
 
       <!-- Gallery/Models -->
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>models</artifactId>
-        <version>9.0.0-SNAPSHOT</version>
+        <version>9.0.0</version>
       </dependency>
 
       <!-- Third Party Libraries in project-->
@@ -655,22 +655,22 @@
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>models-nonfree</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>resources-nonfree</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>story-api-nonfree</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>ide-nonfree</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
           </dependency>
         </dependencies>
       </dependencyManagement>
