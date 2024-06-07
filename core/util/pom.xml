@@ -154,10 +154,11 @@
       <artifactId>jira-rest-java-client-core</artifactId>
       <version>4.0.0</version>
     </dependency>
+      <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
       <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
+          <version>5.10.2</version>
           <scope>test</scope>
       </dependency>
   </dependencies>
