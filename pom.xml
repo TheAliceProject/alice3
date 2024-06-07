@@ -420,7 +420,7 @@
           <inherited>true</inherited>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M2</version>
+          <version>3.5.0</version>
           <executions>
             <execution>
               <id>enforce-maven-3</id>
@@ -430,7 +430,12 @@
             <configuration>
               <rules>
               <requireMavenVersion>
-                <version>3.5.0</version>
+                <version>[3.5.0,3.9.6]</version>
+                <message>The build requires maven version 3.5.0-3.9.6.
+  Problems have been seen with 3.9.7.
+  There is no guarantee with newer maven versions.
+  If you want try (at your own risk) use:
+           mvn -Denforcer.skip</message>
               </requireMavenVersion>
               </rules>
               <fail>true</fail>
@@ -511,6 +516,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
 
       <plugin>
