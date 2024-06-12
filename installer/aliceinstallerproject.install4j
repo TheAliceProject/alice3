@@ -995,7 +995,7 @@
       </exclude>
       <jreBundle jreBundleSource="none" />
     </unixInstaller>
-    <macosArchive name="Mac OS X Intel Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" launcherId="24">
+    <macosArchive name="Mac OS X Intel Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_intel_bundle_${compiler:sys.version}" installDir="Alice3" launcherId="24">
       <exclude>
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
@@ -1041,7 +1041,7 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
       </exclude>
       <jreBundle jreBundleSource="none" />
     </linuxRPM>
-    <macosArchive name="Mac OS X ARM Archive" id="1302" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" architecture="aarch64" launcherId="24">
+    <macosArchive name="Mac OS X ARM Archive" id="1302" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_arm_bundle_${compiler:sys.version}" installDir="Alice3" architecture="aarch64" launcherId="24">
       <exclude>
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
