@@ -59,7 +59,7 @@ import java.awt.image.BufferedImage;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget<JPanel> {
+public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget {
   public static interface Observer {
     public void handleImage(BufferedImage image, boolean isUpSideDown);
   }

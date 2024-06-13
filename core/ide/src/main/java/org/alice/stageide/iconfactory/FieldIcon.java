@@ -173,7 +173,7 @@ public class FieldIcon extends AsynchronousIcon {
             sgVisual = sgFoundVisual;
           }
 
-          OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
+          OnscreenRenderTarget renderTarget = sceneEditor.getOnscreenRenderTarget();
 
           final AbstractCamera sgCamera = renderTarget.getSgCameraAt(0);
           renderTarget.getAsynchronousImageCapturer().captureImageBuffer(new RenderTask() {

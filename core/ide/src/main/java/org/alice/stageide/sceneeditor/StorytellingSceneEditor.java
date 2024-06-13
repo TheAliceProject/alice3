@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
-import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
 import edu.cmu.cs.dennisc.render.RenderUtils;
@@ -253,7 +253,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       StorytellingSceneEditor.this.animator.update();
     }
   };
-  private LightweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
+  private OnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
 
   private class LookingGlassPanel extends CompassPointSpringPanel {
     @Override
@@ -1179,7 +1179,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     renderFactory.decrementAutomaticDisplayCount();
   }
 
-  private void paintHorizonLine(Graphics graphics, LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera) {
+  private void paintHorizonLine(Graphics graphics, OnscreenRenderTarget renderTarget, OrthographicCamera camera) {
     AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
     double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
     if ((dotProd == 1) || (dotProd == -1)) {
@@ -1288,7 +1288,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  public LightweightOnscreenRenderTarget getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 }

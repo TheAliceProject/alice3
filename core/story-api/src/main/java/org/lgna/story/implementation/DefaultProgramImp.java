@@ -55,7 +55,7 @@ public class DefaultProgramImp extends ProgramImp {
   private final ClockBasedAnimator animator = new ClockBasedAnimator();
 
   public DefaultProgramImp(SProgram abstraction) {
-    super(abstraction, RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(new RenderCapabilities.Builder().build()));
+    super(abstraction, RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().build()));
   }
 
   @Override

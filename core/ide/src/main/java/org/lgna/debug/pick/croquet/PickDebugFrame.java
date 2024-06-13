@@ -90,7 +90,7 @@ public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
       Component awtComponent = getView().getAwtComponent(); //org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
       CursorUtilities.pushAndSet(awtComponent, Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
       try {
-        final OnscreenRenderTarget<?> onscreenRenderTarget = StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
+        final OnscreenRenderTarget onscreenRenderTarget = StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
         final int PIXELS_PER_PICK = 10;
         final PickResult[][] pickResults = new PickResult[onscreenRenderTarget.getSurfaceHeight() / PIXELS_PER_PICK][onscreenRenderTarget.getSurfaceWidth() / PIXELS_PER_PICK];
         final boolean IS_ASYCH = false;

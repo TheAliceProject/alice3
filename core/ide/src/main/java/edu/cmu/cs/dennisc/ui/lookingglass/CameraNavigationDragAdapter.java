@@ -94,7 +94,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
   }
 
   @Override
-  public void setOnscreenRenderTarget(OnscreenRenderTarget<?> onscreenLookingGlass) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     super.setOnscreenRenderTarget(onscreenLookingGlass);
     onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener(new AutomaticDisplayListener() {
       @Override
@@ -121,7 +121,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
   private boolean isMultipleCameraWarningAlreadyDelivered = false;
 
   public AbstractCamera getSGCamera() {
-    OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
+    OnscreenRenderTarget onscreenLookingGlass = getOnscreenRenderTarget();
     if (onscreenLookingGlass != null) {
       int cameraCount = onscreenLookingGlass.getSgCameraCount();
       if ((cameraCount > 1) && (this.isMultipleCameraWarningAlreadyDelivered == false)) {

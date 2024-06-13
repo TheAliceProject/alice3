@@ -86,7 +86,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   private Joint joint;
   private boolean started = false;
 
-  public PoserPicturePlaneInteraction(OnscreenRenderTarget<?> renderTarget, AbstractPoserScene scene) {
+  public PoserPicturePlaneInteraction(OnscreenRenderTarget renderTarget, AbstractPoserScene scene) {
     super(renderTarget, ((CameraImp) ((SceneImp) EmployeesOnly.getImplementation(scene)).findFirstCamera()).getSgCamera());
     this.scene = scene;
     SceneImp sceneImp = (SceneImp) EmployeesOnly.getImplementation(scene);

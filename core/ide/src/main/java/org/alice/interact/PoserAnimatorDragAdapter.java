@@ -153,12 +153,12 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
   }
 
   @Override
-  public void setOnscreenRenderTarget(OnscreenRenderTarget<?> onscreenRenderTarget) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
     super.setOnscreenRenderTarget(onscreenRenderTarget);
     initDragAdapter(onscreenRenderTarget);
   }
 
-  private void initDragAdapter(OnscreenRenderTarget<?> onscreenRenderTarget) {
+  private void initDragAdapter(OnscreenRenderTarget onscreenRenderTarget) {
     dragAdapter = new PoserPicturePlaneInteraction(onscreenRenderTarget, poserScene);
     dragAdapter.startUp();
   }

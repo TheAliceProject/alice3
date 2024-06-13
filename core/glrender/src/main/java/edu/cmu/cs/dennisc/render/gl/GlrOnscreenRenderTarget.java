@@ -43,21 +43,117 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.awt.GLJPanel;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 
+import javax.swing.*;
 import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class GlrOnscreenRenderTarget<C extends Component> extends GlrRenderTarget implements OnscreenRenderTarget<C> {
-  protected GlrOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
+
+class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget {
+  private final GLJPanel glPanel;
+
+  GlrOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
     super(lookingGlassFactory, requestedCapabilities);
+    this.glPanel = new RenderPane(requestedCapabilities);
+    this.glPanel.setFocusable(true);
+  }
+
+  private class RenderPane extends GLJPanel {
+    public RenderPane(RenderCapabilities requestedCapabilities) {
+      super(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser());
+    }
+
+    @Override
+    public void display() {
+      if (GlrOnscreenRenderTarget.this.isRenderingEnabled()) {
+        super.display();
+      }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+      if (GlrOnscreenRenderTarget.this.isRenderingEnabled()) {
+        if (GlrOnscreenRenderTarget.this.getSgCameraCount() > 0) {
+          try {
+            super.paintComponent(g);
+            this.prevThrowable = null;
+          } catch (Throwable throwable) {
+            g.setColor(Color.RED);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.BLACK);
+            GraphicsUtilities.drawCenteredText(g, "error in attempting to render scene", this.getSize());
+            if (this.prevThrowable == null) {
+              this.prevThrowable = throwable;
+              throwable.printStackTrace();
+            }
+          }
+        } else {
+          g.setColor(Color.DARK_GRAY);
+          g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        }
+      }
+    }
+
+    @Override
+    public void paint(Graphics g) {
+      if (GlrOnscreenRenderTarget.this.isRenderingEnabled()) {
+        super.paint(g);
+      } else {
+        Dimension size = this.getSize();
+        g.setColor(Color.GRAY);
+        g.fillRect(0, 0, size.width, size.height);
+        String text = "rendering disabled for performance considerations";
+        g.setColor(Color.BLACK);
+        GraphicsUtilities.drawCenteredText(g, text, size);
+        g.setColor(Color.YELLOW);
+        g.translate(-1, -1);
+        GraphicsUtilities.drawCenteredText(g, text, size);
+        g.translate(1, 1);
+      }
+    }
+
+    private Throwable prevThrowable = null;
+  }
+
+  @Override
+  public JPanel getAwtComponent() {
+    return this.glPanel;
+  }
+
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    return this.glPanel.getSize(rv);
+  }
+
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    return this.glPanel.getSize(rv);
+  }
+
+  @Override
+  public void repaint() {
+    this.glPanel.repaint();
   }
 
   @Override
   protected void repaintIfAppropriate() {
     this.repaint();
   }
+
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    return this.glPanel;
+  }
+
+
 }
