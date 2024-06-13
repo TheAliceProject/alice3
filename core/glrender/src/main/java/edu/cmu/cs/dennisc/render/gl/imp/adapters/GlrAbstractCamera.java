@@ -80,22 +80,6 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
 
   public abstract Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport);
 
-  public Rectangle getSpecifiedViewport() {
-    if (this.specifiedViewport != null) {
-      return new Rectangle(this.specifiedViewport);
-    } else {
-      return null;
-    }
-  }
-
-  public void setSpecifiedViewport(Rectangle specifiedViewport) {
-    if (specifiedViewport != null) {
-      this.specifiedViewport = new Rectangle(specifiedViewport);
-    } else {
-      this.specifiedViewport = null;
-    }
-  }
-
   public boolean isLetterboxedAsOpposedToDistorted() {
     return this.isLetterboxedAsOpposedToDistorted;
   }

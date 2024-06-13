@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 
 import javax.swing.*;
-import java.awt.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -135,10 +134,6 @@ class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderT
     return this.glPanel.getSize(rv);
   }
 
-  @Override
-  protected Dimension getDrawableSize(Dimension rv) {
-    return this.glPanel.getSize(rv);
-  }
 
   @Override
   public void repaint() {

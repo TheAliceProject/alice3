@@ -394,7 +394,6 @@ public abstract class ProgramImp {
   }
 
   public void shutDown() {
-    this.onscreenRenderTarget.release();
     this.stopAnimator();
     this.isProgramClosedExceptionDesired = true;
   }
