@@ -267,15 +267,15 @@ import java.util.List;
   }
 
   @Override
-  public boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera) {
+  public boolean isLetterboxed(AbstractCamera sgCamera) {
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
-    return cameraAdapter.isLetterboxedAsOpposedToDistorted();
+    return cameraAdapter.isLetterboxed();
   }
 
   @Override
-  public void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted) {
+  public void setLetterboxed(AbstractCamera sgCamera, boolean isLetterboxed) {
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
-    cameraAdapter.setIsLetterboxedAsOpposedToDistorted(isLetterboxedAsOpposedToDistorted);
+    cameraAdapter.setIsLetterboxed(isLetterboxed);
   }
 
   @Override

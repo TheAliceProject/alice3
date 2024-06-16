@@ -72,7 +72,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
     } else {
       rv.setBounds(0, 0, surfaceWidth, surfaceHeight);
     }
-    if (this.isLetterboxedAsOpposedToDistorted) {
+    if (this.isLetterboxed) {
       performLetterboxing(rv);
     }
     return rv;
@@ -80,12 +80,12 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
 
   public abstract Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport);
 
-  public boolean isLetterboxedAsOpposedToDistorted() {
-    return this.isLetterboxedAsOpposedToDistorted;
+  public boolean isLetterboxed() {
+    return this.isLetterboxed;
   }
 
-  public void setIsLetterboxedAsOpposedToDistorted(boolean isLetterboxedAsOpposedToDistorted) {
-    this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
+  public void setIsLetterboxed(boolean isLetterboxed) {
+    this.isLetterboxed = isLetterboxed;
   }
 
   protected abstract void setupProjection(Context context, Rectangle actualViewport);
@@ -149,5 +149,5 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
   private GlrLayer[] glrLayers;
 
   private Rectangle specifiedViewport;
-  private boolean isLetterboxedAsOpposedToDistorted = true;
+  private boolean isLetterboxed = true;
 }
