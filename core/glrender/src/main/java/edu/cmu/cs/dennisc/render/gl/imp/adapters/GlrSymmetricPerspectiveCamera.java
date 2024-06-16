@@ -68,15 +68,15 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     double far = -owner.farClippingPlaneDistance.getValue();
 
     //todo: investigate (especially x)
-    xPixel = actualViewport.width - xPixel;
-    yPixel = actualViewport.height - yPixel;
+    xPixel = actualViewport.width - xPixel + actualViewport.x;
+    yPixel = actualViewport.height - yPixel - actualViewport.y;
 
-    double tanHalfVertical = Math.tan(vertical * 0.5);
-    double aspect = actualViewport.width / (double) actualViewport.height;
-    double halfWidth = actualViewport.width * 0.5;
-    double halfHeight = actualViewport.height * 0.5;
-    double dx = tanHalfVertical * ((xPixel / halfWidth) - 1.0) * aspect;
-    double dy = tanHalfVertical * (1.0 - (yPixel / halfHeight));
+    final double tanHalfVertical = Math.tan(vertical * 0.5);
+    final double aspect = getAspectRatio(actualViewport);
+    final double halfWidth = actualViewport.width * 0.5;
+    final double halfHeight = actualViewport.height * 0.5;
+    final double dx = tanHalfVertical * ((xPixel  / halfWidth) - 1.0) * aspect;
+    final double dy = tanHalfVertical * (1.0 - (yPixel / halfHeight));
 
     //todo: optimize?
     Point3 pNear = new Point3(dx * near, dy * near, near);
@@ -111,30 +111,36 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
   @Override
   protected Rectangle performLetterboxing(Rectangle rv) {
-    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
-      //pass
+    final double viewAspect = getAspectRatio(rv);
+    double surfaceAspect = rv.width / (double) rv.height;
+    if (viewAspect > surfaceAspect) {
+      int letterBoxedHeight = (int) ((rv.width / viewAspect) + 0.5);
+      rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
+    } else if (viewAspect < surfaceAspect) {
+      int letterBoxedWidth = (int) ((rv.height * viewAspect) + 0.5);
+      rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
     } else {
-      double aspect = this.horizontalInDegrees / this.verticalInDegrees;
-      double pixelAspect = rv.width / (double) rv.height;
-      if (aspect > pixelAspect) {
-        int letterBoxedHeight = (int) ((rv.width / aspect) + 0.5);
-        rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
-      } else if (aspect < pixelAspect) {
-        int letterBoxedWidth = (int) ((rv.height * aspect) + 0.5);
-        rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
-      } else {
-        //pass
-      }
+      // aspect is the same, we don't have to change it
     }
     return rv;
   }
 
-
+  private double getAspectRatio(Rectangle rect) {
+    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
+      if (this.isLetterboxed()) {
+        return SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO;
+      } else {
+        return rect.width / (double) rect.height;
+      }
+    } else {
+      return this.horizontalInDegrees / this.verticalInDegrees;
+    }
+  }
 
   public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
     double angle;
     if (Double.isNaN(this.horizontalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
+      double aspect = getAspectRatio(actualViewport);
       if (Double.isNaN(this.verticalInDegrees)) {
         angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees() * aspect;
       } else {
@@ -149,7 +155,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   public Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
     double angle;
     if (Double.isNaN(this.verticalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
+      double aspect = getAspectRatio(actualViewport);
       if (Double.isNaN(this.horizontalInDegrees)) {
         angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees();
       } else {

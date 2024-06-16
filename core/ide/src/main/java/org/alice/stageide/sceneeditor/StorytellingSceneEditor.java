@@ -506,6 +506,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private void setCameras() {
     SymmetricPerspectiveCamera mainCamera = sceneCameraImp.getSgCamera();
     SymmetricPerspectiveCamera layoutCamera = layoutCameraImp.getSgCamera();
+    onscreenRenderTarget.setLetterboxed(layoutCamera, false);
     OrthographicCamera orthographicCamera = orthographicCameraImp.getSgCamera();
     globalDragAdapter.addCameraView(CameraView.MAIN, mainCamera, layoutCamera, orthographicCamera);
     globalDragAdapter.makeCameraActive(mainCamera);

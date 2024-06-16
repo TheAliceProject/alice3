@@ -120,8 +120,9 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
       pc.gl.glMatrixMode(GL_PROJECTION);
       pc.gl.glLoadIdentity();
 
+      // actualViewport.x & y are set > 0 when letterboxing
       double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
-      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) - actualViewport.y));
+      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
       pc.gl.glTranslated(tx, ty, 0.0);
       pc.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
       //      int[] vp = { actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height };
