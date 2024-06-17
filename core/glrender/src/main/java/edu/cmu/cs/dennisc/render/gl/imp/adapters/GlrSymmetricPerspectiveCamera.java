@@ -106,11 +106,6 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     rv.up.set(0, f, 0, 0);
     rv.backward.set(0, 0, (zFar + zNear) / (zNear - zFar), -1);
     rv.translation.set(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0);
-
-    //    rv.setRow( 0, f / aspect, 0, 0, 0 );
-    //    rv.setRow( 1, 0, f, 0, 0 );
-    //    rv.setRow( 2, 0, 0, (zFar + zNear) / (zNear - zFar), (2 * zFar * zNear) / (zNear - zFar) );
-    //    rv.setRow( 3, 0, 0, -1, 0 );
     return rv;
   }
 
@@ -134,36 +129,36 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     return rv;
   }
 
-  private static final double DEFAULT_ACTUAL_VERTICAL_IN_DEGREES = new AngleInRadians(0.5).getAsDegrees();
+
 
   public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
-    double horizontalInDegrees;
+    double angle;
     if (Double.isNaN(this.horizontalInDegrees)) {
       double aspect = actualViewport.width / (double) actualViewport.height;
       if (Double.isNaN(this.verticalInDegrees)) {
-        horizontalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES * aspect;
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees() * aspect;
       } else {
-        horizontalInDegrees = this.verticalInDegrees * aspect;
+        angle = this.verticalInDegrees * aspect;
       }
     } else {
-      horizontalInDegrees = this.horizontalInDegrees;
+      angle = this.horizontalInDegrees;
     }
-    return new AngleInDegrees(horizontalInDegrees);
+    return new AngleInDegrees(angle);
   }
 
   public Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
-    double verticalInDegrees;
+    double angle;
     if (Double.isNaN(this.verticalInDegrees)) {
       double aspect = actualViewport.width / (double) actualViewport.height;
       if (Double.isNaN(this.horizontalInDegrees)) {
-        verticalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES;
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees();
       } else {
-        verticalInDegrees = this.horizontalInDegrees / aspect;
+        angle = this.horizontalInDegrees / aspect;
       }
     } else {
-      verticalInDegrees = this.verticalInDegrees;
+      angle = this.verticalInDegrees;
     }
-    return new AngleInDegrees(verticalInDegrees);
+    return new AngleInDegrees(angle);
   }
 
   //  @Override
@@ -251,18 +246,6 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float zNear, float zFar) {
-    //    double actualVerticalInDegrees = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.DEGREES );
-    //    context.glu.gluPerspective( actualVerticalInDegrees, actualViewport.width / (double)actualViewport.height, zNear, zFar );
-
-    //    double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
-    //    double aspect = actualViewport.width / (double)actualViewport.height;
-    //
-    //    double halfVerticalTangent = Math.tan( halfVertical );
-    //    double yNear = zNear * halfVerticalTangent;
-    //    double xNear = yNear * aspect;
-    //
-    //    context.gl.glFrustum( -xNear, +xNear, -yNear, +yNear, zNear, zFar );
-
     Matrix4x4 projection = new Matrix4x4();
     double[] projectionArray = new double[16];
     DoubleBuffer projectionBuffer = DoubleBuffer.wrap(projectionArray);
