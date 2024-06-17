@@ -46,7 +46,6 @@ package org.alice.stageide.modelviewer;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
@@ -64,7 +63,7 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends BorderPanel {
-  private LightweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(new RenderCapabilities.Builder().build());
+  private OnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().build());
   private Animator animator = new ClockBasedAnimator();
   private SceneImp scene = new SceneImp(null);
   private SymmetricPerspectiveCameraImp camera = new SymmetricPerspectiveCameraImp(null);
@@ -90,7 +89,7 @@ abstract class Viewer extends BorderPanel {
     this.onscreenRenderTarget.addSgCamera(this.camera.getSgCamera());
   }
 
-  protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  protected OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 

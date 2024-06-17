@@ -163,7 +163,7 @@ public abstract class ProgramContext {
     return this.vm;
   }
 
-  public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     ProgramImp programImp = this.getProgramImp();
     return programImp != null ? programImp.getOnscreenRenderTarget() : null;
   }

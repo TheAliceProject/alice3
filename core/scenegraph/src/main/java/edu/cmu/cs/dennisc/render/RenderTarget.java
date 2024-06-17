@@ -42,16 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Matrix4x4;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -63,8 +58,6 @@ import java.util.List;
 public interface RenderTarget {
   RenderFactory getRenderFactory();
 
-  RenderCapabilities getRequestedCapabilities();
-
   RenderCapabilities getActualCapabilities();
 
   int getSurfaceWidth();
@@ -72,16 +65,6 @@ public interface RenderTarget {
   int getSurfaceHeight();
 
   Dimension getSurfaceSize();
-
-  int getDrawableWidth();
-
-  int getDrawableHeight();
-
-  Dimension getDrawableSize();
-
-  String getDescription();
-
-  void setDescription(String description);
 
   void addSgCamera(AbstractCamera sgCamera);
 
@@ -98,18 +81,6 @@ public interface RenderTarget {
   void addRenderTargetListener(RenderTargetListener listener);
 
   void removeRenderTargetListener(RenderTargetListener listener);
-
-  List<RenderTargetListener> getRenderTargetListeners();
-
-  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
-
-  ClippedZPlane getActualPicturePlane(OrthographicCamera sgOrthographicCamera);
-
-  ClippedZPlane getActualPicturePlane(FrustumPerspectiveCamera sgFrustumPerspectiveCamera);
-
-  Angle getActualHorizontalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
-
-  Angle getActualVerticalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
 
   AbstractCamera getCameraAtPixel(int xPixel, int yPixel);
 
@@ -140,23 +111,10 @@ public interface RenderTarget {
   //todo: remove?
   Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera sgCamera);
 
-  //todo: remove?
-  void release();
-
   MRectangleI getActualViewport(AbstractCamera sgCamera);
-
-  MRectangleI getSpecifiedViewport(AbstractCamera sgCamera);
-
-  void setSpecifiedViewport(AbstractCamera sgCamera, MRectangleI viewport);
 
   @Deprecated
   Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
-
-  @Deprecated
-  Rectangle getSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera);
-
-  @Deprecated
-  void setSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera, Rectangle viewport);
 
   //todo: remove?
   @Deprecated

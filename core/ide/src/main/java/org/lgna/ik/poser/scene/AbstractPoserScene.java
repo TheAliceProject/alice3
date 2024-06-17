@@ -182,7 +182,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
     addCustomDragAdapter();
   }
 
-  private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  private OnscreenRenderTarget getOnscreenRenderTarget() {
     return ((SceneImp) EmployeesOnly.getImplementation(this)).getProgram().getOnscreenRenderTarget();
   }
 

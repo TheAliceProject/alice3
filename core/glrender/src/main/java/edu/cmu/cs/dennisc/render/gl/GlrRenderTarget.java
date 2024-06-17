@@ -45,8 +45,6 @@ package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Matrix4x4;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
@@ -62,13 +60,7 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrFrustumPerspectiveCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrOrthographicCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -84,11 +76,6 @@ import java.util.List;
     this.requestedCapabilities = requestedCapabilities;
     //todo
     this.actualCapabilities = requestedCapabilities;
-  }
-
-  @Override
-  public RenderCapabilities getRequestedCapabilities() {
-    return this.requestedCapabilities;
   }
 
   @Override
@@ -119,16 +106,6 @@ import java.util.List;
   @Override
   public AsynchronousImageCapturer getAsynchronousImageCapturer() {
     return this.imp.getAsynchronousImageCapturer();
-  }
-
-  @Override
-  public String getDescription() {
-    return m_description;
-  }
-
-  @Override
-  public void setDescription(String description) {
-    m_description = description;
   }
 
   @Override
@@ -176,35 +153,7 @@ import java.util.List;
     this.imp.removeRenderTargetListener(listener);
   }
 
-  @Override
-  public List<RenderTargetListener> getRenderTargetListeners() {
-    return this.imp.getRenderTargetListeners();
-  }
-
   protected abstract Dimension getSurfaceSize(Dimension rv);
-
-  protected abstract Dimension getDrawableSize(Dimension rv);
-
-  @Override
-  public final Dimension getDrawableSize() {
-    return getDrawableSize(new Dimension());
-  }
-
-  @Override
-  public final int getDrawableWidth() {
-    synchronized (s_sizeBufferForReuse) {
-      getDrawableSize(s_sizeBufferForReuse);
-      return s_sizeBufferForReuse.width;
-    }
-  }
-
-  @Override
-  public final int getDrawableHeight() {
-    synchronized (s_sizeBufferForReuse) {
-      getDrawableSize(s_sizeBufferForReuse);
-      return s_sizeBufferForReuse.height;
-    }
-  }
 
   @Override
   public final Dimension getSurfaceSize() {
@@ -232,27 +181,6 @@ import java.util.List;
     return RectangleUtilities.toMRectangleI(this.getActualViewportAsAwtRectangle(sgCamera));
   }
 
-  @Override
-  public MRectangleI getSpecifiedViewport(AbstractCamera sgCamera) {
-    return RectangleUtilities.toMRectangleI(this.getSpecifiedViewportAsAwtRectangle(sgCamera));
-  }
-
-  @Override
-  public void setSpecifiedViewport(AbstractCamera sgCamera, MRectangleI viewport) {
-    this.setSpecifiedViewportAsAwtRectangle(sgCamera, RectangleUtilities.toAwtRectangle(viewport));
-  }
-
-  @Override
-  public Rectangle getSpecifiedViewportAsAwtRectangle(AbstractCamera camera) {
-    GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(camera);
-    return cameraAdapter.getSpecifiedViewport();
-  }
-
-  @Override
-  public void setSpecifiedViewportAsAwtRectangle(AbstractCamera camera, Rectangle viewport) {
-    GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(camera);
-    cameraAdapter.setSpecifiedViewport(viewport);
-  }
 
   public Rectangle getActualViewport(Rectangle rv, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {
     Dimension surfaceSize = this.getSurfaceSize();
@@ -276,55 +204,6 @@ import java.util.List;
       GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(camera);
       getActualViewport(s_actualViewportBufferForReuse, cameraAdapter);
       return cameraAdapter.getActualProjectionMatrix(rv, s_actualViewportBufferForReuse);
-    }
-  }
-
-  @Override
-  public final Matrix4x4 getActualProjectionMatrix(AbstractCamera camera) {
-    return getActualProjectionMatrix(new Matrix4x4(), camera);
-  }
-
-  private ClippedZPlane getActualPicturePlane(ClippedZPlane rv, OrthographicCamera orthographicCamera) {
-    synchronized (s_actualViewportBufferForReuse) {
-      GlrOrthographicCamera orthographicCameraAdapter = AdapterFactory.getAdapterFor(orthographicCamera);
-      getActualViewport(s_actualViewportBufferForReuse, orthographicCameraAdapter);
-      return orthographicCameraAdapter.getActualPicturePlane(rv, s_actualViewportBufferForReuse);
-    }
-  }
-
-  @Override
-  public final ClippedZPlane getActualPicturePlane(OrthographicCamera orthographicCamera) {
-    return getActualPicturePlane(new ClippedZPlane(), orthographicCamera);
-  }
-
-  private ClippedZPlane getActualPicturePlane(ClippedZPlane rv, FrustumPerspectiveCamera frustumPerspectiveCamera) {
-    synchronized (s_actualViewportBufferForReuse) {
-      GlrFrustumPerspectiveCamera frustumPerspectiveCameraAdapter = AdapterFactory.getAdapterFor(frustumPerspectiveCamera);
-      getActualViewport(s_actualViewportBufferForReuse, frustumPerspectiveCameraAdapter);
-      return frustumPerspectiveCameraAdapter.getActualPicturePlane(rv, s_actualViewportBufferForReuse);
-    }
-  }
-
-  @Override
-  public final ClippedZPlane getActualPicturePlane(FrustumPerspectiveCamera frustumPerspectiveCamera) {
-    return getActualPicturePlane(new ClippedZPlane(), frustumPerspectiveCamera);
-  }
-
-  @Override
-  public Angle getActualHorizontalViewingAngle(SymmetricPerspectiveCamera symmetricPerspectiveCamera) {
-    synchronized (s_actualViewportBufferForReuse) {
-      GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor(symmetricPerspectiveCamera);
-      getActualViewport(s_actualViewportBufferForReuse, symmetricPerspectiveCameraAdapter);
-      return symmetricPerspectiveCameraAdapter.getActualHorizontalViewingAngle(s_actualViewportBufferForReuse);
-    }
-  }
-
-  @Override
-  public Angle getActualVerticalViewingAngle(SymmetricPerspectiveCamera symmetricPerspectiveCamera) {
-    synchronized (s_actualViewportBufferForReuse) {
-      GlrSymmetricPerspectiveCamera symmetricPerspectiveCameraAdapter = AdapterFactory.getAdapterFor(symmetricPerspectiveCamera);
-      getActualViewport(s_actualViewportBufferForReuse, symmetricPerspectiveCameraAdapter);
-      return symmetricPerspectiveCameraAdapter.getActualVerticalViewingAngle(s_actualViewportBufferForReuse);
     }
   }
 
@@ -397,18 +276,6 @@ import java.util.List;
   public void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted) {
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
     cameraAdapter.setIsLetterboxedAsOpposedToDistorted(isLetterboxedAsOpposedToDistorted);
-  }
-
-  public double[] getActualPlane(double[] rv, Dimension size, OrthographicCamera orthographicCamera) {
-    throw new RuntimeException("todo");
-    //    OrthographicCameraAdapter orthographicCameraAdapter = ElementAdapter.getAdapterFor( orthographicCamera );
-    //    return orthographicCameraAdapter.getActualPlane( rv, size );
-  }
-
-  public double[] getActualPlane(double[] rv, Dimension size, FrustumPerspectiveCamera perspectiveCamera) {
-    throw new RuntimeException("todo");
-    //    PerspectiveCameraAdapter perspectiveCameraAdapter = ElementAdapter.getAdapterFor( perspectiveCamera );
-    //    return perspectiveCameraAdapter.getActualPlane( rv, size );
   }
 
   @Override

@@ -298,7 +298,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return scene != null ? scene.getProgram() : null;
   }
 
-  protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  protected OnscreenRenderTarget getOnscreenRenderTarget() {
     ProgramImp program = this.getProgram();
     return program != null ? program.getOnscreenRenderTarget() : null;
   }
@@ -368,7 +368,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   private Component getParentComponent() {
     SceneImp scene = this.getScene();
     if (scene != null) {
-      OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+      OnscreenRenderTarget onscreenRenderTarget = this.getOnscreenRenderTarget();
       if (onscreenRenderTarget != null) {
         return onscreenRenderTarget.getAwtComponent();
       }

@@ -53,23 +53,23 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public abstract class PickMouseAdapter implements MouseListener {
-  private OnscreenRenderTarget<?> m_onscreenLookingGlass;
+  private OnscreenRenderTarget m_onscreenLookingGlass;
 
   public PickMouseAdapter() {
     this(null);
   }
 
-  public PickMouseAdapter(OnscreenRenderTarget<?> onscreenLookingGlass) {
+  public PickMouseAdapter(OnscreenRenderTarget onscreenLookingGlass) {
     setOnscreenLookingGlass(onscreenLookingGlass);
   }
 
   protected abstract void handlePickResult(PickResult pickResult);
 
-  public OnscreenRenderTarget<?> getOnscreenLookingGlass() {
+  public OnscreenRenderTarget getOnscreenLookingGlass() {
     return m_onscreenLookingGlass;
   }
 
-  public void setOnscreenLookingGlass(OnscreenRenderTarget<?> onscreenLookingGlass) {
+  public void setOnscreenLookingGlass(OnscreenRenderTarget onscreenLookingGlass) {
     m_onscreenLookingGlass = onscreenLookingGlass;
   }
 

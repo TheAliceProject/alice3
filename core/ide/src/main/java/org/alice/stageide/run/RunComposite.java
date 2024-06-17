@@ -131,7 +131,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
   private final class RunAwtContainerInitializer implements ProgramImp.AwtContainerInitializer {
     @Override
-    public void addComponents(OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel) {
+    public void addComponents(OnscreenRenderTarget onscreenRenderTarget, JPanel controlPanel) {
       RunView runView = RunComposite.this.getView();
       runView.forgetAndRemoveAllComponents();
 

@@ -203,7 +203,7 @@ public abstract class ProgramImp {
     }
   }
 
-  protected ProgramImp(SProgram abstraction, OnscreenRenderTarget<?> onscreenRenderTarget) {
+  protected ProgramImp(SProgram abstraction, OnscreenRenderTarget onscreenRenderTarget) {
     this.abstraction = abstraction;
     this.onscreenRenderTarget = onscreenRenderTarget;
     this.toggleFullScreenAction.putValue(Action.SMALL_ICON, new FullScreenIcon());
@@ -255,7 +255,7 @@ public abstract class ProgramImp {
     return this.abstraction;
   }
 
-  public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 
@@ -315,7 +315,7 @@ public abstract class ProgramImp {
   }
 
   public static interface AwtContainerInitializer {
-    public void addComponents(OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel);
+    public void addComponents(OnscreenRenderTarget onscreenRenderTarget, JPanel controlPanel);
   }
 
   private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
@@ -326,7 +326,7 @@ public abstract class ProgramImp {
     }
 
     @Override
-    public void addComponents(OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel) {
+    public void addComponents(OnscreenRenderTarget onscreenRenderTarget, JPanel controlPanel) {
       this.awtContainer.add(onscreenRenderTarget.getAwtComponent());
       if (controlPanel != null) {
         this.awtContainer.add(controlPanel, BorderLayout.PAGE_START);
@@ -394,7 +394,6 @@ public abstract class ProgramImp {
   }
 
   public void shutDown() {
-    this.onscreenRenderTarget.release();
     this.stopAnimator();
     this.isProgramClosedExceptionDesired = true;
   }
@@ -410,7 +409,7 @@ public abstract class ProgramImp {
   }
 
   private final SProgram abstraction;
-  private final OnscreenRenderTarget<?> onscreenRenderTarget;
+  private final OnscreenRenderTarget onscreenRenderTarget;
   private double simulationSpeedFactor = 1.0;
   private String speedFormat;
   private Action restartAction;

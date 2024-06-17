@@ -51,18 +51,18 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
-  private OnscreenRenderTarget<?> m_onscreenLookingGlass;
+  private OnscreenRenderTarget m_onscreenLookingGlass;
 
-  public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     return m_onscreenLookingGlass;
   }
 
-  public void setOnscreenRenderTarget(OnscreenRenderTarget<?> onscreenLookingGlass) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     m_onscreenLookingGlass = onscreenLookingGlass;
     setAWTComponent(getAWTComponentToAddListenersTo(onscreenLookingGlass));
   }
 
-  protected Component getAWTComponentToAddListenersTo(OnscreenRenderTarget<?> onscreenLookingGlass) {
+  protected Component getAWTComponentToAddListenersTo(OnscreenRenderTarget onscreenLookingGlass) {
     return onscreenLookingGlass.getAwtComponent();
   }
 }

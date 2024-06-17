@@ -110,10 +110,6 @@ public class RenderTargetImp {
     this.renderTargetListeners.remove(listener);
   }
 
-  public List<RenderTargetListener> getRenderTargetListeners() {
-    return Collections.unmodifiableList(this.renderTargetListeners);
-  }
-
   public void addSgCamera(AbstractCamera sgCamera, GLAutoDrawable glAutoDrawable) {
     assert sgCamera != null : this;
     this.sgCameras.add(sgCamera);
@@ -456,22 +452,6 @@ public class RenderTargetImp {
       }
     }
     return rv;
-  }
-
-  public int getDrawableWidth() {
-    return this.drawableWidth;
-  }
-
-  public int getDrawableHeight() {
-    return this.drawableHeight;
-  }
-
-  public int getScreenHeight() {
-    return this.screenHeight;
-  }
-
-  public int getScreenWidth() {
-    return this.screenWidth;
   }
 
   private void initialize(GLAutoDrawable drawable) {

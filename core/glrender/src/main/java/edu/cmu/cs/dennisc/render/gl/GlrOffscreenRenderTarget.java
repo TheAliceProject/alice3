@@ -80,15 +80,6 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
     return rv;
   }
 
-  @Override
-  protected Dimension getDrawableSize(Dimension rv) {
-    if (this.glPbuffer != null) {
-      rv.setSize(GlDrawableUtils.getGlDrawableWidth(this.glPbuffer), GlDrawableUtils.getGlDrawableHeight(this.glPbuffer));
-    } else {
-      rv.setSize(0, 0);
-    }
-    return rv;
-  }
 
   @Override
   public void clearAndRenderOffscreen() {

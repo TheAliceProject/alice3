@@ -267,7 +267,6 @@ public class POVRayUtilities {
         } else {
           degrees = angle.getAsDegrees();
         }
-        //pw.println( "angle " + lookingGlass.getActualHorizontalViewingAngle( sgSymmetricPerspectiveCamera ).getAsDegrees() );
         pw.println("angle " + degrees);
       }
       pw.println("}");

@@ -52,9 +52,7 @@ import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 public interface RenderFactory {
   ImageBuffer createImageBuffer(Color4f backgroundColor);
 
-  HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
-
-  LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
+  OnscreenRenderTarget createOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
 
   OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities);
 
