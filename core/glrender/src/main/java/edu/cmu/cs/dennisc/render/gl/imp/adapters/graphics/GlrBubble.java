@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.Graphics2D;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
@@ -77,10 +78,9 @@ public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T
       //Scale the font size to try to match the viewport
       double DEFAULT_WIDTH = 640;
       double DEFAULT_HEIGHT = 360;
-      double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
       double viewportRatio = actualViewport.getWidth() / actualViewport.getHeight();
       float scaleFactor = 1.0f;
-      if (viewportRatio >= DEFAULT_WIDTH_TO_HEIGHT_RATIO) {
+      if (viewportRatio >= SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO) {
         scaleFactor = (float) (actualViewport.getHeight() / DEFAULT_HEIGHT);
       } else {
         scaleFactor = (float) (actualViewport.getWidth() / DEFAULT_WIDTH);

@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.ide.IDE;
-import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveTransformableEdit;
@@ -667,7 +666,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       ClippedZPlane picturePlane = new ClippedZPlane();
       picturePlane.setCenter(0, 0);
-      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetWidth)));
+      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetWidth)));
       markerImp.setPicturePlane(picturePlane);
     }
   }
@@ -707,7 +706,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetHeight)));
+      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight)));
       markerImp.setPicturePlane(picturePlane);
     }
   }
@@ -747,7 +746,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(clampPictureValue(Math.max(targetWidth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetHeight)));
+      picturePlane.setHeight(clampPictureValue(Math.max(targetWidth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight)));
       markerImp.setPicturePlane(picturePlane);
     }
   }

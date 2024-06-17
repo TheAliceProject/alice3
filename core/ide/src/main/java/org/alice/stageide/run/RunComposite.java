@@ -45,6 +45,7 @@ package org.alice.stageide.run;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.alice.stageide.run.views.RunView;
@@ -91,7 +92,6 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   private transient RunProgramContext programContext;
-  public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
   private static final double IDE_WIDTH_TO_RUN_WIDTH_RATIO = 0.9;
   private Point location = null;
   private Dimension size = null;
@@ -136,7 +136,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
       runView.forgetAndRemoveAllComponents();
 
       AwtComponentView<?> lookingGlassContainer = new AwtAdapter(onscreenRenderTarget.getAwtComponent());
-      FixedAspectRatioPanel fixedAspectRatioPanel = new FixedAspectRatioPanel(lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO);
+      FixedAspectRatioPanel fixedAspectRatioPanel = new FixedAspectRatioPanel(lookingGlassContainer, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO);
       fixedAspectRatioPanel.setBackgroundColor(Color.BLACK);
       if (controlPanel != null) {
         runView.getAwtComponent().add(controlPanel, BorderLayout.PAGE_START);
@@ -189,7 +189,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
       frame.setSize(this.size);
     } else {
       int startingWidth = (int) (parentFrame.getWidth() * IDE_WIDTH_TO_RUN_WIDTH_RATIO);
-      int startingHeight = (int) (startingWidth / WIDTH_TO_HEIGHT_RATIO);
+      int startingHeight = (int) (startingWidth / SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO);
       this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(startingWidth, startingHeight));
       frame.pack();
     }
