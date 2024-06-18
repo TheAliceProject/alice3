@@ -63,27 +63,23 @@ import java.nio.DoubleBuffer;
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
   public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
-    double vertical = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double near = -owner.nearClippingPlaneDistance.getValue();
-    double far = -owner.farClippingPlaneDistance.getValue();
+    final double near = owner.nearClippingPlaneDistance.getValue();
+    final double far = owner.farClippingPlaneDistance.getValue();
 
-    //todo: investigate (especially x)
-    xPixel = actualViewport.width - xPixel + actualViewport.x;
-    yPixel = actualViewport.height - yPixel - actualViewport.y;
-
-    final double tanHalfVertical = Math.tan(vertical * 0.5);
-    final double aspect = getAspectRatio(actualViewport);
-    final double halfWidth = actualViewport.width * 0.5;
-    final double halfHeight = actualViewport.height * 0.5;
-    final double dx = tanHalfVertical * ((xPixel  / halfWidth) - 1.0) * aspect;
-    final double dy = tanHalfVertical * (1.0 - (yPixel / halfHeight));
+    // xPixel and yPixel are given to us with 0, 0 in the upper left of the viewport, so flip y.
+    // actualViewport.x & y are set > 0 when letterboxing
+    final double xRatio = (xPixel - actualViewport.x) / ( actualViewport.width * 0.5);
+    final double yRatio = (actualViewport.height - yPixel - actualViewport.y) / ( actualViewport.height * 0.5);
+    final double tanHalfVertical = Math.tan(getActualVerticalViewingAngle(actualViewport).getAsRadians() * 0.5);
+    final double dx = (1.0 - xRatio) * tanHalfVertical * getAspectRatio(actualViewport);
+    final double dy = (1.0 - yRatio) * tanHalfVertical;
 
     //todo: optimize?
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
 
     rv.setOrigin(pNear);
-    Vector3 direction = Vector3.createSubtraction(pFar, pNear);
+    Vector3 direction = Vector3.createSubtraction(pNear, pFar);
     //todo: remove?
     direction.normalize();
     rv.setDirection(direction);
