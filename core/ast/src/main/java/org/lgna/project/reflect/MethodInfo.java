@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
@@ -54,8 +55,11 @@ public class MethodInfo extends MemberInfo {
   private transient Method mthd;
   private final String name;
 
-  public MethodInfo(ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames) {
-    super(classInfo, parameterClassNames, parameterNames);
+  public MethodInfo(
+          @JsonProperty("name") String name,
+          @JsonProperty("parameterClassNames") String[] parameterClassNames,
+          @JsonProperty("parameterNames") String[] parameterNames) {
+    super(parameterClassNames, parameterNames);
     this.name = name;
   }
 
