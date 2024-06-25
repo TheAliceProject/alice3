@@ -63,27 +63,23 @@ import java.nio.DoubleBuffer;
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
   public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
-    double vertical = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double near = -owner.nearClippingPlaneDistance.getValue();
-    double far = -owner.farClippingPlaneDistance.getValue();
+    final double near = owner.nearClippingPlaneDistance.getValue();
+    final double far = owner.farClippingPlaneDistance.getValue();
 
-    //todo: investigate (especially x)
-    xPixel = actualViewport.width - xPixel;
-    yPixel = actualViewport.height - yPixel;
-
-    double tanHalfVertical = Math.tan(vertical * 0.5);
-    double aspect = actualViewport.width / (double) actualViewport.height;
-    double halfWidth = actualViewport.width * 0.5;
-    double halfHeight = actualViewport.height * 0.5;
-    double dx = tanHalfVertical * ((xPixel / halfWidth) - 1.0) * aspect;
-    double dy = tanHalfVertical * (1.0 - (yPixel / halfHeight));
+    // xPixel and yPixel are given to us with 0, 0 in the upper left of the viewport, so flip y.
+    // actualViewport.x & y are set > 0 when letterboxing
+    final double xRatio = (xPixel - actualViewport.x) / (actualViewport.width * 0.5);
+    final double yRatio = (actualViewport.height - yPixel - actualViewport.y) / (actualViewport.height * 0.5);
+    final double tanHalfVertical = Math.tan(getActualVerticalViewingAngle(actualViewport).getAsRadians() * 0.5);
+    final double dx = (1.0 - xRatio) * tanHalfVertical * getAspectRatio(actualViewport);
+    final double dy = (1.0 - yRatio) * tanHalfVertical;
 
     //todo: optimize?
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
 
     rv.setOrigin(pNear);
-    Vector3 direction = Vector3.createSubtraction(pFar, pNear);
+    Vector3 direction = Vector3.createSubtraction(pNear, pFar);
     //todo: remove?
     direction.normalize();
     rv.setDirection(direction);
@@ -106,64 +102,65 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     rv.up.set(0, f, 0, 0);
     rv.backward.set(0, 0, (zFar + zNear) / (zNear - zFar), -1);
     rv.translation.set(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0);
-
-    //    rv.setRow( 0, f / aspect, 0, 0, 0 );
-    //    rv.setRow( 1, 0, f, 0, 0 );
-    //    rv.setRow( 2, 0, 0, (zFar + zNear) / (zNear - zFar), (2 * zFar * zNear) / (zNear - zFar) );
-    //    rv.setRow( 3, 0, 0, -1, 0 );
     return rv;
   }
 
   @Override
   protected Rectangle performLetterboxing(Rectangle rv) {
-    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
-      //pass
+    final double viewAspect = getAspectRatio(rv);
+    double surfaceAspect = rv.width / (double) rv.height;
+    if (viewAspect > surfaceAspect) {
+      int letterBoxedHeight = (int) ((rv.width / viewAspect) + 0.5);
+      rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
+    } else if (viewAspect < surfaceAspect) {
+      int letterBoxedWidth = (int) ((rv.height * viewAspect) + 0.5);
+      rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
     } else {
-      double aspect = this.horizontalInDegrees / this.verticalInDegrees;
-      double pixelAspect = rv.width / (double) rv.height;
-      if (aspect > pixelAspect) {
-        int letterBoxedHeight = (int) ((rv.width / aspect) + 0.5);
-        rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
-      } else if (aspect < pixelAspect) {
-        int letterBoxedWidth = (int) ((rv.height * aspect) + 0.5);
-        rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
-      } else {
-        //pass
-      }
+      // aspect is the same, we don't have to change it
     }
     return rv;
   }
 
-  private static final double DEFAULT_ACTUAL_VERTICAL_IN_DEGREES = new AngleInRadians(0.5).getAsDegrees();
-
-  public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
-    double horizontalInDegrees;
-    if (Double.isNaN(this.horizontalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
-      if (Double.isNaN(this.verticalInDegrees)) {
-        horizontalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES * aspect;
+  private double getAspectRatio(Rectangle rect) {
+    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
+      if (this.isLetterboxed()) {
+        return SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO;
       } else {
-        horizontalInDegrees = this.verticalInDegrees * aspect;
+        return rect.width / (double) rect.height;
       }
     } else {
-      horizontalInDegrees = this.horizontalInDegrees;
+      return this.horizontalInDegrees / this.verticalInDegrees;
     }
-    return new AngleInDegrees(horizontalInDegrees);
+  }
+
+  public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
+    double angle;
+    if (Double.isNaN(this.horizontalInDegrees)) {
+      double aspect = getAspectRatio(actualViewport);
+      if (Double.isNaN(this.verticalInDegrees)) {
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees() * aspect;
+      } else {
+        angle = this.verticalInDegrees * aspect;
+      }
+    } else {
+      angle = this.horizontalInDegrees;
+    }
+    return new AngleInDegrees(angle);
   }
 
   public Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
-    double verticalInDegrees;
+    double angle;
     if (Double.isNaN(this.verticalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
+      double aspect = getAspectRatio(actualViewport);
       if (Double.isNaN(this.horizontalInDegrees)) {
-        verticalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES;
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees();
       } else {
-        verticalInDegrees = this.horizontalInDegrees / aspect;
+        angle = this.horizontalInDegrees / aspect;
       }
     } else {
-      verticalInDegrees = this.verticalInDegrees;
+      angle = this.verticalInDegrees;
     }
-    return new AngleInDegrees(verticalInDegrees);
+    return new AngleInDegrees(angle);
   }
 
   //  @Override
@@ -251,18 +248,6 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float zNear, float zFar) {
-    //    double actualVerticalInDegrees = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.DEGREES );
-    //    context.glu.gluPerspective( actualVerticalInDegrees, actualViewport.width / (double)actualViewport.height, zNear, zFar );
-
-    //    double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
-    //    double aspect = actualViewport.width / (double)actualViewport.height;
-    //
-    //    double halfVerticalTangent = Math.tan( halfVertical );
-    //    double yNear = zNear * halfVerticalTangent;
-    //    double xNear = yNear * aspect;
-    //
-    //    context.gl.glFrustum( -xNear, +xNear, -yNear, +yNear, zNear, zFar );
-
     Matrix4x4 projection = new Matrix4x4();
     double[] projectionArray = new double[16];
     DoubleBuffer projectionBuffer = DoubleBuffer.wrap(projectionArray);

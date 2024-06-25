@@ -86,11 +86,9 @@ public interface RenderTarget {
 
   Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera);
 
-  Ray getRayAtPixel(int xPixel, int yPixel);
+  boolean isLetterboxed(AbstractCamera sgCamera);
 
-  boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera);
-
-  void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted);
+  void setLetterboxed(AbstractCamera sgCamera, boolean isLetterboxed);
 
   boolean isRenderingEnabled();
 

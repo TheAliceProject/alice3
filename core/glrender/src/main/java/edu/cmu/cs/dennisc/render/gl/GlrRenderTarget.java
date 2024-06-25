@@ -212,43 +212,11 @@ import java.util.List;
       synchronized (s_actualViewportBufferForReuse) {
         GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
         getActualViewport(s_actualViewportBufferForReuse, cameraAdapter);
-        //      double halfWidth = s_actualViewportBufferForReuse.width / 2.0;
-        //      double halfHeight = s_actualViewportBufferForReuse.height / 2.0;
-        //      double xInPlane = (xPixel + 0.5 - halfWidth) / halfWidth;
-        //      double yInPlane = -(yPixel + 0.5 - halfHeight) / halfHeight;
         cameraAdapter.getRayAtPixel(rv, xPixel, yPixel, s_actualViewportBufferForReuse);
       }
     } else {
       rv.setNaN();
     }
-    //    java.awt.Rectangle viewport = getActualViewport( camera );
-    //    double halfWidth = viewport.width / 2.0;
-    //    double halfHeight = viewport.height / 2.0;
-    //    double x = (xPixel + 0.5 - halfWidth) / halfWidth;
-    //    double y = -(yPixel + 0.5 - halfHeight) / halfHeight;
-    //
-    //    edu.cmu.cs.dennisc.math.Matrix4d inverseProjection = getActualProjectionMatrix( camera );
-    //    inverseProjection.invert();
-    //
-    //    edu.cmu.cs.dennisc.math.Point3d origin = new edu.cmu.cs.dennisc.math.Point3d(
-    //        inverseProjection.backward.x / inverseProjection.backward.w,
-    //        inverseProjection.backward.y / inverseProjection.backward.w,
-    //        inverseProjection.backward.z / inverseProjection.backward.w
-    //    );
-    //
-    //    edu.cmu.cs.dennisc.math.Vector4d qs = new edu.cmu.cs.dennisc.math.Vector4d( x, y, 0, 1 );
-    //    edu.cmu.cs.dennisc.math.Vector4d qw = edu.cmu.cs.dennisc.math.LinearAlgebra.multiply( qs, inverseProjection );
-    //
-    //    edu.cmu.cs.dennisc.math.Vector3d direction = new edu.cmu.cs.dennisc.math.Vector3d(
-    //        qw.x * inverseProjection.backward.w - qw.w * inverseProjection.backward.x,
-    //        qw.y * inverseProjection.backward.w - qw.w * inverseProjection.backward.y,
-    //        qw.z * inverseProjection.backward.w - qw.w * inverseProjection.backward.z
-    //    );
-    //    direction.normalize();
-    //
-    //    rv.setOrigin( origin );
-    //    rv.setDirection( direction );
-    //    return rv;
     return rv;
   }
 
@@ -257,25 +225,16 @@ import java.util.List;
     return getRayAtPixel(new Ray(), xPixel, yPixel, sgCamera);
   }
 
-  private Ray getRayAtPixel(Ray rv, int xPixel, int yPixel) {
-    return getRayAtPixel(rv, xPixel, yPixel, getCameraAtPixel(xPixel, yPixel));
-  }
-
   @Override
-  public final Ray getRayAtPixel(int xPixel, int yPixel) {
-    return getRayAtPixel(new Ray(), xPixel, yPixel);
-  }
-
-  @Override
-  public boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera) {
+  public boolean isLetterboxed(AbstractCamera sgCamera) {
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
-    return cameraAdapter.isLetterboxedAsOpposedToDistorted();
+    return cameraAdapter.isLetterboxed();
   }
 
   @Override
-  public void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted) {
+  public void setLetterboxed(AbstractCamera sgCamera, boolean isLetterboxed) {
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
-    cameraAdapter.setIsLetterboxedAsOpposedToDistorted(isLetterboxedAsOpposedToDistorted);
+    cameraAdapter.setIsLetterboxed(isLetterboxed);
   }
 
   @Override

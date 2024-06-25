@@ -177,7 +177,9 @@ public abstract class PicturePlaneInteraction {
   private double rayPixelY0 = Double.NaN;
 
   private void startRayDrag(MouseEvent e) {
-    this.ray = this.onscreenRenderTarget.getRayAtPixel(e.getX(), e.getY());
+    // TODO- I made the assumption that this camera would work in order to simplify the RenderTarget API.
+    // If this code is resurrected and this was incorrect, the solution is to call the renderTarget's getCameraAtPixel
+    this.ray = this.onscreenRenderTarget.getRayAtPixel(e.getX(), e.getY(), this.sgCamera);
     this.rayPixelY0 = e.getY();
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
     this.rayT0 = this.ray.getProjectedPointT(p);
