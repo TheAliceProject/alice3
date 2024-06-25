@@ -6,7 +6,10 @@
   <localizing-bundle>org.alice.netbeans.Bundle</localizing-bundle>
   <volume>
     <type>classpath</type>
-    <resource>nbinst:/modules/ext/org.alice.netbeans/com-google-code-gson/gson.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/com-fasterxml-jackson-core/jackson-core.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/com-fasterxml-jackson-core/jackson-databind.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/com-fasterxml-jackson-core/jackson-annotations.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/com-fasterxml-jackson-datatype/jackson-datatype-jsr310.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/com-sun/javamp3.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/com-sun-media/jai-codec.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/javax-media/jai-core.jar</resource>
