@@ -45,10 +45,8 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.EulerAngles;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.pattern.Visitable;
@@ -141,24 +139,6 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   public final OrthogonalMatrix3x3 getAxes(ReferenceFrame asSeenBy) {
     return getAxes(OrthogonalMatrix3x3.createNaN(), asSeenBy);
-  }
-
-  public UnitQuaternion getUnitQuaternionD(UnitQuaternion rv, ReferenceFrame asSeenBy) {
-    rv.setValue(getTransformation(asSeenBy).orientation);
-    return rv;
-  }
-
-  public final UnitQuaternion getUnitQuaternionD(ReferenceFrame asSeenBy) {
-    return getUnitQuaternionD(UnitQuaternion.createNaN(), asSeenBy);
-  }
-
-  public EulerAngles getEulerAnglesD(EulerAngles rv, ReferenceFrame asSeenBy) {
-    rv.setValue(getTransformation(asSeenBy).orientation);
-    return rv;
-  }
-
-  public final EulerAngles getEulerAnglesD(ReferenceFrame asSeenBy) {
-    return getEulerAnglesD(EulerAngles.createNaN(), asSeenBy);
   }
 
   public Composite getParent() {
@@ -344,28 +324,12 @@ public abstract class Component extends Element implements Visitable, ReferenceF
     return rv;
   }
 
-  public Vector4 transformFromAWT(Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
-    PicturePlaneUtils.transformFromAWTToCamera(rv, p, z, renderTarget, camera);
-    if (this != camera) {
-      transformFrom_AffectReturnValuePassedIn(rv, camera);
-    }
-    return rv;
-  }
-
   public Point transformToAWT_New(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
     return transformToAWT(new Point(), xyzw, renderTarget, camera);
   }
 
   public Point transformToAWT_New(Point3 xyz, RenderTarget renderTarget, AbstractCamera camera) {
     return transformToAWT_New(new Vector4(xyz.x, xyz.y, xyz.z, 1.0), renderTarget, camera);
-  }
-
-  public Vector4 transformFromAWT_NewVectorD4(Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
-    return transformFromAWT(new Vector4(), p, z, renderTarget, camera);
-  }
-
-  public Point3 transformFromAWT_NewPointD3(Point p, double z, RenderTarget renderTarget, AbstractCamera camera) {
-    return Point3.createFromXYZW(transformFromAWT_NewVectorD4(p, z, renderTarget, camera));
   }
 
   private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();
