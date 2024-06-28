@@ -42,16 +42,11 @@
  *******************************************************************************/
 package org.alice.stageide.apis.org.lgna.story;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import org.lgna.project.reflect.ClassInfo;
 import org.lgna.project.reflect.ClassInfoManager;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClassInfoUtilities {
   private ClassInfoUtilities() {
@@ -60,9 +55,11 @@ public class ClassInfoUtilities {
 
   public static void loadClassInfos() {
     String json = TextFileUtilities.read(ClassInfoUtilities.class.getResourceAsStream("classinfos.json"));
-    Gson gson = new GsonBuilder().create();
-    Type listType = new TypeToken<ArrayList<ClassInfo>>() { }.getType();
-    List<ClassInfo> infos = gson.fromJson(json, listType);
-    ClassInfoManager.addClassInfos(infos);
+    ObjectMapper mapper = new ObjectMapper();
+      try {
+        ClassInfoManager.addClassInfos(mapper.readValue(json, ClassInfo[].class));
+      } catch (JsonProcessingException e) {
+          throw new RuntimeException(e);
+      }
   }
 }

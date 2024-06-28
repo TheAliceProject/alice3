@@ -53,10 +53,9 @@ public abstract class MemberInfo {
   private final String[] parameterClassNames;
   private final String[] parameterNames;
 
-  public MemberInfo(ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames) {
+  public MemberInfo(String[] parameterClassNames, String[] parameterNames) {
     this.parameterClassNames = parameterClassNames;
     this.parameterNames = parameterNames;
-    initialize(declaringClassInfo);
   }
 
   abstract void initialize(ClassInfo classInfo);
