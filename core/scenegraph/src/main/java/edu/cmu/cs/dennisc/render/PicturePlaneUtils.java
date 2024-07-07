@@ -175,49 +175,33 @@ public class PicturePlaneUtils {
     return rv;
   }
 
-  public static Vector4 transformFromViewportToCamera(Vector4 rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    rv.set(xyzw);
+  public static Vector4 transformFromViewportToCamera(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
+    Vector4 rv = new Vector4(xyzw);
     return transformFromViewportToCamera_AffectReturnValuePassedIn(rv, renderTarget, sgCamera);
   }
 
-  public static Vector4 transformFromCameraToViewport(Vector4 rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    rv.set(xyzw);
+  public static Vector4 transformFromCameraToViewport(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
+    Vector4 rv = new Vector4(xyzw);
     return transformFromCameraToViewport_AffectReturnValuePassedIn(rv, renderTarget, sgCamera);
-  }
-
-  public static Vector4 transformFromViewportToCamera_New(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    return transformFromViewportToCamera(new Vector4(), xyzw, renderTarget, sgCamera);
-  }
-
-  public static Vector4 transformFromCameraToViewport_New(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    return transformFromCameraToViewport(new Vector4(), xyzw, renderTarget, sgCamera);
-  }
-
-  public static Vector4 transformFromAWTToCamera(Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    synchronized (s_actualViewportBuffer) {
-      renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBuffer, sgCamera);
-      transformFromAWTToViewport(rv, p, z, s_actualViewportBuffer);
-      transformFromViewportToCamera_AffectReturnValuePassedIn(rv, renderTarget, sgCamera, s_actualViewportBuffer);
-    }
-    return rv;
   }
 
   private static Vector4 s_vector4dBuffer = new Vector4();
 
-  public static Point transformFromCameraToAWT(Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
+  public static Point transformFromCameraToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
+    Point rv = new Point();
     synchronized (s_vector4dBuffer) {
       s_vector4dBuffer.set(xyzw);
       synchronized (s_actualViewportBuffer) {
         renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBuffer, sgCamera);
         transformFromCameraToViewport_AffectReturnValuePassedIn(s_vector4dBuffer, renderTarget, sgCamera, s_actualViewportBuffer);
-        transformFromViewportToAWT(rv, s_vector4dBuffer, s_actualViewportBuffer);
+        rv = transformFromViewportToAWT(rv, s_vector4dBuffer, s_actualViewportBuffer);
       }
     }
     return rv;
   }
 
-  public static Point transformFromCameraToAWT_New(Point3 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    return transformFromCameraToAWT(new Point(), new Vector4(xyzw.x, xyzw.y, xyzw.z, 1.0), renderTarget, sgCamera);
+  public static Point transformFromCameraToAWT(Point3 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
+    return transformFromCameraToAWT(new Vector4(xyzw.x, xyzw.y, xyzw.z, 1.0), renderTarget, sgCamera);
   }
 
 

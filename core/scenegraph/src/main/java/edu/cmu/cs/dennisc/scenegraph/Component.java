@@ -310,26 +310,17 @@ public abstract class Component extends Element implements Visitable, ReferenceF
     return from.transformTo_AffectReturnValuePassedIn(xyz, this);
   }
 
-  private static final Vector4 s_buffer = new Vector4();
 
-  public Point transformToAWT(Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
-    synchronized (s_buffer) {
-      if (this != camera) {
-        transformTo(s_buffer, xyzw, camera);
-      } else {
-        s_buffer.set(xyzw);
-      }
-      PicturePlaneUtils.transformFromCameraToAWT(rv, s_buffer, renderTarget, camera);
+  public Point transformToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
+    Vector4 s_buffer = new Vector4(xyzw);
+    if (this != camera) {
+      s_buffer = TransformationUtilities.transformTo_New(s_buffer, this, camera);
     }
-    return rv;
+    return PicturePlaneUtils.transformFromCameraToAWT(s_buffer, renderTarget, camera);
   }
 
-  public Point transformToAWT_New(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
-    return transformToAWT(new Point(), xyzw, renderTarget, camera);
-  }
-
-  public Point transformToAWT_New(Point3 xyz, RenderTarget renderTarget, AbstractCamera camera) {
-    return transformToAWT_New(new Vector4(xyz.x, xyz.y, xyz.z, 1.0), renderTarget, camera);
+  public Point transformToAWT(Point3 xyz, RenderTarget renderTarget, AbstractCamera camera) {
+    return transformToAWT(new Vector4(xyz.x, xyz.y, xyz.z, 1.0), renderTarget, camera);
   }
 
   private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();

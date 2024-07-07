@@ -320,7 +320,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     if (this.hidCursor) {
       try {
         Point3 pointInCamera = this.rotationHandle.getSphereLocation(this.getCamera());
-        Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+        Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT(pointInCamera, this.onscreenRenderTarget, this.getCamera());
         RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
       } finally {
         CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());

@@ -150,7 +150,7 @@ public abstract class PicturePlaneInteraction {
   private void startPlaneDrag(MouseEvent e) {
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
     Vector4 xyzwInCameraSpace = new Vector4(p.x, p.y, p.z, 1.0);
-    Vector4 xyzwInViewportSpace = PicturePlaneUtils.transformFromCameraToViewport_New(xyzwInCameraSpace, this.onscreenRenderTarget, this.sgCamera);
+    Vector4 xyzwInViewportSpace = PicturePlaneUtils.transformFromCameraToViewport(xyzwInCameraSpace, this.onscreenRenderTarget, this.sgCamera);
     this.planeZ0 = xyzwInViewportSpace.z / xyzwInViewportSpace.w;
   }
 
@@ -161,7 +161,7 @@ public abstract class PicturePlaneInteraction {
 
     Vector4 xyzwInViewportSpace = new Vector4(x, y, this.planeZ0, 1.0);
 
-    Vector4 xyzwInCameraSpace = PicturePlaneUtils.transformFromViewportToCamera_New(xyzwInViewportSpace, this.onscreenRenderTarget, this.sgCamera);
+    Vector4 xyzwInCameraSpace = PicturePlaneUtils.transformFromViewportToCamera(xyzwInViewportSpace, this.onscreenRenderTarget, this.sgCamera);
 
     Point3 p = new Point3(xyzwInCameraSpace.x / xyzwInCameraSpace.w, xyzwInCameraSpace.y / xyzwInCameraSpace.w, xyzwInCameraSpace.z / xyzwInCameraSpace.w);
     this.sgTransformable.setTranslationOnly(p, this.sgCamera);
@@ -198,7 +198,7 @@ public abstract class PicturePlaneInteraction {
 
   private void stopRayDrag(MouseEvent e) {
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
-    Point xyInPixels = PicturePlaneUtils.transformFromCameraToAWT_New(p, this.onscreenRenderTarget, this.sgCamera);
+    Point xyInPixels = PicturePlaneUtils.transformFromCameraToAWT(p, this.onscreenRenderTarget, this.sgCamera);
 
     this.isInTheMidstOfACursorWarp = true;
     try {

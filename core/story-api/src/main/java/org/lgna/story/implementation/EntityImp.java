@@ -326,7 +326,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   public Point transformToAwt(Point3 xyz, CameraImp<?> camera) {
-    return this.getSgComposite().transformToAWT_New(xyz, this.getOnscreenRenderTarget(), camera.getSgCamera());
+    return this.getSgComposite().transformToAWT(xyz, this.getOnscreenRenderTarget(), camera.getSgCamera());
   }
 
   protected static final double DEFAULT_DURATION = 1.0;

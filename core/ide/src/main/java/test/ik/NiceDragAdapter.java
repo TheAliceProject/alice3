@@ -206,7 +206,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
   protected Point handleMouseRelease(Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
     if ((m_sgCamera != null) && (m_sgDragAcceptor != null)) {
       //      if( dragStyle.isControlDown() ) {
-      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenRenderTarget(), m_sgCamera );
+      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT( m_xyzInDragAcceptorAtPress, getOnscreenRenderTarget(), m_sgCamera );
       //        warpCursor( p );
       //        showCursor();
       //        rv.setLocation( p );
