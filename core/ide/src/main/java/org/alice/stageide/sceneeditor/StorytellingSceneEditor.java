@@ -337,7 +337,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private final Button runButton = IsToolBarShowing.getValue() ? null : RunComposite.getInstance().getLaunchOperation().createButton();
 
   private OrthographicCameraImp orthographicCameraImp = null;
-  private SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp();
+  private final SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp(null);
 
   private ComboBox<CameraOption> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
