@@ -75,8 +75,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>15</java.version>
 
-    <jogl.version>2.4.0-rc-20210916</jogl.version>
-    <gluegen.version>2.4.0-rc-20210111</gluegen.version>
+    <jogl.version>2.5.0</jogl.version>
+    <gluegen.version>2.5.0</gluegen.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.9.0.0</alice.build.version>
@@ -745,6 +745,12 @@
   </pluginRepositories>
 
   <repositories>
+    <repository>
+      <id>jogamp.org</id>
+      <name>JogAmp</name>
+      <url>https://jogamp.org/deployment/maven/</url>
+    </repository>
+
     <repository>
       <id>org.alice</id>
       <name>Alice Repository</name>
