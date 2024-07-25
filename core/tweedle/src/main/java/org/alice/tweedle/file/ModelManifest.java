@@ -134,6 +134,10 @@ public class ModelManifest extends Manifest {
       bounds.max = box.getMaximum().getAsFloatList();
       bounds.min = box.getMinimum().getAsFloatList();
     }
+
+    public JointBounds() {
+      name = "";
+    }
   }
 
   public ModelVariant getModelVariant(String variantName) {
