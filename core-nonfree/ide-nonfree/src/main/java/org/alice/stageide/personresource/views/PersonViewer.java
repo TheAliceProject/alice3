@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter;
 import org.alice.stageide.modelviewer.ModelViewer;
 import org.alice.stageide.personresource.PersonImp;
@@ -144,8 +145,9 @@ public class PersonViewer extends ModelViewer {
   protected void initialize() {
     super.initialize();
     this.dragAdapter.setOnscreenRenderTarget(this.getOnscreenRenderTarget());
-    this.dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera());
-    this.dragAdapter.makeCameraActive(this.getCamera().getSgCamera());
-    getOnscreenRenderTarget().setLetterboxed(getCamera().getSgCamera(), false);
+    SymmetricPerspectiveCamera sgCamera = this.getCamera().getSgCamera();
+    this.dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, sgCamera);
+    this.dragAdapter.makeCameraActive(sgCamera);
+    getOnscreenRenderTarget().setLetterboxed(sgCamera, false);
   }
 }
