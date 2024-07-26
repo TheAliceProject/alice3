@@ -108,7 +108,7 @@ public abstract class AbstractThumbnailMaker {
     this.sgCamera.farClippingPlaneDistance.setValue(1000.0);
     this.sgCamera.nearClippingPlaneDistance.setValue(.1);
     this.sgCamera.setParent(this.sgCameraVehicle);
-    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(this.width * this.antAliasFactor, this.height * this.antAliasFactor, null, new RenderCapabilities.Builder().build());
+    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(this.width * this.antAliasFactor, this.height * this.antAliasFactor, new RenderCapabilities.Builder().build());
     setUpCamera(this.offscreenRenderTarget);
   }
 
