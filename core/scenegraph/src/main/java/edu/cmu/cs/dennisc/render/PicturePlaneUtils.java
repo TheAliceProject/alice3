@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render;
 
-//todo: unify w/ scenegraph.util.TransformationUtilities?
-
 import edu.cmu.cs.dennisc.math.Matrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector4;
@@ -55,6 +53,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
+ * These are functions related to transformations between different types of spaces that we have, eg. 2d <-> 3d
+ * AWT has 0,0 in the upper left, and is what our ui mouse clicks, etc are using
+ * the 'viewport' has it in the lower left
+ *
  * @author Dennis Cosgrove
  */
 public class PicturePlaneUtils {

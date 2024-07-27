@@ -42,8 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-//todo: unify w/ lookingglass.TransformationUtilities?
-
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -54,6 +52,8 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 
 /**
+ * These are functions that help with transforming objects relative to each other/the scene inside the scenegraph
+ *
  * @author Dennis Cosgrove
  */
 public abstract class TransformationUtilities {
