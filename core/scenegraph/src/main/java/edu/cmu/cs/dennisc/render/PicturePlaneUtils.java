@@ -58,19 +58,15 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class PicturePlaneUtils {
-  private static Vector4 transformFromAWTToViewport(Vector4 rv, Point p, double z, Rectangle actualViewport) {
-    rv.x = p.x;
-    rv.y = actualViewport.height - p.y;
-    rv.z = z;
-    rv.w = 1.0;
-    return rv;
+  private static Vector4 transformFromAWTToViewport(Point p, double z, Rectangle actualViewport) {
+    final int y = actualViewport.height - p.y;
+    return new Vector4(p.x, y, z, 1);
   }
 
-  private static Point transformFromViewportToAWT(Point rv, Vector4 xyzw, Rectangle actualViewport) {
-    rv.x = (int) (xyzw.x / xyzw.w);
-    rv.y = (int) (xyzw.y / xyzw.w);
-    rv.y = actualViewport.height - rv.y;
-    return rv;
+  private static Point transformFromViewportToAWT(Vector4 xyzw, Rectangle actualViewport) {
+    final int x = (int) (xyzw.x / xyzw.w);
+    final int y = actualViewport.height - (int) (xyzw.y / xyzw.w);
+    return new Point(x, y);
   }
 
   private static double getNear(AbstractCamera sgCamera) {
@@ -185,19 +181,13 @@ public class PicturePlaneUtils {
     return transformFromCameraToViewport_AffectReturnValuePassedIn(rv, renderTarget, sgCamera);
   }
 
-  private static Vector4 s_vector4dBuffer = new Vector4();
-
   public static Point transformFromCameraToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
-    Point rv = new Point();
-    synchronized (s_vector4dBuffer) {
-      s_vector4dBuffer.set(xyzw);
-      synchronized (s_actualViewportBuffer) {
-        renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBuffer, sgCamera);
-        transformFromCameraToViewport_AffectReturnValuePassedIn(s_vector4dBuffer, renderTarget, sgCamera, s_actualViewportBuffer);
-        rv = transformFromViewportToAWT(rv, s_vector4dBuffer, s_actualViewportBuffer);
-      }
+    synchronized (s_actualViewportBuffer) {
+      renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBuffer, sgCamera);
+      Vector4 viewportPos = new Vector4(xyzw);
+      transformFromCameraToViewport_AffectReturnValuePassedIn(viewportPos, renderTarget, sgCamera, s_actualViewportBuffer);
+      return transformFromViewportToAWT(viewportPos, s_actualViewportBuffer);
     }
-    return rv;
   }
 
   public static Point transformFromCameraToAWT(Point3 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera) {
