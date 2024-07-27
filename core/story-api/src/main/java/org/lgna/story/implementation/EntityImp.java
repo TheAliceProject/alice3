@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.media.Player;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.media.MediaFactory;
@@ -325,7 +325,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return rv;
   }
 
-  public Point transformToAwt(Point3 xyz, CameraImp<?> camera) {
+  public Point transformToAwt(Vector4 xyz, CameraImp<?> camera) {
     return this.getSgComposite().transformToAWT(xyz, this.getOnscreenRenderTarget(), camera.getSgCamera());
   }
 
