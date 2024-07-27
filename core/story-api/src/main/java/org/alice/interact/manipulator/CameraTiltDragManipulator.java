@@ -124,8 +124,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     }
     this.setPlaneDiscPoint(pickPoint);
 
-    Point3 oldPointInCamera = this.camera.transformFrom_New(oldPickPoint, this.camera.getRoot());
-    Point3 newPointInCamera = this.camera.transformFrom_New(newPickPoint, this.camera.getRoot());
+    Point3 oldPointInCamera = this.camera.transformFrom(oldPickPoint, this.camera.getRoot());
+    Point3 newPointInCamera = this.camera.transformFrom(newPickPoint, this.camera.getRoot());
 
     Vector3 xDif = new Vector3(newPointInCamera.x, oldPointInCamera.y, oldPointInCamera.z);
     xDif.normalize();

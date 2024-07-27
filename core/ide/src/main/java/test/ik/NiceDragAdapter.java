@@ -154,7 +154,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     if (m_sgDragAcceptor != null) {
       AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
       m_offset = Vector3.createSubtraction(m_xyzInAbsoluteAtPress, m.translation);
-      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
+      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
       if (!dragStyle.isShiftDown()) {
         AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
         Vector3 axis = Vector3.createSubtraction(cameraAbsolute.translation, m_xyzInAbsoluteAtPress);

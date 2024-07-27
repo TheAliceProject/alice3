@@ -134,7 +134,7 @@ public class PickResult {
         //pass
       } else {
         assert m_sgVisual != null;
-        m_sgVisual.transformFrom_AffectReturnValuePassedIn(m_xyzInVisual, m_sgSource);
+        m_xyzInVisual = m_sgVisual.transformFrom(m_xyzInVisual, m_sgSource);
       }
     }
     return m_xyzInVisual;

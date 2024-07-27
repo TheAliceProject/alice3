@@ -162,7 +162,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     }
 
     Vector3 mouseRelativeMovement = new Vector3(mouseVector.x, 0d, mouseVector.y);
-    getCamera().getRoot().transformFrom_AffectReturnValuePassedIn(mouseRelativeMovement, getCamera());
+    mouseRelativeMovement = getCamera().getRoot().transformFrom(mouseRelativeMovement, getCamera());
     mouseRelativeMovement.y = 0d;
     mouseRelativeMovement.normalize();
 
@@ -332,7 +332,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   protected Point3 getInitialClickPoint(InputState startInput) {
     Point3 initialClickPoint = new Point3();
     startInput.getClickPickResult().getPositionInSource(initialClickPoint);
-    startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
     return initialClickPoint;
   }
 
@@ -466,7 +466,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected Point getMouseCursorPositionInLookingGlass() {
     Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
-    Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
+    Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
     Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT(pointInCamera, this.onscreenRenderTarget, this.getCamera());
     return awtPoint;
   }

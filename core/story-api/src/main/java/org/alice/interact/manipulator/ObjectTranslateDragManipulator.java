@@ -244,7 +244,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
       this.hasMoved = false;
       this.initialObjectPosition.set(this.manipulatedTransformable.getAbsoluteTransformation().translation);
       startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-      startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+      this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
       this.movementPlane = createPickPlane(this.initialClickPoint);
       this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 

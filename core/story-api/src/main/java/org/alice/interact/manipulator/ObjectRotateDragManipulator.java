@@ -173,7 +173,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     this.absoluteRotationAxis.normalize();
     //PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
     startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-    startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
     Vector3 rotationAxis = this.absoluteRotationAxis;
     this.rotationPlane = Plane.createInstance(this.initialClickPoint, rotationAxis);
 

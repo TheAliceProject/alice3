@@ -238,78 +238,29 @@ public abstract class Component extends Element implements Visitable, ReferenceF
     fireHierarchyChanged(new HierarchyEvent(this));
   }
 
-  public Vector4 transformTo(Vector4 rv, Vector4 xyzw, Component to) {
-    return TransformationUtilities.transformTo(rv, xyzw, this, to);
-  }
-
-  public Vector4 transformFrom(Vector4 rv, Vector4 xyzw, Component from) {
-    return from.transformTo(rv, xyzw, this);
-  }
-
-  public Point3 transformTo(Point3 rv, Point3 xyz, Component to) {
-    return TransformationUtilities.transformTo(rv, xyz, this, to);
-  }
-
-  public Point3 transformFrom(Point3 rv, Point3 xyz, Component from) {
-    return from.transformTo(rv, xyz, this);
-  }
-
-  public Vector3 transformTo(Vector3 rv, Vector3 xyz, Component to) {
-    return TransformationUtilities.transformTo(rv, xyz, this, to);
-  }
-
-  public Vector3 transformFrom(Vector3 rv, Vector3 xyz, Component from) {
-    return from.transformTo(rv, xyz, this);
-  }
-
-  public Vector4 transformTo_New(Vector4 xyzw, Component to) {
+  public Vector4 transformTo(Vector4 xyzw, Component to) {
     return TransformationUtilities.transformTo_New(xyzw, this, to);
   }
 
-  public Vector4 transformFrom_New(Vector4 xyzw, Component from) {
-    return from.transformTo_New(xyzw, this);
+  public Vector4 transformFrom(Vector4 xyzw, Component from) {
+    return from.transformTo(xyzw, this);
   }
 
-  public Point3 transformTo_New(Point3 xyz, Component to) {
+  public Point3 transformTo(Point3 xyz, Component to) {
     return TransformationUtilities.transformTo_New(xyz, this, to);
   }
 
-  public Point3 transformFrom_New(Point3 xyz, Component from) {
-    return from.transformTo_New(xyz, this);
+  public Point3 transformFrom(Point3 xyz, Component from) {
+    return from.transformTo(xyz, this);
   }
 
-  public Vector3 transformTo_New(Vector3 xyz, Component to) {
+  public Vector3 transformTo(Vector3 xyz, Component to) {
     return TransformationUtilities.transformTo_New(xyz, this, to);
   }
 
-  public Vector3 transformFrom_New(Vector3 xyz, Component from) {
-    return from.transformTo_New(xyz, this);
+  public Vector3 transformFrom(Vector3 xyz, Component from) {
+    return from.transformTo(xyz, this);
   }
-
-  public Vector4 transformTo_AffectReturnValuePassedIn(Vector4 xyzw, Component to) {
-    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyzw, this, to);
-  }
-
-  public Vector4 transformFrom_AffectReturnValuePassedIn(Vector4 xyzw, Component from) {
-    return from.transformTo_AffectReturnValuePassedIn(xyzw, this);
-  }
-
-  public Point3 transformTo_AffectReturnValuePassedIn(Point3 xyz, Component to) {
-    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyz, this, to);
-  }
-
-  public Point3 transformFrom_AffectReturnValuePassedIn(Point3 xyz, Component from) {
-    return from.transformTo_AffectReturnValuePassedIn(xyz, this);
-  }
-
-  public Vector3 transformTo_AffectReturnValuePassedIn(Vector3 xyz, Component to) {
-    return TransformationUtilities.transformTo_AffectReturnValuePassedIn(xyz, this, to);
-  }
-
-  public Vector3 transformFrom_AffectReturnValuePassedIn(Vector3 xyz, Component from) {
-    return from.transformTo_AffectReturnValuePassedIn(xyz, this);
-  }
-
 
   // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
   // where we need to know what's actually showing in the ui
