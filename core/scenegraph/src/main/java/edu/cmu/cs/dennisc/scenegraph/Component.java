@@ -239,7 +239,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public Vector4 transformTo(Vector4 xyzw, Component to) {
-    return TransformationUtilities.transformTo_New(xyzw, this, to);
+    return TransformationUtilities.transformTo(xyzw, this, to);
   }
 
   public Vector4 transformFrom(Vector4 xyzw, Component from) {
@@ -247,7 +247,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public Point3 transformTo(Point3 xyz, Component to) {
-    return TransformationUtilities.transformTo_New(xyz, this, to);
+    return TransformationUtilities.transformTo(xyz, this, to);
   }
 
   public Point3 transformFrom(Point3 xyz, Component from) {
@@ -255,7 +255,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public Vector3 transformTo(Vector3 xyz, Component to) {
-    return TransformationUtilities.transformTo_New(xyz, this, to);
+    return TransformationUtilities.transformTo(xyz, this, to);
   }
 
   public Vector3 transformFrom(Vector3 xyz, Component from) {
@@ -268,7 +268,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   public Point transformToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
     Vector4 s_buffer = new Vector4(xyzw);
     if (this != camera) {
-      s_buffer = TransformationUtilities.transformTo_New(s_buffer, this, camera);
+      s_buffer = TransformationUtilities.transformTo(s_buffer, this, camera);
     }
     return PicturePlaneUtils.transformFromCameraToAWT(s_buffer, renderTarget, camera);
   }

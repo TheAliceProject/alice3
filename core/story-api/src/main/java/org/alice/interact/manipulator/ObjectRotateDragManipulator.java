@@ -193,7 +193,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
       this.originalMouseRightDirection = Vector3.createCrossProduct(this.originalMouseDirection, rotationAxis);
 
       this.rotationHandle.setSphereVisibility(true);
-      Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New(toMouse, this.rotationHandle);
+      Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute(toMouse, this.rotationHandle);
       this.rotationHandle.setSphereDirection(sphereDirection);
       //Hide the cursor
 

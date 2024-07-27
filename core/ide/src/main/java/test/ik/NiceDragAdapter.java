@@ -137,7 +137,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
         if (m_sgDragAcceptor != null) {
           m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
-          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute_New(pickResult.getPositionInSource(), m_sgCamera);
+          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute(pickResult.getPositionInSource(), m_sgCamera);
         }
       }
       this.yDelta = 0.0;

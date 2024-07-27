@@ -211,10 +211,9 @@ public class SnapUtilities {
     if (boundingBox != null) {
       boundingBox.scale(getTransformableScale(t));
     }
-    Point3 boxMin = boundingBox.getMinimum();
-    Point3 boxMax = boundingBox.getMaximum();
-    TransformationUtilities.transformToAbsolute(boxMin, boxMin, t);
-    TransformationUtilities.transformToAbsolute(boxMax, boxMax, t);
+
+    Point3 boxMin = TransformationUtilities.transformToAbsolute(boundingBox.getMinimum(), t);
+    Point3 boxMax = TransformationUtilities.transformToAbsolute(boundingBox.getMaximum(), t);
     boundingBox.setMaximum(boxMax);
     boundingBox.setMinimum(boxMin);
     return boundingBox;
