@@ -155,13 +155,13 @@ public class PicturePlaneUtils {
     return rv;
   }
 
-  public static Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
+ private static Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
     final Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle(sgCamera);
     transformFromViewportToCamera_AffectReturnValuePassedIn(rv, renderTarget, sgCamera, actualViewport);
     return rv;
   }
 
-  public static Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
+  private static Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
     final Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle(sgCamera);
     transformFromCameraToViewport_AffectReturnValuePassedIn(rv, renderTarget, sgCamera, actualViewport);
     return rv;
