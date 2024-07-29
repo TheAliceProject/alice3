@@ -184,7 +184,7 @@ public class GlDrawableUtils {
     return glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile);
   }
 
-  public static GLOffscreenAutoDrawable createGlPixelBuffer(GLCapabilities glCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, GLContext share) {
+  public static GLOffscreenAutoDrawable createOffscreenAutoDrawable(GLCapabilities glCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, int width, int height) {
     GLProfile glProfile = GLProfile.getDefault();
     GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
     if (glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile)) {

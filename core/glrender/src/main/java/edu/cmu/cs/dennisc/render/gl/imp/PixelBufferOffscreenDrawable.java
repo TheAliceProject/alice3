@@ -106,7 +106,7 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
     if (this.glPixelBuffer != null) {
       Logger.severe(this);
     } else {
-      this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext);
+      this.glPixelBuffer = GlDrawableUtils.createOffscreenAutoDrawable(glRequestedCapabilities, glCapabilitiesChooser, width, height);
       if (this.getCallback() != null) {
         this.glPixelBuffer.addGLEventListener(glEventListener);
       }

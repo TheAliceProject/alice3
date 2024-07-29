@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLOffscreenAutoDrawable;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
@@ -60,7 +59,7 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
 
   GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, RenderCapabilities requestedCapabilities) {
     super(lookingGlassFactory, requestedCapabilities);
-    this.glPbuffer = GlDrawableUtils.createGlPixelBuffer(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, null);
+    drawable = GlDrawableUtils.createOffscreenAutoDrawable(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height);
   }
 
   @Override
