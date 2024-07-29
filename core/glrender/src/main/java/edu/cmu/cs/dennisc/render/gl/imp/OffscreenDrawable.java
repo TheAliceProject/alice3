@@ -64,7 +64,7 @@ import java.awt.Dimension;
   }
 
   public static OffscreenDrawable createInstance(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext) {
-    OffscreenDrawable od = new PixelBufferOffscreenDrawable(callback);
+    OffscreenDrawable od = new NativeOffscreenDrawable(callback);
     try {
       od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
       return od;

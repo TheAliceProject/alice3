@@ -133,7 +133,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 
     private void performPick(GL2 gl) {
       this.pickContext.gl = gl;
-      ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary(gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable);
+      ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary(gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof NativeOffscreenDrawable);
 
       ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 

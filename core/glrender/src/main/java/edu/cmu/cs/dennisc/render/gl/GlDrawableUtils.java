@@ -69,7 +69,7 @@ import java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class GlDrawableUtils {
-  private static final Map<GLOffscreenAutoDrawable, Dimension> mapPixelBufferToDimension;
+  private static final Map<GLOffscreenAutoDrawable, Dimension> linuxDrawableSizes;
 
   private static boolean areEquivalentIgnoringMultisample(GLCapabilitiesImmutable a, GLCapabilitiesImmutable b) {
     return a.getAccumAlphaBits() == b.getAccumAlphaBits()
@@ -144,9 +144,9 @@ public class GlDrawableUtils {
 
   static {
     if (SystemUtilities.isLinux()) {
-      mapPixelBufferToDimension = Maps.newHashMap();
+      linuxDrawableSizes = Maps.newHashMap();
     } else {
-      mapPixelBufferToDimension = null;
+      linuxDrawableSizes = null;
     }
 
     final int MAXIMUM_MULTISAMPLE_COUNT = 0; //4;
@@ -192,8 +192,8 @@ public class GlDrawableUtils {
       // This is a work around for Linux users.
       // Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
       // return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
-      if (mapPixelBufferToDimension != null) {
-        mapPixelBufferToDimension.put(drawable, new Dimension(width, height));
+      if (linuxDrawableSizes != null) {
+        linuxDrawableSizes.put(drawable, new Dimension(width, height));
       }
 
       return drawable;
@@ -215,10 +215,9 @@ public class GlDrawableUtils {
     // Bug in linux opengl, getWidth ALWAYS returns 0
     int width = drawable.getSurfaceWidth();
     if (width == 0) {
-      if (mapPixelBufferToDimension != null) {
+      if (linuxDrawableSizes != null) {
         if (drawable instanceof GLOffscreenAutoDrawable) {
-          GLOffscreenAutoDrawable glPixelBuffer = (GLOffscreenAutoDrawable) drawable;
-          Dimension size = mapPixelBufferToDimension.get(glPixelBuffer);
+            Dimension size = linuxDrawableSizes.get((GLOffscreenAutoDrawable) drawable);
           if (size != null) {
             width = size.width;
           }
@@ -232,10 +231,10 @@ public class GlDrawableUtils {
     // Bug in linux opengl, getHeight ALWAYS returns 0
     int height = drawable.getSurfaceHeight();
     if (height == 0) {
-      if (mapPixelBufferToDimension != null) {
+      if (linuxDrawableSizes != null) {
         if (drawable instanceof GLOffscreenAutoDrawable) {
           GLOffscreenAutoDrawable glPixelBuffer = (GLOffscreenAutoDrawable) drawable;
-          Dimension size = mapPixelBufferToDimension.get(glPixelBuffer);
+          Dimension size = linuxDrawableSizes.get(glPixelBuffer);
           if (size != null) {
             height = size.height;
           }
