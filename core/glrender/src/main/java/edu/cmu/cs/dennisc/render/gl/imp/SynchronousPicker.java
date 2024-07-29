@@ -126,7 +126,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
           public void display(GL2 gl) {
             sharedActualPicker.performPick(gl);
           }
-        }, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+        }, glRequestedCapabilities, glCapabilitiesChooser, glShareContext);
       }
       return this.glOffscreenDrawable;
     }

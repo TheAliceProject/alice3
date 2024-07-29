@@ -63,7 +63,7 @@ import java.awt.Dimension;
     public void display(GL2 gl);
   }
 
-  public static OffscreenDrawable createInstance(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
+  public static OffscreenDrawable createInstance(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext) {
     OffscreenDrawable od = new PixelBufferOffscreenDrawable(callback);
     try {
       od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
