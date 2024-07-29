@@ -185,32 +185,30 @@ public class GlDrawableUtils {
   }
 
   public static GLOffscreenAutoDrawable createOffscreenAutoDrawable(GLCapabilities glCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, int width, int height) {
-    GLProfile glProfile = GLProfile.getDefault();
-    GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
-    if (glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile)) {
-      GLOffscreenAutoDrawable buffer = glDrawableFactory.createOffscreenAutoDrawable(glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height); //, share );
+    try {
+      GLDrawableFactory factory = getGlDrawableFactory();
+      GLOffscreenAutoDrawable drawable = factory.createOffscreenAutoDrawable(factory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height);
 
       // This is a work around for Linux users.
       // Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
       // return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
       if (mapPixelBufferToDimension != null) {
-        mapPixelBufferToDimension.put(buffer, new Dimension(width, height));
+        mapPixelBufferToDimension.put(drawable, new Dimension(width, height));
       }
 
-      return buffer;
-    } else {
-      //      throw new RuntimeException("cannot create pbuffer");
-      Logger.warning("GLDrawableFactory.canCreateGLPbuffer() returned false. This may cause errors in rendering."
-          + " From the JOGL documentation: Some older graphics cards do not have this capability, as well as some new GL"
-          + " implementation, i.e. OpenGL 3 core on OSX.");
-      return null;
+      return drawable;
+    } catch (Exception e) {
+    Logger.warning("GLDrawableFactory failed to create offscreen drawable. This may cause errors in rendering.");
+    return null;
     }
   }
 
   public static GLDrawableImpl createOffscreenDrawable(GLCapabilities glCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, int width, int height) {
-    GLProfile glProfile = GLProfile.getDefault();
-    GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
-    return (GLDrawableImpl) glDrawableFactory.createOffscreenDrawable(null, glCapabilities, glCapabilitiesChooser, width, height);
+      return (GLDrawableImpl) getGlDrawableFactory().createOffscreenDrawable(null, glCapabilities, glCapabilitiesChooser, width, height);
+  }
+
+  private static GLDrawableFactory getGlDrawableFactory() {
+    return GLDrawableFactory.getFactory(GLProfile.getDefault());
   }
 
   public static int getGlDrawableWidth(GLDrawable drawable) {

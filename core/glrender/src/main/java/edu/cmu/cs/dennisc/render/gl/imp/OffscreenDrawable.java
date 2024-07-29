@@ -64,36 +64,32 @@ import java.awt.Dimension;
   }
 
   public static OffscreenDrawable createInstance(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
-    OffscreenDrawable od = null;
-    if (IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtils.canCreateGlPixelBuffer()) {
-      od = new PixelBufferOffscreenDrawable(callback);
+    OffscreenDrawable od = new PixelBufferOffscreenDrawable(callback);
+    try {
+      od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+      return od;
+    } catch (GLException gle) {
       try {
-        od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
-      } catch (GLException gle) {
-        try {
-          od.destroy();
-        } catch (Throwable t) {
-          //pass
-        }
-        od = null;
+        od.destroy();
+      } catch (Throwable ignored) {
       }
+      return createSoftwareDrawable(callback, glRequestedCapabilities, glCapabilitiesChooser, glShareContext);
     }
-    if (od == null) {
-      Logger.severe(callback);
-      od = new SoftwareOffscreenDrawable(callback);
+  }
+
+  private static OffscreenDrawable createSoftwareDrawable(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext) {
+    Logger.severe("Creation of native drawable failed. Using alternative implementation, which may affect rendering.", callback);
+    OffscreenDrawable od = new SoftwareOffscreenDrawable(callback);
+    try {
+      od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+      return od;
+    } catch (GLException gle) {
       try {
-        od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
-      } catch (GLException gle) {
-        try {
-          od.destroy();
-        } catch (Throwable t) {
-          //pass
-        }
-        od = null;
-        throw gle;
+        od.destroy();
+      } catch (Throwable ignored) {
       }
+      throw gle;
     }
-    return od;
   }
 
   private final DisplayCallback callback;
