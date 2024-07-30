@@ -107,7 +107,7 @@ public interface RenderTarget {
   void clearUnusedTextures();
 
   //todo: remove?
-  Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera sgCamera);
+  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
   MRectangleI getActualViewport(AbstractCamera sgCamera);
 

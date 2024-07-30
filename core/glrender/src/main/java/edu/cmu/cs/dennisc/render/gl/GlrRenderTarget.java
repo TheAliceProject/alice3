@@ -49,21 +49,14 @@ import edu.cmu.cs.dennisc.math.Matrix4x4;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
 import edu.cmu.cs.dennisc.pattern.AbstractReleasable;
-import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
-import edu.cmu.cs.dennisc.render.AsynchronousPicker;
-import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderTarget;
-import edu.cmu.cs.dennisc.render.SynchronousImageCapturer;
-import edu.cmu.cs.dennisc.render.SynchronousPicker;
+import edu.cmu.cs.dennisc.render.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -153,72 +146,50 @@ import java.util.List;
     this.imp.removeRenderTargetListener(listener);
   }
 
-  protected abstract Dimension getSurfaceSize(Dimension rv);
-
-  @Override
-  public final Dimension getSurfaceSize() {
-    return getSurfaceSize(new Dimension());
-  }
-
   @Override
   public final int getSurfaceWidth() {
-    synchronized (s_sizeBufferForReuse) {
-      getSurfaceSize(s_sizeBufferForReuse);
-      return s_sizeBufferForReuse.width;
-    }
+    return getSurfaceSize().width;
   }
 
   @Override
   public final int getSurfaceHeight() {
-    synchronized (s_sizeBufferForReuse) {
-      getSurfaceSize(s_sizeBufferForReuse);
-      return s_sizeBufferForReuse.height;
-    }
+    return getSurfaceSize().height;
   }
 
   @Override
-  public MRectangleI getActualViewport(AbstractCamera sgCamera) {
-    return RectangleUtilities.toMRectangleI(this.getActualViewportAsAwtRectangle(sgCamera));
+  public final MRectangleI getActualViewport(AbstractCamera camera) {
+    GlrAbstractCamera<?> cameraAdapter = AdapterFactory.getAdapterFor(camera);
+    return RectangleUtilities.toMRectangleI(getActualViewportFromAdapter(cameraAdapter));
   }
 
-
-  public Rectangle getActualViewport(Rectangle rv, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {
+  private Rectangle getActualViewportFromAdapter(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {
     Dimension surfaceSize = this.getSurfaceSize();
-    return cameraAdapter.getActualViewport(rv, surfaceSize.width, surfaceSize.height);
+    return cameraAdapter.getActualViewport(surfaceSize.width, surfaceSize.height);
   }
 
   @Override
   public final Rectangle getActualViewportAsAwtRectangle(AbstractCamera camera) {
-    Rectangle rv = new Rectangle();
-    GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor(camera);
-    return getActualViewport(rv, glrCamera);
+    GlrAbstractCamera<?> cameraAdapter = AdapterFactory.getAdapterFor(camera);
+    return getActualViewportFromAdapter(cameraAdapter);
   }
 
   @Override
-  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera camera) {
-    synchronized (s_actualViewportBufferForReuse) {
-      GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(camera);
-      getActualViewport(s_actualViewportBufferForReuse, cameraAdapter);
-      return cameraAdapter.getActualProjectionMatrix(rv, s_actualViewportBufferForReuse);
-    }
-  }
-
-  private Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, AbstractCamera sgCamera) {
-    if (sgCamera != null) {
-      synchronized (s_actualViewportBufferForReuse) {
-        GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
-        getActualViewport(s_actualViewportBufferForReuse, cameraAdapter);
-        cameraAdapter.getRayAtPixel(rv, xPixel, yPixel, s_actualViewportBufferForReuse);
-      }
-    } else {
-      rv.setNaN();
-    }
-    return rv;
+  public Matrix4x4 getActualProjectionMatrix(AbstractCamera camera) {
+    GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(camera);
+    final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
+    return cameraAdapter.getActualProjectionMatrix(viewport);
   }
 
   @Override
   public final Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera) {
-    return getRayAtPixel(new Ray(), xPixel, yPixel, sgCamera);
+    if (sgCamera != null) {
+      GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
+      final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
+      return cameraAdapter.getRayAtPixel(xPixel, yPixel, viewport);
+    }
+    Ray rv = new Ray();
+    rv.setNaN();
+    return rv;
   }
 
   @Override
@@ -272,10 +243,6 @@ import java.util.List;
     this.imp.clearUnusedTextures();
   }
 
-  protected RenderTargetImp getRenderTargetImp() {
-    return this.imp;
-  }
-
   private final GlrRenderFactory glrRenderer;
   private final RenderCapabilities requestedCapabilities;
   private final RenderCapabilities actualCapabilities;
@@ -288,7 +255,4 @@ import java.util.List;
 
   private boolean m_isRenderingEnabled = true;
 
-  //
-  private static Rectangle s_actualViewportBufferForReuse = new Rectangle();
-  private static Dimension s_sizeBufferForReuse = new Dimension();
 }

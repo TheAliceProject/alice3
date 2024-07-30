@@ -57,19 +57,19 @@ import java.nio.DoubleBuffer;
  */
 public class GlrProjectionCamera extends GlrAbstractCamera<ProjectionCamera> {
   @Override
-  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+  public Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport) {
     throw new RuntimeException("todo");
   }
 
   @Override
-  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+  public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
     throw new RuntimeException("todo");
   }
 
   @Override
-  protected Rectangle performLetterboxing(Rectangle rv) {
+  protected Rectangle performLetterboxing(Rectangle rect) {
     //todo
-    return rv;
+    return rect;
   }
 
   @Override

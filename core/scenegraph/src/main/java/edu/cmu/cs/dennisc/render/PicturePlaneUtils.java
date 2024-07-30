@@ -122,25 +122,19 @@ public class PicturePlaneUtils {
     return rv;
   }
 
-  private static Matrix4x4 s_actualProjectionBuffer = new Matrix4x4();
-
   private static Vector4 transformFromProjectionToCamera_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
     rv.multiply(1.0 / rv.w);
-    synchronized (s_actualProjectionBuffer) {
-      renderTarget.getActualProjectionMatrix(s_actualProjectionBuffer, sgCamera);
-      s_actualProjectionBuffer.invert();
-      s_actualProjectionBuffer.transform(rv);
-      return rv;
-    }
+    Matrix4x4 actualMatrix = renderTarget.getActualProjectionMatrix(sgCamera);
+    actualMatrix.invert();
+    actualMatrix.transform(rv);
+    return rv;
   }
 
   private static Vector4 transformFromCameraToProjection_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera) {
     rv.multiply(1.0 / rv.w);
-    synchronized (s_actualProjectionBuffer) {
-      renderTarget.getActualProjectionMatrix(s_actualProjectionBuffer, sgCamera);
-      s_actualProjectionBuffer.transform(rv);
-      return rv;
-    }
+    Matrix4x4 actualMatrix = renderTarget.getActualProjectionMatrix(sgCamera);
+    actualMatrix.transform(rv);
+    return rv;
   }
 
   private static Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn(Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera, Rectangle actualViewport) {

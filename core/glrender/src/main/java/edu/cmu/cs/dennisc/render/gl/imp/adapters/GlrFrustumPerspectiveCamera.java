@@ -57,24 +57,23 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<FrustumPerspectiveCamera> {
-  private static final ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
-
   @Override
-  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+  public Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport) {
     throw new RuntimeException("TODO");
   }
 
   @Override
-  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
-    ClippedZPlane actualPicturePlane = getActualPicturePlane(new ClippedZPlane(), actualViewport);
-    double left = actualPicturePlane.getXMinimum();
-    double right = actualPicturePlane.getXMaximum();
-    double bottom = actualPicturePlane.getYMinimum();
-    double top = actualPicturePlane.getYMaximum();
+  public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
+    ClippedZPlane pp = getActualPicturePlane(actualViewport);
+    double left = pp.getXMinimum();
+    double right = pp.getXMaximum();
+    double bottom = pp.getYMinimum();
+    double top = pp.getYMaximum();
 
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
 
+    Matrix4x4 rv = new Matrix4x4();
     rv.right.set(2 * zNear, 0, 0, 0);
     rv.up.set(0, (2 * zNear) / (top - bottom), 0, 0);
     rv.backward.set((right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear), -1);
@@ -84,22 +83,19 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<Fr
   }
 
   @Override
-  protected Rectangle performLetterboxing(Rectangle rv) {
+  protected Rectangle performLetterboxing(Rectangle rect) {
     //todo: handle NaN
-    return rv;
+    return rect;
   }
 
-  public ClippedZPlane getActualPicturePlane(ClippedZPlane rv, Rectangle actualViewport) {
-    rv.set(owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI(actualViewport));
-    return rv;
+  public ClippedZPlane getActualPicturePlane(Rectangle actualViewport) {
+    return new ClippedZPlane(owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI(actualViewport));
   }
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float near, float far) {
-    synchronized (s_actualPicturePlaneBufferForReuse) {
-      getActualPicturePlane(s_actualPicturePlaneBufferForReuse, actualViewport);
-      context.gl.glFrustum(s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far);
-    }
+    ClippedZPlane pp = getActualPicturePlane(actualViewport);
+    context.gl.glFrustum(pp.getXMinimum(), pp.getXMaximum(), pp.getYMinimum(), pp.getYMaximum(), near, far);
   }
 
   @Override

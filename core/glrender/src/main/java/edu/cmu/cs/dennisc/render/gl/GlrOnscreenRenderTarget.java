@@ -130,8 +130,8 @@ class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderT
   }
 
   @Override
-  protected Dimension getSurfaceSize(Dimension rv) {
-    return this.glPanel.getSize(rv);
+  public Dimension getSurfaceSize() {
+    return this.glPanel.getSize();
   }
 
 

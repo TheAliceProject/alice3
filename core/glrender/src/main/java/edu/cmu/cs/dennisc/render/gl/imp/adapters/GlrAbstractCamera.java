@@ -62,23 +62,24 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
-  public abstract Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport);
+  public abstract Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport);
 
-  protected abstract Rectangle performLetterboxing(Rectangle rv);
+  protected abstract Rectangle performLetterboxing(Rectangle rect);
 
-  public Rectangle getActualViewport(Rectangle rv, int surfaceWidth, int surfaceHeight) {
+  public Rectangle getActualViewport(int surfaceWidth, int surfaceHeight) {
+    Rectangle rv = new Rectangle();
     if (this.specifiedViewport != null) {
       rv.setBounds(this.specifiedViewport);
     } else {
       rv.setBounds(0, 0, surfaceWidth, surfaceHeight);
     }
     if (this.isLetterboxed) {
-      performLetterboxing(rv);
+      rv = performLetterboxing(rv);
     }
     return rv;
   }
 
-  public abstract Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport);
+  public abstract Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport);
 
   public boolean isLetterboxed() {
     return this.isLetterboxed;
@@ -93,7 +94,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
   public void performClearAndRenderOffscreen(RenderContext rc, int surfaceWidth, int surfaceHeight) {
     GlrScene sceneAdapter = getGlrScene();
     if (sceneAdapter != null) {
-      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      Rectangle actualViewport = getActualViewport(surfaceWidth, surfaceHeight);
       rc.gl.glMatrixMode(GL_PROJECTION);
       rc.gl.glLoadIdentity();
       setupProjection(rc, actualViewport);
@@ -104,7 +105,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
 
   public void postRender(RenderContext rc, int surfaceWidth, int surfaceHeight, RenderTarget renderTarget, Graphics2D g2) {
     if (this.glrLayers != null) {
-      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      Rectangle actualViewport = getActualViewport(surfaceWidth, surfaceHeight);
       for (GlrLayer layerAdapter : this.glrLayers) {
         layerAdapter.render(g2, renderTarget, actualViewport, this.owner);
       }
