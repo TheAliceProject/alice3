@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer;
@@ -191,9 +190,8 @@ public class GlrRenderFactory implements RenderFactory {
   }
 
   @Override
-  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
-    assert (renderTargetToShareContextWith == null) || (renderTargetToShareContextWith instanceof GlrRenderTarget);
-    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(this, width, height, (GlrRenderTarget) renderTargetToShareContextWith, requestedCapabilities);
+  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderCapabilities requestedCapabilities) {
+    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(this, width, height, requestedCapabilities);
     olg.addReleaseListener(this.releaseListener);
     this.offscreenLookingGlasses.add(olg);
     return olg;

@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 /**
  * @author Dennis Cosgrove
  */
-public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
+public final class NativeOffscreenDrawable extends OffscreenDrawable {
   private final GLEventListener glEventListener = new GLEventListener() {
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -90,40 +90,40 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
     }
   };
 
-  private GLOffscreenAutoDrawable glPixelBuffer;
+  private GLOffscreenAutoDrawable autoDrawable;
 
-  public PixelBufferOffscreenDrawable(DisplayCallback callback) {
+  public NativeOffscreenDrawable(DisplayCallback callback) {
     super(callback);
   }
 
   @Override
   protected GLOffscreenAutoDrawable getGlDrawable() {
-    return this.glPixelBuffer;
+    return autoDrawable;
   }
 
   @Override
   public void initialize(GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
-    if (this.glPixelBuffer != null) {
+    if (autoDrawable != null) {
       Logger.severe(this);
     } else {
-      this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext);
-      if (this.getCallback() != null) {
-        this.glPixelBuffer.addGLEventListener(glEventListener);
+      autoDrawable = GlDrawableUtils.createOffscreenAutoDrawable(glRequestedCapabilities, glCapabilitiesChooser, width, height);
+      if (getCallback() != null) {
+        autoDrawable.addGLEventListener(glEventListener);
       }
     }
   }
 
   @Override
   public void destroy() {
-    if (this.glPixelBuffer != null) {
-      this.glPixelBuffer.destroy();
-      this.glPixelBuffer = null;
+    if (autoDrawable != null) {
+      autoDrawable.destroy();
+      autoDrawable = null;
     }
   }
 
   @Override
   public void display() {
-    this.glPixelBuffer.display();
+    autoDrawable.display();
   }
 
   @Override

@@ -84,7 +84,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
   private AdaptiveRecenteringThumbnailMaker(int width, int height) {
     super(width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR);
     this.searchFactor = DEFAULT_SEARCH_FACTOR;
-    this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget((int) (this.getWidth() * this.searchFactor), (int) (this.getHeight() * this.searchFactor), null, new RenderCapabilities.Builder().build());
+    this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget((int) (this.getWidth() * this.searchFactor), (int) (this.getHeight() * this.searchFactor), new RenderCapabilities.Builder().build());
     setUpCamera(this.testImageOffscreenRenderTarget);
   }
 

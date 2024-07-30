@@ -57,7 +57,7 @@ public final class ThumbnailGenerator {
   private final OffscreenRenderTarget offscreenRenderTarget;
 
   public ThumbnailGenerator(int width, int height) {
-    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(width, height, null, new RenderCapabilities.Builder().build());
+    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(width, height, new RenderCapabilities.Builder().build());
   }
 
   public BufferedImage createThumbnail() {

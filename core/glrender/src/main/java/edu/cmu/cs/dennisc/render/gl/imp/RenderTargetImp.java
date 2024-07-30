@@ -164,15 +164,15 @@ public class RenderTargetImp {
   }
 
   public void forgetAllCachedItems() {
-    if (this.renderContext != null) {
       this.renderContext.forgetAllCachedItems();
-    }
   }
 
   public void clearUnusedTextures() {
-    if (this.renderContext != null) {
-      this.renderContext.clearUnusedTextures();
+    // Without a gl (GL2) there is nothing to clear
+    if (this.renderContext.gl == null) {
+        return;
     }
+    this.renderContext.clearUnusedTextures();
   }
 
   /*package-private*/void addDisplayTask(DisplayTask displayTask) {
