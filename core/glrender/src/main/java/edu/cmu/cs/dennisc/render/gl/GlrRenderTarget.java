@@ -188,14 +188,10 @@ import java.util.List;
   }
 
   @Override
-  public Rectangle getActualViewportAsAwtRectangle(Rectangle rv, AbstractCamera camera) {
+  public final Rectangle getActualViewportAsAwtRectangle(AbstractCamera camera) {
+    Rectangle rv = new Rectangle();
     GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor(camera);
     return getActualViewport(rv, glrCamera);
-  }
-
-  @Override
-  public final Rectangle getActualViewportAsAwtRectangle(AbstractCamera camera) {
-    return getActualViewportAsAwtRectangle(new Rectangle(), camera);
   }
 
   @Override

@@ -328,7 +328,6 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
   // where we need to know what's actually showing in the ui
-  // TODO- this logic is balanced on a deprecated function- getActualViewportAsAwtRectangle. Is there a replacement?
   public Point transformToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
     Vector4 s_buffer = new Vector4(xyzw);
     if (this != camera) {

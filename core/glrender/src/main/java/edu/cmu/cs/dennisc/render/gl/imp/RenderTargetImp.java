@@ -153,12 +153,11 @@ public class RenderTargetImp {
     ListIterator<AbstractCamera> iterator = this.sgCameras.listIterator(this.sgCameras.size());
     while (iterator.hasPrevious()) {
       AbstractCamera sgCamera = iterator.previous();
-      synchronized (s_actualViewportBufferForReuse) {
-        this.renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBufferForReuse, sgCamera);
-        if (s_actualViewportBufferForReuse.contains(xPixel, yPixel)) {
-          return sgCamera;
-        }
+      Rectangle actualViewport = this.renderTarget.getActualViewportAsAwtRectangle(sgCamera);
+      if (actualViewport.contains(xPixel, yPixel)) {
+        return sgCamera;
       }
+
     }
     return null;
   }
@@ -570,7 +569,6 @@ public class RenderTargetImp {
   private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
 
   //
-  private static final Rectangle s_actualViewportBufferForReuse = new Rectangle();
   private final GLEventListener glEventListener = new GLEventListener() {
     @Override
     public void init(GLAutoDrawable drawable) {

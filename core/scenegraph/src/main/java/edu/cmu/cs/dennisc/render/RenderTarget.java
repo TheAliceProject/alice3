@@ -111,10 +111,6 @@ public interface RenderTarget {
 
   MRectangleI getActualViewport(AbstractCamera sgCamera);
 
-  @Deprecated
   Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
 
-  //todo: remove?
-  @Deprecated
-  Rectangle getActualViewportAsAwtRectangle(Rectangle rv, AbstractCamera sgCamera);
 }
