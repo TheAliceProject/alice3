@@ -67,7 +67,6 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
 import java.util.List;
 
@@ -212,8 +211,8 @@ public class SnapUtilities {
       boundingBox.scale(getTransformableScale(t));
     }
 
-    Point3 boxMin = TransformationUtilities.transformToAbsolute(boundingBox.getMinimum(), t);
-    Point3 boxMax = TransformationUtilities.transformToAbsolute(boundingBox.getMaximum(), t);
+    Point3 boxMin = t.transformToAbsolute(boundingBox.getMinimum());
+    Point3 boxMax = t.transformToAbsolute(boundingBox.getMaximum());
     boundingBox.setMaximum(boxMax);
     boundingBox.setMinimum(boxMin);
     return boundingBox;

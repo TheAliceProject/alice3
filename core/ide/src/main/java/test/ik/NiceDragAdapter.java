@@ -59,7 +59,6 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
@@ -137,7 +136,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
         if (m_sgDragAcceptor != null) {
           m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
-          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute(pickResult.getPositionInSource(), m_sgCamera);
+          m_xyzInAbsoluteAtPress = m_sgCamera.transformToAbsolute(pickResult.getPositionInSource());
         }
       }
       this.yDelta = 0.0;

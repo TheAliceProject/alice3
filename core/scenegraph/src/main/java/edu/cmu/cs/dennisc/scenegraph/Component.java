@@ -57,7 +57,6 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
 import java.awt.Point;
 import java.util.List;
@@ -238,28 +237,98 @@ public abstract class Component extends Element implements Visitable, ReferenceF
     fireHierarchyChanged(new HierarchyEvent(this));
   }
 
+  // Vector4
+  public Vector4 transformToAbsolute(Vector4 xyz) {
+    Vector4 rv = new Vector4(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
+  public Vector4 transformFromAbsolute(Vector4 xyz) {
+    Vector4 rv = new Vector4(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
   public Vector4 transformTo(Vector4 xyzw, Component to) {
-    return TransformationUtilities.transformTo(xyzw, this, to);
+    Vector4 p = transformToAbsolute(xyzw);
+    return to.transformFromAbsolute(p);
   }
 
   public Vector4 transformFrom(Vector4 xyzw, Component from) {
     return from.transformTo(xyzw, this);
   }
 
+  // Vector3
+  public Vector3 transformToAbsolute(Vector3 xyz) {
+    Vector3 rv = new Vector3(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
+  public Vector3 transformFromAbsolute(Vector3 xyz) {
+    Vector3 rv = new Vector3(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
+  public Vector3 transformTo(Vector3 xyz, Component to) {
+    Vector3 p = transformToAbsolute(xyz);
+    return to.transformFromAbsolute(p);
+  }
+
+  //Point3d
+  public Point3 transformToAbsolute(Point3 xyz) {
+    Point3 rv = new Point3(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
+  public Point3 transformFromAbsolute(Point3 xyz) {
+    Point3 rv = new Point3(xyz);
+    if (!isAbsolute()) {
+      AffineMatrix4x4 m = getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
+
   public Point3 transformTo(Point3 xyz, Component to) {
-    return TransformationUtilities.transformTo(xyz, this, to);
+    Point3 p = transformToAbsolute(xyz);
+    return to.transformFromAbsolute(p);
   }
 
   public Point3 transformFrom(Point3 xyz, Component from) {
     return from.transformTo(xyz, this);
   }
 
-  public Vector3 transformTo(Vector3 xyz, Component to) {
-    return TransformationUtilities.transformTo(xyz, this, to);
-  }
 
   public Vector3 transformFrom(Vector3 xyz, Component from) {
     return from.transformTo(xyz, this);
+  }
+
+  private boolean isAbsolute() {
+    //todo: call isSceneOf()?
+    if ((this instanceof Scene) || ((ReferenceFrame) this == AsSeenBy.SCENE)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
@@ -268,7 +337,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   public Point transformToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
     Vector4 s_buffer = new Vector4(xyzw);
     if (this != camera) {
-      s_buffer = TransformationUtilities.transformTo(s_buffer, this, camera);
+      s_buffer = transformTo(s_buffer, camera);
     }
     return PicturePlaneUtils.transformFromCameraToAWT(s_buffer, renderTarget, camera);
   }

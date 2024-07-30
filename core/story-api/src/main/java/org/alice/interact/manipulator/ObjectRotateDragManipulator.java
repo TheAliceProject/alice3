@@ -69,7 +69,6 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
 
 /**
@@ -193,7 +192,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
       this.originalMouseRightDirection = Vector3.createCrossProduct(this.originalMouseDirection, rotationAxis);
 
       this.rotationHandle.setSphereVisibility(true);
-      Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute(toMouse, this.rotationHandle);
+      Vector3 sphereDirection = this.rotationHandle.transformFromAbsolute(toMouse);
       this.rotationHandle.setSphereDirection(sphereDirection);
       //Hide the cursor
 
