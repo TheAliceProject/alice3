@@ -323,12 +323,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   private boolean isAbsolute() {
-    //todo: call isSceneOf()?
-    if ((this instanceof Scene) || ((ReferenceFrame) this == AsSeenBy.SCENE)) {
-      return true;
-    } else {
-      return false;
-    }
+    return this instanceof Scene;
   }
 
   // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
