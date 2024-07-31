@@ -467,7 +467,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         }
         Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo(offsetAsSeenBySubject, sgCamera);
         //      edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
-        Point p = sgCamera.transformToAWT(offsetAsSeenByCamera, renderTarget, sgCamera);
+        Point p = renderTarget.transformFromCameraToAWT(offsetAsSeenByCamera, sgCamera);
         //      float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
         //      float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 

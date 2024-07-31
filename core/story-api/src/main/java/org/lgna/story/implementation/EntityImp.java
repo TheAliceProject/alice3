@@ -59,6 +59,7 @@ import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.media.MediaFactory;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -325,8 +326,13 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return rv;
   }
 
-  public Point transformToAwt(Vector4 xyz, CameraImp<?> camera) {
-    return this.getSgComposite().transformToAWT(xyz, this.getOnscreenRenderTarget(), camera.getSgCamera());
+  public Point transformToAwt(Vector4 xyzw, CameraImp<?> cameraImp) {
+    final AbstractCamera camera = cameraImp.getSgCamera();
+    // get the position relative to the camera, first.
+    Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
+    // 3d -> 2d conversion
+    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos, camera);
+
   }
 
   protected static final double DEFAULT_DURATION = 1.0;

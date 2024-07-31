@@ -46,7 +46,6 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementType;
@@ -319,7 +318,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     if (this.hidCursor) {
       try {
         Point3 pointInCamera = this.rotationHandle.getSphereLocation(this.getCamera());
-        Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+        Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
         RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
       } finally {
         CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());

@@ -51,14 +51,11 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.pattern.Visitable;
 import edu.cmu.cs.dennisc.pattern.Visitor;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
-import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-import java.awt.Point;
 import java.util.List;
 
 /**
@@ -324,16 +321,6 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   private boolean isAbsolute() {
     return this instanceof Scene;
-  }
-
-  // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
-  // where we need to know what's actually showing in the ui
-  public Point transformToAWT(Vector4 xyzw, RenderTarget renderTarget, AbstractCamera camera) {
-    Vector4 s_buffer = new Vector4(xyzw);
-    if (this != camera) {
-      s_buffer = transformTo(s_buffer, camera);
-    }
-    return PicturePlaneUtils.transformFromCameraToAWT(s_buffer, renderTarget, camera);
   }
 
   private final List<AbsoluteTransformationListener> absoluteTransformationListeners = Lists.newCopyOnWriteArrayList();

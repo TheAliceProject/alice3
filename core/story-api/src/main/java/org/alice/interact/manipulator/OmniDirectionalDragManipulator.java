@@ -46,7 +46,6 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -456,7 +455,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected Point calculateMousePlaneOffset(Point mousePosition, AbstractTransformable transformable) {
     Point3 pointInCamera = transformable.getTranslation(this.getCamera());
-    Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+    Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
     return new Point(awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y);
   }
 
@@ -467,7 +466,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   protected Point getMouseCursorPositionInLookingGlass() {
     Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
     Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
-    Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+    Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
     return awtPoint;
   }
 
