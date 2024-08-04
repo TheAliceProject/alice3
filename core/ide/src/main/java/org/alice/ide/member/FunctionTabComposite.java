@@ -44,11 +44,13 @@ package org.alice.ide.member;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.StringCodec;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.views.FunctionTabView;
+
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
@@ -103,11 +105,25 @@ public final class FunctionTabComposite extends MemberTabComposite<FunctionTabVi
     if (instanceFactory != null) {
       AbstractType<?, ?, ?> type = instanceFactory.getValueType();
       while (type != null) {
-        for (AbstractMethod method : type.getDeclaredMethods()) {
-          AbstractType<?, ?, ?> returnType = method.getReturnType();
-          if (returnType != JavaType.VOID_TYPE && isInclusionDesired(method)) {
-            List<AbstractMethod> methods = funcByType.computeIfAbsent(returnType, k -> Lists.newLinkedList());
-            methods.add(method);
+        if (type instanceof NamedUserType) {
+          NamedUserType namedUserType = (NamedUserType) type;
+
+          UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
+
+          for (AbstractMethod method : userMethodsSubComposite.getMethods()) {
+            AbstractType<?, ?, ?> returnType = method.getReturnType();
+            if (returnType != JavaType.VOID_TYPE && isInclusionDesired(method)) {
+              List<AbstractMethod> methods = funcByType.computeIfAbsent(returnType, k -> Lists.newLinkedList());
+              methods.add(method);
+            }
+          }
+        } else if (type instanceof JavaType) {
+          for (AbstractMethod method : type.getDeclaredMethods()) {
+            AbstractType<?, ?, ?> returnType = method.getReturnType();
+            if (returnType != JavaType.VOID_TYPE && isInclusionDesired(method)) {
+              List<AbstractMethod> methods = funcByType.computeIfAbsent(returnType, k -> Lists.newLinkedList());
+              methods.add(method);
+            }
           }
         }
         type = type.isFollowToSuperClassDesired() ? type.getSuperType() : null;
@@ -115,11 +131,19 @@ public final class FunctionTabComposite extends MemberTabComposite<FunctionTabVi
     }
 
     List<AbstractType<?, ?, ?>> types = Lists.newArrayList(funcByType.keySet());
+    List<MethodsSubComposite> rv = Lists.newArrayList();
+    UnclaimedMethodsComposite methodsComposite = this.getUnclaimedMethodsComposite();
+
     types.sort(IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator());
-    List<MethodsSubComposite> rv = Lists.newArrayListWithInitialCapacity(types.size());
+
     for (AbstractType<?, ?, ?> type : types) {
       FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance(type);
-      subComposite.setMethods(funcByType.get(type));
+
+      // sort methods under each return type
+      List<AbstractMethod> typeMethods = funcByType.get(type);
+      methodsComposite.sortAndSetMethods(typeMethods);
+
+      subComposite.setMethods(typeMethods);
       rv.add(subComposite);
     }
     return rv;

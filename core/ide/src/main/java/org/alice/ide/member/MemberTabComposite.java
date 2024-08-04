@@ -43,10 +43,12 @@
 package org.alice.ide.member;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+
 import org.alice.ide.IDE;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.views.MemberTabView;
+
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -197,11 +199,23 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     if (instanceFactory != null) {
       AbstractType<?, ?, ?> type = instanceFactory.getValueType();
       while (type != null) {
-        type.getDeclaredMethods();
-        for (AbstractMethod method : type.getDeclaredMethods()) {
-          if (this.isAcceptable(method)) {
-            if (isInclusionDesired(method)) {
-              methods.add(method);
+        if (type instanceof NamedUserType) {
+          NamedUserType namedUserType = (NamedUserType) type;
+
+          UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
+          for (AbstractMethod method : userMethodsSubComposite.getMethods()) {
+            if (this.isAcceptable(method)) {
+              if (isInclusionDesired(method)) {
+                methods.add(method);
+              }
+            }
+          }
+        } else if (type instanceof JavaType) {
+          for (AbstractMethod method : type.getDeclaredMethods()) {
+            if (this.isAcceptable(method)) {
+              if (isInclusionDesired(method)) {
+                methods.add(method);
+              }
             }
           }
         }
@@ -209,8 +223,10 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
       }
     }
     removeOverrides(methods);
+
     List<MethodsSubComposite> subComposites = Lists.newLinkedList();
-    if (methods.size() > 0) {
+
+    if (!methods.isEmpty()) {
       UnclaimedMethodsComposite methodsComposite = this.getUnclaimedMethodsComposite();
       methodsComposite.sortAndSetMethods(methods);
       subComposites.add(methodsComposite);
@@ -245,7 +261,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     }
     removeOverrides(javaMethods);
 
-    if (subComposites.size() > 0) {
+    if (!subComposites.isEmpty()) {
       subComposites.add(SEPARATOR);
     }
     addSubComposites(subComposites, javaMethods, getPotentialCategorySubComposites());
