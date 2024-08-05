@@ -46,7 +46,6 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementType;
@@ -69,7 +68,6 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
 
 /**
@@ -173,7 +171,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     this.absoluteRotationAxis.normalize();
     //PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
     startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-    startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
     Vector3 rotationAxis = this.absoluteRotationAxis;
     this.rotationPlane = Plane.createInstance(this.initialClickPoint, rotationAxis);
 
@@ -193,7 +191,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
       this.originalMouseRightDirection = Vector3.createCrossProduct(this.originalMouseDirection, rotationAxis);
 
       this.rotationHandle.setSphereVisibility(true);
-      Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New(toMouse, this.rotationHandle);
+      Vector3 sphereDirection = this.rotationHandle.transformFromAbsolute(toMouse);
       this.rotationHandle.setSphereDirection(sphereDirection);
       //Hide the cursor
 
@@ -320,7 +318,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     if (this.hidCursor) {
       try {
         Point3 pointInCamera = this.rotationHandle.getSphereLocation(this.getCamera());
-        Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+        Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
         RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
       } finally {
         CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());

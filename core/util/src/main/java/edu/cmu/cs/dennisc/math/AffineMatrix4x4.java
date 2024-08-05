@@ -53,6 +53,9 @@ import edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
+// This is a 3x4 matrix that is ready to be used for affine transformation math.
+// The top 3x3 is orientation, with translation in the final column and a final row of 0, 0, 0, 1
+
 /**
  * @author Dennis Cosgrove
  */

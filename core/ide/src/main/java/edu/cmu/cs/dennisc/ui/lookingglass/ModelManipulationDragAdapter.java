@@ -59,7 +59,6 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
 
@@ -129,7 +128,7 @@ public class ModelManipulationDragAdapter extends OnscreenLookingGlassDragAdapte
         m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
         if (m_sgDragAcceptor != null) {
           m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
-          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute_New(pickResult.getPositionInSource(), m_sgCamera);
+          m_xyzInAbsoluteAtPress = m_sgCamera.transformToAbsolute(pickResult.getPositionInSource());
         }
       }
       this.yDelta = 0.0;
@@ -146,7 +145,7 @@ public class ModelManipulationDragAdapter extends OnscreenLookingGlassDragAdapte
     if (m_sgDragAcceptor != null) {
       AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
       m_offset = Vector3.createSubtraction(m_xyzInAbsoluteAtPress, m.translation);
-      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
+      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
       if (dragStyle.isShiftDown()) {
         AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
         Vector3 axis = Vector3.createSubtraction(cameraAbsolute.translation, m_xyzInAbsoluteAtPress);
@@ -219,7 +218,7 @@ public class ModelManipulationDragAdapter extends OnscreenLookingGlassDragAdapte
   protected Point handleMouseRelease(Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
     if ((m_sgCamera != null) && (m_sgDragAcceptor != null)) {
       //      if( dragStyle.isControlDown() ) {
-      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
+      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
       //        warpCursor( p );
       //        showCursor();
       //        rv.setLocation( p );

@@ -63,7 +63,8 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
   }
 
   @Override
-  protected Dimension getSurfaceSize(Dimension rv) {
+  public Dimension getSurfaceSize() {
+    Dimension rv = new Dimension();
     //TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
     if (drawable != null) {
       rv.setSize(GlDrawableUtils.getGlDrawableWidth(drawable), GlDrawableUtils.getGlDrawableHeight(drawable));

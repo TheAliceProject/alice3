@@ -349,19 +349,27 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
   }
 
   public Point3[] getPoints() {
-    Point3[] points = {new Point3(this.minimum.x, this.minimum.y, this.minimum.z), new Point3(this.maximum.x, this.minimum.y, this.minimum.z), new Point3(this.minimum.x, this.maximum.y, this.minimum.z), new Point3(this.maximum.x, this.maximum.y, this.minimum.z), new Point3(this.minimum.x, this.minimum.y, this.maximum.z), new Point3(this.maximum.x, this.minimum.y, this.maximum.z), new Point3(this.minimum.x, this.maximum.y, this.maximum.z), new Point3(this.maximum.x, this.maximum.y, this.maximum.z)};
-    return points;
+    return new Point3[]{
+            new Point3(this.minimum.x, this.minimum.y, this.minimum.z),
+            new Point3(this.maximum.x, this.minimum.y, this.minimum.z),
+            new Point3(this.minimum.x, this.maximum.y, this.minimum.z),
+            new Point3(this.maximum.x, this.maximum.y, this.minimum.z),
+            new Point3(this.minimum.x, this.minimum.y, this.maximum.z),
+            new Point3(this.maximum.x, this.minimum.y, this.maximum.z),
+            new Point3(this.minimum.x, this.maximum.y, this.maximum.z),
+            new Point3(this.maximum.x, this.maximum.y, this.maximum.z)};
   }
 
-  public Hexahedron getHexahedron(Hexahedron rv) {
-    Point3[] points = this.getPoints();
-    Vector3[] normals = {new Vector3(+1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, +1, 0), new Vector3(0, -1, 0), new Vector3(0, 0, +1), new Vector3(0, 0, -1)};
-    rv.set(points, normals);
-    return rv;
-  }
-
-  public Hexahedron getHexahedron() {
-    return getHexahedron(Hexahedron.createNaN());
+  public Vector4[] getVectors() {
+    return new Vector4[]{
+            new Vector4(this.minimum.x, this.minimum.y, this.minimum.z, 1),
+            new Vector4(this.maximum.x, this.minimum.y, this.minimum.z, 1),
+            new Vector4(this.minimum.x, this.maximum.y, this.minimum.z, 1),
+            new Vector4(this.maximum.x, this.maximum.y, this.minimum.z, 1),
+            new Vector4(this.minimum.x, this.minimum.y, this.maximum.z, 1),
+            new Vector4(this.maximum.x, this.minimum.y, this.maximum.z, 1),
+            new Vector4(this.minimum.x, this.maximum.y, this.maximum.z, 1),
+            new Vector4(this.maximum.x, this.maximum.y, this.maximum.z, 1)};
   }
 
   public void translate(Vector3 v) {

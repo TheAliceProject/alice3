@@ -47,7 +47,6 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -228,7 +227,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
       Point3 initialClickPoint = new Point3();
       startInput.getClickPickResult().getPositionInSource(initialClickPoint);
-      startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+      initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
 
       Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
       if (pickRay != null) {
@@ -361,8 +360,8 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
     try {
       Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
 
-      Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
-      Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+      Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
+      Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
       RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
     } finally {
       CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());

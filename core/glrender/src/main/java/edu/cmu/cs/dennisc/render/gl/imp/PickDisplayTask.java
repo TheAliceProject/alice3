@@ -127,8 +127,7 @@ import java.util.Comparator;
         m.translation.set(actualViewport.width - (2 * (x - actualViewport.x)), actualViewport.height - (2 * (y - actualViewport.y)), 0, 1);
         ScaleUtilities.applyScale(m, actualViewport.width, actualViewport.height, 1.0);
 
-        Matrix4x4 p = new Matrix4x4();
-        cameraAdapter.getActualProjectionMatrix(p, actualViewport);
+        Matrix4x4 p = cameraAdapter.getActualProjectionMatrix(actualViewport);
 
         m.applyMultiplication(p);
         m.invert();
@@ -136,9 +135,7 @@ import java.util.Comparator;
           selectionBufferInfo.updatePointInSource(m);
         }
       } else {
-        Ray ray = new Ray();
-        ray.setNaN();
-        cameraAdapter.getRayAtPixel(ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+        Ray ray = cameraAdapter.getRayAtPixel(pickParameters.getX(), pickParameters.getY(), actualViewport);
         ray.accessDirection().normalize();
         AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
         for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {

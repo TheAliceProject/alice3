@@ -62,7 +62,7 @@ import java.nio.DoubleBuffer;
  */
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
-  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+  public Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport) {
     final double near = owner.nearClippingPlaneDistance.getValue();
     final double far = owner.farClippingPlaneDistance.getValue();
 
@@ -78,17 +78,15 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
 
-    rv.setOrigin(pNear);
     Vector3 direction = Vector3.createSubtraction(pNear, pFar);
     //todo: remove?
     direction.normalize();
-    rv.setDirection(direction);
 
-    return rv;
+    return new Ray(pNear, direction);
   }
 
   @Override
-  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+  public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
     double fovx = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
@@ -98,6 +96,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovx));
     owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovy));
 
+    Matrix4x4 rv = new Matrix4x4();
     rv.right.set(f / aspect, 0, 0, 0);
     rv.up.set(0, f, 0, 0);
     rv.backward.set(0, 0, (zFar + zNear) / (zNear - zFar), -1);
@@ -106,7 +105,8 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   }
 
   @Override
-  protected Rectangle performLetterboxing(Rectangle rv) {
+  protected Rectangle performLetterboxing(Rectangle rect) {
+    Rectangle rv = new Rectangle(rect);
     final double viewAspect = getAspectRatio(rv);
     double surfaceAspect = rv.width / (double) rv.height;
     if (viewAspect > surfaceAspect) {
@@ -248,10 +248,10 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float zNear, float zFar) {
-    Matrix4x4 projection = new Matrix4x4();
+
     double[] projectionArray = new double[16];
     DoubleBuffer projectionBuffer = DoubleBuffer.wrap(projectionArray);
-    getActualProjectionMatrix(projection, actualViewport);
+    Matrix4x4 projection = getActualProjectionMatrix(actualViewport);
     projection.getAsColumnMajorArray16(projectionArray);
     context.gl.glMultMatrixd(projectionBuffer);
   }
