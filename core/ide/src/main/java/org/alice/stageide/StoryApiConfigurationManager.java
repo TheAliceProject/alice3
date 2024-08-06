@@ -147,18 +147,18 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   public StoryApiConfigurationManager() {
     BeveledShapeForType.addRoundType(SThing.class);
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon.class));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon.class));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/256x256/Camera.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
