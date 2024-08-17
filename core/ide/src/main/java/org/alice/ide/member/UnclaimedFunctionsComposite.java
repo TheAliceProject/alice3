@@ -42,12 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
-import org.alice.ide.croquet.models.ui.formatter.FormatterState;
-import org.alice.ide.formatter.Formatter;
-
 import org.lgna.project.ast.AbstractMethod;
 
-import java.util.Comparator;
 import java.util.UUID;
 
 /**
@@ -60,24 +56,6 @@ public class UnclaimedFunctionsComposite extends UnclaimedMethodsComposite {
 
   public static UnclaimedFunctionsComposite getInstance() {
     return SingletonHolder.instance;
-  }
-
-  private final Comparator<AbstractMethod> comparator = UnclaimedFunctionsComposite::compareMethodNames;
-
-  protected static int compareMethodNames(AbstractMethod methodA, AbstractMethod methodB) {
-    if (methodA == null) {
-      return methodB == null ? 0 : -1;
-    } else if (methodB == null) {
-      return 1;
-    }
-
-    Formatter formatter = FormatterState.getInstance().getValue();
-    return formatter.getNameForDeclaration(methodA).compareTo(formatter.getNameForDeclaration(methodB));
-  }
-
-  @Override
-  public Comparator<AbstractMethod> getComparator() {
-    return this.comparator;
   }
 
   private UnclaimedFunctionsComposite() {

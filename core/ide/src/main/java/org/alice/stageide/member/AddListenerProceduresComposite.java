@@ -70,25 +70,7 @@ public class AddListenerProceduresComposite extends FilteredMethodsSubComposite 
     return SingletonHolder.instance;
   }
 
-  private final Collection<String> names = Lists.newArrayList("addDefaultModelManipulation", "addObjectMoverFor");
-  private final Comparator<AbstractMethod> comparator = new Comparator<AbstractMethod>() {
-    @Override
-    public int compare(AbstractMethod methodA, AbstractMethod methodB) {
-      return compareMethodNames(methodA, methodB);
-    }
-  };
-
-  private AddListenerProceduresComposite() {
-    super(UUID.fromString("cfb5bd39-c07b-4436-a4e9-031dd25ca3b5"), true);
-  }
-
-  @Override
-  public Comparator<AbstractMethod> getComparator() {
-    return this.comparator;
-  }
-
-  @Override
-  public boolean isShowingDesired() {
+  public static boolean isEventListenerTabActive() {
     DeclarationsEditorComposite composite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
     if (composite != null) {
       DeclarationTabState tabState = composite.getTabState();
@@ -109,6 +91,28 @@ public class AddListenerProceduresComposite extends FilteredMethodsSubComposite 
       }
     }
     return false;
+  }
+
+  private final Collection<String> names = Lists.newArrayList("addDefaultModelManipulation", "addObjectMoverFor");
+  private final Comparator<AbstractMethod> comparator = new Comparator<AbstractMethod>() {
+    @Override
+    public int compare(AbstractMethod methodA, AbstractMethod methodB) {
+      return compareMethodNames(methodA, methodB);
+    }
+  };
+
+  private AddListenerProceduresComposite() {
+    super(UUID.fromString("cfb5bd39-c07b-4436-a4e9-031dd25ca3b5"), true);
+  }
+
+  @Override
+  public Comparator<AbstractMethod> getComparator() {
+    return this.comparator;
+  }
+
+  @Override
+  public boolean isShowingDesired() {
+    return isEventListenerTabActive();
   }
 
   @Override
