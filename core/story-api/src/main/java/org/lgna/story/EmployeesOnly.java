@@ -45,7 +45,6 @@ package org.lgna.story;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
@@ -60,7 +59,6 @@ import org.lgna.story.resources.JointedModelResource;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -75,6 +73,7 @@ public class EmployeesOnly {
     scene.handleActiveChanged(isActive, activationCount);
   }
 
+  // Used by reflection in StageIDE
   public static void invokeSetJointedModelResource(SJointedModel jointedModel, JointedModelResource resource) {
     jointedModel.setJointedModelResource(resource);
   }
@@ -87,16 +86,8 @@ public class EmployeesOnly {
     return program.getImplementation();
   }
 
-  public static Point3 getPoint3(Position position) {
-    return position.getInternal();
-  }
-
   public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3(Orientation orientation) {
     return orientation.getInternal();
-  }
-
-  public static AffineMatrix4x4 getAffineMatrix4x4(VantagePoint vantagePoint) {
-    return vantagePoint.getInternal();
   }
 
   public static Color createInterpolation(Color a, Color b, float portion) {
@@ -109,10 +100,6 @@ public class EmployeesOnly {
 
   public static Orientation createOrientation(OrthogonalMatrix3x3 m) {
     return Orientation.createInstance(m);
-  }
-
-  public static VantagePoint createVantagePoint(AffineMatrix4x4 m) {
-    return VantagePoint.createInstance(m);
   }
 
   public static Key getKeyFromKeyCode(int keyCode) {
@@ -197,22 +184,6 @@ public class EmployeesOnly {
       }
     } else {
       return defaultValue;
-    }
-  }
-
-  public static Object getKeyedArgumentValue(Object argumentValue) {
-    try {
-      if (argumentValue != null) {
-        Class<?> cls = argumentValue.getClass();
-        Method mthd = cls.getDeclaredMethod("getValue", Object[].class);
-        Object array = new Object[] {argumentValue};
-        return mthd.invoke(null, array);
-      } else {
-        return null;
-      }
-    } catch (Throwable t) {
-      //t.printStackTrace();
-      return argumentValue;
     }
   }
 
