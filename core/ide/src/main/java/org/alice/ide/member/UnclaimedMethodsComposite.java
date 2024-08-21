@@ -44,7 +44,6 @@ package org.alice.ide.member;
 
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
-
 import org.lgna.project.ast.AbstractMethod;
 
 import java.util.Comparator;
@@ -54,15 +53,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UnclaimedMethodsComposite extends FilteredMethodsSubComposite {
-  private final Comparator<AbstractMethod> comparator = UnclaimedMethodsComposite::compareMethodNames;
+  private final Comparator<AbstractMethod> comparator = Comparator.nullsLast(UnclaimedMethodsComposite::compareMethodNames);
 
   protected static int compareMethodNames(AbstractMethod methodA, AbstractMethod methodB) {
-    if (methodA == null) {
-      return methodB == null ? 0 : -1;
-    } else if (methodB == null) {
-      return 1;
-    }
-
     Formatter formatter = FormatterState.getInstance().getValue();
     return formatter.getNameForDeclaration(methodA).compareTo(formatter.getNameForDeclaration(methodB));
   }

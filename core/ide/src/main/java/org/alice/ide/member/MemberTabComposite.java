@@ -268,7 +268,6 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
       NamedUserType namedUserType = (NamedUserType) type;
 
       UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
-      System.out.println("CHECK type: " + namedUserType.name + "  num methods: " + userMethodsSubComposite.getMethods().size());
       for (AbstractMethod method : userMethodsSubComposite.getMethods()) {
         methods.add(method);
       }
