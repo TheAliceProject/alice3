@@ -234,7 +234,7 @@ public abstract class StageIDE extends IDE {
         try {
           JavaField javaField = (JavaField) field;
           org.lgna.story.Color color = (org.lgna.story.Color) ReflectionUtilities.get(javaField.getFieldReflectionProxy().getReification(), null);
-          Color awtColor = EmployeesOnly.getAwtColor(color);
+          Color awtColor = color.toAwtColor();
           return new ColorIconFactory(awtColor).getIconToFit(Theme.EXTRA_SMALL_SQUARE_ICON_SIZE);
         } catch (RuntimeException re) {
           //pass
@@ -284,7 +284,7 @@ public abstract class StageIDE extends IDE {
       if (COLOR_TYPE.isAssignableFrom(type)) {
         Label rv = new Label();
         org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression(instanceCreation, org.lgna.story.Color.class);
-        Color awtColor = EmployeesOnly.getAwtColor(color);
+        Color awtColor = color.toAwtColor();
         rv.setIcon(new ColorIcon(awtColor));
         return rv;
       }

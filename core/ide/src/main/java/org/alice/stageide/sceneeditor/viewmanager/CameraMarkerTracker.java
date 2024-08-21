@@ -433,7 +433,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     public void intializeOnStartingCamera(TransformableImp startingCamera) {
       SimpleAppearance sgAppearance = new SimpleAppearance();
-      Color4f darkGrey = EmployeesOnly.getColor4f(Color.DARK_GRAY);
+      Color4f darkGrey = Color.DARK_GRAY.toColor4f();
       sgAppearance.diffuseColor.setValue(darkGrey);
       if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
         VrUserImp vrUser = (VrUserImp) startingCamera;

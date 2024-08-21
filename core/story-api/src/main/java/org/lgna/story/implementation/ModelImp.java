@@ -105,7 +105,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   public final PaintProperty paint = new PaintProperty(ModelImp.this) {
     @Override
     protected void internalSetValue(Paint value) {
-      Color4f color4f = EmployeesOnly.getColor4f(value, Color4f.WHITE);
+      Color4f color4f = org.lgna.story.Color.getColor4fOrWhite(value);
       Texture texture = EmployeesOnly.getTexture(value, null);
       for (SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances()) {
         if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {

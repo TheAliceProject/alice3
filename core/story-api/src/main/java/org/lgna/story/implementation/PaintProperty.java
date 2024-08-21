@@ -43,9 +43,7 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.color.Color4f;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 
 /**
@@ -71,16 +69,8 @@ public abstract class PaintProperty extends Property<Paint> {
 
   @Override
   protected Paint interpolate(Paint a, Paint b, double portion) {
-    if (a instanceof Color) {
-      Color aColor = (Color) a;
-      if (b instanceof Color) {
-        Color bColor = (Color) b;
-
-        Color4f c = Color4f.createInterpolation(EmployeesOnly.getColor4f(aColor), EmployeesOnly.getColor4f(bColor), (float) portion);
-        return new Color(c.red, c.green, c.blue);
-        //todo:
-        //return org.lgna.story.EmployeesOnly.createInterpolation( aColor, bColor, (float)portion );
-      }
+    if (a instanceof Color && b instanceof Color) {
+        return ((Color) a).interpolateTo((Color) b, portion);
     }
     return b;
   }

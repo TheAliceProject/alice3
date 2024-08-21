@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -90,10 +88,6 @@ public class EmployeesOnly {
     return orientation.getInternal();
   }
 
-  public static Color createInterpolation(Color a, Color b, float portion) {
-    return Color.createInstance(Color4f.createInterpolation(a.getInternal(), b.getInternal(), portion));
-  }
-
   public static Position createPosition(Point3 xyz) {
     return Position.createInstance(xyz);
   }
@@ -111,34 +105,6 @@ public class EmployeesOnly {
       return key.getInternal();
     } else {
       return -1;
-    }
-  }
-
-  public static Color createColor(Color4f color) {
-    return color != null ? Color.createInstance(color) : null;
-  }
-
-  public static Color createColor(java.awt.Color awtColor) {
-    return createColor(awtColor != null ? createColor4f(awtColor) : null);
-  }
-
-  public static Color4f createColor4f(java.awt.Color awtColor) {
-    return Color4f.createFromRgbaInts(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha());
-  }
-
-  public static Color4f getColor4f(Color color) {
-    return color != null ? color.getInternal() : null;
-  }
-
-  public static java.awt.Color getAwtColor(Color color) {
-    return ColorUtilities.toAwtColor(getColor4f(color));
-  }
-
-  public static Color4f getColor4f(Paint paint, Color4f defaultValue) {
-    if (paint instanceof Color) {
-      return getColor4f((Color) paint);
-    } else {
-      return defaultValue;
     }
   }
 

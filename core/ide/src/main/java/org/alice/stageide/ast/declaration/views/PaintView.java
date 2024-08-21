@@ -43,8 +43,6 @@
 
 package org.alice.stageide.ast.declaration.views;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
@@ -104,9 +102,8 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
           Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
           if ((values.length == 1) && (values[0] instanceof Paint)) {
             Paint paint = (Paint) values[0];
-            Color4f color = EmployeesOnly.getColor4f(paint, null);
             if (paint instanceof Color) {
-              g.setColor(ColorUtilities.toAwtColor(color));
+              g.setColor(((Color) paint).toAwtColor());
               g.fillRect(0, 0, this.getWidth(), this.getHeight());
             } else {
               if (paint instanceof ImageSource) {

@@ -70,7 +70,6 @@ import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.resources.sims2.BaseEyeColor;
 import org.lgna.story.resources.sims2.BaseFace;
 import org.lgna.story.resources.sims2.BaseSkinTone;
@@ -761,7 +760,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 
     java.awt.Color awtSkinColor = this.getSkinColorState().getValue();
     this.handleSkinColorChange(awtSkinColor);
-    Color skinColor = EmployeesOnly.createColor(awtSkinColor);
+    Color skinColor = Color.createInstance(awtSkinColor);
 
     EyeColor eyeColor = this.getBaseEyeColorState().getValue();
     Outfit outfit = getOutfit(lifeStage, gender);
@@ -815,7 +814,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
       this.getLifeStageState().setValueTransactionlessly(personResource.getLifeStage());
       this.getGenderState().setValueTransactionlessly(personResource.getGender());
       this.getBaseEyeColorState().setValueTransactionlessly((BaseEyeColor) personResource.getEyeColor());
-      this.getSkinColorState().setValueTransactionlessly(EmployeesOnly.getAwtColor(personResource.getSkinColor()));
+      this.getSkinColorState().setValueTransactionlessly(personResource.getSkinColor().toAwtColor());
 
       Hair hair = personResource.getHair();
       HairHatStyleHairColorName hairHatStyleHairColorName = HairUtilities.getHairHatStyleColorNameFromHair(personResource.getLifeStage(), personResource.getGender(), hair);

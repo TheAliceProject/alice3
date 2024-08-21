@@ -61,7 +61,6 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import org.lgna.story.EmployeesOnly;
 
 /**
  * @author David Culyba
@@ -142,9 +141,9 @@ public class RotationRingHandle extends ManipulationHandle3D {
   protected void initColor(Color4f color) {
     this.baseColor = color;
     Color colorColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
-    this.activeColor = EmployeesOnly.createColor4f(ColorUtilities.shiftHSB(colorColor, 0.0d, 0.0d, .1d));
-    this.mutedColor = EmployeesOnly.createColor4f(ColorUtilities.shiftHSB(colorColor, 0.0d, -.6d, -.5d));
-    this.rolloverColor = EmployeesOnly.createColor4f(ColorUtilities.shiftHSB(colorColor, 0.0d, -.4d, -.3d));
+    this.activeColor = Color4f.createInstance(ColorUtilities.shiftHSB(colorColor, 0.0d, 0.0d, .1d));
+    this.mutedColor = Color4f.createInstance(ColorUtilities.shiftHSB(colorColor, 0.0d, -.6d, -.5d));
+    this.rolloverColor = Color4f.createInstance(ColorUtilities.shiftHSB(colorColor, 0.0d, -.4d, -.3d));
     setCurrentColorInternal();
   }
 

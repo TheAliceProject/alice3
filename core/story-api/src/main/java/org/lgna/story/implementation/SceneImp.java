@@ -332,12 +332,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty atmosphereColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgBackground.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgBackground.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
+      Color4f color = value.toColor4f();
       SceneImp.this.sgBackground.color.setValue(color);
       SceneImp.this.sgFog.color.setValue(color);
     }
@@ -345,12 +345,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty fromAboveLightColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgAmbientLight.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgAmbientLight.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
+      Color4f color = value.toColor4f();
       SceneImp.this.sgAmbientLight.color.setValue(color);
       SceneImp.this.sgFromAboveDirectionalLightA.color.setValue(color);
       SceneImp.this.sgFromAboveDirectionalLightB.color.setValue(color);
@@ -360,13 +360,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty fromBelowLightColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgFromBelowDirectionalLight.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgFromBelowDirectionalLight.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
-      SceneImp.this.sgFromBelowDirectionalLight.color.setValue(color);
+      SceneImp.this.sgFromBelowDirectionalLight.color.setValue(value.toColor4f());
     }
   };
   public final FloatProperty globalLightBrightness = new FloatProperty(SceneImp.this) {
