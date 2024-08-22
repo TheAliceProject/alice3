@@ -226,7 +226,7 @@ public class TimeLine {
           prev = datas.get(i - 1);
         }
         KeyFrameData itr = datas.get(i);
-        return KeyFrameStyles.getAnimationStyleFromTwoKeyFramStyles(prev != null ? prev.getEventStyle() : KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY, itr.getEventStyle());
+        return KeyFrameStyles.getAnimationStyleFromTwoKeyFrameStyles(prev != null ? prev.getEventStyle() : KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY, itr.getEventStyle());
       }
     }
     throw new RuntimeException("Pose Not Found:" + data);
