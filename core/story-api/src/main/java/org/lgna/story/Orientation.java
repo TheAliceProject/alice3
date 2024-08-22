@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 public final class Orientation {
   private final OrthogonalMatrix3x3 internal;
 
-  private Orientation(OrthogonalMatrix3x3 internal) {
+  public Orientation(OrthogonalMatrix3x3 internal) {
     this.internal = internal;
   }
 
@@ -63,18 +63,8 @@ public final class Orientation {
     this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
   }
 
-  /* package-private */
-  static Orientation createInstance(OrthogonalMatrix3x3 internal) {
-    return internal != null ? new Orientation(internal) : null;
-  }
-
   /* package-private */OrthogonalMatrix3x3 getInternal() {
     return this.internal;
-  }
-
-  /* package-private */
-  static OrthogonalMatrix3x3 getInternal(Orientation orientation) {
-    return orientation != null ? orientation.internal : null;
   }
 
   @Override

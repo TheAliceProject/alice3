@@ -56,7 +56,7 @@ public class SVRHand extends SThing {
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public Position getPositionRelativeToVehicle() {
-    return Position.createInstance(implementation.getLocalPosition());
+    return new Position(implementation.getLocalPosition());
   }
 
   // Based on SMovableTurnable, but not accessible and there is always a vehicle, the VRUser

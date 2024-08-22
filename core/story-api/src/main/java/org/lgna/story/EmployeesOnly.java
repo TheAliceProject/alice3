@@ -44,7 +44,6 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.alice.nonfree.NebulousStoryApi;
@@ -86,14 +85,6 @@ public class EmployeesOnly {
 
   public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3(Orientation orientation) {
     return orientation.getInternal();
-  }
-
-  public static Position createPosition(Point3 xyz) {
-    return Position.createInstance(xyz);
-  }
-
-  public static Orientation createOrientation(OrthogonalMatrix3x3 m) {
-    return Orientation.createInstance(m);
   }
 
   public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {

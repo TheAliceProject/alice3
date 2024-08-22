@@ -102,7 +102,7 @@ public class SVRHeadset extends SThing {
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public Orientation getOrientationRelativeToVehicle() {
-    return Orientation.createInstance(this.getImplementation().getLocalOrientation());
+    return new Orientation(this.getImplementation().getLocalOrientation());
   }
 
   // Based on STurnable, but not accessible and there is always a vehicle, the VRUser
@@ -116,7 +116,7 @@ public class SVRHeadset extends SThing {
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public Position getPositionRelativeToVehicle() {
-    return Position.createInstance(implementation.getLocalPosition());
+    return new Position(implementation.getLocalPosition());
   }
 
   // Based on SMovableTurnable, but not accessible and there is always a vehicle, the VRUser
