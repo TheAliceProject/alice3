@@ -131,7 +131,7 @@ public class AngleInRevolutions implements Angle {
 
   @Override
   public void setToInterpolation(Angle a0, Angle a1, double portion) {
-    setAsRevolutions(InterpolationUtilities.interpolate(a0.getAsRevolutions(), a1.getAsRevolutions(), portion));
+    setAsRevolutions(AngleUtilities.interpolate(a0.getAsRevolutions(), a1.getAsRevolutions(), portion));
   }
 
   @Override
