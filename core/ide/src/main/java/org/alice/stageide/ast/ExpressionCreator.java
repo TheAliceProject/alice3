@@ -202,12 +202,12 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
   //private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
   private static final JavaMethod BUILD = JavaMethod.getInstance(PoseBuilder.class, "build");
 
-  private Expression createPoseExpression(Pose pose) throws CannotCreateExpressionException {
-    if ((pose != null) && (EmployeesOnly.getJointIdTransformationPairs(pose).length > 0)) {
+  private Expression createPoseExpression(Pose<?> pose) throws CannotCreateExpressionException {
+    if ((pose != null) && (pose.getJointIdTransformationPairs().length > 0)) {
       Class<? extends PoseBuilder> builderCls = PoseUtilities.getBuilderClassForPoseClass(pose.getClass());
       InstanceCreation builderExpression0 = AstUtilities.createInstanceCreation(builderCls);
       Expression prevExpression = null;
-      for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(pose)) {
+      for (JointIdTransformationPair jtPair : (pose.getJointIdTransformationPairs())) {
 
         //NOTE: this does not take into account that poses may affect translation as well.
         //TODO: check jtPair.affectsTranslation() to see if creating a different pose entry is necessary

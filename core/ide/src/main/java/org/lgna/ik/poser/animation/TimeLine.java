@@ -344,11 +344,11 @@ public class TimeLine {
     List<JointIdTransformationPair> jtPairs = Lists.newArrayList();
     List<JointId> unhandledIds = Lists.newArrayList();
     PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(key1.getPose().getClass());
-    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(key2.getPoseActual())) {
+    for (JointIdTransformationPair jtPair : key2.getPoseActual().getJointIdTransformationPairs()) {
       jtPairs.add(jtPair);
       unhandledIds.add(jtPair.getJointId());
     }
-    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(key1.getPoseActual())) {
+    for (JointIdTransformationPair jtPair : key1.getPoseActual().getJointIdTransformationPairs()) {
       unhandledIds.remove(jtPair.getJointId());
     }
     if (unhandledIds.isEmpty()) {
@@ -365,7 +365,7 @@ public class TimeLine {
     }
     List<JointId> handledIds = Lists.newArrayList();
     for (JointId id : unhandledIds) {
-      for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(prevPose)) {
+      for (JointIdTransformationPair jtPair : prevPose.getJointIdTransformationPairs()) {
         if (jtPair.getJointId().equals(id)) {
           handledIds.add(id);
           jtPairs.add(jtPair);
@@ -411,7 +411,7 @@ public class TimeLine {
     for (JointId id : usedIds) {
       boolean removed = false;
       for (KeyFrameData data : datas) {
-        for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(data.getPose())) {
+        for (JointIdTransformationPair jtPair : data.getPose().getJointIdTransformationPairs()) {
           if (jtPair.getJointId().equals(id)) {
             removed = true;
             unused.remove(id);
@@ -427,7 +427,7 @@ public class TimeLine {
 
   private void checkAddingJoints(KeyFrameData keyFrameData) {
     //    List<JointId> idsForUpdate = Collections.newArrayList();
-    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(keyFrameData.getPose())) {
+    for (JointIdTransformationPair jtPair : keyFrameData.getPose().getJointIdTransformationPairs()) {
       if (!usedIds.contains(jtPair.getJointId())) {
         //        idsForUpdate.add( key.getJointId() );
         usedIds.add(jtPair.getJointId());
@@ -441,7 +441,7 @@ public class TimeLine {
     for (KeyFrameData data : datas) {
       PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(data.getPoseActual().getClass());
       for (JointId id : usedIds) {
-        if (contains(EmployeesOnly.getJointIdTransformationPairs(data.getPose()), id)) {
+        if (contains(data.getPose().getJointIdTransformationPairs(), id)) {
           EmployeesOnly.addJointIdTransformationPair(builder, new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose())));
         } else {
           EmployeesOnly.addJointIdTransformationPair(builder, new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose)));
@@ -455,7 +455,7 @@ public class TimeLine {
   }
 
   private static UnitQuaternion findQuaternionForJointId(JointId id, Pose<?> pose) {
-    for (JointIdTransformationPair jqPair : EmployeesOnly.getJointIdTransformationPairs(pose)) {
+    for (JointIdTransformationPair jqPair : pose.getJointIdTransformationPairs()) {
       if (jqPair.getJointId().equals(id)) {
         return jqPair.getTransformation().orientation.createUnitQuaternion();
       }

@@ -122,7 +122,7 @@ public class PoseUtilities {
   }
 
   public static <M extends SJointedModel> void applyToJointedModel(Pose<M> pose, M model) {
-    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(pose)) {
+    for (JointIdTransformationPair jtPair : pose.getJointIdTransformationPairs()) {
       if (jtPair.orientationOnly()) {
         setOrientationOnly(model.getJoint(jtPair.getJointId()), jtPair.getTransformation().orientation);
       } else {

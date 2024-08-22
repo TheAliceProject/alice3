@@ -85,8 +85,4 @@ public class EmployeesOnly {
     poseBuilder.addJointIdQuaternionPair(jointIdQuaternionPair);
   }
 
-  public static JointIdTransformationPair[] getJointIdTransformationPairs(Pose<?> pose) {
-    return pose.getJointIdTransformationPairs();
-  }
-
 }
