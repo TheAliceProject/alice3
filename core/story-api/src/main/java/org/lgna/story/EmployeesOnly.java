@@ -43,7 +43,6 @@
 package org.lgna.story;
 
 import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.resources.JointedModelResource;
 
 /**
@@ -66,9 +65,4 @@ public class EmployeesOnly {
   public static <T extends EntityImp> T getImplementation(SThing entity) {
     return (T) entity.getImplementation();
   }
-
-  public static ProgramImp getImplementation(SProgram program) {
-    return program.getImplementation();
-  }
-
 }
