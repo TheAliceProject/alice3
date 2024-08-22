@@ -96,18 +96,6 @@ public class EmployeesOnly {
     return Orientation.createInstance(m);
   }
 
-  public static Key getKeyFromKeyCode(int keyCode) {
-    return Key.getInstanceFromKeyCode(keyCode);
-  }
-
-  public static int getKeyCodeFromKey(Key key) {
-    if (key != null) {
-      return key.getInternal();
-    } else {
-      return -1;
-    }
-  }
-
   public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {
     return animationStyle.getInternal();
   }

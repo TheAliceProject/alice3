@@ -52,7 +52,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.KeyEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.ComponentManager;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Key;
 
 import java.awt.event.KeyEvent;
@@ -114,7 +113,7 @@ public final class KeyState extends SimpleItemState<Key> {
   }
 
   public void handleKeyPressed(KeyViewController viewController, KeyEvent e) {
-    Key nextValue = EmployeesOnly.getKeyFromKeyCode(e.getKeyCode());
+    Key nextValue = Key.getInstanceFromKeyCode(e.getKeyCode());
     UserActivity activity = KeyEventTrigger.createUserActivity(viewController, e);
     this.value = nextValue;
     this.changeValueFromSwing(this.value, activity);

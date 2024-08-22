@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Key;
 
 /**
@@ -56,7 +55,7 @@ public abstract class AbstractKeyEvent extends AbstractEvent {
   }
 
   public Key getKey() {
-    return EmployeesOnly.getKeyFromKeyCode(e.getKeyCode());
+    return Key.getInstanceFromKeyCode(e.getKeyCode());
   }
 
   public Boolean isKey(Key key) {
