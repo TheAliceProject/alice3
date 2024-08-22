@@ -82,6 +82,8 @@ public class Manager {
 
   public static native void setDebugDraw(boolean debugDraw);
 
+  private static long lastErrorOrNotification = 0L;
+
   private static void doInitializationIfNecessary() {
     try {
       initializeIfNecessary();
@@ -89,8 +91,13 @@ public class Manager {
       JOptionPane.showMessageDialog(null, "license rejected");
       //throw new RuntimeException( lre );
     } catch (Throwable t) {
-      JOptionPane.showMessageDialog(null, "failed to initialize art assets");
-      t.printStackTrace();
+      // To keep the user from having to dismiss the same dialog repeatedly only show the dialog if it has
+      // been more than a second since the last dialog or the last error.
+      if (System.currentTimeMillis() - lastErrorOrNotification > 1000) {
+        JOptionPane.showMessageDialog(null, "failed to initialize art assets");
+        t.printStackTrace();
+      }
+      lastErrorOrNotification = System.currentTimeMillis();
     }
   }
 
