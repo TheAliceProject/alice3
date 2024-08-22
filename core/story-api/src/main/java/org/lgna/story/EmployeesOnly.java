@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.resources.JointedModelResource;
@@ -72,7 +71,4 @@ public class EmployeesOnly {
     return program.getImplementation();
   }
 
-  public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3(Orientation orientation) {
-    return orientation.getInternal();
-  }
 }

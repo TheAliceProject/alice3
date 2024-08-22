@@ -63,7 +63,7 @@ public final class Orientation {
     this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
   }
 
-  /* package-private */OrthogonalMatrix3x3 getInternal() {
+  public OrthogonalMatrix3x3 getInternal() {
     return this.internal;
   }
 

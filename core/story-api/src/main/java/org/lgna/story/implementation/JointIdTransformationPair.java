@@ -44,7 +44,6 @@ package org.lgna.story.implementation;
 
 import org.alice.serialization.tweedle.Encoder;
 import org.lgna.project.code.InstantiableTweedleNode;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
 import org.lgna.story.resources.JointId;
@@ -84,15 +83,15 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation) {
-    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion());
+    this(id, orientation.getInternal().createUnitQuaternion());
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation, Point3 point3) {
-    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion(), point3);
+    this(id, orientation.getInternal().createUnitQuaternion(), point3);
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation, Position position) {
-    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion(), new Point3(position.getRight(), position.getUp(), position.getBackward()));
+    this(id, orientation.getInternal().createUnitQuaternion(), new Point3(position.getRight(), position.getUp(), position.getBackward()));
   }
 
   public boolean affectsTranslation() {

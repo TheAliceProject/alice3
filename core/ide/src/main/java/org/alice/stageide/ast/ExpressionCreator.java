@@ -44,7 +44,6 @@
 package org.alice.stageide.ast;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
@@ -54,7 +53,6 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Font;
 import org.lgna.story.ImagePaint;
 import org.lgna.story.ImageSource;
@@ -91,8 +89,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createOrientationExpression(Orientation orientation) {
     if (orientation != null) {
-      OrthogonalMatrix3x3 axes = EmployeesOnly.getOrthogonalMatrix3x3(orientation);
-      UnitQuaternion q = new UnitQuaternion(axes);
+      UnitQuaternion q = orientation.getInternal().createUnitQuaternion();
       Class<?> cls = Orientation.class;
       JavaConstructor constructor = JavaConstructor.getInstance(cls, Number.class, Number.class, Number.class, Number.class);
       return AstUtilities.createInstanceCreation(constructor, this.createDoubleExpression(q.x, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.y, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.z, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.w, MICRO_DECIMAL_PLACES));
