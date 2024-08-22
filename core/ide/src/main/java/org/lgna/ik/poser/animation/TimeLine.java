@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.lgna.story.AnimationStyle;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
 import org.lgna.story.implementation.JointIdTransformationPair;
@@ -332,7 +331,7 @@ public class TimeLine {
     }
     PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(init.getClass());
     for (JointIdTransformationPair key : builderList) {
-      EmployeesOnly.addJointIdTransformationPair(builder, key);
+      builder.addJointIdQuaternionPair(key);
     }
     return builder.build();
   }
@@ -377,7 +376,7 @@ public class TimeLine {
     }
     if (unhandledIds.isEmpty()) {
       for (JointIdTransformationPair jtPair : jtPairs) {
-        EmployeesOnly.addJointIdTransformationPair(builder, jtPair);
+        builder.addJointIdQuaternionPair(jtPair);
       }
       Pose<?> rv = builder.build();
       return rv;
@@ -442,9 +441,9 @@ public class TimeLine {
       PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(data.getPoseActual().getClass());
       for (JointId id : usedIds) {
         if (contains(data.getPose().getJointIdTransformationPairs(), id)) {
-          EmployeesOnly.addJointIdTransformationPair(builder, new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose())));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose())));
         } else {
-          EmployeesOnly.addJointIdTransformationPair(builder, new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose)));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose)));
           //          builder.addCustom( orientationForId( id, prev ), id );
           // thought this would be correct changed to other open to either
         }

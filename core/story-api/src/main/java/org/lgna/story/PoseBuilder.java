@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public abstract class PoseBuilder<M extends SJointedModel, P extends Pose<M>> {
-  /*package-private*/void addJointIdQuaternionPair(JointIdTransformationPair jointIdTransformationPair) {
+  public void addJointIdQuaternionPair(JointIdTransformationPair jointIdTransformationPair) {
     this.pairs.add(jointIdTransformationPair);
   }
 

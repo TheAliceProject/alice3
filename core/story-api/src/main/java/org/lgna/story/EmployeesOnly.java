@@ -44,7 +44,6 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -79,10 +78,6 @@ public class EmployeesOnly {
 
   public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {
     return animationStyle.getInternal();
-  }
-
-  public static void addJointIdTransformationPair(PoseBuilder<?, ?> poseBuilder, JointIdTransformationPair jointIdQuaternionPair) {
-    poseBuilder.addJointIdQuaternionPair(jointIdQuaternionPair);
   }
 
 }

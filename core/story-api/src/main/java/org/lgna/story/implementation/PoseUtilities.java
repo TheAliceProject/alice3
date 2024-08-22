@@ -177,7 +177,7 @@ public class PoseUtilities {
       list.add(new JointIdTransformationPair(id, implementation.getLocalOrientation().createUnitQuaternion()));
     }
     for (JointIdTransformationPair key : list) {
-      EmployeesOnly.addJointIdTransformationPair(builder, key);
+      builder.addJointIdQuaternionPair(key);
     }
     return (Pose<T>) builder.build();
   }
