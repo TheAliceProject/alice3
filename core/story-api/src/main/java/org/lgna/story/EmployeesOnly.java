@@ -75,9 +75,4 @@ public class EmployeesOnly {
   public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3(Orientation orientation) {
     return orientation.getInternal();
   }
-
-  public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {
-    return animationStyle.getInternal();
-  }
-
 }

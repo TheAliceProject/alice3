@@ -79,13 +79,13 @@ public enum AnimationStyle implements
   BEGIN_AND_END_ABRUPTLY(TraditionalStyle.BEGIN_AND_END_ABRUPTLY), BEGIN_GENTLY_AND_END_ABRUPTLY(TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY), BEGIN_ABRUPTLY_AND_END_GENTLY(TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY), BEGIN_AND_END_GENTLY(TraditionalStyle.BEGIN_AND_END_GENTLY);
 
   private static final AnimationStyle DEFAULT_VALUE = AnimationStyle.BEGIN_AND_END_GENTLY;
-  private edu.cmu.cs.dennisc.animation.Style internal;
+  private final edu.cmu.cs.dennisc.animation.Style internal;
 
   AnimationStyle(edu.cmu.cs.dennisc.animation.Style internal) {
     this.internal = internal;
   }
 
-  /* package-private */edu.cmu.cs.dennisc.animation.Style getInternal() {
+  public edu.cmu.cs.dennisc.animation.Style getInternal() {
     return this.internal;
   }
 

@@ -221,7 +221,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
             double duration = timeLine.getDurationForKeyFrame(data);
             AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose(data);
             JointedModelImp imp = EmployeesOnly.getImplementation(model);
-            imp.strikePose(data.getPoseActual(), duration, EmployeesOnly.getInternal(styleForKeyFramePose));
+            imp.strikePose(data.getPoseActual(), duration, styleForKeyFramePose.getInternal());
             //            tlComposite.selectKeyFrame( data );
           }
           stillRunning = false;
