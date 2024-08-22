@@ -43,14 +43,20 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.nonfree.NebulousStoryApi;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface NonfreeTexturePaint extends Paint {
-  boolean isTextureValid();
 
   Texture getTexture();
 
   Paint getFallback();
+
+  default Texture getTextureIfPresent() {
+    Texture texture = getTexture();
+    NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture(texture);
+    return texture;
+  }
 }

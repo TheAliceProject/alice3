@@ -42,21 +42,11 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
-import edu.cmu.cs.dennisc.texture.Texture;
-import org.alice.nonfree.NebulousStoryApi;
-import org.lgna.common.resources.ImageResource;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.ProgramImp;
-import org.lgna.story.implementation.TextureFactory;
 import org.lgna.story.resources.JointedModelResource;
-
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -89,47 +79,6 @@ public class EmployeesOnly {
 
   public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {
     return animationStyle.getInternal();
-  }
-
-  private static final Map<ImagePaint, BufferedImageTexture> mapImagePaintToTexture = Maps.newHashMap();
-
-  public static Texture getTexture(Paint paint, Texture defaultValue) {
-    if (paint instanceof ImageSource) {
-      ImageSource imageSource = (ImageSource) paint;
-      ImageResource imageResource = imageSource.getImageResource();
-      if (imageResource != null) {
-        return TextureFactory.getTexture(imageResource, true);
-      } else {
-        return null;
-      }
-    } else if (paint instanceof ImagePaint) {
-      ImagePaint imagePaint = (ImagePaint) paint;
-      BufferedImageTexture rv = mapImagePaintToTexture.get(imagePaint);
-      if (rv == null) {
-        rv = new BufferedImageTexture();
-        try {
-          rv.setBufferedImage(ImageIO.read(imagePaint.getResource()));
-        } catch (IOException ioe) {
-          throw new RuntimeException(ioe);
-        }
-        rv.setMipMappingDesired(true);
-        mapImagePaintToTexture.put(imagePaint, rv);
-      }
-      return rv;
-    } else if (paint instanceof NonfreeTexturePaint) {
-      NonfreeTexturePaint nonfreeTexturePaint = (NonfreeTexturePaint) paint;
-      if (nonfreeTexturePaint.isTextureValid()) {
-        Texture texture = nonfreeTexturePaint.getTexture();
-
-        NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture(texture);
-        return texture;
-      } else {
-        //todo?
-        return defaultValue;
-      }
-    } else {
-      return defaultValue;
-    }
   }
 
   public static void addJointIdTransformationPair(PoseBuilder<?, ?> poseBuilder, JointIdTransformationPair jointIdQuaternionPair) {

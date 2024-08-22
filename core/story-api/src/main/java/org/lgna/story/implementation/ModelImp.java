@@ -69,7 +69,6 @@ import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.texture.Texture;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.overlay.BubbleAnimation;
 import org.lgna.story.implementation.overlay.BubbleImp;
@@ -106,7 +105,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
     @Override
     protected void internalSetValue(Paint value) {
       Color4f color4f = org.lgna.story.Color.getColor4fOrWhite(value);
-      Texture texture = EmployeesOnly.getTexture(value, null);
+      Texture texture = value.getTextureIfPresent();
       for (SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances()) {
         if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
           sgAppearance.diffuseColor.setValue(color4f);

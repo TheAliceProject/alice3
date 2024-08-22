@@ -43,7 +43,6 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 
 /**
@@ -57,6 +56,6 @@ public class TexturedPaintUtilities {
   protected static void setPaint(TexturedVisual sgTexturedVisual, Paint paint) {
     //sgTexturedVisual.setPaint( paint );
     sgTexturedVisual.getAppearance().setDiffuseColor(org.lgna.story.Color.getColor4fOrWhite(paint));
-    sgTexturedVisual.setTexture(EmployeesOnly.getTexture(paint, null));
+    sgTexturedVisual.setTexture(paint.getTextureIfPresent());
   }
 }

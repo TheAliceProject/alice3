@@ -71,10 +71,6 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
     private final String textureKey;
   }
 
-  private static boolean isNebulousTextureValid() {
-    return true;
-  }
-
   public static enum WallAppearance implements NonfreeTexturePaint {
     BLUE_STRIPE_WITH_WOOD_TRIM, BLUE_STRIPE_WITH_WHITE_TRIM, BLUE_STRIPE_WITH_WOOD_COFFER, BLUE_STRIPE_WITH_WHITE_COFFER, BLUE_STRIPE_WITH_WOOD_BEAD, BLUE_STRIPE_WITH_WHITE_BEAD, STARS, BRICK, GREY_STRIPE, GREY_STRIPE_WITH_COFFER, YELLOW_STRIPE, YELLOW_STRIPE_WITH_COFFER, YELLOW_STRIPE_WITH_BEAD, GOLD_FAN, GOLD_FAN_WITH_COFFER, GREEN_STRIPE, GREEN_STRIPE_WITH_COFFER, GREEN_STRIPE_WITH_BEAD, BUNNIES_YELLOW, BUNNIES_PURPLE, BUNNIES_PINK, TEAL, TEAL_WITH_BEAD, YELLOW, YELLOW_WITH_BEAD, PURPLE, PURPLE_WITH_BEAD, BLUE, BLUE_WITH_BEAD, SALMON, SALMON_WITH_BEAD;
 
@@ -84,11 +80,6 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 
     private WallAppearance() {
       this(Color.WHITE);
-    }
-
-    @Override
-    public boolean isTextureValid() {
-      return isNebulousTextureValid();
     }
 
     @Override
@@ -117,11 +108,6 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
     }
 
     @Override
-    public boolean isTextureValid() {
-      return isNebulousTextureValid();
-    }
-
-    @Override
     public Texture getTexture() {
       return this.lazyTexture.get();
     }
@@ -144,11 +130,6 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
 
     private CeilingAppearance() {
       this(Color.WHITE);
-    }
-
-    @Override
-    public boolean isTextureValid() {
-      return isNebulousTextureValid();
     }
 
     @Override

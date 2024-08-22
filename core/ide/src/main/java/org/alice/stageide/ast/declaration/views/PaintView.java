@@ -53,7 +53,6 @@ import org.lgna.croquet.views.ViewController;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.ImageSource;
 import org.lgna.story.Paint;
 
@@ -115,7 +114,7 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
       }
 
       private void paintImage(Graphics g, ImageSource imageSource) {
-        Texture texture = EmployeesOnly.getTexture(imageSource, null);
+        Texture texture = imageSource.getTextureIfPresent();
         BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
         if (texture == null) {
           return;
