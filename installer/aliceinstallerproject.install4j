@@ -971,7 +971,7 @@
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" downloadURL="http://www.alice.org/downloads/installerOnlineData" architecture="universal" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -990,12 +990,14 @@
       </exclude>
       <jreBundle jreBundleSource="none" />
     </unixInstaller>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" launcherId="24">
+    <macosArchive name="Mac OS X Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" architecture="universal" launcherId="24">
       <exclude>
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
-        <entry location="platform/linux-amd64" />
+        <entry location="platform/linux-i586" />
         <entry location="platform/win64" />
+        <entry location="platform/linux-amd64" />
+        <entry location="platform/win32" />
       </exclude>
     </macosArchive>
     <windowsArchive name="Windows Archive" id="891" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" architecture="64">
