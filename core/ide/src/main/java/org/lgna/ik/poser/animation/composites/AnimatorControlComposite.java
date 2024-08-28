@@ -86,11 +86,9 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.DurationAnimationStyleArgumentFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.StrikePose;
-import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.PoseUtilities;
 
 /**
@@ -218,10 +216,9 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
             timerThread.start();
           }
           for (KeyFrameData data : keyFrames) {
-            double duration = timeLine.getDurationForKeyFrame(data);
+            Duration duration = new Duration(timeLine.getDurationForKeyFrame(data));
             AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose(data);
-            JointedModelImp imp = EmployeesOnly.getImplementation(model);
-            imp.strikePose(data.getPoseActual(), duration, styleForKeyFramePose.getInternal());
+            model.strikePose(data.getPoseActual(), duration, styleForKeyFramePose);
             //            tlComposite.selectKeyFrame( data );
           }
           stillRunning = false;
