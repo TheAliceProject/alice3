@@ -53,10 +53,6 @@ public class EmployeesOnly {
     throw new AssertionError();
   }
 
-  public static void invokeHandleActiveChanged(SScene scene, boolean isActive, int activationCount) {
-    scene.handleActiveChanged(isActive, activationCount);
-  }
-
   // Used by reflection in StageIDE
   public static void invokeSetJointedModelResource(SJointedModel jointedModel, JointedModelResource resource) {
     jointedModel.setJointedModelResource(resource);

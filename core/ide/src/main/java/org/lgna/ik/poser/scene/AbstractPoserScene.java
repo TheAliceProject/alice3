@@ -231,7 +231,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
   }
 
   @Override
-  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+  public void handleActiveChanged(Boolean isActive, Integer activeCount) {
     if (isActive) {
       if (activeCount == 1) {
         this.performGeneratedSetup();

@@ -63,7 +63,6 @@ import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SScene;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.implementation.eventhandling.EventManager;
@@ -142,7 +141,7 @@ public class SceneImp extends EntityImp {
     double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
     program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
     if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-      EmployeesOnly.invokeHandleActiveChanged(this.getAbstraction(), isActive, activationCount);
+      this.getAbstraction().handleActiveChanged(isActive, activationCount);
     }
     program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
     if (isActive) {
