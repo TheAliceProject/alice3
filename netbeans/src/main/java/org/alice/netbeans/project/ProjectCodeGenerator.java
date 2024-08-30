@@ -97,9 +97,7 @@ public class ProjectCodeGenerator {
     List<FileObject> fileObjectsToFormat = Lists.newLinkedList();
     java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = aliceProject.getNamedUserTypes();
     final java.util.Set<org.lgna.common.Resource> resources = aliceProject.getResources();
-    if (resources.isEmpty()) {
-      //pass
-    } else {
+    if (!resources.isEmpty()) {
       ResourcesTypeWrapper resourcesTypeWrapper = new ResourcesTypeWrapper(aliceProject.getResources());
       namedUserTypes.add(resourcesTypeWrapper.getType());
 
@@ -131,7 +129,7 @@ public class ProjectCodeGenerator {
       }
     }
 
-    if (progressHandle != null) {
+      if (progressHandle != null) {
       progressHandle.switchToDeterminate(namedUserTypes.size());
     }
     int createWorkUnit = 0;
@@ -142,9 +140,7 @@ public class ProjectCodeGenerator {
       String code = generator.getText();
       File file = new File(javaSrcDirectory, path);
       boolean isMarkedForOpen = false;
-      if (type.isAssignableTo(SProgram.class)) {
-        //pass
-      } else {
+      if (!type.isAssignableTo(SProgram.class)) {
         if (type.isAssignableTo(SScene.class)) {
           isMarkedForOpen = true;
         } else {
@@ -157,7 +153,7 @@ public class ProjectCodeGenerator {
         }
       }
 
-      TextFileUtilities.write(file, code);
+        TextFileUtilities.write(file, code);
       FileObject fileObject = FileUtil.toFileObject(file);
       fileObjectsToFormat.add(fileObject);
 
