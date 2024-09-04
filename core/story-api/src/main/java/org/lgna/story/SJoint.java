@@ -65,7 +65,7 @@ public class SJoint extends SMovableTurnable {
     return mapToJointIdJointMap.getInitializingIfAbsent(jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
       @Override
       public SJoint initialize(SJointedModel jointedModel, JointId jointId) {
-        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
         return SJoint.getInstance(jointedModelImplementation, jointId);
       }
     });
@@ -75,7 +75,7 @@ public class SJoint extends SMovableTurnable {
     return mapToJointNameJointMap.getInitializingIfAbsent(jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
       @Override
       public SJoint initialize(SJointedModel jointedModel, String jointName) {
-        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
         return SJoint.getInstance(jointedModelImplementation, jointName);
       }
     });
@@ -96,7 +96,7 @@ public class SJoint extends SMovableTurnable {
 
   /* package-private */
   static SJoint[] getJointArray(SJointedModel jointedModel, JointArrayId jointArrayId) {
-    JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+    JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
     return getJointArray(jointedModel, jointedModelImplementation.getJointIdArray(jointArrayId));
   }
 

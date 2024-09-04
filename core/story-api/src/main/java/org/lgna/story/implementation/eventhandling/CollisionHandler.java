@@ -47,7 +47,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
@@ -137,7 +136,7 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   }
 
   private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
-    return EmployeesOnly.getImplementation(thing).getCollisionHull();
+    return thing.getImplementation().getCollisionHull();
   }
 
   @Override

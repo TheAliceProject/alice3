@@ -45,7 +45,6 @@ package org.lgna.story.implementation.eventhandling;
 import java.awt.Rectangle;
 
 import edu.cmu.cs.dennisc.math.Vector4;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.CameraImp;
@@ -60,7 +59,7 @@ public class AabbOcclusionDetector {
   }
 
   protected static Rectangle projectedBoundsInView(CameraImp<?> camera, SThing object1) {
-    EntityImp implementation = EmployeesOnly.getImplementation(object1);
+    EntityImp implementation = object1.getImplementation();
     SceneImp scene1 = implementation.getScene();
     Vector4[] object1Points = implementation.getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE).getVectors();
     Rectangle r = new Rectangle(-1, -1);

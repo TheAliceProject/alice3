@@ -51,7 +51,6 @@ import org.lgna.common.ThreadUtilities;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -91,7 +90,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
   protected void preserveUndoInfo(Object instance, boolean isDo) {
     if (instance instanceof SJointedModel) {
       SJointedModel jointedModel = (SJointedModel) instance;
-      JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+      JointedModelImp<?, ?> jointedModelImp = jointedModel.getImplementation();
       Iterable<JointImp> joints = jointedModelImp.getJoints();
       List<JointUndoRunnable> list = Lists.newLinkedList();
       for (JointImp joint : joints) {

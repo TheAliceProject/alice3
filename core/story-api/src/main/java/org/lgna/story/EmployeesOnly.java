@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.resources.JointedModelResource;
 
 /**
@@ -58,7 +57,4 @@ public class EmployeesOnly {
     jointedModel.setJointedModelResource(resource);
   }
 
-  public static <T extends EntityImp> T getImplementation(SThing entity) {
-    return (T) entity.getImplementation();
-  }
 }

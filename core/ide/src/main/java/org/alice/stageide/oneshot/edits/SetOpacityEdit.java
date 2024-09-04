@@ -47,7 +47,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.ModelImp;
 
@@ -66,7 +65,7 @@ public class SetOpacityEdit extends MethodInvocationEdit {
   protected void preserveUndoInfo(Object instance, boolean isDo) {
     if (instance instanceof SThing) {
       SThing thing = (SThing) instance;
-      this.modelImp = EmployeesOnly.getImplementation(thing);
+      this.modelImp = thing.getImplementation();
       this.value = this.modelImp.opacity.getValue();
     } else {
       Logger.severe(instance);

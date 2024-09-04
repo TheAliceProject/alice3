@@ -46,7 +46,6 @@ package org.alice.stageide.properties;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -72,7 +71,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   public void startListening() {
     if (this.instance != null) {
       this.initializeTransformationListenersIfNecessary();
-      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      AbstractTransformableImp implementation = this.instance.getImplementation();
       implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
     }
   }
@@ -80,7 +79,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   @Override
   public void stopListening() {
     if (this.instance != null) {
-      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      AbstractTransformableImp implementation = this.instance.getImplementation();
       implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
     }
   }
@@ -98,7 +97,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   @Override
   public Point3 getValue() {
     if (this.instance != null) {
-      return EmployeesOnly.getImplementation(this.instance).getAbsoluteTransformation().translation;
+      return instance.getImplementation().getAbsoluteTransformation().translation;
     }
     return null;
   }
@@ -107,7 +106,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   public void setValue(Point3 newValue) {
     super.setValue(newValue);
     if (this.instance != null) {
-      AffineMatrix4x4 currentTrans = EmployeesOnly.getImplementation(this.instance).getAbsoluteTransformation();
+      AffineMatrix4x4 currentTrans = this.instance.getImplementation().getAbsoluteTransformation();
       double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
       double duration = 1;
       if (dist < .02) {
@@ -116,7 +115,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
         duration = (dist - .02) / (.5 - .02);
       }
 
-      AbstractTransformableImp implementation = EmployeesOnly.getImplementation(this.instance);
+      AbstractTransformableImp implementation = this.instance.getImplementation();
       implementation.animatePositionOnly(AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue, false, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
   }

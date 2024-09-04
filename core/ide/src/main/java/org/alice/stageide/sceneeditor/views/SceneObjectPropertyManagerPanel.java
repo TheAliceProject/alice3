@@ -98,7 +98,6 @@ import org.lgna.project.ast.LocalAccess;
 import org.lgna.project.ast.ParameterAccess;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
@@ -505,7 +504,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
         Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(this.selectedInstance.createExpression());
         if (instanceInJava instanceof SThing) {
           this.selectedEntity = (SThing) instanceInJava;
-          this.selectedImp = EmployeesOnly.getImplementation(this.selectedEntity);
+          this.selectedImp = this.selectedEntity.getImplementation();
         } else if (instanceInJava instanceof EntityImp) {
           this.selectedImp = (EntityImp) instanceInJava;
           this.selectedEntity = this.selectedImp.getAbstraction();

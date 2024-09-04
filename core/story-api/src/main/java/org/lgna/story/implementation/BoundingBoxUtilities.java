@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.lgna.story.STurnable;
@@ -72,7 +71,7 @@ public class BoundingBoxUtilities {
   }
 
   public static AxisAlignedBox getTransformableScaledBBox(STurnable transformable, boolean ignoreJointOrientations) {
-    AbstractTransformable sgTransformable = (AbstractTransformable) EmployeesOnly.getImplementation(transformable).getSgComposite();
+    AbstractTransformable sgTransformable = transformable.getImplementation().getSgComposite();
     return getSGTransformableBBox(sgTransformable, ignoreJointOrientations);
   }
 

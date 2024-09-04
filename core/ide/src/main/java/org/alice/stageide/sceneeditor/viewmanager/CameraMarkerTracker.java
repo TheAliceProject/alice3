@@ -192,7 +192,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
   private static AxisAlignedBox getBoundingBox(UserField field) {
     Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(field);
-    EntityImp target = EmployeesOnly.getImplementation((SThing) instanceInJava);
+    EntityImp target = ((SThing) instanceInJava).getImplementation();
     return target.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
   }
 
@@ -240,7 +240,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     private PointOfViewAnimation pointOfViewAnimation = null;
     public CameraMarkerConfiguration(CameraMarker marker, CameraOption cameraOption, String iconName) {
       this.cameraOption = cameraOption;
-      markerImp = EmployeesOnly.getImplementation(marker);
+      markerImp = (T) marker.getImplementation();
       MarkerUtilities.addIconForCameraOption(cameraOption, iconName);
       markerImp.getAbstraction().setName(MarkerUtilities.getNameForCamera(cameraOption));
       initialize();

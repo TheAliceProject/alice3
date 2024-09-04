@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.render.PickResult;
 import org.alice.interact.PickUtilities;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
@@ -78,7 +77,7 @@ public class MouseClickEventImp {
 
   private OnscreenRenderTarget getOnscreenRenderTarget() {
     if (this.scene != null) {
-      SceneImp sceneImp = EmployeesOnly.getImplementation(this.scene);
+      SceneImp sceneImp = this.scene.getImplementation();
       ProgramImp programImp = sceneImp.getProgram();
       if (programImp != null) {
         return programImp.getOnscreenRenderTarget();

@@ -60,10 +60,8 @@ import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
 import org.lgna.story.implementation.AbstractTransformableImp;
-import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -149,7 +147,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
 
   public final void setTarget(SModel model) {
     orbiter.setTarget(model);
-    manipulator.setModel((ModelImp) EmployeesOnly.getImplementation(model));
+    manipulator.setModel(model.getImplementation());
   }
 
   @Override

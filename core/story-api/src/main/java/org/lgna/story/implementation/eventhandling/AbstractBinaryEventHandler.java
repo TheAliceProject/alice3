@@ -49,7 +49,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.AbstractEvent;
@@ -86,7 +85,7 @@ public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent, T e
   protected void startTrackingThing(T thing) {
     if (!getModelList().contains(thing)) {
       getModelList().add(thing);
-      EmployeesOnly.getImplementation(thing).getSgComposite().addAbsoluteTransformationListener(this);
+      thing.getImplementation().getSgComposite().addAbsoluteTransformationListener(this);
     }
     if (interactionListeners.get(thing) == null) {
       interactionListeners.put(thing, new ConcurrentHashMap<>());

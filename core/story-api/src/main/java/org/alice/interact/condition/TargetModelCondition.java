@@ -43,7 +43,6 @@
 package org.alice.interact.condition;
 
 import org.alice.interact.InputState;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class TargetModelCondition extends InputCondition {
       return false;
     }
     for (SModel target : targets) {
-      if (state.getClickPickResult().getVisual().getParent() == EmployeesOnly.getImplementation(target).getSgComposite()) {
+      if (state.getClickPickResult().getVisual().getParent() == target.getImplementation().getSgComposite()) {
         return true;
       }
     }

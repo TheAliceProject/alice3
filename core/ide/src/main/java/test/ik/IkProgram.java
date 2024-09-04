@@ -55,7 +55,6 @@ import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Position;
 import org.lgna.story.SBiped;
@@ -153,7 +152,7 @@ class IkProgram extends SProgram {
   //  protected java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> currentSpeeds;
 
   private SphereImp getTargetImp() {
-    return EmployeesOnly.getImplementation(this.target);
+    return target.getImplementation();
   }
 
   private SModel createDragProp() {
@@ -182,7 +181,7 @@ class IkProgram extends SProgram {
   }
 
   private JointedModelImp<?, ?> getSubjectImp() {
-    return EmployeesOnly.getImplementation(this.ogre);
+    return ogre.getImplementation();
   }
 
   private JointImp getAnchorImp() {

@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
@@ -125,7 +124,7 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
-    return EmployeesOnly.getImplementation(thing).getCollisionHull();
+    return thing.getImplementation().getCollisionHull();
   }
 
   @Override

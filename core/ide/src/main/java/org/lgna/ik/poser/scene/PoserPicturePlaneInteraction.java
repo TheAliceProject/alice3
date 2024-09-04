@@ -56,7 +56,6 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SSphere;
 import org.lgna.story.implementation.CameraImp;
@@ -87,9 +86,9 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   private boolean started = false;
 
   public PoserPicturePlaneInteraction(OnscreenRenderTarget renderTarget, AbstractPoserScene scene) {
-    super(renderTarget, ((CameraImp) ((SceneImp) EmployeesOnly.getImplementation(scene)).findFirstCamera()).getSgCamera());
+    super(renderTarget, scene.getImplementation().findFirstCamera().getSgCamera());
     this.scene = scene;
-    SceneImp sceneImp = (SceneImp) EmployeesOnly.getImplementation(scene);
+    SceneImp sceneImp = scene.getImplementation();
     this.camera = sceneImp.findFirstCamera();
 
     final boolean IS_DEBUG_DESIRED = true;
@@ -138,7 +137,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
     JointSelectionSphere selected = this.calculateJointSelectionSphereAtPixel(e.getX(), e.getY());
     if (selected != null) {
       //System.out.println( "selectedFinal: " + selected.getJoint() );
-      Composite sgComposite = EmployeesOnly.getImplementation(selected).getSgComposite();
+      Composite sgComposite = selected.getImplementation().getSgComposite();
       if (SwingUtilities.isLeftMouseButton(e)) {
         this.selected = selected;
       } else if (SwingUtilities.isRightMouseButton(e)) {
@@ -152,7 +151,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   }
 
   private double getSphereRayIntersection(Ray ray, SSphere sSphere) {
-    EntityImp sphere = EmployeesOnly.getImplementation(sSphere);
+    EntityImp sphere = sSphere.getImplementation();
     Point3 center = sphere.getTransformation(camera).translation;
 
     final boolean IS_USING_MATH_CLASSES = true;
@@ -248,7 +247,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   }
 
   private ManipulationHandle3D checkIfHandleSelected(MouseEvent e) {
-    SceneImp implementation = EmployeesOnly.getImplementation(scene);
+    SceneImp implementation = scene.getImplementation();
     RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
     PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED);
     if ((pickResult != null) && (pickResult.getVisual() != null)) {
