@@ -89,7 +89,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createOrientationExpression(Orientation orientation) {
     if (orientation != null) {
-      UnitQuaternion q = orientation.getInternal().createUnitQuaternion();
+      UnitQuaternion q = orientation.createUnitQuaternion();
       Class<?> cls = Orientation.class;
       JavaConstructor constructor = JavaConstructor.getInstance(cls, Number.class, Number.class, Number.class, Number.class);
       return AstUtilities.createInstanceCreation(constructor, this.createDoubleExpression(q.x, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.y, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.z, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.w, MICRO_DECIMAL_PLACES));

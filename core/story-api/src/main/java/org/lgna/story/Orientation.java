@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.EulerAngles;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
@@ -63,8 +64,16 @@ public final class Orientation {
     this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
   }
 
-  public OrthogonalMatrix3x3 getInternal() {
+  OrthogonalMatrix3x3 getInternal() {
     return this.internal;
+  }
+
+  public UnitQuaternion createUnitQuaternion() {
+    return this.internal.createUnitQuaternion();
+  }
+
+  public EulerAngles createEulerAngles() {
+    return this.internal.createEulerAngles();
   }
 
   @Override

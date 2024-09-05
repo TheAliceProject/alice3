@@ -149,7 +149,7 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getLeveledOrientation(Orientation orientation) {
-    EulerAngles angles = orientation.getInternal().createEulerAngles();
+    EulerAngles angles = orientation.createEulerAngles();
 
     Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch));
     Angle flatRoll = new AngleInRadians(nearestPi(angles.roll));
@@ -180,7 +180,7 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getHeadsetOrientation(Orientation cameraOrientation) {
-    EulerAngles angles = cameraOrientation.getInternal().createEulerAngles();
+    EulerAngles angles = cameraOrientation.createEulerAngles();
     Angle flatPitchOffset = new AngleInRadians(angles.pitch.getAsRadians() - nearestPi(angles.pitch));
     Angle flatRollOffset = new AngleInRadians(angles.roll.getAsRadians() - nearestPi(angles.roll));
     EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, zero, flatRollOffset, angles.order);

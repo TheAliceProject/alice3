@@ -83,15 +83,15 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation) {
-    this(id, orientation.getInternal().createUnitQuaternion());
+    this(id, orientation.createUnitQuaternion());
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation, Point3 point3) {
-    this(id, orientation.getInternal().createUnitQuaternion(), point3);
+    this(id, orientation.createUnitQuaternion(), point3);
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation, Position position) {
-    this(id, orientation.getInternal().createUnitQuaternion(), new Point3(position.getRight(), position.getUp(), position.getBackward()));
+    this(id, orientation.createUnitQuaternion(), new Point3(position.getRight(), position.getUp(), position.getBackward()));
   }
 
   public boolean affectsTranslation() {

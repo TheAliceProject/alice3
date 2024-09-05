@@ -59,7 +59,7 @@ public abstract class PoseBuilder<M extends SJointedModel, P extends Pose<M>> {
   }
 
   protected void addJointIdQuaternionPair(JointId jointId, Orientation orientation) {
-    UnitQuaternion quaternion = orientation.getInternal().createUnitQuaternion();
+    UnitQuaternion quaternion = orientation.createUnitQuaternion();
     this.addJointIdQuaternionPair(new JointIdTransformationPair(jointId, quaternion));
   }
 
