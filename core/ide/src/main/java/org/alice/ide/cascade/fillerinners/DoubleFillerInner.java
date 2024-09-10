@@ -42,6 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.lang.ArrayUtils;
+
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.NumberValueDetails;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn;
@@ -49,14 +63,6 @@ import org.alice.ide.croquet.models.cascade.number.IntegerToRealCascadeMenu;
 import org.alice.ide.croquet.models.cascade.number.MathCascadeMenu;
 import org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu;
 import org.alice.ide.custom.DoubleCustomExpressionCreatorComposite;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.CascadeLineSeparator;
-import org.lgna.project.annotations.NumberValueDetails;
-import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.Expression;
-
-import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -70,6 +76,10 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
     }
   }
 
+  private static final int MAX_RECENT = 3;
+
+  private static final LinkedList<Double> recentValues = new LinkedList<>();
+
   public DoubleFillerInner() {
     super(Double.class);
   }
@@ -77,10 +87,25 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     super.appendItems(items, details, isTop, prevExpression);
+
     double[] literals = getLiterals(details);
+
     for (double d : literals) {
       items.add(DoubleLiteralFillIn.getInstance(d));
     }
+
+    Double customValue = getLastCustomValue();
+
+    // the value will be null if the user either picked an existing value from the dropdown, or picked to enter a custom value, but then canceled
+    if (customValue != null) {
+      addRecentValue(customValue, Arrays.asList(ArrayUtils.toObject(literals)));
+      cycleRecentValues();
+
+      for (double d : recentValues) {
+        items.add(DoubleLiteralFillIn.getInstance(d));
+      }
+    }
+
     if (isTop && (prevExpression != null)) {
       items.add(CascadeLineSeparator.getInstance());
       items.add(RandomCascadeMenu.getInstance());
@@ -92,11 +117,35 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
     items.add(CascadeLineSeparator.getInstance());
     IDE ide = IDE.getActiveInstance();
     ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-    CascadeItem item = apiConfigurationManager.getCustomFillInFor(details);
+    CascadeItem<?, ?> item = apiConfigurationManager.getCustomFillInFor(details);
     if (item != null) {
       items.add(item);
     } else {
       items.add(DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    }
+  }
+
+  private Double getLastCustomValue() {
+    DoubleLiteral literal = (DoubleLiteral) DoubleCustomExpressionCreatorComposite.getInstance().getNumberModel().getExpressionValue();
+
+    return literal != null
+      ? literal.value.getValue()
+      : null;
+  }
+
+  private void addRecentValue(Double value, List<Double> literals) {
+    // if the element already exists, remove and then re-add it, effectively moving it to the front
+    recentValues.remove(value);
+
+    if (!literals.contains(value)) {
+      recentValues.add(value);
+    }
+  }
+
+  // remove least recently used values when the total exceeds the max
+  private void cycleRecentValues() {
+    while (recentValues.size() > MAX_RECENT) {
+      recentValues.removeFirst();
     }
   }
 }
