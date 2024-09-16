@@ -43,7 +43,6 @@
 package org.alice.ide.cascade.fillerinners;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -67,7 +66,7 @@ import org.alice.ide.custom.DoubleCustomExpressionCreatorComposite;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleFillerInner extends AbstractNumberFillerInner {
+public class DoubleFillerInner extends AbstractNumberFillerInner<Double> {
   public static double[] getLiterals(ValueDetails<?> details) {
     if (details instanceof NumberValueDetails) {
       return ((NumberValueDetails) details).getLiterals();
@@ -76,34 +75,32 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
     }
   }
 
-  private static final int MAX_RECENT = 3;
-
-  private static final LinkedList<Double> recentValues = new LinkedList<>();
-
   public DoubleFillerInner() {
     super(Double.class);
+  }
+
+  protected Double getLastCustomValue() {
+    DoubleLiteral literal = (DoubleLiteral) DoubleCustomExpressionCreatorComposite.getInstance().getNumberModel().getExpressionValue();
+
+    return literal != null
+            ? literal.value.getValue()
+            : null;
   }
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     super.appendItems(items, details, isTop, prevExpression);
 
-    double[] literals = getLiterals(details);
+    List<Double> literals = Arrays.asList(ArrayUtils.toObject(getLiterals(details)));
 
     for (double d : literals) {
       items.add(DoubleLiteralFillIn.getInstance(d));
     }
 
-    Double customValue = getLastCustomValue();
+    updateRecentValues(literals);
 
-    // the value will be null if the user either picked an existing value from the dropdown, or picked to enter a custom value, but then canceled
-    if (customValue != null) {
-      addRecentValue(customValue, Arrays.asList(ArrayUtils.toObject(literals)));
-      cycleRecentValues();
-
-      for (double d : recentValues) {
-        items.add(DoubleLiteralFillIn.getInstance(d));
-      }
+    for (double d : recentValues) {
+      items.add(DoubleLiteralFillIn.getInstance(d));
     }
 
     if (isTop && (prevExpression != null)) {
@@ -122,30 +119,6 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
       items.add(item);
     } else {
       items.add(DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
-    }
-  }
-
-  private Double getLastCustomValue() {
-    DoubleLiteral literal = (DoubleLiteral) DoubleCustomExpressionCreatorComposite.getInstance().getNumberModel().getExpressionValue();
-
-    return literal != null
-      ? literal.value.getValue()
-      : null;
-  }
-
-  private void addRecentValue(Double value, List<Double> literals) {
-    // if the element already exists, remove and then re-add it, effectively moving it to the front
-    recentValues.remove(value);
-
-    if (!literals.contains(value)) {
-      recentValues.add(value);
-    }
-  }
-
-  // remove least recently used values when the total exceeds the max
-  private void cycleRecentValues() {
-    while (recentValues.size() > MAX_RECENT) {
-      recentValues.removeFirst();
     }
   }
 }

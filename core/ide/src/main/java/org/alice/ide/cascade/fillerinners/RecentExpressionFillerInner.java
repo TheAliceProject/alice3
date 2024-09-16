@@ -42,71 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
-import org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu;
-import org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu;
-import org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu;
-import org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn;
-import org.alice.ide.custom.IntegerCustomExpressionCreatorComposite;
-import org.apache.commons.lang.ArrayUtils;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeLineSeparator;
-import org.lgna.project.annotations.IntegerValueDetails;
-import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.IntegerLiteral;
-import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.AbstractType;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Dennis Cosgrove
+ * @author Dmitry Portnoy
  */
-public class IntegerFillerInner extends AbstractNumberFillerInner<Integer> {
-  public static int[] getLiterals(ValueDetails<?> details) {
-    if (details instanceof IntegerValueDetails) {
-      return ((IntegerValueDetails) details).getLiterals();
-    } else {
-      return new int[] {0, 1, 2, 3};
-    }
-  }
+public abstract class RecentExpressionFillerInner<T> extends ExpressionFillerInner {
 
-  public IntegerFillerInner() {
-    super(Integer.class);
-  }
+    private static final int MAX_RECENT = 3;
 
-  protected Integer getLastCustomValue() {
-    IntegerLiteral literal = (IntegerLiteral) IntegerCustomExpressionCreatorComposite.getInstance().getNumberModel().getExpressionValue();
+    protected final LinkedList<T> recentValues = new LinkedList<>();
 
-    return literal != null
-            ? literal.value.getValue()
-            : null;
-  }
-
-  @Override
-  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    super.appendItems(items, details, isTop, prevExpression);
-
-    List<Integer> literals = Arrays.asList(ArrayUtils.toObject(getLiterals(details)));
-
-    for (int i : literals) {
-      items.add(IntegerLiteralFillIn.getInstance(i));
+    public RecentExpressionFillerInner(AbstractType<?, ?, ?> type) {
+        super(type);
     }
 
-    updateRecentValues(literals);
+    protected void updateRecentValues(List<T> literals) {
+        T customValue = getLastCustomValue();
 
-    for (int i : recentValues) {
-      items.add(IntegerLiteralFillIn.getInstance(i));
+        // the value will be null if the user either picked an existing value from the dropdown, or picked to enter a custom value, but then canceled
+        if (customValue != null && customValue != "") {
+            addRecentValue(customValue, literals);
+            cycleRecentValues();
+        }
     }
 
-    if (isTop && (prevExpression != null)) {
-      items.add(CascadeLineSeparator.getInstance());
-      items.add(RandomCascadeMenu.getInstance());
-      items.add(CascadeLineSeparator.getInstance());
-      items.add(RealToIntegerCascadeMenu.getInstance());
-      items.add(CascadeLineSeparator.getInstance());
-      items.add(MathCascadeMenu.getInstance());
+    protected abstract T getLastCustomValue();
+
+    private void addRecentValue(T value, List<T> literals) {
+        // if the element already exists, remove and then re-add it, effectively moving it to the front
+        recentValues.remove(value);
+
+        if (!literals.contains(value)) {
+            recentValues.add(value);
+        }
     }
-    items.add(CascadeLineSeparator.getInstance());
-    items.add(IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
-  }
+
+    // remove least recently used values when the total exceeds the max
+    private void cycleRecentValues() {
+        while (recentValues.size() > MAX_RECENT) {
+            recentValues.removeFirst();
+        }
+    }
 }

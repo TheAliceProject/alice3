@@ -59,7 +59,7 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
+public abstract class AbstractNumberFillerInner<T> extends RecentExpressionFillerInner<T> {
   public AbstractNumberFillerInner(AbstractType<?, ?, ?> type) {
     super(type);
   }

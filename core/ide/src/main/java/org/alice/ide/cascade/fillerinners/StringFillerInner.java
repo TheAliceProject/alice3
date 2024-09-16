@@ -48,27 +48,41 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ExpressionFillerInner {
+public class StringFillerInner extends RecentExpressionFillerInner<String> {
   public static String[] getLiterals() {
     return new String[] {"hello"};
   }
 
   public StringFillerInner() {
-    super(String.class);
+    super(JavaType.getInstance(String.class));
+  }
+
+  protected String getLastCustomValue() {
+      return StringCustomExpressionCreatorComposite.getInstance().getValueState().getValue();
   }
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    String[] literals = getLiterals();
+    List<String> literals = Arrays.asList(getLiterals());
+
     for (String s : literals) {
       items.add(StringLiteralFillIn.getInstance(s));
     }
+
+    updateRecentValues(literals);
+
+    for (String s : recentValues) {
+      items.add(StringLiteralFillIn.getInstance(s));
+    }
+
     items.add(CascadeLineSeparator.getInstance());
     items.add(StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
   }
