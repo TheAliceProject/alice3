@@ -49,6 +49,7 @@ import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
@@ -130,5 +131,10 @@ import org.lgna.story.implementation.EntityImp;
       sb.append(this.getClass().getSimpleName());
       return sb.toString();
     }
+  }
+
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public VerticalPrismCollisionHull getCollisionHull() {
+    return getImplementation().getCollisionHull();
   }
 }

@@ -118,13 +118,9 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   private boolean areTheseCloseEnough(SThing changedThing, SThing thing, Double proximity) {
-    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
-    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
+    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, SThing::getCollisionHull);
+    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, SThing::getCollisionHull);
     return changedHull.isWithinDistance(hull, proximity);
-  }
-
-  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
-    return thing.getImplementation().getCollisionHull();
   }
 
   @Override

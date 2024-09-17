@@ -132,11 +132,7 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   }
 
   private VerticalPrismCollisionHull collisionHull(SThing changedThing) {
-    return hulls.computeIfAbsent(changedThing, this::newCollisionHull);
-  }
-
-  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
-    return thing.getImplementation().getCollisionHull();
+    return hulls.computeIfAbsent(changedThing, SThing::getCollisionHull);
   }
 
   @Override
