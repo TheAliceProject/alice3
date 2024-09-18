@@ -149,7 +149,8 @@ public class SRoom extends SThing implements MutableRider, VisualWithPaint {
   private final RoomImp implementation = new RoomImp(this);
 
   @Override
-    /* package-private */RoomImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public RoomImp getImplementation() {
     return this.implementation;
   }
 

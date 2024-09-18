@@ -45,6 +45,7 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointArrayId;
@@ -124,7 +125,8 @@ public class SJoint extends SMovableTurnable {
   }
 
   @Override
-  JointImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public JointImp getImplementation() {
     return this.implementation;
   }
 

@@ -44,6 +44,7 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.TorusImp;
 
 /**
@@ -53,7 +54,8 @@ public class STorus extends SShape {
   private final TorusImp implementation = new TorusImp(this);
 
   @Override
-    /* package-private */TorusImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public TorusImp getImplementation() {
     return this.implementation;
   }
 

@@ -56,7 +56,8 @@ import org.lgna.story.resources.JointedModelResource;
  */
 public abstract class SJointedModel extends SModel {
   @Override
-  /* package-private */ abstract JointedModelImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract JointedModelImp getImplementation();
 
   //todo: make protected
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)

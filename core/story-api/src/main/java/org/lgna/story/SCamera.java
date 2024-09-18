@@ -96,7 +96,8 @@ public class SCamera extends SMovableTurnable implements MutableRider {
   }
 
   @Override
-  SymmetricPerspectiveCameraImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SymmetricPerspectiveCameraImp getImplementation() {
     return this.implementation;
   }
 

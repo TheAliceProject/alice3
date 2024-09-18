@@ -44,6 +44,7 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.PaintProperty;
 
@@ -54,7 +55,8 @@ public class SBillboard extends SModel {
   private final BillboardImp implementation = new BillboardImp(this);
 
   @Override
-  BillboardImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public BillboardImp getImplementation() {
     return this.implementation;
   }
 

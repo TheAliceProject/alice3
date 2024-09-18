@@ -45,6 +45,7 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.SphereImp;
 
 /**
@@ -54,7 +55,8 @@ public class SSphere extends SShape {
   private final SphereImp implementation = new SphereImp(this);
 
   @Override
-    /* package-private */SphereImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SphereImp getImplementation() {
     return this.implementation;
   }
 

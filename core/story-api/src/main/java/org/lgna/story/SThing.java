@@ -54,8 +54,8 @@ import org.lgna.story.implementation.EntityImp;
  * @author Dennis Cosgrove
  */
 @ClassTemplate(isFollowToSuperClassDesired = false) public abstract class SThing implements Rider {
-  /* package-private */
-  abstract EntityImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract <T extends EntityImp> T getImplementation();
 
   @GetterTemplate(isPersistent = true)
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)

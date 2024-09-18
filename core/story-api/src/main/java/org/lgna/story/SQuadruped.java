@@ -56,7 +56,8 @@ public class SQuadruped extends SJointedModel implements Articulable {
   private final QuadrupedImp implementation;
 
   @Override
-    /* package-private */QuadrupedImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public QuadrupedImp getImplementation() {
     return this.implementation;
   }
 

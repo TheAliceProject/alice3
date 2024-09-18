@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.PropResource;
 
@@ -58,7 +60,8 @@ public class SProp extends SJointedModel {
   }
 
   @Override
-  JointedModelImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public JointedModelImp getImplementation() {
     return implementation;
   }
 

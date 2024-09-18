@@ -47,6 +47,7 @@ import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.annotation.GroundSurfaceAppearanceDetails;
 import org.lgna.story.annotation.PortionDetails;
 import org.lgna.story.implementation.GroundImp;
@@ -74,7 +75,8 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
   private final GroundImp implementation = new GroundImp(this);
 
   @Override
-    /* package-private */GroundImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public GroundImp getImplementation() {
     return this.implementation;
   }
 

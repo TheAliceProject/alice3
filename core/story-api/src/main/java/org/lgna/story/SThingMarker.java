@@ -43,13 +43,16 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.ObjectMarkerImp;
 
 public class SThingMarker extends SMarker {
   private final ObjectMarkerImp implementation = new ObjectMarkerImp(this);
 
   @Override
-    /* package-private */ObjectMarkerImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public ObjectMarkerImp getImplementation() {
     return this.implementation;
   }
 }
