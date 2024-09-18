@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 public final class Orientation {
   private final OrthogonalMatrix3x3 internal;
 
+  // TODO Either use immutable matrices or make a copy - after checking  we do not depend on side effects
   public Orientation(OrthogonalMatrix3x3 internal) {
     this.internal = internal;
   }

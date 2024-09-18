@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 public final class Position {
   private final Point3 internal;
 
+  // TODO Either use immutable value or make a copy - after checking  we do not depend on side effects
   public Position(Point3 internal) {
     this.internal = internal;
   }
