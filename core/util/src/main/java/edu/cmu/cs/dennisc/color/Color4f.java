@@ -77,6 +77,10 @@ public final class Color4f implements BinaryEncodableAndDecodable {
     return new Color4f(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
   }
 
+  public static Color4f createInstance(java.awt.Color awtColor) {
+    return createFromRgbaInts(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha());
+  }
+
   public Color4f(float red, float green, float blue, float alpha) {
     this.red = red;
     this.green = green;

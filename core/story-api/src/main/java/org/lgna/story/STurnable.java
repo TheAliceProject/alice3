@@ -111,7 +111,7 @@ public abstract class STurnable extends SThing {
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public Orientation getOrientationRelativeToVehicle() {
-    return Orientation.createInstance(this.getImplementation().getLocalOrientation());
+    return new Orientation(this.getImplementation().getLocalOrientation());
   }
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)

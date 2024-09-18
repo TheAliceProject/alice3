@@ -43,8 +43,6 @@
 
 package org.alice.stageide.ast.declaration.views;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
@@ -55,7 +53,6 @@ import org.lgna.croquet.views.ViewController;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.ImageSource;
 import org.lgna.story.Paint;
 
@@ -104,9 +101,8 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
           Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
           if ((values.length == 1) && (values[0] instanceof Paint)) {
             Paint paint = (Paint) values[0];
-            Color4f color = EmployeesOnly.getColor4f(paint, null);
             if (paint instanceof Color) {
-              g.setColor(ColorUtilities.toAwtColor(color));
+              g.setColor(((Color) paint).toAwtColor());
               g.fillRect(0, 0, this.getWidth(), this.getHeight());
             } else {
               if (paint instanceof ImageSource) {
@@ -118,7 +114,7 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
       }
 
       private void paintImage(Graphics g, ImageSource imageSource) {
-        Texture texture = EmployeesOnly.getTexture(imageSource, null);
+        Texture texture = imageSource.getTextureIfPresent();
         BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
         if (texture == null) {
           return;

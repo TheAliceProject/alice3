@@ -131,7 +131,7 @@ public class AngleInDegrees implements Angle {
 
   @Override
   public void setToInterpolation(Angle a0, Angle a1, double portion) {
-    setAsDegrees(InterpolationUtilities.interpolate(a0.getAsDegrees(), a1.getAsDegrees(), portion));
+    setAsDegrees(AngleUtilities.interpolate(a0.getAsDegrees(), a1.getAsDegrees(), portion));
   }
 
   @Override

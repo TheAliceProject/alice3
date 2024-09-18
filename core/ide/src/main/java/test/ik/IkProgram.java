@@ -322,8 +322,8 @@ class IkProgram extends SProgram {
       }
     });
 
-    this.modelManipulationDragAdapter.setOnscreenRenderTarget(EmployeesOnly.getImplementation(this).getOnscreenRenderTarget());
-    this.cameraNavigationDragAdapter.setOnscreenRenderTarget(EmployeesOnly.getImplementation(this).getOnscreenRenderTarget());
+    this.modelManipulationDragAdapter.setOnscreenRenderTarget(this.getImplementation().getOnscreenRenderTarget());
+    this.cameraNavigationDragAdapter.setOnscreenRenderTarget(this.getImplementation().getOnscreenRenderTarget());
     this.cameraNavigationDragAdapter.requestTarget(new Point3(0.0, 1.0, 0.0));
     this.cameraNavigationDragAdapter.requestDistance(8.0);
 

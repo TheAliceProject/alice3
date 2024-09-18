@@ -44,6 +44,8 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.color.property.Color4fProperty;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.story.annotation.PortionDetails;
 
@@ -76,22 +78,38 @@ public final class Color implements Paint {
     this(new Color4f(red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f));
   }
 
+  public static Color fromProperty(Color4fProperty colorProp) {
+    return createInstance(colorProp.getValue());
+  }
+
+  public Color interpolateTo(Color target, double portion) {
+    return createInstance(Color4f.createInterpolation(toColor4f(), target.toColor4f(), (float) portion));
+  }
+
   private Color(Color4f internal) {
     this.internal = internal;
   }
 
-  /* package-private */
-  static Color createInstance(Color4f internal) {
+  private static Color createInstance(Color4f internal) {
     return internal != null ? new Color(internal) : null;
   }
 
-  /* package-private */Color4f getInternal() {
+  public static Color createInstance(java.awt.Color color) {
+    return color != null ? new Color(Color4f.createInstance(color)) : null;
+  }
+
+  public Color4f toColor4f() {
     return this.internal;
   }
 
-  /* package-private */
-  static Color4f getInternal(Color color) {
-    return color != null ? color.internal : null;
+  public java.awt.Color toAwtColor() {
+    return ColorUtilities.toAwtColor(internal);
+  }
+
+  public static Color4f getColor4fOrWhite(Paint paint) {
+      return paint instanceof Color
+              ? ((Color) paint).toColor4f()
+              : Color4f.WHITE;
   }
 
   @Override

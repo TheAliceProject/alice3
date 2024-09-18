@@ -44,7 +44,6 @@
 package test.ik.croquet.views;
 
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SProgram;
 import org.lgna.story.implementation.ProgramImp;
 import test.ik.croquet.SceneComposite;
@@ -58,7 +57,7 @@ public class ScenePanel extends BorderPanel {
   }
 
   public void initializeInAwtContainer(SProgram program) {
-    ProgramImp programImp = EmployeesOnly.getImplementation(program);
+    ProgramImp programImp = program.getImplementation();
     programImp.initializeInAwtContainer(this.getAwtComponent());
   }
 }

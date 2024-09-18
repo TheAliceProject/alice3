@@ -44,7 +44,6 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 
 /**
  * @author Dennis Cosgrove
@@ -56,6 +55,6 @@ public abstract class ColorProperty extends Property<Color> {
 
   @Override
   protected Color interpolate(Color a, Color b, double portion) {
-    return EmployeesOnly.createInterpolation(a, b, (float) portion);
+    return a.interpolateTo(b, portion);
   }
 }

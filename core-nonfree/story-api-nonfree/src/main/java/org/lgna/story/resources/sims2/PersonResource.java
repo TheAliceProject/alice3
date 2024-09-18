@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -91,7 +90,7 @@ public abstract class PersonResource implements BipedResource {
     } else {
       baseSkinTone = BaseSkinTone.getRandom();
     }
-    return EmployeesOnly.createColor(baseSkinTone.getColor());
+    return Color.createInstance(baseSkinTone.getColor());
   }
 
   protected static String getLocalizedDisplayText(String key) {
@@ -112,7 +111,7 @@ public abstract class PersonResource implements BipedResource {
   }
 
   public PersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face) {
-    this(gender, BaseSkinTone.getClosestToColor(EmployeesOnly.getAwtColor(skinColor)), skinColor, eyeColor, hair, obesityLevel, outfit, face);
+    this(gender, BaseSkinTone.getClosestToColor(skinColor.toAwtColor()), skinColor, eyeColor, hair, obesityLevel, outfit, face);
   }
 
   public abstract LifeStage getLifeStage();

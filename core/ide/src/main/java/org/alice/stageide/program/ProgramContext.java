@@ -156,7 +156,7 @@ public abstract class ProgramContext {
   }
 
   public ProgramImp getProgramImp() {
-    return EmployeesOnly.getImplementation(this.getProgram());
+    return this.getProgram().getImplementation();
   }
 
   public VirtualMachine getVirtualMachine() {

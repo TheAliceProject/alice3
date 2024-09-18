@@ -80,45 +80,11 @@ public class AngleUtilities {
     return revolutions * REVOLUTIONS_TO_DEGREES_FACTOR;
   }
 
-  public static Angle createNaN() {
-    return new AngleInRadians(Double.NaN);
-  }
-
-  public static Angle createAddition(Angle a, Angle b) {
-    return setReturnValueToAddition(createNaN(), a, b);
-  }
-
   public static Angle createSubtraction(Angle a, Angle b) {
-    return setReturnValueToSubtraction(createNaN(), a, b);
+    return new AngleInRadians(a.getAsRadians() - b.getAsRadians());
   }
 
-  public static Angle createNegation(Angle a) {
-    return setReturnValueToNegation(createNaN(), a);
-  }
-
-  public static Angle createInterpolation(Angle a, Angle b, double portion) {
-    return setReturnValueToInterpolation(createNaN(), a, b, portion);
-  }
-
-  public static Angle setReturnValueToAddition(Angle rv, Angle a, Angle b) {
-    rv.setAsRadians(a.getAsRadians() + b.getAsRadians());
-    return rv;
-  }
-
-  public static Angle setReturnValueToSubtraction(Angle rv, Angle a, Angle b) {
-    rv.setAsRadians(a.getAsRadians() - b.getAsRadians());
-    return rv;
-  }
-
-  public static Angle setReturnValueToNegation(Angle rv, Angle a) {
-    rv.setAsRadians(-a.getAsRadians());
-    return rv;
-  }
-
-  public static Angle setReturnValueToInterpolation(Angle rv, Angle a, Angle b, double portion) {
-    double aInRadians = a.getAsRadians();
-    double bInRadians = b.getAsRadians();
-    rv.setAsRadians(aInRadians + ((bInRadians - aInRadians) * portion));
-    return rv;
+  public static double interpolate(double a, double b, double portion) {
+    return a + ((b - a) * portion);
   }
 }

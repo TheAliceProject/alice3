@@ -84,7 +84,7 @@ public abstract class SScene extends SThing {
     return this.implementation;
   }
 
-  protected abstract void handleActiveChanged(Boolean isActive, Integer activationCount);
+  public abstract void handleActiveChanged(Boolean isActive, Integer activationCount);
 
   protected void preserveStateAndEventListeners() {
     this.implementation.preserveStateAndEventListeners();

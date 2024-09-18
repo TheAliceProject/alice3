@@ -62,7 +62,7 @@ public class SceneAdapter extends SScene {
   }
 
   @Override
-  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+  public void handleActiveChanged(Boolean isActive, Integer activeCount) {
     UserMethod method = type.getDeclaredMethod("handleActiveChanged", Boolean.class, Integer.class);
     this.context.invokeEntryPoint(method, isActive, activeCount);
   }

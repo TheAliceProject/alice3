@@ -771,10 +771,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
 
     if (sceneField != null) {
-      EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
+      SProgram program = getProgramInstanceInJava();
+      program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
 
       UserInstance sceneAliceInstance = getActiveSceneInstance();
-      SProgram program = getProgramInstanceInJava();
       SScene scene = sceneAliceInstance.getJavaInstance(SScene.class);
 
       SceneImp ACCEPTABLE_HACK_sceneImp = EmployeesOnly.getImplementation(scene);
@@ -856,7 +856,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           }
         }
       }
-      EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(1.0);
+      program.setSimulationSpeedFactor(1.0);
     }
   }
 

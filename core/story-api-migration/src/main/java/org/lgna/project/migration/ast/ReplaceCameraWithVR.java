@@ -4,7 +4,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import org.lgna.project.ProjectVersion;
@@ -150,8 +149,7 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getLeveledOrientation(Orientation orientation) {
-    OrthogonalMatrix3x3 matrix = EmployeesOnly.getOrthogonalMatrix3x3(orientation);
-    EulerAngles angles = new EulerAngles(matrix);
+    EulerAngles angles = orientation.createEulerAngles();
 
     Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch));
     Angle flatRoll = new AngleInRadians(nearestPi(angles.roll));
@@ -182,7 +180,7 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getHeadsetOrientation(Orientation cameraOrientation) {
-    EulerAngles angles = new EulerAngles(EmployeesOnly.getOrthogonalMatrix3x3(cameraOrientation));
+    EulerAngles angles = cameraOrientation.createEulerAngles();
     Angle flatPitchOffset = new AngleInRadians(angles.pitch.getAsRadians() - nearestPi(angles.pitch));
     Angle flatRollOffset = new AngleInRadians(angles.roll.getAsRadians() - nearestPi(angles.roll));
     EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, zero, flatRollOffset, angles.order);

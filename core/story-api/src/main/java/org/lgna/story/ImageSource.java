@@ -42,7 +42,9 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.common.resources.ImageResource;
+import org.lgna.story.implementation.TextureFactory;
 
 /**
  * @author Dennis Cosgrove
@@ -56,5 +58,10 @@ public final class ImageSource implements Paint {
 
   public ImageResource getImageResource() {
     return this.imageResource;
+  }
+
+  public Texture getTextureIfPresent() {
+    ImageResource imageResource = getImageResource();
+    return imageResource != null ? TextureFactory.getTexture(imageResource, true) : null;
   }
 }
