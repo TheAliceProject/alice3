@@ -129,7 +129,7 @@ public class ProjectCodeGenerator {
       }
     }
 
-      if (progressHandle != null) {
+    if (progressHandle != null) {
       progressHandle.switchToDeterminate(namedUserTypes.size());
     }
     int createWorkUnit = 0;
@@ -153,7 +153,7 @@ public class ProjectCodeGenerator {
         }
       }
 
-        TextFileUtilities.write(file, code);
+      TextFileUtilities.write(file, code);
       FileObject fileObject = FileUtil.toFileObject(file);
       fileObjectsToFormat.add(fileObject);
 
