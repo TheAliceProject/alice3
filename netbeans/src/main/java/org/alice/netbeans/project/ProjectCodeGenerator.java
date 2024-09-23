@@ -206,12 +206,12 @@ public class ProjectCodeGenerator {
   }
 
   private static FileObject generateLauncher(File javaSrcDirectory) {
-    String fileName = "AliceJavaFXLauncher.java";
-    File file = new File(javaSrcDirectory, fileName);
+    File file = new File(javaSrcDirectory, LAUNCHER_FILE_NAME);
     TextFileUtilities.write(file, LAUNCHER_FILE);
     return FileUtil.toFileObject(file);
   }
 
+  private static final String LAUNCHER_FILE_NAME = "AliceJavaFXLauncher.java";
   private static final String LAUNCHER_FILE =
 """
 import javafx.application.Application;
