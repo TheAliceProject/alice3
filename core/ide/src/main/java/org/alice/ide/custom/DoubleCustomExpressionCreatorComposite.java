@@ -44,7 +44,9 @@
 package org.alice.ide.custom;
 
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn;
 import org.alice.ide.croquet.models.numberpad.DoubleModel;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 
@@ -53,7 +55,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public final class DoubleCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+public final class DoubleCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite<Double> {
   private static class SingletonHolder {
     private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
   }
@@ -76,5 +78,15 @@ public final class DoubleCustomExpressionCreatorComposite extends NumberCustomEx
       text = "";
     }
     return text;
+  }
+
+  @Override
+  protected Double getLastCustomValue() {
+    return ((DoubleLiteral) createValue()).value.getValue();
+  }
+
+  @Override
+  protected CascadeBlankChild getValueFillIn(Double value) {
+    return DoubleLiteralFillIn.getInstance(value);
   }
 }

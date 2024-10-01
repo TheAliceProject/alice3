@@ -408,18 +408,6 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  public CascadeItem<?, ?> getCustomFillInFor(ValueDetails<?> valueDetails) {
-    if (valueDetails instanceof PortionDetails) {
-      return PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-    } else if (valueDetails instanceof VolumeLevelDetails) {
-      //      return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
-      return VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-    } else {
-      return null;
-    }
-  }
-
-  @Override
   public ExpressionCreator getExpressionCreator() {
     return this.expressionCreator;
   }

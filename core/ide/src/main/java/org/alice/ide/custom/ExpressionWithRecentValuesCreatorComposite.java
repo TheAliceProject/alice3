@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2024, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,74 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.custom;
 
-import org.lgna.project.ast.AbstractType;
+import org.alice.ide.custom.components.CustomExpressionCreatorView;
 
-import java.util.LinkedList;
-import java.util.List;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+
+import java.util.*;
 
 /**
  * @author Dmitry Portnoy
  */
-public abstract class RecentExpressionFillerInner<T> extends ExpressionFillerInner {
-
+public abstract class ExpressionWithRecentValuesCreatorComposite<V extends CustomExpressionCreatorView, T> extends CustomExpressionCreatorComposite<V> {
     private static final int MAX_RECENT = 3;
 
     protected final LinkedList<T> recentValues = new LinkedList<>();
 
-    public RecentExpressionFillerInner(AbstractType<?, ?, ?> type) {
-        super(type);
+    public ExpressionWithRecentValuesCreatorComposite(UUID id) {
+        super(id);
     }
 
-    protected void updateRecentValues(List<T> literals) {
-        T customValue = getLastCustomValue();
+    @Override
+    protected void handlePostHideDialog() {
+        super.handlePostHideDialog();
 
-        // the value will be null if the user either picked an existing value from the dropdown, or picked to enter a custom value, but then canceled
-        if (customValue != null && customValue != "") {
-            addRecentValue(customValue, literals);
-            cycleRecentValues();
+        if (isCommitted) {
+            updateRecentValues();
         }
     }
 
     protected abstract T getLastCustomValue();
 
-    private void addRecentValue(T value, List<T> literals) {
-        // if the element already exists, remove and then re-add it, effectively moving it to the front
-        recentValues.remove(value);
+    protected abstract CascadeBlankChild getValueFillIn(T value);
 
-        if (!literals.contains(value)) {
-            recentValues.add(value);
-        }
+    protected void updateRecentValues() {
+        T customValue = getLastCustomValue();
+
+        // if the element already exists, remove and then re-add it, effectively moving it to the front
+        recentValues.remove(customValue);
+
+        recentValues.add(customValue);
     }
 
-    // remove least recently used values when the total exceeds the max
-    private void cycleRecentValues() {
-        while (recentValues.size() > MAX_RECENT) {
-            recentValues.removeFirst();
+    public List<CascadeBlankChild> getRecentFillIns(List<T> literals) {
+        if (recentValues.isEmpty()) {
+            return new ArrayList<>();
         }
+
+        List<CascadeBlankChild> recentFillIns = new ArrayList<>(recentValues.size() + 1);
+
+        Iterator<T> iter = recentValues.descendingIterator();
+
+        while (iter.hasNext() && recentFillIns.size() < MAX_RECENT) {
+            T value = iter.next();
+
+            if (!literals.contains(value)) {
+                recentFillIns.add(getValueFillIn(value));
+            }
+        }
+
+        // add a separator between the hard-coded and recent values,
+        // and reverse the list to show most revent values last
+        if (!recentFillIns.isEmpty()) {
+            recentFillIns.add(CascadeLineSeparator.getInstance());
+
+            Collections.reverse(recentFillIns);
+        }
+
+        return recentFillIns;
     }
 }

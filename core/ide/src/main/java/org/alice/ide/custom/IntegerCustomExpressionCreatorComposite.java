@@ -43,7 +43,9 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn;
 import org.alice.ide.croquet.models.numberpad.IntegerModel;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.IntegerLiteral;
 
@@ -52,7 +54,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public final class IntegerCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+public final class IntegerCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite<Integer> {
   private static class SingletonHolder {
     private static IntegerCustomExpressionCreatorComposite instance = new IntegerCustomExpressionCreatorComposite();
   }
@@ -75,5 +77,15 @@ public final class IntegerCustomExpressionCreatorComposite extends NumberCustomE
       text = "";
     }
     return text;
+  }
+
+  @Override
+  protected Integer getLastCustomValue() {
+    return ((IntegerLiteral) createValue()).value.getValue();
+  }
+
+  @Override
+  protected CascadeBlankChild getValueFillIn(Integer value) {
+    return IntegerLiteralFillIn.getInstance(value);
   }
 }

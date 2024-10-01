@@ -43,8 +43,10 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn;
 import org.alice.ide.custom.components.PortionCustomExpressionCreatorView;
 import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 
@@ -55,7 +57,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<PortionCustomExpressionCreatorView> {
+public class PortionCustomExpressionCreatorComposite extends ExpressionWithRecentValuesCreatorComposite<PortionCustomExpressionCreatorView, Double> {
   private static class SingletonHolder {
     private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
   }
@@ -102,5 +104,15 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
         this.valueState.setValueTransactionlessly(decimal.intValue());
       }
     }
+  }
+
+  @Override
+  protected Double getLastCustomValue() {
+    return ((DoubleLiteral) createValue()).value.getValue();
+  }
+
+  @Override
+  protected CascadeBlankChild getValueFillIn(Double value) {
+    return DoubleLiteralFillIn.getInstance(value);
   }
 }

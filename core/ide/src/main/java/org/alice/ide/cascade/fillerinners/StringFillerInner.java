@@ -43,12 +43,13 @@
 package org.alice.ide.cascade.fillerinners;
 
 import org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn;
+import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.StringCustomExpressionCreatorComposite;
+
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,17 +57,13 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends RecentExpressionFillerInner<String> {
+public class StringFillerInner extends ExpressionFillerInner {
   public static String[] getLiterals() {
     return new String[] {"hello"};
   }
 
   public StringFillerInner() {
-    super(JavaType.getInstance(String.class));
-  }
-
-  protected String getLastCustomValue() {
-      return StringCustomExpressionCreatorComposite.getInstance().getValueState().getValue();
+    super(String.class);
   }
 
   @Override
@@ -77,11 +74,9 @@ public class StringFillerInner extends RecentExpressionFillerInner<String> {
       items.add(StringLiteralFillIn.getInstance(s));
     }
 
-    updateRecentValues(literals);
+    ExpressionWithRecentValuesCreatorComposite creatorComposite = StringCustomExpressionCreatorComposite.getInstance();
 
-    for (String s : recentValues) {
-      items.add(StringLiteralFillIn.getInstance(s));
-    }
+    items.addAll(creatorComposite.getRecentFillIns(literals));
 
     items.add(CascadeLineSeparator.getInstance());
     items.add(StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
