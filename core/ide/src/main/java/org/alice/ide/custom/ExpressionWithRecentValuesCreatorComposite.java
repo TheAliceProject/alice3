@@ -74,13 +74,15 @@ public abstract class ExpressionWithRecentValuesCreatorComposite<V extends Custo
 
     protected abstract CascadeBlankChild getValueFillIn(T value);
 
-    protected void updateRecentValues() {
-        T customValue = getLastCustomValue();
-
+    public void updateRecentValues(T newValue) {
         // if the element already exists, remove and then re-add it, effectively moving it to the front
-        recentValues.remove(customValue);
+        recentValues.remove(newValue);
 
-        recentValues.add(customValue);
+        recentValues.add(newValue);
+    }
+
+    protected void updateRecentValues() {
+        updateRecentValues(getLastCustomValue());
     }
 
     public List<CascadeBlankChild> getRecentFillIns(List<T> literals) {

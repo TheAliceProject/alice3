@@ -264,6 +264,17 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
   }
 
   @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+
+    if (isCommitted) {
+      double volume = VolumeLevelUtilities.toDouble(this.getVolumeState().getValue());
+
+      VolumeLevelCustomExpressionCreatorComposite.getInstance().updateRecentValues(volume);
+    }
+  }
+
+  @Override
   protected Status getStatusPreRejectorCheck() {
     return null;
   }
