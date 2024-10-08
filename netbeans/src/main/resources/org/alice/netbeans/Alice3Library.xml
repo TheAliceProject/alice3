@@ -19,7 +19,7 @@
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-jogamp-jogl/jogl-all.jar</resource>
 
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/util.jar</resource>
-    <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/scenegraph.jar/</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/scenegraph.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/glrender.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/ast.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice/story-api.jar/</resource>
