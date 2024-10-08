@@ -380,7 +380,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       SThing selectedEntity = this.getInstanceInJavaVMForField(field, SThing.class);
       TransformableImp transImp = null;
       if (selectedEntity != null) {
-        EntityImp imp = EmployeesOnly.getImplementation(selectedEntity);
+        EntityImp imp = selectedEntity.getImplementation();
         if (imp instanceof TransformableImp) {
           transImp = (TransformableImp) imp;
         }
@@ -394,7 +394,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       SThing selectedEntity = this.getInstanceInJavaVMForExpression(expression, SThing.class);
       AbstractTransformableImp transImp = null;
       if (selectedEntity != null) {
-        EntityImp imp = EmployeesOnly.getImplementation(selectedEntity);
+        EntityImp imp = selectedEntity.getImplementation();
         if (imp instanceof AbstractTransformableImp) {
           transImp = (AbstractTransformableImp) imp;
         }
@@ -736,7 +736,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     super.addField(declaringType, field, index, statements);
     if (field.getValueType().isAssignableTo(SMarker.class)) {
       SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
-      MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+      MarkerImp markerImp = marker.getImplementation();
       markerImp.setDisplayVisuals(true);
       markerImp.setShowing(true);
 
@@ -751,12 +751,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     if (SystemUtilities.isPropertyTrue(SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY)) {
       if (field.getValueType().isAssignableTo(SJointedModel.class)) {
         SJointedModel jointedModel = this.getInstanceInJavaVMForField(field, SJointedModel.class);
-        JointedModelImp jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImp = jointedModel.getImplementation();
         jointedModelImp.opacity.setValue(0.25f);
         jointedModelImp.showVisualization();
       } else if (field.getValueType().isAssignableTo(SModel.class)) {
         SModel model = this.getInstanceInJavaVMForField(field, SModel.class);
-        ModelImp modelImp = EmployeesOnly.getImplementation(model);
+        ModelImp modelImp = model.getImplementation();
         modelImp.showVisualization();
       }
     }
@@ -777,7 +777,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       UserInstance sceneAliceInstance = getActiveSceneInstance();
       SScene scene = sceneAliceInstance.getJavaInstance(SScene.class);
 
-      SceneImp ACCEPTABLE_HACK_sceneImp = EmployeesOnly.getImplementation(scene);
+      SceneImp ACCEPTABLE_HACK_sceneImp = scene.getImplementation();
       ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
       try {
         program.setActiveScene(scene);
@@ -800,7 +800,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         }
         if (field.getValueType().isAssignableTo(SVRUser.class)) {
           VrUserImp vrUserImp = getImplementation(field);
-          sceneCameraImp = EmployeesOnly.getImplementation(vrUserImp.getAbstraction().getHeadset());
+          sceneCameraImp = vrUserImp.getAbstraction().getHeadset().getImplementation();
           movableSceneCameraImp = vrUserImp;
           setIsVrActive(true);
           break;
@@ -842,7 +842,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         // we have to manually make them visible to see them in the scene editor)
         if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
-          MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+          MarkerImp markerImp = marker.getImplementation();
           if (field.getValueType().isAssignableTo(CameraMarker.class)) {
             ((PerspectiveCameraMarkerImp) markerImp).setVrActive(isVrActive());
           }
@@ -1264,7 +1264,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public MarkerImp getMarkerForField(UserField field) {
     Object obj = this.getInstanceInJavaVMForField(field);
     if (obj instanceof SMarker) {
-      return EmployeesOnly.getImplementation((SMarker) obj);
+      return ((SMarker) obj).getImplementation();
     }
     return null;
   }

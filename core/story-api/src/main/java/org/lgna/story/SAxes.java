@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.AxesImp;
 
 /**
@@ -52,7 +54,8 @@ public class SAxes extends SShape {
   private final AxesImp implementation = new AxesImp(this);
 
   @Override
-    /* package-private */AxesImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public AxesImp getImplementation() {
     return this.implementation;
   }
 }

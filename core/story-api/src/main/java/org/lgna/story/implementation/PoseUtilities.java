@@ -50,7 +50,6 @@ import java.util.List;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import org.lgna.story.BipedPose;
 import org.lgna.story.BipedPoseBuilder;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.FlyerPose;
 import org.lgna.story.FlyerPoseBuilder;
 import org.lgna.story.Orientation;
@@ -132,7 +131,7 @@ public class PoseUtilities {
   }
 
   public static void setTransformationOnJoint(SJoint sJoint, AffineMatrix4x4 transformation) {
-    ((JointImp) EmployeesOnly.getImplementation(sJoint)).setLocalTransformation(transformation);
+    sJoint.getImplementation().setLocalTransformation(transformation);
   }
 
   public static void setOrientationOnly(SJoint sJoint, UnitQuaternion unitQuaternion) {
@@ -140,7 +139,7 @@ public class PoseUtilities {
   }
 
   public static void setOrientationOnly(SJoint sJoint, OrthogonalMatrix3x3 orientation) {
-    ((JointImp) EmployeesOnly.getImplementation(sJoint)).setLocalOrientation(orientation);
+    sJoint.getImplementation().setLocalOrientation(orientation);
   }
 
   public static <R extends JointedModelResource> Class<R> getResourceClassFromModelClass(Class<? extends SJointedModel> modelCls) {
@@ -173,7 +172,7 @@ public class PoseUtilities {
     }
     List<JointIdTransformationPair> list = Lists.newArrayList();
     for (JointId id : arr) {
-      JointImp implementation = EmployeesOnly.getImplementation(model.getJoint(id));
+      JointImp implementation = model.getJoint(id).getImplementation();
       list.add(new JointIdTransformationPair(id, implementation.getLocalOrientation().createUnitQuaternion()));
     }
     for (JointIdTransformationPair key : list) {

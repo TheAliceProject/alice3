@@ -70,6 +70,7 @@ public class SVRHand extends SThing {
   }
 
   @Override
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public VrHandImp getImplementation() {
     return implementation;
   }

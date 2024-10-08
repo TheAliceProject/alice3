@@ -180,7 +180,6 @@ public abstract class VirtualMachine {
   }
 
   private final Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = Maps.newHashMap();
-  private final Map<Method, Method> mapProtectedMthdToAdapterMthd = Maps.newHashMap();
 
   public void registerAbstractClassAdapter(Class<?> abstractCls, Class<?> adapterCls) {
     if (ReflectionUtilities.isAbstract(abstractCls)) {
@@ -189,25 +188,6 @@ public abstract class VirtualMachine {
       Logger.severe(abstractCls);
     }
     this.mapAbstractClsToAdapterCls.put(abstractCls, adapterCls);
-  }
-
-  public void registerProtectedMethodAdapter(Method anonymousMthd, Method adapterMthd) {
-    assert ReflectionUtilities.isPublic(adapterMthd) : adapterMthd;
-    assert ReflectionUtilities.isStatic(adapterMthd) : adapterMthd;
-
-    Class<?>[] anonymousParameterTypes = anonymousMthd.getParameterTypes();
-    Class<?>[] adapterParameterTypes = adapterMthd.getParameterTypes();
-
-    assert anonymousParameterTypes.length == (adapterParameterTypes.length - 1) : anonymousMthd;
-    assert adapterParameterTypes.length > 0 : anonymousMthd;
-    assert adapterParameterTypes[0] == anonymousMthd.getDeclaringClass();
-
-    if (ReflectionUtilities.isProtected(anonymousMthd)) {
-      //pass
-    } else {
-      Logger.severe(anonymousMthd);
-    }
-    this.mapProtectedMthdToAdapterMthd.put(anonymousMthd, adapterMthd);
   }
 
   /* package-private */Object createInstance(UserType<?> type, final UserInstance userInstance, Constructor<?> cnstrctr, Object... arguments) {
@@ -509,10 +489,6 @@ public abstract class VirtualMachine {
       Class<?> adapterCls = mapAbstractClsToAdapterCls.get(mthd.getDeclaringClass());
       if (adapterCls != null) {
         mthd = ReflectionUtilities.getMethod(adapterCls, mthd.getName(), mthd.getParameterTypes());
-      } else {
-        mthd = this.mapProtectedMthdToAdapterMthd.get(mthd);
-        assert mthd != null : method;
-        arguments = ArrayUtilities.concat(Object.class, instance, arguments);
       }
     }
     assert ReflectionUtilities.isPublic(mthd) : mthd;

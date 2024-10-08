@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
@@ -119,13 +118,9 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   private boolean areTheseCloseEnough(SThing changedThing, SThing thing, Double proximity) {
-    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
-    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
+    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, SThing::getCollisionHull);
+    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, SThing::getCollisionHull);
     return changedHull.isWithinDistance(hull, proximity);
-  }
-
-  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
-    return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 
   @Override

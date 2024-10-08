@@ -59,7 +59,8 @@ import org.lgna.story.implementation.EntityImp;
  */
 public abstract class STurnable extends SThing {
   @Override
-  /* package-private */ abstract AbstractTransformableImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract AbstractTransformableImp getImplementation();
 
   public Boolean isFacing(SThing other) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(other, 0);

@@ -72,13 +72,6 @@ public class ArrayUtilities {
     return rv;
   }
 
-  public static <E> E[] concat(Class<E> cls, E[] as, E b) {
-    E[] rv = (E[]) Array.newInstance(cls, as.length + 1);
-    System.arraycopy(as, 0, rv, 0, as.length);
-    rv[as.length] = b;
-    return rv;
-  }
-
   public static <E> E[] concatArrays(Class<E> cls, E[]... arrays) {
     int totalLength = 0;
     for (E[] array : arrays) {

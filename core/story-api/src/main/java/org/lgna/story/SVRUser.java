@@ -103,7 +103,8 @@ public class SVRUser extends SMovableTurnable implements MutableRider {
   }
 
   @Override
-  VrUserImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public VrUserImp getImplementation() {
     return this.implementation;
   }
 

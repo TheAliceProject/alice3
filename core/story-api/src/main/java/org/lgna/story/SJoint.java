@@ -45,6 +45,7 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointArrayId;
@@ -64,7 +65,7 @@ public class SJoint extends SMovableTurnable {
     return mapToJointIdJointMap.getInitializingIfAbsent(jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
       @Override
       public SJoint initialize(SJointedModel jointedModel, JointId jointId) {
-        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
         return SJoint.getInstance(jointedModelImplementation, jointId);
       }
     });
@@ -74,7 +75,7 @@ public class SJoint extends SMovableTurnable {
     return mapToJointNameJointMap.getInitializingIfAbsent(jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
       @Override
       public SJoint initialize(SJointedModel jointedModel, String jointName) {
-        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
         return SJoint.getInstance(jointedModelImplementation, jointName);
       }
     });
@@ -95,7 +96,7 @@ public class SJoint extends SMovableTurnable {
 
   /* package-private */
   static SJoint[] getJointArray(SJointedModel jointedModel, JointArrayId jointArrayId) {
-    JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+    JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
     return getJointArray(jointedModel, jointedModelImplementation.getJointIdArray(jointArrayId));
   }
 
@@ -124,7 +125,8 @@ public class SJoint extends SMovableTurnable {
   }
 
   @Override
-  JointImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public JointImp getImplementation() {
     return this.implementation;
   }
 

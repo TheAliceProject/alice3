@@ -44,6 +44,7 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.CylinderImp;
 
 /**
@@ -53,7 +54,8 @@ public class SCylinder extends SShape {
   private final CylinderImp implementation = new CylinderImp(this);
 
   @Override
-    /* package-private */CylinderImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public CylinderImp getImplementation() {
     return this.implementation;
   }
 

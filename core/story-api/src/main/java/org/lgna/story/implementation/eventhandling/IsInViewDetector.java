@@ -47,7 +47,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import edu.cmu.cs.dennisc.math.Vector4;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
@@ -60,7 +59,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 public class IsInViewDetector {
 
   public static boolean isThisInView(SThing entity, CameraImp camera) {
-    EntityImp implementation = EmployeesOnly.getImplementation(entity);
+    EntityImp implementation = entity.getImplementation();
     Vector4[] points = implementation.getAxisAlignedMinimumBoundingBox().getVectors();
     Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox(camera).getPoints();
     Point[] awtPoints = new Point[points.length];

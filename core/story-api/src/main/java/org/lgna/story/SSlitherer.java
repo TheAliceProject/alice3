@@ -55,7 +55,8 @@ public class SSlitherer extends SJointedModel {
   private final SlithererImp implementation;
 
   @Override
-    /* package-private */SlithererImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SlithererImp getImplementation() {
     return this.implementation;
   }
 

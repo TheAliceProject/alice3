@@ -73,7 +73,6 @@ import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Color;
 import org.lgna.story.DurationAnimationStyleArgumentFactory;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
 import org.lgna.story.Orientation;
 import org.lgna.story.Paint;
@@ -286,7 +285,7 @@ public class SetUpMethodGenerator {
   }
 
   private static Expression getGetterExpressionForJoint(SJoint joint, UserInstance sceneInstance) {
-    JointImp jointImp = EmployeesOnly.getImplementation(joint);
+    JointImp jointImp = joint.getImplementation();
     SJointedModel jointedModel = getJointedModelForJointImp(jointImp);
     AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
     AbstractMethod getJointMethod = getJointGetterForJoint(entityField, jointImp.getJointId(), sceneInstance);
@@ -303,7 +302,7 @@ public class SetUpMethodGenerator {
         Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(entityField), jointGetter)});
         for (Object o : values) {
           if (o instanceof SJoint) {
-            JointImp gottenJoint = EmployeesOnly.getImplementation((SJoint) o);
+            JointImp gottenJoint = ((SJoint) o).getImplementation();
             if (gottenJoint.getJointId() == jointId) {
               return jointGetter;
             }
@@ -449,7 +448,7 @@ public class SetUpMethodGenerator {
               for (Object o : values) {
                 if (o instanceof SJoint) {
                   SJoint jointEntity = (SJoint) o;
-                  JointImp gottenJoint = EmployeesOnly.getImplementation(jointEntity);
+                  JointImp gottenJoint = jointEntity.getImplementation();
                   if (captureFullState || gottenJoint.isReoriented()) {
                     try {
                       Orientation orientation = jointEntity.getOrientationRelativeToVehicle();

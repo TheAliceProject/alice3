@@ -56,7 +56,8 @@ import org.lgna.story.implementation.ModelImp;
  */
 public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, VisualWithPaint {
   @Override
-  /* package-private */ abstract ModelImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract ModelImp getImplementation();
 
   @Override
   public void setVehicle(SThing vehicle) {

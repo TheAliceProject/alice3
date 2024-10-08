@@ -43,7 +43,6 @@
 
 package org.alice.stageide.program;
 
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.ide.IDE;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
@@ -73,8 +72,6 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.SJointedModel;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.event.ArrowKeyPressListener;
@@ -94,7 +91,6 @@ import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.ProgramImp;
-import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Dennis Cosgrove
@@ -132,8 +128,6 @@ public abstract class ProgramContext {
     this.vm.registerAbstractClassAdapter(OcclusionStartListener.class, StartOcclusionEventAdapter.class);
     this.vm.registerAbstractClassAdapter(OcclusionEndListener.class, EndOcclusionEventAdapter.class);
     this.vm.registerAbstractClassAdapter(TimeListener.class, TimerEventAdapter.class);
-
-    vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
 
     UserProgramRunningStateUtilities.setUserProgramRunning(true);
     this.programInstance = this.createProgramInstance(programType);

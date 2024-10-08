@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -86,9 +85,9 @@ public class MoveAndOrientToEdit extends AbstractEdit {
   @Override
   protected void doOrRedoInternal(boolean isDo) {
     if ((this.toMove != null) && (this.target != null)) {
-      this.transformable = EmployeesOnly.getImplementation(this.toMove);
+      this.transformable = this.toMove.getImplementation();
       this.m = this.transformable.getAbsoluteTransformation();
-      EntityImp targetImp = EmployeesOnly.getImplementation(this.target);
+      EntityImp targetImp = this.target.getImplementation();
       AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
       this.transformable.animateTransformation(AsSeenBy.SCENE, targetTransform);
     } else {

@@ -56,7 +56,8 @@ import org.lgna.story.resources.JointedModelResource;
  */
 public abstract class SJointedModel extends SModel {
   @Override
-  /* package-private */ abstract JointedModelImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract JointedModelImp getImplementation();
 
   //todo: make protected
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
@@ -96,7 +97,7 @@ public abstract class SJointedModel extends SModel {
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-  protected void setJointedModelResource(JointedModelResource resource) {
+  public void setJointedModelResource(JointedModelResource resource) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(resource, 0);
     this.getImplementation().setNewResource(resource);
   }

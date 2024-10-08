@@ -102,9 +102,7 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
-import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.STurnable;
 import org.lgna.story.SVRHand;
@@ -200,7 +198,6 @@ public abstract class StageIDE extends IDE {
   @Override
   protected void registerAdaptersForSceneEditorVm(VirtualMachine vm) {
     vm.registerAbstractClassAdapter(SScene.class, SceneAdapter.class);
-    vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
   }
 
   @Override

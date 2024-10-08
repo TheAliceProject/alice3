@@ -57,7 +57,6 @@ import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointedModelResource;
@@ -123,7 +122,7 @@ public class FieldInitializerInstanceCreationArgument0State extends StandardExpr
     // update Scene Editor
     StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
     SJointedModel model = sceneEditor.getInstanceInJavaVMForField(this.field, SJointedModel.class);
-    JointedModelImp<?, ?> imp = EmployeesOnly.getImplementation(model);
+    JointedModelImp<?, ?> imp = model.getImplementation();
 
     VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
     UserInstance userInstance = null;

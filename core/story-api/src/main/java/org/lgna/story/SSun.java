@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.SunImp;
 
 /**
@@ -52,7 +54,8 @@ import org.lgna.story.implementation.SunImp;
   private final SunImp implementation = new SunImp(this);
 
   @Override
-    /* package-private */SunImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SunImp getImplementation() {
     return this.implementation;
   }
 

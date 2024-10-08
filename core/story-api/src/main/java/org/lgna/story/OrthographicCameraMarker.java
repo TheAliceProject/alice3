@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 
 /**
@@ -52,7 +54,8 @@ public class OrthographicCameraMarker extends CameraMarker {
   private final OrthographicCameraMarkerImp implementation = new OrthographicCameraMarkerImp(this);
 
   @Override
-    /* package-private */OrthographicCameraMarkerImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public OrthographicCameraMarkerImp getImplementation() {
     return this.implementation;
   }
 

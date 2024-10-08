@@ -45,6 +45,7 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.DiscImp;
 
 /**
@@ -54,7 +55,8 @@ public class SDisc extends SShape {
   private final DiscImp implementation = new DiscImp(this);
 
   @Override
-    /* package-private */DiscImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public DiscImp getImplementation() {
     return this.implementation;
   }
 

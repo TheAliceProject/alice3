@@ -56,6 +56,7 @@ public class SVRHeadset extends SThing {
   }
 
   @Override
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public VrHeadsetImp getImplementation() {
     return implementation;
   }

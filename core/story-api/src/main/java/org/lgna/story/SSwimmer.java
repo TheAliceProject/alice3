@@ -53,7 +53,8 @@ public class SSwimmer extends SJointedModel {
   private final SwimmerImp implementation;
 
   @Override
-    /* package-private */SwimmerImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SwimmerImp getImplementation() {
     return this.implementation;
   }
 
