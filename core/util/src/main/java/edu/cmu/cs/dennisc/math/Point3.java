@@ -133,4 +133,16 @@ public final class Point3 extends Tuple3 {
   public MPoint3 createImmutable() {
     return new MPoint3(this.x, this.y, this.z);
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Point3 immutable() {
+    return new org.alice.math.immutable.Point3(x, y, z);
+  }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Vector3 immutableVector() {
+    return new org.alice.math.immutable.Vector3(x, y, z);
+  }
 }

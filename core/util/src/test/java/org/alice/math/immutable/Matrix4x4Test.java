@@ -104,8 +104,23 @@ class Matrix4x4Test {
   }
 
   @Test
+  void conversionToMutableShouldBeIdempotent() {
+    edu.cmu.cs.dennisc.math.AbstractMatrix4x4 mutable = A1.mutable();
+    Matrix4x4 twiceConverted = mutable.immutable();
+    assertEquals(A1, twiceConverted, "Matrix should be the same");
+  }
+
+  @Test
   void conversionToMutableShouldBeAffine() {
     edu.cmu.cs.dennisc.math.AbstractMatrix4x4 mutable = A1.mutable();
     assertInstanceOf(edu.cmu.cs.dennisc.math.AffineMatrix4x4.class, mutable, "Matrix should be Affine");
+  }
+
+  @Test
+  void conversionToMutableAndTwiceInvertedShouldBeIdempotent() {
+    edu.cmu.cs.dennisc.math.AffineMatrix4x4 mutable = A1.mutable();
+    mutable.invert().invert();
+    Matrix4x4 twiceConverted = mutable.immutable();
+    assertTrue(A1.isWithinReasonableEpsilonOf(twiceConverted), "Matrix should be the same");
   }
 }

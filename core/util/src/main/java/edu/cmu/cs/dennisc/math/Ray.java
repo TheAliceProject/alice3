@@ -197,4 +197,10 @@ public final class Ray {
     sb.append("]");
     return sb.toString();
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Ray immutable() {
+    return new org.alice.math.immutable.Ray(origin.immutable(), direction.immutable());
+  }
 }

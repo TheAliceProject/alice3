@@ -105,4 +105,20 @@ class Matrix3x3Test {
     Matrix3x3 product = i1.times(i2);
     assertTrue(product.isIdentity(), "Matrix should be identity");
   }
+
+  @Test
+  void conversionToMutableShouldBeIdempotent() {
+    edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mutable = M1.mutable();
+    Matrix3x3 twiceConverted = mutable.immutable();
+    assertEquals(M1, twiceConverted, "Matrix should be the same");
+  }
+
+  @Test
+  void conversionToMutableAndTwiceInvertedShouldBeIdempotent() {
+    edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mutable = M1.mutable();
+    mutable.invert();
+    mutable.invert();
+    Matrix3x3 twiceConverted = mutable.immutable();
+    assertTrue(M1.isWithinReasonableEpsilonOf(twiceConverted), "Matrix should be the same");
+  }
 }

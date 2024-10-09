@@ -100,4 +100,10 @@ public final class Vector4 extends Tuple4 {
   public static Vector4 createNormalized(Tuple4 a) {
     return (Vector4) setReturnValueToNormalized(new Vector4(), a);
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Vector4 immutable() {
+    return new org.alice.math.immutable.Vector4(x, y, z, w);
+  }
 }
