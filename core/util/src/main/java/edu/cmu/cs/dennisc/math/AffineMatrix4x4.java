@@ -909,6 +909,12 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     return new MAffineMatrix4x4(this.orientation.createImmutable(), this.translation.createImmutable());
   }
 
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.AffineMatrix4x4 immutable() {
+    return new org.alice.math.immutable.AffineMatrix4x4(orientation.immutable(), translation.immutableVector());
+  }
+
   private static DecimalFormat format = new DecimalFormat("0.000");
 
   public String displayString() {

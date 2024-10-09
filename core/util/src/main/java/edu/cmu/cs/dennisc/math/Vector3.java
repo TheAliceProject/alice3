@@ -244,6 +244,12 @@ public class Vector3 extends Tuple3 {
     return new MVector3(this.x, this.y, this.z);
   }
 
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Vector3 immutable() {
+    return new org.alice.math.immutable.Vector3(x, y, z);
+  }
+
   //
   //  public VectorD3() {
   //  }
