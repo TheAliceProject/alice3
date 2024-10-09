@@ -331,7 +331,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     // get the position relative to the camera, first.
     Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
     // 3d -> 2d conversion
-    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos, camera);
+    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos.immutable(), camera);
 
   }
 

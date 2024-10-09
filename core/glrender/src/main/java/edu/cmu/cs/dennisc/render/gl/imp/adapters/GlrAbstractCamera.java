@@ -45,8 +45,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.Graphics2D;
 import edu.cmu.cs.dennisc.render.RenderTarget;
@@ -55,6 +53,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
 
 import java.awt.Rectangle;
 

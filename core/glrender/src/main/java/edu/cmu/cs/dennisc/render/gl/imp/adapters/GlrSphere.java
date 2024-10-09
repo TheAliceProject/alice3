@@ -43,13 +43,13 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -62,20 +62,18 @@ public class GlrSphere extends GlrShape<Sphere> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     //assuming ray unit length
     Point3 origin = new Point3(0, 0, 0);
-    Vector3 dst = Vector3.createSubtraction(ray.accessOrigin(), origin);
-    double b = Vector3.calculateDotProduct(dst, ray.accessDirection());
-    double c = Vector3.calculateDotProduct(dst, dst) - this.radius;
+    Vector3 dst = ray.origin().minus(origin);
+    double b = dst.dotProduct(ray.direction());
+    double c = dst.dotProduct(dst) - this.radius;
     double d = (b * b) - c;
     if (d > 0) {
       double t = -b - Math.sqrt(d);
-      ray.getPointAlong(rv, t);
-    } else {
-      rv.setNaN();
+      return ray.getPointAlong(t);
     }
-    return rv;
+    return Point3.NaN;
   }
 
   @Override

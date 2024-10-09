@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -54,6 +53,7 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.scenegraph.event.BoundEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.BoundListener;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -78,12 +78,11 @@ public abstract class Geometry extends Element {
     boundingSphere.set(g.boundingSphere);
   }
 
-  public AffineMatrix4x4 getPlane(AffineMatrix4x4 rv) {
+  public AffineMatrix4x4 getPlane(AffineMatrix4x4 matrix) {
     Vector3 forward = new Vector3();
     Vector3 upGuide = new Vector3();
-    updatePlane(forward, upGuide, rv.translation);
-    rv.orientation.setValue(new ForwardAndUpGuide(forward, upGuide));
-    return rv;
+    updatePlane(forward, upGuide, matrix.translation().mutablePoint());
+    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).createOrthogonalMatrix3x3().immutable(), matrix.translation());
   }
 
   public abstract void transform(AbstractMatrix4x4 trans);

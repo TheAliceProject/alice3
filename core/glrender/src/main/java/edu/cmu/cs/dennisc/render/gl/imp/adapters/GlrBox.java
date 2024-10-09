@@ -45,14 +45,13 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2ES3.GL_QUADS;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.scenegraph.Box;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,41 +148,43 @@ public class GlrBox extends GlrShape<Box> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    Point3 origin = new Point3(0, 0, 0);
-    Vector3 direction = new Vector3(0, 0, 0);
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
+    double oX = 0;
+    double oY = 0;
+    double oZ = 0;
+    double dX = 0;
+    double dY = 0;
+    double dZ = 0;
     switch (subElement) {
       case 0 -> {
-        origin.x = this.xMin;
-        direction.x = -1;
+        oX = this.xMin;
+        dX = -1;
       }
       case 1 -> {
-        origin.x = this.xMax;
-        direction.x = 1;
+        oX = this.xMax;
+        dX = 1;
       }
       case 2 -> {
-        origin.y = this.yMin;
-        direction.y = -1;
+        oY = this.yMin;
+        dY = -1;
       }
       case 3 -> {
-        origin.y = this.yMax;
-        direction.y = 1;
+        oY = this.yMax;
+        dY = 1;
       }
       case 4 -> {
-        origin.z = this.zMin;
-        direction.z = -1;
+        oZ = this.zMin;
+        dZ = -1;
       }
       case 5 -> {
-        origin.z = this.zMax;
-        direction.z = 1;
+        oZ = this.zMax;
+        dZ = 1;
       }
       default -> {
-        rv.setNaN();
-        return rv;
+        return Point3.NaN;
       }
     }
-    GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
-    return rv;
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, oX, oY, oZ, dX, dY, dZ);
   }
 
   @Override

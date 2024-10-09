@@ -361,7 +361,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
 
       Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
-      Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
+      Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
       RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
     } finally {
       CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());

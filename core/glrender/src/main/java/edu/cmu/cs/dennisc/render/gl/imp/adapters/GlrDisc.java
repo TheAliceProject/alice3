@@ -43,12 +43,12 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.Disc;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 /**
  * @author Dennis Cosgrove
@@ -79,8 +79,8 @@ public class GlrDisc extends GlrShape<Disc> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, 0, 1, 0);
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, 0, 1, 0);
   }
 
   @Override
