@@ -43,13 +43,12 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 /**
  * @author Dennis Cosgrove
@@ -62,18 +61,21 @@ public class GlrTorus extends GlrShape<Torus> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     //todo: solve for intersection with actual torus as opposed to just the plane
-    Vector3 direction = new Vector3(0, 0, 0);
     Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+    double dirX = 0;
+    double dirY = 0;
+    double dirZ = 0;
+
     if (coordinatePlane == Torus.CoordinatePlane.XY) {
-      direction.z = 1;
+      dirZ = 1;
     } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-      direction.x = 1;
+      dirX = 1;
     } else {
-      direction.y = 1;
+      dirY = 1;
     }
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z);
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, dirX, dirY, dirZ);
   }
 
   @Override

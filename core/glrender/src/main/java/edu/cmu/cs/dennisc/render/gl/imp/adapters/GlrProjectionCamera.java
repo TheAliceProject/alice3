@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.ProjectionCamera;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
 
 import java.awt.Rectangle;
 import java.nio.DoubleBuffer;

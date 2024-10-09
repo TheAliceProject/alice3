@@ -45,11 +45,15 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 import java.awt.Rectangle;
 
@@ -77,10 +81,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double y = bottom + ((top - bottom) * yPortion);
     double z = near;
 
-    Ray rv = new Ray();
-    rv.setOrigin(x, y, z);
-    rv.setDirection(0, 0, -1);
-    return rv;
+    return new Ray(new Point3(x, y, z), new Vector3(0, 0, -1));
   }
 
   @Override
@@ -93,18 +94,13 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double near = owner.nearClippingPlaneDistance.getValue();
     double far = owner.farClippingPlaneDistance.getValue();
 
-    Matrix4x4 rv = new Matrix4x4();
-    rv.setIdentity();
-
-    rv.right.x = 2 / (right - left);
-    rv.up.y = 2 / (top - bottom);
-    rv.backward.z = -2 / (far - near);
-
-    rv.translation.x = -(right + left) / (right - left);
-    rv.translation.y = -(top + bottom) / (top - bottom);
-    rv.translation.z = -(far + near) / (far - near);
-
-    return rv;
+    return new AffineMatrix4x4(new Matrix3x3(
+        new Vector3(2 / (right - left), 0, 0),
+        new Vector3(0, 2 / (top - bottom), 0),
+        new Vector3(0, 0, -2 / (far - near))
+        ), new Vector3(-(right + left) / (right - left),
+                      -(top + bottom) / (top - bottom),
+                      -(far + near) / (far - near)));
   }
 
   @Override

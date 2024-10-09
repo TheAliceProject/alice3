@@ -42,13 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.*;
 import java.util.List;
@@ -108,18 +107,18 @@ public interface RenderTarget {
   void clearUnusedTextures();
 
   //todo: remove?
-  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
+  org.alice.math.immutable.Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
   MRectangleI getActualViewport(AbstractCamera sgCamera);
 
   Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
 
-  public Vector4 transformFromViewportToCamera(Vector4 xyzw, AbstractCamera sgCamera);
-  public Vector4 transformFromCameraToViewport(Vector4 xyzw, AbstractCamera sgCamera);
+  Vector4 transformFromViewportToCamera(Vector4 xyzw, AbstractCamera sgCamera);
+  Vector4 transformFromCameraToViewport(Vector4 xyzw, AbstractCamera sgCamera);
 
 
   // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
   // where we need to know what's actually showing in the ui
-  public Point transformFromCameraToAWT(Vector4 xyzw, AbstractCamera sgCamera);
-  public Point transformFromCameraToAWT(Point3 xyzw, AbstractCamera sgCamera);
+  Point transformFromCameraToAWT(Vector4 xyzw, AbstractCamera sgCamera);
+  Point transformFromCameraToAWT(Point3 xyzw, AbstractCamera sgCamera);
 }

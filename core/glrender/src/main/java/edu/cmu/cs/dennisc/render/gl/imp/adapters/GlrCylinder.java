@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -109,7 +109,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     double bottomValue;
     double topValue;
     switch (originAlignment) {
@@ -133,35 +133,42 @@ public class GlrCylinder extends GlrShape<Cylinder> {
 
     Point3 cylinderPosition = new Point3(0, 0, 0);
     Vector3 cylinderDirection = new Vector3(0, 0, 0);
-
     Point3 cylinderTopPosition = new Point3(0, 0, 0);
-    if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_X) {
-      cylinderDirection.x = 1;
-      cylinderPosition.x = bottomValue;
-      cylinderTopPosition.x = topValue;
-    } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Y) {
-      cylinderDirection.y = 1;
-      cylinderPosition.y = bottomValue;
-      cylinderTopPosition.y = topValue;
-    } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Z) {
-      cylinderDirection.z = 1;
-      cylinderPosition.z = bottomValue;
-      cylinderTopPosition.z = topValue;
-    } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_X) {
-      cylinderDirection.x = -1;
-      cylinderPosition.x = -bottomValue;
-      cylinderTopPosition.x = -topValue;
-    } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Y) {
-      cylinderDirection.y = -1;
-      cylinderPosition.y = -bottomValue;
-      cylinderTopPosition.y = -topValue;
-    } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Z) {
-      cylinderDirection.z = -1;
-      cylinderPosition.z = -bottomValue;
-      cylinderTopPosition.z = -topValue;
-    } else {
-      //todo?
-      throw new RuntimeException();
+
+    switch (bottomToTopAxis) {
+      case POSITIVE_X -> {
+        cylinderPosition = new Point3(bottomValue, 0, 0);
+        cylinderDirection = new Vector3(1, 0, 0);
+        cylinderTopPosition = new Point3(topValue, 0, 0);
+      }
+      case POSITIVE_Y -> {
+        cylinderPosition = new Point3(0, bottomValue, 0);
+        cylinderDirection = new Vector3(0, 1, 0);
+        cylinderTopPosition = new Point3(0, topValue, 0);
+      }
+      case POSITIVE_Z -> {
+        cylinderPosition = new Point3(0, 0, bottomValue);
+        cylinderDirection = new Vector3(0, 0, 1);
+        cylinderTopPosition = new Point3(0, 0, topValue);
+      }
+      case NEGATIVE_X -> {
+        cylinderPosition = new Point3(-bottomValue, 0, 0);
+        cylinderDirection = new Vector3(-1, 0, 0);
+        cylinderTopPosition = new Point3(-topValue, 0, 0);
+      }
+      case NEGATIVE_Y -> {
+        cylinderPosition = new Point3(0, -bottomValue, 0);
+        cylinderDirection = new Vector3(0, -1, 0);
+        cylinderTopPosition = new Point3(0, -topValue, 0);
+      }
+      case NEGATIVE_Z -> {
+        cylinderPosition = new Point3(0, 0, -bottomValue);
+        cylinderDirection = new Vector3(0, 0, -1);
+        cylinderTopPosition = new Point3(0, 0, -topValue);
+      }
+      default ->
+        //todo?
+          throw new RuntimeException();
     }
     double maxRadius = Math.max(this.bottomRadius, this.topRadius);
     m.transform(cylinderPosition);
@@ -171,21 +178,21 @@ public class GlrCylinder extends GlrShape<Cylinder> {
     double t = Double.NaN;
     final double THRESHOLD = 0.01;
     if (HANDLE_CONES_SEPARATELY && (Math.abs(this.bottomRadius - this.topRadius) < THRESHOLD)) {
-      Vector3 originToOrigin = Vector3.createSubtraction(ray.accessOrigin(), cylinderPosition);
-      Vector3 rayDirection_X_cylinderDirection = Vector3.createCrossProduct(ray.accessDirection(), cylinderDirection);
+      Vector3 originToOrigin = ray.origin().minus(cylinderPosition);
+      Vector3 rayDirection_X_cylinderDirection = ray.direction().crossProduct(cylinderDirection);
 
-      double magnitude = rayDirection_X_cylinderDirection.calculateMagnitude();
+      double magnitude = rayDirection_X_cylinderDirection.magnitude();
 
       if (magnitude > EpsilonUtilities.REASONABLE_EPSILON) {
-        rayDirection_X_cylinderDirection.normalize();
-        double d = Math.abs(Vector3.calculateDotProduct(originToOrigin, rayDirection_X_cylinderDirection));
+        rayDirection_X_cylinderDirection = rayDirection_X_cylinderDirection.normalized();
+        double d = Math.abs(originToOrigin.dotProduct(rayDirection_X_cylinderDirection));
         if (d <= maxRadius) {
-          Vector3 originToOrigin_X_cylinderDirection = Vector3.createCrossProduct(originToOrigin, cylinderDirection);
-          double a = -Vector3.calculateDotProduct(originToOrigin_X_cylinderDirection, rayDirection_X_cylinderDirection) / magnitude;
+          Vector3 originToOrigin_X_cylinderDirection = originToOrigin.crossProduct(cylinderDirection);
+          double a = -originToOrigin_X_cylinderDirection.dotProduct(rayDirection_X_cylinderDirection) / magnitude;
 
-          Vector3 rayDirection_X_CylinderDirection___X_cylinderDirection = Vector3.createCrossProduct(rayDirection_X_cylinderDirection, cylinderDirection);
-          rayDirection_X_CylinderDirection___X_cylinderDirection.normalize();
-          double b = Math.abs(Math.sqrt((maxRadius * maxRadius) - (d * d)) / Vector3.calculateDotProduct(ray.accessDirection(), rayDirection_X_CylinderDirection___X_cylinderDirection));
+          Vector3 rayDirection_X_CylinderDirection___X_cylinderDirection = rayDirection_X_cylinderDirection.crossProduct(cylinderDirection);
+          rayDirection_X_CylinderDirection___X_cylinderDirection = rayDirection_X_CylinderDirection___X_cylinderDirection.normalized();
+          double b = Math.abs(Math.sqrt((maxRadius * maxRadius) - (d * d)) / ray.direction().dotProduct(rayDirection_X_CylinderDirection___X_cylinderDirection));
 
           t = a - b;
         }
@@ -193,41 +200,21 @@ public class GlrCylinder extends GlrShape<Cylinder> {
     } else {
       //todo handle cones
     }
-    if (Double.isNaN(t)) {
-      rv.setNaN();
-    } else {
-      ray.getPointAlong(rv, t);
-    }
+    Point3 p = Double.isNaN(t) ? Point3.NaN : ray.getPointAlong(t);
 
-    if (rv.isNaN()) {
+    if (p.isNaN()) {
       //todo: check to see if hit cap
-      Point3 pTopCap;
-      Point3 pBottomCap;
-      if (this.hasBottomCap && (this.bottomRadius > 0)) {
-        pBottomCap = new Point3();
-        GlrGeometry.getIntersectionInSourceFromPlaneInLocal(pBottomCap, ray, m, cylinderPosition, cylinderDirection);
-      } else {
-        pBottomCap = null;
+      Point3 pBottomCap = hasBottomCap && (bottomRadius > 0) ? GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, cylinderPosition, cylinderDirection) : null;
+      Point3 pTopCap = hasTopCap && (topRadius > 0) ? GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, cylinderTopPosition, cylinderDirection) : null;
+      if (pBottomCap != null && (p.isNaN() || (p.z() > pBottomCap.z()))) {
+        return pBottomCap;
       }
-      if (this.hasTopCap && (this.topRadius > 0)) {
-        pTopCap = new Point3();
-        GlrGeometry.getIntersectionInSourceFromPlaneInLocal(pTopCap, ray, m, cylinderTopPosition, cylinderDirection);
-      } else {
-        pTopCap = null;
-      }
-      if (pBottomCap != null) {
-        if (rv.isNaN() || (rv.z > pBottomCap.z)) {
-          rv.set(pBottomCap);
-        }
-      }
-      if (pTopCap != null) {
-        if (rv.isNaN() || (rv.z > pTopCap.z)) {
-          rv.set(pTopCap);
-        }
+      if (pTopCap != null && (p.isNaN() || (p.z() > pTopCap.z()))) {
+        return pTopCap;
       }
     }
 
-    return rv;
+    return p;
   }
 
   @Override

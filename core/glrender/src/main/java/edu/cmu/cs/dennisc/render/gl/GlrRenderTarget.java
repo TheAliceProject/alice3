@@ -45,10 +45,6 @@ package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
 import edu.cmu.cs.dennisc.pattern.AbstractReleasable;
 import edu.cmu.cs.dennisc.render.*;
@@ -58,6 +54,10 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.*;
 import java.util.List;
@@ -190,9 +190,7 @@ import java.util.List;
       final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
       return cameraAdapter.getRayAtPixel(xPixel, yPixel, viewport);
     }
-    Ray rv = new Ray();
-    rv.setNaN();
-    return rv;
+    return Ray.NaN;
   }
 
   @Override
@@ -254,14 +252,14 @@ import java.util.List;
    *
    */
 
-  private  Vector4 transformFromAWTToViewport(Point p, double z, Rectangle actualViewport) {
+  private Vector4 transformFromAWTToViewport(Point p, double z, Rectangle actualViewport) {
     final int y = actualViewport.height - p.y;
     return new Vector4(p.x, y, z, 1);
   }
 
   private  Point transformFromViewportToAWT(Vector4 xyzw, Rectangle actualViewport) {
-    final int x = (int) (xyzw.x / xyzw.w);
-    final int y = actualViewport.height - (int) (xyzw.y / xyzw.w);
+    final int x = (int) (xyzw.x() / xyzw.w());
+    final int y = actualViewport.height - (int) (xyzw.y() / xyzw.w());
     return new Point(x, y);
   }
 
@@ -283,89 +281,73 @@ import java.util.List;
     }
   }
 
-  private Vector4 transformFromViewportToProjection_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport) {
-    rv.multiply(1.0 / rv.w);
+  private Vector4 transformFromViewportToProjection_AffectReturnValuePassedIn(Vector4 viewportCoord, AbstractCamera sgCamera, Rectangle actualViewport) {
+    Vector4 scaled = viewportCoord.dividedBy(viewportCoord.w());
 
-    rv.x = (rv.x - actualViewport.x) / actualViewport.width;
-    rv.y = (rv.y - actualViewport.y) / actualViewport.height;
+    double x = (scaled.x() - actualViewport.x) / actualViewport.width;
+    double y = (scaled.y() - actualViewport.y) / actualViewport.height;
 
     double zNear = getNear(sgCamera);
     double zFar = getFar(sgCamera);
-    rv.z = (rv.z - zNear) / (zFar - zNear);
+    double z = (scaled.z() - zNear) / (zFar - zNear);
 
-    rv.x = (rv.x * 2.0) - 1.0;
-    rv.y = (rv.y * 2.0) - 1.0;
-    rv.z = (rv.z * 2.0) - 1.0;
-
-    return rv;
+    return new Vector4((x * 2.0) - 1.0, (y * 2.0) - 1.0, (z * 2.0) - 1.0, 1.0);
   }
 
-  private Vector4 transformFromProjectionToViewport_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport) {
-    rv.multiply(1.0 / rv.w);
+  private Vector4 transformFromProjectionToViewport_AffectReturnValuePassedIn(Vector4 projectionCoord, AbstractCamera sgCamera, Rectangle actualViewport) {
+    Vector4 scaled = projectionCoord.dividedBy(projectionCoord.w());
 
-    rv.x = (rv.x * 0.5) + 0.5;
-    rv.y = (rv.y * 0.5) + 0.5;
-    rv.z = (rv.z * 0.5) + 0.5;
+    double x = (scaled.x() * 0.5) + 0.5;
+    double y = (scaled.y() * 0.5) + 0.5;
+    double z = (scaled.z() * 0.5) + 0.5;
 
-    rv.x = (rv.x * actualViewport.width) + actualViewport.x;
-    rv.y = (rv.y * actualViewport.height) + actualViewport.y;
+    x = (x * actualViewport.width) + actualViewport.x;
+    y = (y * actualViewport.height) + actualViewport.y;
     double zNear = getNear(sgCamera);
     double zFar = getFar(sgCamera);
-    rv.z = (rv.z * (zFar - zNear)) + zNear;
+    z = (z * (zFar - zNear)) + zNear;
 
-    return rv;
+    return new Vector4(x, y, z, 1.0);
   }
 
-  private  Vector4 transformFromProjectionToCamera_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera) {
-    rv.multiply(1.0 / rv.w);
-    Matrix4x4 actualMatrix = getActualProjectionMatrix(sgCamera);
-    actualMatrix.invert();
-    actualMatrix.transform(rv);
-    return rv;
+  private  Vector4 transformFromProjectionToCamera_AffectReturnValuePassedIn(Vector4 projectionCoord, AbstractCamera sgCamera) {
+    Vector4 scaled = projectionCoord.dividedBy(projectionCoord.w());
+    return getActualProjectionMatrix(sgCamera).invert().transform(scaled);
   }
 
-  private  Vector4 transformFromCameraToProjection_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera) {
-    rv.multiply(1.0 / rv.w);
-    Matrix4x4 actualMatrix = getActualProjectionMatrix(sgCamera);
-    actualMatrix.transform(rv);
-    return rv;
+  private  Vector4 transformFromCameraToProjection_AffectReturnValuePassedIn(Vector4 camCoord, AbstractCamera sgCamera) {
+    Vector4 scaled = camCoord.dividedBy(camCoord.w());
+    return getActualProjectionMatrix(sgCamera).transform(scaled);
   }
 
-  private  Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport) {
-    transformFromViewportToProjection_AffectReturnValuePassedIn(rv, sgCamera, actualViewport);
-    transformFromProjectionToCamera_AffectReturnValuePassedIn(rv, sgCamera);
-    return rv;
+  private  Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn(Vector4 viewportCoord, AbstractCamera sgCamera, Rectangle actualViewport) {
+    Vector4 projectionCoord = transformFromViewportToProjection_AffectReturnValuePassedIn(viewportCoord, sgCamera, actualViewport);
+    return transformFromProjectionToCamera_AffectReturnValuePassedIn(projectionCoord, sgCamera);
   }
 
-  private  Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn(Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport) {
-    transformFromCameraToProjection_AffectReturnValuePassedIn(rv, sgCamera);
-    transformFromProjectionToViewport_AffectReturnValuePassedIn(rv, sgCamera, actualViewport);
-    return rv;
+  private  Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn(Vector4 camCoord, AbstractCamera sgCamera, Rectangle actualViewport) {
+    Vector4 projectionCoord = transformFromCameraToProjection_AffectReturnValuePassedIn(camCoord, sgCamera);
+    return transformFromProjectionToViewport_AffectReturnValuePassedIn(projectionCoord, sgCamera, actualViewport);
   }
 
   public Vector4 transformFromViewportToCamera(Vector4 xyzw, AbstractCamera sgCamera) {
-    Vector4 rv = new Vector4(xyzw);
     final Rectangle actualViewport = getActualViewportAsAwtRectangle(sgCamera);
-    transformFromViewportToCamera_AffectReturnValuePassedIn(rv,  sgCamera, actualViewport);
-    return rv;
+    return transformFromViewportToCamera_AffectReturnValuePassedIn(xyzw,  sgCamera, actualViewport);
   }
 
   public Vector4 transformFromCameraToViewport(Vector4 xyzw, AbstractCamera sgCamera) {
-    Vector4 rv = new Vector4(xyzw);
     final Rectangle actualViewport = getActualViewportAsAwtRectangle(sgCamera);
-    transformFromCameraToViewport_AffectReturnValuePassedIn(rv,  sgCamera, actualViewport);
-    return rv;
+    return transformFromCameraToViewport_AffectReturnValuePassedIn(xyzw,  sgCamera, actualViewport);
   }
 
   public Point transformFromCameraToAWT(Vector4 xyzw, AbstractCamera sgCamera) {
     final Rectangle actualViewport = getActualViewportAsAwtRectangle(sgCamera);
-    Vector4 viewportPos = new Vector4(xyzw);
-    transformFromCameraToViewport_AffectReturnValuePassedIn(viewportPos,  sgCamera, actualViewport);
-    return transformFromViewportToAWT(viewportPos, actualViewport);
+    Vector4 viewportCoord = transformFromCameraToViewport_AffectReturnValuePassedIn(xyzw,  sgCamera, actualViewport);
+    return transformFromViewportToAWT(viewportCoord, actualViewport);
   }
 
-  public  Point transformFromCameraToAWT(Point3 xyzw,  AbstractCamera sgCamera) {
-    return transformFromCameraToAWT(new Vector4(xyzw.x, xyzw.y, xyzw.z, 1.0), sgCamera);
+  public  Point transformFromCameraToAWT(Point3 xyzw, AbstractCamera sgCamera) {
+    return transformFromCameraToAWT(new Vector4(xyzw.x(), xyzw.y(), xyzw.z(), 1.0), sgCamera);
   }
   private final GlrRenderFactory glrRenderer;
   private final RenderCapabilities requestedCapabilities;

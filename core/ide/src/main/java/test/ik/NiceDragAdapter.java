@@ -116,7 +116,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
   }
 
   private Point3 getPointInPlane(Plane plane, int xPixel, int yPixel) {
-    Ray ray = getOnscreenRenderTarget().getRayAtPixel(xPixel, yPixel, m_sgCamera);
+    Ray ray = getOnscreenRenderTarget().getRayAtPixel(xPixel, yPixel, m_sgCamera).mutable();
     AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
     ray.transform(m);
     double t = plane.intersect(ray);
@@ -142,7 +142,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
       this.yDelta = 0.0;
     } else {
       if (m_sgDragAcceptor != null) {
-        Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera);
+        Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera).mutable();
         ray.transform(m_sgCamera.getAbsoluteTransformation());
         double t = m_planeInAbsolute.intersect(ray);
         m_xyzInAbsoluteAtPress = ray.getPointAlong(t);

@@ -62,7 +62,6 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -70,6 +69,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
 
 import java.util.Comparator;
 import java.util.List;
@@ -170,7 +170,7 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   private double negativeDistanceFromCameraSquared(Component comp) {
-    return 0.0 - Point3.calculateDistanceSquaredBetween(cameraPosition, comp.getAbsoluteTransformation().translation);
+    return 0.0 - cameraPosition.distanceSquaredFrom(comp.getAbsoluteTransformation().translation);
   }
 
   @Override
@@ -194,7 +194,7 @@ public class GlrScene extends GlrComposite<Scene> {
     rc.gl.glMatrixMode(GL_MODELVIEW);
     synchronized (cameraAdapter) {
       rc.gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
-      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation;
+      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation.immutable();
     }
 
     if (backgroundAdapter == null) {

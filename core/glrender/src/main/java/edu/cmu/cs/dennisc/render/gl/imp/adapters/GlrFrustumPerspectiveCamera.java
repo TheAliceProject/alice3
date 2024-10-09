@@ -45,11 +45,13 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
+import org.alice.math.immutable.FullMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.Rectangle;
 
@@ -73,13 +75,11 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<Fr
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
 
-    Matrix4x4 rv = new Matrix4x4();
-    rv.right.set(2 * zNear, 0, 0, 0);
-    rv.up.set(0, (2 * zNear) / (top - bottom), 0, 0);
-    rv.backward.set((right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear), -1);
-    rv.translation.set(0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0);
-
-    return rv;
+    return new FullMatrix4x4(
+        new Vector4(2 * zNear, 0, 0, 0),
+        new Vector4(0, (2 * zNear) / (top - bottom), 0, 0),
+        new Vector4((right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear), -1),
+        new Vector4(0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0));
   }
 
   @Override

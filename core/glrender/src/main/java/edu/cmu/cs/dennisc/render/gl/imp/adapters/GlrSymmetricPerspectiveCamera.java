@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.FullMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.Rectangle;
 import java.nio.DoubleBuffer;
@@ -77,10 +79,7 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     //todo: optimize?
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
-
-    Vector3 direction = Vector3.createSubtraction(pNear, pFar);
-    //todo: remove?
-    direction.normalize();
+    Vector3 direction = pNear.minus(pFar).normalized();
 
     return new Ray(pNear, direction);
   }
@@ -89,19 +88,18 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
-    double fovx = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
-    double fovy = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double aspect = fovx / fovy;
-    double f = 1 / Math.tan(fovy / 2);
-    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovx));
-    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovy));
+    double fovX = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
+    double fovY = getActualVerticalViewingAngle(actualViewport).getAsRadians();
+    double aspect = fovX / fovY;
+    double f = 1 / Math.tan(fovY / 2);
+    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovX));
+    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovY));
 
-    Matrix4x4 rv = new Matrix4x4();
-    rv.right.set(f / aspect, 0, 0, 0);
-    rv.up.set(0, f, 0, 0);
-    rv.backward.set(0, 0, (zFar + zNear) / (zNear - zFar), -1);
-    rv.translation.set(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0);
-    return rv;
+    return new FullMatrix4x4(
+        new Vector4(f / aspect, 0, 0, 0),
+        new Vector4(0, f, 0, 0),
+        new Vector4(0, 0, (zFar + zNear) / (zNear - zFar), -1),
+        new Vector4(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0));
   }
 
   @Override
@@ -248,12 +246,9 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float zNear, float zFar) {
-
-    double[] projectionArray = new double[16];
-    DoubleBuffer projectionBuffer = DoubleBuffer.wrap(projectionArray);
     Matrix4x4 projection = getActualProjectionMatrix(actualViewport);
-    projection.getAsColumnMajorArray16(projectionArray);
-    context.gl.glMultMatrixd(projectionBuffer);
+    double[] projectionArray = projection.asColumnMajorArray16();
+    context.gl.glMultMatrixd(DoubleBuffer.wrap(projectionArray));
   }
 
   @Override

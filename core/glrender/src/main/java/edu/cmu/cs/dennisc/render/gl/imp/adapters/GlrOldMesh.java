@@ -54,13 +54,13 @@ import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.OldMesh;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -230,9 +230,8 @@ public class GlrOldMesh extends GlrGeometry<OldMesh> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    rv.setNaN();
-    return rv;
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
+    return Point3.NaN;
   }
 
   private double[] xyzs;

@@ -70,7 +70,7 @@ public abstract class PlanarProjectionDragAdapter extends OnscreenLookingGlassDr
     Point3 rv;
     AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel(p.x, p.y);
     if (sgCamera != null) {
-      Ray ray = getOnscreenRenderTarget().getRayAtPixel(p.x, p.y, sgCamera);
+      Ray ray = getOnscreenRenderTarget().getRayAtPixel(p.x, p.y, sgCamera).mutable();
       AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
       ray.transform(m);
       Plane planeInAbsolute = this.getPlaneInAbsolute();

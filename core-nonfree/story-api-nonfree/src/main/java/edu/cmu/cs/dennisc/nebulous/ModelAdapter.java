@@ -42,14 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector4;
 
 /**
  * @author Dennis Cosgrove
@@ -84,15 +85,14 @@ public class ModelAdapter<T extends Model> extends GenericModelAdapter<T> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    Vector3 direction = Vector3.createNegation(m.translation);
-    direction.y = 0.0;
-    if (direction.calculateMagnitudeSquared() == 0.0) {
-      rv.setNaN();
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
+    Vector4 direction = m.columnTranslation();
+    Vector3 flatDirection = new Vector3(direction.x(), 0, direction.z());
+    if (flatDirection.magnitudeSquared() == 0.0) {
+      return Point3.NaN;
     } else {
-      direction.normalize();
-      GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, 0, direction.z);
+      Vector3 normalized = flatDirection.normalized();
+      return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, normalized.x(), 0, normalized.z());
     }
-    return rv;
   }
 }

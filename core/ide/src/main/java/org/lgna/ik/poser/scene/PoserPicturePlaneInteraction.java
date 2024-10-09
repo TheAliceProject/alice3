@@ -110,7 +110,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   }
 
   private JointSelectionSphere calculateJointSelectionSphereAtPixel(int x, int y) {
-    Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel(x, y, this.getSgCamera());
+    Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel(x, y, this.getSgCamera()).mutable();
     double closest = Double.MAX_VALUE; //Integer.MAX_VALUE;
     JointSelectionSphere selected = null;
     for (JointSelectionSphere sphere : scene.getJointSelectionSpheres()) {

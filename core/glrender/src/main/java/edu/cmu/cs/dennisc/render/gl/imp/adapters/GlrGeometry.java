@@ -49,14 +49,14 @@ import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -157,26 +157,25 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
     pickGeometry(pc, isSubElementRequired);
   }
 
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Point3 rv, Ray ray, AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
     Point3 position = new Point3(px, py, pz);
     Vector3 direction = new Vector3(nx, ny, nz);
     m.transform(position);
     m.transform(direction);
     Plane plane = Plane.createInstance(position, direction);
     if (plane.isNaN()) {
-      rv.setNaN();
+      return Point3.NaN;
     } else {
       double t = plane.intersect(ray);
-      ray.getPointAlong(rv, t);
+      return ray.getPointAlong(t);
     }
-    return rv;
   }
 
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Point3 rv, Ray ray, AffineMatrix4x4 m, Point3 planePosition, Vector3 planeDirection) {
-    return getIntersectionInSourceFromPlaneInLocal(rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z);
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, Point3 planePosition, Vector3 planeDirection) {
+    return getIntersectionInSourceFromPlaneInLocal(ray, m, planePosition.x(), planePosition.y(), planePosition.x(), planeDirection.x(), planeDirection.y(), planeDirection.z());
   }
 
-  public abstract Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement);
+  public abstract Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement);
 
   private final List<RenderContext> renderContexts = Lists.newLinkedList();
   private boolean isGeometryChanged;
