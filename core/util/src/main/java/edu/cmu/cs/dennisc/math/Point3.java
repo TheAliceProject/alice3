@@ -42,8 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.math.immutable.MPoint3;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,10 +57,6 @@ public final class Point3 extends Tuple3 {
 
   public Point3(double x, double y, double z) {
     super(x, y, z);
-  }
-
-  public Point3(MPoint3 other) {
-    this(other.x, other.y, other.z);
   }
 
   public static Point3 createZero() {
@@ -128,10 +122,6 @@ public final class Point3 extends Tuple3 {
 
   public static double calculateDistanceBetween(Tuple3 a, Tuple3 b) {
     return Math.sqrt(calculateDistanceSquaredBetween(a, b));
-  }
-
-  public MPoint3 createImmutable() {
-    return new MPoint3(this.x, this.y, this.z);
   }
 
   // Temporary use during transition to immutable Records

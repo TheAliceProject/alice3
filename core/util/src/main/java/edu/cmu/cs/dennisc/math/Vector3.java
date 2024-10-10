@@ -42,8 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.math.immutable.MVector3;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -57,10 +55,6 @@ public class Vector3 extends Tuple3 {
 
   public Vector3(double x, double y, double z) {
     super(x, y, z);
-  }
-
-  public Vector3(MVector3 other) {
-    this(other.x, other.y, other.z);
   }
 
   public static Vector3 createZero() {
@@ -238,10 +232,6 @@ public class Vector3 extends Tuple3 {
 
   public boolean isNegativeZAxis() {
     return this.equals(accessNegativeZAxis());
-  }
-
-  public MVector3 createImmutable() {
-    return new MVector3(this.x, this.y, this.z);
   }
 
   // Temporary use during transition to immutable Records
