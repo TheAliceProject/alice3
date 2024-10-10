@@ -42,8 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -83,10 +81,6 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 
   public OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward) {
     set(right, up, backward);
-  }
-
-  public OrthogonalMatrix3x3(MOrthogonalMatrix3x3 other) {
-    set(new Vector3(other.right), new Vector3(other.up), new Vector3(other.backward));
   }
 
   @Override
@@ -521,9 +515,5 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
     right.z = 0;
     up.z = 0;
     backward.z = 1;
-  }
-
-  public MOrthogonalMatrix3x3 createImmutable() {
-    return new MOrthogonalMatrix3x3(this.right.createImmutable(), this.up.createImmutable(), this.backward.createImmutable());
   }
 }
