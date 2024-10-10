@@ -50,12 +50,11 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
 
     //Magnitude
     public double magnitudeSquared() {
-        return (x * x) + (y * y) + (z * z);
+        return magnitudeSquared(x, y, z);
     }
 
     public double magnitude() {
-        double magnitudeSquared = magnitudeSquared();
-        return magnitudeSquared == 1.0 ? 1.0 : Math.sqrt(magnitudeSquared);
+        return magnitude(x, y, z);
     }
 
     //Normalize
@@ -78,6 +77,16 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     @Deprecated(forRemoval = true)
     public edu.cmu.cs.dennisc.math.Point3 mutablePoint() {
         return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
+    }
+
+    //Magnitude
+    public static double magnitudeSquared(double x, double y, double z) {
+        return (x * x) + (y * y) + (z * z);
+    }
+
+    public static double magnitude(double x, double y, double z) {
+        double magnitudeSquared = magnitudeSquared(x, y, z);
+        return magnitudeSquared == 1.0 ? 1.0 : Math.sqrt(magnitudeSquared);
     }
 }
 

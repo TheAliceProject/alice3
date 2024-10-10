@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.math.immutable.Vector3;
 
 import java.nio.DoubleBuffer;
 
@@ -84,9 +84,9 @@ public abstract class GlrAbstractTransformable<T extends AbstractTransformable> 
     if (isUnscaling) {
       synchronized (unscalingBuffer) {
         c.gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, unscalingBuffer);
-        double xScale = Tuple3.calculateMagnitude(unscaling[X_X], unscaling[X_Y], unscaling[X_Z]);
-        double yScale = Tuple3.calculateMagnitude(unscaling[Y_X], unscaling[Y_Y], unscaling[Y_Z]);
-        double zScale = Tuple3.calculateMagnitude(unscaling[Z_X], unscaling[Z_Y], unscaling[Z_Z]);
+        double xScale = Vector3.magnitude(unscaling[X_X], unscaling[X_Y], unscaling[X_Z]);
+        double yScale = Vector3.magnitude(unscaling[Y_X], unscaling[Y_Y], unscaling[Y_Z]);
+        double zScale = Vector3.magnitude(unscaling[Z_X], unscaling[Z_Y], unscaling[Z_Z]);
 
         if (EpsilonUtilities.isWithinReasonableEpsilon(xScale, 1.0) && EpsilonUtilities.isWithinReasonableEpsilon(yScale, 1.0) && EpsilonUtilities.isWithinReasonableEpsilon(zScale, 1.0)) {
           //pass

@@ -2,7 +2,6 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Tuple3;
 
 public record Plane(double a, double b, double c, double d) {
     public static final Plane NaN = new Plane(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
@@ -11,7 +10,7 @@ public record Plane(double a, double b, double c, double d) {
     //Kept private to avoid confusion on order
     private static Plane createInstance(double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal) {
       final double EPSILON = 0.01;
-      double magnitudeSquared = Tuple3.calculateMagnitudeSquared(xNormal, yNormal, zNormal);
+      double magnitudeSquared = Vector3.magnitudeSquared(xNormal, yNormal, zNormal);
       if (!EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace(magnitudeSquared, EPSILON)) {
         double magnitude = Math.sqrt(magnitudeSquared);
         Logger.severe(magnitude, xNormal, yNormal, zNormal);
