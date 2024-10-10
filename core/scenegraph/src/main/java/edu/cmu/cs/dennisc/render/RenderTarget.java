@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.math.immutable.Point3;
@@ -109,7 +109,7 @@ public interface RenderTarget {
   //todo: remove?
   org.alice.math.immutable.Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
-  MRectangleI getActualViewport(AbstractCamera sgCamera);
+  FixedRectangle getActualViewport(AbstractCamera sgCamera);
 
   Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
 

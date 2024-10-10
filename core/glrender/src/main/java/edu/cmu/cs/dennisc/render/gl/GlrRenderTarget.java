@@ -44,8 +44,7 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
-import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
-import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.pattern.AbstractReleasable;
 import edu.cmu.cs.dennisc.render.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
@@ -160,9 +159,8 @@ import java.util.List;
   }
 
   @Override
-  public final MRectangleI getActualViewport(AbstractCamera camera) {
-    GlrAbstractCamera<?> cameraAdapter = AdapterFactory.getAdapterFor(camera);
-    return RectangleUtilities.toMRectangleI(getActualViewportFromAdapter(cameraAdapter));
+  public final FixedRectangle getActualViewport(AbstractCamera camera) {
+    return FixedRectangle.fromRectangle(getActualViewportAsAwtRectangle(camera));
   }
 
   private Rectangle getActualViewportFromAdapter(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {

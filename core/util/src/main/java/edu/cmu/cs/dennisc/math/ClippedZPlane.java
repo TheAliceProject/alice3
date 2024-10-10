@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import org.alice.math.immutable.FixedRectangle;
 
 /**
  * @author Dennis Cosgrove
@@ -60,7 +60,7 @@ public class ClippedZPlane {
     set(other);
   }
 
-  public ClippedZPlane(ClippedZPlane other, MRectangleI viewport) {
+  public ClippedZPlane(ClippedZPlane other, FixedRectangle viewport) {
     set(other, viewport);
   }
 
@@ -78,17 +78,17 @@ public class ClippedZPlane {
     this.halfHeight = other.halfHeight;
   }
 
-  public void set(ClippedZPlane other, MRectangleI viewport) {
+  public void set(ClippedZPlane other, FixedRectangle viewport) {
     this.set(other);
     if (Double.isNaN(this.halfWidth)) {
       if (Double.isNaN(this.halfHeight)) {
         this.halfHeight = DEFAULT_HALF_HEIGHT;
       }
-      double factor = viewport.width / (double) viewport.height;
+      double factor = viewport.width() / (double) viewport.height();
       this.halfWidth = factor * this.halfHeight;
     } else {
       if (Double.isNaN(this.halfHeight)) {
-        double factor = viewport.height / (double) viewport.width;
+        double factor = viewport.height() / (double) viewport.width();
         this.halfHeight = factor * this.halfWidth;
       }
     }

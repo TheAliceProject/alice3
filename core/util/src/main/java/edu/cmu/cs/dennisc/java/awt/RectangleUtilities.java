@@ -42,10 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
-import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
-
 import javax.swing.SwingConstants;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -54,21 +51,6 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class RectangleUtilities {
-  public static Rectangle createCenteredRectangle(Rectangle bound, int width, int height) {
-    int x0 = bound.x;
-    int x1 = (bound.x + bound.width) - 1;
-    int xC = (x0 + x1) / 2;
-
-    int y0 = bound.y;
-    int y1 = (bound.y + bound.height) - 1;
-    int yC = (y0 + y1) / 2;
-
-    return new Rectangle(xC - (width / 2), yC - (height / 2), width, height);
-  }
-
-  public static Rectangle createCenteredRectangle(Rectangle bound, Dimension size) {
-    return createCenteredRectangle(bound, size.width, size.height);
-  }
 
   public static Rectangle grow(Rectangle rv, int xPad, int yPad) {
     rv.x -= xPad;
@@ -133,13 +115,5 @@ public class RectangleUtilities {
     hole.y = Math.min(yA, yB);
     hole.width = Math.abs(xB - xA);
     hole.height = Math.abs(yB - yA);
-  }
-
-  public static Rectangle toAwtRectangle(MRectangleI rectangle) {
-    return rectangle != null ? new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height) : null;
-  }
-
-  public static MRectangleI toMRectangleI(Rectangle rectangle) {
-    return rectangle != null ? new MRectangleI(rectangle.x, rectangle.y, rectangle.width, rectangle.height) : null;
   }
 }
