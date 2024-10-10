@@ -47,12 +47,14 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.immutable.MSphere;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import org.alice.interact.handle.ManipulationHandle3D;
+
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Sphere;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
@@ -62,7 +64,6 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -151,11 +152,11 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
   private double getSphereRayIntersection(Ray ray, SSphere sSphere) {
     EntityImp sphere = sSphere.getImplementation();
-    Point3 center = sphere.getTransformation(camera).translation;
+    Point3 center = sphere.getTransformation(camera).translation.immutable();
 
     final boolean IS_USING_MATH_CLASSES = true;
     if (IS_USING_MATH_CLASSES) {
-      MSphere mSphereInCameraSpace = new MSphere(center.createImmutable(), sSphere.getRadius());
+      Sphere mSphereInCameraSpace = new Sphere(center, sSphere.getRadius());
       return mSphereInCameraSpace.intersect(ray);
     } else {
       //this formula comes from ccs.neu.edu
