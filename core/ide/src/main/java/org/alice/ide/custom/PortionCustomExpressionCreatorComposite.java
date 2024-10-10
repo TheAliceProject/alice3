@@ -108,7 +108,7 @@ public class PortionCustomExpressionCreatorComposite extends ExpressionWithRecen
 
   @Override
   protected Double getLastCustomValue() {
-    return ((DoubleLiteral) createValue()).value.getValue();
+    return ((DoubleLiteral) getValue()).value.getValue();
   }
 
   @Override

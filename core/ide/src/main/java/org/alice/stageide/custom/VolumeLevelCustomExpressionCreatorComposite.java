@@ -126,7 +126,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends ExpressionWithR
 
   @Override
   protected Double getLastCustomValue() {
-    return ((DoubleLiteral) createValue()).value.getValue();
+    return ((DoubleLiteral) this.getValue()).value.getValue();
   }
 
   @Override

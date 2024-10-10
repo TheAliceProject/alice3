@@ -104,7 +104,7 @@ public class StringCustomExpressionCreatorComposite extends ExpressionWithRecent
 
   @Override
   protected String getLastCustomValue() {
-    return valueState.getValue();
+    return ((StringLiteral) getValue()).value.getValue();
   }
 
   @Override

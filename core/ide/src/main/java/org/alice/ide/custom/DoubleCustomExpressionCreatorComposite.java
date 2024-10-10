@@ -82,7 +82,7 @@ public final class DoubleCustomExpressionCreatorComposite extends NumberCustomEx
 
   @Override
   protected Double getLastCustomValue() {
-    return ((DoubleLiteral) createValue()).value.getValue();
+    return ((DoubleLiteral) getValue()).value.getValue();
   }
 
   @Override

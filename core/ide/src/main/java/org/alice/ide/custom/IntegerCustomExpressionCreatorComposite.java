@@ -81,7 +81,7 @@ public final class IntegerCustomExpressionCreatorComposite extends NumberCustomE
 
   @Override
   protected Integer getLastCustomValue() {
-    return ((IntegerLiteral) createValue()).value.getValue();
+    return ((IntegerLiteral) getValue()).value.getValue();
   }
 
   @Override
