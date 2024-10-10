@@ -73,7 +73,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>15</java.version>
+    <java.version>16</java.version>
 
     <jogl.version>2.5.0</jogl.version>
     <gluegen.version>2.5.0</gluegen.version>
