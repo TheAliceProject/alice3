@@ -8,10 +8,10 @@ public record Point3(double x, double y, double z) implements Serializable, Tupl
 
     //Operations
     public Point3 plus(Tuple3 b) {
-        return new Point3(x + b.x(), y + b.y(),z + b.z());
+        return new Point3(x + b.x(), y + b.y(), z + b.z());
     }
     public Vector3 minus(Tuple3 b) {
-        return new Vector3(x - b.x(), y - b.y(),z - b.z());
+        return new Vector3(x - b.x(), y - b.y(), z - b.z());
     }
 
     public Point3 times(double factor) {

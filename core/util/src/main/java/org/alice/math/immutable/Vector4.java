@@ -4,7 +4,7 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 public record Vector4(double x, double y, double z, double w) {
 
-  public static final Vector4 ZERO = new Vector4(0,0, 0, 0);
+  public static final Vector4 ZERO = new Vector4(0, 0, 0, 0);
   public static final Vector4 UNIT_X = new Vector4(1.0, 0, 0, 0);
   public static final Vector4 UNIT_Y = new Vector4(0, 1.0, 0, 0);
   public static final Vector4 UNIT_Z = new Vector4(0, 0, 1.0, 0);

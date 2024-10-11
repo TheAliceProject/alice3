@@ -18,7 +18,7 @@ public interface Tuple3 {
     return Double.isNaN(x()) || Double.isNaN(y()) || Double.isNaN(z());
   }
 
-  default boolean isWithinEpsilonOf(Tuple3 b, double epsilon){
+  default boolean isWithinEpsilonOf(Tuple3 b, double epsilon) {
     return EpsilonUtilities.isWithinEpsilon(x(), b.x(), epsilon)
         && EpsilonUtilities.isWithinEpsilon(y(), b.y(), epsilon)
         && EpsilonUtilities.isWithinEpsilon(z(), b.z(), epsilon);

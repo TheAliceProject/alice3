@@ -48,7 +48,7 @@ public record Plane(double a, double b, double c, double d) {
     public double intersect(Ray ray) {
       Vector3 direction = ray.direction();
       double denominator = (a * direction.x()) + (b * direction.y()) + (c * direction.z());
-      return denominator == 0 ? Double.NaN : - evaluate(ray.origin()) / denominator;
+      return denominator == 0 ? Double.NaN : -evaluate(ray.origin()) / denominator;
     }
 
     public double evaluate(Point3 p) {
