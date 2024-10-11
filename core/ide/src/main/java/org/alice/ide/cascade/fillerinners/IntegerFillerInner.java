@@ -100,6 +100,6 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
     }
     items.add(CascadeLineSeparator.getInstance());
 
-    items.add(IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    items.add(creatorComposite.getValueCreator().getFillIn());
   }
 }

@@ -103,7 +103,7 @@ public abstract class ExpressionWithRecentValuesCreatorComposite<V extends Custo
         }
 
         // add a separator between the hard-coded and recent values,
-        // and reverse the list to show most revent values last
+        // and reverse the list to show most recent values last
         if (!recentFillIns.isEmpty()) {
             recentFillIns.add(CascadeLineSeparator.getInstance());
 

@@ -79,6 +79,6 @@ public class StringFillerInner extends ExpressionFillerInner {
     items.addAll(creatorComposite.getRecentFillIns(literals));
 
     items.add(CascadeLineSeparator.getInstance());
-    items.add(StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    items.add(creatorComposite.getValueCreator().getFillIn());
   }
 }
