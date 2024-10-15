@@ -42,20 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
-import org.alice.ide.ApiConfigurationManager;
-import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn;
 import org.alice.ide.croquet.models.cascade.number.IntegerToRealCascadeMenu;
 import org.alice.ide.croquet.models.cascade.number.MathCascadeMenu;
 import org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu;
 import org.alice.ide.custom.DoubleCustomExpressionCreatorComposite;
+import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
+import org.alice.ide.custom.PortionCustomExpressionCreatorComposite;
+import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
+
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.NumberValueDetails;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
+import org.lgna.story.annotation.PortionDetails;
+import org.lgna.story.annotation.VolumeLevelDetails;
 
+import org.apache.commons.lang.ArrayUtils;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,10 +83,17 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     super.appendItems(items, details, isTop, prevExpression);
-    double[] literals = getLiterals(details);
+
+    List<Double> literals = Arrays.asList(ArrayUtils.toObject(getLiterals(details)));
+
     for (double d : literals) {
       items.add(DoubleLiteralFillIn.getInstance(d));
     }
+
+    ExpressionWithRecentValuesCreatorComposite creatorComposite = getCustomCreatorCompositeFor(details);
+
+    items.addAll(creatorComposite.getRecentFillIns(literals));
+
     if (isTop && (prevExpression != null)) {
       items.add(CascadeLineSeparator.getInstance());
       items.add(RandomCascadeMenu.getInstance());
@@ -90,13 +103,17 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
       items.add(MathCascadeMenu.getInstance());
     }
     items.add(CascadeLineSeparator.getInstance());
-    IDE ide = IDE.getActiveInstance();
-    ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-    CascadeItem item = apiConfigurationManager.getCustomFillInFor(details);
-    if (item != null) {
-      items.add(item);
+
+    items.add(creatorComposite.getValueCreator().getFillIn());
+  }
+
+  protected ExpressionWithRecentValuesCreatorComposite getCustomCreatorCompositeFor(ValueDetails valueDetails) {
+    if (valueDetails instanceof PortionDetails) {
+      return PortionCustomExpressionCreatorComposite.getInstance();
+    } else if (valueDetails instanceof VolumeLevelDetails) {
+      return VolumeLevelCustomExpressionCreatorComposite.getInstance();
     } else {
-      items.add(DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+      return DoubleCustomExpressionCreatorComposite.getInstance();
     }
   }
 }

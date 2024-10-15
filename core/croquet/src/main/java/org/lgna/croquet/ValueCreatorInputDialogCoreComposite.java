@@ -86,6 +86,10 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeVi
 
   private T value;
 
+  protected T getValue() {
+    return value;
+  }
+
   @Override
   public T createValue(UserActivity userActivity) {
     this.value = null;

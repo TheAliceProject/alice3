@@ -56,7 +56,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<NumberCustomExpressionCreatorView> {
+public abstract class NumberCustomExpressionCreatorComposite<T> extends ExpressionWithRecentValuesCreatorComposite<NumberCustomExpressionCreatorView, T> {
   private final ErrorStatus errorStatus = this.createErrorStatus("errorStatus");
   private final NumberModel numberModel;
 

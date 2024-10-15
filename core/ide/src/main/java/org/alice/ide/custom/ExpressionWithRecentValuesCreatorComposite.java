@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2024, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,76 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-
 package org.alice.ide.custom;
 
-import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import org.alice.ide.croquet.models.numberpad.FloatModel;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FloatLiteral;
+import org.alice.ide.custom.components.CustomExpressionCreatorView;
 
-import java.util.UUID;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+
+import java.util.*;
 
 /**
- * @author Dennis Cosgrove
+ * @author Dmitry Portnoy
  */
-public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
-  private static class SingletonHolder {
-    private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
-  }
+public abstract class ExpressionWithRecentValuesCreatorComposite<V extends CustomExpressionCreatorView, T> extends CustomExpressionCreatorComposite<V> {
+    private static final int MAX_RECENT = 3;
 
-  public static FloatCustomExpressionCreatorComposite getInstance() {
-    return SingletonHolder.instance;
-  }
+    protected final LinkedList<T> recentValues = new LinkedList<>();
 
-  private FloatCustomExpressionCreatorComposite() {
-    super(UUID.fromString("9fe48aa9-d9cc-4110-9ada-696406bfd727"), FloatModel.getInstance());
-  }
-
-  @Override
-  protected String getTextForPreviousExpression(Expression expression) {
-    String text;
-    if (expression instanceof FloatLiteral) {
-      FloatLiteral floatLiteral = (FloatLiteral) expression;
-      text = DoubleUtilities.formatInCurrentDefaultLocale(floatLiteral.value.getValue());
-    } else {
-      text = "";
+    public ExpressionWithRecentValuesCreatorComposite(UUID id) {
+        super(id);
     }
-    return text;
-  }
+
+    @Override
+    protected void handlePostHideDialog() {
+        super.handlePostHideDialog();
+
+        if (isCommitted) {
+            updateRecentValues();
+        }
+    }
+
+    protected abstract T getLastCustomValue();
+
+    protected abstract CascadeBlankChild getValueFillIn(T value);
+
+    public void updateRecentValues(T newValue) {
+        // if the element already exists, remove and then re-add it, effectively moving it to the front
+        recentValues.remove(newValue);
+
+        recentValues.add(newValue);
+    }
+
+    protected void updateRecentValues() {
+        updateRecentValues(getLastCustomValue());
+    }
+
+    public List<CascadeBlankChild> getRecentFillIns(List<T> literals) {
+        if (recentValues.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<CascadeBlankChild> recentFillIns = new ArrayList<>(recentValues.size() + 1);
+
+        Iterator<T> iter = recentValues.descendingIterator();
+
+        while (iter.hasNext() && recentFillIns.size() < MAX_RECENT) {
+            T value = iter.next();
+
+            if (!literals.contains(value)) {
+                recentFillIns.add(getValueFillIn(value));
+            }
+        }
+
+        // add a separator between the hard-coded and recent values,
+        // and reverse the list to show most recent values last
+        if (!recentFillIns.isEmpty()) {
+            recentFillIns.add(CascadeLineSeparator.getInstance());
+
+            Collections.reverse(recentFillIns);
+        }
+
+        return recentFillIns;
+    }
 }

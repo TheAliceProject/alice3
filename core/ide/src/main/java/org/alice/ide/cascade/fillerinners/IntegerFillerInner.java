@@ -46,13 +46,18 @@ import org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu;
 import org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu;
 import org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu;
 import org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn;
+import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.IntegerCustomExpressionCreatorComposite;
+
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.IntegerValueDetails;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
 
+import org.apache.commons.lang.ArrayUtils;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,10 +79,17 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     super.appendItems(items, details, isTop, prevExpression);
-    int[] literals = getLiterals(details);
+
+    List<Integer> literals = Arrays.asList(ArrayUtils.toObject(getLiterals(details)));
+
     for (int i : literals) {
       items.add(IntegerLiteralFillIn.getInstance(i));
     }
+
+    ExpressionWithRecentValuesCreatorComposite creatorComposite = IntegerCustomExpressionCreatorComposite.getInstance();
+
+    items.addAll(creatorComposite.getRecentFillIns(literals));
+
     if (isTop && (prevExpression != null)) {
       items.add(CascadeLineSeparator.getInstance());
       items.add(RandomCascadeMenu.getInstance());
@@ -87,6 +99,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
       items.add(MathCascadeMenu.getInstance());
     }
     items.add(CascadeLineSeparator.getInstance());
-    items.add(IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+
+    items.add(creatorComposite.getValueCreator().getFillIn());
   }
 }
