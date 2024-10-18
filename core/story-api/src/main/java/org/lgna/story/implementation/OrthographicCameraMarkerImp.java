@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.ClippedZPlane;
 import org.lgna.story.OrthographicCameraMarker;
 
 /**
@@ -62,7 +62,7 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
   }
 
   public void setPicturePlane(ClippedZPlane picturePlane) {
-    this.picturePlane.set(picturePlane);
+    this.picturePlane = picturePlane;
   }
 
   public ClippedZPlane getPicturePlane() {
@@ -84,7 +84,7 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
     return this.sgVisuals;
   }
 
-  private final ClippedZPlane picturePlane = new ClippedZPlane();
+  private ClippedZPlane picturePlane = ClippedZPlane.DEFAULT;
   private final TexturedAppearance[] sgAppearances = {};
   private final Visual[] sgVisuals = {};
 }

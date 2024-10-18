@@ -43,11 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.FullMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Ray;
@@ -89,7 +88,7 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<Fr
   }
 
   public ClippedZPlane getActualPicturePlane(Rectangle actualViewport) {
-    return new ClippedZPlane(owner.picturePlane.getValue(), FixedRectangle.fromRectangle(actualViewport));
+    return owner.picturePlane.getValue().completeFrom(actualViewport);
   }
 
   @Override

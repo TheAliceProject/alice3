@@ -54,6 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.ide.IDE;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveTransformableEdit;
@@ -612,7 +613,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     @Override
     protected void switchToCamera() {
       sceneEditor.switchToOrthographicCamera();
-      orthographicCamera.picturePlane.setValue(new ClippedZPlane(markerImp.getPicturePlane()));
+      orthographicCamera.picturePlane.setValue(markerImp.getPicturePlane());
     }
 
     @Override
@@ -641,10 +642,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       topTransform.orientation.backward.set(0, 1, 0);
       assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
       markerImp.setLocalTransformation(topTransform);
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setCenter(0, 0);
-      picturePlane.setHeight(16);
-      markerImp.setPicturePlane(picturePlane);
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(16));
     }
 
     @Override
@@ -664,10 +662,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       topTransform.orientation.backward.set(0, 1, 0);
       markerImp.setLocalTransformation(topTransform);
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setCenter(0, 0);
-      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetWidth)));
-      markerImp.setPicturePlane(picturePlane);
+      double height = clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetWidth));
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(height));
     }
   }
 
@@ -684,9 +680,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
       assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
       markerImp.setLocalTransformation(sideTransform);
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(4);
-      markerImp.setPicturePlane(picturePlane);
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
 
     @Override
@@ -705,9 +699,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       markerImp.setLocalTransformation(sideTransform);
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight)));
-      markerImp.setPicturePlane(picturePlane);
+      double height = clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight));
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(height));
     }
   }
 
@@ -724,9 +717,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
       assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
       markerImp.setLocalTransformation(frontTransform);
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(4);
-      markerImp.setPicturePlane(picturePlane);
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
 
     @Override
@@ -745,9 +736,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       markerImp.setLocalTransformation(frontTransform);
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
-      ClippedZPlane picturePlane = new ClippedZPlane();
-      picturePlane.setHeight(clampPictureValue(Math.max(targetWidth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight)));
-      markerImp.setPicturePlane(picturePlane);
+      double height = clampPictureValue(Math.max(targetWidth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight));
+      markerImp.setPicturePlane(ClippedZPlane.createWithHeight(height));
     }
   }
 }
