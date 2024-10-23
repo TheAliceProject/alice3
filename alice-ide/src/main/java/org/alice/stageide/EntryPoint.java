@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
 import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
 import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
@@ -187,7 +187,7 @@ public class EntryPoint extends Application {
       ide.getDocumentFrame().getFrame().setVisible(true);
       heapMonitor = new HeapWatchDog();
     });
-    RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory.getInstance();
 
     // Call to initialize JavaFX
     launch(args);

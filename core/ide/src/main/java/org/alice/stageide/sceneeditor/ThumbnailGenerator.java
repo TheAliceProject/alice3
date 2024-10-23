@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor;
 
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 import java.awt.image.BufferedImage;
@@ -57,7 +57,7 @@ public final class ThumbnailGenerator {
   private final OffscreenRenderTarget offscreenRenderTarget;
 
   public ThumbnailGenerator(int width, int height) {
-    this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget(width, height, new RenderCapabilities.Builder().build());
+    this.offscreenRenderTarget = GlrRenderFactory.getInstance().createOffscreenRenderTarget(width, height, new RenderCapabilities.Builder().build());
   }
 
   public BufferedImage createThumbnail() {
