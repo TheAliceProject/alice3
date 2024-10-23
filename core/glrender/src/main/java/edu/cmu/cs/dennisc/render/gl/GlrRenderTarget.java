@@ -65,9 +65,8 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarget {
-  public GlrRenderTarget(GlrRenderFactory glrRenderer, RenderCapabilities requestedCapabilities) {
-    this.glrRenderer = glrRenderer;
+abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarget {
+  public GlrRenderTarget(RenderCapabilities requestedCapabilities) {
 
     this.requestedCapabilities = requestedCapabilities;
     //todo
@@ -77,11 +76,6 @@ import java.util.List;
   @Override
   public RenderCapabilities getActualCapabilities() {
     return this.actualCapabilities;
-  }
-
-  @Override
-  public RenderFactory getRenderFactory() {
-    return this.glrRenderer;
   }
 
   @Override
@@ -367,7 +361,6 @@ import java.util.List;
   public  Point transformFromCameraToAWT(Point3 xyzw,  AbstractCamera sgCamera) {
     return transformFromCameraToAWT(new Vector4(xyzw.x, xyzw.y, xyzw.z, 1.0), sgCamera);
   }
-  private final GlrRenderFactory glrRenderer;
   private final RenderCapabilities requestedCapabilities;
   private final RenderCapabilities actualCapabilities;
 

@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.ui.DragStyle;
@@ -98,7 +99,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
   @Override
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     super.setOnscreenRenderTarget(onscreenLookingGlass);
-    onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener(new AutomaticDisplayListener() {
+    GlrRenderFactory.getInstance().addAutomaticDisplayListener(new AutomaticDisplayListener() {
       @Override
       public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
         CameraNavigationDragAdapter.this.handleDisplayed();

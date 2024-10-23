@@ -57,6 +57,7 @@ import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Element;
@@ -202,12 +203,12 @@ public abstract class DragAdapter {
 
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
+      GlrRenderFactory.getInstance().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
     }
     this.onscreenRenderTarget = onscreenRenderTarget;
     setAWTComponent(getAWTComponentToAddListenersTo(this.onscreenRenderTarget));
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+      GlrRenderFactory.getInstance().addAutomaticDisplayListener(this.automaticDisplayAdapter);
     }
   }
 

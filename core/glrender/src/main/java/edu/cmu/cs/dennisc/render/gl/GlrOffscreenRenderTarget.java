@@ -57,8 +57,8 @@ import java.awt.Dimension;
 class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
   private final GLOffscreenAutoDrawable drawable;
 
-  GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, RenderCapabilities requestedCapabilities) {
-    super(lookingGlassFactory, requestedCapabilities);
+  GlrOffscreenRenderTarget(int width, int height, RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities);
     drawable = GlDrawableUtils.createOffscreenAutoDrawable(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height);
   }
 

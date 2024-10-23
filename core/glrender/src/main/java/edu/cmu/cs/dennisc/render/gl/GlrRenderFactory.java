@@ -183,7 +183,7 @@ public class GlrRenderFactory implements RenderFactory {
 
   @Override
   public OnscreenRenderTarget createOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
-    GlrOnscreenRenderTarget lolg = new GlrOnscreenRenderTarget(this, requestedCapabilities);
+    GlrOnscreenRenderTarget lolg = new GlrOnscreenRenderTarget(requestedCapabilities);
     lolg.addReleaseListener(this.releaseListener);
     this.onscreenLookingGlasses.add(lolg);
     return lolg;
@@ -191,7 +191,7 @@ public class GlrRenderFactory implements RenderFactory {
 
   @Override
   public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderCapabilities requestedCapabilities) {
-    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(this, width, height, requestedCapabilities);
+    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(width, height, requestedCapabilities);
     olg.addReleaseListener(this.releaseListener);
     this.offscreenLookingGlasses.add(olg);
     return olg;

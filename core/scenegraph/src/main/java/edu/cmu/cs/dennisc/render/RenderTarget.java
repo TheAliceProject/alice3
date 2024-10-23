@@ -57,8 +57,6 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface RenderTarget {
-  RenderFactory getRenderFactory();
-
   RenderCapabilities getActualCapabilities();
 
   int getSurfaceWidth();

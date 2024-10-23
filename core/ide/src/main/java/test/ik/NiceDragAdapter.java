@@ -53,6 +53,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -191,7 +192,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         //linear drag
         final Point3 xyzInAbsolutePlane = getPointInPlane(m_planeInAbsolute, current.x, current.y);
         xyzInAbsolutePlane.subtract(m_offset);
-        getOnscreenRenderTarget().getRenderFactory().invokeLater(new Runnable() {
+        GlrRenderFactory.getInstance().invokeLater(new Runnable() {
           @Override
           public void run() {
             updateTranslation(m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE);
