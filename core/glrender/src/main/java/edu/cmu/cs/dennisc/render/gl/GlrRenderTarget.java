@@ -206,13 +206,11 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
     return m_isRenderingEnabled;
   }
 
-  protected abstract void repaintIfAppropriate();
-
   @Override
   public void setRenderingEnabled(boolean isRenderingEnabled) {
     if (m_isRenderingEnabled != isRenderingEnabled) {
       m_isRenderingEnabled = isRenderingEnabled;
-      this.repaintIfAppropriate();
+      this.repaint();
       //      //todo
       //      if( m_isRenderingEnabled ) {
       //        if( m_glEventAdapter.isListening() ) {

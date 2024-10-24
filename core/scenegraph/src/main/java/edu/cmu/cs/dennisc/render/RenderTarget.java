@@ -59,6 +59,8 @@ import java.util.List;
 public interface RenderTarget {
   RenderCapabilities getActualCapabilities();
 
+  void repaint();
+
   int getSurfaceWidth();
 
   int getSurfaceHeight();

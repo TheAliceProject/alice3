@@ -97,6 +97,6 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
   }
 
   @Override
-  protected void repaintIfAppropriate() {
+  public void repaint() {
   }
 }

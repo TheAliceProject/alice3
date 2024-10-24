@@ -134,15 +134,9 @@ class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderT
     return this.glPanel.getSize();
   }
 
-
   @Override
   public void repaint() {
     this.glPanel.repaint();
-  }
-
-  @Override
-  protected void repaintIfAppropriate() {
-    this.repaint();
   }
 
   @Override

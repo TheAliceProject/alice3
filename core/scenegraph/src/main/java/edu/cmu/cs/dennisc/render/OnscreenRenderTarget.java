@@ -49,6 +49,4 @@ import javax.swing.JPanel;
  */
 public interface OnscreenRenderTarget extends RenderTarget {
   public JPanel getAwtComponent();
-
-  public void repaint();
 }
