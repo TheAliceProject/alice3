@@ -60,7 +60,9 @@ import java.util.List;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public abstract class DragAdapter implements MouseListener, MouseMotionListener, KeyListener {
   private Animator m_animator;
   private UndoRedoManager m_undoRedoManager = null;

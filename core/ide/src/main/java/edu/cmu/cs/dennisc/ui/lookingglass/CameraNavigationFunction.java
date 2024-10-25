@@ -54,13 +54,17 @@ import java.awt.event.KeyEvent;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 class CameraNavigationDerivative extends TranslationDerivative {
 }
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public class CameraNavigationFunction extends TranslationFunction<CameraNavigationDerivative> {
   private static final double DISTANCE_MINIMUM = 4.0;
   private static final double DISTANCE_MAXIMUM = 100.0;

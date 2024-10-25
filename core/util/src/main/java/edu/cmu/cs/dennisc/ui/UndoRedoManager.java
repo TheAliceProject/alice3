@@ -50,7 +50,9 @@ import java.util.Stack;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public abstract class UndoRedoManager {
   private Stack<Action> m_undoStack = new Stack<Action>();
   private Stack<Action> m_redoStack = new Stack<Action>();

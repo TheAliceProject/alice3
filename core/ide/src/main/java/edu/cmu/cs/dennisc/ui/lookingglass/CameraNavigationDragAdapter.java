@@ -76,7 +76,9 @@ enum CameraNavigationMode {
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements MouseWheelListener, RenderTargetListener {
   private CameraNavigationFunction m_function = new CameraNavigationFunction();
   private double m_tPrev = Double.NaN;
