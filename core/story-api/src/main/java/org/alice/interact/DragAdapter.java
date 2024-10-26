@@ -189,26 +189,21 @@ public abstract class DragAdapter {
     return this.manipulators;
   }
 
-  private Component getAWTComponentToAddListenersTo(OnscreenRenderTarget onscreenRenderTarget) {
-    if (onscreenRenderTarget != null) {
-      return onscreenRenderTarget.getAwtComponent();
-    } else {
-      return null;
-    }
-  }
-
   public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 
-  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget target) {
     if (this.onscreenRenderTarget != null) {
       GlrRenderFactory.getInstance().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
     }
-    this.onscreenRenderTarget = onscreenRenderTarget;
-    setAWTComponent(getAWTComponentToAddListenersTo(this.onscreenRenderTarget));
+    this.onscreenRenderTarget = target;
+
     if (this.onscreenRenderTarget != null) {
+      setAWTComponent(this.onscreenRenderTarget.getAwtComponent());
       GlrRenderFactory.getInstance().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+    } else {
+      setAWTComponent(null);
     }
   }
 

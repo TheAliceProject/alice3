@@ -61,10 +61,8 @@ public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
 
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     m_onscreenLookingGlass = onscreenLookingGlass;
-    setAWTComponent(getAWTComponentToAddListenersTo(onscreenLookingGlass));
-  }
-
-  protected Component getAWTComponentToAddListenersTo(OnscreenRenderTarget onscreenLookingGlass) {
-    return onscreenLookingGlass.getAwtComponent();
+    if (onscreenLookingGlass != null) {
+      setAWTComponent(onscreenLookingGlass.getAwtComponent());
+    }
   }
 }
