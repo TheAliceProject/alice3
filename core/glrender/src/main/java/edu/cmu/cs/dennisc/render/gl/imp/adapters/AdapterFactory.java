@@ -61,7 +61,6 @@ import edu.cmu.cs.dennisc.scenegraph.Ghost;
 import edu.cmu.cs.dennisc.scenegraph.Graphic;
 import edu.cmu.cs.dennisc.scenegraph.Layer;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.ProjectionCamera;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -201,10 +200,6 @@ public class AdapterFactory {
 
   public static GlrAbstractCamera<?> getAdapterFor(AbstractCamera sgCamera) {
     return (GlrAbstractCamera<?>) getAdapterForElement(sgCamera);
-  }
-
-  public static GlrProjectionCamera getAdapterFor(ProjectionCamera sgProjectionCamera) {
-    return (GlrProjectionCamera) getAdapterForElement(sgProjectionCamera);
   }
 
   public static GlrOrthographicCamera getAdapterFor(OrthographicCamera sgOrthographicCamera) {
