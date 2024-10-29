@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.alice.ide.IDE;
 import org.alice.ide.IdeApp;
 import org.alice.ide.IdeConfiguration;
@@ -143,10 +143,10 @@ public abstract class StageIDE extends IDE {
         int newState = e.getNewState();
         //edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
         if ((oldState & Frame.ICONIFIED) == Frame.ICONIFIED) {
-          RenderUtils.getDefaultRenderFactory().incrementAutomaticDisplayCount();
+          GlrRenderFactory.getInstance().incrementAutomaticDisplayCount();
         }
         if ((newState & Frame.ICONIFIED) == Frame.ICONIFIED) {
-          RenderUtils.getDefaultRenderFactory().decrementAutomaticDisplayCount();
+          GlrRenderFactory.getInstance().decrementAutomaticDisplayCount();
         }
       }
     });

@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 import java.awt.image.BufferedImage;
@@ -84,7 +84,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
   private AdaptiveRecenteringThumbnailMaker(int width, int height) {
     super(width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR);
     this.searchFactor = DEFAULT_SEARCH_FACTOR;
-    this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget((int) (this.getWidth() * this.searchFactor), (int) (this.getHeight() * this.searchFactor), new RenderCapabilities.Builder().build());
+    this.testImageOffscreenRenderTarget = GlrRenderFactory.getInstance().createOffscreenRenderTarget((int) (this.getWidth() * this.searchFactor), (int) (this.getHeight() * this.searchFactor), new RenderCapabilities.Builder().build());
     setUpCamera(this.testImageOffscreenRenderTarget);
   }
 

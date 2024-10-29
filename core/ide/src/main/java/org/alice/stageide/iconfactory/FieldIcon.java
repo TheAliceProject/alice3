@@ -60,7 +60,7 @@ import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
 import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderTask;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
@@ -143,7 +143,7 @@ public class FieldIcon extends AsynchronousIcon {
           Rectangle viewport = new Rectangle(0, 0, this.getIconWidth(), this.getIconHeight());
 
           Color4f backgroundColor = true ? null : Color4f.WHITE;
-          final ImageBuffer rImageBuffer = RenderUtils.getDefaultRenderFactory().createImageBuffer(backgroundColor);
+          final ImageBuffer rImageBuffer = GlrRenderFactory.getInstance().createImageBuffer(backgroundColor);
           StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
 
           AbstractTransformableImp fieldImp = sceneEditor.getImplementation(field);

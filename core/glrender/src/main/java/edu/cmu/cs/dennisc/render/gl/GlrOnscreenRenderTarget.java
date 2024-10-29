@@ -61,8 +61,8 @@ import java.awt.Graphics;
 class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget {
   private final GLJPanel glPanel;
 
-  GlrOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
-    super(lookingGlassFactory, requestedCapabilities);
+  GlrOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities);
     this.glPanel = new RenderPane(requestedCapabilities);
     this.glPanel.setFocusable(true);
   }
@@ -134,15 +134,9 @@ class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderT
     return this.glPanel.getSize();
   }
 
-
   @Override
   public void repaint() {
     this.glPanel.repaint();
-  }
-
-  @Override
-  protected void repaintIfAppropriate() {
-    this.repaint();
   }
 
   @Override

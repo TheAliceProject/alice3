@@ -45,7 +45,7 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.lgna.story.SProgram;
 
 /**
@@ -55,7 +55,7 @@ public class DefaultProgramImp extends ProgramImp {
   private final ClockBasedAnimator animator = new ClockBasedAnimator();
 
   public DefaultProgramImp(SProgram abstraction) {
-    super(abstraction, RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().build()));
+    super(abstraction, GlrRenderFactory.getInstance().createOnscreenRenderTarget(new RenderCapabilities.Builder().build()));
   }
 
   @Override

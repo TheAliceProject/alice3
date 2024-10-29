@@ -65,11 +65,10 @@ import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderUtils;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import org.alice.ide.IDE;
@@ -253,7 +252,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       StorytellingSceneEditor.this.animator.update();
     }
   };
-  private OnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
+  private OnscreenRenderTarget onscreenRenderTarget = GlrRenderFactory.getInstance().createOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
 
   private class LookingGlassPanel extends CompassPointSpringPanel {
     @Override
@@ -1167,7 +1166,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void handleShowing() {
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.incrementAutomaticDisplayCount();
     renderFactory.addAutomaticDisplayListener(this.automaticDisplayListener);
     this.showLookingGlassPanel();
@@ -1175,7 +1174,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   public void handleHiding() {
     this.hideLookingGlassPanel();
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
     renderFactory.decrementAutomaticDisplayCount();
   }

@@ -57,6 +57,7 @@ import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Element;
@@ -188,26 +189,21 @@ public abstract class DragAdapter {
     return this.manipulators;
   }
 
-  private Component getAWTComponentToAddListenersTo(OnscreenRenderTarget onscreenRenderTarget) {
-    if (onscreenRenderTarget != null) {
-      return onscreenRenderTarget.getAwtComponent();
-    } else {
-      return null;
-    }
-  }
-
   public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 
-  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget target) {
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
+      GlrRenderFactory.getInstance().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
     }
-    this.onscreenRenderTarget = onscreenRenderTarget;
-    setAWTComponent(getAWTComponentToAddListenersTo(this.onscreenRenderTarget));
+    this.onscreenRenderTarget = target;
+
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+      setAWTComponent(this.onscreenRenderTarget.getAwtComponent());
+      GlrRenderFactory.getInstance().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+    } else {
+      setAWTComponent(null);
     }
   }
 

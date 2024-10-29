@@ -49,7 +49,9 @@ import java.awt.Component;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
   private OnscreenRenderTarget m_onscreenLookingGlass;
 
@@ -59,10 +61,8 @@ public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
 
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     m_onscreenLookingGlass = onscreenLookingGlass;
-    setAWTComponent(getAWTComponentToAddListenersTo(onscreenLookingGlass));
-  }
-
-  protected Component getAWTComponentToAddListenersTo(OnscreenRenderTarget onscreenLookingGlass) {
-    return onscreenLookingGlass.getAwtComponent();
+    if (onscreenLookingGlass != null) {
+      setAWTComponent(onscreenLookingGlass.getAwtComponent());
+    }
   }
 }

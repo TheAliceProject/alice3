@@ -44,7 +44,11 @@ package edu.cmu.cs.dennisc.ui;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
+ * It was resurrected in 2014, as part of the IK work, and doesn't obviously fully do what we want it to do.
+ * There is no reason to keep this around vs any other, possibly more consistent, way of getting this functionality
  */
+@Deprecated
 public enum DragStyle {
   NORMAL(false, false), CONTROL(true, false), SHIFT(false, true), CONTROL_SHIFT(true, true);
   private boolean m_isControlDown;

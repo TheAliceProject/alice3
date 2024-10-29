@@ -48,10 +48,9 @@ import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderUtils;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SunImp;
@@ -63,7 +62,7 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends BorderPanel {
-  private OnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOnscreenRenderTarget(new RenderCapabilities.Builder().build());
+  private OnscreenRenderTarget onscreenRenderTarget = GlrRenderFactory.getInstance().createOnscreenRenderTarget(new RenderCapabilities.Builder().build());
   private Animator animator = new ClockBasedAnimator();
   private SceneImp scene = new SceneImp(null);
   private SymmetricPerspectiveCameraImp camera = new SymmetricPerspectiveCameraImp(null);
@@ -114,14 +113,14 @@ abstract class Viewer extends BorderPanel {
       this.initialize();
       this.isInitialized = true;
     }
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.incrementAutomaticDisplayCount();
     renderFactory.addAutomaticDisplayListener(this.automaticDisplayListener);
   }
 
   @Override
   protected void handleUndisplayable() {
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
     renderFactory.decrementAutomaticDisplayCount();
     super.handleUndisplayable();

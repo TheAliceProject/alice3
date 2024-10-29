@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.ui.DragStyle;
@@ -76,7 +77,9 @@ enum CameraNavigationMode {
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
+@Deprecated
 public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements MouseWheelListener, RenderTargetListener {
   private CameraNavigationFunction m_function = new CameraNavigationFunction();
   private double m_tPrev = Double.NaN;
@@ -96,7 +99,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
   @Override
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenLookingGlass) {
     super.setOnscreenRenderTarget(onscreenLookingGlass);
-    onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener(new AutomaticDisplayListener() {
+    GlrRenderFactory.getInstance().addAutomaticDisplayListener(new AutomaticDisplayListener() {
       @Override
       public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
         CameraNavigationDragAdapter.this.handleDisplayed();

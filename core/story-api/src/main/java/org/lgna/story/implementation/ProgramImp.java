@@ -49,9 +49,9 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.RenderFactory;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.story.SProgram;
 
@@ -279,7 +279,7 @@ public abstract class ProgramImp {
   };
 
   public void startAnimator() {
-    RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.addAutomaticDisplayListener(this.automaticDisplayListener);
     renderFactory.incrementAutomaticDisplayCount();
     this.isAnimatorStarted = true;
@@ -289,7 +289,7 @@ public abstract class ProgramImp {
     if (this.isAnimatorStarted) {
       isAnimatorStarted = false;
       this.getAnimator().cancelAnimation();
-      RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+      GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
       renderFactory.decrementAutomaticDisplayCount();
       renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
     } else {
