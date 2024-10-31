@@ -89,7 +89,7 @@ public class GenericModelAdapter<T extends Model> extends GlrGeometry<T> {
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     Vector4 direction = m.columnTranslation();
-    Vector3 flatDirection = new Vector3(direction.x(), 0, direction.z());
+    Vector3 flatDirection = new Vector3(-direction.x(), 0, -direction.z());
     if (flatDirection.magnitudeSquared() == 0.0) {
       return Point3.NaN;
     } else {
