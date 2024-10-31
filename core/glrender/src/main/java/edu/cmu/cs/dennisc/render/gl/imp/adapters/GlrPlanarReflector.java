@@ -45,16 +45,15 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.PlanarReflector;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Vector3;
 
 import java.nio.DoubleBuffer;
 
@@ -67,7 +66,7 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
     if ((sgGeometries != null) && (sgGeometries.length > 0)) {
       Geometry sgGeometry = sgGeometries[0];
 
-      sgGeometry.getPlane(this.geometryTransformation);
+      geometryTransformation = sgGeometry.getPlane(geometryTransformation);
       //      edu.cmu.cs.dennisc.math.PointD3 point0;
       //      edu.cmu.cs.dennisc.math.PointD3 point1;
       //      edu.cmu.cs.dennisc.math.VectorF3 normal;
@@ -140,43 +139,37 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
   //  }
 
   public boolean isFacing(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {
-    AffineMatrix4x4 m = owner.getTransformation(cameraAdapter.owner);
-    return m.orientation.backward.z > 0;
+    AffineMatrix4x4 m = owner.getTransformation(cameraAdapter.owner).immutable();
+    return m.orientation().backward().z() > 0;
   }
 
   public synchronized void applyReflection(RenderContext rc) {
-    AffineMatrix4x4 m = owner.getAbsoluteTransformation();
-    m.multiply(this.geometryTransformation);
+    AffineMatrix4x4 m = owner.getAbsoluteTransformation().immutable();
+    m.times(geometryTransformation);
 
     Plane plane = Plane.createInstance(m);
     plane.getEquation(this.equation);
     rc.gl.glClipPlane(GL_CLIP_PLANE0, this.equationBuffer);
 
-    Point3 p = m.translation;
-    Vector3 v = new Vector3(-m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z);
+    Vector3 v = m.orientation().backward().negate();
+    double p_dot_v = v.dotProduct(m.translation());
+    reflection[0] = 1 - (2 * v.x() * v.x());
+    reflection[1] = 0 - (2 * v.y() * v.x());
+    reflection[2] = 0 - (2 * v.z() * v.x());
+    reflection[3] = 0;
+    reflection[4] = 0 - (2 * v.x() * v.y());
+    reflection[5] = 1 - (2 * v.y() * v.y());
+    reflection[6] = 0 - (2 * v.z() * v.y());
+    reflection[7] = 0;
+    reflection[8] = 0 - (2 * v.x() * v.z());
+    reflection[9] = 0 - (2 * v.y() * v.z());
+    reflection[10] = 1 - (2 * v.z() * v.z());
+    reflection[11] = 0;
+    reflection[12] = 2 * v.x() * p_dot_v;
+    reflection[13] = 2 * v.y() * p_dot_v;
+    reflection[14] = 2 * v.z() * p_dot_v;
+    reflection[15] = 1;
 
-    Matrix4x4 r = new Matrix4x4();
-
-    double p_dot_v = (p.x * v.x) + (p.y * v.y) + (p.z * v.z);
-
-    r.right.x = 1 - (2 * v.x * v.x);
-    r.up.x = 0 - (2 * v.x * v.y);
-    r.backward.x = 0 - (2 * v.x * v.z);
-    r.translation.x = 2 * v.x * p_dot_v;
-    r.right.y = 0 - (2 * v.y * v.x);
-    r.up.y = 1 - (2 * v.y * v.y);
-    r.backward.y = 0 - (2 * v.y * v.z);
-    r.translation.y = 2 * v.y * p_dot_v;
-    r.right.z = 0 - (2 * v.z * v.x);
-    r.up.z = 0 - (2 * v.z * v.y);
-    r.backward.z = 1 - (2 * v.z * v.z);
-    r.translation.z = 2 * v.z * p_dot_v;
-    r.right.w = 0;
-    r.up.w = 0;
-    r.backward.w = 0;
-    r.translation.w = 1;
-
-    r.getAsColumnMajorArray16(this.reflection);
     rc.gl.glMultMatrixd(this.reflectionBuffer);
   }
 
@@ -192,7 +185,7 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
     }
   }
 
-  private final AffineMatrix4x4 geometryTransformation = AffineMatrix4x4.createNaN();
+  private AffineMatrix4x4 geometryTransformation = Matrix4x4.NaN;
   private final double[] reflection = new double[16];
   private final DoubleBuffer reflectionBuffer = DoubleBuffer.wrap(this.reflection);
   private final double[] equation = new double[4];

@@ -42,38 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.property.CopyableInstanceProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.ClippedZPlane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClippedZPlaneProperty extends CopyableInstanceProperty<ClippedZPlane> {
-  public ClippedZPlaneProperty(InstancePropertyOwner owner, ClippedZPlane value) {
-    super(owner, value);
+public class ClippedZPlaneProperty extends InstanceProperty<ClippedZPlane> {
+  public ClippedZPlaneProperty(InstancePropertyOwner owner) {
+    super(owner, ClippedZPlane.DEFAULT);
   }
 
   @Override
   public void setValue(ClippedZPlane value) {
     assert value != null : this;
     super.setValue(value);
-  }
-
-  @Override
-  public ClippedZPlane getCopy(ClippedZPlane rv) {
-    rv.set(this.getValue());
-    return rv;
-  }
-
-  @Override
-  public final ClippedZPlane getCopy() {
-    return this.getCopy(ClippedZPlane.createNaN());
-  }
-
-  @Override
-  public void setCopy(ClippedZPlane value) {
-    //todo?
-    this.setValue(new ClippedZPlane(value));
   }
 }

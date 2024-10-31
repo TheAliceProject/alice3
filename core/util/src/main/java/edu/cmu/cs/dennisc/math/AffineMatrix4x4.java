@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -175,10 +174,6 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 
   public AffineMatrix4x4(Orientation orientation, Point3 translation) {
     set(orientation, translation);
-  }
-
-  public AffineMatrix4x4(MAffineMatrix4x4 other) {
-    this(new OrthogonalMatrix3x3(other.orientation), new Point3(other.translation));
   }
 
   public void decode(BinaryDecoder binaryDecoder) {
@@ -905,8 +900,10 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     return this.orientation.isWithinEpsilonOfIdentity(epsilon) && this.translation.isWithinEpsilonOfZero(epsilon);
   }
 
-  public MAffineMatrix4x4 createImmutable() {
-    return new MAffineMatrix4x4(this.orientation.createImmutable(), this.translation.createImmutable());
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.AffineMatrix4x4 immutable() {
+    return new org.alice.math.immutable.AffineMatrix4x4(orientation.immutable(), translation.immutableVector());
   }
 
   private static DecimalFormat format = new DecimalFormat("0.000");

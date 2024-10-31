@@ -47,12 +47,14 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.immutable.MRay;
-import edu.cmu.cs.dennisc.math.immutable.MSphere;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import org.alice.interact.handle.ManipulationHandle3D;
+
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Sphere;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
@@ -62,8 +64,6 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -152,30 +152,29 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
   private double getSphereRayIntersection(Ray ray, SSphere sSphere) {
     EntityImp sphere = sSphere.getImplementation();
-    Point3 center = sphere.getTransformation(camera).translation;
+    Point3 center = sphere.getTransformation(camera).translation.immutable();
 
     final boolean IS_USING_MATH_CLASSES = true;
     if (IS_USING_MATH_CLASSES) {
-      MRay mRayInCameraSpace = ray.createImmutable();
-      MSphere mSphereInCameraSpace = new MSphere(center.createImmutable(), sSphere.getRadius());
-      return mSphereInCameraSpace.intersect(mRayInCameraSpace);
+      Sphere mSphereInCameraSpace = new Sphere(center, sSphere.getRadius());
+      return mSphereInCameraSpace.intersect(ray);
     } else {
       //this formula comes from ccs.neu.edu
       //    center.x = -1 * center.x;
       //    center.y = -1 * center.y;
       //    center.z = -1 * center.z;
       double radius = sSphere.getRadius(); //1;
-      double dx = ray.getDirection().x - ray.getOrigin().x;
-      double dy = ray.getDirection().y - ray.getOrigin().y;
-      double dz = ray.getDirection().z - ray.getOrigin().z;
+      double dx = ray.direction().x() - ray.origin().x();
+      double dy = ray.direction().y() - ray.origin().y();
+      double dz = ray.direction().z() - ray.origin().z();
       double a = (dx * dx) + (dy * dy) + (dz * dz);
-      double b = (2 * dx * (ray.getOrigin().x - center.x)) + (2 * dy * (ray.getOrigin().y - center.y)) + (2 * dz * (ray.getOrigin().z - center.z));
-      double c = ((center.x * center.x) + (center.y * center.y) + (center.z * center.z) + (ray.getOrigin().x * ray.getOrigin().x) + (ray.getOrigin().y * ray.getOrigin().y) + (ray.getOrigin().z * ray.getOrigin().z) + (-2 * ((center.x * ray.getOrigin().x) + (center.y * ray.getOrigin().y) + (center.z * ray.getOrigin().z)))) - (radius * radius);
+      double b = (2 * dx * (ray.origin().x() - center.x())) + (2 * dy * (ray.origin().y() - center.y())) + (2 * dz * (ray.origin().z() - center.z()));
+      double c = ((center.x() * center.x()) + (center.y() * center.y()) + (center.z() * center.z()) + (ray.origin().x() * ray.origin().x()) + (ray.origin().y() * ray.origin().y()) + (ray.origin().z() * ray.origin().z()) + (-2 * ((center.x() * ray.origin().x()) + (center.y() * ray.origin().y()) + (center.z() * ray.origin().z())))) - (radius * radius);
       double t = (-b - Math.sqrt((b * b) - (4 * a * c))) / (2 * a);
 
-      double intersectionX = ray.getOrigin().x + (t * dx);
-      double intersectionY = ray.getOrigin().y + (t * dy);
-      double intersectionZ = ray.getOrigin().z + (t * dz);
+      double intersectionX = ray.origin().x() + (t * dx);
+      double intersectionY = ray.origin().y() + (t * dy);
+      double intersectionZ = ray.origin().z() + (t * dz);
 
       if (Double.isNaN(t)) {
         //      System.out.println( "Fail(NaN): " + sSphere );

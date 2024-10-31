@@ -64,7 +64,7 @@ public class PlaneUtilities {
   }
 
   public static Ray getRayFromPixel(RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel) {
-    Ray ray = renderTarget.getRayAtPixel(xPixel, yPixel, camera);
+    Ray ray = renderTarget.getRayAtPixel(xPixel, yPixel, camera).mutable();
     AffineMatrix4x4 m = camera.getAbsoluteTransformation();
     ray.transform(m);
     return ray;

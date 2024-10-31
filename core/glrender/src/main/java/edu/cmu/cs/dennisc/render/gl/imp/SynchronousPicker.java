@@ -49,10 +49,6 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLCapabilitiesChooser;
 import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLProfile;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
@@ -63,6 +59,10 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 import java.awt.Rectangle;
 import java.nio.ByteBuffer;
@@ -160,7 +160,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 
         this.selectionAsIntBuffer.rewind();
         int length = this.pickContext.gl.glRenderMode(GL2.GL_RENDER);
-        //todo: invesigate negative length
+        //todo: investigate negative length
         //assert length >= 0;
 
         if (length > 0) {
@@ -175,21 +175,21 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
             double x = pickParameters.getX();
             double y = pickParameters.getFlippedY(actualViewport);
 
-            Matrix4x4 m = new Matrix4x4();
-            m.translation.set(actualViewport.width - (2 * (x - actualViewport.x)), actualViewport.height - (2 * (y - actualViewport.y)), 0, 1);
-            ScaleUtilities.applyScale(m, actualViewport.width, actualViewport.height, 1.0);
-
+            Vector3 translation = new Vector3(
+                actualViewport.width - (2 * (x - actualViewport.x)),
+                actualViewport.height - (2 * (y - actualViewport.y)),
+                0);
+            Matrix4x4 m = Matrix4x4.fromTranslation(translation);
+            Matrix4x4 scale = Matrix4x4.fromScale(actualViewport.width, actualViewport.height, 1.0);
             Matrix4x4 p = cameraAdapter.getActualProjectionMatrix(actualViewport);
 
-            m.applyMultiplication(p);
-            m.invert();
+            m = m.times(scale).times(p).invert();
             for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
               selectionBufferInfo.updatePointInSource(m);
             }
           } else {
-            Ray ray = cameraAdapter.getRayAtPixel(pickParameters.getX(), pickParameters.getY(), actualViewport);
-            ray.accessDirection().normalize();
-            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
+            Ray ray = cameraAdapter.getRayAtPixel(pickParameters.getX(), pickParameters.getY(), actualViewport).normalized();
+            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
             for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
               selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
             }
@@ -243,8 +243,8 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
               comparator = new Comparator<SelectionBufferInfo>() {
                 @Override
                 public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-                  double z1 = -sbi1.getPointInSource().z;
-                  double z2 = -sbi2.getPointInSource().z;
+                  double z1 = -sbi1.getPointInSource().z();
+                  double z2 = -sbi2.getPointInSource().z();
                   return Double.compare(z1, z2);
                 }
               };

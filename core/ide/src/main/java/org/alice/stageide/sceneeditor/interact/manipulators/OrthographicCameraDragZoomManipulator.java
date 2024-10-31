@@ -52,10 +52,10 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -95,8 +95,7 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
     } else if (newZoom < MIN_ZOOM) {
       newZoom = amount < 0 ? currentZoom : newZoom;
     }
-    picturePlane.setHeight(newZoom);
-    orthoCam.picturePlane.setValue(picturePlane);
+    orthoCam.picturePlane.setValue(picturePlane.withHeight(newZoom));
   }
 
   @Override

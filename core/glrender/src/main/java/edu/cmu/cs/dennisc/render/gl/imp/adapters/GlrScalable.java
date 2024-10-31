@@ -42,12 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Scalable;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -107,11 +107,11 @@ public class GlrScalable extends GlrComposite<Scalable> {
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.scale) {
-      Dimension3 scale = owner.scale.getValue();
-      this.isIdentity = (scale.x == 1.0) && (scale.y == 1.0) && (scale.z == 1.0);
-      this.x = scale.x;
-      this.y = scale.y;
-      this.z = scale.z;
+      Vector3 scale = owner.scale.getValue().immutable();
+      this.isIdentity = (scale.x() == 1.0) && (scale.y() == 1.0) && (scale.z() == 1.0);
+      this.x = scale.x();
+      this.y = scale.y();
+      this.z = scale.z();
     } else {
       super.propertyChanged(property);
     }

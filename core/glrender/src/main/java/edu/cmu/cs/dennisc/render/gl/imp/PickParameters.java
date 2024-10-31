@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.RenderTarget;
@@ -52,6 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
 
 import java.awt.Rectangle;
 import java.util.List;
@@ -78,7 +78,7 @@ public class PickParameters {
   }
 
   public void addPickResult(Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource) {
-    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource));
+    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource.mutable()));
   }
 
   public List<PickResult> accessAllPickResults() {

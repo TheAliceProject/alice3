@@ -62,6 +62,11 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -89,6 +94,7 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
@@ -130,7 +136,6 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 
-import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
@@ -1188,7 +1193,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
-      ClippedZPlane dummyPlane = new ClippedZPlane(camera.picturePlane.getValue(), renderTarget.getActualViewport(camera));
+      ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 
       double lookingGlassHeight = lookingGlassSize.getHeight();
 
