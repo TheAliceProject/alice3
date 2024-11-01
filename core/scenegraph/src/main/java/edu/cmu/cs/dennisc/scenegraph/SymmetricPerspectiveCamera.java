@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.math.property.AngleProperty;
  *
  * @author Dennis Cosgrove
  */
-public class SymmetricPerspectiveCamera extends AbstractPerspectiveCamera {
+public class SymmetricPerspectiveCamera extends AbstractNearPlaneAndFarPlaneCamera {
   public static final AngleInRadians DEFAULT_VERTICAL_VIEW_ANGLE = new AngleInRadians(0.5);
   public static final double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
   public final AngleProperty verticalViewingAngle = new AngleProperty(this, DEFAULT_VERTICAL_VIEW_ANGLE, true);
