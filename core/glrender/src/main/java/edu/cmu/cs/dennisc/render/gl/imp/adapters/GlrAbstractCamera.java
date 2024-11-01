@@ -62,7 +62,7 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
-  public abstract Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport);
+  public abstract Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport);
 
   protected abstract Rectangle performLetterboxing(Rectangle rect);
 

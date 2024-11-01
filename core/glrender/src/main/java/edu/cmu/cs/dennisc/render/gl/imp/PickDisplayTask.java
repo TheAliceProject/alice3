@@ -136,7 +136,7 @@ import java.util.Comparator;
           selectionBufferInfo.updatePointInSource(m);
         }
       } else {
-        Ray ray = cameraAdapter.getRayAtPixel(pickParameters.getX(), pickParameters.getY(), actualViewport);
+        Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport);
         ray = ray.normalized();
         AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
         for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {

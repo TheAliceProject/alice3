@@ -62,7 +62,7 @@ import java.awt.Rectangle;
 public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera<OrthographicCamera> {
 
   @Override
-  public Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport) {
+  public Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport) {
     ClippedZPlane pp = getActualPicturePlane(actualViewport);
     double left = pp.getXMinimum();
     double right = pp.getXMaximum();
@@ -70,9 +70,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double top = pp.getYMaximum();
     double near = owner.nearClippingPlaneDistance.getValue();
 
-    //Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
-    yPixel = actualViewport.height - yPixel;
-
+    // actualViewport.x & y are set > 0 when letterboxing
     double xPortion = (xPixel - actualViewport.x) / (double) actualViewport.width;
     double yPortion = (yPixel - actualViewport.y) / (double) actualViewport.height;
 

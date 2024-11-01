@@ -64,14 +64,13 @@ import java.nio.DoubleBuffer;
  */
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
-  public Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport) {
+  public Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport) {
     final double near = owner.nearClippingPlaneDistance.getValue();
     final double far = owner.farClippingPlaneDistance.getValue();
 
-    // xPixel and yPixel are given to us with 0, 0 in the upper left of the viewport, so flip y.
     // actualViewport.x & y are set > 0 when letterboxing
     final double xRatio = (xPixel - actualViewport.x) / (actualViewport.width * 0.5);
-    final double yRatio = (actualViewport.height - yPixel - actualViewport.y) / (actualViewport.height * 0.5);
+    final double yRatio = (yPixel - actualViewport.y) / (actualViewport.height * 0.5);
     final double tanHalfVertical = Math.tan(getActualVerticalViewingAngle(actualViewport).getAsRadians() * 0.5);
     final double dx = (1.0 - xRatio) * tanHalfVertical * getAspectRatio(actualViewport);
     final double dy = (1.0 - yRatio) * tanHalfVertical;

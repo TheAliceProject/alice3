@@ -180,7 +180,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
     if (sgCamera != null) {
       GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
       final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
-      return cameraAdapter.getRayAtPixel(xPixel, yPixel, viewport);
+      // Convert from awt to viewport so that the cameras don't have to know about awt.
+      return cameraAdapter.getRayAtViewportPixel(xPixel, viewport.height - yPixel, viewport);
     }
     return Ray.NaN;
   }
