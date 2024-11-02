@@ -63,6 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
+import org.alice.interact.PlaneUtilities;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -116,12 +117,6 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     return m_sgDragAcceptor;
   }
 
-  private Point3 getPointInPlane(Plane plane, int xPixel, int yPixel) {
-    Ray ray = getOnscreenRenderTarget().getRayAtPixel(xPixel, yPixel, m_sgCamera).mutable();
-    double t = plane.intersect(ray);
-    return ray.getPointAlong(t);
-  }
-
   private double yDelta = 0.0;
 
   @Override
@@ -142,8 +137,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     } else {
       if (m_sgDragAcceptor != null) {
         Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera).mutable();
-        double t = m_planeInAbsolute.intersect(ray);
-        m_xyzInAbsoluteAtPress = ray.getPointAlong(t);
+        m_xyzInAbsoluteAtPress = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray)
         //m_xyzInAbsoluteAtPress.y += this.yDelta;
       }
     }
@@ -187,7 +181,8 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         }
       } else {
         //linear drag
-        final Point3 xyzInAbsolutePlane = getPointInPlane(m_planeInAbsolute, current.x, current.y);
+        Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera).mutable();
+        final Point3 xyzInAbsolutePlane = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
         xyzInAbsolutePlane.subtract(m_offset);
         GlrRenderFactory.getInstance().invokeLater(new Runnable() {
           @Override
