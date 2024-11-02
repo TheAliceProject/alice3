@@ -53,6 +53,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -181,7 +182,10 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
       GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
       final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
       // Convert from awt to viewport so that the cameras don't have to know about awt.
-      return cameraAdapter.getRayAtViewportPixel(xPixel, viewport.height - yPixel, viewport);
+      Ray ray = cameraAdapter.getRayAtViewportPixel(xPixel, viewport.height - yPixel, viewport);
+
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().immutable();
+      return ray.transform(m);
     }
     return Ray.NaN;
   }
