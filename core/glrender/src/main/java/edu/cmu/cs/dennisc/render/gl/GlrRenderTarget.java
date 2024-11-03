@@ -177,12 +177,12 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   @Override
-  public final Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera) {
+  public final Ray getRayAtAwtPoint(Point p, AbstractCamera sgCamera) {
     if (sgCamera != null) {
       GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
       final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
       // Convert from awt to viewport so that the cameras don't have to know about awt.
-      Ray ray = cameraAdapter.getRayAtViewportPixel(xPixel, viewport.height - yPixel, viewport);
+      Ray ray = cameraAdapter.getRayAtViewportPixel(p.x, viewport.height - p.y, viewport);
 
       AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().immutable();
       return ray.transform(m);

@@ -42,13 +42,10 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.render.RenderTarget;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
@@ -61,10 +58,6 @@ public class PlaneUtilities {
     } else {
       return ray.getPointAlong(t);
     }
-  }
-
-  public static Ray getRayFromPixel(RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel) {
-    return renderTarget.getRayAtPixel(xPixel, yPixel, camera).mutable();
   }
 
   public static double distanceToPlane(Plane plane, Point3 point) {

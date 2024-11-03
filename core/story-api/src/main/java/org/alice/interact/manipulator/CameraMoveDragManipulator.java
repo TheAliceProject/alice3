@@ -147,11 +147,11 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
   }
 
   private void calculateMovementFactors(Point mousePoint) {
-    Ray centerRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
-    Ray oneUp = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1);
-    Ray oneDown = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1);
-    Ray oneRight = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x + 1, mousePoint.y);
-    Ray oneLeft = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x - 1, mousePoint.y);
+    Ray centerRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
+    Ray oneUp = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y - 1), this.getCamera()).mutable();
+    Ray oneDown = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y + 1), this.getCamera()).mutable();
+    Ray oneRight = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x + 1, mousePoint.y), this.getCamera()).mutable();
+    Ray oneLeft = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x - 1, mousePoint.y), this.getCamera()).mutable();
 
     double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
     double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;

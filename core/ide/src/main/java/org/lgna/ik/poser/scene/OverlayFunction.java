@@ -43,11 +43,12 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.Color;
+import java.awt.Point;
 
 /**
  * @author Matt May
  */
 public interface OverlayFunction {
 
-  public Color getColorForXY(int x, int y);
+  public Color getColorForPoint(Point point);
 }

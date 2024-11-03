@@ -44,6 +44,7 @@ package org.lgna.ik.poser.scene;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.awt.Point;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -97,8 +98,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
       onscreenPicturePlane.addRenderTargetListener(new DebugOverlay(new OverlayFunction() {
 
         @Override
-        public Color getColorForXY(int x, int y) {
-          JointSelectionSphere jointSelectionSphere = calculateJointSelectionSphereAtPixel(x, y);
+        public Color getColorForPoint(Point point) {
+          JointSelectionSphere jointSelectionSphere = calculateJointSelectionSphereAtPoint(point);
           if (jointSelectionSphere != null) {
             return Color.RED;
           } else {
@@ -109,8 +110,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
     }
   }
 
-  private JointSelectionSphere calculateJointSelectionSphereAtPixel(int x, int y) {
-    Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel(x, y, this.getSgCamera());
+  private JointSelectionSphere calculateJointSelectionSphereAtPoint(Point point) {
+    Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtAwtPoint(point, this.getSgCamera());
     double closest = Double.MAX_VALUE; //Integer.MAX_VALUE;
     JointSelectionSphere selected = null;
     for (JointSelectionSphere sphere : scene.getJointSelectionSpheres()) {
@@ -134,7 +135,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
       joint = (Joint) handle.getManipulatedObject();
       return handle;
     }
-    JointSelectionSphere selected = this.calculateJointSelectionSphereAtPixel(e.getX(), e.getY());
+    JointSelectionSphere selected = this.calculateJointSelectionSphereAtPoint(e.getPoint());
     if (selected != null) {
       //System.out.println( "selectedFinal: " + selected.getJoint() );
       Composite sgComposite = selected.getImplementation().getSgComposite();

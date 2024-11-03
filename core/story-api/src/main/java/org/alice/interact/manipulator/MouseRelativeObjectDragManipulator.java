@@ -125,7 +125,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
     //    horizontalPlacementPlane = calculateCameraFacingPlane();
     if (horizontalPlacementPlane != null) {
-      Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
       Point3 pickPoint = PlaneUtilities.getPointInPlane(horizontalPlacementPlane, pickRay);
       pickPoint.subtract(this.offsetFromOrigin);
       pickPoint.y = 0;
@@ -141,7 +141,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
   }
 
   private Vector3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
 
@@ -221,7 +221,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, this.getCamera().getAxes(AsSeenBy.SCENE).backward);
 
-      Ray orthoPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
       Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
       this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
 
@@ -229,7 +229,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       startInput.getClickPickResult().getPositionInSource(initialClickPoint);
       initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
 
-      Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
       if (pickRay != null) {
         this.offsetFromOrigin = Point3.createSubtraction(initialClickPoint, this.originalPosition);
       }
@@ -276,11 +276,11 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
   }
 
   private void calculateMovementFactors(Point mousePoint) {
-    Ray centerRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
-    Ray oneUp = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1);
-    Ray oneDown = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1);
-    Ray oneRight = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x + 1, mousePoint.y);
-    Ray oneLeft = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x - 1, mousePoint.y);
+    Ray centerRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
+    Ray oneUp = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y - 1), this.getCamera()).mutable();
+    Ray oneDown = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y + 1), this.getCamera()).mutable();
+    Ray oneRight = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x + 1, mousePoint.y), this.getCamera()).mutable();
+    Ray oneLeft = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x - 1, mousePoint.y), this.getCamera()).mutable();
 
     double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
     double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
