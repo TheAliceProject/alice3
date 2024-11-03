@@ -46,12 +46,14 @@ import edu.cmu.cs.dennisc.render.PickAllObserver;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/final class PickAllDisplayTask extends PickDisplayTask {
-  public PickAllDisplayTask(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
-    super(xPixel, yPixel, pickSubElementPolicy, criterion);
+  public PickAllDisplayTask(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
+    super(mousePos, pickSubElementPolicy, criterion);
     this.observer = observer;
   }
 

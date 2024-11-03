@@ -129,8 +129,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   @Override
-  public AbstractCamera getCameraAtPixel(int xPixel, int yPixel) {
-    return this.imp.getCameraAtPixel(xPixel, yPixel);
+  public AbstractCamera getCameraAtAwtPoint(Point point) {
+    return this.imp.getCameraAtAwtPoint(point);
   }
 
   @Override

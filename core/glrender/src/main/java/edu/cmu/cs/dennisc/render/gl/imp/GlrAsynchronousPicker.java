@@ -48,6 +48,8 @@ import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,13 +59,13 @@ import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
   }
 
   @Override
-  public void pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
-    this.rtImp.addDisplayTask(new PickAllDisplayTask(xPixel, yPixel, pickSubElementPolicy, criterion, observer));
+  public void pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
+    this.rtImp.addDisplayTask(new PickAllDisplayTask(mousePos, pickSubElementPolicy, criterion, observer));
   }
 
   @Override
-  public void pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
-    this.rtImp.addDisplayTask(new PickFrontMostDisplayTask(xPixel, yPixel, pickSubElementPolicy, criterion, observer));
+  public void pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
+    this.rtImp.addDisplayTask(new PickFrontMostDisplayTask(mousePos, pickSubElementPolicy, criterion, observer));
   }
 
   private final RenderTargetImp rtImp;

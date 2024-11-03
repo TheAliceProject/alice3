@@ -68,6 +68,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.Collections;
 import java.util.List;
@@ -149,12 +150,12 @@ public class RenderTargetImp {
     return Collections.unmodifiableList(this.sgCameras);
   }
 
-  public AbstractCamera getCameraAtPixel(int xPixel, int yPixel) {
+  public AbstractCamera getCameraAtAwtPoint(Point p) {
     ListIterator<AbstractCamera> iterator = this.sgCameras.listIterator(this.sgCameras.size());
     while (iterator.hasPrevious()) {
       AbstractCamera sgCamera = iterator.previous();
       Rectangle actualViewport = this.renderTarget.getActualViewportAsAwtRectangle(sgCamera);
-      if (actualViewport.contains(xPixel, yPixel)) {
+      if (actualViewport.contains(p)) {
         return sgCamera;
       }
 

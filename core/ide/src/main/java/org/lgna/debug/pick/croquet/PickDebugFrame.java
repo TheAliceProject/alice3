@@ -55,8 +55,7 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.debug.pick.croquet.views.PickDebugFrameView;
 
-import java.awt.Component;
-import java.awt.Cursor;
+import java.awt.*;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -103,7 +102,7 @@ public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
               int xPixel = x * PIXELS_PER_PICK;
               //pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
               final int _x = x;
-              onscreenRenderTarget.getAsynchronousPicker().pickFrontMost(xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED, null, new PickFrontMostObserver() {
+              onscreenRenderTarget.getAsynchronousPicker().pickFrontMost(new Point(xPixel, yPixel), PickSubElementPolicy.NOT_REQUIRED, null, new PickFrontMostObserver() {
                 @Override
                 public void done(PickResult result) {
                   pickResults[_y][_x] = result;
@@ -118,11 +117,12 @@ public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
             e.printStackTrace();
           }
         } else {
+          // use synchronous picker
           for (int y = 0; y < pickResults.length; y++) {
             int yPixel = y * PIXELS_PER_PICK;
             for (int x = 0; x < pickResults[y].length; x++) {
               int xPixel = x * PIXELS_PER_PICK;
-              pickResults[y][x] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED);
+              pickResults[y][x] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(new Point(xPixel, yPixel), PickSubElementPolicy.NOT_REQUIRED);
             }
           }
         }

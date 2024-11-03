@@ -56,6 +56,8 @@ import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
 
+
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -67,9 +69,8 @@ import java.util.Comparator;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class PickDisplayTask extends DisplayTask {
-  public PickDisplayTask(int x, int y, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion) {
-    this.x = x;
-    this.y = y;
+  public PickDisplayTask(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion) {
+    this.mousePosition = mousePos;
     this.pickSubElementPolicy = pickSubElementPolicy;
     this.criterion = criterion;
 
@@ -89,8 +90,8 @@ import java.util.Comparator;
     ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary(gl);
 
     RenderTarget rt = rtImp.getRenderTarget();
-    AbstractCamera sgCamera = rtImp.getCameraAtPixel(this.x, this.y);
-    PickParameters pickParameters = new PickParameters(rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
+    AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(this.mousePosition);
+    PickParameters pickParameters = new PickParameters(rt, sgCamera, this.mousePosition, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
 
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
 
@@ -174,8 +175,7 @@ import java.util.Comparator;
     return IsFrameBufferIntact.TRUE;
   }
 
-  private final int x;
-  private final int y;
+  private final Point mousePosition;
   private final PickSubElementPolicy pickSubElementPolicy;
   private final VisualInclusionCriterion criterion;
 

@@ -123,7 +123,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
   protected void handleMousePress(Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
     if (isOriginalAsOpposedToStyleChange) {
       PickObserver pickObserver = null;
-      PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(current.x, current.y, PickSubElementPolicy.NOT_REQUIRED, pickObserver);
+      PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(current, PickSubElementPolicy.NOT_REQUIRED, pickObserver);
       m_sgCamera = (AbstractCamera) pickResult.getSource();
       Visual sgVisual = pickResult.getVisual();
       if (sgVisual != null) {
