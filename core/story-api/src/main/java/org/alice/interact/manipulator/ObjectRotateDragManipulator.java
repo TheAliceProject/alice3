@@ -225,7 +225,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   }
 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
       AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
       double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());

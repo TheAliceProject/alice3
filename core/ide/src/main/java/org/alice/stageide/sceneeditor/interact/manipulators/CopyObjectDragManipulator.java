@@ -102,7 +102,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
       Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
-      Ray orthoPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
       Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
       this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
 

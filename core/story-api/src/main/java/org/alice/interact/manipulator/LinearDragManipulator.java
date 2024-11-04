@@ -122,7 +122,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
   }
 
   protected double getDistanceAlongAxisBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
       Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation.backward;
       double axisCameraDot = Vector3.calculateDotProduct(this.absoluteDragAxis, cameraBack);

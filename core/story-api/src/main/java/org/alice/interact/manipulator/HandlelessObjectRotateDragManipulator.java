@@ -49,7 +49,6 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.interact.event.ManipulationEvent;
@@ -123,7 +122,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
       int xDif = mouseLocation.x - this.initialPoint.x;
       return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);

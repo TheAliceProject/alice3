@@ -43,8 +43,9 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.Dimension;
+import java.awt.Point;
 
 import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
@@ -105,7 +106,7 @@ public class DebugOverlay implements RenderTargetListener {
     BufferedImage rv = new BufferedImage(surfaceSize.width, surfaceSize.height, BufferedImage.TYPE_INT_RGB);
     for (int x = 0; x < surfaceSize.width; x += 2) {
       for (int y = 0; y < surfaceSize.height; y += 2) {
-        Color c = function.getColorForXY(x, y);
+        Color c = function.getColorForPoint(new Point(x, y));
         if (!isPreservingAlpha) {
           c = new Color(c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_ALPHA);
         }

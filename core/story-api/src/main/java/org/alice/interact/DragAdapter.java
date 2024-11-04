@@ -676,8 +676,8 @@ public abstract class DragAdapter {
     OnscreenRenderTarget onscreenRenderTarget = this.getOnscreenRenderTarget();
     assert onscreenRenderTarget != null;
     // Once IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME we could switch to
-    // getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED, null, observer );
-    PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED);
+    // getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation, PickSubElementPolicy.NOT_REQUIRED, null, observer );
+    PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(mouseLocation, PickSubElementPolicy.NOT_REQUIRED);
     observer.done(pickResult);
   }
 

@@ -103,7 +103,7 @@ public class MouseClickEventImp {
       if (this.scene != null) {
         OnscreenRenderTarget rt = this.getOnscreenRenderTarget();
         if (rt != null) {
-          PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED);
+          PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
           if (pickResult != null) {
             SThing e = PickUtilities.getEntityFromPickedObject(pickResult.getVisual());
             if (e instanceof SModel) {

@@ -62,7 +62,7 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
-  public abstract Ray getRayAtPixel(int xPixel, int yPixel, Rectangle actualViewport);
+  public abstract Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport);
 
   protected abstract Rectangle performLetterboxing(Rectangle rect);
 
@@ -126,10 +126,6 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
       double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
       pc.gl.glTranslated(tx, ty, 0.0);
       pc.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
-      //      int[] vp = { actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height };
-      //      java.nio.IntBuffer vpBuffer = java.nio.IntBuffer.wrap( vp );
-      //      pc.glu.gluPickMatrix( pickParameters.getX(), pickParameters.getFlippedY( actualViewport ), 1.0, 1.0, vpBuffer );
-
       setupProjection(pc, actualViewport);
 
       pc.pickScene(this, sceneAdapter, pickParameters);

@@ -53,6 +53,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -128,8 +129,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   @Override
-  public AbstractCamera getCameraAtPixel(int xPixel, int yPixel) {
-    return this.imp.getCameraAtPixel(xPixel, yPixel);
+  public AbstractCamera getCameraAtAwtPoint(Point point) {
+    return this.imp.getCameraAtAwtPoint(point);
   }
 
   @Override
@@ -176,11 +177,15 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   @Override
-  public final Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera) {
+  public final Ray getRayAtAwtPoint(Point p, AbstractCamera sgCamera) {
     if (sgCamera != null) {
       GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
       final Rectangle viewport = getActualViewportFromAdapter(cameraAdapter);
-      return cameraAdapter.getRayAtPixel(xPixel, yPixel, viewport);
+      // Convert from awt to viewport so that the cameras don't have to know about awt.
+      Ray ray = cameraAdapter.getRayAtViewportPixel(p.x, viewport.height - p.y, viewport);
+
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().immutable();
+      return ray.transform(m);
     }
     return Ray.NaN;
   }

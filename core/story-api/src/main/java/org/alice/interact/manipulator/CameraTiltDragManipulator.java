@@ -115,8 +115,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-    Ray oldPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y);
-    Ray newPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+    Ray oldPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(previousInput.getMouseLocation(), this.getCamera()).mutable();
+    Ray newPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
     Point3 oldPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, oldPickRay);
     Point3 newPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, newPickRay);
     if (newPickPoint == null || oldPickPoint == null) {
@@ -190,7 +190,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
       addPickPointSphereToScene();
 
-      Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
 
       Point3 planePoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward);
       this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);

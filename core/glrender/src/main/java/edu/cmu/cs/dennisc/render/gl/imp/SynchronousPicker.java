@@ -65,6 +65,7 @@ import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
 
 import java.awt.Rectangle;
+import java.awt.Point;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -101,8 +102,8 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
       this.glShareContext = null;
     }
 
-    public void setPickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver) {
-      this.pickParameters = new PickParameters(renderTarget, sgCamera, x, y, isSubElementRequired, pickObserver);
+    public void setPickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, Point mousePos, boolean isSubElementRequired, PickObserver pickObserver) {
+      this.pickParameters = new PickParameters(renderTarget, sgCamera, mousePos, isSubElementRequired, pickObserver);
     }
 
     public void clearPickParameters() {
@@ -188,7 +189,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
               selectionBufferInfo.updatePointInSource(m);
             }
           } else {
-            Ray ray = cameraAdapter.getRayAtPixel(pickParameters.getX(), pickParameters.getY(), actualViewport).normalized();
+            Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport).normalized();
             AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
             for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
               selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
@@ -196,41 +197,6 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
           }
 
           if (length > 1) {
-            //        float front0 = selectionBufferInfos[ 0 ].getZFront();
-            //        boolean isDifferentiated = false;
-            //        for( int i=1; i<length; i++ ) {
-            //          if( front0 == selectionBufferInfos[ i ].getZFront() ) {
-            //            //pass
-            //          } else {
-            //            isDifferentiated = true;
-            //            break;
-            //          }
-            //        }
-            //        java.util.Comparator< SelectionBufferInfo > comparator;
-            //        if( isDifferentiated ) {
-            //          comparator = new java.util.Comparator< SelectionBufferInfo >() {
-            //            public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-            //              return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
-            //            }
-            //          };
-            //        } else {
-            //          if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: conformance test reports pick is functioning correctly" );
-            //            comparator = null;
-            //          } else {
-            //            edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
-            //            ray.setNaN();
-            //            cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
-            //            for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-            //              selectionBufferInfo.updatePointInSource( ray );
-            //            }
-            //            comparator = new java.util.Comparator< SelectionBufferInfo >() {
-            //              public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-            //                return Double.compare( sbi1.getPointInSource().z, sbi2.getPointInSource().z );
-            //              }
-            //            };
-            //          }
-            //        }
             Comparator<SelectionBufferInfo> comparator;
             if (pickDetails.isPickFunctioningCorrectly()) {
               comparator = new Comparator<SelectionBufferInfo>() {
@@ -262,11 +228,11 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
       }
     }
 
-    private PickResult pickFrontMost(RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver) {
-      AbstractCamera sgCamera = rtImp.getCameraAtPixel(xPixel, yPixel);
+    private PickResult pickFrontMost(RenderTargetImp rtImp, Point mousePos, boolean isSubElementRequired, PickObserver pickObserver) {
+      AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(mousePos);
       OffscreenDrawable impl = this.getOffscreenDrawable();
       if (impl != null) {
-        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver);
+        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, mousePos, isSubElementRequired, pickObserver);
         try {
           if (sgCamera != null) {
             impl.display();
@@ -280,11 +246,11 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
       }
     }
 
-    private List<PickResult> pickAll(RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver) {
-      AbstractCamera sgCamera = rtImp.getCameraAtPixel(xPixel, yPixel);
+    private List<PickResult> pickAll(RenderTargetImp rtImp, Point mousePos, boolean isSubElementRequired, PickObserver pickObserver) {
+      AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(mousePos);
       OffscreenDrawable impl = this.getOffscreenDrawable();
       if (impl != null) {
-        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver);
+        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, mousePos, isSubElementRequired, pickObserver);
         try {
           if (sgCamera != null) {
             impl.display();
@@ -306,26 +272,26 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
   }
 
   @Override
-  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
-    return this.pickAll(xPixel, yPixel, pickSubElementPolicy, null);
+  public List<PickResult> pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickAll(mousePos, pickSubElementPolicy, null);
   }
 
   @Override
-  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+  public List<PickResult> pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
     synchronized (sharedActualPicker) {
-      return sharedActualPicker.pickAll(this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
+      return sharedActualPicker.pickAll(this.rtImp, mousePos, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
     }
   }
 
   @Override
-  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
-    return this.pickFrontMost(xPixel, yPixel, pickSubElementPolicy, null);
+  public PickResult pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickFrontMost(mousePos, pickSubElementPolicy, null);
   }
 
   @Override
-  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+  public PickResult pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
     synchronized (sharedActualPicker) {
-      return sharedActualPicker.pickFrontMost(this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
+      return sharedActualPicker.pickFrontMost(this.rtImp, mousePos, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
     }
   }
 
