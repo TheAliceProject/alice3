@@ -68,6 +68,10 @@ public interface Matrix4x4 {
     return new Vector4(x, y, z, w);
   }
 
+  default Ray transform(Ray ray) {
+    return new Ray(transform(ray.origin()), transformByOrientationOnly(ray.direction()).normalized());
+  }
+
   // Transform with full matrix multiplication
   void transformPoint3(double[] dest, int offsetDest, double[] src, int offsetSrc);
 

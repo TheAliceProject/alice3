@@ -185,7 +185,7 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
       Ray ray = cameraAdapter.getRayAtViewportPixel(p.x, viewport.height - p.y, viewport);
 
       AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().immutable();
-      return ray.transform(m);
+      return m.transform(ray);
     }
     return Ray.NaN;
   }

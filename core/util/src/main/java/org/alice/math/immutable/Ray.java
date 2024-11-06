@@ -19,11 +19,6 @@ public record Ray(Point3 origin, Vector3 direction) {
     return getPointAlong(getProjectedPointT(p));
   }
 
-  // TODO move to matrix?
-  public Ray transform(AffineMatrix4x4 m) {
-    return new Ray(m.transform(origin), m.transform(direction));
-  }
-
   public Ray normalized() {
     return direction.isNormalized() ? this : new Ray(origin, direction.normalized());
   }
