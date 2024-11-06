@@ -160,8 +160,8 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
   protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
     Point3 position = new Point3(px, py, pz);
     Vector3 direction = new Vector3(nx, ny, nz);
-    m.transform(position);
-    m.transform(direction);
+    position = m.transform(position);
+    direction = m.transformByOrientationOnly(direction);
     Plane plane = Plane.createInstance(position, direction);
     if (plane.isNaN()) {
       return Point3.NaN;

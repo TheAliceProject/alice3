@@ -171,8 +171,8 @@ public class GlrCylinder extends GlrShape<Cylinder> {
           throw new RuntimeException();
     }
     double maxRadius = Math.max(this.bottomRadius, this.topRadius);
-    m.transform(cylinderPosition);
-    m.transform(cylinderDirection);
+    cylinderPosition = m.transform(cylinderPosition);
+    cylinderDirection = m.transformByOrientationOnly(cylinderDirection);
 
     final boolean HANDLE_CONES_SEPARATELY = false;
     double t = Double.NaN;
