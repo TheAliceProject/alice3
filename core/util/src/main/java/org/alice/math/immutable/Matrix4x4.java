@@ -47,13 +47,13 @@ public interface Matrix4x4 {
   }
 
   default Point3 transform(Point3 b) {
-    double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z());
-    double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z());
-    double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z());
+    double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14();
+    double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24();
+    double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34();
     return new Point3(x, y, z);
   }
 
-  default Vector3 transform(Vector3 b) {
+  default Vector3 transformByOrientationOnly(Vector3 b) {
     double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z());
     double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z());
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z());
@@ -66,6 +66,10 @@ public interface Matrix4x4 {
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z() + e34() * b.w());
     double w = (e41() * b.x()) + (e42() * b.y()) + (e43() * b.z() + e44() * b.w());
     return new Vector4(x, y, z, w);
+  }
+
+  default Ray transform(Ray ray) {
+    return new Ray(transform(ray.origin()), transformByOrientationOnly(ray.direction()).normalized());
   }
 
   // Transform with full matrix multiplication

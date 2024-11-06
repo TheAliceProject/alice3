@@ -344,8 +344,6 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
       this.hasMoved = false;
       this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-      Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
-      toOrigin.normalize();
       Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 

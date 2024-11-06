@@ -53,7 +53,6 @@ import org.alice.math.immutable.FullMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
 import org.alice.math.immutable.Vector4;
 
 import java.awt.Rectangle;
@@ -65,22 +64,26 @@ import java.nio.DoubleBuffer;
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
   public Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport) {
-    final double near = owner.nearClippingPlaneDistance.getValue();
-    final double far = owner.farClippingPlaneDistance.getValue();
+    // Camera forward is negative z, so these values are negative, in the camera's frame of reference.
+    final double near = -owner.nearClippingPlaneDistance.getValue();
+    final double far = -owner.farClippingPlaneDistance.getValue();
 
-    // actualViewport.x & y are set > 0 when letterboxing
-    final double xRatio = (xPixel - actualViewport.x) / (actualViewport.width * 0.5);
-    final double yRatio = (yPixel - actualViewport.y) / (actualViewport.height * 0.5);
+    // actualViewport.x or y are set > 0 when letterboxing
+
+    // Proportional offset from center of viewport.
+    // -1, -1 is the lower left corner
+    // 0,0 is the center
+    // 1, 1 is the upper right
+    final double xOffset = 1.0 - ((2.0 * (xPixel - actualViewport.x)) / actualViewport.width);
+    final double yOffset = 1.0 - ((2.0 * (yPixel - actualViewport.y)) / actualViewport.height);
+
     final double tanHalfVertical = Math.tan(getActualVerticalViewingAngle(actualViewport).getAsRadians() * 0.5);
-    final double dx = (1.0 - xRatio) * tanHalfVertical * getAspectRatio(actualViewport);
-    final double dy = (1.0 - yRatio) * tanHalfVertical;
+    final double dx = xOffset * tanHalfVertical * getAspectRatio(actualViewport);
+    final double dy = yOffset * tanHalfVertical;
 
-    //todo: optimize?
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
-    Vector3 direction = pNear.minus(pFar).normalized();
-
-    return new Ray(pNear, direction);
+    return Ray.fromAtoB(pNear, pFar);
   }
 
   @Override
