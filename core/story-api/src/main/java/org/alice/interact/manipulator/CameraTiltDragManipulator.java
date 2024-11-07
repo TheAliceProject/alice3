@@ -49,9 +49,9 @@ import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.debug.DebugSphere;
+import org.alice.math.immutable.Angle;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -137,11 +137,11 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
     Angle xAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, xDif);
     if (currentInput.getMouseLocation().x < previousInput.getMouseLocation().x) {
-      xAngle.setAsRadians(xAngle.getAsRadians() * -1);
+      xAngle = xAngle.negated();
     }
     Angle yAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, yDif);
     if (currentInput.getMouseLocation().y < previousInput.getMouseLocation().y) {
-      yAngle.setAsRadians(yAngle.getAsRadians() * -1);
+      yAngle = yAngle.negated();
     }
 
     StandIn standIn = new StandIn();

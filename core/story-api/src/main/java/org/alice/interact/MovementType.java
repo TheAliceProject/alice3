@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.Angle;
+import org.alice.math.immutable.Angle;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;

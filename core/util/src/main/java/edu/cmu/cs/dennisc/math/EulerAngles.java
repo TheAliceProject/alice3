@@ -141,7 +141,7 @@ public class EulerAngles implements Orientation {
       numbers.roll = roll.getAsRadians();
       rv.setIdentity();
       for (int i = 0; i < 3; i++) {
-        rv.applyRotationAboutArbitraryAxis(accessAxis(i), new AngleInRadians(getValue(i, numbers)));
+        rv.applyRotationAboutArbitraryAxis(accessAxis(i), new org.alice.math.immutable.AngleInRadians(getValue(i, numbers)));
       }
       return rv;
     }

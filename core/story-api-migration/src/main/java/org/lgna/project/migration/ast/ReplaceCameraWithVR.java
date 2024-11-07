@@ -1,11 +1,11 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EulerAngles;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 import org.lgna.project.ast.*;
@@ -151,15 +151,13 @@ public class ReplaceCameraWithVR extends AstMigration {
   private UnitQuaternion getLeveledOrientation(Orientation orientation) {
     EulerAngles angles = orientation.createEulerAngles();
 
-    Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch));
-    Angle flatRoll = new AngleInRadians(nearestPi(angles.roll));
-    EulerAngles vrUserAngles = new EulerAngles(flatPitch, angles.yaw, flatRoll, angles.order);
+    Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch.getAsRadians()));
+    Angle flatRoll = new AngleInRadians(nearestPi(angles.roll.getAsRadians()));
+    EulerAngles vrUserAngles = new EulerAngles(flatPitch.mutable(), angles.yaw, flatRoll.mutable(), angles.order);
     return vrUserAngles.createUnitQuaternion();
   }
 
-  private double nearestPi(Angle angle) {
-    double radians = angle.getAsRadians();
-
+  private double nearestPi(double radians) {
     int halfTurns = (int) (radians / Math.PI);
     // Set to absolute lower bound
     halfTurns = (radians < 0) ? halfTurns - 1 : halfTurns;
@@ -181,9 +179,9 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   private UnitQuaternion getHeadsetOrientation(Orientation cameraOrientation) {
     EulerAngles angles = cameraOrientation.createEulerAngles();
-    Angle flatPitchOffset = new AngleInRadians(angles.pitch.getAsRadians() - nearestPi(angles.pitch));
-    Angle flatRollOffset = new AngleInRadians(angles.roll.getAsRadians() - nearestPi(angles.roll));
-    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, zero, flatRollOffset, angles.order);
+    Angle flatPitchOffset = new AngleInRadians(angles.pitch.getAsRadians() - nearestPi(angles.pitch.getAsRadians()));
+    Angle flatRollOffset = new AngleInRadians(angles.roll.getAsRadians() - nearestPi(angles.roll.getAsRadians()));
+    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset.mutable(), zero.mutable(), flatRollOffset.mutable(), angles.order);
     return headsetAngles.createUnitQuaternion();
   }
 

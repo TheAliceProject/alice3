@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
+import org.alice.math.immutable.Angle;
 import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;

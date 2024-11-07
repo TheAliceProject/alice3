@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
@@ -64,6 +63,7 @@ import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.pattern.DefaultPool;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import org.alice.math.immutable.Angle;
 
 /**
  * @author Dennis Cosgrove
@@ -197,7 +197,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   private void applyRotationInRevolutions(Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy) {
-    this.applyRotationInRadians(axis, AngleUtilities.revolutionsToRadians(angleInRevolutions), asSeenBy);
+    this.applyRotationInRadians(axis, angleInRevolutions * Angle.REVOLUTIONS_TO_RADIANS, asSeenBy);
   }
 
   public void applyRotationInRevolutions(Vector3 axis, double angleInRadians) {
@@ -254,7 +254,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public void animateApplyRotationInRevolutions(Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy, double duration, Style style) {
-    this.animateApplyRotationInRadians(axis, AngleUtilities.revolutionsToRadians(angleInRevolutions), asSeenBy, duration, style);
+    this.animateApplyRotationInRadians(axis, angleInRevolutions * Angle.REVOLUTIONS_TO_RADIANS, asSeenBy, duration, style);
   }
 
   protected abstract static class VantagePointData {

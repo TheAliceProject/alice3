@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.AngleInRevolutions;
+import org.alice.math.immutable.AngleInRevolutions;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.VrHeadsetImp;

@@ -53,8 +53,6 @@ import org.alice.interact.manipulator.scenegraph.SnapLine;
 import org.alice.interact.manipulator.scenegraph.SnapSphere;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -67,6 +65,9 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
 
 import java.util.List;
 
@@ -505,14 +506,11 @@ public class SnapUtilities {
   }
 
   public static Angle doRotationSnapping(Angle currentAngle, DragAdapter dragAdapter) {
-    Angle snapAngle = new AngleInRadians(currentAngle);
-    //Try snapping to various snaps
-    if (dragAdapter != null) {
-      if (dragAdapter.shouldSnapToRotation()) {
-        snapAngle = snapObjectToAngle(currentAngle, dragAdapter.getRotationSnapAngle());
-      }
+    if (dragAdapter == null || !dragAdapter.shouldSnapToRotation()) {
+      return currentAngle;
     }
-    return snapAngle;
+    //Try snapping to various snaps
+    return snapObjectToAngle(currentAngle, dragAdapter.getRotationSnapAngle());
   }
 
 }

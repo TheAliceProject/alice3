@@ -43,9 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.property.AngleProperty;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+
 
 /**
  * defined by a regular pyramidal frustum

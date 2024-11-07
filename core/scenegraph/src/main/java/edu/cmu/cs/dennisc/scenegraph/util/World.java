@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
+import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
 import edu.cmu.cs.dennisc.scenegraph.Background;
 import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;

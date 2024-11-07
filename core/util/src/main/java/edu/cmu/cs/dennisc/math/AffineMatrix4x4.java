@@ -49,6 +49,8 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Objects;
 
+import org.alice.math.immutable.Angle;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 

@@ -44,7 +44,6 @@ package test.ik;
 
 import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -64,6 +63,7 @@ import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
 import org.alice.interact.PlaneUtilities;
+import org.alice.math.immutable.AngleInRadians;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;

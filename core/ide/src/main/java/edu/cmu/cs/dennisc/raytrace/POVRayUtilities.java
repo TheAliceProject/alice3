@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.raytrace;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
@@ -70,6 +69,7 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Angle;
 
 import java.io.PrintWriter;
 

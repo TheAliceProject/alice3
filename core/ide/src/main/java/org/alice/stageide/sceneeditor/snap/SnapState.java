@@ -48,8 +48,8 @@ import org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedDoubleState;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInDegrees;
 
 public class SnapState {
 

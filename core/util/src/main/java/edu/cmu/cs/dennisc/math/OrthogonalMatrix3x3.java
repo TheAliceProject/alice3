@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRevolutions;
+
 /**
  * @author Dennis Cosgrove
  */

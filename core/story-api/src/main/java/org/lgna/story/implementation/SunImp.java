@@ -44,9 +44,9 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRevolutions;
 import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.alice.math.immutable.AngleInRevolutions;
 import org.lgna.story.SSun;
 
 /**

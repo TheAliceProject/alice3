@@ -43,12 +43,12 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInDegrees;
+import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.FullMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;

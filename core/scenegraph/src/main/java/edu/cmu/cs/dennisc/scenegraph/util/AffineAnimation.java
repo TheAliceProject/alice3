@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRevolutions;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.AngleInRevolutions;
 
 /**
  * @author Dennis Cosgrove

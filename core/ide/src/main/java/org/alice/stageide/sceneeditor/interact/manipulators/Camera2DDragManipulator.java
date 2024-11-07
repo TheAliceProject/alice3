@@ -47,10 +47,10 @@ import java.awt.Color;
 import org.alice.interact.InputState;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.math.immutable.AngleInRadians;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;

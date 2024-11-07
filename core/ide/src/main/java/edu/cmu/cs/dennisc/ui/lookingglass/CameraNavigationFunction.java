@@ -43,12 +43,12 @@
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.rigidbody.TranslationDerivative;
 import edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
 
 import java.awt.event.KeyEvent;
 

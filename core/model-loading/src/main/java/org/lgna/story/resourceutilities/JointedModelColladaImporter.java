@@ -23,6 +23,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.math.immutable.AngleInDegrees;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;

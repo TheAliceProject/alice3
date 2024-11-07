@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.math;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.random.RandomUtilities;
 
 /**
  * @author Dennis Cosgrove
@@ -57,8 +56,8 @@ public class AxisRotation implements Orientation {
   private AxisRotation() {
   }
 
-  public AxisRotation(Vector3 axis, Angle angle) {
-    set(axis, angle);
+  public AxisRotation(Vector3 axis, org.alice.math.immutable.Angle angle) {
+    set(axis, angle.mutable());
   }
 
   public AxisRotation(OrthogonalMatrix3x3 other) {
@@ -156,15 +155,15 @@ public class AxisRotation implements Orientation {
   //    angle.encode( binaryEncoder );
   //  }
 
-  public static AxisRotation createXAxisRotation(Angle angle) {
+  public static AxisRotation createXAxisRotation(org.alice.math.immutable.Angle angle) {
     return new AxisRotation(Vector3.accessPositiveXAxis(), angle);
   }
 
-  public static AxisRotation createYAxisRotation(Angle angle) {
+  public static AxisRotation createYAxisRotation(org.alice.math.immutable.Angle angle) {
     return new AxisRotation(Vector3.accessPositiveYAxis(), angle);
   }
 
-  public static AxisRotation createZAxisRotation(Angle angle) {
+  public static AxisRotation createZAxisRotation(org.alice.math.immutable.Angle angle) {
     return new AxisRotation(Vector3.accessPositiveZAxis(), angle);
   }
 
@@ -373,28 +372,6 @@ public class AxisRotation implements Orientation {
         return false;
       }
     }
-  }
-
-  //Random
-  public static AxisRotation setReturnValueToRandom(AxisRotation rv) {
-    double magnitudeSquared;
-    do {
-      rv.axis.x = RandomUtilities.nextDoubleInRange(-1, 1);
-      rv.axis.y = RandomUtilities.nextDoubleInRange(-1, 1);
-      rv.axis.z = RandomUtilities.nextDoubleInRange(-1, 1);
-      magnitudeSquared = rv.axis.calculateMagnitudeSquared();
-    } while (magnitudeSquared == 0.0);
-    rv.axis.divide(Math.sqrt(magnitudeSquared));
-    rv.angle.setAsRadians(RandomUtilities.nextDoubleInRange(-Math.PI, Math.PI));
-    return rv;
-  }
-
-  public static AxisRotation createRandom() {
-    return setReturnValueToRandom(new AxisRotation());
-  }
-
-  public void setRandom() {
-    setReturnValueToRandom(this);
   }
 
   @Override

@@ -56,12 +56,11 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
 
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AngleUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -218,12 +217,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
   }
 
-  protected Vector3 getVectorForAngle(Angle angle) {
-    AffineMatrix4x4 rotationTransform = this.rotationHandle.getAbsoluteTransformation();
-    rotationTransform.applyRotationAboutYAxis(angle);
-    return Vector3.createMultiplication(rotationTransform.orientation.backward, -1);
-  }
-
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
@@ -272,30 +265,28 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-    if (!currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
-      if (!this.hidCursor) {
-        this.hideCursor();
-      }
-      Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
-      if ((currentAngle != null) && (this.originalAngleBasedOnMouse != null)) {
-        Angle angleDif = AngleUtilities.createSubtraction(currentAngle, this.originalAngleBasedOnMouse);
-        //The angleDif is the amount the object as rotated relative to the start of the manipulation
-        //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
-        Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
-        boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
-        if (didSnap) {
-          angleDif = snappedAngle;
-        }
+    if (currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
+      return;
+    }
+    if (!this.hidCursor) {
+      this.hideCursor();
+    }
+    Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
+    if ((currentAngle != null) && (this.originalAngleBasedOnMouse != null)) {
+      Angle angleDif = currentAngle.minus(this.originalAngleBasedOnMouse);
+      //The angleDif is the amount the object as rotated relative to the start of the manipulation
+      //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+      Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
+      boolean didSnap = !snappedAngle.isCloseTo(angleDif);
 
-        this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
-        this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), angleDif, this.rotationHandle.getReferenceFrame());
-        manipulatedTransformable.notifyTransformationListeners();
+      this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
+      this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), snappedAngle, this.rotationHandle.getReferenceFrame());
+      manipulatedTransformable.notifyTransformationListeners();
 
-        if (didSnap) {
-          SnapUtilities.showSnapRotation(this.rotationHandle);
-        } else {
-          SnapUtilities.hideRotationSnapVisualization();
-        }
+      if (didSnap) {
+        SnapUtilities.showSnapRotation(this.rotationHandle);
+      } else {
+        SnapUtilities.hideRotationSnapVisualization();
       }
     }
   }

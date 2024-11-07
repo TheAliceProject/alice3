@@ -60,7 +60,7 @@ import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.animation.Color4fAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
+import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;

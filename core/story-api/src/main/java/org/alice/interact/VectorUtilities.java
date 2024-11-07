@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.AngleInRadians;
+import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**

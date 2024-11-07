@@ -44,8 +44,6 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisRotation;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.Orientation;
@@ -53,6 +51,8 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import org.alice.interact.debug.DebugSphere;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
 
 /**
  * @author Dennis Cosgrove

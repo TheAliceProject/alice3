@@ -45,16 +45,12 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import edu.cmu.cs.dennisc.math.Ray;
-import org.alice.interact.DragAdapter.CameraView;
-import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
@@ -66,6 +62,11 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import org.alice.interact.DragAdapter.CameraView;
+import org.alice.interact.InputState;
+import org.alice.interact.PlaneUtilities;
+import org.alice.math.immutable.AngleInDegrees;
 
 /**
  * @author David Culyba

@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
 import edu.cmu.cs.dennisc.clock.Clock;
 import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
@@ -60,6 +59,7 @@ import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.ui.DragStyle;
+import org.alice.math.immutable.Angle;
 
 import java.awt.Color;
 import java.awt.Component;
