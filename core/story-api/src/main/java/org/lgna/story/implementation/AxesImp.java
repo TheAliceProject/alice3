@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
@@ -120,7 +121,14 @@ public class AxesImp extends VisualScaleModelImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    this.setScale(getScaleForSize(size));
+    Dimension3 newScale = getScaleForSize(size);
+
+    if (newScale.hasNegativeComponents()) {
+      Logger.outln("Attempt to set axes scale to " + newScale + " ignored.");
+      return;
+    }
+
+    this.setScale(newScale);
   }
 
   private final SAxes abstraction;

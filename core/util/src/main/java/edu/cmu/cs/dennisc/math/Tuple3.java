@@ -407,4 +407,8 @@ public abstract class Tuple3 implements BinaryEncodableAndDecodable, Printable {
   public String toString() {
     return getClass().getName() + "[x=" + x + ";y=" + y + ";z=" + z + "]";
   }
+
+  public boolean hasNegativeComponents() {
+    return x < 0.0 || y < 0.0 || z < 0.0;
+  }
 }

@@ -98,7 +98,14 @@ public class BillboardImp extends VisualScaleModelImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    this.setScale(getScaleForSize(size));
+    Dimension3 newScale = getScaleForSize(size);
+
+    if (newScale.hasNegativeComponents()) {
+      Logger.outln("Attempt to set billboard scale to " + newScale + " ignored.");
+      return;
+    }
+
+    this.setScale(newScale);
   }
 
   @Override

@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -131,6 +132,11 @@ public class TorusImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
+    if (size.hasNegativeComponents()) {
+      Logger.outln("Attempt to set torus size to " + size + " ignored.");
+      return;
+    }
+
     double newOuter = size.x * .5;
     outerRadius.setValue(newOuter);
     innerRadius.setValue(newOuter - size.y);

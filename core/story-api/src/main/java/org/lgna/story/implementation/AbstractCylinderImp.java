@@ -118,6 +118,12 @@ public abstract class AbstractCylinderImp extends ShapeImp {
     if (size.x != size.z) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
+
+    if (size.hasNegativeComponents()) {
+      Logger.outln("Attempt to set abstract cylinder size to " + size + " ignored.");
+      return;
+    }
+
     this.length.setValue(size.y);
     this.setXZ(size.x * .5);
   }
