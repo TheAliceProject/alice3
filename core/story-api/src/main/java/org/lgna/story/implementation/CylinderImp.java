@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 import org.lgna.story.SCylinder;
 import org.lgna.story.implementation.eventhandling.CylinderHull;
 import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
@@ -85,6 +87,11 @@ public class CylinderImp extends AbstractCylinderImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      if (value < 0.0) {
+        Logger.outln("Attempt to set cylinder radius to " + value + " ignored.");
+        return;
+      }
+
       //Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
       CylinderImp.this.getSgCylinder().topRadius.setValue(value);
       CylinderImp.this.getSgCylinder().bottomRadius.setValue(value);

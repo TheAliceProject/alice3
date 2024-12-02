@@ -159,6 +159,11 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double newInner) {
+      if (newInner < 0.0) {
+        Logger.outln("Attempt to set torus inner radius to " + newInner + " ignored.");
+        return;
+      }
+
       double oldOuter = sgTorus.majorRadius.getValue() + sgTorus.minorRadius.getValue();
       updateRadii(newInner, Math.max(oldOuter, newInner + MINIMUM_VALUE));
       if (oldOuter < newInner + MINIMUM_VALUE) {
@@ -176,6 +181,11 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double newOuter) {
+      if (newOuter < 0.0) {
+        Logger.outln("Attempt to set torus outer radius to " + newOuter + " ignored.");
+        return;
+      }
+
       double oldInner = sgTorus.majorRadius.getValue() - sgTorus.minorRadius.getValue();
       updateRadii(Math.min(oldInner, newOuter - MINIMUM_VALUE), newOuter);
       if (newOuter - MINIMUM_VALUE < oldInner) {

@@ -129,6 +129,11 @@ public class DiscImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      if (value < 0.0) {
+        Logger.outln("Attempt to set disc radius to " + value + " ignored.");
+        return;
+      }
+
       DiscImp.this.sgDisc.outerRadius.setValue(value);
     }
   };

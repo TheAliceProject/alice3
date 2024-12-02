@@ -138,6 +138,11 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      if (value < 0.0) {
+        Logger.outln("Attempt to set abstract cylinder length to " + value + " ignored.");
+        return;
+      }
+
       AbstractCylinderImp.this.sgCylinder.length.setValue(value);
     }
   };

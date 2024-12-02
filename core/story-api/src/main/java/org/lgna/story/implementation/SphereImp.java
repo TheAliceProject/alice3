@@ -134,6 +134,11 @@ public class SphereImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      if (value < 0.0) {
+        Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
+        return;
+      }
+
       SphereImp.this.sgSphere.radius.setValue(value);
     }
   };
