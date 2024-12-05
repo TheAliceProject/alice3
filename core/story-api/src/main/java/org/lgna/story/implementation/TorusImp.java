@@ -132,11 +132,6 @@ public class TorusImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    if (size.hasNegativeComponents()) {
-      Logger.outln("Attempt to set torus size to " + size + " ignored.");
-      return;
-    }
-
     double newOuter = size.x * .5;
     outerRadius.setValue(newOuter);
     innerRadius.setValue(newOuter - size.y);

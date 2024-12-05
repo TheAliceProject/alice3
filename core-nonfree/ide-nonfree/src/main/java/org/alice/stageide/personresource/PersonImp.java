@@ -145,13 +145,6 @@ public class PersonImp extends SingleVisualModelImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    Dimension3 newScale = getScaleForSize(size);
-
-    if (newScale.hasNegativeComponents()) {
-      Logger.outln("Attempt to set person scale to " + newScale + " ignored.");
-      return;
-    }
-
-    this.setScale(newScale);
+    this.setScale(getScaleForSize(size));
   }
 }

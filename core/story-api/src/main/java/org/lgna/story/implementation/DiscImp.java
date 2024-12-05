@@ -107,10 +107,6 @@ public class DiscImp extends ShapeImp {
     if (size.x != size.z) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
-    if (size.hasNegativeComponents()) {
-      Logger.outln("Attempt to set disk size to " + size + " ignored.");
-      return;
-    }
     this.outerRadius.setValue(size.x * .5);
   }
 

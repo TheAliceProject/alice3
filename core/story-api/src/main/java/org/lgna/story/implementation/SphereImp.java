@@ -107,12 +107,6 @@ public class SphereImp extends ShapeImp {
     if ((size.x != size.y) || (size.y != size.z)) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
-
-    if (size.hasNegativeComponents()) {
-      Logger.outln("Attempt to set sphere size to " + size + " ignored.");
-      return;
-    }
-
     this.radius.setValue(size.x * .5);
   }
 

@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -150,14 +149,7 @@ public class TextModelImp extends SimpleModelImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    Dimension3 newScale = getScaleForSize(size);
-
-    if (newScale.hasNegativeComponents()) {
-      Logger.outln("Attempt to set text model scale to " + newScale + " ignored.");
-      return;
-    }
-
-    this.setScale(newScale);
+    this.setScale(getScaleForSize(size));
   }
 
   private final STextModel abstraction;

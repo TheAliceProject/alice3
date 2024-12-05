@@ -672,14 +672,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   @Override
   public void setSize(Dimension3 size) {
-    Dimension3 newScale = getScaleForSize(size);
-
-    if (newScale.hasNegativeComponents()) {
-      Logger.outln("Attempt to set jointed model scale to " + newScale + " ignored.");
-      return;
-    }
-
-    this.setScale(newScale);
+    setScale(getScaleForSize(size));
   }
 
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
