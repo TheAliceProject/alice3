@@ -124,7 +124,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 
   private final Cylinder sgCylinder = new Cylinder();
 
-  public final DoubleProperty length = new DoubleProperty(AbstractCylinderImp.this) {
+  public final DoubleProperty length = new DoubleProperty(AbstractCylinderImp.this, 0.) {
     @Override
     public Double getValue() {
       return AbstractCylinderImp.this.sgCylinder.length.getValue();
@@ -132,11 +132,6 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
-      if (value < 0.0) {
-        Logger.outln("Attempt to set abstract cylinder length to " + value + " ignored.");
-        return;
-      }
-
       AbstractCylinderImp.this.sgCylinder.length.setValue(value);
     }
   };

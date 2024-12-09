@@ -43,16 +43,41 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class DoubleProperty extends Property<Double> {
-  public DoubleProperty(PropertyOwnerImp owner) {
+  public static Double CLOSE_TO_ZERO = .01;
+
+  private Double minValue;
+
+  public DoubleProperty(PropertyOwnerImp owner, Double minValue) {
     super(owner, Double.class);
+
+    this.minValue = minValue;
+  }
+
+  public DoubleProperty(PropertyOwnerImp owner) {
+    this(owner, Double.NaN);
   }
 
   @Override
   protected Double interpolate(Double a, Double b, double portion) {
     return a + ((b - a) * portion);
+  }
+
+  @Override
+  public void animateValue(final Double value, double duration, Style style) {
+    Double newValue = value;
+
+    if (!minValue.isNaN() && value < minValue) {
+      Logger.outln("Attempt to set double property below the minimum of " + minValue + " to " + value + " ignored.");
+      newValue = minValue;
+    }
+
+    super.animateValue(newValue, duration, style);
   }
 }

@@ -120,7 +120,7 @@ public class SphereImp extends ShapeImp {
 
   private final SSphere abstraction;
   private final Sphere sgSphere = new Sphere();
-  public final DoubleProperty radius = new DoubleProperty(SphereImp.this) {
+  public final DoubleProperty radius = new DoubleProperty(SphereImp.this, 0.) {
     @Override
     public Double getValue() {
       return SphereImp.this.sgSphere.radius.getValue();
@@ -128,11 +128,6 @@ public class SphereImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
-      if (value < 0.0) {
-        Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
-        return;
-      }
-
       SphereImp.this.sgSphere.radius.setValue(value);
     }
   };

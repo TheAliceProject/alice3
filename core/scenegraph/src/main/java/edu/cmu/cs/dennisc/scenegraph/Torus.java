@@ -111,18 +111,6 @@ public class Torus extends Shape {
     }
 
   };
-  public final BoundDoubleProperty minorRadius = new BoundDoubleProperty(this, 0.1) {
-    @Override
-    public void setValue(Double value) {
-      assert value >= 0.0 : value;
-      super.setValue(value);
-    }
-  };
-  public final BoundDoubleProperty majorRadius = new BoundDoubleProperty(this, 0.9) {
-    @Override
-    public void setValue(Double value) {
-      assert value >= 0.0 : value;
-      super.setValue(value);
-    }
-  };
+  public final BoundDoubleProperty minorRadius = new BoundDoubleProperty(this, 0.0);
+  public final BoundDoubleProperty majorRadius = new BoundDoubleProperty(this, 0.0);
 }

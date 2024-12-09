@@ -43,8 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
 import org.lgna.story.SCone;
 import org.lgna.story.implementation.eventhandling.CylinderHull;
 import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
@@ -81,7 +79,7 @@ public class ConeImp extends AbstractCylinderImp {
   }
 
   private final SCone abstraction;
-  public final DoubleProperty baseRadius = new DoubleProperty(ConeImp.this) {
+  public final DoubleProperty baseRadius = new DoubleProperty(ConeImp.this, 0.) {
     @Override
     public Double getValue() {
       return ConeImp.this.getSgCylinder().bottomRadius.getValue();
@@ -89,11 +87,6 @@ public class ConeImp extends AbstractCylinderImp {
 
     @Override
     protected void handleSetValue(Double value) {
-      if (value < 0.0) {
-        Logger.outln("Attempt to set cone base radius to " + value + " ignored.");
-        return;
-      }
-
       ConeImp.this.getSgCylinder().bottomRadius.setValue(value);
     }
   };

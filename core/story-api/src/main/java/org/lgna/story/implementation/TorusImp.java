@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -145,7 +144,7 @@ public class TorusImp extends ShapeImp {
 
   private final STorus abstraction;
   private final Torus sgTorus = new Torus();
-  public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this) {
+  public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this, 0.) {
 
     @Override
     public Double getValue() {
@@ -154,11 +153,6 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double newInner) {
-      if (newInner < 0.0) {
-        Logger.outln("Attempt to set torus inner radius to " + newInner + " ignored.");
-        return;
-      }
-
       double oldOuter = sgTorus.majorRadius.getValue() + sgTorus.minorRadius.getValue();
       updateRadii(newInner, Math.max(oldOuter, newInner + MINIMUM_VALUE));
       if (oldOuter < newInner + MINIMUM_VALUE) {
@@ -167,7 +161,7 @@ public class TorusImp extends ShapeImp {
       }
     }
   };
-  public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this) {
+  public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this, DoubleProperty.CLOSE_TO_ZERO) {
 
     @Override
     public Double getValue() {
@@ -176,11 +170,6 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double newOuter) {
-      if (newOuter < 0.0) {
-        Logger.outln("Attempt to set torus outer radius to " + newOuter + " ignored.");
-        return;
-      }
-
       double oldInner = sgTorus.majorRadius.getValue() - sgTorus.minorRadius.getValue();
       updateRadii(Math.min(oldInner, newOuter - MINIMUM_VALUE), newOuter);
       if (newOuter - MINIMUM_VALUE < oldInner) {
