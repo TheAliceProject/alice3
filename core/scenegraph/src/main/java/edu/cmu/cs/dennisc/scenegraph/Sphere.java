@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
@@ -63,14 +62,5 @@ public class Sphere extends Shape {
     boundingSphere.radius = radius.getValue();
   }
 
-  public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 0.5) {
-    @Override
-    public void setValue(Double value) {
-      if (value >= 0.0) {
-        super.setValue(value);
-      } else {
-        Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
-      }
-    }
-  };
+  public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 0.5);
 }

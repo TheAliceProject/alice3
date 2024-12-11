@@ -124,7 +124,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 
   private final Cylinder sgCylinder = new Cylinder();
 
-  public final DoubleProperty length = new DoubleProperty(AbstractCylinderImp.this) {
+  public final DoubleProperty length = new DoubleProperty(AbstractCylinderImp.this, 0.0) {
     @Override
     public Double getValue() {
       return AbstractCylinderImp.this.sgCylinder.length.getValue();

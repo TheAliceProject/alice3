@@ -245,27 +245,9 @@ public class Cylinder extends Shape {
     boundingSphere.radius = Math.sqrt(halfLengthSquared + maxRadiusSquared + maxRadiusSquared);
   }
 
-  public final BoundDoubleProperty length = new BoundDoubleProperty(this, 1.0) {
-    @Override
-    public void setValue(Double value) {
-      assert value >= 0.0 : value;
-      super.setValue(value);
-    }
-  };
-  public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty(this, 1.0) {
-    @Override
-    public void setValue(Double value) {
-      assert value >= 0.0 : value;
-      super.setValue(value);
-    }
-  };
-  public final BoundDoubleProperty topRadius = new BoundDoubleProperty(this, 1.0) {
-    @Override
-    public void setValue(Double value) {
-      assert value >= 0.0 : value;
-      super.setValue(value);
-    }
-  };
+  public final BoundDoubleProperty length = new BoundDoubleProperty(this, 1.0);
+  public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty(this, 1.0);
+  public final BoundDoubleProperty topRadius = new BoundDoubleProperty(this, 1.0);
   //todo: change default to CENTER?
   public final InstanceProperty<OriginAlignment> originAlignment = new InstanceProperty<OriginAlignment>(this, OriginAlignment.BOTTOM) {
     @Override
