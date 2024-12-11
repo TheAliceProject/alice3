@@ -111,6 +111,6 @@ public class Torus extends Shape {
     }
 
   };
-  public final BoundDoubleProperty minorRadius = new BoundDoubleProperty(this, 0.0);
-  public final BoundDoubleProperty majorRadius = new BoundDoubleProperty(this, 0.0);
+  public final BoundDoubleProperty minorRadius = new BoundDoubleProperty(this, 0.1);
+  public final BoundDoubleProperty majorRadius = new BoundDoubleProperty(this, 0.9);
 }

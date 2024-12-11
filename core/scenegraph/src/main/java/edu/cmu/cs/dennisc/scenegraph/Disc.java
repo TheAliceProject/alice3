@@ -93,7 +93,7 @@ public class Disc extends Shape {
 
   };
   public final DoubleProperty innerRadius = new DoubleProperty(this, 0.0);
-  public final BoundDoubleProperty outerRadius = new BoundDoubleProperty(this, 0.0);
+  public final BoundDoubleProperty outerRadius = new BoundDoubleProperty(this, 1.0);
   public final BooleanProperty isFrontFaceVisible = new BooleanProperty(this, true);
   public final BooleanProperty isBackFaceVisible = new BooleanProperty(this, true);
 }

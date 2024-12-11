@@ -117,7 +117,7 @@ public class DiscImp extends ShapeImp {
 
   private final SDisc abstraction;
   private final Disc sgDisc = new Disc();
-  public final DoubleProperty outerRadius = new DoubleProperty(DiscImp.this, 0.) {
+  public final DoubleProperty outerRadius = new DoubleProperty(DiscImp.this, 0.0) {
     @Override
     public Double getValue() {
       return DiscImp.this.sgDisc.outerRadius.getValue();

@@ -77,7 +77,7 @@ public class CylinderImp extends AbstractCylinderImp {
   }
 
   private final SCylinder abstraction;
-  public final DoubleProperty radius = new DoubleProperty(CylinderImp.this, 0.) {
+  public final DoubleProperty radius = new DoubleProperty(CylinderImp.this, 0.0) {
     @Override
     public Double getValue() {
       return CylinderImp.this.getSgCylinder().bottomRadius.getValue();

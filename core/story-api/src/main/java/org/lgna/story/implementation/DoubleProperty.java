@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  * @author Dennis Cosgrove
  */
 public abstract class DoubleProperty extends Property<Double> {
-  public static Double CLOSE_TO_ZERO = .01;
+  public static final Double CLOSE_TO_ZERO = .01;
 
   private Double minValue;
 
@@ -74,7 +74,7 @@ public abstract class DoubleProperty extends Property<Double> {
     Double newValue = value;
 
     if (!minValue.isNaN() && value < minValue) {
-      Logger.outln("Attempt to set double property below the minimum of " + minValue + " to " + value + " ignored.");
+      Logger.outln("Attempt to set double property below the minimum of " + minValue + " to " + value + " will instead set it to the minimum.");
       newValue = minValue;
     }
 

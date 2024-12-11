@@ -79,7 +79,7 @@ public class ConeImp extends AbstractCylinderImp {
   }
 
   private final SCone abstraction;
-  public final DoubleProperty baseRadius = new DoubleProperty(ConeImp.this, 0.) {
+  public final DoubleProperty baseRadius = new DoubleProperty(ConeImp.this, 0.0) {
     @Override
     public Double getValue() {
       return ConeImp.this.getSgCylinder().bottomRadius.getValue();
