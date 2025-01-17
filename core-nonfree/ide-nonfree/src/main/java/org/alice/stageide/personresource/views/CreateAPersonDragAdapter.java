@@ -123,10 +123,6 @@ public class CreateAPersonDragAdapter extends DragAdapter {
   }
 
   @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
   public void setSGCamera(AbstractCamera camera) {
     super.setSGCamera(camera);
     Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
@@ -143,9 +139,5 @@ public class CreateAPersonDragAdapter extends DragAdapter {
         ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds);
       }
     }
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
   }
 }

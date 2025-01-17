@@ -99,6 +99,17 @@ import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
+ *
+ * inherited by
+ *
+ * RuntimeDragAdapter- don't make the kids learn how to deal with keys/mouse movements, offer them something that mostly works.
+ *
+ * CroquetSupporting/Global DragAdapter- an absolute unit of a class, hugely interwoven with the scene editor, because it handles
+ * dragging into and out of the scene editor AND all the manipulations inside.  fun!
+ *
+ * CreateAPersonDragAdapter- might be able to be merged with SingleViewer
+ * PoserAnimatorDragAdapter- you're not supposed to pick favorites of all your children. This one is absolutely not it.
+ * SingleViewerDragAdapter- skeleton viewer & model imports, might be able to absorb CreateAPerson
  */
 public abstract class DragAdapter {
   public static final Element.Key<AxisAlignedBox> BOUNDING_BOX_KEY = Element.Key.createInstance("BOUNDING_BOX_KEY");
@@ -344,7 +355,8 @@ public abstract class DragAdapter {
     this.hasObjectToBeSelected = true;
   }
 
-  protected abstract void updateHandleSelection(AbstractTransformableImp selected);
+  protected void updateHandleSelection(AbstractTransformableImp selected) {
+  }
 
   public boolean hasSceneEditor() {
     return false;
@@ -662,7 +674,8 @@ public abstract class DragAdapter {
     return new AngleInRadians(Math.PI / 16.0);
   }
 
-  public abstract void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation);
+  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
+  }
 
   private void pickIntoSceneSuppressingErrors(Point mouseLocation, PickFrontMostObserver observer) {
     try {

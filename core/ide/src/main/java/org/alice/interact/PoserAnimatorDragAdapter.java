@@ -53,7 +53,6 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.alice.math.immutable.AffineMatrix4x4;
@@ -62,7 +61,6 @@ import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
 import org.lgna.story.SModel;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -135,14 +133,6 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     for (int i = 0; i < this.manipulators.size(); i++) {
       this.manipulators.get(i).getManipulator().setDragAdapter(this);
     }
-  }
-
-  @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
   }
 
   public final void setTarget(SModel model) {

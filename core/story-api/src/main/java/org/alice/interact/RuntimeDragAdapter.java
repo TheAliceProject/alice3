@@ -53,7 +53,6 @@ import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.condition.TargetModelCondition;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
@@ -63,12 +62,13 @@ import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.lgna.story.SModel;
 import org.lgna.story.Visual;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author David Culyba
+ *
+ * created as an event listener for interacting with a live running world
  */
 public class RuntimeDragAdapter extends DragAdapter {
   private List<SModel> targetModels = new ArrayList<>();
@@ -158,10 +158,6 @@ public class RuntimeDragAdapter extends DragAdapter {
   }
 
   @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
   protected void handleMouseEntered(MouseEvent e) {
     //Overridden to do nothing
   }
@@ -171,10 +167,6 @@ public class RuntimeDragAdapter extends DragAdapter {
     //Overridden to prevent picking every frame since there is no need for rollover events
     this.currentInputState.setMouseLocation(e.getPoint());
     this.fireStateChange();
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
   }
 
 }

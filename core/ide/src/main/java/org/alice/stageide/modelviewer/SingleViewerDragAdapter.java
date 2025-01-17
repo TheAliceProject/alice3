@@ -56,7 +56,6 @@ import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
@@ -127,10 +126,6 @@ public class SingleViewerDragAdapter extends DragAdapter {
   }
 
   @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
   public void setSGCamera(AbstractCamera camera) {
     super.setSGCamera(camera);
     Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
@@ -150,7 +145,4 @@ public class SingleViewerDragAdapter extends DragAdapter {
     fireStateChange();
   }
 
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
-  }
 }
