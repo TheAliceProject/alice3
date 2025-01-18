@@ -81,17 +81,10 @@ public class SingleViewerDragAdapter extends DragAdapter {
   }
 
   private void addZoomKeyControl() {
-    MovementKey[] zoomKeys = {
-        //Zoom out
-        new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-        new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-        //Zoom in
-        new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-        new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-    };
-    CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(zoomKeys);
+    // camera translate
+    CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(DEFAULT_ZOOM_KEYS);
     ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet(cameraTranslateManip);
-    for (MovementKey zoomKey : zoomKeys) {
+    for (MovementKey zoomKey : DEFAULT_ZOOM_KEYS) {
       cameraTranslate.addCondition(new KeyPressCondition(zoomKey.keyValue));
     }
     addManipulatorConditionSet(cameraTranslate);

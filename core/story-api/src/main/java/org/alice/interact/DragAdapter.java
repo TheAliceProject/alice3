@@ -63,9 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.PickCondition;
+import org.alice.interact.condition.*;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
 import org.alice.interact.event.ManipulationListener;
@@ -114,6 +112,38 @@ public abstract class DragAdapter {
   public static final Element.Key<AxisAlignedBox> BOUNDING_BOX_KEY = Element.Key.createInstance("BOUNDING_BOX_KEY");
   private static final double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
   private static final double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
+
+  protected static final MovementKey[] DEFAULT_MOVEMENT_KEYS = {
+      // Forward
+      new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
+      // Backward
+      new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
+      // Left
+      new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
+      // Right
+      new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
+      // Up
+      new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
+      // Down
+      new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
+  };
+
+  protected static final MovementKey[] DEFAULT_ZOOM_KEYS = {
+      //Zoom out
+      new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+      new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+      //Zoom in
+      new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+      new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+  };
+
+  protected static final MovementKey[] DEFAULT_ROTATE_KEYS = {
+      //Left
+      new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), 2.0d),
+      //Right
+      new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 2.0d),
+  };
+
   protected final Map<HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = Maps.newHashMap();
   private final HandleManager handleManager = new HandleManager();
   private final List<SelectionListener> selectionListeners = Lists.newCopyOnWriteArrayList();

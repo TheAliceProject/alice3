@@ -43,7 +43,6 @@
 
 package org.alice.stageide.sceneeditor.interact;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -142,62 +141,33 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
   }
 
   private void setUpControls() {
-    MovementKey[] movementKeys = {
-        //Forward
-        new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
-        //Backward
-        new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
-        //Left
-        new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
-        //Right
-        new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
-        //Up
-        new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
-        //Down
-        new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
-    };
-
-    MovementKey[] zoomKeys = {
-        //Zoom out
-        new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)), new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-        //Zoom in
-        new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)), new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-    };
-
-    MovementKey[] turnKeys = {
-        //Left
-        new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), 2.0d),
-        //Right
-        new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 2.0d),
-    };
-
     ModifierMask noModifiers = new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN);
 
-    MovementKey[] combinedKeys = new MovementKey[movementKeys.length + zoomKeys.length];
-    System.arraycopy(movementKeys, 0, combinedKeys, 0, movementKeys.length);
-    System.arraycopy(zoomKeys, 0, combinedKeys, movementKeys.length, zoomKeys.length);
+    MovementKey[] combinedKeys = new MovementKey[DEFAULT_MOVEMENT_KEYS.length + DEFAULT_ZOOM_KEYS.length];
+    System.arraycopy(DEFAULT_MOVEMENT_KEYS, 0, combinedKeys, 0, DEFAULT_MOVEMENT_KEYS.length);
+    System.arraycopy(DEFAULT_ZOOM_KEYS, 0, combinedKeys, DEFAULT_MOVEMENT_KEYS.length, DEFAULT_ZOOM_KEYS.length);
 
     CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(combinedKeys);
     ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet(cameraTranslateManip);
-    for (MovementKey movementKey : movementKeys) {
+    for (MovementKey movementKey : DEFAULT_MOVEMENT_KEYS) {
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(movementKey.keyValue), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
       cameraTranslate.addCondition(keyAndNotSelected);
     }
-    for (MovementKey zoomKey : zoomKeys) {
+    for (MovementKey zoomKey : DEFAULT_ZOOM_KEYS) {
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(zoomKey.keyValue, noModifiers), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
       cameraTranslate.addCondition(keyAndNotSelected);
     }
     //  this.addManipulator( cameraTranslate );
 
-    ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet(new ObjectTranslateKeyManipulator(movementKeys));
-    for (MovementKey movementKey : movementKeys) {
+    ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet(new ObjectTranslateKeyManipulator(DEFAULT_MOVEMENT_KEYS));
+    for (MovementKey movementKey : DEFAULT_MOVEMENT_KEYS) {
       AndInputCondition keyAndSelected = new AndInputCondition(new KeyPressCondition(movementKey.keyValue), new SelectedObjectCondition(PickHint.PickType.MOVEABLE.pickHint()));
       objectTranslate.addCondition(keyAndSelected);
     }
     this.addManipulatorConditionSet(objectTranslate);
 
-    ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet(new CameraRotateKeyManipulator(turnKeys));
-    for (MovementKey turnKey : turnKeys) {
+    ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet(new CameraRotateKeyManipulator(DEFAULT_ROTATE_KEYS));
+    for (MovementKey turnKey : DEFAULT_ROTATE_KEYS) {
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(turnKey.keyValue), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
       cameraRotate.addCondition(keyAndNotSelected);
     }
@@ -207,6 +177,8 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     addCameraMouseControl();
 
     //Object Manipulation
+
+    //Ability to drag stuff in from gallery
     OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
     this.dropTargetManipulator = boundingBoxManipulator;
     ManipulatorConditionSet dragFromGallery = new ManipulatorConditionSet(boundingBoxManipulator, "Bounding Box Translate");
