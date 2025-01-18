@@ -113,9 +113,6 @@ public class RuntimeDragAdapter extends DragAdapter {
       addCameraMouseControl();
     }
 
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   private void addDragCondition(ManipulatorConditionSet mouseTranslateObject, MouseDragCondition moveableObject) {

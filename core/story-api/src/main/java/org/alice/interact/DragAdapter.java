@@ -192,6 +192,7 @@ public abstract class DragAdapter {
 
   public void addManipulatorConditionSet(ManipulatorConditionSet manipulator) {
     this.manipulators.add(manipulator);
+    manipulator.getManipulator().setDragAdapter(this);
   }
 
   protected Iterable<ManipulatorConditionSet> getManipulatorConditionSets() {
@@ -934,7 +935,7 @@ public abstract class DragAdapter {
     }
   };
 
-  protected/*private*/ final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
+  private final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
   private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
   private OnscreenRenderTarget onscreenRenderTarget;
   private Component lookingGlassComponent = null;

@@ -89,7 +89,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(orbiter);
     //    cameraOrbit.addCondition(rightMouseAndNonInteractive);
     cameraOrbit.addCondition(middleMouseAndAnything);
-    this.manipulators.add(cameraOrbit);
+    addManipulatorConditionSet(cameraOrbit);
 
     JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle(MovementDirection.BACKWARD, Color4f.BLUE);
     rotateJointAboutZAxis.setManipulation(new ObjectRotateDragManipulator());
@@ -116,7 +116,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet(manipulator);
     MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     mouseWheelCameraZoom.addCondition(mouseWheelCondition);
-    this.manipulators.add(mouseWheelCameraZoom);
+    addManipulatorConditionSet(mouseWheelCameraZoom);
 
     selectObject = new ManipulatorConditionSet(new ObjectRotateDragManipulator());
 
@@ -128,11 +128,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, group);
     setInteractionState(HandleStyle.ROTATION);
 
-    this.manipulators.add(selectObject);
-
-    for (int i = 0; i < this.manipulators.size(); i++) {
-      this.manipulators.get(i).getManipulator().setDragAdapter(this);
-    }
+    addManipulatorConditionSet(selectObject);
   }
 
   public final void setTarget(SModel model) {

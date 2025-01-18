@@ -272,11 +272,6 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     mouseWheelCameraZoom.addCondition(mouseWheelCondition);
     this.addManipulatorConditionSet(mouseWheelCameraZoom);
 
-    //todo: move down?
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
-
     ManipulationAxes handleAxis = new ManipulationAxes();
 
     handleAxis.addToGroup(HandleSet.HandleGroup.VISUALIZATION);

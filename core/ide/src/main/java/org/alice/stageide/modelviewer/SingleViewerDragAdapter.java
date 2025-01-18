@@ -71,9 +71,6 @@ public class SingleViewerDragAdapter extends DragAdapter {
     addZoomKeyControl();
     addCameraKeyControl();
 
-    for (ManipulatorConditionSet manipulatorConditionSet : getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   private void addDragControl() {

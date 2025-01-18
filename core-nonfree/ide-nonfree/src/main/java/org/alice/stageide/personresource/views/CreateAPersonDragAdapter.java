@@ -117,9 +117,6 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     mouseRotateObjectLeftRight.addCondition(moveableObjectWithCtrl);
     this.addManipulatorConditionSet(mouseRotateObjectLeftRight);
 
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   @Override
