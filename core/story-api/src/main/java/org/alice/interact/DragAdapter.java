@@ -119,8 +119,7 @@ public abstract class DragAdapter {
   private final HandleManager handleManager = new HandleManager();
   private final List<SelectionListener> selectionListeners = Lists.newCopyOnWriteArrayList();
   private final AbsoluteTransformationListener cameraTransformationListener = absoluteTransformationEvent -> {
-    if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
-      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
+    if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera camera) {
       if (getActiveCamera() == camera) {
         DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation());
       }
@@ -316,12 +315,10 @@ public abstract class DragAdapter {
   }
 
   private void setManipulatorStartState(AbstractManipulator manipulator) {
-    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator) {
-      OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator) manipulator;
+    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator lookingGlassManipulator) {
       this.setLookingGlassOnManipulator(lookingGlassManipulator);
     }
-    if (manipulator instanceof CameraInformedManipulator) {
-      CameraInformedManipulator cameraInformed = (CameraInformedManipulator) manipulator;
+    if (manipulator instanceof CameraInformedManipulator cameraInformed) {
       this.setCameraOnManipulator(cameraInformed);
     }
   }
@@ -582,8 +579,7 @@ public abstract class DragAdapter {
 
   private void setSelectedObjectSilhouetteIfAppropriate(boolean isHaloed) {
     if (this.sgSilhouette != null) {
-      if (this.selectedObject instanceof ModelImp) {
-        ModelImp modelImp = (ModelImp) this.selectedObject;
+      if (this.selectedObject instanceof ModelImp modelImp) {
         for (Visual sgVisual : modelImp.getSgVisuals()) {
           sgVisual.silouette.setValue(isHaloed ? this.sgSilhouette : null);
         }
