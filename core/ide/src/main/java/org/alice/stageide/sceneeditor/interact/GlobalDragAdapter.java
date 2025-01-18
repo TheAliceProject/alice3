@@ -84,11 +84,7 @@ import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.SelectionIndicator;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.manipulator.CameraMoveDragManipulator;
-import org.alice.interact.manipulator.CameraOrbitDragManipulator;
-import org.alice.interact.manipulator.CameraPanDragManipulator;
 import org.alice.interact.manipulator.CameraRotateKeyManipulator;
-import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
@@ -264,29 +260,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
       this.addManipulatorConditionSet(cameraRotate);
 
       //Camera mouse control
-      MouseDragCondition leftAndNoModifiers = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-      MouseDragCondition leftAndShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_SHIFT));
-      MouseDragCondition leftAndControl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_CONTROL));
-      MouseDragCondition middleMouseAndAnything = new MouseDragCondition(MouseEvent.BUTTON2, new PickCondition(PickHint.getAnythingHint()));
-      MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.getNonInteractiveHint()));
-
-      ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(new CameraOrbitDragManipulator());
-      //    cameraOrbit.addCondition(rightMouseAndNonInteractive);
-      cameraOrbit.addCondition(middleMouseAndAnything);
-      this.addManipulatorConditionSet(cameraOrbit);
-
-      ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet(new CameraTiltDragManipulator());
-      cameraTilt.addCondition(rightMouseAndNonInteractive);
-      cameraTilt.addCondition(leftAndControl);
-      this.addManipulatorConditionSet(cameraTilt);
-
-      ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet(new CameraMoveDragManipulator());
-      cameraMouseTranslate.addCondition(leftAndNoModifiers);
-      this.addManipulatorConditionSet(cameraMouseTranslate);
-
-      ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet(new CameraPanDragManipulator());
-      cameraMousePan.addCondition(leftAndShift);
-      this.addManipulatorConditionSet(cameraMousePan);
+      addCameraMouseControl();
 
       //Object Manipulation
       OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
