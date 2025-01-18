@@ -143,9 +143,7 @@ public class HandleManager implements ManipulationListener {
 
   private static boolean canHaveHandle(AbstractTransformable selectedObject, ManipulationHandle handle) {
     PickHint objectPickHint = PickUtilities.getPickType(selectedObject);
-    if (handle instanceof SelectionIndicator) {
-      return (objectPickHint.intersects(PickHint.PickType.SELECTABLE.pickHint()));
-    } else if (handle instanceof ManipulationAxes) {
+    if (handle instanceof ManipulationAxes) {
       EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject(selectedObject);
       return !(entityImp instanceof AxesImp);
     } else if (handle instanceof LinearTranslateHandle) {
