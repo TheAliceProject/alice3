@@ -143,29 +143,27 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
   private void setUpControls() {
     ModifierMask noModifiers = new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN);
 
+    // Camera Keyboard Control
+
+    // camera translation
     MovementKey[] combinedKeys = new MovementKey[DEFAULT_MOVEMENT_KEYS.length + DEFAULT_ZOOM_KEYS.length];
     System.arraycopy(DEFAULT_MOVEMENT_KEYS, 0, combinedKeys, 0, DEFAULT_MOVEMENT_KEYS.length);
     System.arraycopy(DEFAULT_ZOOM_KEYS, 0, combinedKeys, DEFAULT_MOVEMENT_KEYS.length, DEFAULT_ZOOM_KEYS.length);
-
     CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(combinedKeys);
     ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet(cameraTranslateManip);
+
     for (MovementKey movementKey : DEFAULT_MOVEMENT_KEYS) {
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(movementKey.keyValue), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
       cameraTranslate.addCondition(keyAndNotSelected);
     }
     for (MovementKey zoomKey : DEFAULT_ZOOM_KEYS) {
+      // almost the same as the move keys, but specifically with no modifiers pressed
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(zoomKey.keyValue, noModifiers), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
       cameraTranslate.addCondition(keyAndNotSelected);
     }
-    //  this.addManipulator( cameraTranslate );
+    this.addManipulatorConditionSet(cameraTranslate);
 
-    ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet(new ObjectTranslateKeyManipulator(DEFAULT_MOVEMENT_KEYS));
-    for (MovementKey movementKey : DEFAULT_MOVEMENT_KEYS) {
-      AndInputCondition keyAndSelected = new AndInputCondition(new KeyPressCondition(movementKey.keyValue), new SelectedObjectCondition(PickHint.PickType.MOVEABLE.pickHint()));
-      objectTranslate.addCondition(keyAndSelected);
-    }
-    this.addManipulatorConditionSet(objectTranslate);
-
+    // camera rotation
     ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet(new CameraRotateKeyManipulator(DEFAULT_ROTATE_KEYS));
     for (MovementKey turnKey : DEFAULT_ROTATE_KEYS) {
       AndInputCondition keyAndNotSelected = new AndInputCondition(new KeyPressCondition(turnKey.keyValue), new SelectedObjectCondition(PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH));
@@ -173,53 +171,74 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     }
     this.addManipulatorConditionSet(cameraRotate);
 
-    //Camera mouse control
+    // Camera Mouse Control
     addCameraMouseControl();
 
-    //Object Manipulation
+    ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet(new CameraZoomMouseWheelManipulator());
+    MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    mouseWheelCameraZoom.addCondition(mouseWheelCondition);
+    this.addManipulatorConditionSet(mouseWheelCameraZoom);
 
-    //Ability to drag stuff in from gallery
+    // Object Manipulation
+
+    // Object Keyboard Control
+    // this can only work when the the scene editor is getting keyboard events, so, specifically NOT when an object is
+    // selected via the dropdown on the right
+    ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet(new ObjectTranslateKeyManipulator(DEFAULT_MOVEMENT_KEYS));
+    for (MovementKey movementKey : DEFAULT_MOVEMENT_KEYS) {
+      AndInputCondition keyAndSelected = new AndInputCondition(new KeyPressCondition(movementKey.keyValue), new SelectedObjectCondition(PickHint.PickType.MOVEABLE.pickHint()));
+      objectTranslate.addCondition(keyAndSelected);
+    }
+    this.addManipulatorConditionSet(objectTranslate);
+
+    // Ability to drag stuff in from gallery
     OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
     this.dropTargetManipulator = boundingBoxManipulator;
     ManipulatorConditionSet dragFromGallery = new ManipulatorConditionSet(boundingBoxManipulator, "Bounding Box Translate");
     dragFromGallery.addCondition(new DragAndDropCondition());
     this.addManipulatorConditionSet(dragFromGallery);
 
-    MouseDragCondition leftClickMoveableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    MouseDragCondition leftClickTurnableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    MouseDragCondition leftClickResizableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.RESIZABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-
+    // movable objects- translate, default interaction group
     ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet(new OmniDirectionalDragManipulator(), "Mouse Translate");
+    MouseDragCondition leftClickMoveableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     leftClickMouseTranslateObject.addCondition(leftClickMoveableObjects);
     this.addManipulatorConditionSet(leftClickMouseTranslateObject);
 
+    // turnable objects- rotate
+    // This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
     ManipulatorConditionSet leftClickMouseRotateObjectLeftRight = new ManipulatorConditionSet(new HandlelessObjectRotateDragManipulator(MovementDirection.UP));
+    MouseDragCondition leftClickTurnableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     leftClickMouseRotateObjectLeftRight.addCondition(leftClickTurnableObjects);
-    //This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
     leftClickMouseRotateObjectLeftRight.setEnabled(false);
     this.addManipulatorConditionSet(leftClickMouseRotateObjectLeftRight);
 
+    // resizable objects - scale
+    // This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
     ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet(new ResizeDragManipulator(Resizer.UNIFORM, Resizer.XY_PLANE, Resizer.XZ_PLANE, Resizer.YZ_PLANE));
+    MouseDragCondition leftClickResizableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.RESIZABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     leftClickMouseResizeObject.addCondition(leftClickResizableObjects);
-    //This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
     leftClickMouseResizeObject.setEnabled(false);
     this.addManipulatorConditionSet(leftClickMouseResizeObject);
 
+    // shift + drag -> movement in up/down direction only
     ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet(new ObjectUpDownDragManipulator());
     MouseDragCondition moveableObjectWithShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierKey.SHIFT));
     mouseUpDownTranslateObject.addCondition(moveableObjectWithShift);
     this.addManipulatorConditionSet(mouseUpDownTranslateObject);
 
+    // ctrl + drag -> rotate
     ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet(new HandlelessObjectRotateDragManipulator(MovementDirection.UP));
     MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierKey.CONTROL));
     mouseRotateObjectLeftRight.addCondition(moveableObjectWithCtrl);
     this.addManipulatorConditionSet(mouseRotateObjectLeftRight);
 
+    // alt + drag -> copy
     ManipulatorConditionSet mouseCopyAndMoveObject = new ManipulatorConditionSet(new CopyObjectDragManipulator());
     MouseDragCondition copyObjectWithAlt = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierKey.ALT));
     mouseCopyAndMoveObject.addCondition(copyObjectWithAlt);
     this.addManipulatorConditionSet(mouseCopyAndMoveObject);
 
+    // click + drag -> drag/move
     ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet(new ObjectGlobalHandleDragManipulator());
     MouseDragCondition handleObjectCondition = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.THREE_D_HANDLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     MouseCondition handleObjectClickCondition = new MouseCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TWO_D_HANDLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
@@ -227,27 +246,63 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     mouseHandleDrag.addCondition(handleObjectClickCondition);
     this.addManipulatorConditionSet(mouseHandleDrag);
 
+    // select object on either left or right click
     ManipulatorConditionSet selectObject = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
     selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
+    selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
     this.addManipulatorConditionSet(selectObject);
 
-    ManipulatorConditionSet selectObjectRight = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
-    selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
-    this.addManipulatorConditionSet(selectObjectRight);
-
+    // double click
     ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet(new GetAGoodLookAtManipulator());
     getAGoodLookAtObject.addCondition(new DoubleClickedObjectCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.VIEWABLE.pickHint()), new ModifierMask(ModifierMask.JUST_CONTROL)));
     this.addManipulatorConditionSet(getAGoodLookAtObject);
 
-    ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet(new CameraZoomMouseWheelManipulator());
-    MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    mouseWheelCameraZoom.addCondition(mouseWheelCondition);
-    this.addManipulatorConditionSet(mouseWheelCameraZoom);
+    // right click is defined in the scene editor, for reasons I suppose
 
+    // ux handles
+    setupHandles();
+    
+    if (this.sceneEditor != null) {
+      // Interaction groups
+      final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER, ObjectType.MAIN_CAMERA);
+      final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects(ObjectType.JOINT);
+      final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects(ObjectType.ANY);
+
+      InteractionGroup defaultInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE));
+
+      // rotation, translation, resize interaction groups
+      //TODO: Make joint and non joint interactions
+      InteractionGroup rotationInteraction = new InteractionGroup();
+      rotationInteraction.addInteractionInfo(notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
+      rotationInteraction.addInteractionInfo(joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
+
+      InteractionGroup translationInteraction = new InteractionGroup();
+      translationInteraction.addInteractionInfo(notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
+      translationInteraction.addInteractionInfo(joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
+
+      InteractionGroup resizeInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, PickHint.PickType.RESIZABLE));
+
+      this.mapHandleStyleToInteractionGroup.put(HandleStyle.DEFAULT, defaultInteraction);
+      this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, rotationInteraction);
+      this.mapHandleStyleToInteractionGroup.put(HandleStyle.TRANSLATION, translationInteraction);
+      this.mapHandleStyleToInteractionGroup.put(HandleStyle.RESIZE, resizeInteraction);
+      SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener(this.handleStyleListener);
+      this.setHandleSelectionState(HandleStyle.DEFAULT);
+    }
+
+    RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
+    if (renderCapabilities.getStencilBits() > 0) {
+      Silhouette sgSilhouette = new Silhouette();
+      //sgSilhouette.color.setValue( Color4f.YELLOW );
+      //sgSilhouette.width.setValue( 1.5f );
+      this.setSgSilhouette(sgSilhouette);
+    }
+  }
+
+  // Creates all the visual handles that show up when we select an object in various modes
+  private void setupHandles() {
     ManipulationAxes handleAxis = new ManipulationAxes();
-
     handleAxis.addToGroup(HandleSet.HandleGroup.VISUALIZATION);
-
     handleAxis.addCondition(new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate, null, PickHint.getAnythingHint()));
     handleAxis.addCondition(new ManipulationEventCriteria(ManipulationEvent.EventType.Translate, null, PickHint.getAnythingHint()));
     this.addManipulationListener(handleAxis);
@@ -439,40 +494,6 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     scaleAxisYZ.addCondition(new ManipulationEventCriteria(ManipulationEvent.EventType.Scale, scaleAxisYZ.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint()));
     scaleAxisYZ.setDragAdapterAndAddHandle(this);
     scaleAxisYZ.setName("scaleAxisYZ");
-
-    if (this.sceneEditor != null) {
-      final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER, ObjectType.MAIN_CAMERA);
-      final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects(ObjectType.JOINT);
-      final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects(ObjectType.ANY);
-
-      InteractionGroup defaultInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE));
-
-      //TODO: Make joint and non joint interactions
-      InteractionGroup rotationInteraction = new InteractionGroup();
-      rotationInteraction.addInteractionInfo(notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
-      rotationInteraction.addInteractionInfo(joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
-
-      InteractionGroup translationInteraction = new InteractionGroup();
-      translationInteraction.addInteractionInfo(notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
-      translationInteraction.addInteractionInfo(joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
-
-      InteractionGroup resizeInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, PickHint.PickType.RESIZABLE));
-
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.DEFAULT, defaultInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, rotationInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.TRANSLATION, translationInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.RESIZE, resizeInteraction);
-      SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener(this.handleStyleListener);
-      this.setHandleSelectionState(HandleStyle.DEFAULT);
-    }
-
-    RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
-    if (renderCapabilities.getStencilBits() > 0) {
-      Silhouette sgSilhouette = new Silhouette();
-      //sgSilhouette.color.setValue( Color4f.YELLOW );
-      //sgSilhouette.width.setValue( 1.5f );
-      this.setSgSilhouette(sgSilhouette);
-    }
   }
 
   public void addClickAdapter(ManipulatorClickAdapter clickAdapter, InputCondition... conditions) {
