@@ -43,10 +43,20 @@
 package edu.cmu.cs.dennisc.codec;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -381,5 +391,147 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
       assert clsName.length() == 0;
     }
     return rv;
+  }
+
+  @Override
+  public void decodeProperties(InstancePropertyOwner owner, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    while (true) {
+      String propertyName = decodeString();
+      if (propertyName.isEmpty()) {
+        break;
+      }
+      InstanceProperty property = owner.getPropertyNamed(propertyName);
+      assert property != null;
+      property.setValue(decodeValue(map));
+    }
+  }
+
+  private Object decodeValue(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    String valueClsName = decodeString();
+    assert valueClsName != null;
+    if (valueClsName.isEmpty()) {
+      return null;
+    }
+    Class<?> valueCls = ReflectionUtilities.getClassForName(valueClsName);
+    if (valueCls.isArray()) {
+      return decodeArray(map, valueCls);
+    }
+    if (Collection.class.isAssignableFrom(valueCls)) {
+      int size = decodeInt();
+      var collection = (Collection) ReflectionUtilities.newInstance(valueCls);
+      for (int i = 0; i < size; i++) {
+        String componentTypeName = decodeString();
+        Class<?> componentType = ReflectionUtilities.getClassForName(componentTypeName);
+        collection.add(decodeObject(componentType, map));
+      }
+      return null;
+    }
+    return decodeObject(valueCls, map);
+  }
+
+  private Object decodeArray(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map, Class valueCls) {
+    if (boolean[].class == valueCls) {
+      return decodeBooleanArray();
+    }
+    if (byte[].class == valueCls) {
+      return decodeByteArray();
+    }
+    if (char[].class == valueCls) {
+      return decodeCharArray();
+    }
+    if (double[].class == valueCls) {
+      return decodeDoubleArray();
+    }
+    if (float[].class == valueCls) {
+      return decodeFloatArray();
+    }
+    if (int[].class == valueCls) {
+      return decodeIntArray();
+    }
+    if (long[].class == valueCls) {
+      return decodeLongArray();
+    }
+    if (short[].class == valueCls) {
+      return decodeShortArray();
+    }
+    if (String[].class == valueCls) {
+      return decodeStringArray();
+    }
+    if (Enum[].class.isAssignableFrom(valueCls)) {
+      return decodeEnumArray(valueCls.getComponentType());
+    }
+    if (BinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+      return decodeBinaryEncodableAndDecodableArray(valueCls.getComponentType());
+    }
+    if (ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+      return decodeReferenceableBinaryEncodableAndDecodableArray(valueCls.getComponentType(), map);
+    }
+    int length = decodeInt();
+    Object value = Array.newInstance(valueCls.getComponentType(), length);
+    for (int i = 0; i < length; i++) {
+      Array.set(value, i, decodeObject(valueCls.getComponentType(), map));
+    }
+    return value;
+  }
+
+  private Object decodeObject(Class valueCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+      return decodeBinaryEncodableAndDecodable();
+    }
+    if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+      return decodeReferenceableBinaryEncodableAndDecodable(map);
+    }
+    if (ByteBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeByteBuffer(this);
+    }
+    if (CharBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeCharBuffer(this);
+    }
+    if (ShortBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeShortBuffer(this);
+    }
+    if (IntBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeIntBuffer(this);
+    }
+    if (LongBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeLongBuffer(this);
+    }
+    if (FloatBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeFloatBuffer(this);
+    }
+    if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeDoubleBuffer(this);
+    }
+    if (Boolean.class == valueCls) {
+      return decodeBoolean();
+    }
+    if (Byte.class == valueCls) {
+      return decodeByte();
+    }
+    if (Character.class == valueCls) {
+      return decodeChar();
+    }
+    if (Double.class == valueCls) {
+      return decodeDouble();
+    }
+    if (Float.class == valueCls) {
+      return decodeFloat();
+    }
+    if (Integer.class == valueCls) {
+      return decodeInt();
+    }
+    if (Long.class == valueCls) {
+      return decodeLong();
+    }
+    if (Short.class == valueCls) {
+      return decodeShort();
+    }
+    if (String.class == valueCls) {
+      return decodeString();
+    }
+    if (Enum.class.isAssignableFrom(valueCls)) {
+      return this.<Enum>decodeEnum();
+    }
+    throw new RuntimeException(valueCls.getName());
   }
 }

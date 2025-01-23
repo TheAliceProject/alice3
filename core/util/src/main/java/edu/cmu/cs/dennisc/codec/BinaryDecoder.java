@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,69 +51,68 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface BinaryDecoder {
-  public byte[] readFully(byte[] rv);
+  byte[] readFully(byte[] rv);
 
-  public byte[] readFully(byte[] rv, int offset, int length);
+  byte[] readFully(byte[] rv, int offset, int length);
 
-  public boolean decodeBoolean();
+  boolean decodeBoolean();
 
-  public byte decodeByte();
+  byte decodeByte();
 
-  public char decodeChar();
+  char decodeChar();
 
-  public double decodeDouble();
+  double decodeDouble();
 
-  public float decodeFloat();
+  float decodeFloat();
 
-  public int decodeInt();
+  int decodeInt();
 
-  public long decodeLong();
+  long decodeLong();
 
-  public short decodeShort();
+  short decodeShort();
 
-  public String decodeString();
+  String decodeString();
 
-  public <E extends Enum<E>> E decodeEnum();
+  <E extends Enum<E>> E decodeEnum();
 
-  public UUID decodeId();
+  UUID decodeId();
 
-  public <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable();
+  <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable();
 
-  public <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Object context);
+  <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Object context);
 
   @Deprecated
-  public ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable(ReferenceableBinaryEncodableAndDecodable rv, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
+  ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable(ReferenceableBinaryEncodableAndDecodable rv, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 
-  public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
+  <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 
-  //  public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map, Object context );
+  boolean[] decodeBooleanArray();
 
-  public boolean[] decodeBooleanArray();
+  byte[] decodeByteArray();
 
-  public byte[] decodeByteArray();
+  char[] decodeCharArray();
 
-  public char[] decodeCharArray();
+  double[] decodeDoubleArray();
 
-  public double[] decodeDoubleArray();
+  float[] decodeFloatArray();
 
-  public float[] decodeFloatArray();
+  int[] decodeIntArray();
 
-  public int[] decodeIntArray();
+  long[] decodeLongArray();
 
-  public long[] decodeLongArray();
+  short[] decodeShortArray();
 
-  public short[] decodeShortArray();
+  String[] decodeStringArray();
 
-  public String[] decodeStringArray();
+  <E extends Enum<E>> E[] decodeEnumArray(Class<E> cls);
 
-  public <E extends Enum<E>> E[] decodeEnumArray(Class<E> cls);
+  UUID[] decodeIdArray();
 
-  public UUID[] decodeIdArray();
+  <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls);
 
-  public <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls);
+  <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls, Object context);
 
-  public <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls, Object context);
+  <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray(Class<E> componentCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 
-  public <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray(Class<E> componentCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
-  //  public <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > componentCls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map, Object context );
+  void decodeProperties(InstancePropertyOwner owner, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 }
