@@ -81,8 +81,6 @@ import java.util.Map;
 
 //todo: clean up
 public abstract class Element implements InstancePropertyOwner, ReferenceableBinaryEncodableAndDecodable {
-  private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
-
   private List<InstanceProperty<?>> m_properties = null;
 
   private List<PropertyListener> m_propertyListeners = new LinkedList<PropertyListener>();
@@ -229,19 +227,19 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
     } else if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
       rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable(map);
     } else if (ByteBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeByteBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeByteBuffer(binaryDecoder);
     } else if (CharBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeCharBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeCharBuffer(binaryDecoder);
     } else if (ShortBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeShortBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeShortBuffer(binaryDecoder);
     } else if (IntBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeIntBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeIntBuffer(binaryDecoder);
     } else if (LongBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeLongBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeLongBuffer(binaryDecoder);
     } else if (FloatBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeFloatBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeFloatBuffer(binaryDecoder);
     } else if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
-      rv = BufferUtilities.decodeDoubleBuffer(binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+      rv = BufferUtilities.decodeDoubleBuffer(binaryDecoder);
     } else if (Boolean.class == valueCls) {
       rv = binaryDecoder.decodeBoolean();
     } else if (Byte.class == valueCls) {
@@ -344,19 +342,19 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
       } else if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
         binaryEncoder.encode((ReferenceableBinaryEncodableAndDecodable) value, map);
       } else if (ByteBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (ByteBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (ByteBuffer) value);
       } else if (CharBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (CharBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (CharBuffer) value);
       } else if (ShortBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (ShortBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (ShortBuffer) value);
       } else if (IntBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (IntBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (IntBuffer) value);
       } else if (LongBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (LongBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (LongBuffer) value);
       } else if (FloatBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (FloatBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (FloatBuffer) value);
       } else if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (DoubleBuffer) value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS);
+        BufferUtilities.encode(binaryEncoder, (DoubleBuffer) value);
       } else if (Boolean.class == valueCls) {
         binaryEncoder.encode((Boolean) value);
       } else if (Byte.class == valueCls) {

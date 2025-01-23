@@ -208,7 +208,7 @@ public class ModelBuilder {
           if (geometry instanceof IndexedTriangleArray) {
             IndexedTriangleArray ita = (IndexedTriangleArray) geometry;
             encoder.encode(ita.vertices.getValue());
-            BufferUtilities.encode(encoder, ita.polygonData.getValue(), false);
+            BufferUtilities.encodeNativeOptional(encoder, ita.polygonData.getValue());
           } else if (geometry instanceof OldMesh) {
             OldMesh mesh = (OldMesh) geometry;
             encoder.encode(mesh.xyzs.getValue());
