@@ -42,7 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -206,6 +217,112 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
       } else {
         map.put(value, value.hashCode());
         value.encode(this, map);
+      }
+    } else {
+      encode("");
+    }
+  }
+
+  public void encodeProperties(InstancePropertyOwner owner, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+    for (InstanceProperty<?> property : owner.getProperties()) {
+      encode(property.getName());
+      Object value = property.getValue();
+      if (value != null) {
+        Class<?> valueCls = value.getClass();
+        encode(valueCls.getName());
+        if (valueCls.isArray()) {
+          if (boolean[].class == valueCls) {
+            encode((boolean[]) value);
+          } else if (byte[].class == valueCls) {
+            encode((byte[]) value);
+          } else if (char[].class == valueCls) {
+            encode((char[]) value);
+          } else if (double[].class == valueCls) {
+            encode((double[]) value);
+          } else if (float[].class == valueCls) {
+            encode((float[]) value);
+          } else if (int[].class == valueCls) {
+            encode((int[]) value);
+          } else if (long[].class == valueCls) {
+            encode((long[]) value);
+          } else if (short[].class == valueCls) {
+            encode((short[]) value);
+          } else if (String[].class == valueCls) {
+            encode((String[]) value);
+          } else if (Enum[].class.isAssignableFrom(valueCls)) {
+            encode((Enum[]) value);
+          } else if (BinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+            encode((BinaryEncodableAndDecodable[]) value);
+          } else if (ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+            encode((ReferenceableBinaryEncodableAndDecodable[]) value, map);
+          } else {
+            int length = Array.getLength(value);
+            encode(length);
+            for (int i = 0; i < length; i++) {
+              encodeObject(Array.get(value, i), map);
+            }
+          }
+        } else if (Collection.class.isAssignableFrom(valueCls)) {
+          Collection<?> collection = (Collection<?>) value;
+          int size = collection.size();
+          encode(size);
+          for (Object o : collection) {
+            encodeObject(o, map);
+          }
+        } else {
+          encodeObject(value, map);
+        }
+      } else {
+        encode("");
+      }
+    }
+    encode("");
+  }
+
+  private void encodeObject(Object value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+    if (value != null) {
+      Class<?> valueCls = value.getClass();
+
+      if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+        encode((BinaryEncodableAndDecodable) value);
+      } else if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+        encode((ReferenceableBinaryEncodableAndDecodable) value, map);
+      } else if (ByteBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (ByteBuffer) value);
+      } else if (CharBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (CharBuffer) value);
+      } else if (ShortBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (ShortBuffer) value);
+      } else if (IntBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (IntBuffer) value);
+      } else if (LongBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (LongBuffer) value);
+      } else if (FloatBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (FloatBuffer) value);
+      } else if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
+        BufferUtilities.encode(this, (DoubleBuffer) value);
+      } else if (Boolean.class == valueCls) {
+        encode((Boolean) value);
+      } else if (Byte.class == valueCls) {
+        encode((Byte) value);
+      } else if (Character.class == valueCls) {
+        encode((Character) value);
+      } else if (Double.class == valueCls) {
+        encode((Double) value);
+      } else if (Float.class == valueCls) {
+        encode((Float) value);
+      } else if (Integer.class == valueCls) {
+        encode((Integer) value);
+      } else if (Long.class == valueCls) {
+        encode((Long) value);
+      } else if (Short.class == valueCls) {
+        encode((Short) value);
+      } else if (String.class == valueCls) {
+        encode((String) value);
+      } else if (Enum.class.isAssignableFrom(valueCls)) {
+        encode((Enum) value);
+      } else {
+        throw new RuntimeException(value.getClass().getName() + " " + value.toString());
       }
     } else {
       encode("");

@@ -43,9 +43,7 @@
 package edu.cmu.cs.dennisc.pattern;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.codec.BufferUtilities;
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -61,16 +59,8 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ShortBuffer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -220,115 +210,9 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     binaryDecoder.decodeProperties(this, map);
   }
 
-  private void encodeObject(BinaryEncoder binaryEncoder, Object value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
-    if (value != null) {
-      Class<?> valueCls = value.getClass();
-
-      if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
-        binaryEncoder.encode((BinaryEncodableAndDecodable) value);
-      } else if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
-        binaryEncoder.encode((ReferenceableBinaryEncodableAndDecodable) value, map);
-      } else if (ByteBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (ByteBuffer) value);
-      } else if (CharBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (CharBuffer) value);
-      } else if (ShortBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (ShortBuffer) value);
-      } else if (IntBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (IntBuffer) value);
-      } else if (LongBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (LongBuffer) value);
-      } else if (FloatBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (FloatBuffer) value);
-      } else if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
-        BufferUtilities.encode(binaryEncoder, (DoubleBuffer) value);
-      } else if (Boolean.class == valueCls) {
-        binaryEncoder.encode((Boolean) value);
-      } else if (Byte.class == valueCls) {
-        binaryEncoder.encode((Byte) value);
-      } else if (Character.class == valueCls) {
-        binaryEncoder.encode((Character) value);
-      } else if (Double.class == valueCls) {
-        binaryEncoder.encode((Double) value);
-      } else if (Float.class == valueCls) {
-        binaryEncoder.encode((Float) value);
-      } else if (Integer.class == valueCls) {
-        binaryEncoder.encode((Integer) value);
-      } else if (Long.class == valueCls) {
-        binaryEncoder.encode((Long) value);
-      } else if (Short.class == valueCls) {
-        binaryEncoder.encode((Short) value);
-      } else if (String.class == valueCls) {
-        binaryEncoder.encode((String) value);
-      } else if (Enum.class.isAssignableFrom(valueCls)) {
-        binaryEncoder.encode((Enum) value);
-      } else {
-        throw new RuntimeException(value.getClass().getName() + " " + value.toString());
-      }
-    } else {
-      binaryEncoder.encode("");
-    }
-  }
-
   @Override
   public void encode(BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
-    for (InstanceProperty<?> property : getProperties()) {
-      // todo?
-      // if( property.isTransient() ) {
-      // //pass
-      // } else {
-      binaryEncoder.encode(property.getName());
-      Object value = property.getValue();
-      if (value != null) {
-        Class<?> valueCls = value.getClass();
-        binaryEncoder.encode(valueCls.getName());
-        if (valueCls.isArray()) {
-          if (boolean[].class == valueCls) {
-            binaryEncoder.encode((boolean[]) value);
-          } else if (byte[].class == valueCls) {
-            binaryEncoder.encode((byte[]) value);
-          } else if (char[].class == valueCls) {
-            binaryEncoder.encode((char[]) value);
-          } else if (double[].class == valueCls) {
-            binaryEncoder.encode((double[]) value);
-          } else if (float[].class == valueCls) {
-            binaryEncoder.encode((float[]) value);
-          } else if (int[].class == valueCls) {
-            binaryEncoder.encode((int[]) value);
-          } else if (long[].class == valueCls) {
-            binaryEncoder.encode((long[]) value);
-          } else if (short[].class == valueCls) {
-            binaryEncoder.encode((short[]) value);
-          } else if (String[].class == valueCls) {
-            binaryEncoder.encode((String[]) value);
-          } else if (Enum[].class.isAssignableFrom(valueCls)) {
-            binaryEncoder.encode((Enum[]) value);
-          } else if (BinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
-            binaryEncoder.encode((BinaryEncodableAndDecodable[]) value);
-          } else if (ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
-            binaryEncoder.encode((ReferenceableBinaryEncodableAndDecodable[]) value, map);
-          } else {
-            int length = Array.getLength(value);
-            binaryEncoder.encode(length);
-            for (int i = 0; i < length; i++) {
-              encodeObject(binaryEncoder, Array.get(value, i), map);
-            }
-          }
-        } else if (Collection.class.isAssignableFrom(valueCls)) {
-          Collection<?> collection = (Collection<?>) value;
-          int size = collection.size();
-          binaryEncoder.encode(size);
-          for (Object o : collection) {
-            encodeObject(binaryEncoder, o, map);
-          }
-        } else {
-          encodeObject(binaryEncoder, value, map);
-        }
-      } else {
-        binaryEncoder.encode("");
-      }
-    }
-    binaryEncoder.encode("");
+    binaryEncoder.encodeProperties(this, map);
   }
 
   @Override
