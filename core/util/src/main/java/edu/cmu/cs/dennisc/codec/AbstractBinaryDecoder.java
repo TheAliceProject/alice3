@@ -42,6 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
@@ -223,11 +224,16 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     }
   }
 
+  private static <T extends BinaryEncodableAndDecodable> Constructor<T> getPublicDecodeConstructor(String className, Class<?>[] parameterTypes) throws ClassNotFoundException, NoSuchMethodException {
+    Class<T> cls = (Class<T>) ClassUtilities.forName(className);
+    return cls.getConstructor(parameterTypes);
+  }
+
   private <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Class<?>[] parameterTypes, Object[] args) {
     String clsName = this.decodeString();
     if (clsName.length() > 0) {
       try {
-        Constructor<E> cnstrctr = CodecUtilities.getPublicDecodeConstructor(clsName, parameterTypes);
+        Constructor<E> cnstrctr = getPublicDecodeConstructor(clsName, parameterTypes);
         return ReflectionUtilities.newInstance(cnstrctr, args);
       } catch (NoSuchMethodException nsme) {
         try {
@@ -274,64 +280,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Object context) {
     return (E) decodeBinaryEncodableAndDecodable(OBJECT_PARAMETER_TYPES, new Object[] {this, context});
   }
-
-  //  public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
-  //    String clsName = this.decodeString();
-  //    if( clsName.length() > 0 ) {
-  //      try {
-  //        java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, EMPTY_PARAMETER_TYPES );
-  //        return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-  //      } catch( NoSuchMethodException nsme ) {
-  ////        try {
-  ////          Class<E> cls = (Class<E>)Class.forName( clsName );
-  ////          java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
-  ////          E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-  ////          rv.decode( this );
-  ////          return rv;
-  ////        } catch( ClassNotFoundException cnfe ) {
-  ////          throw new RuntimeException( cnfe );
-  ////        }
-  //        throw new RuntimeException( nsme );
-  //      } catch( ClassNotFoundException cnfe ) {
-  //        throw new RuntimeException( cnfe );
-  //      }
-  ////      Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-  ////      java.lang.reflect.Constructor< E > cnstrctr;
-  ////      E rv;
-  ////      try {
-  ////        cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-  ////        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-  ////      } catch( NoSuchMethodException nsme ) {
-  ////        cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-  ////        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-  ////        rv.decode( this );
-  ////      }
-  ////      return rv;
-  //    } else {
-  //      return null;
-  //    }
-  //  }
-  @Override
-  public <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls, Object context) {
-    throw new RuntimeException("todo");
-  }
-
-  //  @Deprecated
-  //  public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
-  //    E rv = decodeBinaryEncodableAndDecodable();
-  //    assert cls.isInstance( rv );
-  //    return rv;
-  //  }
-  //  public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
-  //    String clsName = decodeString();
-  //    if( rv != null ) {
-  //      assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
-  //      rv.decode( this );
-  //    } else {
-  //      assert clsName.length() == 0;
-  //    }
-  //    return rv;
-  //  }
   @Override
   public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
     String clsName = decodeString();
@@ -371,25 +319,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Class<E> cls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
     E rv = (E) decodeReferenceableBinaryEncodableAndDecodable(map);
     assert cls.isInstance(rv);
-    return rv;
-  }
-
-  @Override
-  public final ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable(ReferenceableBinaryEncodableAndDecodable rv, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
-    String clsName = decodeString();
-    if (rv != null) {
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( clsName, rv.getClass().getName() );
-      //assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
-      int reference = decodeInt();
-      if (map.containsKey(reference)) {
-        assert rv == map.get(reference);
-      } else {
-        map.put(reference, rv);
-        rv.decode(this, map);
-      }
-    } else {
-      assert clsName.length() == 0;
-    }
     return rv;
   }
 

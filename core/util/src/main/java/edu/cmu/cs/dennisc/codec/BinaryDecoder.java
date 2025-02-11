@@ -53,8 +53,6 @@ import java.util.UUID;
 public interface BinaryDecoder {
   byte[] readFully(byte[] rv);
 
-  byte[] readFully(byte[] rv, int offset, int length);
-
   boolean decodeBoolean();
 
   byte decodeByte();
@@ -81,9 +79,6 @@ public interface BinaryDecoder {
 
   <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Object context);
 
-  @Deprecated
-  ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable(ReferenceableBinaryEncodableAndDecodable rv, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
-
   <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 
   boolean[] decodeBooleanArray();
@@ -109,8 +104,6 @@ public interface BinaryDecoder {
   UUID[] decodeIdArray();
 
   <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls);
-
-  <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls, Object context);
 
   <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray(Class<E> componentCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map);
 
