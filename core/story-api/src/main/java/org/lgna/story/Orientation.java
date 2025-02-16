@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.EulerAngles;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.EulerAngles;
 
 /**
  * @author Dennis Cosgrove
@@ -73,8 +73,8 @@ public final class Orientation {
     return this.internal.createUnitQuaternion();
   }
 
-  public EulerAngles createEulerAngles() {
-    return this.internal.createEulerAngles();
+  public EulerAngles asEulerAngles() {
+    return this.internal.immutable().asEulerAngles();
   }
 
   @Override

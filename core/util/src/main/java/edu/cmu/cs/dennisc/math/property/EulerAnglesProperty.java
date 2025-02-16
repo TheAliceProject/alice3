@@ -42,39 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.property.CopyableInstanceProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.EulerAngles;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EulerAnglesProperty extends CopyableInstanceProperty<EulerAngles> {
-  public EulerAnglesProperty(InstancePropertyOwner owner, EulerAngles value) {
-    super(owner, value);
+public class EulerAnglesProperty extends InstanceProperty<EulerAngles> {
+  public EulerAnglesProperty(InstancePropertyOwner owner) {
+    super(owner, EulerAngles.IDENTITY);
   }
 
   @Override
   public void setValue(EulerAngles value) {
     assert value != null : this;
-    assert value.isNaN() == false : this;
+    assert !value.isNaN() : this;
     super.setValue(value);
-  }
-
-  @Override
-  public EulerAngles getCopy(EulerAngles rv) {
-    rv.setValue(this.getValue());
-    return rv;
-  }
-
-  @Override
-  public final EulerAngles getCopy() {
-    return this.getCopy(EulerAngles.createNaN());
-  }
-
-  @Override
-  public void setCopy(EulerAngles value) {
-    //todo?
-    this.setValue(new EulerAngles(value));
   }
 }

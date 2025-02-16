@@ -8,6 +8,9 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     public static final Vector3 POSITIVE_X_AXIS = new Vector3(1, 0, 0);
     public static final Vector3 POSITIVE_Y_AXIS = new Vector3(0, 1, 0);
     public static final Vector3 POSITIVE_Z_AXIS = new Vector3(0, 0, 1);
+    public static final Vector3 NEGATIVE_X_AXIS = new Vector3(-1, 0, 0);
+    public static final Vector3 NEGATIVE_Y_AXIS = new Vector3(0, -1, 0);
+    public static final Vector3 NEGATIVE_Z_AXIS = new Vector3(0, 0, -1);
 
     // Operations. These create new records.
     public Vector3 plus(Vector3 b) {
@@ -58,6 +61,20 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     }
 
     //Normalize
+    public static Vector3 createNormalized(double x, double y, double z) {
+        double magnitudeSquared = magnitudeSquared(x, y, z);
+        if (magnitudeSquared == 0.0) {
+            // Cannot normalize a zero vector
+            return Vector3.NaN;
+        }
+        if (magnitudeSquared == 1.0) {
+            // Already normal
+            return new Vector3(x, y, z);
+        }
+        double magnitude = Math.sqrt(magnitudeSquared);
+        return new Vector3(x / magnitude, y / magnitude, z / magnitude);
+    }
+
     public Vector3 normalized() {
         double magnitudeSquared = magnitudeSquared();
         return magnitudeSquared == 1.0 ? this : dividedBy(Math.sqrt(magnitudeSquared));

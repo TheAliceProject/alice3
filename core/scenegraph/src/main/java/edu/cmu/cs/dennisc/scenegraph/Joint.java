@@ -206,9 +206,9 @@ public class Joint extends Transformable implements ModelJoint {
   public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
 
   public final Vector3fProperty oStiffness = new Vector3fProperty(this, new Vector3f());
-  public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this, EulerAngles.createIdentity());
-  public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty(this, EulerAngles.createIdentity());
-  public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty(this, EulerAngles.createIdentity());
+  public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this);
+  public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty(this);
+  public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty(this);
   public final Vector3fProperty oMinimumDampRange = new Vector3fProperty(this, new Vector3f());
   public final Vector3fProperty oMaximumDampRange = new Vector3fProperty(this, new Vector3f());
   public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty(this, new Vector3f());

@@ -1,0 +1,13 @@
+package org.alice.math.immutable;
+
+
+public interface Orientation {
+    boolean isNaN();
+    boolean isIdentity();
+    Matrix3x3 asMatrix3x3();
+    UnitQuaternion asUnitQuaternion();
+    AxisRotation asAxisRotation();
+    EulerAngles asEulerAngles();
+    // This one was not used
+    ForwardAndUpGuide asForwardAndUpGuide();
+}

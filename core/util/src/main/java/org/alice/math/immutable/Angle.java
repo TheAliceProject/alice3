@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 public interface Angle {
   Angle NaN = new AngleInRadians(Double.NaN);
   Angle ZERO = new AngleInRadians(0);
+  Angle PI = new AngleInRadians(Math.PI);
   double REVOLUTIONS_TO_DEGREES = 360;
   double DEGREES_TO_REVOLUTIONS = 1 / REVOLUTIONS_TO_DEGREES;
 
@@ -36,5 +37,23 @@ public interface Angle {
   @Deprecated
   default edu.cmu.cs.dennisc.math.Angle mutable() {
     return new edu.cmu.cs.dennisc.math.AngleInRadians(getAsRadians());
+  }
+
+  default Angle toNearestPi() {
+    return toNearest(PI);
+  }
+
+  default Angle toNearest(Angle unit) {
+    double radians = getAsRadians();
+    double unitRadians = unit.getAsRadians();
+    int unitCount = (int) (radians / unitRadians);
+    // Set to absolute lower bound
+    unitCount = (radians < 0) ? unitCount - 1 : unitCount;
+
+    // Pick closest half, below or above
+    if (radians > (0.5 + unitCount) * Math.PI) {
+      unitCount++;
+    }
+    return new AngleInRadians(unitCount * unitRadians);
   }
 }
