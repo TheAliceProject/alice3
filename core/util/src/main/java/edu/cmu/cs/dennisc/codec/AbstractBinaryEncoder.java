@@ -328,4 +328,9 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
       encode("");
     }
   }
+
+  @Override
+  public void encodeRecord(Record record) {
+
+  }
 }

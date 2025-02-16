@@ -183,4 +183,12 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
       throw new RuntimeException(ioe);
     }
   }
+
+  public <C> C decodeRecord() {
+    try {
+      return  (C) m_ois.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

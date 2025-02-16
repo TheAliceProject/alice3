@@ -104,4 +104,11 @@ public class DebugOutputStreamBinaryEncoder extends OutputStreamBinaryEncoder {
     super.encode(value);
     this.writeByte('x');
   }
+
+  @Override
+  public void encodeRecord(Record record) {
+    this.writeByte('R');
+    super.encodeRecord(record);
+    this.writeByte('r');
+  }
 }

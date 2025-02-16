@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
-import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.EulerAngles;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -197,6 +199,11 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     boolean isNotNull = decodeBoolean();
     if (isNotNull) {
       String clsName = decodeString();
+
+      // Hack for special cases. Catch older classes to replace.
+      if (clsName.equals("edu.cmu.cs.dennisc.math.EulerAngles$Order")) {
+        clsName = "org.alice.math.immutable.EulerAngles$Order";
+      }
       String name = decodeString();
       Class<E> clsActual = (Class<E>) ReflectionUtilities.getClassForName(clsName);
       return Enum.valueOf(clsActual, name);
@@ -224,48 +231,49 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     }
   }
 
-  private static <T extends BinaryEncodableAndDecodable> Constructor<T> getPublicDecodeConstructor(String className, Class<?>[] parameterTypes) throws ClassNotFoundException, NoSuchMethodException {
-    Class<T> cls = (Class<T>) ClassUtilities.forName(className);
-    return cls.getConstructor(parameterTypes);
-  }
-
   private <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Class<?>[] parameterTypes, Object[] args) {
-    String clsName = this.decodeString();
-    if (clsName.length() > 0) {
-      try {
-        Constructor<E> cnstrctr = getPublicDecodeConstructor(clsName, parameterTypes);
-        return ReflectionUtilities.newInstance(cnstrctr, args);
-      } catch (NoSuchMethodException nsme) {
-        try {
-          Class<E> cls = (Class<E>) Class.forName(clsName);
-          Constructor<E> cnstrctr = ReflectionUtilities.getConstructor(cls);
-          Method mthd = ReflectionUtilities.getMethod(cls, "decode", BinaryDecoder.class);
-          E rv = ReflectionUtilities.newInstance(cnstrctr);
-          ReflectionUtilities.invoke(rv, mthd, this);
-          //          rv.decode( this );
-          return rv;
-        } catch (ClassNotFoundException cnfe) {
-          throw new RuntimeException(cnfe);
-        }
-        //        throw new RuntimeException( nsme );
-      } catch (ClassNotFoundException cnfe) {
-        throw new RuntimeException(cnfe);
-      }
-      //      Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-      //      java.lang.reflect.Constructor< E > cnstrctr;
-      //      E rv;
-      //      try {
-      //        cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-      //        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-      //      } catch( NoSuchMethodException nsme ) {
-      //        cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-      //        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-      //        rv.decode( this );
-      //      }
-      //      return rv;
-    } else {
+    String storedClassName = decodeString();
+
+    if (storedClassName.isEmpty()) {
       return null;
     }
+    // Hack for special cases. Catch older classes to replace.
+    if (storedClassName.equals("edu.cmu.cs.dennisc.math.EulerAngles")) {
+      return (E) decodeEulerAngles();
+    }
+
+    try {
+      Class<E> cls = (Class<E>) Class.forName(storedClassName);
+      try {
+        return instantiateWithConstructor(cls, parameterTypes, args);
+      } catch (NoSuchMethodException nsme) {
+        return instantiateWithDecode(cls);
+      }
+    } catch (ClassNotFoundException cnfe) {
+      throw new RuntimeException(cnfe);
+    }
+  }
+
+  private EulerAngles decodeEulerAngles() {
+    return new EulerAngles(decodeAngle(), decodeAngle(), decodeAngle(), decodeEnum());
+  }
+
+  private Angle decodeAngle() {
+    return new AngleInRadians(decodeDouble());
+  }
+
+  private static <E extends BinaryEncodableAndDecodable> E instantiateWithConstructor(Class<E> cls, Class<?>[] parameterTypes, Object[] args) throws ClassNotFoundException, NoSuchMethodException {
+    Constructor<E> cnstrctr = cls.getConstructor(parameterTypes);
+    return ReflectionUtilities.newInstance(cnstrctr, args);
+  }
+
+  private <E extends BinaryEncodableAndDecodable> E instantiateWithDecode(Class<E> cls) {
+    Constructor<E> cnstrctr = ReflectionUtilities.getConstructor(cls);
+    E newInstance = ReflectionUtilities.newInstance(cnstrctr);
+
+    Method decode = ReflectionUtilities.getMethod(cls, "decode", BinaryDecoder.class);
+    ReflectionUtilities.invoke(newInstance, decode, this);
+    return newInstance;
   }
 
   private static final Class<?>[] EMPTY_PARAMETER_TYPES = {BinaryDecoder.class};

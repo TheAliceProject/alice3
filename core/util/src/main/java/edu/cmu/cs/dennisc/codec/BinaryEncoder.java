@@ -110,4 +110,6 @@ public interface BinaryEncoder {
   void flush();
 
   void encodeProperties(InstancePropertyOwner owner, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
+
+  void encodeRecord(Record record);
 }
