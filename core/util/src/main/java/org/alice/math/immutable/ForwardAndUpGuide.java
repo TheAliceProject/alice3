@@ -55,4 +55,11 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   public ForwardAndUpGuide asForwardAndUpGuide() {
     return this;
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public edu.cmu.cs.dennisc.math.ForwardAndUpGuide mutable() {
+    return new edu.cmu.cs.dennisc.math.ForwardAndUpGuide(forward.mutable(), upGuide.mutable());
+  }
 }

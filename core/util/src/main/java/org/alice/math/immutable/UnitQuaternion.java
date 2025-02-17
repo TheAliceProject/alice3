@@ -64,7 +64,14 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
     return asMatrix3x3().asForwardAndUpGuide();
   }
 
-  private boolean isWithinEpsilon(UnitQuaternion q , double epsilon) {
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public edu.cmu.cs.dennisc.math.UnitQuaternion mutable() {
+    return new edu.cmu.cs.dennisc.math.UnitQuaternion(x, y, z, w);
+  }
+
+  private boolean isWithinEpsilon(UnitQuaternion q, double epsilon) {
     return (Math.abs(x - q.x) < epsilon)
         && (Math.abs(y - q.y) < epsilon)
         && (Math.abs(z - q.z) < epsilon)

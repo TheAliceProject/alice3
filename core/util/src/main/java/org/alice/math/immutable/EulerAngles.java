@@ -105,4 +105,13 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
         ea0.roll.interpolateToward(ea1.roll, portion),
         ea0.order);
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public edu.cmu.cs.dennisc.math.EulerAngles mutable() {
+    return new edu.cmu.cs.dennisc.math.EulerAngles(
+        pitch().mutable(), yaw().mutable(), roll().mutable(),
+        edu.cmu.cs.dennisc.math.EulerAngles.Order.valueOf(order().toString()));
+  }
 }
