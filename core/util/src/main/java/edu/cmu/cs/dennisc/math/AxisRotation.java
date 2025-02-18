@@ -378,4 +378,11 @@ public class AxisRotation implements Orientation {
   public String toString() {
     return AxisRotation.class.getName() + "[axis=" + axis + ";angle=" + angle + "]";
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public org.alice.math.immutable.AxisRotation immutable() {
+    return new org.alice.math.immutable.AxisRotation(axis.immutable(), angle.immutable());
+  }
 }

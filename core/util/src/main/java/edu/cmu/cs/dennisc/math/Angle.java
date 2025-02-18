@@ -73,4 +73,8 @@ public interface Angle extends BinaryEncodableAndDecodable {
   public void set(Angle other);
 
   public void setToInterpolation(Angle v0, Angle v1, double portion);
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  org.alice.math.immutable.Angle immutable();
 }

@@ -427,4 +427,13 @@ public class EulerAngles implements Orientation {
   //    return rv;
   //  }
 
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public org.alice.math.immutable.EulerAngles immutable() {
+    return new org.alice.math.immutable.EulerAngles(
+        pitch.immutable(), yaw.immutable(), roll.immutable(),
+        org.alice.math.immutable.EulerAngles.Order.valueOf(order.toString()));
+  }
 }
