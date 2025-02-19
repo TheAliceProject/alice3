@@ -15,37 +15,37 @@ class Matrix3x3Test {
 
   @Test
   void createShouldMakeMatrix() {
-    Matrix3x3 m = new Matrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+    OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertNotNull(m, "Matrix should not be null");
   }
 
   @Test
   void createIdentityShouldEqualIdentityMatrix() {
-    Matrix3x3 m = new Matrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+    Matrix3x3 m = new FullMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertEquals(Matrix3x3.IDENTITY, m, "Matrix should be identity");
   }
 
   @Test
   void createIdentityShouldReplyTrueOnIsIdentity() {
-    Matrix3x3 m = new Matrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+    OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertTrue(m.isIdentity(), "Matrix should be identity");
   }
 
   @Test
   void createIdentityShouldReplyFalseOnIsZero() {
-    Matrix3x3 m = new Matrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+    OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertFalse(m.isZero(), "Matrix should not be zero");
   }
 
   @Test
   void createIdentityShouldReplyFalseOnIsNaN() {
-    Matrix3x3 m = new Matrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+    OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertFalse(m.isNaN(), "Matrix should not be NaN");
   }
 
   @Test
   void isNaNShouldRecognizeNaN() {
-    assertTrue(Matrix3x3.NaN.isNaN(), "Matrix should be NaN");
+    assertTrue(OrthogonalMatrix3x3.NaN.isNaN(), "Matrix should be NaN");
   }
 
   @Test
@@ -55,7 +55,7 @@ class Matrix3x3Test {
 
   @Test
   void isZeroShouldRecognizeZero() {
-    assertTrue(Matrix3x3.ZERO.isZero(), "Matrix should be zero");
+    assertTrue(OrthogonalMatrix3x3.ZERO.isZero(), "Matrix should be zero");
   }
 
   @Test
@@ -65,7 +65,7 @@ class Matrix3x3Test {
 
   @Test
   void isIdentityShouldRecognizeIdentity() {
-    assertTrue(Matrix3x3.IDENTITY.isIdentity(), "Matrix should be identity");
+    assertTrue(OrthogonalMatrix3x3.IDENTITY.isIdentity(), "Matrix should be identity");
   }
 
   @Test
@@ -100,22 +100,22 @@ class Matrix3x3Test {
 
   @Test
   void multiplyingIdentityShouldReturnIdentityMatrix() {
-    Matrix3x3 i1 = Matrix3x3.IDENTITY;
-    Matrix3x3 i2 = Matrix3x3.IDENTITY;
+    OrthogonalMatrix3x3 i1 = OrthogonalMatrix3x3.IDENTITY;
+    OrthogonalMatrix3x3 i2 = OrthogonalMatrix3x3.IDENTITY;
     Matrix3x3 product = i1.times(i2);
     assertTrue(product.isIdentity(), "Matrix should be identity");
   }
 
   @Test
   void conversionToMutableShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mutable = M1.mutable();
+    edu.cmu.cs.dennisc.math.AbstractMatrix3x3 mutable = M1.mutable();
     Matrix3x3 twiceConverted = mutable.immutable();
     assertEquals(M1, twiceConverted, "Matrix should be the same");
   }
 
   @Test
   void conversionToMutableAndTwiceInvertedShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mutable = M1.mutable();
+    edu.cmu.cs.dennisc.math.AbstractMatrix3x3 mutable = M1.mutable();
     mutable.invert();
     mutable.invert();
     Matrix3x3 twiceConverted = mutable.immutable();

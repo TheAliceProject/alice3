@@ -1,8 +1,6 @@
 package org.alice.math.immutable;
 
-public record AffineMatrix4x4(Matrix3x3 orientation, Vector3 translation) implements Matrix4x4 {
-  // All zeros is not an affine matrix, but is useful when summing up affine matrices using plusPreservingAffine
-  public static AffineMatrix4x4 ZERO = new AffineMatrix4x4(Matrix3x3.ZERO, Vector3.ZERO);
+public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4 {
 
   @Override
   public boolean isAffine() {
@@ -42,9 +40,9 @@ public record AffineMatrix4x4(Matrix3x3 orientation, Vector3 translation) implem
   public Matrix4x4 scaleTranslation(Matrix3x3 scale) {
     return new AffineMatrix4x4(orientation(),
         new Vector3(
-            translation.x() * scale.right().x(),
-            translation.y() * scale.up().y(),
-            translation.z() * scale.backward().z()));
+            translation.x() * scale.getRight().x(),
+            translation.y() * scale.getUp().y(),
+            translation.z() * scale.getBackward().z()));
   }
 
   @Override
@@ -202,7 +200,7 @@ public record AffineMatrix4x4(Matrix3x3 orientation, Vector3 translation) implem
     Vector3 right = new Vector3(columnMajorArray[0], columnMajorArray[1], columnMajorArray[2]);
     Vector3 up = new Vector3(columnMajorArray[3], columnMajorArray[4], columnMajorArray[5]);
     Vector3 back = new Vector3(columnMajorArray[6], columnMajorArray[7], columnMajorArray[8]);
-    Matrix3x3 orientation = new Matrix3x3(right, up, back);
+    OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(right, up, back);
     Vector3 translation = new Vector3(columnMajorArray[9], columnMajorArray[10], columnMajorArray[11]);
     return new AffineMatrix4x4(orientation, translation);
   }
@@ -214,7 +212,7 @@ public record AffineMatrix4x4(Matrix3x3 orientation, Vector3 translation) implem
     Vector3 right = new Vector3(rowMajorArray[0], rowMajorArray[4], rowMajorArray[8]);
     Vector3 up = new Vector3(rowMajorArray[1], rowMajorArray[5], rowMajorArray[9]);
     Vector3 back = new Vector3(rowMajorArray[2], rowMajorArray[6], rowMajorArray[10]);
-    Matrix3x3 orientation = new Matrix3x3(right, up, back);
+    OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(right, up, back);
     Vector3 translation = new Vector3(rowMajorArray[3], rowMajorArray[7], rowMajorArray[11]);
     return new AffineMatrix4x4(orientation, translation);
   }

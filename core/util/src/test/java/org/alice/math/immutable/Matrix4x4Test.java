@@ -1,10 +1,7 @@
 package org.alice.math.immutable;
 
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,15 +16,15 @@ class Matrix4x4Test {
   static final double M1_DET = -781.0;
   static final edu.cmu.cs.dennisc.math.AffineMatrix4x4 ROTATE_LEFT_AROUND_Y =
       new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
-          new OrthogonalMatrix3x3(
+          new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3(
               new edu.cmu.cs.dennisc.math.Vector3(0, 0, -1),
               new edu.cmu.cs.dennisc.math.Vector3(0, 1, 0),
               new edu.cmu.cs.dennisc.math.Vector3(1, 0, 0)),
           Point3.ORIGIN);
 
-  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(Matrix3x3.IDENTITY, new Vector3(4, 6, 2));
+  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Vector3(4, 6, 2));
 
-  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(Matrix3x3.IDENTITY, Vector3.ZERO);
+  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Vector3.ZERO);
 
   @Test
   void createShouldMakeMatrix() {

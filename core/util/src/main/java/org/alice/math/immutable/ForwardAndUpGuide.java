@@ -14,16 +14,16 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   }
 
   @Override
-  public Matrix3x3 asMatrix3x3() {
+  public OrthogonalMatrix3x3 asMatrix3x3() {
     if (forward.isNaN() || forward.isZero()) {
-      return Matrix3x3.NaN;
+      return OrthogonalMatrix3x3.NaN;
     }
     Vector3 up = getSafeUpGuide();
     Vector3 zAxis = forward.negate().normalized();
     Vector3 xAxis = up.crossProduct(zAxis).normalized();
     Vector3 yAxis = zAxis.crossProduct(xAxis).normalized();
 
-    return new Matrix3x3(xAxis, yAxis, zAxis);
+    return new OrthogonalMatrix3x3(xAxis, yAxis, zAxis);
   }
 
   private Vector3 getSafeUpGuide() {

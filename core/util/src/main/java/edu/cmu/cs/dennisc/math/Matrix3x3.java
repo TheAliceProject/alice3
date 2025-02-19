@@ -44,6 +44,8 @@ package edu.cmu.cs.dennisc.math;
 
 //todo: rename
 
+import org.alice.math.immutable.FullMatrix3x3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -126,6 +128,13 @@ public final class Matrix3x3 extends AbstractMatrix3x3 {
     this.right.z = m20;
     this.up.z = m21;
     this.backward.z = m22;
+  }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  @Override
+  public org.alice.math.immutable.FullMatrix3x3 immutable() {
+    return new FullMatrix3x3(right.immutable(), up.immutable(), backward.immutable());
   }
 
   //  @Override

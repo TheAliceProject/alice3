@@ -21,7 +21,7 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   }
 
   @Override
-  public Matrix3x3 asMatrix3x3() {
+  public OrthogonalMatrix3x3 asMatrix3x3() {
     double wx = w * x;
     double wy = w * y;
     double wz = w * z;
@@ -38,7 +38,7 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
     Vector3 right = new Vector3(1 - (2 * (yy + zz)), 2 * (xy + wz), 2 * (xz - wy));
     Vector3 up = new Vector3(2 * (xy - wz), 1 - (2 * (xx + zz)), 2 * (yz + wx));
     Vector3 backward = new Vector3(2 * (xz + wy), 2 * (yz - wx), 1 - (2 * (xx + yy)));
-    return new Matrix3x3(right, up, backward);
+    return new OrthogonalMatrix3x3(right, up, backward);
   }
 
   @Override

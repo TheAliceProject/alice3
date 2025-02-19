@@ -24,23 +24,23 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
   private enum CardinalRotation {
     PITCH() {
       @Override
-      public Matrix3x3 applyRotation(Matrix3x3 m, EulerAngles ea) {
+      public OrthogonalMatrix3x3 applyRotation(OrthogonalMatrix3x3 m, EulerAngles ea) {
         return m.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, ea.pitch);
       }
     },
     YAW() {
       @Override
-      public Matrix3x3 applyRotation(Matrix3x3 m, EulerAngles ea) {
+      public OrthogonalMatrix3x3 applyRotation(OrthogonalMatrix3x3 m, EulerAngles ea) {
         return m.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, ea.yaw);
       }
     },
     ROLL() {
       @Override
-      public Matrix3x3 applyRotation(Matrix3x3 m, EulerAngles ea) {
+      public OrthogonalMatrix3x3 applyRotation(OrthogonalMatrix3x3 m, EulerAngles ea) {
         return m.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Z_AXIS, ea.roll);
       }
     };
-    public abstract Matrix3x3 applyRotation(Matrix3x3 m, EulerAngles ea);
+    public abstract OrthogonalMatrix3x3 applyRotation(OrthogonalMatrix3x3 m, EulerAngles ea);
   }
 
   public enum Order {
@@ -65,8 +65,8 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
     Order() {
     }
 
-    public Matrix3x3 matrixFrom(EulerAngles ea) {
-      Matrix3x3 m = Matrix3x3.IDENTITY;
+    public OrthogonalMatrix3x3 matrixFrom(EulerAngles ea) {
+      OrthogonalMatrix3x3 m = OrthogonalMatrix3x3.IDENTITY;
       m = primary.applyRotation(m, ea);
       m = secondary.applyRotation(m, ea);
       return tertiary.applyRotation(m, ea);
@@ -74,7 +74,7 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
   }
 
   @Override
-  public Matrix3x3 asMatrix3x3() {
+  public OrthogonalMatrix3x3 asMatrix3x3() {
     return order.matrixFrom(this);
   }
 

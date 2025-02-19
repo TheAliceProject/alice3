@@ -1,5 +1,7 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+
 import java.io.Serializable;
 
 public record Vector3(double x, double y, double z) implements Serializable, Tuple3 {
@@ -81,7 +83,14 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     }
 
     public boolean isNormalized() {
-        return magnitudeSquared() == 1.0;
+        return isWithinEpsilonOfNormalized(EpsilonUtilities.REASONABLE_EPSILON);
+    }
+
+    boolean isWithinEpsilonOfNormalized(double epsilon) {
+        final double magSquare = magnitudeSquared();
+        final double min = 1.0 - epsilon;
+        final double max = 1.0 + epsilon;
+        return ((min * min) < magSquare) && (magSquare < (max * max));
     }
 
     // Temporary use during transition to immutable Records
@@ -104,6 +113,10 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     public static double magnitude(double x, double y, double z) {
         double magnitudeSquared = magnitudeSquared(x, y, z);
         return magnitudeSquared == 1.0 ? 1.0 : Math.sqrt(magnitudeSquared);
+    }
+
+    public boolean isOrthogonalTo(Vector3 other) {
+        return EpsilonUtilities.isWithinReasonableEpsilon(0.0, dotProduct(other));
     }
 }
 

@@ -28,9 +28,9 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   }
 
   @Override
-  public Matrix3x3 asMatrix3x3() {
+  public OrthogonalMatrix3x3 asMatrix3x3() {
     if (isNaN()) {
-      return Matrix3x3.NaN;
+      return OrthogonalMatrix3x3.NaN;
     } else {
       // TODO optimize for special axes
       double thetaInRadians = angle.getAsRadians();
@@ -50,7 +50,7 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
       Vector3 right = new Vector3(c + (axis.x() * axis.x() * t), xyt + zs, xzt - ys);
       Vector3 up = new Vector3(xyt - zs, c + (axis.y() * axis.y() * t), yzt + xs);
       Vector3 backward = new Vector3(xzt + ys, yzt - xs, c + (axis.z() * axis.z() * t));
-      return new Matrix3x3(right, up, backward);
+      return new OrthogonalMatrix3x3(right, up, backward);
     }
   }
 

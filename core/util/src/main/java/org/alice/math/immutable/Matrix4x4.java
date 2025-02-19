@@ -3,8 +3,8 @@ package org.alice.math.immutable;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 public interface Matrix4x4 {
-  AffineMatrix4x4 IDENTITY = new AffineMatrix4x4(Matrix3x3.IDENTITY, Vector3.ZERO);
-  AffineMatrix4x4 NaN = new AffineMatrix4x4(Matrix3x3.NaN, Vector3.NaN);
+  AffineMatrix4x4 IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Vector3.ZERO);
+  AffineMatrix4x4 NaN = new AffineMatrix4x4(OrthogonalMatrix3x3.NaN, Vector3.NaN);
 
   boolean isAffine();
   boolean isNaN();
@@ -34,12 +34,12 @@ public interface Matrix4x4 {
   }
 
   static Matrix4x4 fromTranslation(Vector3 p) {
-    return new AffineMatrix4x4(Matrix3x3.IDENTITY, p);
+    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, p);
   }
 
   static Matrix4x4 fromScale(double x, double y, double z) {
     return new AffineMatrix4x4(
-        new Matrix3x3(
+        new OrthogonalMatrix3x3(
             new Vector3(x, 0, 0),
             new Vector3(0, y, 0),
             new Vector3(0, 0, z)),

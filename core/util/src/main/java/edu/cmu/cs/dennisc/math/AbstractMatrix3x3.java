@@ -374,7 +374,5 @@ public abstract class AbstractMatrix3x3 implements BinaryEncodableAndDecodable, 
 
   // Temporary use during transition to immutable Records
   @Deprecated(forRemoval = true)
-  public org.alice.math.immutable.Matrix3x3 immutable() {
-    return new org.alice.math.immutable.Matrix3x3(right.immutable(), up.immutable(), backward.immutable());
-  }
+  public abstract org.alice.math.immutable.Matrix3x3 immutable();
 }
