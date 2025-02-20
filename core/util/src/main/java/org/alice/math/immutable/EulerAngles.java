@@ -3,7 +3,7 @@ package org.alice.math.immutable;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
-public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order order) implements Orientation, BinaryEncodableAndDecodable {
+public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order order) implements Orientation, BinaryEncodableAndDecodable {
   public static final EulerAngles IDENTITY = new EulerAngles(Angle.ZERO, Angle.ZERO, Angle.ZERO, Order.YAW_PITCH_ROLL);
 
   @Override
@@ -48,7 +48,25 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
     YAW_ROLL_PITCH(CardinalRotation.YAW, CardinalRotation.ROLL, CardinalRotation.PITCH),
     ROLL_PITCH_YAW(CardinalRotation.ROLL, CardinalRotation.PITCH, CardinalRotation.YAW),
     PITCH_ROLL_YAW(CardinalRotation.PITCH, CardinalRotation.ROLL, CardinalRotation.YAW),
-    YAW_PITCH_ROLL(CardinalRotation.YAW, CardinalRotation.PITCH, CardinalRotation.ROLL),
+    YAW_PITCH_ROLL(CardinalRotation.YAW, CardinalRotation.PITCH, CardinalRotation.ROLL){
+      @Override
+      public OrthogonalMatrix3x3 matrixFrom(EulerAngles ea) {
+        double theta = ea.yaw.getAsRadians();
+        double phi = ea.pitch.getAsRadians();
+        double psi = ea.roll.getAsRadians();
+        double cosTheta = Math.cos(theta);
+        double sinTheta = Math.sin(theta);
+        double cosPhi = Math.cos(phi);
+        double sinPhi = Math.sin(phi);
+        double cosPsi = Math.cos(psi);
+        double sinPsi = Math.sin(psi);
+
+        Vector3 right = new Vector3(cosPsi * cosTheta, sinPsi * cosTheta, -sinTheta);
+        Vector3 up = new Vector3((cosPsi * sinTheta * sinPhi) - (sinPsi * cosPhi), (sinPsi * sinTheta * sinPhi) + (cosPsi * cosPhi), cosTheta * sinPhi);
+        Vector3 backward = new Vector3((cosPsi * sinTheta * cosPhi) + (sinPsi * sinPhi), (sinPsi * sinTheta * cosPhi) - (cosPsi * sinPhi), cosTheta * cosPhi);
+        return new OrthogonalMatrix3x3(right, up, backward);
+      }
+    },
     ROLL_YAW_PITCH(CardinalRotation.ROLL, CardinalRotation.YAW, CardinalRotation.PITCH),
     NOT_APPLICABLE();
 
@@ -100,8 +118,8 @@ public record EulerAngles(Angle yaw, Angle pitch, Angle roll, EulerAngles.Order 
 
   public EulerAngles interpolate(EulerAngles ea0, EulerAngles ea1, double portion) {
     return new EulerAngles(
-        ea0.yaw.interpolateToward(ea1.yaw, portion),
         ea0.pitch.interpolateToward(ea1.pitch, portion),
+        ea0.yaw.interpolateToward(ea1.yaw, portion),
         ea0.roll.interpolateToward(ea1.roll, portion),
         ea0.order);
   }

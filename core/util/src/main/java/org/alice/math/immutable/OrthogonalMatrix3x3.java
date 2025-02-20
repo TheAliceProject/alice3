@@ -97,8 +97,9 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
     double e31 = right.z();
     e31 = Math.max(e31, -1);
     e31 = Math.min(e31, 1);
-    return new EulerAngles(new AngleInRadians(Math.asin(-e31)),
+    return new EulerAngles(
         new AngleInRadians(Math.atan2(up.z(), backward.z())),
+        new AngleInRadians(Math.asin(-e31)),
         new AngleInRadians(Math.atan2(right.y(), right.x())),
         EulerAngles.Order.YAW_PITCH_ROLL);
   }
