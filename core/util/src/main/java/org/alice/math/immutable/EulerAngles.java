@@ -18,6 +18,17 @@ public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order 
   }
   //</editor-fold>
 
+  //<editor-fold desc="Comparisons">
+  @Override
+  public boolean isAlignedWith(Orientation other) {
+    EulerAngles b = other.asEulerAngles();
+    return order == b.order
+        && yaw.isCloseTo(b.yaw)
+        && pitch.isCloseTo(b.pitch)
+        && roll.isCloseTo(b.roll);
+  }
+  //</editor-fold>
+
   //<editor-fold desc="Representation">
   private enum CardinalRotation {
     PITCH() {

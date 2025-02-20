@@ -4,6 +4,7 @@ package org.alice.math.immutable;
 public interface Orientation {
     boolean isNaN();
     boolean isIdentity();
+    boolean isAlignedWith(Orientation other);
     OrthogonalMatrix3x3 asMatrix3x3();
     UnitQuaternion asUnitQuaternion();
     AxisRotation asAxisRotation();

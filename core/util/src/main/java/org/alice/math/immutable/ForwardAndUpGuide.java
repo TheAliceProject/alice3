@@ -15,6 +15,14 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   }
   //</editor-fold>
 
+  //<editor-fold desc="Comparisons">
+  @Override
+  public boolean isAlignedWith(Orientation other) {
+    ForwardAndUpGuide o = other.asForwardAndUpGuide();
+    return this.forward.isWithinReasonableEpsilonOf(o.forward) && this.upGuide.isWithinReasonableEpsilonOf(o.upGuide);
+  }
+  //</editor-fold>
+
   //<editor-fold desc="Orientation Conversions">
   @Override
   public OrthogonalMatrix3x3 asMatrix3x3() {

@@ -23,6 +23,11 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   //</editor-fold>
 
   //<editor-fold desc="Comparisons">
+  @Override
+  public boolean isAlignedWith(Orientation other) {
+    return this.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(other.asUnitQuaternion());
+  }
+
   private boolean isWithinEpsilon(UnitQuaternion q, double epsilon) {
     return (Math.abs(x - q.x) < epsilon)
         && (Math.abs(y - q.y) < epsilon)

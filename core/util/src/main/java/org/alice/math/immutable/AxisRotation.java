@@ -29,6 +29,12 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   public boolean isIdentity() {
     return angle.isZero();
   }
+
+  @Override
+  public boolean isAlignedWith(Orientation other) {
+    AxisRotation o = other.asAxisRotation();
+    return this.axis.isWithinReasonableEpsilonOf(o.axis) && this.angle.isCloseTo(o.angle);
+  }
   //</editor-fold>
 
   //<editor-fold desc="Orientation Conversions">

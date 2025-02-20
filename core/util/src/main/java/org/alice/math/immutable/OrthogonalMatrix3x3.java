@@ -35,7 +35,16 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
   public boolean isIdentity() {
     return Matrix3x3.super.isIdentity();
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Comparisons">
+  @Override
+  public boolean isAlignedWith(Orientation other) {
+    OrthogonalMatrix3x3 o = other.asMatrix3x3();
+    return this.right.isWithinReasonableEpsilonOf(o.right)
+        && this.up.isWithinReasonableEpsilonOf(o.up)
+        && this.backward.isWithinReasonableEpsilonOf(o.backward);
+  }
   //</editor-fold>
 
   //<editor-fold desc="Matrix Operations">
