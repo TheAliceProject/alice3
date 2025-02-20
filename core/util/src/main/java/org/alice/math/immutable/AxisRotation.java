@@ -3,7 +3,7 @@ package org.alice.math.immutable;
 public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   static AxisRotation NaN = new AxisRotation(Vector3.NaN, Angle.NaN);
   // Any axis will do when angle is 0.
-  static AxisRotation IDENTITY = new AxisRotation(Vector3.POSITIVE_Z_AXIS, Angle.ZERO);
+  static AxisRotation IDENTITY = new AxisRotation(Vector3.POSITIVE_X_AXIS, Angle.ZERO);
 
   //<editor-fold desc="Constructors">
   public static AxisRotation createXAxisRotation(Angle angle) {

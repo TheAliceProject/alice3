@@ -12,6 +12,8 @@ class Matrix3x3Test {
       0, 8, 9
       );
   static final double M1_DET = 49.0;
+  private final OrthogonalMatrix3x3 rotatedMatrix =
+      OrthogonalMatrix3x3.IDENTITY.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, new AngleInRadians(2));
 
   @Test
   void createShouldMakeMatrix() {
@@ -20,9 +22,54 @@ class Matrix3x3Test {
   }
 
   @Test
-  void createIdentityShouldEqualIdentityMatrix() {
-    Matrix3x3 m = new FullMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
+  void createIdentityByVectorsShouldEqualIdentityMatrix() {
+    OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
     assertEquals(Matrix3x3.IDENTITY, m, "Matrix should be identity");
+  }
+
+  @Test
+  void createIdentityByValuesShouldBeOrthogonalMatrix() {
+    Matrix3x3 m = Matrix3x3.create(
+        1, 0, 0,
+        0,1, 0,
+        0, 0, 1);
+    assertInstanceOf(OrthogonalMatrix3x3.class, m, "Matrix should be OrthogonalMatrix3x3");
+  }
+
+  @Test
+  void createTranspositionByValuesShouldBeOrthogonalMatrix() {
+    Matrix3x3 m = Matrix3x3.create(
+        0, 1, 0,
+        1,0, 0,
+        0, 0, 1);
+    assertInstanceOf(OrthogonalMatrix3x3.class, m, "Matrix should be OrthogonalMatrix3x3");
+  }
+
+  @Test
+  void createUnitButNotOrthogonalByValuesShouldNotBeOrthogonalMatrix() {
+    Matrix3x3 m = Matrix3x3.create(
+        0, 0, 0,
+        1,1, 0,
+        0, 0, 1);
+    assertInstanceOf(FullMatrix3x3.class, m, "Matrix should not be OrthogonalMatrix3x3");
+  }
+
+  @Test
+  void createOrthogonalButNotUnitByValuesShouldNotBeOrthogonalMatrix() {
+    Matrix3x3 m = Matrix3x3.create(
+        2, 0, 0,
+        0,1, 0,
+        0, 0, 1);
+    assertInstanceOf(FullMatrix3x3.class, m, "Matrix should not be OrthogonalMatrix3x3");
+  }
+
+  @Test
+  void createIdentityByValuesShouldEqualIdentityMatrix() {
+    Matrix3x3 m = Matrix3x3.create(
+        1, 0, 0,
+        0,1, 0,
+        0, 0, 1);
+    assertEquals(OrthogonalMatrix3x3.IDENTITY, m, "Matrix should be identity");
   }
 
   @Test
@@ -80,6 +127,12 @@ class Matrix3x3Test {
   }
 
   @Test
+  void rotatedMatrixHasDeterminant() {
+    double d = rotatedMatrix.determinant();
+    assertEquals(1.0, d);
+  }
+
+  @Test
   void invertShouldExist() {
     Matrix3x3 inverted = M1.invert();
     assertNotNull(inverted);
@@ -120,5 +173,44 @@ class Matrix3x3Test {
     mutable.invert();
     Matrix3x3 twiceConverted = mutable.immutable();
     assertTrue(M1.isWithinReasonableEpsilonOf(twiceConverted), "Matrix should be the same");
+  }
+
+  @Test
+  void rotatedIdentityMatrixShouldBeOrthogonal() {
+    assertInstanceOf(OrthogonalMatrix3x3.class, rotatedMatrix);
+  }
+
+  @Test
+  void rotatedIdentityMatrixShouldNotBeIdentity() {
+    assertFalse(rotatedMatrix.isIdentity(), "Identity should be false");
+  }
+
+  @Test
+  void twiceRotatedIdentityMatrixShouldBeIdentity() {
+    OrthogonalMatrix3x3 m = rotatedMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, new AngleInRadians(-2));
+    assertTrue(m.isIdentity(), "Identity should be true");
+  }
+
+  @Test
+  void identityOrthogonalMatrixConversionsToAndFromShouldBeEqual() {
+    checkConversionsAndBack(OrthogonalMatrix3x3.IDENTITY);
+  }
+
+  @Test
+  void rotatedMatrixConversionToAndFromShouldRemainEqual() {
+    checkConversionsAndBack(rotatedMatrix);
+  }
+
+  private static void checkConversionsAndBack(OrthogonalMatrix3x3 src) {
+    compareTo(src, src.asEulerAngles());
+    compareTo(src, src.asUnitQuaternion());
+    assertSame(src, src.asMatrix3x3(), "Should be equal to original matrix");
+    compareTo(src, src.asForwardAndUpGuide());
+    compareTo(src, src.asAxisRotation());
+  }
+
+  private static void compareTo(OrthogonalMatrix3x3 src, Orientation uq) {
+    OrthogonalMatrix3x3 dest = uq.asMatrix3x3();
+    assertTrue(src.isAlignedWith(dest), "Source:\n" + src + "\nShould be the same as destination:\n" + dest);
   }
 }
