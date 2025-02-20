@@ -6,8 +6,11 @@ public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4
   public static FullMatrix4x4 ZERO = new FullMatrix4x4(Vector4.ZERO, Vector4.ZERO, Vector4.ZERO, Vector4.ZERO);
 
   @Override
-  public Matrix4x4 times(double factor) {
-    return new FullMatrix4x4(right.times(factor), up.times(factor), backward.times(factor), translation.times(factor));
+  public Matrix4x4 times(double scale) {
+    if (scale == 1.0) {
+      return this;
+    }
+    return new FullMatrix4x4(right.times(scale), up.times(scale), backward.times(scale), translation.times(scale));
   }
 
   @Override

@@ -26,18 +26,31 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     return b.isWithinReasonableEpsilonOf(this);
   }
 
+  //<editor-fold desc="Weighted Mesh Support">
   @Override
   public AffineMatrix4x4 times(double scale) {
+    if (scale == 1.0) {
+      return this;
+    }
+    // Scaling orientation denormalizes it, so it is not orthonormal, but not scaling orientation breaks the rendering.
+    // The accumulated values along a skeleton are computed below in plusPreservingAffine, and those remain orthonormal.
     return new AffineMatrix4x4(orientation.times(scale), translation.times(scale));
   }
 
   // Not a full matrix addition of every element. Preserves the implicit value of 1.0 in e44().
   public AffineMatrix4x4 plusPreservingAffine(AffineMatrix4x4 b) {
+    if (isNaN()) {
+      return b;
+    }
     return new AffineMatrix4x4(orientation.plus(b.orientation), translation.plus(b.translation));
   }
+  //</editor-fold>
 
   @Override
   public Matrix4x4 scaleTranslation(Matrix3x3 scale) {
+    if (scale.isIdentity()) {
+      return this;
+    }
     return new AffineMatrix4x4(orientation(),
         new Vector3(
             translation.x() * scale.getRight().x(),

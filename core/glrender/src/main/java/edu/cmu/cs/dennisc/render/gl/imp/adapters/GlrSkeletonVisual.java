@@ -114,7 +114,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         this.weightedJointMatrices = new AffineMatrix4x4[nVertexCount];
         this.weights = new float[nVertexCount];
         for (int i = 0; i < nVertexCount; i++) {
-          this.weightedJointMatrices[i] = AffineMatrix4x4.ZERO;
+          this.weightedJointMatrices[i] = AffineMatrix4x4.NaN;
           this.weights[i] = 0f;
         }
         needsInitialization = false;
@@ -123,7 +123,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
     void preProcess() {
       for (int i = 0; i < this.weightedJointMatrices.length; i++) {
-        this.weightedJointMatrices[i] = AffineMatrix4x4.ZERO;
+        this.weightedJointMatrices[i] = AffineMatrix4x4.NaN;
         this.weights[i] = 0f;
       }
     }
@@ -149,6 +149,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       while (weightIterator.hasNext()) {
         int vertexIndex = weightIterator.getIndex();
         float weight = weightIterator.next();
+        // Accumulating the transforms by weight produces interim that breaks the Orientation's normalization
+        // until the total weight is 1, or any other value is corrected for in postProcess.
         AffineMatrix4x4 transform = (AffineMatrix4x4) oDelta.times(weight);
         this.weightedJointMatrices[vertexIndex] = weightedJointMatrices[vertexIndex].plusPreservingAffine(transform);
         this.weights[vertexIndex] += weight;
@@ -160,6 +162,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         float weight = weights[i];
         if ((!(0.999f < weight)) || (!(weight < 1.001f))) {
           if (weight != 0) {
+            // Adjust for accumulated weight. Once done the Orientation should be normalized again.
             weightedJointMatrices[i] = weightedJointMatrices[i].times(1.0 / weight);
           }
         }
