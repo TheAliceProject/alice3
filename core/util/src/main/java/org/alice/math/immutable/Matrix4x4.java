@@ -19,11 +19,15 @@ public interface Matrix4x4 {
   static Matrix4x4 create(double e11, double e12, double e13, double e14, double e21, double e22, double e23, double e24, double e31, double e32, double e33, double e34, double e41, double e42, double e43, double e44) {
     // Comes in as row major values
     if (e41 == 0 && e42 == 0 && e43 == 0 && e44 == 1.0) {
-      // Affine matrix always have the same 4th row
-      // It stores the rest as a 3x3 orientation plus a translation vector
-      return new AffineMatrix4x4(
-          Matrix3x3.create(e11, e12, e13, e21, e22, e23, e31, e32, e33),
-          new Vector3(e14, e24, e34));
+      // An AffineMatrix always has the same 4th row [0, 0, 0, 1]
+      // It stores the first three rows as a 3x3 orientation matrix and a translation vector
+      Matrix3x3 orientation = Matrix3x3.create(e11, e12, e13, e21, e22, e23, e31, e32, e33);
+      // The orientation matrix must be orthonormal, containing three mutually perpendicular unit vectors
+      if (orientation instanceof OrthogonalMatrix3x3) {
+        return new AffineMatrix4x4(
+            (OrthogonalMatrix3x3) orientation,
+            new Vector3(e14, e24, e34));
+      }
     }
     // FullMatrix stores a column in each vector
     return new FullMatrix4x4(
