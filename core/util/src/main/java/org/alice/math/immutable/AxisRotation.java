@@ -5,6 +5,7 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   // Any axis will do when angle is 0.
   static AxisRotation IDENTITY = new AxisRotation(Vector3.POSITIVE_Z_AXIS, Angle.ZERO);
 
+  //<editor-fold desc="Constructors">
   public static AxisRotation createXAxisRotation(Angle angle) {
     return new AxisRotation(Vector3.POSITIVE_X_AXIS, angle);
   }
@@ -16,7 +17,9 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   public static AxisRotation createZAxisRotation(Angle angle) {
     return new AxisRotation(Vector3.POSITIVE_Y_AXIS, angle);
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Condition Checks">
   @Override
   public boolean isNaN() {
     return this.axis.isNaN() || this.angle.isNaN();
@@ -26,7 +29,9 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   public boolean isIdentity() {
     return angle.isZero();
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Orientation Conversions">
   @Override
   public OrthogonalMatrix3x3 asMatrix3x3() {
     if (isNaN()) {
@@ -76,6 +81,7 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   public ForwardAndUpGuide asForwardAndUpGuide() {
     return asMatrix3x3().asForwardAndUpGuide();
   }
+  //</editor-fold>
 
   // Temporary use during transition to immutable Records
   @Deprecated(forRemoval = true)

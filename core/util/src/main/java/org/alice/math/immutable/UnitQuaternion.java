@@ -6,6 +6,7 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 public record UnitQuaternion(double x, double y, double z, double w) implements Orientation {
   public static final UnitQuaternion IDENTITY = new UnitQuaternion(0, 0, 0, 1);
 
+  //<editor-fold desc="Condition Checks">
   @Override
   public boolean isNaN() {
     return Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z) || Double.isNaN(w);
@@ -19,7 +20,67 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   public boolean isUnit() {
     return Math.abs(1 - (x * x + y * y + z * z + w * w)) < EpsilonUtilities.REASONABLE_EPSILON;
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Comparisons">
+  private boolean isWithinEpsilon(UnitQuaternion q, double epsilon) {
+    return (Math.abs(x - q.x) < epsilon)
+        && (Math.abs(y - q.y) < epsilon)
+        && (Math.abs(z - q.z) < epsilon)
+        && (Math.abs(w - q.w) < epsilon);
+  }
+
+  public boolean isWithinEpsilonOrIsNegativeWithinEpsilon(UnitQuaternion q, double epsilon) {
+    return isWithinEpsilon(q, epsilon) || this.negated().isWithinEpsilon(q, epsilon);
+  }
+
+  public boolean isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(UnitQuaternion q) {
+    return isWithinEpsilonOrIsNegativeWithinEpsilon(q, EpsilonUtilities.REASONABLE_EPSILON);
+  }
+  //</editor-fold>
+
+  //<editor-fold desc="Operations">
+  public UnitQuaternion interpolate(UnitQuaternion b, double portion) {
+    final double EPSILON = 0.0001;
+    assert !this.isNaN();
+    assert !b.isNaN();
+    if (portion == 0.0) {
+      return this;
+    }
+    if (portion == 1.0 || this.isWithinEpsilonOrIsNegativeWithinEpsilon(b, EPSILON)) {
+      return b;
+    }
+    double dotProduct = dotProduct(b);
+    UnitQuaternion bPrime = (dotProduct < 0.0) ? b.negated() : b;
+    dotProduct = Math.abs(dotProduct);
+
+    double aPortion = 1 - portion;
+    double bPortion = portion;
+    final double THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION = 0.05;
+    if (!((1 - dotProduct) < THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION)) {
+      double halfAngle = Math.acos(dotProduct);
+      //        double sineHalfAngle = Math.sin( halfAngle );
+      double sineHalfAngle = Math.sqrt(1.0 - (dotProduct * dotProduct));
+      aPortion = Math.sin(aPortion * halfAngle) / sineHalfAngle;
+      bPortion = Math.sin(bPortion * halfAngle) / sineHalfAngle;
+    }
+    return new UnitQuaternion(
+        (x * aPortion) + (bPrime.x * bPortion),
+        (y * aPortion) + (bPrime.y * bPortion),
+        (z * aPortion) + (bPrime.z * bPortion),
+        (w * aPortion) + (bPrime.w * bPortion));
+  }
+
+  private UnitQuaternion negated() {
+    return new UnitQuaternion(-x, -y, -z, -w);
+  }
+
+  private double dotProduct(UnitQuaternion b) {
+    return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w);
+  }
+  //</editor-fold>
+
+  //<editor-fold desc="Orientation Conversions">
   @Override
   public OrthogonalMatrix3x3 asMatrix3x3() {
     double wx = w * x;
@@ -63,65 +124,12 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   public ForwardAndUpGuide asForwardAndUpGuide() {
     return asMatrix3x3().asForwardAndUpGuide();
   }
+  //</editor-fold>
 
   // Temporary use during transition to immutable Records
   @Deprecated(forRemoval = true)
   @Override
   public edu.cmu.cs.dennisc.math.UnitQuaternion mutable() {
     return new edu.cmu.cs.dennisc.math.UnitQuaternion(x, y, z, w);
-  }
-
-  private boolean isWithinEpsilon(UnitQuaternion q, double epsilon) {
-    return (Math.abs(x - q.x) < epsilon)
-        && (Math.abs(y - q.y) < epsilon)
-        && (Math.abs(z - q.z) < epsilon)
-        && (Math.abs(w - q.w) < epsilon);
-  }
-
-  public boolean isWithinEpsilonOrIsNegativeWithinEpsilon(UnitQuaternion q, double epsilon) {
-    return isWithinEpsilon(q, epsilon) || this.negated().isWithinEpsilon(q, epsilon);
-  }
-
-  public boolean isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(UnitQuaternion q) {
-    return isWithinEpsilonOrIsNegativeWithinEpsilon(q, EpsilonUtilities.REASONABLE_EPSILON);
-  }
-
-  public UnitQuaternion interpolate(UnitQuaternion b, double portion) {
-    final double EPSILON = 0.0001;
-    assert !this.isNaN();
-    assert !b.isNaN();
-    if (portion == 0.0) {
-      return this;
-    }
-    if (portion == 1.0 || this.isWithinEpsilonOrIsNegativeWithinEpsilon(b, EPSILON)) {
-      return b;
-    }
-    double dotProduct = dotProduct(b);
-    UnitQuaternion bPrime = (dotProduct < 0.0) ? b.negated() : b;
-    dotProduct = Math.abs(dotProduct);
-
-    double aPortion = 1 - portion;
-    double bPortion = portion;
-    final double THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION = 0.05;
-    if (!((1 - dotProduct) < THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION)) {
-      double halfAngle = Math.acos(dotProduct);
-      //        double sineHalfAngle = Math.sin( halfAngle );
-      double sineHalfAngle = Math.sqrt(1.0 - (dotProduct * dotProduct));
-      aPortion = Math.sin(aPortion * halfAngle) / sineHalfAngle;
-      bPortion = Math.sin(bPortion * halfAngle) / sineHalfAngle;
-    }
-    return new UnitQuaternion(
-        (x * aPortion) + (bPrime.x * bPortion),
-        (y * aPortion) + (bPrime.y * bPortion),
-        (z * aPortion) + (bPrime.z * bPortion),
-        (w * aPortion) + (bPrime.w * bPortion));
-  }
-
-  private UnitQuaternion negated() {
-    return new UnitQuaternion(-x, -y, -z, -w);
-  }
-
-  private double dotProduct(UnitQuaternion b) {
-    return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w);
   }
 }

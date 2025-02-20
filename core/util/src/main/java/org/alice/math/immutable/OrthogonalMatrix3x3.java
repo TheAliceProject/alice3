@@ -7,7 +7,6 @@ import java.io.Serializable;
 // Orthogonal3x3Matrix is expected to be orthonormal, meaning its three vectors are mutually perpendicular unit vectors.
 public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
     implements Matrix3x3, Serializable, Orientation {
-
   static OrthogonalMatrix3x3 NaN = new OrthogonalMatrix3x3(Vector3.NaN, Vector3.NaN, Vector3.NaN);
 
   //<editor-fold desc="Accessors">
@@ -27,7 +26,7 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
   }
   //</editor-fold>
 
-  //<editor-fold desc="Tests">
+  //<editor-fold desc="Condition Checks">
 
   public boolean isNaN() {
     return Matrix3x3.super.isNaN();
@@ -39,6 +38,7 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
 
   //</editor-fold>
 
+  //<editor-fold desc="Matrix Operations">
   public OrthogonalMatrix3x3 applyRotationAboutArbitraryAxis(Vector3 axis, Angle theta) {
     double angleInRadians = theta.getAsRadians();
     double c = Math.cos(angleInRadians);
@@ -71,6 +71,7 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
   public OrthogonalMatrix3x3 times(double factor) {
     return new OrthogonalMatrix3x3(right.times(factor), up.times(factor), backward.times(factor));
   }
+  //</editor-fold>
 
   //<editor-fold desc="Orientation Conversions">
   @Override

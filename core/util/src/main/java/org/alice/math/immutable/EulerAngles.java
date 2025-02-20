@@ -6,6 +6,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order order) implements Orientation, BinaryEncodableAndDecodable {
   public static final EulerAngles IDENTITY = new EulerAngles(Angle.ZERO, Angle.ZERO, Angle.ZERO, Order.YAW_PITCH_ROLL);
 
+  //<editor-fold desc="Condition Checks">
   @Override
   public boolean isNaN() {
     return yaw.isNaN() || pitch.isNaN() || roll.isNaN();
@@ -15,12 +16,9 @@ public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order 
   public boolean isIdentity() {
     return yaw.isZero() && pitch.isZero() && roll.isZero();
   }
+  //</editor-fold>
 
-  @Override
-  public void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encodeRecord(this);
-  }
-
+  //<editor-fold desc="Representation">
   private enum CardinalRotation {
     PITCH() {
       @Override
@@ -48,7 +46,7 @@ public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order 
     YAW_ROLL_PITCH(CardinalRotation.YAW, CardinalRotation.ROLL, CardinalRotation.PITCH),
     ROLL_PITCH_YAW(CardinalRotation.ROLL, CardinalRotation.PITCH, CardinalRotation.YAW),
     PITCH_ROLL_YAW(CardinalRotation.PITCH, CardinalRotation.ROLL, CardinalRotation.YAW),
-    YAW_PITCH_ROLL(CardinalRotation.YAW, CardinalRotation.PITCH, CardinalRotation.ROLL){
+    YAW_PITCH_ROLL(CardinalRotation.YAW, CardinalRotation.PITCH, CardinalRotation.ROLL) {
       @Override
       public OrthogonalMatrix3x3 matrixFrom(EulerAngles ea) {
         double theta = ea.yaw.getAsRadians();
@@ -90,7 +88,19 @@ public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order 
       return tertiary.applyRotation(m, ea);
     }
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Operations">
+  public EulerAngles interpolate(EulerAngles ea0, EulerAngles ea1, double portion) {
+    return new EulerAngles(
+        ea0.pitch.interpolateToward(ea1.pitch, portion),
+        ea0.yaw.interpolateToward(ea1.yaw, portion),
+        ea0.roll.interpolateToward(ea1.roll, portion),
+        ea0.order);
+  }
+  //</editor-fold>
+
+  //<editor-fold desc="Orientation Conversions">
   @Override
   public OrthogonalMatrix3x3 asMatrix3x3() {
     return order.matrixFrom(this);
@@ -115,13 +125,11 @@ public record EulerAngles(Angle pitch, Angle yaw, Angle roll, EulerAngles.Order 
   public ForwardAndUpGuide asForwardAndUpGuide() {
     return asMatrix3x3().asForwardAndUpGuide();
   }
+  //</editor-fold>
 
-  public EulerAngles interpolate(EulerAngles ea0, EulerAngles ea1, double portion) {
-    return new EulerAngles(
-        ea0.pitch.interpolateToward(ea1.pitch, portion),
-        ea0.yaw.interpolateToward(ea1.yaw, portion),
-        ea0.roll.interpolateToward(ea1.roll, portion),
-        ea0.order);
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encodeRecord(this);
   }
 
   // Temporary use during transition to immutable Records

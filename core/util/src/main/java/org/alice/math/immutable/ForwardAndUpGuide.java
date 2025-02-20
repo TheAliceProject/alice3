@@ -3,6 +3,7 @@ package org.alice.math.immutable;
 public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Orientation {
   public static ForwardAndUpGuide IDENTITY = new ForwardAndUpGuide(Vector3.NEGATIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS);
 
+  //<editor-fold desc="Condition Checks">
   @Override
   public boolean isNaN() {
     return forward.isNaN() || upGuide.isNaN();
@@ -12,7 +13,9 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   public boolean isIdentity() {
     return this == IDENTITY;
   }
+  //</editor-fold>
 
+  //<editor-fold desc="Orientation Conversions">
   @Override
   public OrthogonalMatrix3x3 asMatrix3x3() {
     if (forward.isNaN() || forward.isZero()) {
@@ -55,6 +58,7 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   public ForwardAndUpGuide asForwardAndUpGuide() {
     return this;
   }
+  //</editor-fold>
 
   // Temporary use during transition to immutable Records
   @Deprecated(forRemoval = true)
