@@ -1,12 +1,14 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.print.Printable;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 
-public interface Matrix3x3 extends Printable {
+public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
   OrthogonalMatrix3x3 IDENTITY = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
   FullMatrix3x3 ZERO = new FullMatrix3x3(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO);
   //<editor-fold desc="Accessors">
@@ -31,7 +33,7 @@ public interface Matrix3x3 extends Printable {
         new Vector3(e13, e23, e33));
   }
 
-  private static Matrix3x3 create(Vector3 right, Vector3 up, Vector3 backward) {
+  static Matrix3x3 create(Vector3 right, Vector3 up, Vector3 backward) {
     if (right.isNormalized() && up.isNormalized() && backward.isNormalized()
         && right.isOrthogonalTo(up) && backward.isOrthogonalTo(right) && up.isOrthogonalTo(backward)) {
       return new OrthogonalMatrix3x3(right, up, backward);
@@ -39,6 +41,12 @@ public interface Matrix3x3 extends Printable {
     return new FullMatrix3x3(right, up, backward);
   }
   //</editor-fold>
+
+  default void encode(BinaryEncoder binaryEncoder) {
+    getRight().encode(binaryEncoder);
+    getUp().encode(binaryEncoder);
+    getBackward().encode(binaryEncoder);
+  }
 
   //<editor-fold desc="Condition Checks">
 
