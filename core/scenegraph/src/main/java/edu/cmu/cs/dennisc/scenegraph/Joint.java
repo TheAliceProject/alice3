@@ -43,12 +43,16 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.*;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
+
+import org.alice.math.immutable.AxisAlignedBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,13 +88,13 @@ public class Joint extends Transformable implements ModelJoint {
     return null;
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     AffineMatrix4x4 newTransform = new AffineMatrix4x4(localTransformation.getValue());
     newTransform.translation.multiply(scale);
     localTransformation.setValue(newTransform);
     AxisAlignedBox bb = boundingBox.getValue();
     if (bb != null) {
-      bb.scale(scale);
+      bb = bb.scale(scale);
     }
     for (int i = 0; i < getComponentCount(); i++) {
       Component comp = getComponentAt(i);
@@ -139,31 +143,31 @@ public class Joint extends Transformable implements ModelJoint {
     return this.parentVisual;
   }
 
-  private AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative) {
+  private AxisAlignedBox getBoundingBox(Composite c, AffineMatrix4x4 transform, boolean cumulative) {
     if (c == null) {
       return null;
     }
+    AxisAlignedBox bounds = AxisAlignedBox.NaN;
     if (c instanceof Joint) {
       Joint j = (Joint) c;
-
       //We scale the local bounding box based on the scale of the SkeletonVisual base object
       //We can do this here (in the local space of the joint) because we restrict the scale to be a uniform scale
-      AxisAlignedBox scaledBBox = new AxisAlignedBox(j.boundingBox.getValue());
+      AxisAlignedBox scaledBBox = boundingBox.getValue();
       SkeletonVisual sv = this.getParentVisual();
       if (sv != null) {
-        scaledBBox.scale(sv.scale.getValue());
+        scaledBBox = scaledBBox.scale(sv.scale.getValue());
       }
 
-      Point3 localMin = scaledBBox.getMinimum();
-      Point3 localMax = scaledBBox.getMaximum();
+      Point3 localMin = scaledBBox.minimum().mutable();
+      Point3 localMax = scaledBBox.maximum().mutable();
 
       Point3 transformedMin = transform.createTransformed(localMin);
       Point3 transformedMax = transform.createTransformed(localMax);
       if (!transformedMin.isNaN()) {
-        rv.union(transformedMin);
+        bounds = bounds.union(transformedMin.immutable());
       }
       if (!transformedMax.isNaN()) {
-        rv.union(transformedMax);
+        bounds = bounds.union(transformedMax.immutable());
       }
     }
     if (cumulative) {
@@ -171,23 +175,18 @@ public class Joint extends Transformable implements ModelJoint {
         Component comp = c.getComponentAt(i);
         if (comp instanceof Composite) {
           AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable) comp).accessLocalTransformation());
-          getBoundingBox((Composite) comp, rv, childTransform, cumulative);
+          AxisAlignedBox childAabb = getBoundingBox((Composite) comp, childTransform, cumulative);
+          if (childAabb != null && !childAabb.isNaN()) {
+            bounds = bounds.union(childAabb);
+          }
         }
       }
     }
-    return rv;
+    return bounds;
   }
 
-  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative) {
-    if (rv == null) {
-      rv = new AxisAlignedBox();
-    }
-    getBoundingBox(this, rv, transform, cumulative);
-    return rv;
-  }
-
-  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, boolean cumulative) {
-    return getBoundingBox(rv, AffineMatrix4x4.createIdentity(), cumulative);
+  public AxisAlignedBox getBoundingBox(boolean cumulative) {
+    return getBoundingBox(this, AffineMatrix4x4.createIdentity(), cumulative);
   }
 
   @Override
@@ -203,7 +202,7 @@ public class Joint extends Transformable implements ModelJoint {
 
   //    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
 
-  public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
+  public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>(this, AxisAlignedBox.NaN);
 
   public final Vector3fProperty oStiffness = new Vector3fProperty(this, new Vector3f());
   public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this);

@@ -220,7 +220,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
         if (placeOnGround) {
           offsetTransform.translation.y += -box.getMinimum().y;
         }
-        this.sgBoundingBoxDecorator.setBox(box);
+        this.sgBoundingBoxDecorator.setBox(box.immutable());
         this.sgAxes = new ModestAxes(box.getWidth() * .5);
       }
       this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);

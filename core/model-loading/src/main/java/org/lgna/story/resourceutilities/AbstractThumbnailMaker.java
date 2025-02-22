@@ -412,11 +412,11 @@ public abstract class AbstractThumbnailMaker {
   }
 
   public BufferedImage createThumbnail(Visual v) {
-    return createThumbnail(v, v.getAxisAlignedMinimumBoundingBox(), true);
+    return createThumbnail(v, v.getAxisAlignedMinimumBoundingBox().mutable(), true);
   }
 
   public BufferedImage createThumbnail(Visual v, boolean trimWhitespace) {
-    return createThumbnail(v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace);
+    return createThumbnail(v, v.getAxisAlignedMinimumBoundingBox().mutable(), trimWhitespace);
   }
 
   protected void setUpCamera(OffscreenRenderTarget renderTarget) {

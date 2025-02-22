@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
@@ -191,31 +191,37 @@ public class Cylinder extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double top = getTop();
     double bottom = getBottom();
     double maxRadius = getMaxRadius();
     BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
-      boundingBox.setMinimum(bottom, -maxRadius, -maxRadius);
-      boundingBox.setMaximum(top, +maxRadius, +maxRadius);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
-      boundingBox.setMinimum(-maxRadius, bottom, -maxRadius);
-      boundingBox.setMaximum(+maxRadius, top, +maxRadius);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
-      boundingBox.setMinimum(-maxRadius, -maxRadius, bottom);
-      boundingBox.setMaximum(+maxRadius, +maxRadius, top);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
-      boundingBox.setMinimum(top, -maxRadius, -maxRadius);
-      boundingBox.setMaximum(bottom, +maxRadius, +maxRadius);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
-      boundingBox.setMinimum(-maxRadius, top, -maxRadius);
-      boundingBox.setMaximum(+maxRadius, bottom, +maxRadius);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
-      boundingBox.setMinimum(-maxRadius, -maxRadius, top);
-      boundingBox.setMaximum(+maxRadius, +maxRadius, bottom);
-    } else {
-      throw new RuntimeException();
+    switch (bottomToTopAxis) {
+      case POSITIVE_X -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(bottom, -maxRadius, -maxRadius),
+            new org.alice.math.immutable.Point3(top, +maxRadius, +maxRadius));
+      }
+      case POSITIVE_Y -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, bottom, -maxRadius),
+            new org.alice.math.immutable.Point3(+maxRadius, top, +maxRadius));
+      }
+      case POSITIVE_Z -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, -maxRadius, bottom),
+            new org.alice.math.immutable.Point3(+maxRadius, +maxRadius, top));
+      }
+      case NEGATIVE_X -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(top, -maxRadius, -maxRadius),
+            new org.alice.math.immutable.Point3(bottom, +maxRadius, +maxRadius));
+      }
+      case NEGATIVE_Y -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, top, -maxRadius),
+            new org.alice.math.immutable.Point3(+maxRadius, bottom, +maxRadius));
+      }
+      case NEGATIVE_Z -> {
+        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, -maxRadius, top),
+            new org.alice.math.immutable.Point3(+maxRadius, +maxRadius, bottom));
+      }
+      default -> throw new RuntimeException();
     }
   }
 

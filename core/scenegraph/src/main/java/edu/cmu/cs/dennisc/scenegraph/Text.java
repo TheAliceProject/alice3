@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.glyph.GlyphVector;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -70,14 +70,14 @@ public class Text extends Geometry {
   protected void updateUnalignedBoundingBoxIfNecessary() {
     if (this.unalignedBoundingBox.isNaN()) {
       Rectangle2D.Float bounds = this.glyphVector.getBounds();
-      this.unalignedBoundingBox.setMinimum(bounds.x, bounds.y, 0);
-      this.unalignedBoundingBox.setMaximum(bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue());
+      this.unalignedBoundingBox = new AxisAlignedBox(
+          new org.alice.math.immutable.Point3(bounds.x, bounds.y, 0),
+          new org.alice.math.immutable.Point3(bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue()));
     }
 
     if (this.unalignedBoundingBox.isNaN()) {
       Logger.todo(this);
-      this.unalignedBoundingBox.setMinimum(0, 0, 0);
-      this.unalignedBoundingBox.setMaximum(0, 0, 0);
+      this.unalignedBoundingBox = AxisAlignedBox.Empty;
     }
   }
 
@@ -128,14 +128,9 @@ public class Text extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     updateUnalignedBoundingBoxIfNecessary();
-
-    Vector3 alignmentOffset = getAlignmentOffset();
-
-    boundingBox.set(this.unalignedBoundingBox);
-    boundingBox.translate(alignmentOffset);
-
+    return unalignedBoundingBox.translate(getAlignmentOffset().immutable());
   }
 
   @Override
@@ -158,8 +153,8 @@ public class Text extends Geometry {
     public void setValue(String value) {
       markBoundsDirty();
       super.setValue(value);
-      glyphVector.setText(value.toString());
-      unalignedBoundingBox.setNaN();
+      glyphVector.setText(value);
+      unalignedBoundingBox = AxisAlignedBox.NaN;
       fireBoundChanged();
     }
   };
@@ -169,7 +164,7 @@ public class Text extends Geometry {
       markBoundsDirty();
       super.setValue(value);
       glyphVector.setFont(value);
-      unalignedBoundingBox.setNaN();
+      unalignedBoundingBox = AxisAlignedBox.NaN;
       fireBoundChanged();
     }
   };
@@ -178,7 +173,7 @@ public class Text extends Geometry {
     @Override
     public void setValue(Double value) {
       super.setValue(value);
-      unalignedBoundingBox.setNaN();
+      unalignedBoundingBox = AxisAlignedBox.NaN;
     }
   };
 
@@ -188,7 +183,7 @@ public class Text extends Geometry {
       if (Objects.notEquals(value, this.getValue())) {
         markBoundsDirty();
         super.setValue(value);
-        unalignedBoundingBox.setNaN();
+        unalignedBoundingBox = AxisAlignedBox.NaN;
         fireBoundChanged();
       }
     }
@@ -199,7 +194,7 @@ public class Text extends Geometry {
       if (Objects.notEquals(value, this.getValue())) {
         markBoundsDirty();
         super.setValue(value);
-        unalignedBoundingBox.setNaN();
+        unalignedBoundingBox = AxisAlignedBox.NaN;
         fireBoundChanged();
       }
     }
@@ -210,13 +205,13 @@ public class Text extends Geometry {
       if (Objects.notEquals(value, this.getValue())) {
         markBoundsDirty();
         super.setValue(value);
-        unalignedBoundingBox.setNaN();
+        unalignedBoundingBox = AxisAlignedBox.NaN;
         fireBoundChanged();
       }
     }
   };
 
-  private final AxisAlignedBox unalignedBoundingBox = AxisAlignedBox.createNaN();
+  private AxisAlignedBox unalignedBoundingBox = AxisAlignedBox.NaN;
 
   private final GlyphVector glyphVector = new GlyphVector(DEFAULT_TEXT, DEFAULT_FONT, -1, -1);
 }

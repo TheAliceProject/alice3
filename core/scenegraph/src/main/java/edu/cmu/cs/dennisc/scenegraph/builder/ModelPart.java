@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AbstractMatrix3x3;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -133,12 +133,9 @@ public class ModelPart implements BinaryEncodableAndDecodable {
         }
         rv.geometry = visual.getGeometry();
         if (rv.geometry != null) {
-          Matrix3x3 scale = visual.scale.getValue();
-          if (rv.geometry instanceof IndexedTriangleArray) {
-            IndexedTriangleArray sgITA = (IndexedTriangleArray) rv.geometry;
-            if (scale.isIdentity()) {
-              //pass
-            } else {
+          AbstractMatrix3x3 scale = visual.scale.getValue().mutable();
+          if (rv.geometry instanceof IndexedTriangleArray sgITA) {
+            if (!scale.isIdentity()) {
               //              System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
               for (Vertex v : sgITA.vertices.getValue()) {
                 v.position.x *= scale.right.x;

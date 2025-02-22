@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -80,7 +80,7 @@ public class CumulativeBound {
   }
 
   public void addSkeletonVisual(SkeletonVisual sgSkeletonVisual, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
-    AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox(new AxisAlignedBox(), ignoreJointOrientations);
+    AxisAlignedBox box = sgSkeletonVisual.getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
     this.addBoundingBox(box, trans);
   }
 
@@ -92,8 +92,8 @@ public class CumulativeBound {
     if (box.isNaN()) {
       return;
     }
-    for (Point3 point : box.getPoints()) {
-      addPoint(point, trans);
+    for (org.alice.math.immutable.Point3 point : box.getPoints()) {
+      addPoint(point.mutable(), trans);
     }
   }
 
@@ -105,11 +105,7 @@ public class CumulativeBound {
     return getBoundingSphere(new Sphere());
   }
 
-  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv) {
-    return BoundUtilities.getBoundingBox(rv, m_transformedPoints);
-  }
-
   public AxisAlignedBox getBoundingBox() {
-    return getBoundingBox(new AxisAlignedBox());
+    return BoundUtilities.getBoundingBox(m_transformedPoints);
   }
 }

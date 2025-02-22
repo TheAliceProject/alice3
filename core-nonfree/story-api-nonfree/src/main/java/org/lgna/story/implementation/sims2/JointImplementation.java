@@ -125,7 +125,7 @@ public class JointImplementation extends JointImp {
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(sgJoint.getAxisAlignedBoundingBox(), trans);
+    rv.addBoundingBox(sgJoint.getAxisAlignedBoundingBox().immutable(), trans);
   }
 
 }

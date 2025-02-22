@@ -43,8 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -59,7 +60,7 @@ public class Torus extends Shape {
       this.isZ = isZ;
     }
 
-    public void updateBoundingBox(AxisAlignedBox boundingBox, double yesRadius, double noRadius) {
+    public AxisAlignedBox updateBoundingBox(double yesRadius, double noRadius) {
       double x;
       double y;
       double z;
@@ -78,8 +79,7 @@ public class Torus extends Shape {
       } else {
         z = noRadius;
       }
-      boundingBox.setMinimum(-x, -y, -z);
-      boundingBox.setMaximum(+x, +y, +z);
+      return new AxisAlignedBox(new Point3(-x, -y, -z), new Point3(+x, +y, +z));
     }
 
     private final boolean isX;
@@ -88,10 +88,10 @@ public class Torus extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double yesRadius = majorRadius.getValue() + minorRadius.getValue();
     double noRadius = minorRadius.getValue();
-    this.coordinatePlane.getValue().updateBoundingBox(boundingBox, yesRadius, noRadius);
+    return this.coordinatePlane.getValue().updateBoundingBox(yesRadius, noRadius);
   }
 
   @Override

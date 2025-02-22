@@ -44,11 +44,10 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Layer;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dennis Cosgrove
@@ -68,7 +67,7 @@ public abstract class CameraImp<S extends AbstractCamera> extends TransformableI
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
+    rv.addBoundingBox(AxisAlignedBox.Empty, trans);
   }
 
   public Layer getPostRenderLayer() {

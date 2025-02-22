@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -99,9 +99,10 @@ public class Box extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    boundingBox.setMinimum(xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue());
-    boundingBox.setMaximum(xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue());
+  protected AxisAlignedBox updateBoundingBox() {
+    return new AxisAlignedBox(
+        new org.alice.math.immutable.Point3(xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue()),
+    new org.alice.math.immutable.Point3(xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue()));
   }
 
   @Override

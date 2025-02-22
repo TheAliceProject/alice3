@@ -482,9 +482,9 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   protected Leaf getVisualization() {
     if (this.boundingBoxDecorator == null) {
       this.boundingBoxDecorator = new BoundingBoxDecorator();
-      this.boundingBoxDecorator.setBox(this.getAxisAlignedMinimumBoundingBox());
+      this.boundingBoxDecorator.setBox(this.getAxisAlignedMinimumBoundingBox().immutable());
 
-      this.addScaleListener(e -> boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox()));
+      this.addScaleListener(e -> boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox().immutable()));
     }
     return this.boundingBoxDecorator;
   }

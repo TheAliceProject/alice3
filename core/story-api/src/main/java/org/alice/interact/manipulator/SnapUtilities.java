@@ -186,7 +186,7 @@ public class SnapUtilities {
     Visual objectVisual = getSGVisualForTransformable(t);
     if (objectVisual != null) {
       returnScale = new Matrix3x3();
-      returnScale.setValue(objectVisual.scale.getValue());
+      returnScale.setValue(objectVisual.scale.getValue().mutable());
     } else {
       returnScale = ScaleUtilities.newScaleMatrix3d(1.0d, 1.0d, 1.0d);
     }

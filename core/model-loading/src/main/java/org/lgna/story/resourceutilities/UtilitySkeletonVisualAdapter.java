@@ -116,7 +116,7 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
           AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint) currentNode);
           box.union(subBox);
         }
-        ((Joint) currentNode).boundingBox.setValue(box);
+        ((Joint) currentNode).boundingBox.setValue(box.immutable());
         //Now that the bounding boxes are set we can set the radii (they use the bounding box for their calculations)
         //                double boundingRadius = Double.NaN;
         //                for (WeightedMeshControl control : this.meshControls)

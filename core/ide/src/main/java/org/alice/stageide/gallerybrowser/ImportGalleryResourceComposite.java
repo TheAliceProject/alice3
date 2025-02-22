@@ -132,7 +132,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
   private void scaleModel(Double newScale) {
     if (newScale != null) {
       double change = newScale / appliedScale;
-      skeletonVisual.scale(new Vector3(change, change, change));
+      skeletonVisual.scale(change);
       appliedScale = newScale;
       previewComposite.updateView();
     }
@@ -163,7 +163,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     List<ModelManifest.Joint> modelJoints = getModelJoints(skeletonVisual);
     List<ModelManifest.Joint> extraJoints = getExtraJoints(modelJoints, baseJoints, true);
 
-    ModelManifest modelManifest = createSimpleManifest(detailsComposite.modelName.getValue(), detailsComposite.author.getValue(), AliceResourceClassUtilities.getAliceClassName(parentJavaClass), skeletonVisual.getAxisAlignedMinimumBoundingBox());
+    ModelManifest modelManifest = createSimpleManifest(detailsComposite.modelName.getValue(), detailsComposite.author.getValue(), AliceResourceClassUtilities.getAliceClassName(parentJavaClass), skeletonVisual.getAxisAlignedMinimumBoundingBox().mutable());
     modelManifest.additionalJoints = extraJoints;
     for (ModelManifest.Joint rootJoint : getRootJoints(modelJoints)) {
       rootJoint.visibility = Visibility.COMPLETELY_HIDDEN;

@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AbstractMatrix3x3;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
@@ -82,7 +83,7 @@ public class AxesImp extends VisualScaleModelImp {
   }
 
   @Override
-  protected Matrix3x3 getSgVisualsScale() {
+  protected AbstractMatrix3x3 getSgVisualsScale() {
     return this.sgAxes.getScale();
   }
 

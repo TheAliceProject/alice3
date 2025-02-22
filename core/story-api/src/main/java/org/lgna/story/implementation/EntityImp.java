@@ -149,7 +149,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     AffineMatrix4x4 trans = this.getTransformation(asSeenBy);
     CumulativeBound cumulativeBound = new CumulativeBound();
     this.updateCumulativeBound(cumulativeBound, trans);
-    return cumulativeBound.getBoundingBox();
+    return cumulativeBound.getBoundingBox().mutable();
   }
 
   public VerticalPrismCollisionHull getCollisionHull() {

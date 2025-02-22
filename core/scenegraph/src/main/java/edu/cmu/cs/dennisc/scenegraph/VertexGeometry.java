@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
@@ -78,8 +78,8 @@ public abstract class VertexGeometry extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    BoundUtilities.getBoundingBox(boundingBox, vertices.getValue());
+  protected AxisAlignedBox updateBoundingBox() {
+    return BoundUtilities.getBoundingBox(vertices.getValue());
   }
 
   @Override

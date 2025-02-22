@@ -61,7 +61,6 @@ import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -81,6 +80,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Matrix4x4;
 
@@ -343,29 +343,27 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
     initializeDataIfNecessary();
     if (this.skeletonIsDirty) {
       this.processWeightedMesh();
     }
+    AxisAlignedBox aabb = AxisAlignedBox.NaN;
     for (Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet()) {
       WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get(appearanceEntry.getKey());
       if (weightedMeshControls != null) {
         for (WeightedMeshControl wmc : weightedMeshControls) {
-          AxisAlignedBox b = new AxisAlignedBox();
-          BoundUtilities.getBoundingBox(b, wmc.vertexBuffer);
-          rv.union(b);
+          aabb = BoundUtilities.getBoundingBox(wmc.vertexBuffer).union(aabb);
         }
       }
       GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get(appearanceEntry.getKey());
       if (meshAdapters != null) {
         for (GlrMesh<Mesh> ma : meshAdapters) {
-          AxisAlignedBox b = ma.owner.getAxisAlignedMinimumBoundingBox();
-          rv.union(b);
+          aabb = ma.owner.getAxisAlignedMinimumBoundingBox().union(aabb);
         }
       }
     }
-    return rv;
+    return aabb;
   }
 
   private void renderJoint(RenderContext rc, Composite currentNode, Matrix4x4 oTransformationPre) {
@@ -594,7 +592,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
             wmc.preProcess();
           }
         }
-        Matrix3x3 inverseScale = owner.scale.getValue().immutable().invert();
+        Matrix3x3 inverseScale = owner.scale.getValue().invert();
         synchronized (this.currentSkeleton) {
           processWeightedMesh(this.currentSkeleton, AffineMatrix4x4.IDENTITY, inverseScale);
         }

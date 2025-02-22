@@ -294,7 +294,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected void setTransformableScale(AbstractTransformable t, Matrix3x3 scaleMatrix) {
     Visual objectVisual = getSGVisualForTransformable(t);
-    objectVisual.scale.setValue(scaleMatrix);
+    objectVisual.scale.setValue(scaleMatrix.immutable());
   }
 
   protected Visual getSGVisualForTransformable(AbstractTransformable object) {

@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.scenegraph.qa;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Matrix3x3;
 
 import java.util.List;
 
@@ -71,31 +71,32 @@ public class QualityAssuranceUtilities {
   }
 
   private static void appendProblems(List<Problem> problems, Component sgComponent) {
-    if (sgComponent != null) {
-      if (sgComponent instanceof Composite) {
-        Composite sgComposite = (Composite) sgComponent;
-        if (sgComponent instanceof AbstractTransformable) {
-          AbstractTransformable sgTransformable = (AbstractTransformable) sgComponent;
-          AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
-          boolean isOrientationMendingRequired = isOrientationMendingRequired(lt);
-          boolean isTranslationMendingRequired = isTranslationMendingRequired(lt);
-          if (isOrientationMendingRequired || isTranslationMendingRequired) {
-            problems.add(new BadLocalTransformation(sgTransformable, isOrientationMendingRequired, isTranslationMendingRequired));
-          }
+    if (sgComponent == null) {
+      return;
+    }
+    if (sgComponent instanceof Composite) {
+      Composite sgComposite = (Composite) sgComponent;
+      if (sgComponent instanceof AbstractTransformable) {
+        AbstractTransformable sgTransformable = (AbstractTransformable) sgComponent;
+        AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
+        boolean isOrientationMendingRequired = isOrientationMendingRequired(lt);
+        boolean isTranslationMendingRequired = isTranslationMendingRequired(lt);
+        if (isOrientationMendingRequired || isTranslationMendingRequired) {
+          problems.add(new BadLocalTransformation(sgTransformable, isOrientationMendingRequired, isTranslationMendingRequired));
         }
-        for (Component sgChild : sgComposite.getComponents()) {
-          appendProblems(problems, sgChild);
-        }
-      } else if (sgComponent instanceof Visual) {
-        Visual sgVisual = (Visual) sgComponent;
-        Matrix3x3 scale = sgVisual.scale.getValue();
-        if (scale.isNaN()) { //todo: check isZero()?
-          problems.add(new BadScale(sgVisual));
-        }
-        if (sgVisual instanceof SkeletonVisual) {
-          SkeletonVisual sgSkeletonVisual = (SkeletonVisual) sgVisual;
-          appendProblems(problems, sgSkeletonVisual.skeleton.getValue());
-        }
+      }
+      for (Component sgChild : sgComposite.getComponents()) {
+        appendProblems(problems, sgChild);
+      }
+    } else if (sgComponent instanceof Visual) {
+      Visual sgVisual = (Visual) sgComponent;
+      Matrix3x3 scale = sgVisual.scale.getValue();
+      if (scale.isNaN()) { //todo: check isZero()?
+        problems.add(new BadScale(sgVisual));
+      }
+      if (sgVisual instanceof SkeletonVisual) {
+        SkeletonVisual sgSkeletonVisual = (SkeletonVisual) sgVisual;
+        appendProblems(problems, sgSkeletonVisual.skeleton.getValue());
       }
     }
   }

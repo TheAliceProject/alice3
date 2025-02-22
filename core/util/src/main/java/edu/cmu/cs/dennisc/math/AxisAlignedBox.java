@@ -415,4 +415,10 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
            + ",\n depth= " + this.getDepth()
            + "]";
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.AxisAlignedBox immutable() {
+    return new org.alice.math.immutable.AxisAlignedBox(minimum.immutable(), maximum.immutable());
+  }
 }

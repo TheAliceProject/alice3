@@ -119,7 +119,7 @@ public class SelectionIndicator extends ManipulationHandle3D {
   public void resizeToObject() {
     if ((this.getParentTransformable() != null) && (this.manipulatedObject != null)) {
       AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-      this.sgBoundingBoxDecorator.setBox(boundingBox);
+      this.sgBoundingBoxDecorator.setBox(boundingBox.immutable());
     }
   }
 

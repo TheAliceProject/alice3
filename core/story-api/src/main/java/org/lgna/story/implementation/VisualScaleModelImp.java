@@ -44,11 +44,11 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.math.AbstractMatrix3x3;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.animation.Vector3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -64,13 +64,14 @@ public abstract class VisualScaleModelImp extends ModelImp {
   }
 
   protected void setSgVisualsScale(Matrix3x3 m) {
+    org.alice.math.immutable.Matrix3x3 i = m.immutable();
     for (Visual sgVisual : this.getSgVisuals()) {
-      sgVisual.scale.setValue(new Matrix3x3(m));
+      sgVisual.scale.setValue(i);
     }
   }
 
-  protected Matrix3x3 getSgVisualsScale() {
-    return this.getSgVisuals()[0].scale.getValue();
+  protected AbstractMatrix3x3 getSgVisualsScale() {
+    return this.getSgVisuals()[0].scale.getValue().mutable();
   }
 
   protected void applyScale(Vector3 axis, boolean isScootDesired) {
@@ -80,8 +81,8 @@ public abstract class VisualScaleModelImp extends ModelImp {
       this.getSgComposite().localTransformation.setValue(m);
     }
     for (Visual sgVisual : this.getSgVisuals()) {
-      Matrix3x3 scale = sgVisual.scale.getValue();
-      ScaleUtilities.applyScale(scale, axis);
+      org.alice.math.immutable.Matrix3x3 scale = sgVisual.scale.getValue();
+      scale = scale.times(axis.immutable().asScaleMatrix());
       sgVisual.scale.setValue(scale);
     }
   }
@@ -143,7 +144,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
   @Override
   public Dimension3 getScale() {
-    Matrix3x3 scale = this.getSgVisualsScale();
+    AbstractMatrix3x3 scale = this.getSgVisualsScale();
     return new Dimension3(scale.right.x, scale.up.y, scale.backward.z);
   }
 

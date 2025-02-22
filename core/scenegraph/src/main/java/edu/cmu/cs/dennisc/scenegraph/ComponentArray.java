@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 /**
@@ -51,8 +51,9 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  */
 public class ComponentArray extends VertexGeometry {
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     //todo
+    return null;
   }
 
   @Override

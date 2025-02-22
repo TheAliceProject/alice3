@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
@@ -60,7 +60,7 @@ public class BoundUtilities {
 
   //TODO: remove duplicate code, if possible
 
-  public static AxisAlignedBox getBoundingBox(AxisAlignedBox rv, Vertex[] va) {
+  public static AxisAlignedBox getBoundingBox(Vertex[] va) {
     Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
     Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     for (Vertex v : va) {
@@ -72,15 +72,12 @@ public class BoundUtilities {
       max.z = Math.max(max.z, v.position.z);
     }
     if (min.x == +Double.MAX_VALUE) {
-      rv.setNaN();
-    } else {
-      rv.setMinimum(min);
-      rv.setMaximum(max);
+      return AxisAlignedBox.NaN;
     }
-    return rv;
+    return new AxisAlignedBox(min.immutable(), max.immutable());
   }
 
-  public static AxisAlignedBox getBoundingBox(AxisAlignedBox rv, Iterable<Point3> pi) {
+  public static AxisAlignedBox getBoundingBox(Iterable<Point3> pi) {
     Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
     Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     for (Point3 p : pi) {
@@ -92,15 +89,12 @@ public class BoundUtilities {
       max.z = Math.max(max.z, p.z);
     }
     if (min.x == +Double.MAX_VALUE) {
-      rv.setNaN();
-    } else {
-      rv.setMinimum(min);
-      rv.setMaximum(max);
+      return AxisAlignedBox.NaN;
     }
-    return rv;
+    return new AxisAlignedBox(min.immutable(), max.immutable());
   }
 
-  public static AxisAlignedBox getBoundingBox(AxisAlignedBox rv, Point3[] pa) {
+  public static AxisAlignedBox getBoundingBox(Point3[] pa) {
     Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
     Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     for (Point3 p : pa) {
@@ -112,15 +106,12 @@ public class BoundUtilities {
       max.z = Math.max(max.z, p.z);
     }
     if (min.x == +Double.MAX_VALUE) {
-      rv.setNaN();
-    } else {
-      rv.setMinimum(min);
-      rv.setMaximum(max);
+      return AxisAlignedBox.NaN;
     }
-    return rv;
+    return new AxisAlignedBox(min.immutable(), max.immutable());
   }
 
-  public static AxisAlignedBox getBoundingBox(AxisAlignedBox rv, double[] xyzs) {
+  public static AxisAlignedBox getBoundingBox(double[] xyzs) {
     Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
     Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     final int N = xyzs.length;
@@ -136,15 +127,12 @@ public class BoundUtilities {
       max.z = Math.max(max.z, z);
     }
     if (min.x == +Double.MAX_VALUE) {
-      rv.setNaN();
-    } else {
-      rv.setMinimum(min);
-      rv.setMaximum(max);
+      return AxisAlignedBox.NaN;
     }
-    return rv;
+    return new AxisAlignedBox(min.immutable(), max.immutable());
   }
 
-  public static AxisAlignedBox getBoundingBox(AxisAlignedBox rv, DoubleBuffer xyzs) {
+  public static AxisAlignedBox getBoundingBox(DoubleBuffer xyzs) {
     Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
     Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     final int N = xyzs.limit();
@@ -160,12 +148,9 @@ public class BoundUtilities {
       max.z = Math.max(max.z, z);
     }
     if (min.x == +Double.MAX_VALUE) {
-      rv.setNaN();
-    } else {
-      rv.setMinimum(min);
-      rv.setMaximum(max);
+      return AxisAlignedBox.NaN;
     }
-    return rv;
+    return new AxisAlignedBox(min.immutable(), max.immutable());
   }
 
   public static Sphere getBoundingSphere(Sphere rv, Point3[] pa) {
@@ -320,9 +305,8 @@ public class BoundUtilities {
       //rv.center.multiply( 0.5 );
       //rv.radius = Math.sqrt( maxDistanceSquared ) * 0.5;
 
-      AxisAlignedBox bb = new AxisAlignedBox();
-      getBoundingBox(bb, pv);
-      bb.getCenter(rv.center);
+      AxisAlignedBox bb = getBoundingBox(pv);
+      rv.center.set(bb.getCenter().mutable());
 
       double maxDistanceFromCenterSquared = -1.0; // any negative number would do
       for (Point3 p : pv) {

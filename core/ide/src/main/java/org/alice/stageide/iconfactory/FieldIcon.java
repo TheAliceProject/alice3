@@ -217,7 +217,7 @@ public class FieldIcon extends AsynchronousIcon {
               if (sgVisual != null) {
                 distance = GoodLookAtUtils.calculateGoodLookAtDistance(sgVisual, verticalViewingAngle, aspectRatio, sgCamera);
               } else {
-                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox, absoluteTransform, verticalViewingAngle, aspectRatio, sgCamera);
+                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox.immutable(), absoluteTransform, verticalViewingAngle, aspectRatio, sgCamera);
               }
               //m = null;
               if (Double.isNaN(distance) == false) {

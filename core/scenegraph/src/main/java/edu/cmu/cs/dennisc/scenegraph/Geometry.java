@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -63,7 +63,7 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-  protected abstract void updateBoundingBox(AxisAlignedBox boundingBox);
+  protected abstract AxisAlignedBox updateBoundingBox();
 
   protected abstract void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere);
 
@@ -74,7 +74,7 @@ public abstract class Geometry extends Element {
   }
 
   public Geometry(Geometry g) {
-    boundingBox.set(g.boundingBox);
+    boundingBox = g.boundingBox;
     boundingSphere.set(g.boundingSphere);
   }
 
@@ -115,16 +115,11 @@ public abstract class Geometry extends Element {
 
   }
 
-  public final AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox boundingBox) {
-    if (this.boundingBox.isNaN()) {
-      updateBoundingBox(this.boundingBox);
-    }
-    boundingBox.set(this.boundingBox);
-    return boundingBox;
-  }
-
   public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-    return getAxisAlignedMinimumBoundingBox(new AxisAlignedBox());
+    if (boundingBox == null) {
+      boundingBox = updateBoundingBox();
+    }
+    return boundingBox;
   }
 
   public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
@@ -152,7 +147,7 @@ public abstract class Geometry extends Element {
   }
 
   protected void markBoundsDirty() {
-    this.boundingBox.setNaN();
+    this.boundingBox = null;
     this.boundingSphere.setNaN();
   }
 
@@ -164,7 +159,7 @@ public abstract class Geometry extends Element {
   }
 
   private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
-  private final AxisAlignedBox boundingBox = new AxisAlignedBox();
+  private AxisAlignedBox boundingBox = null;
   private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
   boolean isMarkedAsChanged;
 }

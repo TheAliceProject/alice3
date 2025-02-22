@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
@@ -82,8 +82,8 @@ public class Mesh extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    BoundUtilities.getBoundingBox(boundingBox, vertexBuffer.getValue());
+  protected AxisAlignedBox updateBoundingBox() {
+    return BoundUtilities.getBoundingBox(vertexBuffer.getValue());
   }
 
   @Override
@@ -135,7 +135,7 @@ public class Mesh extends Geometry {
     return new Mesh(this);
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     DoubleBuffer buffer =  vertexBuffer.getValue();
 
     buffer.rewind();
@@ -143,9 +143,9 @@ public class Mesh extends Geometry {
     int n = buffer.remaining();
 
     for (int i = 0; i < n; i += 3) {
-      buffer.put(i, buffer.get(i) * scale.x);
-      buffer.put(i + 1, buffer.get(i + 1) * scale.y);
-      buffer.put(i + 2, buffer.get(i + 2) * scale.z);
+      buffer.put(i, buffer.get(i) * scale);
+      buffer.put(i + 1, buffer.get(i + 1) * scale);
+      buffer.put(i + 2, buffer.get(i + 2) * scale);
     }
 
     vertexBuffer.setValue(buffer);

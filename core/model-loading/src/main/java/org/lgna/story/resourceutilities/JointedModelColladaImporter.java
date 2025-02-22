@@ -616,7 +616,7 @@ public class JointedModelColladaImporter {
 
     float extraScale = colladaModel.getUnit().getMeter();
     if (extraScale != 1.0f) {
-      skeletonVisual.scale(new Vector3(extraScale, extraScale, extraScale));
+      skeletonVisual.scale(extraScale);
     }
 
     List<TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada(colladaModel, rootPath, aliceMeshes);
@@ -629,10 +629,10 @@ public class JointedModelColladaImporter {
     AxisAlignedBox absoluteBBox = skeletonVisualAdapter.getAbsoluteBoundingBox();
     if (skeletonVisual.geometries.getValue() != null) {
       for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonVisual.geometries.getValue()) {
-        absoluteBBox.union(g.getAxisAlignedMinimumBoundingBox());
+        absoluteBBox.union(g.getAxisAlignedMinimumBoundingBox().mutable());
       }
     }
-    skeletonVisual.baseBoundingBox.setValue(absoluteBBox);
+    skeletonVisual.baseBoundingBox.setValue(absoluteBBox.immutable());
     skeletonVisualAdapter.handleReleased();
     skeletonVisual.setTracker(null);
 

@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
@@ -73,10 +73,10 @@ public class ConvexHull extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     DoubleBuffer doubleBuffer = this.points.getValue();
     double[] xyzs = doubleBuffer.array();
-    BoundUtilities.getBoundingBox(boundingBox, xyzs);
+    return BoundUtilities.getBoundingBox(xyzs);
   }
 
   @Override

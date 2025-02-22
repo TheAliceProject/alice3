@@ -44,8 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
@@ -104,9 +103,10 @@ public class SkeletonVisual extends Visual {
     }
   }
 
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv, boolean ignoreJointOrientations) {
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(boolean ignoreJointOrientations) {
+    AxisAlignedBox aabb = null;
     if (!ignoreJointOrientations && (this.tracker != null)) {
-      this.tracker.getAxisAlignedMinimumBoundingBox(rv);
+      aabb = tracker.getAxisAlignedMinimumBoundingBox();
     } else {
       //There's a problem here.
       //This code is used to return a bounding box for a Skeleton Visual in 2 cases:
@@ -124,43 +124,39 @@ public class SkeletonVisual extends Visual {
       if (this.hasDefaultPoseWeightedMeshes.getValue()) {
         if (this.defaultPoseWeightedMeshes.getValue() != null) {
           for (WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
+            aabb = wm.getAxisAlignedMinimumBoundingBox().union(aabb);
           }
         }
       } else {
         if (this.weightedMeshes.getValue() != null) {
           for (WeightedMesh wm : this.weightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
+            aabb = wm.getAxisAlignedMinimumBoundingBox().union(aabb);
           }
         }
       }
       if (this.geometries.getValue() != null) {
         for (Geometry g : this.geometries.getValue()) {
-          AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-          rv.union(b);
+          aabb = g.getAxisAlignedMinimumBoundingBox().union(aabb);
         }
       }
     }
-    if (!rv.isNaN()) {
-      rv.scale(this.scale.getValue());
+    if (aabb != null) {
+      return aabb.scale(this.scale.getValue());
     }
-    return rv;
+    return null;
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    return getAxisAlignedMinimumBoundingBox(rv, false);
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    return getAxisAlignedMinimumBoundingBox(false);
   }
 
   @Override
   public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    AxisAlignedBox box = new AxisAlignedBox();
-    getAxisAlignedMinimumBoundingBox(box);
-    if (!box.isNaN()) {
-      double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
-      rv.center.set(box.getCenter());
+    AxisAlignedBox box = getAxisAlignedMinimumBoundingBox();
+    if (box != null) {
+      double diameter = box.minimum().distanceFrom(box.maximum());
+      rv.center.set(box.getCenter().mutable());
       rv.radius = diameter / 2;
     } else {
       rv.setNaN();
@@ -220,14 +216,14 @@ public class SkeletonVisual extends Visual {
     }
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     if (skeleton.getValue() != null) {
       skeleton.getValue().scale(scale);
     }
     scaleMeshes(scale);
   }
 
-  private void scaleMeshes(Vector3 scale) {
+  private void scaleMeshes(double scale) {
     for (Geometry g : geometries.getValue()) {
       //The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
       //If we start to support things like cylinders and boxes, then this would need to be updated
@@ -253,7 +249,7 @@ public class SkeletonVisual extends Visual {
   }
 
   public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
-  public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
+  public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>(this, null);
 
   private SkeletonVisualBoundingBoxTracker tracker = null;
 

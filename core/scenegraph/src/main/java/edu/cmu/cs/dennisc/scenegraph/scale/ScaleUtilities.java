@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Criterion;
@@ -51,6 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Matrix3x3;
 
 /**
  * @author Dennis Cosgrove
@@ -77,7 +77,7 @@ public class ScaleUtilities {
       } else if (sgComponent instanceof Visual) {
         Visual sgVisual = (Visual) sgComponent;
         Matrix3x3 scale = sgVisual.scale.getValue();
-        edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale(scale, axis);
+        edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale((edu.cmu.cs.dennisc.math.Matrix3x3) scale.mutable(), axis);
         sgVisual.scale.setValue(scale);
       }
     }

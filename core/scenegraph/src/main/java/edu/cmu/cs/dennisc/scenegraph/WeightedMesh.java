@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 import java.util.Map;
@@ -101,7 +100,7 @@ public class WeightedMesh extends Mesh {
   }
 
   @Override
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     super.scale(scale);
     weightInfo.getValue().scale(scale);
   }

@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
@@ -76,20 +76,20 @@ public class TransformableVisual extends Visual {
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox(rv);
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox();
 
-    if (!transformedRV.isNaN()) {
-      Point3 maximum = transformedRV.getMaximum();
-      this.sgTransformable.accessLocalTransformation().transform(maximum);
-      transformedRV.setMaximum(maximum);
-
-      Point3 minimum = transformedRV.getMinimum();
-      this.sgTransformable.accessLocalTransformation().transform(minimum);
-      transformedRV.setMinimum(minimum);
+    if (transformedRV == null) {
+      return null;
     }
 
-    return transformedRV;
+    Point3 maximum = transformedRV.maximum().mutable();
+    this.sgTransformable.accessLocalTransformation().transform(maximum);
+
+    Point3 minimum = transformedRV.minimum().mutable();
+    this.sgTransformable.accessLocalTransformation().transform(minimum);
+
+    return new AxisAlignedBox(minimum.immutable(), maximum.immutable());
   }
 
   @Override

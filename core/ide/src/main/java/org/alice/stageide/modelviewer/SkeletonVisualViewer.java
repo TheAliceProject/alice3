@@ -1,12 +1,12 @@
 package org.alice.stageide.modelviewer;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 import org.alice.interact.DragAdapter;
+import org.alice.math.immutable.Point3;
 
 public class SkeletonVisualViewer extends Viewer {
 
@@ -16,8 +16,6 @@ public class SkeletonVisualViewer extends Viewer {
   private final ExtravagantAxes fancyAxes;
 
   private final BoundingBoxDecorator unitBox = new BoundingBoxDecorator();
-  // To shrink unit box and hide unitBox
-  private final AxisAlignedBox zeroAAB = new AxisAlignedBox(0, 0, 0, 0, 0, 0);
   // To grow and display unitBox
   private final AxisAlignedBox unitAAB = new AxisAlignedBox(0, 0, 0, 1, 1, 1);
 
@@ -44,7 +42,7 @@ public class SkeletonVisualViewer extends Viewer {
   }
 
   public void updateScale() {
-    final AxisAlignedBox modelBounds = this.skeletonVisual.getAxisAlignedMinimumBoundingBox();
+    final org.alice.math.immutable.AxisAlignedBox modelBounds = this.skeletonVisual.getAxisAlignedMinimumBoundingBox();
     // Scale to fit with skeletonVisual
     fancyAxes.resize(modelBounds.getDiagonal(), 1.5, 1);
     //  Position next to skeletonVisual
@@ -61,15 +59,15 @@ public class SkeletonVisualViewer extends Viewer {
   }
 
   public void positionAndOrientCamera() {
-    final AxisAlignedBox boundingBox = skeletonVisual.getAxisAlignedMinimumBoundingBox();
+    final org.alice.math.immutable.AxisAlignedBox boundingBox = skeletonVisual.getAxisAlignedMinimumBoundingBox();
     final Point3 center = boundingBox.getCenter();
     double diagonal = boundingBox.getDiagonal();
     getCamera().setTransformation(getScene().createOffsetStandIn(-2 * diagonal, diagonal, -diagonal));
-    getCamera().setOrientationOnlyToPointAt(getScene().createOffsetStandIn(0, center.y, 0));
+    getCamera().setOrientationOnlyToPointAt(getScene().createOffsetStandIn(0, center.y(), 0));
   }
 
   public void setShowUnitBox(Boolean showBox) {
-    unitBox.setBox(showBox ? unitAAB : zeroAAB);
+    unitBox.setBox(showBox ? unitAAB.immutable() : org.alice.math.immutable.AxisAlignedBox.Empty);
   }
 
   public void setShowAxes(Boolean showAxes) {

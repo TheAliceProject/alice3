@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
@@ -53,10 +53,9 @@ import edu.cmu.cs.dennisc.math.Vector3;
  */
 public class Sprite extends Geometry {
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double d = radius.getValue();
-    boundingBox.setMinimum(-d, -d, 0);
-    boundingBox.setMaximum(d, d, 0);
+    return new AxisAlignedBox(new org.alice.math.immutable.Point3(-d, -d, 0), new org.alice.math.immutable.Point3(d, d, 0));
   }
 
   @Override

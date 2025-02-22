@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -84,10 +84,10 @@ public class GoodLookAtUtils {
     if (axisAlignedBox.getWidth() > THRESHOLD) {
       return Double.NaN;
     } else {
-      Point3[] localPoints = axisAlignedBox.getPoints();
+      org.alice.math.immutable.Point3[] localPoints = axisAlignedBox.getPoints();
       Point3[] transformedPoints = new Point3[localPoints.length];
       for (int i = 0; i < localPoints.length; i++) {
-        transformedPoints[i] = visualAbsoluteTransform.createTransformed(localPoints[i]);
+        transformedPoints[i] = visualAbsoluteTransform.createTransformed(localPoints[i].mutable());
       }
 
       Point3 averageAbsolutePoint = Point3.createZero();

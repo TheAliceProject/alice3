@@ -43,17 +43,17 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double d = radius.getValue();
-    boundingBox.setMinimum(-d, -d, -d);
-    boundingBox.setMaximum(d, d, d);
+    return new AxisAlignedBox(new Point3(-d, -d, -d), new Point3(d, d, d));
   }
 
   @Override

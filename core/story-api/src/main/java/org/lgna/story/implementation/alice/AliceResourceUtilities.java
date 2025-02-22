@@ -64,7 +64,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -74,6 +73,7 @@ import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.math.immutable.Matrix3x3;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -572,8 +572,8 @@ public class AliceResourceUtilities {
     WeightedMesh[] sgDefaultPoseWeightedMeshes = sgOriginal.defaultPoseWeightedMeshes.getValue();
     boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
-    AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
-    Matrix3x3 scaleCopy = new Matrix3x3(sgOriginal.scale.getValue());
+    org.alice.math.immutable.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
+    Matrix3x3 scaleCopy = sgOriginal.scale.getValue();
     Appearance sgFrontAppearanceCopy;
     if (sgOriginal.frontFacingAppearance.getValue() != null) {
       sgFrontAppearanceCopy = (Appearance) sgOriginal.frontFacingAppearance.getValue().newCopy();
@@ -613,7 +613,7 @@ public class AliceResourceUtilities {
     SkeletonVisual sgToReplaceWith = getVisual(resource);
     Geometry[] sgGeometries = sgToReplaceWith.geometries.getValue();
     WeightedMesh[] sgWeightedMeshes = sgToReplaceWith.weightedMeshes.getValue();
-    AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
+    org.alice.math.immutable.AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
     Joint sgNewSkeletonRoot = sgToReplaceWith.skeleton.getValue();
     final Joint sgNewSkeleton;
     if (sgNewSkeletonRoot != null) {

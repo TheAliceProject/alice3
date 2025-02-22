@@ -53,14 +53,7 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
@@ -77,7 +70,6 @@ import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
@@ -606,7 +598,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     if (this.sgScalable != null) {
       return this.sgScalable.scale.getValue();
     } else {
-      Matrix3x3 scale = this.visualData.getSgVisuals()[0].scale.getValue();
+      AbstractMatrix3x3 scale = this.visualData.getSgVisuals()[0].scale.getValue().mutable();
       return new Dimension3(scale.right.x, scale.up.y, scale.backward.z);
     }
   }
@@ -622,7 +614,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       m.backward.z = scale.z;
 
       for (Visual sgVisual : this.visualData.getSgVisuals()) {
-        sgVisual.scale.setValue(m);
+        sgVisual.scale.setValue(m.immutable());
       }
       for (JointImp jointImp : this.mapIdToJoint.values()) {
         jointImp.setScale(scale);
@@ -634,7 +626,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     AffineMatrix4x4 trans = this.getTransformation(asSeenBy);
     CumulativeBound cumulativeBound = new CumulativeBound();
     this.updateCumulativeBound(cumulativeBound, trans, ignoreJointOrientations);
-    return cumulativeBound.getBoundingBox();
+    return cumulativeBound.getBoundingBox().mutable();
   }
 
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox(boolean ignoreJointOrientations) {

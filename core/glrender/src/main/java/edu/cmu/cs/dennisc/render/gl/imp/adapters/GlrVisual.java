@@ -383,7 +383,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
     } else if (property == owner.scale) {
       //todo: accessScale?
-      updateScale(owner.scale.getValue().immutable());
+      updateScale(owner.scale.getValue());
     } else if (property == owner.isShowing) {
       this.isShowing = owner.isShowing.getValue();
     } else if (property == owner.silouette) {

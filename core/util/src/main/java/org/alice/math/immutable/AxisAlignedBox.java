@@ -4,6 +4,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 
 public record AxisAlignedBox(Point3 minimum, Point3 maximum) {
   static AxisAlignedBox NaN = new AxisAlignedBox(Point3.NaN, Point3.NaN);
+  public static AxisAlignedBox Empty = new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN);
 
   public AxisAlignedBox createAxisAlignedBox(double minimumX, double minimumY, double minimumZ, double maximumX, double maximumY, double maximumZ) {
     return new AxisAlignedBox(new Point3(minimumX, minimumY, minimumZ), new Point3(maximumX, maximumY, maximumZ));
@@ -158,8 +159,18 @@ public record AxisAlignedBox(Point3 minimum, Point3 maximum) {
     return new AxisAlignedBox(minimum.plus(v), maximum.plus(v));
   }
 
+  public AxisAlignedBox scale(double scale) {
+    return new AxisAlignedBox(minimum.times(scale), maximum.times(scale));
+  }
+
   // Used to scale, but could apply any transform
   public AxisAlignedBox scale(Matrix3x3 m) {
     return new AxisAlignedBox(m.transform(minimum), m.transform(maximum));
+  }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public edu.cmu.cs.dennisc.math.AxisAlignedBox mutable() {
+    return new edu.cmu.cs.dennisc.math.AxisAlignedBox(minimum.mutable(), maximum.mutable());
   }
 }

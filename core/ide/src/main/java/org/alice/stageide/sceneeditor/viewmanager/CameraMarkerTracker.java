@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -456,18 +455,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     private void scaleVisuals(Double scale) {
-      Matrix3x3 scaleMatrix = scaleMatrix(scale);
+      org.alice.math.immutable.Matrix3x3 scaleMatrix =
+          (new org.alice.math.immutable.Vector3(scale, scale, scale)).asScaleMatrix();
       for (Visual visual : visuals) {
         visual.scale.setValue(scaleMatrix);
       }
-    }
-
-    private Matrix3x3 scaleMatrix(Double scale) {
-      Matrix3x3 m = Matrix3x3.createZero();
-      m.right.x = scale;
-      m.up.y = scale;
-      m.backward.z = scale;
-      return m;
     }
 
     protected void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {

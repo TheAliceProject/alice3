@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Vector3;
 
 public class WeightInfo implements BinaryEncodableAndDecodable {
   private Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs;
@@ -72,7 +71,7 @@ public class WeightInfo implements BinaryEncodableAndDecodable {
     return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs;
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = getMap();
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();

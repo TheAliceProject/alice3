@@ -181,7 +181,7 @@ public class Sphere implements BinaryEncodableAndDecodable {
   //    m_center.z += m.translation.z;
   //  }
 
-  public void scale(Matrix3x3 m) {
+  public void scale(AbstractMatrix3x3 m) {
     //todo?
 
     //todo: test

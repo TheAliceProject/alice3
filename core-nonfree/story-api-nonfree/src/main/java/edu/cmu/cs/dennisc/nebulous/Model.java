@@ -263,17 +263,18 @@ public abstract class Model extends Geometry {
     double[] bboxData = new double[6];
     getAxisAlignedBoundingBoxForJoint(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), bboxData);
     AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
-    bbox.scale(this.sgAssociatedVisual.scale.getValue());
+    bbox.scale(this.sgAssociatedVisual.scale.getValue().mutable());
     return bbox;
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected org.alice.math.immutable.AxisAlignedBox updateBoundingBox() {
     //the bounding boxes come in the form (double[6])
     double[] bboxData = new double[6];
     updateAxisAlignedBoundingBox(bboxData);
-    boundingBox.setMinimum(bboxData[0], bboxData[1], bboxData[2]);
-    boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
+    return new org.alice.math.immutable.AxisAlignedBox(
+        new org.alice.math.immutable.Point3(bboxData[0], bboxData[1], bboxData[2]),
+        new org.alice.math.immutable.Point3(bboxData[3], bboxData[4], bboxData[5]));
   }
 
   private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex) {

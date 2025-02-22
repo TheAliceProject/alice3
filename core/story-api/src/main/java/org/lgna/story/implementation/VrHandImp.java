@@ -44,10 +44,9 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.SVRHand;
+import org.alice.math.immutable.AxisAlignedBox;
 
 public class VrHandImp extends TransformableImp {
 
@@ -60,7 +59,7 @@ public class VrHandImp extends TransformableImp {
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
+    rv.addBoundingBox(AxisAlignedBox.Empty, trans);
   }
 
   @Override

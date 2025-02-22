@@ -146,7 +146,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
           this.color = new Color4f(appearance.diffuseColor.getValue());
           this.opacity = appearance.opacity.getValue();
         }
-        this.scale = new Matrix3x3(visual.scale.getValue());
+        this.scale = new Matrix3x3(visual.scale.getValue().mutable());
         this.isShowing = visual.isShowing.getValue();
       }
       this.hasExtras = true;

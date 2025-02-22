@@ -118,5 +118,12 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     public boolean isOrthogonalTo(Vector3 other) {
         return EpsilonUtilities.isWithinReasonableEpsilon(0.0, dotProduct(other));
     }
+
+    public Matrix3x3 asScaleMatrix() {
+        return new FullMatrix3x3(
+            new Vector3(x, 0, 0),
+            new Vector3(0, y, 0),
+            new Vector3(0, 0, z));
+    }
 }
 

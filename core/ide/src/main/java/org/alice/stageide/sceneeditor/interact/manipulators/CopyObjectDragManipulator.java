@@ -144,7 +144,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
         this.sgBoundingBoxDecorator.isShowing.setValue(false);
         this.sgAxes = new ModestAxes(1.0);
       } else {
-        this.sgBoundingBoxDecorator.setBox(box);
+        this.sgBoundingBoxDecorator.setBox(box.immutable());
         this.sgAxes = new ModestAxes(box.getWidth() * .5);
       }
       this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
