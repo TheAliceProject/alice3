@@ -53,8 +53,12 @@ import org.lgna.croquet.views.PopupMenu;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
+
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
 import java.util.UUID;
 
 /**
@@ -108,6 +112,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
       } else {
         final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity(this, activity);
         final PopupMenu popupMenu = new PopupMenu(this, activity);
+
         popupMenu.addComponentListener(new ComponentListener() {
           @Override
           public void componentShown(ComponentEvent e) {
@@ -127,6 +132,26 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
           }
         });
         popupMenu.addPopupMenuListener(rtRoot.createPopupMenuListener(popupMenu));
+
+        popupMenu.getAwtComponent().addMenuKeyListener(new MenuKeyListener() {
+          @Override
+          public void menuKeyTyped(MenuKeyEvent e) {
+          }
+
+          @Override
+          public void menuKeyPressed(MenuKeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+              synchronized (popupMenu.getAwtComponent().getParent().getTreeLock()) {
+                popupMenu.setVisible(false);
+              }
+            }
+          }
+
+          @Override
+          public void menuKeyReleased(MenuKeyEvent e) {
+          }
+        });
+
         prepStep.showPopupMenu(popupMenu);
       }
     }
