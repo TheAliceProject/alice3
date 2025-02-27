@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.*;
-import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
@@ -505,11 +504,6 @@ public abstract class Model extends Geometry {
     skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[textures.size()]));
 
     return skeletonVisual;
-  }
-
-  @Override
-  protected void updateBoundingSphere(Sphere boundingSphere) {
-    boundingSphere.setNaN();
   }
 
   @Override

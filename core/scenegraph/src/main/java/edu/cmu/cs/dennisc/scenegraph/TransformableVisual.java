@@ -92,17 +92,6 @@ public class TransformableVisual extends Visual {
     return new AxisAlignedBox(minimum.immutable(), maximum.immutable());
   }
 
-  @Override
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    edu.cmu.cs.dennisc.math.Sphere transformedRV = super.getBoundingSphere(rv);
-
-    if (!transformedRV.isNaN()) {
-      this.sgTransformable.accessLocalTransformation().transform(transformedRV.center);
-    }
-
-    return rv;
-  }
-
   private final Transformable sgTransformable = new Transformable();
 
   public void setTranslation(Vector3 translation) {

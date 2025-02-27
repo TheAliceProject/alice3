@@ -94,13 +94,6 @@ public class Torus extends Shape {
     return this.coordinatePlane.getValue().updateBoundingBox(yesRadius, noRadius);
   }
 
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    double outerRadius = majorRadius.getValue() + minorRadius.getValue();
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = outerRadius;
-  }
-
   public final InstanceProperty<CoordinatePlane> coordinatePlane = new InstanceProperty<CoordinatePlane>(this, CoordinatePlane.XZ) {
     @Override
     public void setValue(CoordinatePlane value) {

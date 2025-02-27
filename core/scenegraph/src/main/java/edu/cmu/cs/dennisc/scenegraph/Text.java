@@ -134,11 +134,6 @@ public class Text extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    //todo
-  }
-
-  @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     throw new RuntimeException("TODO");
   }

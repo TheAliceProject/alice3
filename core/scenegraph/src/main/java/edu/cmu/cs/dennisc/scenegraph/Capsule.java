@@ -73,12 +73,6 @@ public class Capsule extends Shape {
     return null;
   }
 
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + (this.radius.getValue() * 2);
-  }
-
   public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty(this, 1.0) {
     @Override
     public void setValue(Double value) {

@@ -99,11 +99,6 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     }
 
     @Override
-    public double getBoundingSphereRadius() {
-      return 1.0;
-    }
-
-    @Override
     public void setSGParent(Composite parent) {
       sgSkeletonVisual.setParent(parent);
     }

@@ -59,12 +59,6 @@ public class Sprite extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = radius.getValue();
-  }
-
-  @Override
   public void transform(AbstractMatrix4x4 trans) {
     throw new RuntimeException("TODO");
   }

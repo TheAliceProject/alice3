@@ -97,14 +97,6 @@ public class CumulativeBound {
     }
   }
 
-  public Sphere getBoundingSphere(Sphere rv) {
-    return BoundUtilities.getBoundingSphere(rv, m_transformedPoints);
-  }
-
-  public Sphere getBoundingSphere() {
-    return getBoundingSphere(new Sphere());
-  }
-
   public AxisAlignedBox getBoundingBox() {
     return BoundUtilities.getBoundingBox(m_transformedPoints);
   }

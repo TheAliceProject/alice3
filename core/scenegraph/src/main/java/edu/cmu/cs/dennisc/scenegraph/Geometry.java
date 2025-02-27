@@ -65,8 +65,6 @@ import java.util.List;
 public abstract class Geometry extends Element {
   protected abstract AxisAlignedBox updateBoundingBox();
 
-  protected abstract void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere);
-
   protected abstract void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation);
 
   public Geometry() {
@@ -75,7 +73,6 @@ public abstract class Geometry extends Element {
 
   public Geometry(Geometry g) {
     boundingBox = g.boundingBox;
-    boundingSphere.set(g.boundingSphere);
   }
 
   public AffineMatrix4x4 getPlane(AffineMatrix4x4 matrix) {
@@ -122,18 +119,6 @@ public abstract class Geometry extends Element {
     return boundingBox;
   }
 
-  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    if (this.boundingSphere.isNaN()) {
-      updateBoundingSphere(this.boundingSphere);
-    }
-    boundingSphere.set(this.boundingSphere);
-    return boundingSphere;
-  }
-
-  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-    return getBoundingSphere(new edu.cmu.cs.dennisc.math.Sphere());
-  }
-
   public void addBoundListener(BoundListener boundListener) {
     this.boundListeners.add(boundListener);
   }
@@ -148,7 +133,6 @@ public abstract class Geometry extends Element {
 
   protected void markBoundsDirty() {
     this.boundingBox = null;
-    this.boundingSphere.setNaN();
   }
 
   protected void fireBoundChanged() {
@@ -160,6 +144,5 @@ public abstract class Geometry extends Element {
 
   private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
   private AxisAlignedBox boundingBox = null;
-  private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
   boolean isMarkedAsChanged;
 }

@@ -225,32 +225,6 @@ public class Cylinder extends Shape {
     }
   }
 
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    double center = getCenter();
-    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
-      boundingSphere.center.set(+center, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
-      boundingSphere.center.set(0, +center, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
-      boundingSphere.center.set(0, 0, +center);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
-      boundingSphere.center.set(-center, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
-      boundingSphere.center.set(0, -center, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
-      boundingSphere.center.set(0, 0, -center);
-    } else {
-      throw new RuntimeException();
-    }
-    double halfLength = length.getValue() * 0.5;
-    double halfLengthSquared = halfLength * halfLength;
-    double maxRadius = getMaxRadius();
-    double maxRadiusSquared = maxRadius * maxRadius;
-    boundingSphere.radius = Math.sqrt(halfLengthSquared + maxRadiusSquared + maxRadiusSquared);
-  }
-
   public final BoundDoubleProperty length = new BoundDoubleProperty(this, 1.0);
   public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty(this, 1.0);
   public final BoundDoubleProperty topRadius = new BoundDoubleProperty(this, 1.0);

@@ -77,12 +77,6 @@ public class Disc extends Shape {
     }
   }
 
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = outerRadius.getValue();
-  }
-
   public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>(this, Axis.Y) {
     @Override
     public void setValue(Axis value) {

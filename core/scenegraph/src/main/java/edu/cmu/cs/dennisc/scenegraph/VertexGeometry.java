@@ -83,11 +83,6 @@ public abstract class VertexGeometry extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    BoundUtilities.getBoundingSphere(boundingSphere, vertices.getValue());
-  }
-
-  @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     Point3 point0;
     Point3 point1;

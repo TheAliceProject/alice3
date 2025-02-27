@@ -60,11 +60,6 @@ public class OldMesh extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    BoundUtilities.getBoundingSphere(boundingSphere, xyzs.getValue());
-  }
-
-  @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     double[] xyzs = this.xyzs.getValue();
     float[] ijks = this.ijks.getValue();

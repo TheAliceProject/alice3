@@ -83,8 +83,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     SimpleAppearance[] getSgAppearances();
 
-    double getBoundingSphereRadius();
-
     void setSGParent(Composite parent);
 
     Composite getSGParent();

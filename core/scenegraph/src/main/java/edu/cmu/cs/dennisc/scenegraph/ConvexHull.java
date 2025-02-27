@@ -80,13 +80,6 @@ public class ConvexHull extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    DoubleBuffer doubleBuffer = this.points.getValue();
-    double[] xyzs = doubleBuffer.array();
-    BoundUtilities.getBoundingSphere(boundingSphere, xyzs);
-  }
-
-  @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     DoubleBuffer doubleBuffer = this.points.getValue();
     double[] xyzs = doubleBuffer.array();

@@ -103,21 +103,6 @@ public class Visual extends Leaf {
     return getGeometry().getAxisAlignedMinimumBoundingBox().scale(scale.getValue());
   }
 
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    if (getGeometry() != null) {
-      //todo
-      getGeometry().getBoundingSphere(rv);
-      rv.scale(scale.getValue().mutable());
-    } else {
-      rv.setNaN();
-    }
-    return rv;
-  }
-
-  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-    return getBoundingSphere(new edu.cmu.cs.dennisc.math.Sphere());
-  }
-
   public final InstanceProperty<Appearance> frontFacingAppearance = new InstanceProperty<Appearance>(this, null);
   public final InstanceProperty<Appearance> backFacingAppearance = new InstanceProperty<Appearance>(this, null);
   public final InstanceProperty<Matrix3x3> scale = new InstanceProperty<>(this, Matrix3x3.IDENTITY);

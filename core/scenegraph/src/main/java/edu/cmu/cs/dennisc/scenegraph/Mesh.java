@@ -87,11 +87,6 @@ public class Mesh extends Geometry {
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    BoundUtilities.getBoundingSphere(boundingSphere, vertexBuffer.getValue().array());
-  }
-
-  @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
 
     double[] xyzs = vertexBuffer.getValue().array();

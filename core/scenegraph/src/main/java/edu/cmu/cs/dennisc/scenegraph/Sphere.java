@@ -56,11 +56,5 @@ public class Sphere extends Shape {
     return new AxisAlignedBox(new Point3(-d, -d, -d), new Point3(d, d, d));
   }
 
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = radius.getValue();
-  }
-
   public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 0.5);
 }

@@ -43,9 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -151,19 +150,6 @@ public class SkeletonVisual extends Visual {
     return getAxisAlignedMinimumBoundingBox(false);
   }
 
-  @Override
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    AxisAlignedBox box = getAxisAlignedMinimumBoundingBox();
-    if (box != null) {
-      double diameter = box.minimum().distanceFrom(box.maximum());
-      rv.center.set(box.getCenter().mutable());
-      rv.radius = diameter / 2;
-    } else {
-      rv.setNaN();
-    }
-    return rv;
-  }
-
   public boolean renderBackfaces() {
     if (this.weightedMeshes.getValue() != null) {
       for (WeightedMesh wm : this.weightedMeshes.getValue()) {
@@ -233,18 +219,6 @@ public class SkeletonVisual extends Visual {
     }
     for (WeightedMesh wm : weightedMeshes.getValue()) {
       wm.scale(scale);
-    }
-  }
-
-  private void scaleJoints(Joint j, Vector3 scale) {
-    AffineMatrix4x4 newTransform = new AffineMatrix4x4(j.localTransformation.getValue());
-    newTransform.translation.multiply(scale);
-    j.localTransformation.setValue(newTransform);
-    for (int i = 0; i < j.getComponentCount(); i++) {
-      Component comp = j.getComponentAt(i);
-      if (comp instanceof Joint) {
-        scaleJoints((Joint) comp, scale);
-      }
     }
   }
 
