@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.scenegraph.util;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.property.Matrix3x3Property;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Matrix3x3;
 
 import java.util.Map;
 
@@ -159,7 +159,7 @@ public class ExtravagantAxes extends Transformable {
     return this.scale.getValue();
   }
 
-  public Matrix3x3Property getScaleProperty() {
+  public InstanceProperty getScaleProperty() {
     return this.scale;
   }
 
@@ -192,7 +192,7 @@ public class ExtravagantAxes extends Transformable {
     }
   }
 
-  private final Matrix3x3Property scale = new Matrix3x3Property(this, Matrix3x3.createIdentity());
+  private final InstanceProperty<Matrix3x3> scale = new InstanceProperty<>(this, Matrix3x3.IDENTITY);
 
   private final Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = Maps.newHashMap();
   private final SimpleAppearance[] sgAppearances = new SimpleAppearance[4];
