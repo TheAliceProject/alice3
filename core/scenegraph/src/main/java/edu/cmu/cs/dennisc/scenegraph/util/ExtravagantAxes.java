@@ -151,7 +151,7 @@ public class ExtravagantAxes extends Transformable {
 
   public void setScale(Matrix3x3 scale) {
     this.scale.setValue(scale);
-    double scaleVal = scale.right.x;
+    double scaleVal = scale.getRight().x();
     resize(this.initialUnitLength * scaleVal, this.initialForwardFactor * scaleVal, this.initialDiameterScale * scaleVal);
   }
 

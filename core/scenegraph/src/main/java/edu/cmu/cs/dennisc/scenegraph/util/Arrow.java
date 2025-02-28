@@ -42,7 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -51,6 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.TransformableVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -99,7 +99,7 @@ public class Arrow extends Transformable {
   }
 
   private void setConeTranslation(double lengthCylinder) {
-    Vector3 translation = Vector3.createMultiplication(new Vector3(lengthCylinder, lengthCylinder, lengthCylinder), this.bottomToTopAxis.accessVector());
+    Vector3 translation = new Vector3(lengthCylinder, lengthCylinder, lengthCylinder).times(this.bottomToTopAxis.accessVector());
     sgVisualCone.setTranslation(translation);
   }
 

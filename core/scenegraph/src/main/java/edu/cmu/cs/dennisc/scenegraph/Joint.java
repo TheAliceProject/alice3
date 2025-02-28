@@ -43,16 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
-import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
-import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.EulerAngles;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +88,9 @@ public class Joint extends Transformable implements ModelJoint {
   }
 
   public void scale(double scale) {
-    AffineMatrix4x4 newTransform = new AffineMatrix4x4(localTransformation.getValue());
-    newTransform.translation.multiply(scale);
-    localTransformation.setValue(newTransform);
+    AffineMatrix4x4 newTransform = localTransformation.getValue();
+    Vector3 scaled = newTransform.translation().times(scale);
+    localTransformation.setValue(new AffineMatrix4x4(newTransform.orientation(), scaled));
     AxisAlignedBox bb = boundingBox.getValue();
     if (bb != null) {
       bb = bb.scale(scale);
@@ -148,8 +147,7 @@ public class Joint extends Transformable implements ModelJoint {
       return null;
     }
     AxisAlignedBox bounds = AxisAlignedBox.NaN;
-    if (c instanceof Joint) {
-      Joint j = (Joint) c;
+    if (c instanceof Joint j) {
       //We scale the local bounding box based on the scale of the SkeletonVisual base object
       //We can do this here (in the local space of the joint) because we restrict the scale to be a uniform scale
       AxisAlignedBox scaledBBox = boundingBox.getValue();
@@ -158,23 +156,23 @@ public class Joint extends Transformable implements ModelJoint {
         scaledBBox = scaledBBox.scale(sv.scale.getValue());
       }
 
-      Point3 localMin = scaledBBox.minimum().mutable();
-      Point3 localMax = scaledBBox.maximum().mutable();
+      Point3 localMin = scaledBBox.minimum();
+      Point3 localMax = scaledBBox.maximum();
 
-      Point3 transformedMin = transform.createTransformed(localMin);
-      Point3 transformedMax = transform.createTransformed(localMax);
+      Point3 transformedMin = transform.transform(localMin);
+      Point3 transformedMax = transform.transform(localMax);
       if (!transformedMin.isNaN()) {
-        bounds = bounds.union(transformedMin.immutable());
+        bounds = bounds.union(transformedMin);
       }
       if (!transformedMax.isNaN()) {
-        bounds = bounds.union(transformedMax.immutable());
+        bounds = bounds.union(transformedMax);
       }
     }
     if (cumulative) {
       for (int i = 0; i < c.getComponentCount(); i++) {
         Component comp = c.getComponentAt(i);
         if (comp instanceof Composite) {
-          AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable) comp).accessLocalTransformation());
+          AffineMatrix4x4 childTransform = transform.times(((AbstractTransformable) comp).getLocalTransformation());
           AxisAlignedBox childAabb = getBoundingBox((Composite) comp, childTransform, cumulative);
           if (childAabb != null && !childAabb.isNaN()) {
             bounds = bounds.union(childAabb);
@@ -186,7 +184,7 @@ public class Joint extends Transformable implements ModelJoint {
   }
 
   public AxisAlignedBox getBoundingBox(boolean cumulative) {
-    return getBoundingBox(this, AffineMatrix4x4.createIdentity(), cumulative);
+    return getBoundingBox(this, AffineMatrix4x4.IDENTITY, cumulative);
   }
 
   @Override
@@ -204,14 +202,14 @@ public class Joint extends Transformable implements ModelJoint {
 
   public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>(this, AxisAlignedBox.NaN);
 
-  public final Vector3fProperty oStiffness = new Vector3fProperty(this, new Vector3f());
-  public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this);
-  public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty(this);
-  public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty(this);
-  public final Vector3fProperty oMinimumDampRange = new Vector3fProperty(this, new Vector3f());
-  public final Vector3fProperty oMaximumDampRange = new Vector3fProperty(this, new Vector3f());
-  public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty(this, new Vector3f());
-  public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty(this, new Vector3f());
+  public final InstanceProperty<Vector3f> oStiffness = new InstanceProperty<>(this, Vector3f.ZERO);
+  public final InstanceProperty<EulerAngles> oBoneOrientation = new InstanceProperty<>(this, EulerAngles.IDENTITY);
+  public final InstanceProperty<EulerAngles> oPreferedAngles = new InstanceProperty<>(this, EulerAngles.IDENTITY);
+  public final InstanceProperty<EulerAngles> oLocalRotationAxis = new InstanceProperty<>(this, EulerAngles.IDENTITY);
+  public final InstanceProperty<Vector3f> oMinimumDampRange = new InstanceProperty<>(this, Vector3f.ZERO);
+  public final InstanceProperty<Vector3f> oMaximumDampRange = new InstanceProperty<>(this, Vector3f.ZERO);
+  public final InstanceProperty<Vector3f> oMinimumDampStrength = new InstanceProperty<>(this, Vector3f.ZERO);
+  public final InstanceProperty<Vector3f> oMaximumDampStrength = new InstanceProperty<>(this, Vector3f.ZERO);
 
   private SkeletonVisual parentVisual = null;
 

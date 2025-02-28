@@ -43,21 +43,20 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Geometry {
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     throw new RuntimeException("TODO");
   }
 
   @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public AffineMatrix4x4 getPlane() {
     throw new RuntimeException("TODO");
   }
 }

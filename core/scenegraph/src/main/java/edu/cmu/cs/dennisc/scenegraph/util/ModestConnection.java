@@ -42,12 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineStrip;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -65,17 +66,17 @@ public class ModestConnection extends Connection {
 
   public void update() {
     AffineMatrix4x4 m = getTarget().getTransformation(this);
-    double s = m.translation.calculateMagnitude();
+    double s = m.translation().magnitude();
     s *= 2;
-    HermiteCubic x = new HermiteCubic(0, m.translation.x, 0, s * m.orientation.backward.x);
-    HermiteCubic y = new HermiteCubic(0, m.translation.y, 0, s * m.orientation.backward.y);
-    HermiteCubic z = new HermiteCubic(0, m.translation.z, -s, -s * m.orientation.backward.z);
+    HermiteCubic x = new HermiteCubic(0, m.translation().x(), 0, s * m.orientation().backward().x());
+    HermiteCubic y = new HermiteCubic(0, m.translation().y(), 0, s * m.orientation().backward().y());
+    HermiteCubic z = new HermiteCubic(0, m.translation().z(), -s, -s * m.orientation().backward().z());
     Vertex[] vertices = this.sgLineStrip.vertices.getValue();
     synchronized (vertices) {
       double tDelta = 1.0 / (vertices.length - 1);
       double t = tDelta;
       for (int i = 1; i < vertices.length; i++) {
-        vertices[i].position.set(x.evaluate(t), y.evaluate(t), z.evaluate(t));
+        vertices[i].position = new Point3(x.evaluate(t), y.evaluate(t), z.evaluate(t));
         t += tDelta;
       }
       this.sgLineStrip.vertices.touch();

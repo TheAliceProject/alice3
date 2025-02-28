@@ -42,12 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 import java.util.Vector;
 
@@ -57,21 +56,10 @@ import java.util.Vector;
 public class CumulativeBound {
   private Vector<Point3> m_transformedPoints = new Vector<Point3>();
 
-  //  public CumulativeBound() {
-  //  }
-  //  public CumulativeBound( edu.cmu.cs.dennisc.scenegraph.Composite sgRoot, final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-  //    for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgRoot, edu.cmu.cs.dennisc.scenegraph.Visual.class ) ) {
-  //      if( sgVisual.isShowing.getValue() ) {
-  //        add( sgVisual, sgVisual.getTransformation( asSeenBy ) );
-  //        //add( sgVisual, asSeenBy.getTransformation( sgVisual ) );
-  //      }
-  //    }
-  //  }
   private void addPoint(Point3 p, AffineMatrix4x4 trans) {
-    assert p.isNaN() == false;
-    assert trans.isNaN() == false;
-    trans.transform(p);
-    m_transformedPoints.addElement(p);
+    assert !p.isNaN();
+    assert !trans.isNaN();
+    m_transformedPoints.addElement(trans.transform(p));
   }
 
   public void add(Visual sgVisual, AffineMatrix4x4 trans) {
@@ -84,16 +72,12 @@ public class CumulativeBound {
     this.addBoundingBox(box, trans);
   }
 
-  public void addOrigin(AffineMatrix4x4 trans) {
-    addPoint(Point3.createZero(), trans);
-  }
-
   public void addBoundingBox(AxisAlignedBox box, AffineMatrix4x4 trans) {
     if (box.isNaN()) {
       return;
     }
-    for (org.alice.math.immutable.Point3 point : box.getPoints()) {
-      addPoint(point.mutable(), trans);
+    for (Point3 point : box.getPoints()) {
+      addPoint(point, trans);
     }
   }
 

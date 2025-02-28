@@ -44,12 +44,12 @@ package edu.cmu.cs.dennisc.scenegraph.qa;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix3x3;
 
 import java.util.List;
@@ -63,11 +63,14 @@ public class QualityAssuranceUtilities {
   }
 
   private static boolean isOrientationMendingRequired(AffineMatrix4x4 lt) {
-    return lt.orientation.isNaN() || lt.orientation.right.isWithinReasonableEpsilonOfZero() || lt.orientation.up.isWithinReasonableEpsilonOfZero() || lt.orientation.backward.isWithinReasonableEpsilonOfZero();
+    return lt.orientation().isNaN()
+        || lt.orientation().right().isWithinReasonableEpsilonOfZero()
+        || lt.orientation().up().isWithinReasonableEpsilonOfZero()
+        || lt.orientation().backward().isWithinReasonableEpsilonOfZero();
   }
 
   private static boolean isTranslationMendingRequired(AffineMatrix4x4 lt) {
-    return lt.translation.isNaN();
+    return lt.translation().isNaN();
   }
 
   private static void appendProblems(List<Problem> problems, Component sgComponent) {

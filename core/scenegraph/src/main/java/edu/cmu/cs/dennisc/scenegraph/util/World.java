@@ -43,14 +43,15 @@
 package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
 import edu.cmu.cs.dennisc.scenegraph.Background;
 import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisRotation;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +65,7 @@ public class World extends Scene {
     this.sgAmbientLight.color.setValue(new Color4f(0.2f, 0.2f, 0.2f, 1));
 
     this.sgSunVehicle.setParent(this);
-    this.sgSunVehicle.setLocalTransformation(AffineMatrix4x4.createRotationAboutXAxis(new AngleInRadians(-Math.PI / 2)));
+    this.sgSunVehicle.setLocalTransformation(AffineMatrix4x4.createOrientation(AxisRotation.createXAxisRotation(new AngleInRadians(-Math.PI / 2))));
 
     this.sgSunLight.color.setValue(new Color4f(1, 1, 1, 1));
     this.sgSunLight.setParent(this.sgSunVehicle);

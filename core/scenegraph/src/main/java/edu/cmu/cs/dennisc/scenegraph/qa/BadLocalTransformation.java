@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.qa;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -65,23 +67,18 @@ public class BadLocalTransformation implements Problem {
   public void mend(Mender mender) {
     AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
     AffineMatrix4x4 replacement;
-    if (sgTransformable instanceof Joint) {
-      Joint sgJoint = (Joint) sgTransformable;
+    if (sgTransformable instanceof Joint sgJoint) {
       replacement = mender.getMendTransformationFor(sgJoint);
       //      if( isOrientationMendingRequired( m ) || isTranslationMendingRequired( m ) ) {
       //        edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sgJoint );
       //        m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
       //      }
     } else {
-      replacement = AffineMatrix4x4.createIdentity();
+      replacement = AffineMatrix4x4.IDENTITY;
     }
-    if (isOrientationMendingRequired) {
-      original.orientation.set(replacement.orientation.right, replacement.orientation.up, replacement.orientation.backward);
-    }
-    if (isTranslationMendingRequired) {
-      original.translation.set(replacement.translation);
-    }
-    sgTransformable.setLocalTransformation(original);
+    OrthogonalMatrix3x3 orientation = isOrientationMendingRequired ? replacement.orientation() : original.orientation();
+    Vector3 translation = isTranslationMendingRequired ? replacement.translation() : original.translation();
+    sgTransformable.setLocalTransformation(new AffineMatrix4x4(orientation, translation));
   }
 
   @Override

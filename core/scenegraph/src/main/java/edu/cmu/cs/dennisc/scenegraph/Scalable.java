@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.property.Dimension3Property;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -59,14 +59,10 @@ public class Scalable extends Composite {
   };
 
   @Override
-  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
-    super.getAbsoluteTransformation(rv);
+  public AffineMatrix4x4 getAbsoluteTransformation() {
+    AffineMatrix4x4 transform = super.getAbsoluteTransformation();
     Dimension3 scale = this.scale.getValue();
-    AffineMatrix4x4 s = AffineMatrix4x4.createIdentity();
-    s.orientation.right.x = scale.x;
-    s.orientation.up.y = scale.y;
-    s.orientation.backward.z = scale.z;
-    AffineMatrix4x4.setReturnValueToMultiplication(rv, rv, s);
-    return rv;
+    AffineMatrix4x4 s = AffineMatrix4x4.createWithDiagonal(scale.immutable());
+    return transform.times(s);
   }
 }

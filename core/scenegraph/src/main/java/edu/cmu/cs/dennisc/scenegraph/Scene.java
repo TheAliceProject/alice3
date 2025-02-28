@@ -43,9 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.FloatProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * the root of the scenegraph
@@ -54,15 +54,13 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  */
 public class Scene extends Composite {
   @Override
-  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
-    rv.setIdentity();
-    return rv;
+  public AffineMatrix4x4 getAbsoluteTransformation() {
+    return AffineMatrix4x4.IDENTITY;
   }
 
   @Override
-  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
-    rv.setIdentity();
-    return rv;
+  public AffineMatrix4x4 getInverseAbsoluteTransformation() {
+    return AffineMatrix4x4.IDENTITY;
   }
 
   @Override

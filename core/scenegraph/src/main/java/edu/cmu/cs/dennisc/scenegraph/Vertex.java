@@ -47,10 +47,10 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3f;
 
 /**
  * @author Dennis Cosgrove
@@ -62,15 +62,15 @@ public final class Vertex implements BinaryEncodableAndDecodable {
   public static final int FORMAT_SPECULAR_HIGHLIGHT_COLOR = 8;
   public static final int FORMAT_TEXTURE_COORDINATE_0 = 16;
 
-  public final Point3 position;
-  public final Vector3f normal;
+  public Point3 position;
+  public Vector3f normal;
   public final Color4f diffuseColor;
   public final Color4f specularHighlightColor;
   public final TextureCoordinate2f textureCoordinate0;
 
   public Vertex(Point3 position, Vector3f normal, Color4f diffuseColor, Color4f specularHighlightColor, TextureCoordinate2f textureCoordinate0) {
-    this.position = position != null ? position : Point3.createNaN();
-    this.normal = normal != null ? normal : Vector3f.createNaN();
+    this.position = position != null ? position : Point3.NaN;
+    this.normal = normal != null ? normal : Vector3f.NaN;
     this.diffuseColor = diffuseColor != null ? diffuseColor : Color4f.createNaN();
     this.specularHighlightColor = specularHighlightColor != null ? specularHighlightColor : Color4f.createNaN();
     this.textureCoordinate0 = textureCoordinate0 != null ? textureCoordinate0 : TextureCoordinate2f.createNaN();
@@ -150,68 +150,50 @@ public final class Vertex implements BinaryEncodableAndDecodable {
   public boolean equals(Object o) {
     if (this == o) {
       return true;
-    } else {
-      if (o instanceof Vertex) {
-        Vertex v = (Vertex) o;
-        if (v.position.isNaN()) {
-          if (this.position.isNaN()) {
-            //pass
-          } else {
-            return false;
-          }
-        } else {
-          if (!v.position.equals(this.position)) {
-            return false;
-          }
-        }
-        if (v.normal.isNaN()) {
-          if (this.normal.isNaN()) {
-            //pass
-          } else {
-            return false;
-          }
-        } else {
-          if (!v.normal.equals(this.normal)) {
-            return false;
-          }
-        }
-        if (v.diffuseColor.isNaN()) {
-          if (this.diffuseColor.isNaN()) {
-            //pass
-          } else {
-            return false;
-          }
-        } else {
-          if (!v.diffuseColor.equals(diffuseColor)) {
-            return false;
-          }
-        }
-        if (v.specularHighlightColor.isNaN()) {
-          if (this.specularHighlightColor.isNaN()) {
-            //pass
-          } else {
-            return false;
-          }
-        } else {
-          if (!v.specularHighlightColor.equals(this.specularHighlightColor)) {
-            return false;
-          }
-        }
-        if (v.textureCoordinate0.isNaN()) {
-          if (this.textureCoordinate0.isNaN()) {
-            //pass
-          } else {
-            return false;
-          }
-        } else {
-          if (!v.textureCoordinate0.equals(this.textureCoordinate0)) {
-            return false;
-          }
-        }
-        return true;
-      } else {
+    }
+    if (!(o instanceof Vertex v)) {
+      return false;
+    }
+    if (v.position.isNaN()) {
+      if (!this.position.isNaN()) {
         return false;
       }
+    } else {
+      if (!v.position.equals(this.position)) {
+        return false;
+      }
+    }
+    if (v.normal.isNaN()) {
+      if (!this.normal.isNaN()) {
+        return false;
+      }
+    } else {
+      if (!v.normal.equals(this.normal)) {
+        return false;
+      }
+    }
+    if (v.diffuseColor.isNaN()) {
+      if (!this.diffuseColor.isNaN()) {
+        return false;
+      }
+    } else {
+      if (!v.diffuseColor.equals(diffuseColor)) {
+        return false;
+      }
+    }
+    if (v.specularHighlightColor.isNaN()) {
+      if (!this.specularHighlightColor.isNaN()) {
+        return false;
+      }
+    } else {
+      if (!v.specularHighlightColor.equals(this.specularHighlightColor)) {
+        return false;
+      }
+    }
+    if (v.textureCoordinate0.isNaN()) {
+      return this.textureCoordinate0.isNaN();
+    } else {
+      return v.textureCoordinate0.equals(this.textureCoordinate0);
     }
   }
 
@@ -241,12 +223,12 @@ public final class Vertex implements BinaryEncodableAndDecodable {
     return format;
   }
 
-  public void transform(AbstractMatrix4x4 m) {
-    if (position.isNaN() == false) {
-      m.transform(position);
+  public void transform(Matrix4x4 m) {
+    if (!position.isNaN()) {
+      position = m.transform(position);
     }
-    if (normal.isNaN() == false) {
-      m.transform(normal);
+    if (!normal.isNaN()) {
+      normal = m.transform(normal);
     }
   }
 

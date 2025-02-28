@@ -143,12 +143,12 @@ public class VFB {
     if (vertices != null) {
       store(bos, vertices.length);
       for (Vertex vertice : vertices) {
-        store(bos, (float) vertice.position.x);
-        store(bos, (float) vertice.position.y);
-        store(bos, (float) vertice.position.z);
-        store(bos, vertice.normal.x);
-        store(bos, vertice.normal.y);
-        store(bos, vertice.normal.z);
+        store(bos, (float) vertice.position.x());
+        store(bos, (float) vertice.position.y());
+        store(bos, (float) vertice.position.z());
+        store(bos, vertice.normal.x());
+        store(bos, vertice.normal.y());
+        store(bos, vertice.normal.z());
         store(bos, vertice.textureCoordinate0.u);
         store(bos, vertice.textureCoordinate0.v);
       }

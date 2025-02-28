@@ -43,16 +43,16 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisRotation;
-import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.Orientation;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Tuple3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import org.alice.interact.debug.DebugSphere;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisRotation;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.Orientation;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -60,18 +60,9 @@ import org.alice.math.immutable.AngleInRadians;
 public abstract class AbstractTransformable extends Composite {
   protected abstract Composite getVehicle();
 
-  protected abstract AffineMatrix4x4 accessLocalTransformation();
-
   protected abstract void touchLocalTransformation(AffineMatrix4x4 m);
 
-  public AffineMatrix4x4 getLocalTransformation(AffineMatrix4x4 rv) {
-    rv.set(this.accessLocalTransformation());
-    return rv;
-  }
-
-  public final AffineMatrix4x4 getLocalTransformation() {
-    return getLocalTransformation(AffineMatrix4x4.createNaN());
-  }
+  public abstract AffineMatrix4x4 getLocalTransformation();
 
   protected void setLocalTransformation(AffineMatrix4x4 transformation, TransformationAffect affect) {
     if (transformation == null) {
@@ -82,9 +73,8 @@ public abstract class AbstractTransformable extends Composite {
     }
 
     assert affect != null;
-    AffineMatrix4x4 m = this.accessLocalTransformation();
-    affect.set(m, transformation);
-    this.touchLocalTransformation(m);
+    AffineMatrix4x4 m = getLocalTransformation();
+    this.touchLocalTransformation(affect.set(m, transformation));
   }
 
   public void notifyTransformationListeners() {
@@ -97,39 +87,30 @@ public abstract class AbstractTransformable extends Composite {
 
   // todo: cache this information
   @Override
-  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+  public AffineMatrix4x4 getAbsoluteTransformation() {
     Composite vehicle = getVehicle();
     if ((vehicle == null) || vehicle.isSceneOf(this)) {
-      rv = getLocalTransformation(rv);
-    } else {
-      rv = vehicle.getAbsoluteTransformation(rv);
-      rv.setToMultiplication(rv, this.accessLocalTransformation());
+      return getLocalTransformation();
     }
-    return rv;
+    return vehicle.getAbsoluteTransformation().times(this.getLocalTransformation());
   }
 
   // todo: cache this information
   @Override
-  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
-    rv = getAbsoluteTransformation(rv);
-    rv.invert();
-    return rv;
+  public AffineMatrix4x4 getInverseAbsoluteTransformation() {
+    return getAbsoluteTransformation().invert();
   }
 
   @Override
-  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame asSeenBy) {
+  public AffineMatrix4x4 getTransformation(ReferenceFrame asSeenBy) {
     if (asSeenBy.isVehicleOf(this)) {
-      rv = getLocalTransformation(rv);
+      return getLocalTransformation();
     } else if (asSeenBy.isSceneOf(this)) {
-      rv = getAbsoluteTransformation(rv);
+      return getAbsoluteTransformation();
     } else if (asSeenBy.isLocalOf(this)) {
-      rv.setIdentity();
-    } else {
-      asSeenBy.getInverseAbsoluteTransformation(rv);
-      rv.normalizeOrientation();
-      rv.multiply(getAbsoluteTransformation());
+      return AffineMatrix4x4.IDENTITY;
     }
-    return rv;
+    return asSeenBy.getInverseAbsoluteTransformation().normalizeOrientation().times(getAbsoluteTransformation());
   }
 
   public void setTransformation(AffineMatrix4x4 transformation, ReferenceFrame asSeenBy, TransformationAffect affect) {
@@ -143,14 +124,13 @@ public abstract class AbstractTransformable extends Composite {
       Composite vehicle = getVehicle();
       //todo: optimize
       AffineMatrix4x4 m = vehicle == null
-              ? new AffineMatrix4x4()
-              : new AffineMatrix4x4(vehicle.getInverseAbsoluteTransformation());
+              ? AffineMatrix4x4.IDENTITY
+              : vehicle.getInverseAbsoluteTransformation();
       if (!asSeenBy.isSceneOf(this)) {
         final AffineMatrix4x4 seenBy = asSeenBy.getAbsoluteTransformation();
-        seenBy.orientation.normalizeColumns();
-        m.multiply(seenBy);
+        m = m.times(seenBy.normalizeOnlyOrientation());
       }
-      m.multiply(transformation);
+      m = m.times(transformation);
 
       setLocalTransformation(m, affect);
       //return LinearAlgebra.multiply( transformation, LinearAlgebra.multiply( asSeenBy.getAbsoluteTransformation(), vehicleInverse ) );
@@ -176,28 +156,28 @@ public abstract class AbstractTransformable extends Composite {
   }
 
   public void setTranslationOnly(Tuple3 t, ReferenceFrame asSeenBy) {
-    setTranslationOnly(t.x, t.y, t.z, asSeenBy);
+    setTranslationOnly(t.x(), t.y(), t.z(), asSeenBy);
     notifyTransformationListeners();
   }
 
   public void setAxesOnly(Orientation orientation, ReferenceFrame asSeenBy) {
-    setTransformation(AffineMatrix4x4.createOrientation(orientation), asSeenBy, TransformationAffect.AFFECT_ORIENTAION_ONLY);
+    setTransformation(new AffineMatrix4x4(orientation.asMatrix3x3(), Vector3.ZERO), asSeenBy, TransformationAffect.AFFECT_ORIENTAION_ONLY);
   }
 
   public void setAxesOnlyToPointAt(Component target) {
     AffineMatrix4x4 mSelf = getAbsoluteTransformation();
     AffineMatrix4x4 mTarget = target.getAbsoluteTransformation();
 
-    Vector3 forward = Vector3.createSubtraction(mTarget.translation, mSelf.translation);
+    Vector3 forward = mTarget.translation().minus(mSelf.translation());
 
-    if (!(forward.calculateMagnitudeSquared() == 0)) {
-      setAxesOnly(new ForwardAndUpGuide(forward, null).createOrthogonalMatrix3x3(), AsSeenBy.SCENE);
+    if (forward.magnitudeSquared() != 0) {
+      setAxesOnly(new ForwardAndUpGuide(forward, null).asMatrix3x3(), AsSeenBy.SCENE);
     }
   }
 
   public void setAxesOnlyToStandUp(ReferenceFrame asSeenBy) {
     OrthogonalMatrix3x3 axes = getAxes(asSeenBy);
-    setAxesOnly(OrthogonalMatrix3x3.createFromStandUp(axes), asSeenBy);
+    setAxesOnly(axes.asStandUp(), asSeenBy);
   }
 
   public void setAxesOnlyToStandUp() {
@@ -208,19 +188,13 @@ public abstract class AbstractTransformable extends Composite {
   private void applyTransformation(AffineMatrix4x4 transformation, ReferenceFrame asSeenBy, TransformationAffect affect) {
     //todo: handle affect
     if (asSeenBy.isLocalOf(this)) {
-      AffineMatrix4x4 m = getLocalTransformation();
-      m.setToMultiplication(m, transformation);
-      setLocalTransformation(m);
+      setLocalTransformation(getLocalTransformation().times(transformation));
     } else if (asSeenBy.isVehicleOf(this)) {
-      AffineMatrix4x4 m = getLocalTransformation();
-      m.setToMultiplication(transformation, m);
-      setLocalTransformation(m);
+      setLocalTransformation(transformation.times(getLocalTransformation()));
       //todo?
       //    } else if( asSeenBy.isSceneOf( this ) ) {
     } else {
-      AffineMatrix4x4 m = getTransformation(asSeenBy);
-      m.setToMultiplication(transformation, m);
-      setTransformation(m, asSeenBy);
+      setTransformation(transformation.times(getTransformation(asSeenBy)), asSeenBy);
     }
   }
 
@@ -233,7 +207,7 @@ public abstract class AbstractTransformable extends Composite {
   }
 
   public void applyTranslation(Tuple3 t, ReferenceFrame asSeenBy) {
-    applyTranslation(t.x, t.y, t.z, asSeenBy);
+    applyTranslation(t.x(), t.y(), t.z(), asSeenBy);
   }
 
   public void applyTranslation(double x, double y, double z) {
@@ -241,12 +215,12 @@ public abstract class AbstractTransformable extends Composite {
   }
 
   public void applyTranslation(Tuple3 t) {
-    applyTranslation(t.x, t.y, t.z);
+    applyTranslation(t.x(), t.y(), t.z());
   }
 
   @Deprecated
   public void applyRotationAboutXAxisInRadians(double angleInRadians, ReferenceFrame asSeenBy) {
-    applyTransformation(AffineMatrix4x4.createRotationAboutXAxis(new AngleInRadians(angleInRadians)), asSeenBy);
+    applyTransformation(AffineMatrix4x4.createOrientation(AxisRotation.createXAxisRotation(new AngleInRadians(angleInRadians))), asSeenBy);
   }
 
   @Deprecated
@@ -256,7 +230,7 @@ public abstract class AbstractTransformable extends Composite {
 
   @Deprecated
   public void applyRotationAboutYAxisInRadians(double angleInRadians, ReferenceFrame asSeenBy) {
-    applyTransformation(AffineMatrix4x4.createRotationAboutYAxis(new AngleInRadians(angleInRadians)), asSeenBy);
+    applyTransformation(AffineMatrix4x4.createOrientation(AxisRotation.createYAxisRotation(new AngleInRadians(angleInRadians))), asSeenBy);
   }
 
   @Deprecated
@@ -266,31 +240,12 @@ public abstract class AbstractTransformable extends Composite {
 
   @Deprecated
   public void applyRotationAboutZAxisInRadians(double angleInRadians, ReferenceFrame asSeenBy) {
-    applyTransformation(AffineMatrix4x4.createRotationAboutZAxis(new AngleInRadians(angleInRadians)), asSeenBy);
-  }
-
-  @Deprecated
-  public void applyRotationAboutZAxisInRadians(double angleInRadians) {
-    applyRotationAboutZAxisInRadians(angleInRadians, AsSeenBy.SELF);
+    applyTransformation(AffineMatrix4x4.createOrientation(AxisRotation.createZAxisRotation(new AngleInRadians(angleInRadians))), asSeenBy);
   }
 
   @Deprecated
   public void applyRotationAboutArbitraryAxisInRadians(Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy) {
-    if (axis.isPositiveXAxis()) {
-      applyRotationAboutXAxisInRadians(angleInRadians, asSeenBy);
-    } else if (axis.isNegativeXAxis()) {
-      applyRotationAboutXAxisInRadians(-angleInRadians, asSeenBy);
-    } else if (axis.isPositiveYAxis()) {
-      applyRotationAboutYAxisInRadians(angleInRadians, asSeenBy);
-    } else if (axis.isNegativeYAxis()) {
-      applyRotationAboutYAxisInRadians(-angleInRadians, asSeenBy);
-    } else if (axis.isPositiveZAxis()) {
-      applyRotationAboutZAxisInRadians(angleInRadians, asSeenBy);
-    } else if (axis.isNegativeZAxis()) {
-      applyRotationAboutZAxisInRadians(-angleInRadians, asSeenBy);
-    } else {
       applyTransformation(AffineMatrix4x4.createOrientation(new AxisRotation(axis, new AngleInRadians(angleInRadians))), asSeenBy);
-    }
   }
 
   @Deprecated
@@ -335,6 +290,6 @@ public abstract class AbstractTransformable extends Composite {
   public void addBreadcrumbToScene() {
     DebugSphere debugSphere = new DebugSphere();
     getRoot().addComponent(debugSphere);
-    debugSphere.setLocalTranslation(getAbsoluteTransformation().translation);
+    debugSphere.setLocalTranslation(getAbsoluteTransformation().translation());
   }
 }

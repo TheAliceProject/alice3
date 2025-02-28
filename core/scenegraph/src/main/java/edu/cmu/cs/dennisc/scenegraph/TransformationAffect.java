@@ -43,14 +43,24 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 
 public enum TransformationAffect {
-  AFFECT_TRANSLATION_X_ONLY(false, true, false, false), AFFECT_TRANSLATION_Y_ONLY(false, false, true, false), AFFECT_TRANSLATION_Z_ONLY(false, false, false, true), AFFECT_TRANSLATION_XY_ONLY(false, true, true, false), AFFECT_TRANSLATION_XZ_ONLY(false, true, false, true), AFFECT_TRANSLATION_YZ_ONLY(false, false, true, true), AFFECT_TRANSLATION_ONLY(false, true, true, true), AFFECT_ORIENTAION_ONLY(true, false, false, false), AFFECT_ALL(true, true, true, true);
+  AFFECT_TRANSLATION_X_ONLY(false, true, false, false),
+  AFFECT_TRANSLATION_Y_ONLY(false, false, true, false),
+  AFFECT_TRANSLATION_Z_ONLY(false, false, false, true),
+  AFFECT_TRANSLATION_XY_ONLY(false, true, true, false),
+  AFFECT_TRANSLATION_XZ_ONLY(false, true, false, true),
+  AFFECT_TRANSLATION_YZ_ONLY(false, false, true, true),
+  AFFECT_TRANSLATION_ONLY(false, true, true, true),
+  AFFECT_ORIENTAION_ONLY(true, false, false, false),
+  AFFECT_ALL(true, true, true, true);
+
   private boolean m_isAffectOrientationDesired;
   private boolean m_isAffectTranslationXDesired;
   private boolean m_isAffectTranslationYDesired;
@@ -63,19 +73,13 @@ public enum TransformationAffect {
     m_isAffectTranslationZDesired = isAffectTranslationZDesired;
   }
 
-  public void set(AffineMatrix4x4 dst, AffineMatrix4x4 src) {
-    if (m_isAffectOrientationDesired) {
-      dst.orientation.setValue(src.orientation);
-    }
-    if (m_isAffectTranslationXDesired) {
-      dst.translation.x = src.translation.x;
-    }
-    if (m_isAffectTranslationYDesired) {
-      dst.translation.y = src.translation.y;
-    }
-    if (m_isAffectTranslationZDesired) {
-      dst.translation.z = src.translation.z;
-    }
+  public AffineMatrix4x4 set(AffineMatrix4x4 old, AffineMatrix4x4 change) {
+    return new AffineMatrix4x4(
+        m_isAffectOrientationDesired ? change.orientation() : old.orientation(),
+        new Vector3(
+            m_isAffectTranslationXDesired ? change.translation().x() : old.translation().x(),
+            m_isAffectTranslationYDesired ? change.translation().y() : old.translation().y(),
+            m_isAffectTranslationZDesired ? change.translation().z() : old.translation().z()));
   }
 
   public static TransformationAffect getTranslationAffect(double x, double y, double z) {

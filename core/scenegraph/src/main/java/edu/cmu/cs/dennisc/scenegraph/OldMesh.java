@@ -43,12 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -60,24 +61,21 @@ public class OldMesh extends Geometry {
   }
 
   @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public AffineMatrix4x4 getPlane() {
     double[] xyzs = this.xyzs.getValue();
     float[] ijks = this.ijks.getValue();
     assert xyzs.length >= 6;
     assert ijks.length >= 3;
 
-    forward.set(ijks[0], ijks[1], ijks[2]);
-    forward.normalize();
-    forward.negate();
+    Vector3 forward = (new Vector3(ijks[0], ijks[1], ijks[2])).normalized().negate();
+    Vector3 translation = new Vector3(xyzs[0], xyzs[1], xyzs[2]);
+    Vector3 upGuide = (new Vector3(translation.x() - xyzs[3], translation.y() - xyzs[4], translation.z() - xyzs[5])).normalized();
 
-    translation.set(xyzs[0], xyzs[1], xyzs[2]);
-    upGuide.set(translation.x - xyzs[3], translation.y - xyzs[4], translation.z - xyzs[5]);
-    upGuide.normalize();
-
+    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation);
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     //todo
   }
 

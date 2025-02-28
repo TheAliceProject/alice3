@@ -46,9 +46,6 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AbstractMatrix3x3;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -59,6 +56,10 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Point3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,14 +134,15 @@ public class ModelPart implements BinaryEncodableAndDecodable {
         }
         rv.geometry = visual.getGeometry();
         if (rv.geometry != null) {
-          AbstractMatrix3x3 scale = visual.scale.getValue().mutable();
+          Matrix3x3 scale = visual.scale.getValue();
           if (rv.geometry instanceof IndexedTriangleArray sgITA) {
             if (!scale.isIdentity()) {
               //              System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
               for (Vertex v : sgITA.vertices.getValue()) {
-                v.position.x *= scale.right.x;
-                v.position.y *= scale.up.y;
-                v.position.z *= scale.backward.z;
+                v.position = new Point3(
+                    v.position.x() * scale.getRight().x(),
+                    v.position.y() * scale.getUp().y(),
+                    v.position.z() * scale.getBackward().z());
               }
             }
           } else {
@@ -167,7 +169,7 @@ public class ModelPart implements BinaryEncodableAndDecodable {
     assert this.geometry != null;
     visual.setGeometry(this.geometry);
     rv.addComponent(visual);
-    rv.localTransformation.setValue(new AffineMatrix4x4(this.localTransformation));
+    rv.localTransformation.setValue(this.localTransformation);
     for (ModelPart child : this.children) {
       rv.addComponent(child.build());
     }

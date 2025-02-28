@@ -43,113 +43,66 @@
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
 import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 
 import java.nio.DoubleBuffer;
-import java.util.Vector;
 
-/**
- * @author Dennis Cosgrove
- */
 public class BoundUtilities {
   private BoundUtilities() {
     throw new AssertionError();
   }
 
-  //TODO: remove duplicate code, if possible
-
   public static AxisAlignedBox getBoundingBox(Vertex[] va) {
-    Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
-    Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+    DynamicLimits limits = new DynamicLimits();
     for (Vertex v : va) {
-      min.x = Math.min(min.x, v.position.x);
-      min.y = Math.min(min.y, v.position.y);
-      min.z = Math.min(min.z, v.position.z);
-      max.x = Math.max(max.x, v.position.x);
-      max.y = Math.max(max.y, v.position.y);
-      max.z = Math.max(max.z, v.position.z);
+      limits.check(v.position.x(), v.position.y(), v.position.z());
     }
-    if (min.x == +Double.MAX_VALUE) {
-      return AxisAlignedBox.NaN;
-    }
-    return new AxisAlignedBox(min.immutable(), max.immutable());
+    return limits.getBoundingBox();
   }
 
   public static AxisAlignedBox getBoundingBox(Iterable<Point3> pi) {
-    Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
-    Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+    DynamicLimits limits = new DynamicLimits();
     for (Point3 p : pi) {
-      min.x = Math.min(min.x, p.x);
-      min.y = Math.min(min.y, p.y);
-      min.z = Math.min(min.z, p.z);
-      max.x = Math.max(max.x, p.x);
-      max.y = Math.max(max.y, p.y);
-      max.z = Math.max(max.z, p.z);
+      limits.check(p.x(), p.y(), p.z());
     }
-    if (min.x == +Double.MAX_VALUE) {
-      return AxisAlignedBox.NaN;
-    }
-    return new AxisAlignedBox(min.immutable(), max.immutable());
-  }
-
-  public static AxisAlignedBox getBoundingBox(Point3[] pa) {
-    Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
-    Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-    for (Point3 p : pa) {
-      min.x = Math.min(min.x, p.x);
-      min.y = Math.min(min.y, p.y);
-      min.z = Math.min(min.z, p.z);
-      max.x = Math.max(max.x, p.x);
-      max.y = Math.max(max.y, p.y);
-      max.z = Math.max(max.z, p.z);
-    }
-    if (min.x == +Double.MAX_VALUE) {
-      return AxisAlignedBox.NaN;
-    }
-    return new AxisAlignedBox(min.immutable(), max.immutable());
+    return limits.getBoundingBox();
   }
 
   public static AxisAlignedBox getBoundingBox(double[] xyzs) {
-    Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
-    Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-    final int N = xyzs.length;
-    for (int i = 0; i < N; i += 3) {
-      double x = xyzs[i + 0];
-      double y = xyzs[i + 1];
-      double z = xyzs[i + 2];
-      min.x = Math.min(min.x, x);
-      min.y = Math.min(min.y, y);
-      min.z = Math.min(min.z, z);
-      max.x = Math.max(max.x, x);
-      max.y = Math.max(max.y, y);
-      max.z = Math.max(max.z, z);
+    DynamicLimits limits = new DynamicLimits();
+    for (int i = 0; i < xyzs.length; i += 3) {
+      limits.check(xyzs[i], xyzs[i + 1], xyzs[i + 2]);
     }
-    if (min.x == +Double.MAX_VALUE) {
-      return AxisAlignedBox.NaN;
-    }
-    return new AxisAlignedBox(min.immutable(), max.immutable());
+    return limits.getBoundingBox();
   }
 
   public static AxisAlignedBox getBoundingBox(DoubleBuffer xyzs) {
-    Point3 min = new Point3(+Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE);
-    Point3 max = new Point3(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-    final int N = xyzs.limit();
-    for (int i = 0; i < N; i += 3) {
-      double x = xyzs.get(i + 0);
-      double y = xyzs.get(i + 1);
-      double z = xyzs.get(i + 2);
-      min.x = Math.min(min.x, x);
-      min.y = Math.min(min.y, y);
-      min.z = Math.min(min.z, z);
-      max.x = Math.max(max.x, x);
-      max.y = Math.max(max.y, y);
-      max.z = Math.max(max.z, z);
+    DynamicLimits limits = new DynamicLimits();
+    for (int i = 0; i < xyzs.limit(); i += 3) {
+      limits.check(xyzs.get(i), xyzs.get(i + 1), xyzs.get(i + 2));
     }
-    if (min.x == +Double.MAX_VALUE) {
-      return AxisAlignedBox.NaN;
-    }
-    return new AxisAlignedBox(min.immutable(), max.immutable());
+    return limits.getBoundingBox();
   }
+
+  private static class DynamicLimits {
+    double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, minZ = Double.MAX_VALUE;
+    double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE, maxZ = -Double.MAX_VALUE;
+
+    void check(double x, double y, double z) {
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+      minZ = Math.min(minZ, z);
+      maxZ = Math.max(maxZ, z);
+    }
+
+    public AxisAlignedBox getBoundingBox() {
+      if (minX == +Double.MAX_VALUE) {
+        return AxisAlignedBox.NaN;
+      }
+      return new AxisAlignedBox(new Point3(minX, minY, minZ), new Point3(maxX, maxY, maxZ));
+    }
   }
 }

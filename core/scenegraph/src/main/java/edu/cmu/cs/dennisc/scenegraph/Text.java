@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.scenegraph;
 import edu.cmu.cs.dennisc.glyph.GlyphVector;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
 
@@ -84,62 +84,50 @@ public class Text extends Geometry {
   //todo: cache result?
   public Vector3 getAlignmentOffset() {
     updateUnalignedBoundingBoxIfNecessary();
-    Vector3 alignmentOffset = new Vector3();
+    return new Vector3(getXOffset(), getYOffset(), getZOffset());
+  }
 
-    LeftToRightAlignment leftToRightAlignment = this.leftToRightAlignment.getValue();
-    TopToBottomAlignment topToBottomAlignment = this.topToBottomAlignment.getValue();
-    FrontToBackAlignment frontToBackAlignment = this.frontToBackAlignment.getValue();
+  private double getXOffset() {
+    return switch (this.leftToRightAlignment.getValue()) {
+      case ALIGN_CENTER_OF_LEFT_AND_RIGHT ->
+          -(this.unalignedBoundingBox.getXMinimum() + (this.unalignedBoundingBox.getWidth() / 2));
+      case ALIGN_LEFT -> -this.unalignedBoundingBox.getXMinimum();
+      case ALIGN_RIGHT -> -this.unalignedBoundingBox.getXMaximum();
+    };
+  }
 
-    if (leftToRightAlignment == LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT) {
-      alignmentOffset.x = -(this.unalignedBoundingBox.getXMinimum() + (this.unalignedBoundingBox.getWidth() / 2));
-    } else if (leftToRightAlignment == LeftToRightAlignment.ALIGN_LEFT) {
-      alignmentOffset.x = -this.unalignedBoundingBox.getXMinimum();
-    } else if (leftToRightAlignment == LeftToRightAlignment.ALIGN_RIGHT) {
-      alignmentOffset.x = -this.unalignedBoundingBox.getXMaximum();
-    } else {
-      throw new RuntimeException();
-    }
+  private double getYOffset() {
+    return switch (this.topToBottomAlignment.getValue()) {
+      case ALIGN_CENTER_OF_TOP_AND_BOTTOM ->
+          -(this.unalignedBoundingBox.getYMinimum() + (this.unalignedBoundingBox.getHeight() / 2));
+      case ALIGN_TOP -> -this.unalignedBoundingBox.getYMaximum();
+      case ALIGN_BOTTOM -> -this.unalignedBoundingBox.getYMinimum();
+      case ALIGN_BASELINE -> 0;
+      case ALIGN_CENTER_OF_TOP_AND_BASELINE -> -this.unalignedBoundingBox.getYMaximum() / 2;
+    };
+  }
 
-    if (topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BOTTOM) {
-      alignmentOffset.y = -(this.unalignedBoundingBox.getYMinimum() + (this.unalignedBoundingBox.getHeight() / 2));
-    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_TOP) {
-      alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum();
-    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_BOTTOM) {
-      alignmentOffset.y = -this.unalignedBoundingBox.getYMinimum();
-    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_BASELINE) {
-      alignmentOffset.y = 0;
-    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BASELINE) {
-      alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum() / 2;
-    } else {
-      throw new RuntimeException();
-    }
-
-    if (frontToBackAlignment == FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK) {
-      alignmentOffset.z = -depth.getValue() / 2;
-    } else if (frontToBackAlignment == FrontToBackAlignment.ALIGN_FRONT) {
-      alignmentOffset.z = 0;
-    } else if (frontToBackAlignment == FrontToBackAlignment.ALIGN_BACK) {
-      alignmentOffset.z = -depth.getValue();
-    } else {
-      throw new RuntimeException();
-    }
-
-    return alignmentOffset;
+  private double getZOffset() {
+    return switch (this.frontToBackAlignment.getValue()) {
+      case ALIGN_CENTER_OF_FRONT_AND_BACK -> -depth.getValue() / 2;
+      case ALIGN_FRONT -> 0;
+      case ALIGN_BACK -> -depth.getValue();
+    };
   }
 
   @Override
   protected AxisAlignedBox updateBoundingBox() {
     updateUnalignedBoundingBoxIfNecessary();
-    return unalignedBoundingBox.translate(getAlignmentOffset().immutable());
+    return unalignedBoundingBox.translate(getAlignmentOffset());
   }
 
   @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public AffineMatrix4x4 getPlane() {
     throw new RuntimeException("TODO");
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     throw new RuntimeException("TODO");
   }
 

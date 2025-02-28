@@ -44,11 +44,11 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -62,27 +62,18 @@ public class Cylinder extends Shape {
     POSITIVE_X(+1, 0, 0), POSITIVE_Y(0, +1, 0), POSITIVE_Z(0, 0, +1), NEGATIVE_X(-1, 0, 0), NEGATIVE_Y(0, -1, 0), NEGATIVE_Z(0, 0, -1);
 
     BottomToTopAxis(double x, double y, double z) {
-      this.axis.set(x, y, z);
+      axis = new Vector3(x, y, z);
     }
 
     public Vector3 accessVector() {
       return this.axis;
     }
 
-    public Vector3 getVector(Vector3 rv) {
-      rv.set(this.axis);
-      return rv;
-    }
-
     public Vector3 getVector() {
-      return getVector(new Vector3());
+      return axis;
     }
 
-    public boolean isPositive() {
-      return (this.axis.x > 0) || (this.axis.y > 0) || (this.axis.z > 0);
-    }
-
-    private final Vector3 axis = new Vector3();
+    private final Vector3 axis;
   }
 
   public double getActualTopRadius() {
@@ -140,54 +131,23 @@ public class Cylinder extends Shape {
     }
   }
 
-  public Point3 getCenterOfTop(Point3 rv) {
-    double top = getTop();
-    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
-      rv.set(top, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
-      rv.set(0, top, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
-      rv.set(0, 0, top);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
-      rv.set(-top, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
-      rv.set(0, -top, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
-      rv.set(0, 0, -top);
-    } else {
-      throw new RuntimeException();
-    }
-    return rv;
-  }
-
   public Point3 getCenterOfTop() {
-    return getCenterOfTop(new Point3());
-  }
-
-  public Point3 getCenterOfBottom(Point3 rv) {
-    double bottom = getBottom();
-    BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
-    if (bottomToTopAxis == BottomToTopAxis.POSITIVE_X) {
-      rv.set(bottom, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Y) {
-      rv.set(0, bottom, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.POSITIVE_Z) {
-      rv.set(0, 0, bottom);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_X) {
-      rv.set(-bottom, 0, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y) {
-      rv.set(0, -bottom, 0);
-    } else if (bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z) {
-      rv.set(0, 0, -bottom);
-    } else {
-      throw new RuntimeException();
-    }
-    return rv;
+    return getOffsetPoint(getTop());
   }
 
   public Point3 getCenterOfBottom() {
-    return getCenterOfBottom(new Point3());
+    return getOffsetPoint(getBottom());
+  }
+
+  private Point3 getOffsetPoint(double offset) {
+    return switch (bottomToTopAxis.getValue()) {
+      case POSITIVE_X -> new Point3(offset, 0, 0);
+      case POSITIVE_Y -> new Point3(0, offset, 0);
+      case POSITIVE_Z -> new Point3(0, 0, offset);
+      case NEGATIVE_X -> new Point3(-offset, 0, 0);
+      case NEGATIVE_Y -> new Point3(0, -offset, 0);
+      case NEGATIVE_Z -> new Point3(0, 0, -offset);
+    };
   }
 
   @Override

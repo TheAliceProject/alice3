@@ -42,10 +42,10 @@
  */
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author dculyba
@@ -68,7 +68,7 @@ public class TransformableVisual extends Visual {
   }
 
   public void setTransform(Transformable transform) {
-    this.sgTransformable.setLocalTransformation(transform.accessLocalTransformation());
+    this.sgTransformable.setLocalTransformation(transform.getLocalTransformation());
   }
 
   public Transformable getTransformable() {
@@ -83,13 +83,13 @@ public class TransformableVisual extends Visual {
       return null;
     }
 
-    Point3 maximum = transformedRV.maximum().mutable();
-    this.sgTransformable.accessLocalTransformation().transform(maximum);
+    Point3 maximum = transformedRV.maximum();
+    maximum = sgTransformable.getLocalTransformation().transform(maximum);
 
-    Point3 minimum = transformedRV.minimum().mutable();
-    this.sgTransformable.accessLocalTransformation().transform(minimum);
+    Point3 minimum = transformedRV.minimum();
+    minimum = sgTransformable.getLocalTransformation().transform(minimum);
 
-    return new AxisAlignedBox(minimum.immutable(), maximum.immutable());
+    return new AxisAlignedBox(minimum, maximum);
   }
 
   private final Transformable sgTransformable = new Transformable();
@@ -97,7 +97,7 @@ public class TransformableVisual extends Visual {
   public void setTranslation(Vector3 translation) {
     // Update value
     AffineMatrix4x4 currentTransform = sgTransformable.localTransformation.getValue();
-    currentTransform.translation.set(translation);
+    sgTransformable.localTransformation.setValue(new AffineMatrix4x4(currentTransform.orientation(), translation));
 
     // Trigger property event
     sgTransformable.localTransformation.setValue(currentTransform);
