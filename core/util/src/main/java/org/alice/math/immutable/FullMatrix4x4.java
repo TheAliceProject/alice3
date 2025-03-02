@@ -1,6 +1,8 @@
 package org.alice.math.immutable;
 
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 // The columns of a 4x4 matrix
 public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4 translation) implements Matrix4x4 {
   public static FullMatrix4x4 ZERO = new FullMatrix4x4(Vector4.ZERO, Vector4.ZERO, Vector4.ZERO, Vector4.ZERO);
@@ -187,5 +189,13 @@ public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4
   @Deprecated(forRemoval = true)
   public edu.cmu.cs.dennisc.math.Matrix4x4 mutable() {
     return new edu.cmu.cs.dennisc.math.Matrix4x4(asColumnMajorArray16());
+  }
+
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    right.encode(binaryEncoder);
+    up.encode(binaryEncoder);
+    backward.encode(binaryEncoder);
+    translation.encode(binaryEncoder);
   }
 }

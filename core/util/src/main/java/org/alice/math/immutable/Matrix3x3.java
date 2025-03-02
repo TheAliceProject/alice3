@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
   OrthogonalMatrix3x3 IDENTITY = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
   FullMatrix3x3 ZERO = new FullMatrix3x3(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO);
+
   //<editor-fold desc="Accessors">
   Vector3 getRight();
   Vector3 getUp();
@@ -23,6 +24,12 @@ public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
   //</editor-fold>
 
   //<editor-fold desc="Static Constructors">
+  static Matrix3x3 create(double[] values) {
+    return create(values[0], values[1], values[2],
+                  values[3], values[4], values[5],
+                  values[6], values[7], values[8]);
+  }
+
   static Matrix3x3 create(double e11, double e12, double e13,
                           double e21, double e22, double e23,
                           double e31, double e32, double e33) {
@@ -34,8 +41,8 @@ public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
   }
 
   static Matrix3x3 create(Vector3 right, Vector3 up, Vector3 backward) {
-    if (right.isNormalized() && up.isNormalized() && backward.isNormalized()
-        && right.isOrthogonalTo(up) && backward.isOrthogonalTo(right) && up.isOrthogonalTo(backward)) {
+    // Create Orthogonal Matrix if these are mutually orthogonal. It is not required or forced to be orthonormal.
+    if (right.isOrthogonalTo(up) && backward.isOrthogonalTo(right) && up.isOrthogonalTo(backward)) {
       return new OrthogonalMatrix3x3(right, up, backward);
     }
     return new FullMatrix3x3(right, up, backward);
@@ -103,6 +110,9 @@ public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
   }
 
   default Matrix3x3 scale(double d) {
+    if (d == 1.0) {
+      return this;
+    }
     return create(getRight().times(d), getUp().times(d), getBackward().times(d));
   }
 

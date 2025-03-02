@@ -1,6 +1,21 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4 {
+
+  public static AffineMatrix4x4 createTranslation(double x, double y, double z) {
+    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Vector3(x, y, z));
+  }
+
+  public static AffineMatrix4x4 createOrientation(Orientation orientation) {
+    return new AffineMatrix4x4(orientation.asMatrix3x3(), Vector3.ZERO);
+  }
+
+  public static AffineMatrix4x4 createWithDiagonal(Vector3 diagonal) {
+    return new AffineMatrix4x4(diagonal.asScaleMatrix(), Vector3.ZERO);
+  }
 
   @Override
   public boolean isAffine() {
@@ -24,6 +39,26 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
           && translation.isWithinEpsilonOf(affineMatrix.translation, epsilon);
     }
     return b.isWithinReasonableEpsilonOf(this);
+  }
+
+  public AffineMatrix4x4 invert() {
+    Matrix4x4 invert = Matrix4x4.super.invert();
+    if (invert instanceof AffineMatrix4x4) {
+      return ((AffineMatrix4x4) invert);
+    }
+    throw new RuntimeException("AffineMatrix4x4 " + this + " invert() returned non affine matrix " + invert);
+  }
+
+  public AffineMatrix4x4 times(AffineMatrix4x4 b) {
+    Matrix4x4 product = Matrix4x4.super.times(b);
+    if (product instanceof AffineMatrix4x4) {
+      return ((AffineMatrix4x4) product);
+    }
+    throw new RuntimeException("AffineMatrix4x4 " + this + " times() returned non affine matrix " + product);
+  }
+
+  public Matrix4x4 times(FullMatrix4x4 b) {
+   return Matrix4x4.super.times(b);
   }
 
   //<editor-fold desc="Weighted Mesh Support">
@@ -56,6 +91,17 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
             translation.x() * scale.getRight().x(),
             translation.y() * scale.getUp().y(),
             translation.z() * scale.getBackward().z()));
+  }
+
+  public AffineMatrix4x4 scaleTranslation(double scale) {
+    if (scale == 1.0) {
+      return this;
+    }
+    return new AffineMatrix4x4(orientation(),
+        new Vector3(
+            translation.x() * scale,
+            translation.y() * scale,
+            translation.z() * scale));
   }
 
   @Override
@@ -220,13 +266,17 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
 
 
   public static AffineMatrix4x4 createFromRowMajorArray12(double[] rowMajorArray) {
-    assert rowMajorArray.length == 12;
-
+    assert rowMajorArray.length >= 12;
     Vector3 right = new Vector3(rowMajorArray[0], rowMajorArray[4], rowMajorArray[8]);
     Vector3 up = new Vector3(rowMajorArray[1], rowMajorArray[5], rowMajorArray[9]);
     Vector3 back = new Vector3(rowMajorArray[2], rowMajorArray[6], rowMajorArray[10]);
     OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(right, up, back);
     Vector3 translation = new Vector3(rowMajorArray[3], rowMajorArray[7], rowMajorArray[11]);
+    if (rowMajorArray.length == 16) {
+      if (rowMajorArray[12] != 0 || rowMajorArray[13] != 0 || rowMajorArray[14] != 0 || rowMajorArray[15] != 1.0) {
+        Logger.warning("Row major array was not affine");
+      }
+    }
     return new AffineMatrix4x4(orientation, translation);
   }
 
@@ -275,5 +325,39 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
 
   public double[] asRowMajorArray12() {
     return asRowMajorArray12(new double[12]);
+  }
+
+  public AffineMatrix4x4 normalizeOnlyOrientation() {
+    if (orientation.isNormalized()) {
+      return this;
+    }
+    return new AffineMatrix4x4(orientation.normalized(), translation);
+  }
+
+  public AffineMatrix4x4 normalizeOrientation() {
+      if (orientation.isNormalized()) {
+        return this;
+      }
+      double xScale = orientation.right().magnitude();
+      double yScale = orientation.up().magnitude();
+      double zScale = orientation.backward().magnitude();
+
+      Matrix3x3 inverseScale = Matrix3x3.create(
+          1 / xScale, 0, 0,
+          0, 1 / yScale, 0,
+          0, 0, 1 / zScale);
+
+    Matrix3x3 scaledOrientation = orientation.times(inverseScale);
+    if (scaledOrientation.isNormalized() && scaledOrientation instanceof OrthogonalMatrix3x3) {
+      return new AffineMatrix4x4((OrthogonalMatrix3x3) scaledOrientation, inverseScale.transform(translation));
+    }
+
+    throw new UnsupportedOperationException("Cannot normalize orientation");
+  }
+
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    orientation.encode(binaryEncoder);
+    translation.encode(binaryEncoder);
   }
 }

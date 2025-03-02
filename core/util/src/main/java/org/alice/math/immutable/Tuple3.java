@@ -67,4 +67,6 @@ public interface Tuple3 extends BinaryEncodableAndDecodable {
     binaryEncoder.encode(y());
     binaryEncoder.encode(z());
   }
+
+  Vector3 asVector();
 }

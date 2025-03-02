@@ -1,8 +1,9 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
-public interface Matrix4x4 {
+public interface Matrix4x4 extends BinaryEncodableAndDecodable {
   AffineMatrix4x4 IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Vector3.ZERO);
   AffineMatrix4x4 NaN = new AffineMatrix4x4(OrthogonalMatrix3x3.NaN, Vector3.NaN);
 
@@ -20,14 +21,20 @@ public interface Matrix4x4 {
     // Comes in as row major values
     if (e41 == 0 && e42 == 0 && e43 == 0 && e44 == 1.0) {
       // An AffineMatrix always has the same 4th row [0, 0, 0, 1]
-      // It stores the first three rows as a 3x3 orientation matrix and a translation vector
-      Matrix3x3 orientation = Matrix3x3.create(e11, e12, e13, e21, e22, e23, e31, e32, e33);
-      // The orientation matrix must be orthonormal, containing three mutually perpendicular unit vectors
-      if (orientation instanceof OrthogonalMatrix3x3) {
-        return new AffineMatrix4x4(
-            (OrthogonalMatrix3x3) orientation,
-            new Vector3(e14, e24, e34));
+      // It stores the first three rows as a 3x3 orientation matrix and a translation vector.
+      OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(
+          new Vector3(e11, e21, e31),
+          new Vector3(e12, e22, e32),
+          new Vector3(e13, e23, e33));
+      // Ideally, the orientation matrix should be orthonormal, containing three mutually perpendicular unit vectors.
+      // We do not enforce that, but this can make note of those that aren't close enough
+      if (orientation.deviationFromNormal() > .05) {
+        System.out.println("Not quite orthogonal.\n  up    X right: " + orientation.getUp().dotProduct(orientation.getRight()) +
+            "\n  right X  back: " + orientation.getRight().dotProduct(orientation.getBackward()) +
+            "\n  back  X    up: " + orientation.getBackward().dotProduct(orientation.getUp()) +
+            "\n  sum deviation: " + orientation.deviationFromNormal());
       }
+      return new AffineMatrix4x4(orientation, new Vector3(e14, e24, e34));
     }
     // FullMatrix stores a column in each vector
     return new FullMatrix4x4(
@@ -51,13 +58,39 @@ public interface Matrix4x4 {
   }
 
   default Point3 transform(Point3 b) {
+    if (this.isIdentity()) {
+      return b;
+    }
     double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14();
     double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24();
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34();
     return new Point3(x, y, z);
   }
 
+  default Vector3f transform(Vector3f b) {
+    if (this.isIdentity()) {
+      return b;
+    }
+    float x = (float) ((e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14());
+    float y = (float) ((e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24());
+    float z = (float) ((e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34());
+    return new Vector3f(x, y, z);
+  }
+
+  default Vector3 transform(Vector3 b) {
+    if (this.isIdentity()) {
+      return b;
+    }
+    double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14();
+    double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24();
+    double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34();
+    return new Vector3(x, y, z);
+  }
+
   default Vector3 transformByOrientationOnly(Vector3 b) {
+    if (this.isIdentity()) {
+      return b;
+    }
     double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z());
     double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z());
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z());
@@ -65,6 +98,9 @@ public interface Matrix4x4 {
   }
 
   default Vector4 transform(Vector4 b) {
+    if (this.isIdentity()) {
+      return b;
+    }
     double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z() + e14() * b.w());
     double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z() + e24() * b.w());
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z() + e34() * b.w());
@@ -73,6 +109,9 @@ public interface Matrix4x4 {
   }
 
   default Ray transform(Ray ray) {
+    if (this.isIdentity()) {
+      return ray;
+    }
     return new Ray(transform(ray.origin()), transformByOrientationOnly(ray.direction()).normalized());
   }
 
@@ -83,10 +122,12 @@ public interface Matrix4x4 {
   void transformVector3(float[] dest, int offsetDest, float[] src, int offsetSrc);
 
   default Matrix4x4 invert() {
+    if (this.isIdentity()) {
+      return Matrix4x4.IDENTITY;
+    }
     double d = determinant();
     if (d == 0) {
-
-      return AffineMatrix4x4.IDENTITY;
+      return Matrix4x4.IDENTITY;
     }
     double e11 = (((((e23() * e34() * e42()) - (e24() * e33() * e42())) + (e24() * e32() * e43())) - (e22() * e34() * e43()) - (e23() * e32() * e44())) + (e22() * e33() * e44())) / d;
     double e12 = ((((e14() * e33() * e42()) - (e13() * e34() * e42()) - (e14() * e32() * e43())) + (e12() * e34() * e43()) + (e13() * e32() * e44())) - (e12() * e33() * e44())) / d;
@@ -141,6 +182,12 @@ public interface Matrix4x4 {
   Matrix4x4 times(double scale);
 
   default Matrix4x4 times(Matrix4x4 b) {
+    if (this.isIdentity()) {
+      return b;
+    }
+    if (b.isIdentity()) {
+      return this;
+    }
     Vector4 rowX = rowX();
     Vector4 rowY = rowY();
     Vector4 rowZ = rowZ();

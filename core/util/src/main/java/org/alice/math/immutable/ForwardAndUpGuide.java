@@ -38,7 +38,7 @@ public record ForwardAndUpGuide(Vector3 forward, Vector3 upGuide) implements Ori
   }
 
   private Vector3 getSafeUpGuide() {
-    if (!upGuide.isNaN()) {
+    if (upGuide != null && !upGuide.isNaN()) {
       return upGuide.normalized();
     }
     if (forward.x() == 0 && forward.z() == 0) {

@@ -1,8 +1,10 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
-public record Vector4(double x, double y, double z, double w) {
+public record Vector4(double x, double y, double z, double w) implements BinaryEncodableAndDecodable {
 
   public static final Vector4 ZERO = new Vector4(0, 0, 0, 0);
   public static final Vector4 UNIT_X = new Vector4(1.0, 0, 0, 0);
@@ -73,5 +75,19 @@ public record Vector4(double x, double y, double z, double w) {
   public Vector4 normalized() {
     double magnitudeSquared = magnitudeSquared();
     return magnitudeSquared == 1.0 ? this : this.dividedBy(Math.sqrt(magnitudeSquared));
+  }
+
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(x);
+    binaryEncoder.encode(y);
+    binaryEncoder.encode(z);
+    binaryEncoder.encode(w);
+  }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public edu.cmu.cs.dennisc.math.Vector4 mutable() {
+    return new edu.cmu.cs.dennisc.math.Vector4(x, y, z, w);
   }
 }

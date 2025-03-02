@@ -4,7 +4,17 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 import java.io.Serializable;
 
-// Orthogonal3x3Matrix is expected to be orthonormal, meaning its three vectors are mutually perpendicular unit vectors.
+/**
+ * Orthogonal3x3Matrix is generally expected to be orthonormal, meaning its three vectors are mutually perpendicular
+ * unit vectors, but it may not be strictly true. Examples include:
+ * <ul>
+ * <li>Scaling matrices use non-unit vectors to represent scale.</li>
+ * <li>Repeated matrix operations accumulate rounding errors and can violate both the unit length and orthogonality.</li>
+ * </ul>
+ * In cases where the vectors are not unit length, calling normalized() will produce
+ * a corrected version. There is no operation provided to attempt to fix it if the vectors are not orthogonal.
+ *
+ */
 public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
     implements Matrix3x3, Serializable, Orientation {
   static OrthogonalMatrix3x3 NaN = new OrthogonalMatrix3x3(Vector3.NaN, Vector3.NaN, Vector3.NaN);
@@ -34,6 +44,11 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
 
   public boolean isIdentity() {
     return Matrix3x3.super.isIdentity();
+  }
+
+  // This is primarily for debugging and not a formal notion
+  public double deviationFromNormal() {
+    return right.dotProduct(up) + backward.dotProduct(right) + up.dotProduct(backward);
   }
   //</editor-fold>
 
@@ -178,6 +193,33 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
   private static double getCardinal(double el) {
     double c = (el + 1) * 0.5;
     return c > 0 ? Math.sqrt(c) : 0.0;
+  }
+
+  public OrthogonalMatrix3x3 normalized() {
+    if (isNormalized()) {
+      // If we enforced this on construction this could happen every time, but the code can produce exceptions.
+      return this;
+    }
+    return new OrthogonalMatrix3x3(right.normalized(), up.normalized(), backward.normalized());
+  }
+
+  public OrthogonalMatrix3x3 asStandUp() {
+    if (EpsilonUtilities.isWithinReasonableEpsilon(getUp().y(), 1.0)) {
+      return this;
+    }
+    if (EpsilonUtilities.isWithinReasonableEpsilon(getBackward().x(), 0)
+        && EpsilonUtilities.isWithinReasonableEpsilon(getBackward().z(), 0)) {
+      double theta = getBackward().y() < 0.0 ? -0.25 : +0.25;
+
+      return (OrthogonalMatrix3x3) this.times((new AxisRotation(Vector3.POSITIVE_X_AXIS, new AngleInRevolutions(theta))).asMatrix3x3());
+    }
+
+    Vector3 zAxis = EpsilonUtilities.isWithinReasonableEpsilon(getBackward().y(), 0.0)
+        ? getBackward()
+        : Vector3.createNormalized(getBackward().x(), 0, getBackward().z());
+
+    Vector3 xAxis = Vector3.POSITIVE_Y_AXIS.crossProduct(zAxis).normalized();
+    return new OrthogonalMatrix3x3(xAxis, Vector3.POSITIVE_Y_AXIS, zAxis);
   }
   //</editor-fold>
 

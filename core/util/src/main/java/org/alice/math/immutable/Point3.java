@@ -29,4 +29,8 @@ public record Point3(double x, double y, double z) implements Serializable, Tupl
     public edu.cmu.cs.dennisc.math.Point3 mutable() {
         return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
     }
+
+    public Vector3 asVector() {
+        return new Vector3(x, y, z);
+    }
 }

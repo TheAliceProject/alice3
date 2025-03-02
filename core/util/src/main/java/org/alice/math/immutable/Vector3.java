@@ -93,18 +93,6 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
         return ((min * min) < magSquare) && (magSquare < (max * max));
     }
 
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    public edu.cmu.cs.dennisc.math.Vector3 mutable() {
-        return new edu.cmu.cs.dennisc.math.Vector3(x, y, z);
-    }
-
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    public edu.cmu.cs.dennisc.math.Point3 mutablePoint() {
-        return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
-    }
-
     //Magnitude
     public static double magnitudeSquared(double x, double y, double z) {
         return (x * x) + (y * y) + (z * z);
@@ -116,14 +104,39 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     }
 
     public boolean isOrthogonalTo(Vector3 other) {
-        return EpsilonUtilities.isWithinReasonableEpsilon(0.0, dotProduct(other));
+        // This epsilon provides wiggle enough for our models where some error can accumulate in processing.
+        return EpsilonUtilities.isWithinEpsilon(0.0, dotProduct(other), 0.005);
     }
 
-    public Matrix3x3 asScaleMatrix() {
-        return new FullMatrix3x3(
+    public OrthogonalMatrix3x3 asScaleMatrix() {
+        return new OrthogonalMatrix3x3(
             new Vector3(x, 0, 0),
             new Vector3(0, y, 0),
             new Vector3(0, 0, z));
     }
+
+    //<editor-fold desc="Conversions">
+    // Point-Vector conversions should be avoided and may indicate a problem.
+    @Override
+    public Vector3 asVector() {
+        return this;
+    }
+
+    public Point3 asPoint() {
+        return new Point3(x, y, z);
+    }
+
+    // Temporary use during transition to immutable Records
+    @Deprecated(forRemoval = true)
+    public edu.cmu.cs.dennisc.math.Vector3 mutable() {
+        return new edu.cmu.cs.dennisc.math.Vector3(x, y, z);
+    }
+
+    // Temporary use during transition to immutable Records
+    @Deprecated(forRemoval = true)
+    public edu.cmu.cs.dennisc.math.Point3 mutablePoint() {
+        return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
+    }
+    //</editor-fold>
 }
 
