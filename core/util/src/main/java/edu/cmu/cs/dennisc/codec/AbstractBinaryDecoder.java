@@ -45,11 +45,13 @@ package edu.cmu.cs.dennisc.codec;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.EulerAngles;
 import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 
@@ -251,6 +253,9 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     if (storedClassName.equals("edu.cmu.cs.dennisc.math.AxisAlignedBox")) {
       return (E) decodeAxisAlignedBox();
     }
+    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AffineMatrix4x4")) {
+      return (E) decodeAffineMatrix();
+    }
 
     try {
       Class<E> cls = (Class<E>) Class.forName(storedClassName);
@@ -266,6 +271,10 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 
   private AxisAlignedBox decodeAxisAlignedBox() {
     return new AxisAlignedBox(decodePoint3(), decodePoint3());
+  }
+
+  private AffineMatrix4x4 decodeAffineMatrix() {
+    return new AffineMatrix4x4((OrthogonalMatrix3x3) decodeMatrix3x3(), decodeVector3());
   }
 
   private EulerAngles decodeEulerAngles() {
