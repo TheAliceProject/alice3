@@ -80,12 +80,8 @@ public class InfiniteLineVisualization extends Visual {
     Vertex[] vertices = lines.vertices.getValue();
     Point3 lineEnd1 = Point3.createMultiplication(line, LINE_DISTANCE);
     Point3 lineEnd2 = Point3.createMultiplication(line, -LINE_DISTANCE);
-    vertices[0].position.x = lineEnd1.x;
-    vertices[0].position.y = lineEnd1.y;
-    vertices[0].position.z = lineEnd1.z;
-    vertices[1].position.x = lineEnd2.x;
-    vertices[1].position.y = lineEnd2.y;
-    vertices[1].position.z = lineEnd2.z;
+    vertices[0].position = new org.alice.math.immutable.Point3(lineEnd1.x, lineEnd1.y, lineEnd1.z);
+    vertices[1].position = new org.alice.math.immutable.Point3(lineEnd2.x, lineEnd2.y, lineEnd2.z);
   }
 
   public void setColor(Color4f color) {

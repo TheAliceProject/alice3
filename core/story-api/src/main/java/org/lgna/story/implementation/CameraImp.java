@@ -67,7 +67,7 @@ public abstract class CameraImp<S extends AbstractCamera> extends TransformableI
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(AxisAlignedBox.Empty, trans);
+    rv.addBoundingBox(AxisAlignedBox.Empty, trans.immutable());
   }
 
   public Layer getPostRenderLayer() {

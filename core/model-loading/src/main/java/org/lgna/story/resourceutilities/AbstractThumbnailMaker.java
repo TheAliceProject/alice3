@@ -104,7 +104,7 @@ public abstract class AbstractThumbnailMaker {
 
     this.scene.getSgComposite().addComponent(this.sgModelTransformable);
     this.sgCameraVehicle.setParent(this.scene.getSgComposite());
-    this.sgCameraVehicle.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0, 32));
+    this.sgCameraVehicle.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0, 32).immutable());
     this.sgCamera.farClippingPlaneDistance.setValue(1000.0);
     this.sgCamera.nearClippingPlaneDistance.setValue(.1);
     this.sgCamera.setParent(this.sgCameraVehicle);
@@ -243,7 +243,7 @@ public abstract class AbstractThumbnailMaker {
   }
 
   protected synchronized BufferedImage takePicture(AffineMatrix4x4 cameraTransform, boolean trimWhitespace, Color colorKey) {
-    getSGCameraVehicle().setLocalTransformation(cameraTransform);
+    getSGCameraVehicle().setLocalTransformation(cameraTransform.immutable());
     //offscreenRenderTarget.clearAndRenderOffscreen();
     BufferedImage rv = offscreenRenderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
     if (rv == null) {

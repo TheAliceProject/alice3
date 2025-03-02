@@ -134,7 +134,7 @@ public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> exte
       int index = subElement * indicesPerPolygon;
       if ((0 <= index) && (index < polygonData.length)) {
         Vertex v = accessVertexAt(polygonData[index]);
-        return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z);
+        return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, v.position.x(), v.position.y(), v.position.z(), v.normal.x(), v.normal.y(), v.normal.z());
       }
     }
     return Point3.NaN;

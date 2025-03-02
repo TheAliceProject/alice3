@@ -79,22 +79,22 @@ public class AxesImp extends VisualScaleModelImp {
 
   @Override
   protected void setSgVisualsScale(Matrix3x3 m) {
-    sgAxes.setScale(m);
+    sgAxes.setScale(m.immutable());
   }
 
   @Override
   protected AbstractMatrix3x3 getSgVisualsScale() {
-    return this.sgAxes.getScale();
+    return this.sgAxes.getScale().mutable();
   }
 
   @Override
   protected void applyScale(Vector3 axis, boolean isScootDesired) {
     if (isScootDesired) {
-      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue().mutable();
       m.translation.multiply(axis);
-      this.getSgComposite().localTransformation.setValue(m);
+      this.getSgComposite().localTransformation.setValue(m.immutable());
     }
-    Matrix3x3 scale = sgAxes.getScale();
+    Matrix3x3 scale = (Matrix3x3) sgAxes.getScale().mutable();
     ScaleUtilities.applyScale(scale, axis);
     setSgVisualsScale(scale);
   }

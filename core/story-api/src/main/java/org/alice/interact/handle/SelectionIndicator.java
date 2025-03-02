@@ -56,7 +56,7 @@ public class SelectionIndicator extends ManipulationHandle3D {
     this.sgBoundingBoxOffsetTransformable.setParent(this);
     AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
     offsetTransform.translation.y = .01;
-    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
+    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform.immutable());
     this.sgBoundingBoxDecorator.setParent(this.sgBoundingBoxOffsetTransformable);
   }
 

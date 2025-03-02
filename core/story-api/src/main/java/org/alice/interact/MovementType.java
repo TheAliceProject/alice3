@@ -60,7 +60,7 @@ public enum MovementType {
       standIn.setVehicle(transformable);
       try {
         standIn.setAxesOnlyToStandUp();
-        transformable.applyTranslation(translateAmount, standIn);
+        transformable.applyTranslation(translateAmount.immutable(), standIn);
       } finally {
         standIn.setVehicle(null);
       }
@@ -72,7 +72,7 @@ public enum MovementType {
       standIn.setVehicle(transformable);
       try {
         standIn.setAxesOnlyToStandUp();
-        transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, standIn);
+        transformable.applyRotationAboutArbitraryAxis(rotationAxis.immutable(), rotation, standIn);
       } finally {
         standIn.setVehicle(null);
       }
@@ -81,23 +81,23 @@ public enum MovementType {
   }, LOCAL() {
     @Override
     public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
-      transformable.applyTranslation(translateAmount, transformable);
+      transformable.applyTranslation(translateAmount.immutable(), transformable);
     }
 
     @Override
     public void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation) {
-      transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, transformable);
+      transformable.applyRotationAboutArbitraryAxis(rotationAxis.immutable(), rotation, transformable);
     }
 
   }, ABSOLUTE() {
     @Override
     public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
-      transformable.applyTranslation(translateAmount, AsSeenBy.SCENE);
+      transformable.applyTranslation(translateAmount.immutable(), AsSeenBy.SCENE);
     }
 
     @Override
     public void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation) {
-      transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, AsSeenBy.SCENE);
+      transformable.applyRotationAboutArbitraryAxis(rotationAxis.immutable(), rotation, AsSeenBy.SCENE);
     }
 
   };

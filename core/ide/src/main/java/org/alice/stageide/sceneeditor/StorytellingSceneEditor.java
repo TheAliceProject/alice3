@@ -1185,13 +1185,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private void paintHorizonLine(Graphics graphics, OnscreenRenderTarget renderTarget, OrthographicCamera camera) {
-    AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+    AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation().mutable();
     double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
     if ((dotProd == 1) || (dotProd == -1)) {
       //TODO: Make this handle retina displays and the fact that surface size and screen size may be different
       Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
-      Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
+      Point3 cameraPosition = camera.getAbsoluteTransformation().translation().mutablePoint();
 
       ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 

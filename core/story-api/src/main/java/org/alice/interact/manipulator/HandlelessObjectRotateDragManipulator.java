@@ -44,7 +44,11 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -54,14 +58,9 @@ import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -130,7 +129,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected void initManipulator(InputState startInput) {
-    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed(this.rotateAxis);
+    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().transform(this.rotateAxis.immutable()).mutable();
     this.initialPoint = new Point(startInput.getMouseLocation());
   }
 
@@ -169,9 +168,9 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
     //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
     Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
     this.standUpReference.setParent(this.manipulatedTransformable);
-    this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+    this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
     this.standUpReference.setAxesOnlyToStandUp();
-    this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis, snappedAngle, this.standUpReference);
+    this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis.immutable(), snappedAngle, this.standUpReference);
   }
 
   @Override

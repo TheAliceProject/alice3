@@ -111,9 +111,9 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 
   private void setPivotSpherePosition(Tuple3 position) {
     if (SHOW_SPHERE) {
-      AffineMatrix4x4 transform = this.pivotSphereTransformable.localTransformation.getValue();
+      AffineMatrix4x4 transform = this.pivotSphereTransformable.localTransformation.getValue().mutable();
       transform.translation.set(position);
-      this.pivotSphereTransformable.localTransformation.setValue(transform);
+      this.pivotSphereTransformable.localTransformation.setValue(transform.immutable());
     }
   }
 
@@ -142,13 +142,13 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
     double leftRightRotationAngle = xChange * TURN_RATE;
     double upDownRotationAngle = yChange * TURN_RATE;
 
-    this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
+    this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation.immutable());
 
     StandIn standIn = new StandIn();
     standIn.setName("CameraOrbitStandIn");
     standIn.setVehicle(this.getCamera().getRoot());
     try {
-      standIn.setTranslationOnly(this.pivotPoint, AsSeenBy.SCENE);
+      standIn.setTranslationOnly(this.pivotPoint.immutable(), AsSeenBy.SCENE);
       standIn.setAxesOnlyToPointAt(this.getCamera());
       standIn.setAxesOnlyToStandUp();
       this.manipulatedTransformable.applyRotationAboutXAxis(new AngleInDegrees(upDownRotationAngle), standIn);
@@ -173,17 +173,17 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
     if (super.doStartManipulator(startInput) && (this.camera instanceof SymmetricPerspectiveCamera)) {
       boolean success = false;
 
-      this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
+      this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation().mutable());
       this.originalMousePoint = new Point(startInput.getMouseLocation());
 
       addPivotSphereToScene();
 
       AbstractTransformable clickedObject = startInput.getClickPickTransformable();
       if (clickedObject != null) {
-        this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation);
+        this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation().mutablePoint());
         success = true;
       } else {
-        Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
+        Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().mutable();
         cameraForward.multiply(-1.0d);
 
         double dotWithVertical = Math.abs(Vector3.calculateDotProduct(cameraForward, Vector3.accessPositiveYAxis()));
@@ -192,7 +192,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
           cameraForward.add(new Vector3(0, downwardShiftFactor, 0));
           cameraForward.normalize();
         }
-        Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+        Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint(), cameraForward));
         if (pickPoint != null) {
           this.setPivotPoint(pickPoint);
           success = true;

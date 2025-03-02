@@ -139,7 +139,7 @@ public class JointedModelColladaImporter {
     j.jointID.setValue(getJointIdentifier(node));
     j.setName(getJointIdentifier(node));
 
-    j.localTransformation.setValue(getNodeTransform(node));
+    j.localTransformation.setValue(getNodeTransform(node).immutable());
     for (Node child : node.getChildNodes()) {
       if (nodeIsJoint(child)) {
         Joint childJoint = createAliceSkeletonFromNode(child);
@@ -271,7 +271,7 @@ public class JointedModelColladaImporter {
       // The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
       float[] inverseBindMatrix = Arrays.copyOfRange(inverseBindMatrixData, 16 * jointIndex, 16 * jointIndex + 16);
       AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix(inverseBindMatrix);
-      InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(jointAndWeights.getValue(), aliceInverseBindMatrix);
+      InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(jointAndWeights.getValue(), aliceInverseBindMatrix.immutable());
       if (iawp != null) {
         weightInfo.addReference(jointId, iawp);
       }
@@ -582,8 +582,8 @@ public class JointedModelColladaImporter {
       aliceSkeleton = createAliceSkeletonFromNode(rootNode);
       AffineMatrix4x4 rootTransform = collapsedRootTransform(scene.getNodes(), rootNode);
       if (rootTransform != null && !rootTransform.isIdentity()) {
-        rootTransform.multiply(aliceSkeleton.getLocalTransformation());
-        aliceSkeleton.setLocalTransformation(rootTransform);
+        rootTransform.multiply(aliceSkeleton.getLocalTransformation().mutable());
+        aliceSkeleton.setLocalTransformation(rootTransform.immutable());
       }
     }
 
@@ -669,9 +669,9 @@ public class JointedModelColladaImporter {
 
   private static void printJoints(Joint j, String indent) {
     System.out.println(indent + "Joint " + j.jointID.getValue());
-    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation, j.localTransformation.getValue().orientation);
+    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation(), j.localTransformation.getValue().orientation());
     System.out.println();
-    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
+    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation().mutable();
     PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation);
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
@@ -685,8 +685,8 @@ public class JointedModelColladaImporter {
   private static void printWeightInfo(WeightInfo wi) {
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      Point3 t = iatwp.getInverseAbsoluteTransformation().translation;
-      OrthogonalMatrix3x3 o = iatwp.getInverseAbsoluteTransformation().orientation;
+      Point3 t = iatwp.getInverseAbsoluteTransformation().translation().mutablePoint();
+      OrthogonalMatrix3x3 o = iatwp.getInverseAbsoluteTransformation().orientation().mutable();
 
       System.out.println(entry.getKey() + ":");
       System.out.println(" inverse transform = (" + t.x + ", " + t.y + ", " + t.z + "), [[" + o.right.x + ", " + o.right.y + ", " + o.right.z + "], [" + o.up.x + ", " + o.up.y + ", " + o.up.z + "], [" + o.backward.x + ", " + o.backward.y + ", " + o.backward.z + "]]");

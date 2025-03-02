@@ -121,9 +121,9 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
   @Override
   protected AffineMatrix4x4 getThumbnailTransform(Visual v, AxisAlignedBox bbox) {
     v.setParent(this.getModelTransformable());
-    getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
+    getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox).immutable());
 
-    AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
+    AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation().mutable();
 
     OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
     BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
@@ -135,7 +135,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     writeDebugImageIfAppropriate("initial.png", testImage);
 
     Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
-    getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+    getSGCameraVehicle().setTranslationOnly(testPosition.immutable(), this.getScene().getSgReferenceFrame());
     Point3 lastGoodPosition = new Point3(testPosition);
 
     Ray cameraRay = new Ray(testPosition, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
@@ -150,7 +150,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     int limitCount = 0;
     while (!framed && (limitCount < COUNT_LIMIT)) {
       cameraRay.getPointAlong(testPosition, currentT);
-      getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+      getSGCameraVehicle().setTranslationOnly(testPosition.immutable(), this.getScene().getSgReferenceFrame());
       testImageRT.clearAndRenderOffscreen();
       testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 
@@ -171,7 +171,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     //zoom in until just framed
     while ((limitCount < COUNT_LIMIT) && framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue())) {
       cameraRay.getPointAlong(testPosition, currentT);
-      getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
+      getSGCameraVehicle().setTranslationOnly(testPosition.immutable(), this.getScene().getSgReferenceFrame());
       testImageRT.clearAndRenderOffscreen();
       testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 
@@ -187,8 +187,8 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     if (limitCount > COUNT_LIMIT) {
       System.err.println("hit thumbnail limit count");
     }
-    getSGCameraVehicle().setTranslationOnly(lastGoodPosition, this.getScene().getSgReferenceFrame());
-    AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation();
+    getSGCameraVehicle().setTranslationOnly(lastGoodPosition.immutable(), this.getScene().getSgReferenceFrame());
+    AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation().mutable();
     return finalCameraTransform;
   }
 

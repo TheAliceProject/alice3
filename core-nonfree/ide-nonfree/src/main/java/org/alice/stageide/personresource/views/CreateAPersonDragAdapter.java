@@ -130,9 +130,9 @@ public class CreateAPersonDragAdapter extends DragAdapter {
   public void setSGCamera(AbstractCamera camera) {
     super.setSGCamera(camera);
     AxisAlignedBox cameraBounds = new AxisAlignedBox();
-    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
+    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward().mutable();
 
-    Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation);
+    Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation().mutable());
     Point3 cameraMax = new Point3(cameraMin);
     double originalY = cameraMin.y;
     cameraMin.add(Vector3.createMultiplication(cameraBackwards, 1.5d));

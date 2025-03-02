@@ -641,14 +641,14 @@ public class AliceResourceUtilities {
     SkeletonVisual sgOriginal = getVisual(resource);
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     Joint sgJoint = sgSkeletonRoot.getJoint(jointId.toString());
-    return sgJoint.getLocalTransformation();
+    return sgJoint.getLocalTransformation().mutable();
   }
 
   public static UnitQuaternion getOriginalJointOrientation(ModelResource resource, JointId jointId) {
     SkeletonVisual sgOriginal = getVisual(resource);
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     Joint sgJoint = sgSkeletonRoot.getJoint(jointId.toString());
-    return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();
+    return sgJoint.getLocalTransformation().orientation().asUnitQuaternion().mutable();
   }
 
   public static String getName(Class<?> modelResource) {

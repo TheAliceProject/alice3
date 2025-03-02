@@ -76,8 +76,7 @@ public class MovementKey {
   }
 
   public void applyOrbit(AbstractTransformable transformable, double degreesToRotate) {
-    Vector3 rotationDirection = new Vector3(movementDescription.direction.getVector());
-    transformable.getLocalTransformation().orientation.transform(rotationDirection);
+    Vector3 rotationDirection = transformable.getLocalTransformation().orientation().transform(movementDescription.direction.getVector().immutable()).mutable();
     movementDescription.type.applyRotation(transformable, rotationDirection, new AngleInDegrees(directionMultiplier * degreesToRotate));
   }
 }

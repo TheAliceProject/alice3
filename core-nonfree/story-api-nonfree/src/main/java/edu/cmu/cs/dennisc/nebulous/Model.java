@@ -254,7 +254,7 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(org.alice.math.immutable.Matrix4x4 trans) {
     throw new RuntimeException("todo");
   }
 
@@ -316,7 +316,7 @@ public abstract class Model extends Geometry {
           }
         }
         AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
-        InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix);
+        InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix.immutable());
         if (iawp != null) {
           weightInfo.addReference(joint.toString(), iawp);
         }
@@ -413,7 +413,7 @@ public abstract class Model extends Geometry {
       Joint j = new Joint();
       j.jointID.setValue(currentJointId.toString());
       j.setName(currentJointId.toString());
-      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
+      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId).immutable());
       processedJoints.add(j);
       if (currentJointId.getParent() == null) {
         rootJoint = j;
@@ -507,7 +507,7 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public org.alice.math.immutable.AffineMatrix4x4 getPlane() {
     throw new RuntimeException("todo");
   }
 

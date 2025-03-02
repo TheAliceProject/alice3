@@ -55,7 +55,6 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
@@ -91,9 +90,9 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     }
   }
 
-  private void setPickPoint(Tuple3 position) {
+  private void setPickPoint(Point3 position) {
     if (SHOW_PICK_POINT) {
-      this.pickPointDebugSphere.setLocalTranslation(position);
+      this.pickPointDebugSphere.setLocalTranslation(position.immutableVector());
     }
   }
 
@@ -124,8 +123,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     }
     this.setPlaneDiscPoint(pickPoint);
 
-    Point3 oldPointInCamera = this.camera.transformFrom(oldPickPoint, this.camera.getRoot());
-    Point3 newPointInCamera = this.camera.transformFrom(newPickPoint, this.camera.getRoot());
+    Point3 oldPointInCamera = this.camera.transformFrom(oldPickPoint.immutable(), this.camera.getRoot()).mutable();
+    Point3 newPointInCamera = this.camera.transformFrom(newPickPoint.immutable(), this.camera.getRoot()).mutable();
 
     Vector3 xDif = new Vector3(newPointInCamera.x, oldPointInCamera.y, oldPointInCamera.z);
     xDif.normalize();
@@ -157,7 +156,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     }
 
     //Make sure the camera's x-axis is still horizontal
-    AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+    AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
     Vector3 rightAxis = cameraTransform.orientation.right;
     rightAxis.y = 0;
     rightAxis.normalize();
@@ -165,9 +164,9 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     upAxis.normalize();
     cameraTransform.orientation.right.set(rightAxis);
     cameraTransform.orientation.up.set(upAxis);
-    this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
+    this.manipulatedTransformable.setTransformation(cameraTransform.immutable(), AsSeenBy.SCENE);
 
-    this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+    this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().mutable());
     manipulatedTransformable.notifyTransformationListeners();
   }
 
@@ -185,15 +184,15 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput) && (this.camera instanceof SymmetricPerspectiveCamera)) {
       boolean success = false;
-      Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
+      Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().mutable();
       cameraForward.multiply(-10.0d);
 
       addPickPointSphereToScene();
 
       Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
 
-      Point3 planePoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward);
-      this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+      Point3 planePoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(cameraForward.immutable()).mutablePoint();
+      this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().mutable());
 
       Point3 pickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, pickRay);
       if (pickPoint != null) {

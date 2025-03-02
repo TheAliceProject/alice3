@@ -147,7 +147,7 @@ public abstract class PicturePlaneInteraction {
   private double planeZ0 = Double.NaN;
 
   private void startPlaneDrag(MouseEvent e) {
-    Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
+    Point3 p = this.sgTransformable.getTranslation(this.sgCamera).mutable();
     Vector4 xyzwInCameraSpace = new Vector4(p.x, p.y, p.z, 1.0);
     org.alice.math.immutable.Vector4 xyzwInViewportSpace = this.onscreenRenderTarget.transformFromCameraToViewport(xyzwInCameraSpace.immutable(), this.sgCamera);
     this.planeZ0 = xyzwInViewportSpace.z() / xyzwInViewportSpace.w();
@@ -163,7 +163,7 @@ public abstract class PicturePlaneInteraction {
     org.alice.math.immutable.Vector4 xyzwInCameraSpace = this.onscreenRenderTarget.transformFromViewportToCamera(xyzwInViewportSpace.immutable(), this.sgCamera);
 
     Point3 p = new Point3(xyzwInCameraSpace.x() / xyzwInCameraSpace.w(), xyzwInCameraSpace.y() / xyzwInCameraSpace.w(), xyzwInCameraSpace.z() / xyzwInCameraSpace.w());
-    this.sgTransformable.setTranslationOnly(p, this.sgCamera);
+    this.sgTransformable.setTranslationOnly(p.immutable(), this.sgCamera);
   }
 
   private void stopPlaneDrag(MouseEvent e) {
@@ -180,7 +180,7 @@ public abstract class PicturePlaneInteraction {
     // If this code is resurrected and this was incorrect, the solution is to call the renderTarget's getCameraAtPixel
     this.ray = this.onscreenRenderTarget.getRayAtAwtPoint(e.getPoint(), this.sgCamera).mutable();
     this.rayPixelY0 = e.getY();
-    Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
+    Point3 p = this.sgTransformable.getTranslation(this.sgCamera).mutable();
     this.rayT0 = this.ray.getProjectedPointT(p);
     CursorUtilities.pushAndSet(this.onscreenRenderTarget.getAwtComponent(), CursorUtilities.NULL_CURSOR);
   }
@@ -189,14 +189,14 @@ public abstract class PicturePlaneInteraction {
     double deltaY = e.getY() - this.rayPixelY0;
     double rayT = this.rayT0 + (deltaY * Y_PIXELS_TO_RAY_T_FACTOR);
     Point3 p = this.ray.getPointAlong(rayT);
-    this.sgTransformable.setTranslationOnly(p, this.sgCamera);
+    this.sgTransformable.setTranslationOnly(p.immutable(), this.sgCamera);
   }
 
   // note: this seems to be unnecessary (on jdk7/linux at least) as mouseDragged does not seem to be invoked on cursor warps
   private boolean isInTheMidstOfACursorWarp = false;
 
   private void stopRayDrag(MouseEvent e) {
-    Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
+    Point3 p = this.sgTransformable.getTranslation(this.sgCamera).mutable();
     Point xyInPixels = this.onscreenRenderTarget.transformFromCameraToAWT(p.immutable(), this.sgCamera);
 
     this.isInTheMidstOfACursorWarp = true;

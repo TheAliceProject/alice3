@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
 import org.lgna.story.Paint;
 import org.lgna.story.SRoom;
 
@@ -76,31 +77,31 @@ public class RoomImp extends VisualScaleModelImp {
 
     public WallSurface(float width, float depth, float height, float xTiling, float zTiling) {
       for (int i = 0; i < 4; i++) {
-        Vector3f normal;
+        org.alice.math.immutable.Vector3f normal;
         switch (i) {
         case 0:
-          normal = new Vector3f(1, 0, 0);
+          normal = new org.alice.math.immutable.Vector3f(1, 0, 0);
           break;
         case 1:
-          normal = new Vector3f(0, 0, -1);
+          normal = new org.alice.math.immutable.Vector3f(0, 0, -1);
           break;
         case 2:
-          normal = new Vector3f(-1, 0, 0);
+          normal = new org.alice.math.immutable.Vector3f(-1, 0, 0);
           break;
         case 3:
-          normal = new Vector3f(0, 0, 1);
+          normal = new org.alice.math.immutable.Vector3f(0, 0, 1);
           break;
         default:
           normal = null;
         }
         Vertex topLeft = sgVertices[(i * 4) + 0];
-        topLeft.normal.set(normal);
+        topLeft.normal = normal;
         Vertex topRight = sgVertices[(i * 4) + 1];
-        topRight.normal.set(normal);
+        topRight.normal = normal;
         Vertex bottomRight = sgVertices[(i * 4) + 2];
-        bottomRight.normal.set(normal);
+        bottomRight.normal = normal;
         Vertex bottomLeft = sgVertices[(i * 4) + 3];
-        bottomLeft.normal.set(normal);
+        bottomLeft.normal = normal;
       }
       this.setTiling(xTiling, zTiling);
       this.setSize(width, depth, height);
@@ -172,13 +173,13 @@ public class RoomImp extends VisualScaleModelImp {
           break;
         }
         Vertex topLeft = sgVertices[(i * 4) + 0];
-        topLeft.position.set(leftVals.x, y, leftVals.z);
+        topLeft.position = new Point3(leftVals.x, y, leftVals.z);
         Vertex topRight = sgVertices[(i * 4) + 1];
-        topRight.position.set(rightVals.x, y, rightVals.z);
+        topRight.position = new Point3(rightVals.x, y, rightVals.z);
         Vertex bottomRight = sgVertices[(i * 4) + 2];
-        bottomRight.position.set(rightVals.x, BASE_FLOOR_Y, rightVals.z);
+        bottomRight.position = new Point3(rightVals.x, BASE_FLOOR_Y, rightVals.z);
         Vertex bottomLeft = sgVertices[(i * 4) + 3];
-        bottomLeft.position.set(leftVals.x, BASE_FLOOR_Y, leftVals.z);
+        bottomLeft.position = new Point3(leftVals.x, BASE_FLOOR_Y, leftVals.z);
       }
     }
   }

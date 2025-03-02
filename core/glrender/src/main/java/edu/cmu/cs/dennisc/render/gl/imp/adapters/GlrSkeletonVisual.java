@@ -134,7 +134,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         return;
       }
       // jointTransform * IBMi - This is the reverse of the Collada skin weighting spec which is IBMi * JMi
-      Matrix4x4 oDelta = jointTransform.times(iatwp.getInverseAbsoluteTransformation().immutable());
+      Matrix4x4 oDelta = jointTransform.times(iatwp.getInverseAbsoluteTransformation());
       //        System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
       //        System.out.println( "  On Joint " + joint.jointID.getValue() );
       //        System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
@@ -373,7 +373,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
     Matrix4x4 oTransformationPost = oTransformationPre;
     if (currentNode instanceof Transformable) {
-      oTransformationPost = oTransformationPre.times(((Transformable) currentNode).localTransformation.getValue().immutable());
+      oTransformationPost = oTransformationPre.times(((Transformable) currentNode).localTransformation.getValue());
 
       if ((currentNode instanceof Joint)) {
         rc.gl.glPushMatrix();
@@ -610,7 +610,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     if (joint == null) {
       return;
     }
-    Matrix4x4 absoluteLocalTransform = parentTransform.times(joint.localTransformation.getValue().immutable());
+    Matrix4x4 absoluteLocalTransform = parentTransform.times(joint.localTransformation.getValue());
 
 //    AffineMatrix4x4 unscaledJointTransform = new AffineMatrix4x4(absoluteLocalTransform.orientation(),
 //        new Point3(inverseScale.right().x(), inverseScale.up().y(), inverseScale.backward().z()));

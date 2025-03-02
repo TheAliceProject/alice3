@@ -156,10 +156,10 @@ public class LinearScaleHandle extends LinearDragHandle {
     if (objectTransformation.isNaN()) {
       objectTransformation = new AffineMatrix4x4();
     }
-    this.setTransformation(objectTransformation, this.getReferenceFrame());
+    this.setTransformation(objectTransformation.immutable(), this.getReferenceFrame());
     Vector3 handleOffset = new Vector3(this.dragAxis);
     handleOffset.multiply(this.getHandleLength());
-    this.setTranslationOnly(handleOffset, this.getReferenceFrame());
+    this.setTranslationOnly(handleOffset.immutable(), this.getReferenceFrame());
   }
 
   @Override

@@ -233,7 +233,7 @@ public abstract class AbstractManipulator {
 
   public void undoRedoBeginManipulation() {
     if (this.getManipulatedTransformable() != null) {
-      this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
+      this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation().mutable();
     }
   }
 

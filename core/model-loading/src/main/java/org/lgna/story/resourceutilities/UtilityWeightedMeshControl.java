@@ -68,8 +68,8 @@ class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
     InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
     AxisAlignedBox box = new AxisAlignedBox();
     if (iatwp != null) {
-      AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
-      AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
+      AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation().mutable();
+      AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation().mutable();
       InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
       while (weightIterator.hasNext()) {
         int vertexIndex = weightIterator.getIndex() * 3;

@@ -190,7 +190,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
             }
           } else {
             Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport).normalized();
-            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
+            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
             for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
               selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
             }

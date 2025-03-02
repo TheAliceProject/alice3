@@ -123,9 +123,9 @@ public abstract class STurnable extends SThing {
       this.getImplementation().animateOrientationOnly(vehicle, orientation.getInternal(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
-      AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+      AffineMatrix4x4 m = sgTransformable.getLocalTransformation().mutable();
       m.orientation.setValue(orientation.getInternal());
-      sgTransformable.setLocalTransformation(m);
+      sgTransformable.setLocalTransformation(m.immutable());
       Logger.severe(this);
     }
   }

@@ -149,7 +149,7 @@ public class FieldIcon extends AsynchronousIcon {
           AbstractTransformableImp fieldImp = sceneEditor.getImplementation(field);
 
           final AbstractTransformable sgTransformable = fieldImp.getSgComposite();
-          final AffineMatrix4x4 absoluteTransform = sgTransformable.getAbsoluteTransformation();
+          final AffineMatrix4x4 absoluteTransform = sgTransformable.getAbsoluteTransformation().mutable();
           final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox();
           Point3 center = bbox.getCenter();
           absoluteTransform.transform(center);
@@ -217,7 +217,7 @@ public class FieldIcon extends AsynchronousIcon {
               if (sgVisual != null) {
                 distance = GoodLookAtUtils.calculateGoodLookAtDistance(sgVisual, verticalViewingAngle, aspectRatio, sgCamera);
               } else {
-                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox.immutable(), absoluteTransform, verticalViewingAngle, aspectRatio, sgCamera);
+                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox.immutable(), absoluteTransform.immutable(), verticalViewingAngle, aspectRatio, sgCamera);
               }
               //m = null;
               if (Double.isNaN(distance) == false) {
@@ -226,7 +226,7 @@ public class FieldIcon extends AsynchronousIcon {
                 //                  m.getAsColumnMajorArray16( array );
                 //                  gl.glLoadMatrixd( buffer );
 
-                AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
+                AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation().mutable();
 
                 Vector3 v = Vector3.createSubtraction(cameraAbsolute.translation, p);
                 v.normalize();

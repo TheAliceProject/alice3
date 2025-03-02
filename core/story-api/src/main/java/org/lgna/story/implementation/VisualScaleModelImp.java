@@ -76,9 +76,9 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
   protected void applyScale(Vector3 axis, boolean isScootDesired) {
     if (isScootDesired) {
-      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue().mutable();
       m.translation.multiply(axis);
-      this.getSgComposite().localTransformation.setValue(m);
+      this.getSgComposite().localTransformation.setValue(m.immutable());
     }
     for (Visual sgVisual : this.getSgVisuals()) {
       org.alice.math.immutable.Matrix3x3 scale = sgVisual.scale.getValue();

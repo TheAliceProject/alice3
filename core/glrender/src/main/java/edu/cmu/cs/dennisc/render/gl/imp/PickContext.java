@@ -107,7 +107,7 @@ public class PickContext extends Context {
   }
 
   public void pickVertex(Vertex vertex) {
-    gl.glVertex3d(vertex.position.x, vertex.position.y, vertex.position.z);
+    gl.glVertex3d(vertex.position.x(), vertex.position.y(), vertex.position.z());
   }
 
   public void pickScene(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters) {

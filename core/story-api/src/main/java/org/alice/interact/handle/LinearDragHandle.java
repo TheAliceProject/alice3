@@ -59,6 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.debug.DebugInteractUtilities;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author David Culyba
@@ -79,7 +80,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     if (this.dragAxis.isNaN()) {
       this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
     }
-    this.localTransformation.setValue(this.getTransformationForAxis(this.dragAxis));
+    this.localTransformation.setValue(this.getTransformationForAxis(this.dragAxis).immutable());
     this.distanceFromOrigin = 0.0d;
     createShape();
   }
@@ -205,14 +206,15 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     if (this.getParentTransformable() != null) {
       if (this.dragDescription.type == MovementType.STOOD_UP) {
         this.standUpReference.setParent(this.getParentTransformable());
-        this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+        this.standUpReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
         this.standUpReference.setAxesOnlyToStandUp();
         return this.standUpReference;
       } else if (this.dragDescription.type == MovementType.ABSOLUTE) {
         this.standUpReference.setParent(this.getParentTransformable().getRoot());
         AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
-        location.translation.set(this.getParentTransformable().getTranslation(AsSeenBy.SCENE));
-        this.standUpReference.localTransformation.setValue(location);
+        Point3 translation = this.getParentTransformable().getTranslation(AsSeenBy.SCENE);
+        location.translation.set(translation == null ? null : translation.mutable());
+        this.standUpReference.localTransformation.setValue(location.immutable());
         return this.standUpReference;
       } else {
         return this.getParentTransformable();
@@ -232,8 +234,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
         return this.snapReference;
       } else if (this.dragDescription.type == MovementType.ABSOLUTE) {
         this.snapReference.setParent(this.getParentTransformable().getRoot());
-        AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
-        this.snapReference.localTransformation.setValue(location);
+        this.snapReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
         return this.snapReference;
       } else {
         this.snapReference.setParent(this.getParentTransformable().getRoot());
@@ -249,8 +250,8 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
   public void positionRelativeToObject() {
     if (this.getParentTransformable() != null) {
       Vector3 translation = Vector3.createMultiplication(this.dragAxis, this.distanceFromOrigin + this.offsetPadding);
-      this.setTransformation(this.getTransformationForAxis(this.dragAxis), this.getReferenceFrame());
-      this.setTranslationOnly(translation, this.getReferenceFrame());
+      this.setTransformation(this.getTransformationForAxis(this.dragAxis).immutable(), this.getReferenceFrame());
+      this.setTranslationOnly(translation.immutable(), this.getReferenceFrame());
     }
   }
 

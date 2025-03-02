@@ -69,7 +69,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 import java.util.Comparator;
 import java.util.List;
@@ -170,7 +170,7 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   private double negativeDistanceFromCameraSquared(Component comp) {
-    return 0.0 - cameraPosition.distanceSquaredFrom(comp.getAbsoluteTransformation().translation);
+    return 0.0 - cameraPosition.distanceSquaredFrom(comp.getAbsoluteTransformation().translation());
   }
 
   @Override
@@ -194,7 +194,7 @@ public class GlrScene extends GlrComposite<Scene> {
     rc.gl.glMatrixMode(GL_MODELVIEW);
     synchronized (cameraAdapter) {
       rc.gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
-      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation.immutable();
+      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation();
     }
 
     if (backgroundAdapter == null) {
@@ -263,6 +263,6 @@ public class GlrScene extends GlrComposite<Scene> {
   private final List<GlrGhost> glrGhostDescendants = Lists.newLinkedList();
   private final List<GlrVisual<?>> glrVisualDescendants = Lists.newLinkedList();
   private final List<GlrPlanarReflector> glrPlanarReflectorDescendants = Lists.newLinkedList();
-  private Point3 cameraPosition;
+  private Vector3 cameraPosition;
   private boolean isInitialized = false;
 }

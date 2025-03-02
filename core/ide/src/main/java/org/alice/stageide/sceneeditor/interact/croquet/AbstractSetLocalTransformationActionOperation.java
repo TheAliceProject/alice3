@@ -85,7 +85,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
       povAnimation.setDuration(0.5);
       this.getAnimator().invokeLater(povAnimation, null);
     } else {
-      sgTransformable.setLocalTransformation(lt);
+      sgTransformable.setLocalTransformation(lt.immutable());
     }
   }
 

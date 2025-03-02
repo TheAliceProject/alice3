@@ -116,8 +116,8 @@ public class POVRayUtilities {
     } else if (sgGeometry instanceof Cylinder) {
       Cylinder sgCylinder = (Cylinder) sgGeometry;
       pw.println("cone {");
-      Point3 base = sgCylinder.getCenterOfBottom();
-      Point3 cap = sgCylinder.getCenterOfTop();
+      Point3 base = sgCylinder.getCenterOfBottom().mutable();
+      Point3 cap = sgCylinder.getCenterOfTop().mutable();
       pw.println(toString(base));
       pw.println(sgCylinder.bottomRadius.getValue() + ", ");
       pw.println(toString(cap));
@@ -144,8 +144,8 @@ public class POVRayUtilities {
       pw.println(toString(m));
     } else if (sgGeometry instanceof Box) {
       Box sgBox = (Box) sgGeometry;
-      Point3 minimum = sgBox.getMinimum();
-      Point3 maximum = sgBox.getMaximum();
+      Point3 minimum = sgBox.getMinimum().mutable();
+      Point3 maximum = sgBox.getMaximum().mutable();
       pw.println("box {");
       pw.print(toString(minimum));
       pw.print(", ");
@@ -159,7 +159,7 @@ public class POVRayUtilities {
       Vertex[] sgVertices = sgTriangleFan.vertices.getValue();
       for (int i = 0; i < n; i++) {
         Vertex sgVertex = sgVertices[i];
-        Point3 p = new Point3(sgVertex.position);
+        Point3 p = sgVertex.position.mutable();
         m.transform(p);
         pw.print(toString(p));
         if (i < (n - 1)) {
@@ -203,7 +203,7 @@ public class POVRayUtilities {
   }
 
   private static void exportVisual(PrintWriter pw, Visual sgVisual) {
-    AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation();
+    AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation().mutable();
     Appearance sgAppearance = sgVisual.frontFacingAppearance.getValue();
     double reflection;
     if (sgVisual instanceof PlanarReflector) {
@@ -221,7 +221,7 @@ public class POVRayUtilities {
       Logger.todo("UNHANDLED AMBIENT LIGHT: " + sgLight);
       return;
     }
-    AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
+    AffineMatrix4x4 m = sgLight.getAbsoluteTransformation().mutable();
     pw.println("light_source { ");
     pw.println("<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">");
     pw.println(toString(sgLight.color.getValue()));
@@ -254,7 +254,7 @@ public class POVRayUtilities {
       }
       exportBackground(pw, background);
 
-      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().mutable();
       pw.println("camera {");
       pw.println(toString(m));
       if (sgCamera instanceof SymmetricPerspectiveCamera) {

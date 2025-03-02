@@ -168,7 +168,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
 
     Matrix matrix = factory.createMatrix();
     matrix.setSid("matrix");
-    AffineMatrix4x4 newTransform = new AffineMatrix4x4(joint.localTransformation.getValue());
+    AffineMatrix4x4 newTransform = new AffineMatrix4x4(joint.localTransformation.getValue().mutable());
     if (SCALE_MODEL) {
       newTransform.translation.multiply(MODEL_SCALE);
     }
@@ -491,7 +491,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     matricesArray.setId(matricesSourceName + "-array");
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
+      AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation().mutable();
       if (SCALE_MODEL) {
         inverseBindMatrix.translation.multiply(MODEL_SCALE);
       }

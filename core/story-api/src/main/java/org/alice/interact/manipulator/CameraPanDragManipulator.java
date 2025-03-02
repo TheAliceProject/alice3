@@ -76,8 +76,8 @@ public class CameraPanDragManipulator extends CameraManipulator {
     Vector3 xMovement = Vector3.createMultiplication(this.xDirection, xDif * MOVEMENT_PER_PIXEL);
     Vector3 yMovement = Vector3.createMultiplication(this.yDirection, yDif * MOVEMENT_PER_PIXEL);
 
-    this.manipulatedTransformable.applyTranslation(xMovement, AsSeenBy.SCENE);
-    this.manipulatedTransformable.applyTranslation(yMovement, AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(xMovement.immutable(), AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(yMovement.immutable(), AsSeenBy.SCENE);
     manipulatedTransformable.notifyTransformationListeners();
   }
 
@@ -94,7 +94,7 @@ public class CameraPanDragManipulator extends CameraManipulator {
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput) && (this.camera instanceof SymmetricPerspectiveCamera)) {
       boolean success = false;
-      AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+      AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
       this.yDirection = new Vector3(Vector3.accessPositiveYAxis());
       this.xDirection = new Vector3(cameraTransform.orientation.right);
 

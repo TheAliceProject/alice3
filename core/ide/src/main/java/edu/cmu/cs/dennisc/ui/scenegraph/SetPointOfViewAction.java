@@ -70,7 +70,7 @@ public class SetPointOfViewAction implements Action {
   @Override
   public void run() {
     assert m_undoPOV == null;
-    m_undoPOV = m_sgSubject.getTransformation(m_sgAsSeenBy);
+    m_undoPOV = m_sgSubject.getTransformation(m_sgAsSeenBy).mutable();
     redo();
   }
 

@@ -204,7 +204,7 @@ public class GlrText extends GlrGeometry<Text> {
   }
 
   private void glText(Context context) {
-    Vector3 alignmentOffset = owner.getAlignmentOffset().immutable();
+    Vector3 alignmentOffset = owner.getAlignmentOffset();
     double zFront = alignmentOffset.z();
     double zBack = zFront + owner.depth.getValue();
 
@@ -280,7 +280,7 @@ public class GlrText extends GlrGeometry<Text> {
 
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
-    Vector3 alignmentOffset = owner.getAlignmentOffset().immutable();
+    Vector3 alignmentOffset = owner.getAlignmentOffset();
     double zFront = alignmentOffset.z();
     //todo: no reason to believe it hit the front
     return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, zFront, 0, 0, -1);

@@ -305,11 +305,11 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   public AffineMatrix4x4 getAbsoluteTransformation() {
-    return this.getSgComposite().getAbsoluteTransformation();
+    return this.getSgComposite().getAbsoluteTransformation().mutable();
   }
 
   public AffineMatrix4x4 getTransformation(ReferenceFrame asSeenBy) {
-    return this.getSgComposite().getTransformation(asSeenBy.getSgReferenceFrame());
+    return this.getSgComposite().getTransformation(asSeenBy.getSgReferenceFrame()).mutable();
   }
 
   public StandInImp createStandIn() {
@@ -329,9 +329,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   public Point transformToAwt(Vector4 xyzw, CameraImp<?> cameraImp) {
     final AbstractCamera camera = cameraImp.getSgCamera();
     // get the position relative to the camera, first.
-    Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
+    org.alice.math.immutable.Vector4 pos = this.getSgComposite().transformTo(xyzw.immutable(), camera);
     // 3d -> 2d conversion
-    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos.immutable(), camera);
+    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos, camera);
 
   }
 
@@ -768,13 +768,13 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   public void mendSceneGraphIfNecessary() {
     QualityAssuranceUtilities.inspectAndMendIfNecessary(this.getSgComposite(), new Mender() {
       @Override
-      public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
+      public org.alice.math.immutable.AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
         EntityImp imp = EntityImp.getInstance(sgJoint);
         if (imp instanceof JointImp) {
           JointImp jointImp = (JointImp) imp;
-          return jointImp.getScaledOriginalTransformation();
+          return jointImp.getScaledOriginalTransformation().immutable();
         } else {
-          return AffineMatrix4x4.createIdentity();
+          return org.alice.math.immutable.AffineMatrix4x4.IDENTITY;
         }
       }
     });

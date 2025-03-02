@@ -44,7 +44,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
@@ -57,6 +56,9 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector3f;
 import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.SCamera;
 import org.lgna.story.resources.DynamicResource;
@@ -127,8 +129,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgBoxVisual.setName("Camera Box Visual");
     sgBoxVisual.frontFacingAppearance.setValue(paint);
     Box sgBox = new Box();
-    sgBox.setMinimum(new Point3(-WIDTH / 2, -HEIGHT / 2, 0));
-    sgBox.setMaximum(new Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
+    sgBox.setMinimum(new org.alice.math.immutable.Point3(-WIDTH / 2, -HEIGHT / 2, 0));
+    sgBox.setMaximum(new org.alice.math.immutable.Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
     sgBoxVisual.geometries.setValue(new Geometry[] {sgBox});
     sgBoxVisual.setParent(parent);
     return sgBoxVisual;
@@ -140,7 +142,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     visual.frontFacingAppearance.setValue(paint);
     Transformable transformable = new Transformable();
     transformable.setName(name);
-    transformable.applyTranslation(new Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
+    transformable.applyTranslation(new org.alice.math.immutable.Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
     visual.geometries.setValue(new Geometry[]{createFilmCylinder()});
     visual.setParent(transformable);
     transformable.setParent(parent);
@@ -173,23 +175,19 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     Point3 outerBottomLeft = new Point3(-HEIGHT / 2, -HEIGHT / 2, -LENS_HOOD_LENGTH);
     Point3 outerBottomRight = new Point3(HEIGHT / 2, -HEIGHT / 2, -LENS_HOOD_LENGTH);
 
-    Vector3 topNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerTopRight, innerTopLeft), Vector3.createSubtraction(outerTopLeft, innerTopLeft));
-    topNormal.normalize();
-    Vector3 rightNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerBottomRight, innerTopRight), Vector3.createSubtraction(outerTopRight, innerTopRight));
-    rightNormal.normalize();
-    Vector3 bottomNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerBottomLeft, innerBottomRight), Vector3.createSubtraction(outerBottomRight, innerBottomRight));
-    bottomNormal.normalize();
-    Vector3 leftNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerTopLeft, innerBottomLeft), Vector3.createSubtraction(outerBottomLeft, innerBottomLeft));
-    leftNormal.normalize();
+    Vector3 topNormal = innerTopRight.minus(innerTopLeft).crossProduct(outerTopLeft.minus(innerTopLeft)).normalized();
+    Vector3 rightNormal = innerBottomRight.minus(innerTopRight).crossProduct(outerTopRight.minus(innerTopRight)).normalized();
+    Vector3 bottomNormal = innerBottomLeft.minus(innerBottomRight).crossProduct(outerBottomRight.minus(innerBottomRight)).normalized();
+    Vector3 leftNormal = innerTopLeft.minus(innerBottomLeft).crossProduct(outerBottomLeft.minus(innerBottomLeft)).normalized();
 
-    Vector3f topNormalf = new Vector3f((float) topNormal.x, (float) topNormal.y, (float) topNormal.z);
-    Vector3f rightNormalf = new Vector3f((float) rightNormal.x, (float) rightNormal.y, (float) rightNormal.z);
-    Vector3f bottomNormalf = new Vector3f((float) bottomNormal.x, (float) bottomNormal.y, (float) bottomNormal.z);
-    Vector3f leftNormalf = new Vector3f((float) leftNormal.x, (float) leftNormal.y, (float) leftNormal.z);
-    Vector3f negTopNormalf = Vector3f.createMultiplication(topNormalf, -1);
-    Vector3f negRightNormalf = Vector3f.createMultiplication(rightNormalf, -1);
-    Vector3f negBottomNormalf = Vector3f.createMultiplication(bottomNormalf, -1);
-    Vector3f negLeftNormalf = Vector3f.createMultiplication(leftNormalf, -1);
+    Vector3f topNormalf = new Vector3f((float) topNormal.x(), (float) topNormal.y(), (float) topNormal.z());
+    Vector3f rightNormalf = new Vector3f((float) rightNormal.x(), (float) rightNormal.y(), (float) rightNormal.z());
+    Vector3f bottomNormalf = new Vector3f((float) bottomNormal.x(), (float) bottomNormal.y(), (float) bottomNormal.z());
+    Vector3f leftNormalf = new Vector3f((float) leftNormal.x(), (float) leftNormal.y(), (float) leftNormal.z());
+    Vector3f negTopNormalf = topNormalf.negate();
+    Vector3f negRightNormalf = rightNormalf.negate();
+    Vector3f negBottomNormalf = bottomNormalf.negate();
+    Vector3f negLeftNormalf = leftNormalf.negate();
 
     TextureCoordinate2f uvs = TextureCoordinate2f.createNaN();
 
@@ -272,7 +270,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 
   private void updateViewGeometry() {
     if ((this.sgLaserLineVertices != null) && (this.sgLaserLine != null)) {
-      this.sgLaserLineVertices[1].position.z = -this.farClippingPlane;
+      Vertex vertex = this.sgLaserLineVertices[1];
+      vertex.position = new Point3(vertex.position.x(), vertex.position.y(), -this.farClippingPlane);
       this.sgLaserLine.vertices.setValue(this.sgLaserLineVertices);
     }
   }
@@ -292,7 +291,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     showVisuals(sgVrVisuals, isVrActive && getDisplayEnabled());
     showVisuals(sgCameraVisuals, !isVrActive && getDisplayEnabled());
     if (isVrActive) {
-      sgLaserLineVertices[0].position.y = SCamera.DEFAULT_POSITION.getUp();
+      Vertex vertex = sgLaserLineVertices[0];
+      vertex.position = new Point3(vertex.position.x(), SCamera.DEFAULT_POSITION.getUp(), vertex.position.z());
     }
     sgLaserLine.vertices.setValue(sgLaserLineVertices);
   }

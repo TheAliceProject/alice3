@@ -184,7 +184,7 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
       // Convert from awt to viewport so that the cameras don't have to know about awt.
       Ray ray = cameraAdapter.getRayAtViewportPixel(p.x, viewport.height - p.y, viewport);
 
-      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation().immutable();
+      AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
       return m.transform(ray);
     }
     return Ray.NaN;

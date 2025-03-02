@@ -668,9 +668,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
     for (Visual sgVisual : this.getSgVisuals()) {
       if (sgVisual instanceof SkeletonVisual) {
-        rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans, ignoreJointOrientations);
+        rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans.immutable(), ignoreJointOrientations);
       } else {
-        rv.add(sgVisual, trans);
+        rv.add(sgVisual, trans.immutable());
       }
     }
   }

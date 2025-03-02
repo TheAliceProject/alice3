@@ -132,7 +132,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private void createInterpolationTargets() {
-    AffineMatrix4x4 currentTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+    AffineMatrix4x4 currentTransform = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
 
     this.movementDirection = Vector3.createMultiplication(currentTransform.orientation.backward, -1);
     if (Math.abs(this.movementDirection.x) < .000001) {
@@ -316,17 +316,17 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   @Override
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput)) {
-      this.originalTransformation = this.manipulatedTransformable.getAbsoluteTransformation();
+      this.originalTransformation = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
       createInterpolationTargets();
       if (this.cameraAnimation != null) {
         this.animator.removeFrameObserver(this.cameraAnimation);
       }
-      this.cameraAnimation = new QuaternionAndTranslationTargetBasedAnimation(new QuaternionAndTranslation(this.manipulatedTransformable.getAbsoluteTransformation()), CAMERA_SPEED) {
+      this.cameraAnimation = new QuaternionAndTranslationTargetBasedAnimation(new QuaternionAndTranslation(this.manipulatedTransformable.getAbsoluteTransformation().mutable()), CAMERA_SPEED) {
         @Override
         protected void updateValue(QuaternionAndTranslation value) {
           if (CameraZoomMouseWheelManipulator.this.camera != null) {
             AffineMatrix4x4 m = value.getAffineMatrix();
-            manipulatedTransformable.setTransformation(m, AsSeenBy.SCENE);
+            manipulatedTransformable.setTransformation(m.immutable(), AsSeenBy.SCENE);
           }
         }
       };

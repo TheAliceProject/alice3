@@ -65,7 +65,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
     if (!super.shouldApplyEnding(currentTime, amountToMove)) {
       return false;
     }
-    Point3 positionDif = Point3.createSubtraction(manipulatedTransformable.getAbsoluteTransformation().translation, initialPoint);
+    Point3 positionDif = Point3.createSubtraction(manipulatedTransformable.getAbsoluteTransformation().translation().mutable(), initialPoint);
     double distanceAlreadyMoved = positionDif.calculateMagnitude();
     return amountToMove > distanceAlreadyMoved;
   }
@@ -82,7 +82,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
 
   private void enforceBounds() {
     if (this.bounds != null) {
-      Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
+      Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE).mutable();
       if (currentPos.x > this.bounds.getXMaximum()) {
         currentPos.x = this.bounds.getXMaximum();
       }
@@ -102,7 +102,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
         currentPos.z = this.bounds.getZMinimum();
       }
 
-      this.manipulatedTransformable.setTranslationOnly(currentPos, AsSeenBy.SCENE);
+      this.manipulatedTransformable.setTranslationOnly(currentPos.immutable(), AsSeenBy.SCENE);
     }
   }
 

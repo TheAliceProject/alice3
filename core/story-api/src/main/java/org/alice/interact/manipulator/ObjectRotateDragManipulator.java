@@ -166,21 +166,21 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     this.hidCursor = false;
     this.rotationHandle = handle;
     this.setManipulatedTransformable(this.rotationHandle.getManipulatedObject());
-    this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed(this.rotationHandle.getRotationAxis());
+    this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().transform(rotationHandle.getRotationAxis().immutable()).mutable();
     this.absoluteRotationAxis.normalize();
     //PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
-    startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-    this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    this.initialClickPoint = startInput.getClickPickResult().getPositionInSource().mutable();
+    this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint.immutable(), startInput.getClickPickResult().getSource().getRoot()).mutable();
     Vector3 rotationAxis = this.absoluteRotationAxis;
     this.rotationPlane = Plane.createInstance(this.initialClickPoint, rotationAxis);
 
     this.rotationHandle.initializeSnapReferenceFrame();
 
-    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis);
+    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint(), rotationAxis);
 
     this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
     if (this.objectOriginInPlane == null) {
-      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, Vector3.createMultiplication(rotationAxis, -1.0d));
+      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint(), Vector3.createMultiplication(rotationAxis, -1.0d));
       this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
     }
     if (this.objectOriginInPlane != null) {
@@ -190,7 +190,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
       this.originalMouseRightDirection = Vector3.createCrossProduct(this.originalMouseDirection, rotationAxis);
 
       this.rotationHandle.setSphereVisibility(true);
-      Vector3 sphereDirection = this.rotationHandle.transformFromAbsolute(toMouse);
+      Vector3 sphereDirection = this.rotationHandle.transformFromAbsolute(toMouse.immutable()).mutable();
       this.rotationHandle.setSphereDirection(sphereDirection);
       //Hide the cursor
 
@@ -198,9 +198,9 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
     //    DEBUG_setDebugSpherePosition(this.initialClickPoint);
 
-    this.cameraFacingPlane = Plane.createInstance(this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
-    this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
-    this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation();
+    this.cameraFacingPlane = Plane.createInstance(this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation().backward().mutable());
+    this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation().mutable());
+    this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation().mutable();
     this.originalAngleBasedOnMouse = getRotationBasedOnMouse(startInput.getMouseLocation());
   }
 
@@ -220,12 +220,12 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
-      AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
+      AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation().backward().mutable());
       double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
       if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
         Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.cameraFacingPlane, pickRay);
         Vector3 fromOriginalMouseToCurrentMouse = Vector3.createSubtraction(pointInPlane, this.initialClickPoint);
-        Vector3 rotationRightAxis = Vector3.createCrossProduct(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
+        Vector3 rotationRightAxis = Vector3.createCrossProduct(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation().backward().mutable());
         double mouseDistance = Vector3.calculateDotProduct(fromOriginalMouseToCurrentMouse, rotationRightAxis);
 
         return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
@@ -279,8 +279,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
       Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
       boolean didSnap = !snappedAngle.isCloseTo(angleDif);
 
-      this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
-      this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), snappedAngle, this.rotationHandle.getReferenceFrame());
+      this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation.immutable());
+      this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis().immutable(), snappedAngle, this.rotationHandle.getReferenceFrame());
       manipulatedTransformable.notifyTransformationListeners();
 
       if (didSnap) {

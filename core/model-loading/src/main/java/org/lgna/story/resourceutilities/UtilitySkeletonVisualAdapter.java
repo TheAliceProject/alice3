@@ -109,7 +109,7 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
     }
     AffineMatrix4x4 absoluteLocalTransform = parentTransform;
     if (currentNode instanceof Transformable) {
-      absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable) currentNode).localTransformation.getValue());
+      absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable) currentNode).localTransformation.getValue().mutable());
       if (currentNode instanceof Joint) {
         AxisAlignedBox box = new AxisAlignedBox();
         for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {

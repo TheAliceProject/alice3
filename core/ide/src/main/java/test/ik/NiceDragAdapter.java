@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
@@ -98,9 +97,9 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     return MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e);
   }
 
-  protected void updateTranslation(Transformable sgDragAcceptor, Tuple3 xyz, ReferenceFrame asSeenBy) {
+  protected void updateTranslation(Transformable sgDragAcceptor, Point3 xyz, ReferenceFrame asSeenBy) {
     if (sgDragAcceptor != null) {
-      sgDragAcceptor.setTranslationOnly(xyz, asSeenBy);
+      sgDragAcceptor.setTranslationOnly(xyz.immutable(), asSeenBy);
     }
   }
 
@@ -129,8 +128,8 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
       if (sgVisual != null) {
         m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
         if (m_sgDragAcceptor != null) {
-          m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
-          m_xyzInAbsoluteAtPress = m_sgCamera.transformToAbsolute(pickResult.getPositionInSource());
+          m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE).mutable();
+          m_xyzInAbsoluteAtPress = m_sgCamera.transformToAbsolute(pickResult.getPositionInSource()).mutable();
         }
       }
       this.yDelta = 0.0;
@@ -143,11 +142,11 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     }
 
     if (m_sgDragAcceptor != null) {
-      AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
+      AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation().mutable();
       m_offset = Vector3.createSubtraction(m_xyzInAbsoluteAtPress, m.translation);
-      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
+      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo(m_xyzInAbsoluteAtPress.immutable(), m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */).mutable();
       if (!dragStyle.isShiftDown()) {
-        AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
+        AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation().mutable();
         Vector3 axis = Vector3.createSubtraction(cameraAbsolute.translation, m_xyzInAbsoluteAtPress);
         axis.normalize();
         m_planeInAbsolute = Plane.createInstance(m_xyzInAbsoluteAtPress, axis);
@@ -172,12 +171,12 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     } else {
       if (dragStyle.isShiftDown()) {
         //angular drag
-        AffineMatrix4x4 cameraMatrixWrtDragged = m_sgCamera.getTransformation(m_sgDragAcceptor);
+        AffineMatrix4x4 cameraMatrixWrtDragged = m_sgCamera.getTransformation(m_sgDragAcceptor).mutable();
         if (dragStyle.isControlDown()) {
-          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.up, new AngleInRadians(xDeltaSincePrevious * 0.01));
+          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.up.immutable(), new AngleInRadians(xDeltaSincePrevious * 0.01));
         } else {
-          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.backward, new AngleInRadians(xDeltaSincePrevious * 0.01));
-          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.right, new AngleInRadians(yDeltaSincePrevious * 0.01));
+          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.backward.immutable(), new AngleInRadians(xDeltaSincePrevious * 0.01));
+          m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.right.immutable(), new AngleInRadians(yDeltaSincePrevious * 0.01));
         }
       } else {
         //linear drag
@@ -206,7 +205,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     }
     if (isOriginalAsOpposedToStyleChange) {
       if (m_sgDragAcceptor != null) {
-        AffineMatrix4x4 redoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
+        AffineMatrix4x4 redoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE).mutable();
         if (getUndoRedoManager() != null) {
           getUndoRedoManager().pushAlreadyRunActionOntoUndoStack(new SetPointOfViewAction(getAnimator(), m_sgDragAcceptor, AsSeenBy.SCENE, m_undoPOV, redoPOV));
         }

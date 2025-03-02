@@ -75,7 +75,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
   public boolean doStartManipulator(InputState startInput) {
     if (manipulatedTransformable != null) {
       startTime = System.currentTimeMillis() * .001d;
-      initialPoint.set(manipulatedTransformable.getAbsoluteTransformation().translation);
+      initialPoint.set(manipulatedTransformable.getAbsoluteTransformation().translation().mutable());
       return true;
     } else {
       return false;
@@ -94,7 +94,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
     double currentTime = System.currentTimeMillis() * .001d;
     double amountToMove = CLICK_TIME * RATE;
     if (shouldApplyEnding(currentTime, amountToMove)) {
-      manipulatedTransformable.setTranslationOnly(initialPoint, manipulatedTransformable.getRoot());
+      manipulatedTransformable.setTranslationOnly(initialPoint.immutable(), manipulatedTransformable.getRoot());
       applyInput(previousInput, amountToMove);
     }
   }

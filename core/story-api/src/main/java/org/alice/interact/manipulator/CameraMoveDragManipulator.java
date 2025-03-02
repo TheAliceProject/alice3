@@ -91,9 +91,9 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
     Vector3 translationX = Vector3.createMultiplication(moveXVector, xChange * this.worldUnitsPerPixelX);
     Vector3 translationY = Vector3.createMultiplication(moveYVector, yChange * this.worldUnitsPerPixelY);
 
-    this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
-    this.manipulatedTransformable.applyTranslation(translationX, AsSeenBy.SCENE);
-    this.manipulatedTransformable.applyTranslation(translationY, AsSeenBy.SCENE);
+    this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation.immutable());
+    this.manipulatedTransformable.applyTranslation(translationX.immutable(), AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(translationY.immutable(), AsSeenBy.SCENE);
     manipulatedTransformable.notifyTransformationListeners();
   }
 
@@ -109,9 +109,9 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
   @Override
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput)) {
-      this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
+      this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation().mutable());
       this.originalMousePoint = new Point(startInput.getMouseLocation());
-      AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+      AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
       initialCameraDotVertical = Vector3.calculateDotProduct(absoluteTransform.orientation.backward, Vector3.accessPositiveYAxis());
       initialCameraDotVertical = Math.abs(initialCameraDotVertical);
       if (this.camera instanceof OrthographicCamera) {
@@ -135,7 +135,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
       pickDistance = -1;
       Vector3 cameraForward = new Vector3(absoluteTransform.orientation.backward);
       cameraForward.multiply(-1.0d);
-      Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+      Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint(), cameraForward));
       if (pickPoint != null) {
         pickDistance = Point3.calculateDistanceBetween(pickPoint, absoluteTransform.translation);
       }

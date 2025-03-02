@@ -82,7 +82,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
     if ((0 <= geometryIndex) && (geometryIndex < this.glrGeometries.length)) {
-      Matrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation().immutable();
+      Matrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
       Matrix4x4 m = inverseAbsoluteTransformationOfSource.times(absoluteTransformation);
       return this.glrGeometries[geometryIndex].getIntersectionInSource(ray, m, subElement);
     }

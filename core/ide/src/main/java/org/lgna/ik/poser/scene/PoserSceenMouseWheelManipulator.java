@@ -86,7 +86,7 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 
   private double getDistance() {
     Point3 modelLoc = model.getAbsoluteTransformation().translation;
-    Point3 cameraLoc = camera.getAbsoluteTransformation().translation;
+    Point3 cameraLoc = camera.getAbsoluteTransformation().translation().mutablePoint();
     modelLoc.z = 1;
     cameraLoc.z = 1;
     double distance = Point3.calculateDistanceBetween(modelLoc, cameraLoc);
@@ -105,7 +105,7 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
     if (this.camera instanceof SymmetricPerspectiveCamera) {
       AbstractTransformable cameraTransformable = getManipulatedTransformable();
       //      super.zoomCamera( direction );
-      AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation();
+      AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation().mutable();
       OrthogonalMatrix3x3 orientation = originalTransformation.orientation;
       Vector3 movementDirection = Vector3.createMultiplication(orientation.backward, direction);
       movementDirection.normalize();

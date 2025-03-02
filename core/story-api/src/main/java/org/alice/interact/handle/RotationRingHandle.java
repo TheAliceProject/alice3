@@ -134,7 +134,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
     this.rotationAxis.normalize();
     this.sphereDirection.set(0.0d, 0.0d, -1.0d);
     this.handlePosition = handlePosition;
-    this.localTransformation.setValue(this.getTransformationForAxis(this.rotationAxis));
+    this.localTransformation.setValue(this.getTransformationForAxis(this.rotationAxis).immutable());
     this.sgVisual.geometries.setValue(new Geometry[] {this.sgTorus});
   }
 
@@ -193,7 +193,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
       if (this.handleOffset.isNaN()) {
         this.handleOffset.set(0.0d, 0.0d, 0.0d);
       }
-      this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
+      this.setTranslationOnly(this.handleOffset.immutable(), this.getReferenceFrame());
       notifyTransformationListeners();
     }
   }
@@ -225,7 +225,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
   }
 
   public Point3 getSphereLocation(ReferenceFrame referenceFrame) {
-    return this.sphereTransformable.getTranslation(referenceFrame);
+    return this.sphereTransformable.getTranslation(referenceFrame).mutable();
   }
 
   public double getRadius() {
@@ -233,7 +233,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
   }
 
   protected void placeSphere() {
-    this.sphereTransformable.setTranslationOnly(Point3.createMultiplication(this.sphereDirection, this.sgTorus.majorRadius.getValue()), this);
+    this.sphereTransformable.setTranslationOnly(Point3.createMultiplication(this.sphereDirection, this.sgTorus.majorRadius.getValue()).immutable(), this);
     notifyTransformationListeners();
   }
 

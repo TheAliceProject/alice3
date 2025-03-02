@@ -137,7 +137,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
     if (element instanceof Component) {
       Component sgComponent = (Component) element;
       if ((sgComponent.getRoot() != null) && (sgComponent.getParent() != null)) {
-        this.absoluteTransform = sgComponent.getAbsoluteTransformation();
+        this.absoluteTransform = sgComponent.getAbsoluteTransformation().mutable();
       }
       if (sgComponent instanceof Visual) {
         Visual visual = (Visual) sgComponent;

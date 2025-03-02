@@ -45,11 +45,11 @@ package org.alice.interact.handle;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.interact.MovementDirection;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.debug.DebugInteractUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author David Culyba
@@ -108,7 +108,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   public ReferenceFrame getReferenceFrame() {
     if (this.manipulatedObject != null) {
       this.standUpReference.setParent(this.manipulatedObject);
-      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
       this.standUpReference.setAxesOnlyToStandUp();
       return this.standUpReference;
     } else {
@@ -118,8 +118,8 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 
   @Override
   public void positionRelativeToObject() {
-    this.setTransformation(this.getTransformationForAxis(this.rotationAxis), this.getReferenceFrame());
-    this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
+    this.setTransformation(this.getTransformationForAxis(this.rotationAxis).immutable(), this.getReferenceFrame());
+    this.setTranslationOnly(this.handleOffset.immutable(), this.getReferenceFrame());
     notifyTransformationListeners();
   }
 

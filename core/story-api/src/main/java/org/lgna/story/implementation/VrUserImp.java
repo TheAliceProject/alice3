@@ -60,7 +60,7 @@ public class VrUserImp extends TransformableImp {
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(AxisAlignedBox.Empty, trans);
+    rv.addBoundingBox(AxisAlignedBox.Empty, trans.immutable());
   }
 
   public void animateSetScale(double newScale, double duration, Style style) {

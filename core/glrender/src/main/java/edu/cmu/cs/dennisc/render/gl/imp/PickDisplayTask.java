@@ -139,7 +139,7 @@ import java.util.Comparator;
       } else {
         Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport);
         ray = ray.normalized();
-        AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
+        AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
         for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
           selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
         }

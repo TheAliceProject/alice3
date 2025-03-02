@@ -86,20 +86,20 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
   }
 
   @Override
-  protected AffineMatrix4x4 accessLocalTransformation() {
+  public org.alice.math.immutable.AffineMatrix4x4 getLocalTransformation() {
     AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint(this.jointId);
     if (this.actualTranslation != null) {
       aliceTransform.translation.set(this.actualTranslation);
     }
     aliceTransform.translation.setToMultiplication(aliceTransform.translation, scale);
-    return aliceTransform;
+    return aliceTransform.immutable();
   }
 
   @Override
-  protected void touchLocalTransformation(AffineMatrix4x4 m) {
+  protected void touchLocalTransformation(org.alice.math.immutable.AffineMatrix4x4 m) {
     AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint(this.jointId);
-    current.orientation.setValue(m.orientation);
-    final Point3 unscaledTranslation = m.translation;
+    current.orientation.setValue(m.orientation().mutable());
+    final Point3 unscaledTranslation = m.translation().mutablePoint();
     // Remove scale before sending to native library
     unscaledTranslation.divide(scale);
     current.translation.set(unscaledTranslation);

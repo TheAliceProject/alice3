@@ -29,9 +29,9 @@ public class AliceModelLoader {
 
   private static void printJoints(Joint j, String indent) {
     System.out.println(indent + "Joint " + j.jointID.getValue());
-    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation, j.localTransformation.getValue().orientation);
+    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation(), j.localTransformation.getValue().orientation());
     System.out.println();
-    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
+    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation().mutable();
     PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation);
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
@@ -64,7 +64,7 @@ public class AliceModelLoader {
     Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-      AffineMatrix4x4 inverseTransform = iatwp.getInverseAbsoluteTransformation();
+      AffineMatrix4x4 inverseTransform = iatwp.getInverseAbsoluteTransformation().mutable();
       AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse(inverseTransform);
       System.out.println("  joint: " + pair.getKey());
       System.out.println("  inverse absolute transform:");
@@ -112,11 +112,11 @@ public class AliceModelLoader {
 
   public static void translateSkeletonVisual(SkeletonVisual sv, Vector3 translation) {
     if (sv.skeleton.getValue() != null) {
-      AffineMatrix4x4 rootTransform = sv.skeleton.getValue().localTransformation.getValue();
+      AffineMatrix4x4 rootTransform = sv.skeleton.getValue().localTransformation.getValue().mutable();
       rootTransform.translation.x += translation.x();
       rootTransform.translation.y += translation.y();
       rootTransform.translation.z += translation.z();
-      sv.skeleton.getValue().localTransformation.setValue(rootTransform);
+      sv.skeleton.getValue().localTransformation.setValue(rootTransform.immutable());
     }
     for (Geometry g : sv.geometries.getValue()) {
       if (g instanceof Mesh) {

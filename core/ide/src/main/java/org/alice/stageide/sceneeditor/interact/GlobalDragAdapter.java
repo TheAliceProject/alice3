@@ -658,7 +658,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
   public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
     AbstractTransformable sgManipulatedTransformable = manipulator.getManipulatedTransformable();
     if (sgManipulatedTransformable != null) {
-      AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
+      AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation().mutable();
 
       if (newTransformation.equals(originalTransformation)) {
         Logger.warning("Adding an undoable action for a manipulation that didn't actually change the transformation.");

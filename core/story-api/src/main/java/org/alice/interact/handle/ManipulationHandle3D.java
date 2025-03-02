@@ -203,7 +203,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     this.state = new HandleState(handle.state);
     this.handleSet.clear();
     this.handleSet.addSet(handle.handleSet);
-    this.localTransformation.setValue(new AffineMatrix4x4(handle.localTransformation.getValue()));
+    this.localTransformation.setValue(handle.localTransformation.getValue());
     this.criteriaManager = handle.criteriaManager;
     this.handleManager = handle.handleManager;
     this.manipulation = handle.manipulation;
@@ -274,7 +274,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     if (ManipulationHandle3D.this.dragAdapter != null) {
       AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
       if (activeCamera instanceof SymmetricPerspectiveCamera) {
-        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation;
+        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation().mutablePoint();
         ManipulationHandle3D.this.setCameraPosition(cameraLocation);
       }
     }
@@ -318,15 +318,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   }
 
   private void invertParentScale(Composite parent) {
-    OrthogonalMatrix3x3 local = localTransformation.getValue().orientation;
+    OrthogonalMatrix3x3 local = localTransformation.getValue().orientation().mutable();
     // Remove previous scale
     local.normalizeColumns();
     if (parent != null) {
-      OrthogonalMatrix3x3 parentOrientation = parent.getAbsoluteTransformation().orientation;
+      OrthogonalMatrix3x3 parentOrientation = parent.getAbsoluteTransformation().orientation().mutable();
       local.right.multiply(1 / parentOrientation.right.calculateMagnitude());
       local.up.multiply(1 / parentOrientation.up.calculateMagnitude());
       local.backward.multiply(1 / parentOrientation.backward.calculateMagnitude());
     }
+    // Write changed orientation into local transformation
+    localTransformation.setValue(new org.alice.math.immutable.AffineMatrix4x4(local.immutable(), localTransformation.getValue().translation()));
   }
 
   @Override
@@ -474,7 +476,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   public float calculateCameraRelativeOpacity(Point3 cameraPosition) {
     if ((this.getParentTransformable() != null) && (cameraPosition != null)) {
-      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation;
+      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation().mutablePoint();
       double distance = Point3.calculateDistanceBetween(cameraPosition, handlePosition);
       if (distance < .2) {
         return 0.0f;

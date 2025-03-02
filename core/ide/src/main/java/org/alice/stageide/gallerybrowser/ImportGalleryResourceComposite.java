@@ -327,7 +327,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
     private ActionOperation rotateOperation(String rotateDir, AffineMatrix4x4 rotation) {
       return createActionOperation(rotateDir, (userActivity, source) -> {
-        skeletonVisual.rotate(rotation);
+        skeletonVisual.rotate(rotation.immutable());
         return null;
       });
     }

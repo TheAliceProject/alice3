@@ -83,7 +83,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public AffineMatrix4x4 getLocalTransformation() {
-    return this.getSgComposite().getLocalTransformation();
+    return this.getSgComposite().getLocalTransformation().mutable();
   }
 
   public Point3 getLocalPosition() {
@@ -95,7 +95,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public void setLocalTransformation(AffineMatrix4x4 transformation) {
-    this.getSgComposite().setLocalTransformation(transformation);
+    this.getSgComposite().setLocalTransformation(transformation.immutable());
   }
 
   void setLocalOrientation(OrthogonalMatrix3x3 orientation) {
@@ -189,7 +189,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public void applyRotationInRadians(Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy) {
-    this.getSgComposite().applyRotationAboutArbitraryAxisInRadians(axis, angleInRadians, asSeenBy.getSgReferenceFrame());
+    this.getSgComposite().applyRotationAboutArbitraryAxisInRadians(axis.immutable(), angleInRadians, asSeenBy.getSgReferenceFrame());
   }
 
   public void applyRotationInRadians(Vector3 axis, double angleInRadians) {
@@ -345,7 +345,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     @Override
     protected void setM(AffineMatrix4x4 m) {
-      this.getSubject().getSgComposite().setTransformation(m, other.getSgReferenceFrame());
+      this.getSubject().getSgComposite().setTransformation(m.immutable(), other.getSgReferenceFrame());
     }
   }
 
@@ -456,14 +456,14 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
   private static class LocalOrientationData extends PreSetOrientationData {
     LocalOrientationData(AbstractTransformableImp subject, OrthogonalMatrix3x3 m1) {
-      super(subject, subject.getSgComposite().getLocalTransformation().orientation, m1);
+      super(subject, subject.getSgComposite().getLocalTransformation().orientation().mutable(), m1);
     }
 
     @Override
     protected void setM(OrthogonalMatrix3x3 orientation) {
-      AffineMatrix4x4 prevM = this.getSubject().getSgComposite().getLocalTransformation();
+      AffineMatrix4x4 prevM = this.getSubject().getSgComposite().getLocalTransformation().mutable();
       AffineMatrix4x4 nextM = new AffineMatrix4x4(orientation, prevM.translation);
-      this.getSubject().getSgComposite().setLocalTransformation(nextM);
+      this.getSubject().getSgComposite().setLocalTransformation(nextM.immutable());
     }
   }
 
@@ -535,7 +535,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     @Override
     protected void setM(OrthogonalMatrix3x3 m) {
-      this.getSubject().getSgComposite().setAxesOnly(m, this.upAsSeenBy.getSgReferenceFrame());
+      this.getSubject().getSgComposite().setAxesOnly(m.immutable(), this.upAsSeenBy.getSgReferenceFrame());
     }
   }
 
@@ -565,7 +565,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     @Override
     protected void setM(OrthogonalMatrix3x3 m) {
-      this.getSubject().getSgComposite().setAxesOnly(m, this.upAsSeenBy.getSgReferenceFrame());
+      this.getSubject().getSgComposite().setAxesOnly(m.immutable(), this.upAsSeenBy.getSgReferenceFrame());
     }
   }
 
@@ -617,7 +617,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   //    return m.orientation;
   //  }
   private void setOrientationOnly(EntityImp target, Orientation offset) {
-    this.getSgComposite().setAxesOnly(offset != null ? offset : OrthogonalMatrix3x3.accessIdentity(), target.getSgComposite());
+    this.getSgComposite().setAxesOnly(offset != null ? offset.immutable() : org.alice.math.immutable.OrthogonalMatrix3x3.IDENTITY, target.getSgComposite());
   }
 
   public void animateOrientationOnly(final EntityImp target, Orientation offset, double duration, Style style) {
@@ -715,7 +715,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     @Override
     protected void epilogue() {
-      this.subject.getSgComposite().setTranslationOnly(this.m1.translation, this.asSeenBy.getSgReferenceFrame());
+      this.subject.getSgComposite().setTranslationOnly(this.m1.translation.immutable(), this.asSeenBy.getSgReferenceFrame());
     }
   }
 
@@ -772,7 +772,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     }
 
     public void setTranslation(AffineMatrix4x4 translation) {
-      this.subject.getSgComposite().setTransformation(translation, this.asSeenBy.getSgReferenceFrame());
+      this.subject.getSgComposite().setTransformation(translation.immutable(), this.asSeenBy.getSgReferenceFrame());
     }
   }
 
@@ -817,7 +817,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   private void setPositionOnly(EntityImp target, Point3 offset) {
-    this.getSgComposite().setTranslationOnly(offset != null ? offset : Point3.ORIGIN,
+    this.getSgComposite().setTranslationOnly(offset != null ? offset.immutable() : org.alice.math.immutable.Point3.ORIGIN,
                                              target != null ? target.getSgComposite() : AsSeenBy.SCENE);
   }
 
@@ -883,7 +883,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     if (offset == null) {
       offset = AffineMatrix4x4.accessIdentity();
     }
-    this.getSgComposite().setTransformation(offset, target.getSgReferenceFrame());
+    this.getSgComposite().setTransformation(offset.immutable(), target.getSgReferenceFrame());
   }
 
   public void setTransformation(ReferenceFrame target) {
@@ -934,7 +934,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public double getDistanceTo(EntityImp other) {
-    Point3 translation = this.getSgComposite().getTranslation(other.getSgComposite());
+    Point3 translation = this.getSgComposite().getTranslation(other.getSgComposite()).mutable();
     return translation.calculateMagnitude();
   }
 
@@ -943,7 +943,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
       AxisAlignedBox bbox = entity.getDynamicAxisAlignedMinimumBoundingBox(asSeenBy);
       return bbox.getMaximum();
     } else {
-      return entity.getSgComposite().getTranslation(asSeenBy.getSgReferenceFrame());
+      return entity.getSgComposite().getTranslation(asSeenBy.getSgReferenceFrame()).mutable();
     }
   }
 
@@ -952,7 +952,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
       AxisAlignedBox bbox = entity.getDynamicAxisAlignedMinimumBoundingBox(asSeenBy);
       return bbox.getMinimum();
     } else {
-      return entity.getSgComposite().getTranslation(asSeenBy.getSgReferenceFrame());
+      return entity.getSgComposite().getTranslation(asSeenBy.getSgReferenceFrame()).mutable();
     }
   }
 

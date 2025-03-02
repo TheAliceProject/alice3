@@ -144,7 +144,7 @@ public class PointOfViewAnimation extends AffineAnimation {
   @Override
   protected void prologue() {
     if (m_povBegin.isNaN()) {
-      getSubject().getTransformation(m_pov0Runtime, getAsSeenBy());
+      m_pov0Runtime.set(getSubject().getTransformation(getAsSeenBy()).mutable());
     } else {
       m_pov0Runtime.set(m_povBegin);
     }
@@ -167,13 +167,13 @@ public class PointOfViewAnimation extends AffineAnimation {
 
     m_povRuntime.set(m_q, m_t);
 
-    getSubject().setTransformation(m_povRuntime, getAsSeenBy());
+    getSubject().setTransformation(m_povRuntime.immutable(), getAsSeenBy());
     getSubject().notifyTransformationListeners();
   }
 
   @Override
   protected void epilogue() {
-    getSubject().setTransformation(m_povEnd, getAsSeenBy());
+    getSubject().setTransformation(m_povEnd.immutable(), getAsSeenBy());
     getSubject().notifyTransformationListeners();
     m_pov0Runtime.setNaN();
     m_povRuntime.setNaN();

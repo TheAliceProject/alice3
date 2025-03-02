@@ -90,13 +90,13 @@ public class SnapUtilities {
 
   public static void showXAxis(Point3 position, Composite parent) {
     X_AXIS_LINE.setParent(parent);
-    X_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    X_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void showXAxis(Point3 position, Vector3 newDirection, Composite parent) {
     X_AXIS_LINE.setLine(newDirection);
     X_AXIS_LINE.setParent(parent);
-    X_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    X_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void hideXAxis() {
@@ -106,13 +106,13 @@ public class SnapUtilities {
 
   public static void showYAxis(Point3 position, Composite parent) {
     Y_AXIS_LINE.setParent(parent);
-    Y_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    Y_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void showYAxis(Point3 position, Vector3 newDirection, Composite parent) {
     Y_AXIS_LINE.setLine(newDirection);
     Y_AXIS_LINE.setParent(parent);
-    Y_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    Y_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void hideYAxis() {
@@ -122,13 +122,13 @@ public class SnapUtilities {
 
   public static void showZAxis(Point3 position, Composite parent) {
     Z_AXIS_LINE.setParent(parent);
-    Z_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    Z_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void showZAxis(Point3 position, Vector3 newDirection, Composite parent) {
     Z_AXIS_LINE.setLine(newDirection);
     Z_AXIS_LINE.setParent(parent);
-    Z_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    Z_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void hideZAxis() {
@@ -139,7 +139,7 @@ public class SnapUtilities {
   public static void showArbitraryAxis(Point3 position, Vector3 direction, Composite parent) {
     ARBITRARY_AXIS_LINE.setLine(direction);
     ARBITRARY_AXIS_LINE.setParent(parent);
-    ARBITRARY_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+    ARBITRARY_AXIS_LINE.setTranslationOnly(position.immutable(), AsSeenBy.SCENE);
   }
 
   public static void hideArbitraryAxis() {
@@ -159,7 +159,7 @@ public class SnapUtilities {
 
   public static void showSnapSphere(Point3 location, Point3 ringCenter, Composite parent) {
     ANGLE_SNAP_SPHERE.setParent(parent);
-    ANGLE_SNAP_SPHERE.setTranslationOnly(location, AsSeenBy.SCENE);
+    ANGLE_SNAP_SPHERE.setTranslationOnly(location.immutable(), AsSeenBy.SCENE);
     ANGLE_SNAP_SPHERE.setLineDirection(ringCenter, location);
   }
 
@@ -212,8 +212,8 @@ public class SnapUtilities {
       boundingBox.scale(getTransformableScale(t));
     }
 
-    Point3 boxMin = t.transformToAbsolute(boundingBox.getMinimum());
-    Point3 boxMax = t.transformToAbsolute(boundingBox.getMaximum());
+    Point3 boxMin = t.transformToAbsolute(boundingBox.getMinimum().immutable()).mutable();
+    Point3 boxMax = t.transformToAbsolute(boundingBox.getMaximum().immutable()).mutable();
     boundingBox.setMaximum(boxMax);
     boundingBox.setMinimum(boxMin);
     return boundingBox;
@@ -224,7 +224,7 @@ public class SnapUtilities {
     Point3 returnSnapPosition = new Point3(newPosition);
 
     boolean didSnap = false;
-    Vector3 movementDelta = Vector3.createSubtraction(newPosition, toSnap.getAbsoluteTransformation().translation);
+    Vector3 movementDelta = Vector3.createSubtraction(newPosition, toSnap.getAbsoluteTransformation().translation().mutable());
     if (movementDelta.y != 0) {
       AxisAlignedBox bbox = getBoundingBox(toSnap);
       bbox.translate(movementDelta); //move the bounding box to where the newPosition would place it
@@ -247,7 +247,7 @@ public class SnapUtilities {
   }
 
   public static boolean isEdgeOn(AbstractCamera camera, Vector3 upVector, double epsilon) {
-    double dotProd = Vector3.calculateDotProduct(camera.getAbsoluteTransformation().orientation.backward, upVector);
+    double dotProd = Vector3.calculateDotProduct(camera.getAbsoluteTransformation().orientation().backward().mutable(), upVector);
     return (Math.abs(dotProd)) <= epsilon;
   }
 
@@ -294,7 +294,7 @@ public class SnapUtilities {
 
     //    if (isEdgeOn(camera, snapTransform.orientation.up, .9)) {
     if (Math.abs(snapVector.y) > MIN_SNAP_DELTA) {
-      AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+      AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation().mutable();
       double dotRight = Vector3.calculateDotProduct(snapTransform.orientation.right, cameraTransform.orientation.backward);
       double dotBackward = Vector3.calculateDotProduct(snapTransform.orientation.backward, cameraTransform.orientation.backward);
       Vector3 lineToUse = (Math.abs(dotRight) < Math.abs(dotBackward)) ? snapTransform.orientation.right : snapTransform.orientation.backward;
@@ -321,7 +321,7 @@ public class SnapUtilities {
     toReferenceFrame.transform(originalPosition);
     Point3 returnSnapPosition = new Point3(originalPosition);
     boolean didSnap = false;
-    Point3 currentObjectTranslation = toSnap.getAbsoluteTransformation().translation;
+    Point3 currentObjectTranslation = toSnap.getAbsoluteTransformation().translation().mutablePoint();
     toReferenceFrame.transform(currentObjectTranslation);
     Vector3 movementDelta = Vector3.createSubtraction(originalPosition, currentObjectTranslation);
     if (movementDelta.x != 0) {
@@ -386,11 +386,11 @@ public class SnapUtilities {
   }
 
   private static AffineMatrix4x4 getFrameTransform(ReferenceFrame referenceFrame) {
-    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getAbsoluteTransformation();
+    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getAbsoluteTransformation().mutable();
   }
 
   private static AffineMatrix4x4 getFrameInverseTransform(ReferenceFrame referenceFrame) {
-    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getInverseAbsoluteTransformation();
+    return referenceFrame == null ? AffineMatrix4x4.createIdentity() : referenceFrame.getInverseAbsoluteTransformation().mutable();
   }
 
   public static Point3 doMovementSnapping(AbstractTransformable t, Point3 currentPosition, DragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera) {
@@ -499,7 +499,7 @@ public class SnapUtilities {
   }
 
   public static void showSnapRotation(RotationRingHandle rotationHandle) {
-    AffineMatrix4x4 handleTransform = rotationHandle.getAbsoluteTransformation();
+    AffineMatrix4x4 handleTransform = rotationHandle.getAbsoluteTransformation().mutable();
     Vector3 snapDirection = Vector3.createMultiplication(handleTransform.orientation.backward, rotationHandle.getRadius() * -1);
     Point3 snapSphereLocation = Point3.createAddition(handleTransform.translation, snapDirection);
     showSnapSphere(snapSphereLocation, handleTransform.translation, rotationHandle.getRoot());

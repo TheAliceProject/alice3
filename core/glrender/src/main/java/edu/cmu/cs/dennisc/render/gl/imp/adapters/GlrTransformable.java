@@ -60,7 +60,7 @@ public class GlrTransformable<T extends Transformable> extends GlrAbstractTransf
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.localTransformation) {
-      owner.localTransformation.getValue().getAsColumnMajorArray16(this.localTransformation);
+      owner.localTransformation.getValue().asColumnMajorArray16(this.localTransformation);
     } else {
       super.propertyChanged(property);
     }

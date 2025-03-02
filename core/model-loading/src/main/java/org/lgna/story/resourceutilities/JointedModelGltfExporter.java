@@ -341,7 +341,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     Node node = new Node();
     node.setName(getUserJointIdentifier(joint.jointID.getValue()));
 
-    final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue();
+    final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue().mutable();
     float[] matrixValues = new float[16];
     matrixValues = jointTransform.getAsColumnMajorArray16(matrixValues);
     node.setMatrix(matrixValues);
@@ -659,7 +659,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     int index = 0;
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : entries) {
       skin.addJoints(jointNodes.get(getUserJointIdentifier(entry.getKey())));
-      AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation();
+      AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation().mutable();
       inverseBindMatrix.getAsColumnMajorArray16(matrix);
       System.arraycopy(matrix, 0, matrices, index, 16);
       index += 16;

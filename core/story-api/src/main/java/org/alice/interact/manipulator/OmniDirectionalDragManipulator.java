@@ -142,7 +142,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected Plane createCameraPickPlane(Point3 clickPoint) {
-    Vector3 clickPlaneNormal = this.getCamera().getAxes(AsSeenBy.SCENE).backward;
+    Vector3 clickPlaneNormal = this.getCamera().getAxes(AsSeenBy.SCENE).backward().mutable();
     //    clickPlaneNormal.y += 2d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
     clickPlaneNormal.normalize();
     return Plane.createInstance(clickPoint, clickPlaneNormal);
@@ -161,7 +161,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     }
 
     Vector3 mouseRelativeMovement = new Vector3(mouseVector.x, 0d, mouseVector.y);
-    mouseRelativeMovement = getCamera().getRoot().transformFrom(mouseRelativeMovement, getCamera());
+    mouseRelativeMovement = getCamera().getRoot().transformFrom(mouseRelativeMovement.immutable(), getCamera()).mutable();
     mouseRelativeMovement.y = 0d;
     mouseRelativeMovement.normalize();
 
@@ -189,12 +189,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
 
-    return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+    return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation().mutablePoint());
   }
 
   protected Point3 getPerspectivePositionBasedOnInput(InputState currentInput) {
     Point mousePoint = new Point(currentInput.getMouseLocation().x + this.mousePlaneOffset.x, currentInput.getMouseLocation().y + this.mousePlaneOffset.y);
-    Vector3 cameraForward = this.getCamera().getParent().getAbsoluteTransformation().orientation.backward;
+    Vector3 cameraForward = this.getCamera().getParent().getAbsoluteTransformation().orientation().backward().mutable();
     cameraForward.multiply(-1);
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
 
@@ -222,7 +222,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     } else if ((levelPickPoint != null) && (skewedPickPoint == null)) {
       pointToUse = levelPickPoint;
     } else {
-      Point3 cameraPosition = this.getCamera().getParent().getAbsoluteTransformation().translation;
+      Point3 cameraPosition = this.getCamera().getParent().getAbsoluteTransformation().translation().mutablePoint();
       double levelDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, levelPickPoint);
       double skewedDistanceToCamera = Point3.calculateDistanceBetween(cameraPosition, skewedPickPoint);
       if (levelDistanceToCamera <= skewedDistanceToCamera) {
@@ -232,7 +232,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
       }
     }
     if (pointToUse != null) {
-      pointToUse.y = this.manipulatedTransformable.getAbsoluteTransformation().translation.y;
+      pointToUse.y = this.manipulatedTransformable.getAbsoluteTransformation().translation().y();
       return pointToUse;
     } else {
       return null;
@@ -243,17 +243,17 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     if ((this.pickPlane == null) && (this.backPlane == null)) {
       int mouseDifX = (currentInput.getMouseLocation().x - previousInput.getMouseLocation().x);
       double rightMovement = mouseDifX * this.movementScale;
-      Vector3 rightVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.right);
+      Vector3 rightVector = new Vector3(this.camera.getAbsoluteTransformation().orientation().right().mutable());
       rightVector.y = 0;
       rightVector.normalize();
       Point3 movementVector = Point3.createMultiplication(rightVector, rightMovement);
       int mouseDifY = (currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
       double forwardMovement = mouseDifY * this.movementScale;
-      Vector3 backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.backward);
+      Vector3 backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation().backward().mutable());
       backwardVector.y = 0;
       backwardVector.normalize();
       if (backwardVector.isNaN()) {
-        backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation.up);
+        backwardVector = new Vector3(this.camera.getAbsoluteTransformation().orientation().up().mutable());
         backwardVector.y = 0;
         backwardVector.multiply(-1);
         backwardVector.normalize();
@@ -263,7 +263,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     }
     Point3 pointToUse = getPerspectivePositionBasedOnInput(currentInput);
     if (pointToUse != null) {
-      Point3 movementChange = Point3.createSubtraction(pointToUse, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+      Point3 movementChange = Point3.createSubtraction(pointToUse, this.getManipulatedTransformable().getAbsoluteTransformation().translation().mutablePoint());
       movementChange.y = 0;
       return movementChange;
     } else {
@@ -280,13 +280,13 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
       }
 
       Point3 movementVector = getMovementVectorBasedOnCamera(currentInput, previousInput);
-      Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+      Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint();
       Point3 newPosition = Point3.createAddition(currentPosition, movementVector);
 
       newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
 
       //Send manipulation events
-      Vector3 movementDif = Vector3.createSubtraction(newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
+      Vector3 movementDif = Vector3.createSubtraction(newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation().mutable());
       if (movementDif.x > .1) {
         movementVector = getMovementVectorBasedOnCamera(currentInput, previousInput);
       }
@@ -300,8 +300,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
         }
       }
       if (newPosition != null) {
-        this.manipulatedTransformable.setTranslationOnly(newPosition, AsSeenBy.SCENE);
-        planeTransitionPointDebugSphere.setLocalTranslation(newPosition);
+        this.manipulatedTransformable.setTranslationOnly(newPosition.immutable(), AsSeenBy.SCENE);
+        planeTransitionPointDebugSphere.setLocalTranslation(newPosition.immutable());
         //        Point awtPoint = getMouseCursorPositionInLookingGlass();
         //        if (!isPointInsideLookingGlass(awtPoint))
         //        {
@@ -329,9 +329,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected Point3 getInitialClickPoint(InputState startInput) {
-    Point3 initialClickPoint = new Point3();
-    startInput.getClickPickResult().getPositionInSource(initialClickPoint);
-    initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    Point3 initialClickPoint = startInput.getClickPickResult().getPositionInSource().mutable();
+    initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint.immutable(), startInput.getClickPickResult().getSource().getRoot()).mutable();
     return initialClickPoint;
   }
 
@@ -342,8 +341,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     if (this.manipulatedTransformable != null) {
       this.initializeEventMessages();
       this.hasMoved = false;
-      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
-      AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation().mutablePoint();
+      AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation().mutable();
       Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
@@ -370,7 +369,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected void setUpPlanes(Point3 planePosition, Point mousePoint) {
     Plane horizontalPlane = Plane.createInstance(planePosition, Vector3.accessPositiveYAxis());
-    AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+    AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation().mutable();
     boolean isAbove = cameraTransform.translation.y > planePosition.y;
 
     Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(Plane.createInstance(cameraTransform.translation, cameraTransform.orientation.right), planePosition);
@@ -452,7 +451,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected Point calculateMousePlaneOffset(Point mousePosition, AbstractTransformable transformable) {
-    Point3 pointInCamera = transformable.getTranslation(this.getCamera());
+    Point3 pointInCamera = transformable.getTranslation(this.getCamera()).mutable();
     Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
     return new Point(awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y);
   }
@@ -462,8 +461,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected Point getMouseCursorPositionInLookingGlass() {
-    Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
-    Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
+    Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutable(), this.offsetFromOrigin);
+    Point3 pointInCamera = this.camera.transformFrom(new3DPoint.immutable(), this.camera.getRoot()).mutable();
     Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
     return awtPoint;
   }
