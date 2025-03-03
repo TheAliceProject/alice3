@@ -123,7 +123,7 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
       if (Double.isNaN(this.absolute[0])) {
         AffineMatrix4x4 transform = owner.getAbsoluteTransformation();
         assert !transform.isNaN();
-        transform.asRowMajorArray16(this.absolute);
+        transform.asColumnMajorArray16(this.absolute);
       }
     }
   }
@@ -133,7 +133,7 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
       if (Double.isNaN(this.inverseAbsolute[0])) {
         AffineMatrix4x4 transform = owner.getInverseAbsoluteTransformation();
         assert !transform.isNaN();
-        transform.asRowMajorArray16(this.inverseAbsolute);
+        transform.asColumnMajorArray16(this.inverseAbsolute);
       }
     }
   }
