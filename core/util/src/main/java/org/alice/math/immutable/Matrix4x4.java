@@ -29,10 +29,10 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
       // Ideally, the orientation matrix should be orthonormal, containing three mutually perpendicular unit vectors.
       // We do not enforce that, but this can make note of those that aren't close enough
       if (orientation.deviationFromNormal() > .05) {
-        System.out.println("Not quite orthogonal.\n  up    X right: " + orientation.getUp().dotProduct(orientation.getRight()) +
-            "\n  right X  back: " + orientation.getRight().dotProduct(orientation.getBackward()) +
-            "\n  back  X    up: " + orientation.getBackward().dotProduct(orientation.getUp()) +
-            "\n  sum deviation: " + orientation.deviationFromNormal());
+        System.out.println("Not quite orthogonal.\n  up    X right: " + orientation.getUp().dotProduct(orientation.getRight())
+            + "\n  right X  back: " + orientation.getRight().dotProduct(orientation.getBackward())
+            + "\n  back  X    up: " + orientation.getBackward().dotProduct(orientation.getUp())
+            + "\n  sum deviation: " + orientation.deviationFromNormal());
       }
       return new AffineMatrix4x4(orientation, new Vector3(e14, e24, e34));
     }
