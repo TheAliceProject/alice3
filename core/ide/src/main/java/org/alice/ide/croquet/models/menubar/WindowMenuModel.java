@@ -67,7 +67,6 @@ public class WindowMenuModel extends StaticMenuModel {
       rv.add(((SingleSelectListState) perspectiveState).getMenuModel());
       rv.add(MenuModel.SEPARATOR);
     }
-    rv.add(PreferencesMenuModel.getInstance());
     rv.add(IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel());
     if (SystemUtilities.isPropertyTrue("org.alice.ide.internalTesting")) {
       rv.add(MenuModel.SEPARATOR);
