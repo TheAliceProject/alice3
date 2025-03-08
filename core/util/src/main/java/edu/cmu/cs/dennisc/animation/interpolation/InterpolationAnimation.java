@@ -62,7 +62,7 @@ public abstract class InterpolationAnimation<E> extends DurationBasedAnimation {
 
   protected abstract E newE(E other);
 
-  protected abstract E interpolate(E rv, E v0, E v1, double portion);
+  protected abstract E interpolate(E v0, E v1, double portion);
 
   protected abstract void updateValue(E v);
 
@@ -72,7 +72,7 @@ public abstract class InterpolationAnimation<E> extends DurationBasedAnimation {
 
   @Override
   protected final void setPortion(double portion) {
-    updateValue(interpolate(m_v, m_v0, m_v1, portion));
+    updateValue(interpolate(m_v0, m_v1, portion));
   }
 
   @Override

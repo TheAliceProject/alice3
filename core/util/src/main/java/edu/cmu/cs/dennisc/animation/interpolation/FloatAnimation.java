@@ -60,7 +60,7 @@ public abstract class FloatAnimation extends InterpolationAnimation<Float> {
   }
 
   @Override
-  protected Float interpolate(Float rv, Float v0, Float v1, double portion) {
+  protected Float interpolate(Float v0, Float v1, double portion) {
     return (float) (v0 + ((v1 - v0) * portion));
   }
 }

@@ -43,18 +43,24 @@
 package edu.cmu.cs.dennisc.math.animation;
 
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
+import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Vector3Animation extends Tuple3Animation<Vector3> {
+public abstract class Vector3Animation extends InterpolationAnimation<Vector3> {
   public Vector3Animation(double duration, Style style, Vector3 v0, Vector3 v1) {
     super(duration, style, v0, v1);
   }
 
   @Override
   protected Vector3 newE(Vector3 other) {
-    return new Vector3(other);
+    return other == null ? Vector3.NaN : other;
+  }
+
+  @Override
+  protected Vector3 interpolate(Vector3 v0, Vector3 v1, double portion) {
+    return v0.interpolate(v1, portion);
   }
 }

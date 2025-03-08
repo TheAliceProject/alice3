@@ -54,6 +54,7 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
+import org.alice.math.immutable.Dimension3;
 import org.alice.stageide.properties.IsAllScaleLinkedState;
 import org.alice.stageide.properties.IsXYScaleLinkedState;
 import org.alice.stageide.properties.IsXZScaleLinkedState;
@@ -74,7 +75,6 @@ import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 
 import javax.swing.AbstractButton;
 
@@ -435,7 +435,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
     ModelImp baseModel = (ModelImp) this.propertyAdapter.getInstance();
     Dimension3 scale = baseModel.getScale();
     Dimension3 size = baseModel.getSize();
-    return new Dimension3(size.x / scale.x, size.y / scale.y, size.z / scale.z);
+    return size.dividedBy(scale);
   }
 
   private Dimension3 getModelSize() {
@@ -447,9 +447,9 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
   protected void setValueOnUI(Dimension3 value) {
     if (value != null) {
       this.doUpdateOnAdapter = false;
-      this.widthField.setValue(value.x);
-      this.heightField.setValue(value.y);
-      this.depthField.setValue(value.z);
+      this.widthField.setValue(value.x());
+      this.heightField.setValue(value.y());
+      this.depthField.setValue(value.z());
       this.doUpdateOnAdapter = true;
       return;
     }
@@ -472,34 +472,34 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
     if (source != null) {
       Dimension3 size = this.getModelSize();
       if (source == widthField) {
-        double relativeXScale = width / size.x;
+        double relativeXScale = width / size.x();
         if (IsAllScaleLinkedState.getInstance().getValue()) {
-          height = relativeXScale * size.y;
-          depth = relativeXScale * size.z;
+          height = relativeXScale * size.y();
+          depth = relativeXScale * size.z();
         } else if (IsXYScaleLinkedState.getInstance().getValue()) {
-          height = relativeXScale * size.y;
+          height = relativeXScale * size.y();
         } else if (IsXZScaleLinkedState.getInstance().getValue()) {
-          depth = relativeXScale * size.z;
+          depth = relativeXScale * size.z();
         }
       } else if (source == heightField) {
-        double relativeYScale = height / size.y;
+        double relativeYScale = height / size.y();
         if (IsAllScaleLinkedState.getInstance().getValue()) {
-          width = relativeYScale * size.x;
-          depth = relativeYScale * size.z;
+          width = relativeYScale * size.x();
+          depth = relativeYScale * size.z();
         } else if (IsXYScaleLinkedState.getInstance().getValue()) {
-          width = relativeYScale * size.x;
+          width = relativeYScale * size.x();
         } else if (IsYZScaleLinkedState.getInstance().getValue()) {
-          depth = relativeYScale * size.z;
+          depth = relativeYScale * size.z();
         }
       } else if (source == depthField) {
-        double relativeZScale = depth / size.z;
+        double relativeZScale = depth / size.z();
         if (IsAllScaleLinkedState.getInstance().getValue()) {
-          width = relativeZScale * size.x;
-          height = relativeZScale * size.y;
+          width = relativeZScale * size.x();
+          height = relativeZScale * size.y();
         } else if (IsXZScaleLinkedState.getInstance().getValue()) {
-          width = relativeZScale * size.x;
+          width = relativeZScale * size.x();
         } else if (IsYZScaleLinkedState.getInstance().getValue()) {
-          height = relativeZScale * size.y;
+          height = relativeZScale * size.y();
         }
       }
     }
@@ -551,11 +551,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
               Dimension3 oldScale = propertyAdapter.getValue();
 
-              double maxDim = Math.max(oldScale.x, Math.max(oldScale.y, oldScale.z));
+              double maxDim = Math.max(oldScale.x(), Math.max(oldScale.y(), oldScale.z()));
 
               double scaleFactor = .01; // set the size close to zero, instead of negative
 
-              newScale = Dimension3.createMultiplication(oldScale, scaleFactor / maxDim);
+              newScale = oldScale.times(scaleFactor / maxDim);
             }
 
             Operation operation = new ModelSizePropertyValueOperation(this.propertyAdapter, newScale);

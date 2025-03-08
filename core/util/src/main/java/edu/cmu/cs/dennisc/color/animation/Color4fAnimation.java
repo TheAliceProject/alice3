@@ -60,13 +60,13 @@ public abstract class Color4fAnimation extends InterpolationAnimation<Color4f> {
     if (other != null) {
       return new Color4f(other);
     } else {
+      // Does this happen? Does it break things?
       return null;
     }
   }
 
   @Override
-  protected Color4f interpolate(Color4f rv, Color4f v0, Color4f v1, double portion) {
-    assert rv == null;
+  protected Color4f interpolate(Color4f v0, Color4f v1, double portion) {
     return Color4f.createInterpolation(v0, v1, (float) portion);
   }
 }

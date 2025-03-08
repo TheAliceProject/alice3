@@ -42,15 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.property.Dimension3Property;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Scalable extends Composite {
-  public final Dimension3Property scale = new Dimension3Property(this, new Dimension3(1, 1, 1)) {
+  public final InstanceProperty<Dimension3> scale = new InstanceProperty<>(this, new Dimension3(1, 1, 1)) {
     @Override
     public void setValue(Dimension3 value) {
       super.setValue(value);
@@ -62,7 +62,7 @@ public class Scalable extends Composite {
   public AffineMatrix4x4 getAbsoluteTransformation() {
     AffineMatrix4x4 transform = super.getAbsoluteTransformation();
     Dimension3 scale = this.scale.getValue();
-    AffineMatrix4x4 s = AffineMatrix4x4.createWithDiagonal(scale.immutable());
+    AffineMatrix4x4 s = AffineMatrix4x4.createWithDiagonal(scale);
     return transform.times(s);
   }
 }

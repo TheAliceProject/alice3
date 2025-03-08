@@ -35,6 +35,10 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
         return new Vector3(x / divisor, y / divisor, z / divisor);
     }
 
+    public Vector3 dividedBy(Dimension3 divisor) {
+        return new Vector3(x / divisor.x(), y / divisor.y(), z / divisor.z());
+    }
+
     public Vector3 negate() {
         return new Vector3(-x, -y, -z);
     }

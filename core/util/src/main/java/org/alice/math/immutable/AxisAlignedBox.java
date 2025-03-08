@@ -91,8 +91,8 @@ public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEn
     return maximum.z() - minimum.z();
   }
 
-  public Vector3 getSize() {
-    return new Vector3(getWidth(), getHeight(), getDepth());
+  public Dimension3 getSize() {
+    return new Dimension3(getWidth(), getHeight(), getDepth());
   }
 
   public double getVolume() {

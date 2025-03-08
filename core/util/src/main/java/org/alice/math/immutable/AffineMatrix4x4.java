@@ -13,7 +13,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     return new AffineMatrix4x4(orientation.asMatrix3x3(), Vector3.ZERO);
   }
 
-  public static AffineMatrix4x4 createWithDiagonal(Vector3 diagonal) {
+  public static AffineMatrix4x4 createWithDiagonal(Dimension3 diagonal) {
     return new AffineMatrix4x4(diagonal.asScaleMatrix(), Vector3.ZERO);
   }
 
