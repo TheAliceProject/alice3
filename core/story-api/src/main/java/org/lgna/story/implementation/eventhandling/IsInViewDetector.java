@@ -46,12 +46,12 @@ package org.lgna.story.implementation.eventhandling;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Vector4;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Matt May
@@ -78,27 +78,27 @@ public class IsInViewDetector {
     boolean below = false;
     for (int i = 0; i != awtPoints.length; ++i) {
       if ((awtPoints[i].x < surfaceSize.width) && (awtPoints[i].x > 0) && (awtPoints[i].y < surfaceSize.height) && (awtPoints[i].y > 0)) {
-        if (relativeToCamera[i].z < 0) {
+        if (relativeToCamera[i].z() < 0) {
           return true;
         }
       } else {
         if (awtPoints[i].x > surfaceSize.width) {
-          if (relativeToCamera[i].z < 0) {
+          if (relativeToCamera[i].z() < 0) {
             rightOf = true;
           }
         }
         if (awtPoints[i].x < 0) {
-          if (relativeToCamera[i].z < 0) {
+          if (relativeToCamera[i].z() < 0) {
             leftOf = true;
           }
         }
         if (awtPoints[i].y > surfaceSize.height) {
-          if (relativeToCamera[i].z < 0) {
+          if (relativeToCamera[i].z() < 0) {
             above = true;
           }
         }
         if (awtPoints[i].y < 0) {
-          if (relativeToCamera[i].z < 0) {
+          if (relativeToCamera[i].z() < 0) {
             below = true;
           }
         }

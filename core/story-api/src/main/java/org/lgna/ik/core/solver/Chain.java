@@ -48,12 +48,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.lgna.ik.core.solver.Bone.Axis;
 
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -74,7 +74,7 @@ public class Chain {
 
   private final List<JointImp> jointImps;
   private final Bone[] bones;
-  private final Point3 endEffectorLocalPosition;
+  private Point3 endEffectorLocalPosition;
   private final List<Bone.Direction> directions; //the order doesn't change but the directions do
 
   //  private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
@@ -87,7 +87,7 @@ public class Chain {
     this.jointImps = jointImps;
     this.directions = directions;
 
-    this.endEffectorLocalPosition = Point3.createZero();
+    this.endEffectorLocalPosition = Point3.ORIGIN;
     //    this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
     //    this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
     this.linearVelocityContributions = new HashMap<Bone, Map<Axis, Vector3>>();
@@ -109,13 +109,13 @@ public class Chain {
     JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
 
     //get the world eePosition local to eeJointImp
-    AffineMatrix4x4 eeJointInverse = AffineMatrix4x4.createInverse(eeJointImp.getTransformation(AsSeenBy.SCENE));
+    AffineMatrix4x4 eeJointInverse = eeJointImp.getTransformation(AsSeenBy.SCENE).invert();
 
-    eeJointInverse.setReturnValueToTransformed(endEffectorLocalPosition, eePosition);
+    endEffectorLocalPosition = eeJointInverse.transform(eePosition);
   }
 
   public void setEndEffectorLocalPosition(Point3 endEffectorLocalPosition) {
-    this.endEffectorLocalPosition.set(endEffectorLocalPosition);
+    this.endEffectorLocalPosition = endEffectorLocalPosition;
   }
 
   public Bone[] getBones() {
@@ -134,12 +134,12 @@ public class Chain {
   // so, these are world
   public Point3 getEndEffectorPosition() {
     JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
-    return eeJointImp.getTransformation(AsSeenBy.SCENE).setReturnValueToTransformed(new Point3(), endEffectorLocalPosition);
+    return eeJointImp.getTransformation(AsSeenBy.SCENE).transform(endEffectorLocalPosition);
   }
 
   public OrthogonalMatrix3x3 getEndEffectorOrientation() {
     JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
-    return eeJointImp.getTransformation(AsSeenBy.SCENE).orientation;
+    return eeJointImp.getTransformation(AsSeenBy.SCENE).orientation();
   }
 
   public void updateStateFromJoints() {
@@ -150,7 +150,7 @@ public class Chain {
 
   public Map<Bone, Map<Axis, Vector3>> computeLinearVelocityContributions() {
     for (Bone bone : this.bones) {
-      Vector3 jointEeVector = Vector3.createSubtraction(this.getEndEffectorPosition(), bone.getAnchorPosition());
+      Vector3 jointEeVector = this.getEndEffectorPosition().minus(bone.getAnchorPosition());
       bone.updateLinearContributions(jointEeVector);
 
       //axis has inverse value. then contrib should also be inversed when merging here?

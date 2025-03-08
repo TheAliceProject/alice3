@@ -43,12 +43,12 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SMarker;
 
 /**
@@ -138,12 +138,12 @@ public abstract class MarkerImp extends VisualScaleModelImp {
   }
 
   protected AxisAlignedBox calculateBoundingBox() {
-    AxisAlignedBox bbox = new AxisAlignedBox();
+    AxisAlignedBox bbox = AxisAlignedBox.NaN;
     Visual[] visuals = this.getSgVisuals();
     if ((visuals != null) && (visuals.length > 0)) {
       for (Visual v : this.getSgVisuals()) {
         for (Geometry g : v.geometries.getValue()) {
-          bbox.union(g.getAxisAlignedMinimumBoundingBox().mutable());
+          bbox.union(g.getAxisAlignedMinimumBoundingBox());
         }
       }
     }

@@ -49,9 +49,8 @@ import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.story.implementation.EntityImp;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.lgna.story.implementation.MarkerImp;
 
 import java.util.List;
@@ -233,7 +232,7 @@ public abstract class AbstractManipulator {
 
   public void undoRedoBeginManipulation() {
     if (this.getManipulatedTransformable() != null) {
-      this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation().mutable();
+      this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
     }
   }
 

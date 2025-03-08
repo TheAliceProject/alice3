@@ -59,7 +59,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 /**
@@ -95,9 +95,7 @@ public class ModelResourceInfo {
       double maxY = Double.parseDouble(max.getAttribute("y"));
       double maxZ = Double.parseDouble(max.getAttribute("z"));
 
-      AxisAlignedBox bbox = new AxisAlignedBox(minX, minY, minZ, maxX, maxY, maxZ);
-
-      return bbox;
+      return AxisAlignedBox.createAxisAlignedBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     return null;
@@ -217,7 +215,8 @@ public class ModelResourceInfo {
     if (bboxNodeList.size() > 0) {
       this.boundingBox = getBoundingBoxFromXML(bboxNodeList.get(0));
     } else {
-      this.boundingBox = new AxisAlignedBox();
+      // TODO Check this works.
+      this.boundingBox = AxisAlignedBox.Empty;
     }
     this.modelName = modelElement.getAttribute("name");
     this.creator = modelElement.getAttribute("creator");
@@ -462,8 +461,8 @@ public class ModelResourceInfo {
       return null;
     }
     ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
-    boundingBox.max = getBoundingBox().getMaximum().getAsFloatList();
-    boundingBox.min = getBoundingBox().getMinimum().getAsFloatList();
+    boundingBox.max = getBoundingBox().maximum().asFloatList();
+    boundingBox.min = getBoundingBox().minimum().asFloatList();
     return boundingBox;
   }
 

@@ -44,8 +44,11 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -56,14 +59,10 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.math.immutable.AngleInRadians;
-
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -125,22 +124,19 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
   protected Point3 getPositionForPlane(Plane movementPlane, Ray pickRay) {
     if (pickRay != null) {
       Point3 pointInPlane = PlaneUtilities.getPointInPlane(movementPlane, pickRay);
-      Point3 newPosition = Point3.createAddition(this.offsetToOrigin, pointInPlane);
-      newPosition.y = this.initialObjectPosition.y;
-      return newPosition;
+      return this.offsetToOrigin.plus(pointInPlane).withY(this.initialObjectPosition.y());
     } else {
       return null;
     }
   }
 
   protected Point3 getPositionBasedOnMouseLocation(Point mouseLocation) {
-    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera());
     if (pickRay != null) {
       Plane toMoveIn = this.movementPlane;
       double badAngleAmount = this.getBadAngleAmount(this.movementPlane, pickRay);
       if (badAngleAmount > 0.0d) {
-        Vector3 newNormal = Vector3.createInterpolation(PlaneUtilities.getPlaneNormal(this.movementPlane), PlaneUtilities.getPlaneNormal(this.badAnglePlane), badAngleAmount);
-        newNormal.normalize();
+        Vector3 newNormal = PlaneUtilities.getPlaneNormal(this.movementPlane).interpolate(PlaneUtilities.getPlaneNormal(this.badAnglePlane), badAngleAmount).normalized();
         toMoveIn = Plane.createInstance(this.initialClickPoint, newNormal);
       }
       Point3 newPosition = this.getPositionForPlane(toMoveIn, pickRay);
@@ -151,8 +147,8 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
   }
 
   protected double getBadAngleAmount(Plane plane, Ray pickRay) {
-    Vector3 cameraDirection = this.getCamera().getAbsoluteTransformation().orientation().backward().mutable();
-    double cameraDistanceFactor = Math.abs(PlaneUtilities.distanceToPlane(plane, this.getCamera().getAbsoluteTransformation().translation().mutablePoint()));
+    Vector3 cameraDirection = this.getCamera().getAbsoluteTransformation().orientation().backward();
+    double cameraDistanceFactor = Math.abs(PlaneUtilities.distanceToPlane(plane, this.getCamera().getAbsoluteTransformation().translation().asPoint()));
     Vector3 planeNormal = PlaneUtilities.getPlaneNormal(plane);
     AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(cameraDirection, planeNormal);
     double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
@@ -177,25 +173,23 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
   }
 
   protected Vector3 createCameraFacingStoodUpVector() {
-    Vector3 cameraBackward = this.getCamera().getAxes(AsSeenBy.SCENE).backward().mutable();
-    if (EpsilonUtilities.isWithinReasonableEpsilon(cameraBackward.y, 1.0d)) { //handle case where camera is pointing down or up
-      return getCamera().getAbsoluteTransformation().orientation().up().negate().mutable();
+    Vector3 cameraBackward = this.getCamera().getAxes(AsSeenBy.SCENE).backward();
+    if (EpsilonUtilities.isWithinReasonableEpsilon(cameraBackward.y(), 1.0d)) { //handle case where camera is pointing down or up
+      return getCamera().getAbsoluteTransformation().orientation().up().negate();
     } else {
-      cameraBackward.y = 0.0f;
-      cameraBackward.normalize();
-      return cameraBackward;
+      return cameraBackward.withY(0).normalized();
     }
   }
 
   protected Plane createBadAnglePlane(Point3 clickPoint) {
     Vector3 badPlaneNormal = createCameraFacingStoodUpVector();
-    badPlaneNormal.y += 2d; //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
-    badPlaneNormal.normalize();
+    // Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
+    badPlaneNormal = badPlaneNormal.withY(badPlaneNormal.y() + 2d).normalized();
     return Plane.createInstance(clickPoint, badPlaneNormal);
   }
 
   protected Plane createPickPlane(Point3 clickPoint) {
-    return Plane.createInstance(clickPoint, Vector3.createPositiveYAxis());
+    return Plane.createInstance(clickPoint, Vector3.POSITIVE_Y_AXIS);
   }
 
   @Override
@@ -209,10 +203,9 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
       newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
 
-      Vector3 movementDif = Vector3.createSubtraction(newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation().mutable());
-      movementDif.normalize();
+      Vector3 movementDif = newPosition.minus(this.manipulatedTransformable.getAbsoluteTransformation().translation()).asVector().normalized();
       for (ManipulationEvent event : this.getManipulationEvents()) {
-        double dot = Vector3.calculateDotProduct(event.getMovementDescription().direction.getVector(), movementDif);
+        double dot = event.getMovementDescription().direction.getVector().dotProduct(movementDif);
         if (dot > 0.1d) {
           this.dragAdapter.triggerManipulationEvent(event, true);
         } else if (dot < -.07d) {
@@ -221,7 +214,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
       }
 
       if (newPosition != null) {
-        this.manipulatedTransformable.setTranslationOnly(newPosition.immutable(), AsSeenBy.SCENE);
+        this.manipulatedTransformable.setTranslationOnly(newPosition, AsSeenBy.SCENE);
       }
     }
   }
@@ -242,16 +235,16 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
       this.initializeEventMessages();
       this.initialMouseLocation.setLocation(startInput.getMouseLocation());
       this.hasMoved = false;
-      this.initialObjectPosition.set(this.manipulatedTransformable.getAbsoluteTransformation().translation().mutable());
-      this.initialClickPoint = startInput.getClickPickResult().getPositionInSource().mutable();
-      this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint.immutable(), startInput.getClickPickResult().getSource().getRoot()).mutable();
+      this.initialObjectPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint();
+      this.initialClickPoint = startInput.getClickPickResult().getPositionInSource();
+      this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
       this.movementPlane = createPickPlane(this.initialClickPoint);
       this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 
-      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
       if (pickRay != null) {
         this.initialClickPoint = PlaneUtilities.getPointInPlane(this.movementPlane, pickRay);
-        this.offsetToOrigin = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialClickPoint.immutableVector()).mutablePoint();
+        this.offsetToOrigin = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialClickPoint.asVector()).asPoint();
         this.movementPlane = createPickPlane(this.initialClickPoint);
         this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
       } else {
@@ -273,8 +266,8 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
     return HandleSet.ABSOLUTE_GROUND_TRANSLATION_VISUALIZATION;
   }
 
-  private Point3 initialClickPoint = new Point3();
-  protected Point3 initialObjectPosition = new Point3();
+  private Point3 initialClickPoint = Point3.ORIGIN;
+  protected Point3 initialObjectPosition = Point3.ORIGIN;
   private Plane movementPlane = Plane.XZ_PLANE;
   private Plane badAnglePlane = null;
   protected Point3 offsetToOrigin = null;

@@ -43,11 +43,11 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 
 /**
  * @author Dennis Cosgrove
@@ -115,11 +115,11 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    if (size.x != size.z) {
+    if (size.x() != size.z()) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
-    this.length.setValue(size.y);
-    this.setXZ(size.x * .5);
+    this.length.setValue(size.y());
+    this.setXZ(size.x() * .5);
   }
 
   private final Cylinder sgCylinder = new Cylinder();

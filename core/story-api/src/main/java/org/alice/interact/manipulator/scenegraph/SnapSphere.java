@@ -43,8 +43,8 @@
 package org.alice.interact.manipulator.scenegraph;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
@@ -81,9 +81,9 @@ public class SnapSphere extends Transformable {
   //Since this visual is rooted at the location of the sphere (and is therefore centered on the rotation ring), we need to make the line extend back to the center of the ring
   public void setLineDirection(Point3 rootOrigin, Point3 sphereEndPoint) {
     Vertex[] vertices = new Vertex[2];
-    Vector3 lineOffset = Vector3.createSubtraction(rootOrigin, sphereEndPoint);
+    Vector3 lineOffset = rootOrigin.minus(sphereEndPoint);
     vertices[0] = Vertex.createXYZ(0, 0, 0);
-    vertices[1] = Vertex.createXYZ(lineOffset.x, lineOffset.y, lineOffset.z);
+    vertices[1] = Vertex.createXYZ(lineOffset.x(), lineOffset.y(), lineOffset.z());
 
     this.sgLineArray.vertices.setValue(vertices);
   }

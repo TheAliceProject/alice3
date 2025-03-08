@@ -42,17 +42,17 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
-import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -127,24 +127,18 @@ public class LinearScaleHandle extends LinearDragHandle {
 
   protected Vector3 getUniformResizeOffset() {
     AxisAlignedBox bbox = getManipulatedObjectBox();
-    Vector3 handleOffset;
     if (bbox != null) {
-      handleOffset = new Vector3(bbox.getMaximum());
-      handleOffset.z = 0;
-      handleOffset.x *= -1;
-    } else {
-      handleOffset = new Vector3(1, 1, 0);
+      Point3 handleOffset = bbox.maximum().withZ(0);
+      handleOffset = handleOffset.withX(-1 * handleOffset.x());
+      if (!handleOffset.isZero()) {
+        return handleOffset.asVector();
+      }
     }
-    if (handleOffset.isZero()) {
-      handleOffset = new Vector3(1, 1, 0);
-    }
-    return handleOffset;
+    return new Vector3(1, 1, 0);
   }
 
   protected Vector3 getUniformResizeDirection() {
-    Vector3 direction = getUniformResizeOffset();
-    direction.normalize();
-    return direction;
+    return getUniformResizeOffset().normalized();
   }
 
   @Override
@@ -154,12 +148,10 @@ public class LinearScaleHandle extends LinearDragHandle {
     }
     AffineMatrix4x4 objectTransformation = this.getTransformationForAxis(this.dragAxis);
     if (objectTransformation.isNaN()) {
-      objectTransformation = new AffineMatrix4x4();
+      objectTransformation = AffineMatrix4x4.IDENTITY;
     }
-    this.setTransformation(objectTransformation.immutable(), this.getReferenceFrame());
-    Vector3 handleOffset = new Vector3(this.dragAxis);
-    handleOffset.multiply(this.getHandleLength());
-    this.setTranslationOnly(handleOffset.immutable(), this.getReferenceFrame());
+    this.setTransformation(objectTransformation, this.getReferenceFrame());
+    this.setTranslationOnly(this.dragAxis.times(this.getHandleLength()), this.getReferenceFrame());
   }
 
   @Override

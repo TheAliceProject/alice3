@@ -42,10 +42,9 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import org.alice.interact.MovementDirection;
-
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.interact.MovementDirection;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author dculyba

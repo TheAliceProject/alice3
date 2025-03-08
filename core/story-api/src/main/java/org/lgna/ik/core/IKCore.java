@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.alice.math.immutable.Vector3;
 import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer.PositionConstraint;
@@ -58,7 +59,7 @@ import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Matt May
@@ -144,11 +145,10 @@ public class IKCore {
 
   private static Point3 correctTarget(JointImp anchor, JointImp end, Point3 target) {
     double lengthOfLimb = getLengthOfLimb(anchor, end);
-    Point3 vec = Point3.createSubtraction(target, anchor.getAbsoluteTransformation().translation);
-    if (lengthOfLimb < vec.calculateMagnitude()) {
-      vec.setToDivision(vec, vec.calculateMagnitude());
-      vec.setToMultiplication(vec, lengthOfLimb);
-      return Point3.createAddition(anchor.getAbsoluteTransformation().translation, vec);
+    Vector3 vec = target.minus(anchor.getAbsoluteTransformation().translation()).asVector();
+    if (lengthOfLimb < vec.magnitude()) {
+      vec = vec.normalized().times(lengthOfLimb);
+      return anchor.getAbsoluteTransformation().translation().plus(vec).asPoint();
     }
     return target;
   }
@@ -172,10 +172,10 @@ public class IKCore {
     JointId anchorId = anchor.getJointId();
     JointId eeId = end.getJointId();
     enforcer.setChainBetween(anchorId, eeId);
-    Point3 currTransformation = end.getTransformation(AsSeenBy.SCENE).translation;
+    Point3 currTransformation = end.getTransformation(AsSeenBy.SCENE).translation().asPoint();
     Point3 prevTransformation = new Point3(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
     double delta = .001; //arbitrary
-    while (Point3.calculateDistanceBetween(currTransformation, prevTransformation) > delta) {
+    while (currTransformation.distanceFrom(prevTransformation) > delta) {
       prevTransformation = currTransformation;
       //solver has the chain. can also have multiple chains.
       //I can tell solver, for this chain this is the linear target, etc.
@@ -224,7 +224,7 @@ public class IKCore {
         //            });
       }
 
-      currTransformation = end.getTransformation(AsSeenBy.SCENE).translation;
+      currTransformation = end.getTransformation(AsSeenBy.SCENE).translation().asPoint();
     }
   }
 

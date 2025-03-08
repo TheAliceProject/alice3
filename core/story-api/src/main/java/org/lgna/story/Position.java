@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -79,14 +79,14 @@ public final class Position {
   }
 
   public Double getRight() {
-    return (double) this.internal.x;
+    return this.internal.x();
   }
 
   public Double getUp() {
-    return (double) this.internal.y;
+    return this.internal.y();
   }
 
   public Double getBackward() {
-    return (double) this.internal.z;
+    return this.internal.z();
   }
 }

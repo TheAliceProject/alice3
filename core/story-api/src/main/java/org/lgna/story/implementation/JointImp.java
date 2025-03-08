@@ -43,10 +43,10 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.SJoint;
 import org.lgna.story.resources.JointId;
 
@@ -166,15 +166,15 @@ public abstract class JointImp extends AbstractTransformableImp {
   }
 
   public double getWidth() {
-    return this.getSize().x;
+    return this.getSize().x();
   }
 
   public double getHeight() {
-    return this.getSize().y;
+    return this.getSize().y();
   }
 
   public double getDepth() {
-    return this.getSize().z;
+    return this.getSize().z();
   }
 
   private SJoint abstraction;

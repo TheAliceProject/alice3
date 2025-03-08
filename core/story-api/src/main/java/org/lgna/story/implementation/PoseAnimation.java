@@ -42,15 +42,14 @@
  */
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import org.lgna.story.Pose;
-
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
+import org.alice.math.immutable.Vector3;
+import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 
 import java.util.List;
@@ -73,41 +72,36 @@ public class PoseAnimation extends DurationBasedAnimation {
 
     private UnitQuaternion m_q0;
     private UnitQuaternion m_q1;
-    private UnitQuaternion m_qBuffer;
     private AffineMatrix4x4 m_m0;
     private AffineMatrix4x4 m_m1;
-    private AffineMatrix4x4 m_mBuffer;
 
     public JointInfo(JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair) {
       this.jointImp = jointedModel.getJointImplementation(jtPair.getJointId());
 
-      m_q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
-      m_q1 = jtPair.getTransformation().orientation.createUnitQuaternion();
-      m_qBuffer = UnitQuaternion.createNaN();
+      m_q0 = this.jointImp.getLocalOrientation().asUnitQuaternion();
+      m_q1 = jtPair.getTransformation().orientation().asUnitQuaternion();
 
       m_m0 = this.jointImp.getLocalTransformation();
       //If the pose affects the translation of the joint, use the supplied translation as the target
       // Otherwise, use the current translation as the target
       if (jtPair.affectsTranslation()) {
-        m_m1 = new AffineMatrix4x4(jtPair.getTransformation());
+        m_m1 = jtPair.getTransformation();
       } else {
         m_m1 = this.jointImp.getLocalTransformation();
       }
-      m_mBuffer = AffineMatrix4x4.createNaN();
     }
 
     public void setPortion(double portion) {
-      //Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
-      m_mBuffer.translation.setToInterpolation(m_m0.translation, Point3.createMultiplication(m_m1.translation, this.jointImp.getJointedModelImplementation().getScale()), portion);
-      m_qBuffer.setToInterpolation(m_q0, m_q1, portion);
-      m_mBuffer.orientation.setValue(m_qBuffer);
-
-      jointImp.setLocalTransformation(m_mBuffer);
+      // Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and
+      // position, they inherently encode the scale they were created at. This multiplication accounts for that.
+      Vector3 t = m_m0.translation().interpolate(m_m1.translation().times(this.jointImp.getJointedModelImplementation().getScale()), portion);
+      UnitQuaternion q  = m_q0.interpolate(m_q1, portion);
+      jointImp.setLocalTransformation(new AffineMatrix4x4(q.asMatrix3x3(), t));
     }
 
     public void epilogue() {
       //Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
-      jointImp.setLocalTransformation(new AffineMatrix4x4(m_q1, Point3.createMultiplication(m_m1.translation, this.jointImp.getJointedModelImplementation().getScale())));
+      jointImp.setLocalTransformation(new AffineMatrix4x4(m_q1.asMatrix3x3(), m_m1.translation().times(this.jointImp.getJointedModelImplementation().getScale())));
     }
   }
 

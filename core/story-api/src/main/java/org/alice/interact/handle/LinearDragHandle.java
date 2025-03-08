@@ -49,9 +49,6 @@ import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
@@ -59,6 +56,10 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.debug.DebugInteractUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 import org.alice.math.immutable.Point3;
 
 /**
@@ -76,11 +77,11 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     if (DebugInteractUtilities.isDebugEnabled()) {
       this.snapReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
     }
-    this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
+    this.dragAxis = this.dragDescription.direction.getVector();
     if (this.dragAxis.isNaN()) {
-      this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
+      this.dragAxis = this.dragDescription.direction.getVector();
     }
-    this.localTransformation.setValue(this.getTransformationForAxis(this.dragAxis).immutable());
+    this.localTransformation.setValue(this.getTransformationForAxis(this.dragAxis));
     this.distanceFromOrigin = 0.0d;
     createShape();
   }
@@ -145,30 +146,19 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     if (this.getParentTransformable() != null) {
       AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 
-      Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
-      if (this.dragAxis.x != 0) {
-        if (this.dragAxis.x < 0) {
-          desiredHandleValues.x = boundingBox.getMinimum().x;
-        } else {
-          desiredHandleValues.x = boundingBox.getMaximum().x;
-        }
+      double x = 0;
+      double y = 0;
+      double z = 0;
+      if (this.dragAxis.x() != 0) {
+        x = this.dragAxis.x() < 0 ? boundingBox.minimum().x() : boundingBox.maximum().x();
       }
-      if (this.dragAxis.y != 0) {
-        if (this.dragAxis.y < 0) {
-          desiredHandleValues.y = boundingBox.getMinimum().y;
-        } else {
-          desiredHandleValues.y = boundingBox.getMaximum().y;
-        }
+      if (this.dragAxis.y() != 0) {
+        y = this.dragAxis.y() < 0 ? boundingBox.minimum().y() : boundingBox.maximum().y();
       }
-      if (this.dragAxis.z != 0) {
-        if (this.dragAxis.z < 0) {
-          desiredHandleValues.z = boundingBox.getMinimum().z;
-        } else {
-          desiredHandleValues.z = boundingBox.getMaximum().z;
-        }
+      if (this.dragAxis.z() != 0) {
+        z = this.dragAxis.z() < 0 ? boundingBox.minimum().z() : boundingBox.maximum().z();
       }
-
-      return desiredHandleValues.calculateMagnitude();
+      return (new Vector3(x, y, z)).magnitude();
     }
     return 0;
   }
@@ -211,10 +201,9 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
         return this.standUpReference;
       } else if (this.dragDescription.type == MovementType.ABSOLUTE) {
         this.standUpReference.setParent(this.getParentTransformable().getRoot());
-        AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
         Point3 translation = this.getParentTransformable().getTranslation(AsSeenBy.SCENE);
-        location.translation.set(translation == null ? null : translation.mutable());
-        this.standUpReference.localTransformation.setValue(location.immutable());
+        this.standUpReference.localTransformation.setValue(
+            new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, translation.asVector()));
         return this.standUpReference;
       } else {
         return this.getParentTransformable();
@@ -249,9 +238,9 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
   @Override
   public void positionRelativeToObject() {
     if (this.getParentTransformable() != null) {
-      Vector3 translation = Vector3.createMultiplication(this.dragAxis, this.distanceFromOrigin + this.offsetPadding);
-      this.setTransformation(this.getTransformationForAxis(this.dragAxis).immutable(), this.getReferenceFrame());
-      this.setTranslationOnly(translation.immutable(), this.getReferenceFrame());
+      Vector3 translation = this.dragAxis.times(this.distanceFromOrigin + this.offsetPadding);
+      this.setTransformation(this.getTransformationForAxis(this.dragAxis), this.getReferenceFrame());
+      this.setTranslationOnly(translation, this.getReferenceFrame());
     }
   }
 

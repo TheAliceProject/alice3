@@ -47,10 +47,6 @@ import edu.cmu.cs.dennisc.clock.Clock;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import org.alice.math.immutable.Angle;
-import org.alice.math.immutable.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
@@ -81,6 +77,10 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import org.lgna.story.implementation.*;
@@ -111,7 +111,7 @@ public abstract class DragAdapter {
     if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
       if (getActiveCamera() == camera) {
-        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().mutablePoint());
+        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().asPoint());
       }
     }
   };
@@ -263,7 +263,7 @@ public abstract class DragAdapter {
       }
     }
     if (camera instanceof SymmetricPerspectiveCamera) {
-      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().mutablePoint());
+      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().asPoint());
     } else {
       this.handleManager.updateCameraPosition(null);
     }
@@ -375,7 +375,7 @@ public abstract class DragAdapter {
   private void addCameraView(CameraView viewType, CameraSet cameras) {
     if (cameras.mainCamera != null) {
       cameras.mainCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
-      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation().mutablePoint());
+      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation().asPoint());
     }
     this.cameraMap.put(viewType, cameras);
   }

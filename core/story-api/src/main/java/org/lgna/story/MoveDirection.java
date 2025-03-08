@@ -43,14 +43,14 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public enum MoveDirection {
-  LEFT(Vector3.createNegativeXAxis()), RIGHT(Vector3.createPositiveXAxis()), UP(Vector3.createPositiveYAxis()), DOWN(Vector3.createNegativeYAxis()), FORWARD(Vector3.createNegativeZAxis()), BACKWARD(Vector3.createPositiveZAxis());
+  LEFT(Vector3.NEGATIVE_X_AXIS), RIGHT(Vector3.POSITIVE_X_AXIS), UP(Vector3.POSITIVE_Y_AXIS), DOWN(Vector3.NEGATIVE_Y_AXIS), FORWARD(Vector3.NEGATIVE_Z_AXIS), BACKWARD(Vector3.POSITIVE_Z_AXIS);
 
   private final Vector3 axis;
 
@@ -63,6 +63,6 @@ public enum MoveDirection {
   }
 
   /* package-private */Point3 createTranslation(double scalar) {
-    return new Point3(this.axis.x * scalar, this.axis.y * scalar, this.axis.z * scalar);
+    return axis.times(scalar).asPoint();
   }
 }

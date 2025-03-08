@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
+import org.alice.math.immutable.Vector3;
+
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
@@ -54,19 +56,19 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 public class PointOfViewAnimation extends AffineAnimation {
   public static final AffineMatrix4x4 USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-  private AffineMatrix4x4 m_povBegin = AffineMatrix4x4.createNaN();
-  private AffineMatrix4x4 m_povEnd = AffineMatrix4x4.createNaN();
+  private AffineMatrix4x4 m_povBegin = AffineMatrix4x4.NaN;
+  private AffineMatrix4x4 m_povEnd = AffineMatrix4x4.NaN;
 
-  private AffineMatrix4x4 m_pov0Runtime = AffineMatrix4x4.createNaN();
-  private AffineMatrix4x4 m_povRuntime = AffineMatrix4x4.createNaN();
+  private AffineMatrix4x4 m_pov0Runtime = AffineMatrix4x4.NaN;
+  private AffineMatrix4x4 m_povRuntime = AffineMatrix4x4.NaN;
 
-  private UnitQuaternion m_q0 = UnitQuaternion.createNaN();
-  private UnitQuaternion m_q1 = UnitQuaternion.createNaN();
-  private UnitQuaternion m_q = UnitQuaternion.createNaN();
+  private UnitQuaternion m_q0 = UnitQuaternion.NaN;
+  private UnitQuaternion m_q1 = UnitQuaternion.NaN;
+  private UnitQuaternion m_q = UnitQuaternion.NaN;
 
-  private Point3 m_t0 = new Point3();
-  private Point3 m_t1 = new Point3();
-  private Point3 m_t = new Point3();
+  private Vector3 m_t0 = Vector3.ZERO;
+  private Vector3 m_t1 = Vector3.ZERO;
+  private Vector3 m_t = Vector3.ZERO;
 
   public PointOfViewAnimation() {
     this(null, null, null, null);
@@ -76,47 +78,29 @@ public class PointOfViewAnimation extends AffineAnimation {
     super(sgSubject, sgAsSeenBy);
     setPointOfViewBegin(povBegin);
     setPointOfViewEnd(povEnd);
-    m_pov0Runtime.setNaN();
-    m_povRuntime.setNaN();
-    m_q0.setNaN();
-    m_q1.setNaN();
-    m_q.setNaN();
-    m_t0.setNaN();
-    m_t1.setNaN();
-    m_t.setNaN();
   }
 
   public AffineMatrix4x4 accessPointOfViewBeginUsedAtRuntime() {
     return m_pov0Runtime;
   }
 
-  public AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime(AffineMatrix4x4 rv) {
-    rv.set(m_pov0Runtime);
-    return rv;
-  }
-
   public AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime() {
-    return getPointOfViewBeginUsedAtRuntime(AffineMatrix4x4.createNaN());
+    return m_pov0Runtime;
   }
 
   public AffineMatrix4x4 accessPointOfViewBegin() {
     return m_povBegin;
   }
 
-  public AffineMatrix4x4 getPointOfViewBegin(AffineMatrix4x4 rv) {
-    rv.set(m_povBegin);
-    return rv;
-  }
-
   public AffineMatrix4x4 getPointOfViewBegin() {
-    return getPointOfViewBegin(AffineMatrix4x4.createNaN());
+    return m_povBegin;
   }
 
   public void setPointOfViewBegin(AffineMatrix4x4 povBegin) {
     if (povBegin != USE_EXISTING_VALUE_AT_RUN_TIME) {
-      m_povBegin.set(povBegin);
+      m_povBegin = povBegin;
     } else {
-      m_povBegin.setNaN();
+      m_povBegin = AffineMatrix4x4.NaN;
     }
   }
 
@@ -124,58 +108,49 @@ public class PointOfViewAnimation extends AffineAnimation {
     return m_povEnd;
   }
 
-  public AffineMatrix4x4 getPointOfViewEnd(AffineMatrix4x4 rv) {
-    rv.set(m_povEnd);
-    return rv;
-  }
-
   public AffineMatrix4x4 getPointOfViewEnd() {
-    return getPointOfViewEnd(AffineMatrix4x4.createNaN());
+    return m_povEnd;
   }
 
   public void setPointOfViewEnd(AffineMatrix4x4 povEnd) {
-    if (povEnd != null) {
-      m_povEnd.set(povEnd);
-    } else {
-      m_povEnd.setNaN();
-    }
+    m_povEnd = Objects.requireNonNullElse(povEnd, AffineMatrix4x4.NaN);
   }
 
   @Override
   protected void prologue() {
     if (m_povBegin.isNaN()) {
-      m_pov0Runtime.set(getSubject().getTransformation(getAsSeenBy()).mutable());
+      m_pov0Runtime = getSubject().getTransformation(getAsSeenBy());
     } else {
-      m_pov0Runtime.set(m_povBegin);
+      m_pov0Runtime = m_povBegin;
     }
 
-    m_q0.setValue(m_pov0Runtime.orientation);
-    m_q1.setValue(m_povEnd.orientation);
+    m_q0 = m_pov0Runtime.orientation().asUnitQuaternion();
+    m_q1 = m_povEnd.orientation().asUnitQuaternion();
 
-    m_t0.set(m_pov0Runtime.translation);
-    m_t1.set(m_povEnd.translation);
+    m_t0 = m_pov0Runtime.translation();
+    m_t1 = m_povEnd.translation();
 
-    m_povRuntime.set(m_pov0Runtime);
-    m_q.setValue(m_q0);
-    m_t.set(m_t0);
+    m_povRuntime = m_pov0Runtime;
+    m_q = m_q0;
+    m_t = m_t0;
   }
 
   @Override
   protected void setPortion(double portion) {
-    m_q.setToInterpolation(m_q0, m_q1, portion);
-    m_t.setToInterpolation(m_t0, m_t1, portion);
+    m_q = m_q0.interpolate(m_q1, portion);
+    m_t = m_t0.interpolate(m_t1, portion);
 
-    m_povRuntime.set(m_q, m_t);
+    m_povRuntime = new AffineMatrix4x4(m_q.asMatrix3x3(), m_t);
 
-    getSubject().setTransformation(m_povRuntime.immutable(), getAsSeenBy());
+    getSubject().setTransformation(m_povRuntime, getAsSeenBy());
     getSubject().notifyTransformationListeners();
   }
 
   @Override
   protected void epilogue() {
-    getSubject().setTransformation(m_povEnd.immutable(), getAsSeenBy());
+    getSubject().setTransformation(m_povEnd, getAsSeenBy());
     getSubject().notifyTransformationListeners();
-    m_pov0Runtime.setNaN();
-    m_povRuntime.setNaN();
+    m_pov0Runtime = AffineMatrix4x4.NaN;
+    m_povRuntime = AffineMatrix4x4.NaN;
   }
 }

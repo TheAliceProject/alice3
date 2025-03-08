@@ -44,72 +44,69 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.math.AbstractMatrix3x3;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.animation.Vector3Animation;
+import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Matrix3x3;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VisualScaleModelImp extends ModelImp {
   @Override
-  protected InstanceProperty[] getScaleProperties() {
+  protected InstanceProperty<?>[] getScaleProperties() {
     return new InstanceProperty[] {this.getSgVisuals()[0].scale};
   }
 
   protected void setSgVisualsScale(Matrix3x3 m) {
-    org.alice.math.immutable.Matrix3x3 i = m.immutable();
+    org.alice.math.immutable.Matrix3x3 i = m;
     for (Visual sgVisual : this.getSgVisuals()) {
       sgVisual.scale.setValue(i);
     }
   }
 
-  protected AbstractMatrix3x3 getSgVisualsScale() {
-    return this.getSgVisuals()[0].scale.getValue().mutable();
+  protected Matrix3x3 getSgVisualsScale() {
+    return this.getSgVisuals()[0].scale.getValue();
   }
 
-  protected void applyScale(Vector3 axis, boolean isScootDesired) {
+  protected void applyScale(Dimension3 axis, boolean isScootDesired) {
     if (isScootDesired) {
-      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue().mutable();
-      m.translation.multiply(axis);
-      this.getSgComposite().localTransformation.setValue(m.immutable());
+      AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+      this.getSgComposite().localTransformation.setValue(new AffineMatrix4x4(m.orientation(), m.translation().times(axis)));
     }
     for (Visual sgVisual : this.getSgVisuals()) {
       org.alice.math.immutable.Matrix3x3 scale = sgVisual.scale.getValue();
-      scale = scale.times(axis.immutable().asScaleMatrix());
+      scale = scale.times(axis.asScaleMatrix());
       sgVisual.scale.setValue(scale);
     }
   }
 
   @Override
   public void animateSetScale(Dimension3 scale, double duration, Style style) {
-    class ScaleAnimation extends Vector3Animation {
-      private final Vector3 vPrev = new Vector3(1, 1, 1);
-      private final Vector3 vBuffer = new Vector3();
+    class ScaleAnimation extends Dimension3Animation {
+      private Dimension3 vPrev = Dimension3.UNIT_SIZE;
+      private Dimension3 vBuffer = Dimension3.UNIT_SIZE;
 
       private final VisualScaleModelImp subject;
       private final VisualScaleModelImp[] scoots;
 
-      public ScaleAnimation(double duration, Style style, Vector3 axis, VisualScaleModelImp subject, VisualScaleModelImp[] scoots) {
-        super(duration, style, new Vector3(1, 1, 1), axis);
+      public ScaleAnimation(double duration, Style style, Dimension3 axis, VisualScaleModelImp subject, VisualScaleModelImp[] scoots) {
+        super(duration, style, Dimension3.UNIT_SIZE, axis);
         this.subject = subject;
         this.scoots = scoots;
       }
 
       @Override
-      protected void updateValue(Vector3 v) {
-        Vector3.setReturnValueToDivision(this.vBuffer, v, this.vPrev);
-        this.subject.applyScale(this.vBuffer, false);
+      protected void updateValue(Dimension3 v) {
+        vBuffer = v.dividedBy(vPrev);
+        subject.applyScale(vBuffer, false);
         for (VisualScaleModelImp model : this.scoots) {
-          model.applyScale(this.vBuffer, true);
+          model.applyScale(vBuffer, true);
         }
-        this.vPrev.set(v);
+        vPrev = v;
       }
 
       @Override
@@ -120,18 +117,8 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
     double actualDuration = adjustDurationIfNecessary(duration);
     VisualScaleModelImp[] scoots = {};
-    //    edu.cmu.cs.dennisc.math.Vector3 newScaleVec = new edu.cmu.cs.dennisc.math.Vector3(scale);
     Dimension3 currentScale = this.getScale();
-    Vector3 appliedScaleVec = new Vector3(scale.x / currentScale.x, scale.y / currentScale.y, scale.z / currentScale.z);
-    if (Double.isNaN(appliedScaleVec.x) || Double.isInfinite(appliedScaleVec.x)) {
-      appliedScaleVec.x = 1;
-    }
-    if (Double.isNaN(appliedScaleVec.y) || Double.isInfinite(appliedScaleVec.y)) {
-      appliedScaleVec.y = 1;
-    }
-    if (Double.isNaN(appliedScaleVec.z) || Double.isInfinite(appliedScaleVec.z)) {
-      appliedScaleVec.z = 1;
-    }
+    Dimension3 appliedScaleVec = scale.dividedBy(currentScale).withSafeNumbers();
     if (EpsilonUtilities.isWithinReasonableEpsilon(actualDuration, RIGHT_NOW)) {
       this.applyScale(appliedScaleVec, false);
       for (VisualScaleModelImp model : scoots) {
@@ -144,16 +131,12 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
   @Override
   public Dimension3 getScale() {
-    AbstractMatrix3x3 scale = this.getSgVisualsScale();
-    return new Dimension3(scale.right.x, scale.up.y, scale.backward.z);
+    Matrix3x3 scale = this.getSgVisualsScale();
+    return new Dimension3(scale.getRight().x(), scale.getUp().y(), scale.getBackward().z());
   }
 
   @Override
   public void setScale(Dimension3 scale) {
-    Matrix3x3 m = Matrix3x3.createIdentity();
-    m.right.x = scale.x;
-    m.up.y = scale.y;
-    m.backward.z = scale.z;
-    this.setSgVisualsScale(m);
+    this.setSgVisualsScale(scale.asScaleMatrix());
   }
 }

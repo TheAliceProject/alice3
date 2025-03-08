@@ -44,9 +44,9 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
@@ -71,16 +71,16 @@ public abstract class SMovableTurnable extends STurnable {
   }
 
   private void internalMoveToward(SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle) {
-    Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
-    Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
-    Vector3 v = Vector3.createSubtraction(tTarget, tThis);
-    double length = v.calculateMagnitude();
+    Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation().asPoint();
+    Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation().asPoint();
+    Vector3 v = tTarget.minus(tThis);
+    double length = v.magnitude();
     if (length > 0) {
-      v.multiply(amount / length);
+      v = v.times(amount / length);
     } else {
-      v.set(0, 0, amount);
+      v = new Vector3(0, 0, amount);
     }
-    this.getImplementation().animateApplyTranslation(v.x, v.y, v.z, org.lgna.story.implementation.AsSeenBy.SCENE, duration, animationStyle);
+    this.getImplementation().animateApplyTranslation(v.x(), v.y(), v.z(), org.lgna.story.implementation.AsSeenBy.SCENE, duration, animationStyle);
   }
 
   @MethodTemplate()
@@ -127,9 +127,8 @@ public abstract class SMovableTurnable extends STurnable {
       this.getImplementation().animatePositionOnly(vehicle, position.getInternal(), PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
-      AffineMatrix4x4 m = sgTransformable.getLocalTransformation().mutable();
-      m.translation.set(position.getInternal());
-      sgTransformable.setLocalTransformation(m.immutable());
+      AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+      sgTransformable.setLocalTransformation(new AffineMatrix4x4(m.orientation(), position.getInternal().asVector()));
       Logger.severe(this);
     }
   }

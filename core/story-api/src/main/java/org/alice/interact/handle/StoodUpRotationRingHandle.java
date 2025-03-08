@@ -66,7 +66,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   public StoodUpRotationRingHandle(StoodUpRotationRingHandle handle) {
     this(handle.rotationAxisDirection, handle.handlePosition);
     this.initFromHandle(handle);
-    this.handleOffset.set(handle.handleOffset);
+    this.handleOffset = handle.handleOffset;
   }
 
   public StoodUpRotationRingHandle(MovementDirection rotationAxisDirection) {
@@ -118,8 +118,8 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 
   @Override
   public void positionRelativeToObject() {
-    this.setTransformation(this.getTransformationForAxis(this.rotationAxis).immutable(), this.getReferenceFrame());
-    this.setTranslationOnly(this.handleOffset.immutable(), this.getReferenceFrame());
+    this.setTransformation(this.getTransformationForAxis(this.rotationAxis), this.getReferenceFrame());
+    this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
     notifyTransformationListeners();
   }
 

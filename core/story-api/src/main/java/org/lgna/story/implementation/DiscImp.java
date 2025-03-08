@@ -44,11 +44,11 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Disc;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SDisc;
 import org.lgna.story.implementation.eventhandling.CylinderHull;
 import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
@@ -104,15 +104,15 @@ public class DiscImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    if (size.x != size.z) {
+    if (size.x() != size.z()) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
-    this.outerRadius.setValue(size.x * .5);
+    this.outerRadius.setValue(size.x() * .5);
   }
 
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation, 0.01, outerRadius.getValue());
+    return new CylinderHull(getAbsoluteTransformation().translation().asPoint(), 0.01, outerRadius.getValue());
   }
 
   private final SDisc abstraction;

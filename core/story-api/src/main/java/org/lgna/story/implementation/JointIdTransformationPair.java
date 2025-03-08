@@ -48,9 +48,9 @@ import org.lgna.story.Orientation;
 import org.lgna.story.Position;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author dculyba
@@ -71,15 +71,15 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
   }
 
   public JointIdTransformationPair(JointId id, UnitQuaternion quaternion, Point3 translation) {
-    this(id, new AffineMatrix4x4(quaternion, translation));
+    this(id, quaternion, translation, true);
   }
 
   public JointIdTransformationPair(JointId id, UnitQuaternion quaternion, Point3 translation, boolean affectsTranslation) {
-    this(id, new AffineMatrix4x4(quaternion, translation), affectsTranslation);
+    this(id, new AffineMatrix4x4(quaternion.asMatrix3x3(), translation.asVector()), affectsTranslation);
   }
 
   public JointIdTransformationPair(JointId id, UnitQuaternion quaternion) {
-    this(id, quaternion, Point3.createZero(), false);
+    this(id, AffineMatrix4x4.createOrientation(quaternion), false);
   }
 
   public JointIdTransformationPair(JointId id, Orientation orientation) {
@@ -112,6 +112,6 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
 
   @Override
   public void encodeDefinition(Encoder processor) {
-    processor.appendNewJointTransformation(id.getCodeIdentifier(processor), transformation);
+    processor.appendNewJointTransformation(id.getCodeIdentifier(processor), transformation.mutable());
   }
 }

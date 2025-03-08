@@ -49,10 +49,10 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -74,12 +74,10 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 
   @Override
   protected Plane createBadAnglePlane(Point3 clickPoint) {
-    Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation().up().mutable();
-    Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
-    badPlaneNormal.subtract(cameraUp);
-    badPlaneNormal.normalize();
+    Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation().up();
+    Vector3 badPlaneNormal = Vector3.POSITIVE_Y_AXIS.minus(cameraUp).normalized();
     if (badPlaneNormal.isNaN()) {
-      badPlaneNormal = Vector3.createPositiveYAxis();
+      badPlaneNormal = Vector3.POSITIVE_Y_AXIS;
     }
     return Plane.createInstance(clickPoint, badPlaneNormal);
   }
@@ -88,10 +86,8 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
   protected Point3 getPositionForPlane(Plane movementPlane, Ray pickRay) {
     if (pickRay != null) {
       Point3 pointInPlane = PlaneUtilities.getPointInPlane(movementPlane, pickRay);
-      Point3 newPosition = Point3.createAddition(this.offsetToOrigin, pointInPlane);
-      newPosition.x = this.initialObjectPosition.x;
-      newPosition.z = this.initialObjectPosition.z;
-      return newPosition;
+      Point3 newPosition = this.offsetToOrigin.plus(pointInPlane);
+      return newPosition.withX(initialObjectPosition.x()).withZ(initialObjectPosition.z());
     } else {
       return null;
     }

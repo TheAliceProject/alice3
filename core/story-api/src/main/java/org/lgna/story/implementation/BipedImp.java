@@ -43,7 +43,7 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Vector4;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.story.SBiped;
@@ -93,6 +93,6 @@ public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
       System.out.println("Unhandled LIMB: " + reachingLimb);
       return;
     }
-    IKCore.moveChainToPointInSceneSpace(anchor, end, entity.getImplementation().getTransformation(AsSeenBy.SCENE).translation);
+    IKCore.moveChainToPointInSceneSpace(anchor, end, entity.getImplementation().getTransformation(AsSeenBy.SCENE).translation().asPoint());
   }
 }

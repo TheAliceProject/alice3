@@ -45,14 +45,13 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.DragAdapter.CameraView;
-import org.alice.interact.InputState;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.interact.DragAdapter.CameraView;
+import org.alice.interact.InputState;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Vector3;
 
 public class CameraPanDragManipulator extends CameraManipulator {
 
@@ -73,11 +72,11 @@ public class CameraPanDragManipulator extends CameraManipulator {
     double yDif = -(currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
     double xDif = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
 
-    Vector3 xMovement = Vector3.createMultiplication(this.xDirection, xDif * MOVEMENT_PER_PIXEL);
-    Vector3 yMovement = Vector3.createMultiplication(this.yDirection, yDif * MOVEMENT_PER_PIXEL);
+    Vector3 xMovement = this.xDirection.times(xDif * MOVEMENT_PER_PIXEL);
+    Vector3 yMovement = this.yDirection.times(yDif * MOVEMENT_PER_PIXEL);
 
-    this.manipulatedTransformable.applyTranslation(xMovement.immutable(), AsSeenBy.SCENE);
-    this.manipulatedTransformable.applyTranslation(yMovement.immutable(), AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(xMovement, AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(yMovement, AsSeenBy.SCENE);
     manipulatedTransformable.notifyTransformationListeners();
   }
 
@@ -94,11 +93,11 @@ public class CameraPanDragManipulator extends CameraManipulator {
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput) && (this.camera instanceof SymmetricPerspectiveCamera)) {
       boolean success = false;
-      AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation().mutable();
-      this.yDirection = new Vector3(Vector3.accessPositiveYAxis());
-      this.xDirection = new Vector3(cameraTransform.orientation.right);
+      AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+      this.yDirection = Vector3.POSITIVE_Y_AXIS;
+      this.xDirection = cameraTransform.orientation().getRight();
 
-      double xDoty = Vector3.calculateDotProduct(this.yDirection, this.xDirection);
+      double xDoty = this.yDirection.dotProduct(this.xDirection);
       if (Math.abs(xDoty) > EpsilonUtilities.REASONABLE_EPSILON) {
         return false;
       }

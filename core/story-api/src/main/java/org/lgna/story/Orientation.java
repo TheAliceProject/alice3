@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.alice.math.immutable.EulerAngles;
 
 /**
@@ -58,11 +58,11 @@ public final class Orientation {
   }
 
   public Orientation() {
-    this(OrthogonalMatrix3x3.createIdentity());
+    this(OrthogonalMatrix3x3.IDENTITY);
   }
 
   public Orientation(Number x, Number y, Number z, Number w) {
-    this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
+    this((new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())).asMatrix3x3());
   }
 
   OrthogonalMatrix3x3 getInternal() {
@@ -70,17 +70,16 @@ public final class Orientation {
   }
 
   public UnitQuaternion createUnitQuaternion() {
-    return this.internal.createUnitQuaternion();
+    return this.internal.asUnitQuaternion();
   }
 
   public EulerAngles asEulerAngles() {
-    return this.internal.immutable().asEulerAngles();
+    return this.internal.asEulerAngles();
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Orientation) {
-      Orientation other = (Orientation) obj;
+    if (obj instanceof Orientation other) {
       return this.internal.equals(other.internal);
     } else {
       return false;

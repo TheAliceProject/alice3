@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -62,7 +62,7 @@ public class PlaneUtilities {
 
   public static double distanceToPlane(Plane plane, Point3 point) {
     double[] equation = plane.getEquation();
-    double topVal = (equation[0] * point.x) + (equation[1] * point.y) + (equation[2] * point.z) + equation[3];
+    double topVal = (equation[0] * point.x()) + (equation[1] * point.y()) + (equation[2] * point.z()) + equation[3];
     double bottomVal = Math.sqrt((equation[0] * equation[0]) + (equation[1] * equation[1]) + (equation[2] * equation[2]));
     return topVal / bottomVal;
   }
@@ -74,8 +74,8 @@ public class PlaneUtilities {
 
   public static Point3 projectPointIntoPlane(Plane plane, Point3 point) {
     double distanceToPlane = distanceToPlane(plane, point);
-    Vector3 offsetVector = Vector3.createMultiplication(getPlaneNormal(plane), -distanceToPlane);
-    return Point3.createAddition(point, offsetVector);
+    Vector3 offsetVector = getPlaneNormal(plane).times(-distanceToPlane);
+    return point.plus(offsetVector);
   }
 
 }

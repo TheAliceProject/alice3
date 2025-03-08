@@ -43,13 +43,13 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public enum TurnDirection {
-  LEFT(Vector3.createPositiveYAxis()), RIGHT(Vector3.createNegativeYAxis()), FORWARD(Vector3.createNegativeXAxis()), BACKWARD(Vector3.createPositiveXAxis());
+  LEFT(Vector3.POSITIVE_Y_AXIS), RIGHT(Vector3.NEGATIVE_Y_AXIS), FORWARD(Vector3.NEGATIVE_X_AXIS), BACKWARD(Vector3.POSITIVE_X_AXIS);
 
   private final Vector3 axis;
 

@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author dculyba

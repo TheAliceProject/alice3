@@ -44,8 +44,6 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -61,6 +59,8 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -120,7 +120,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera());
     if (pickRay != null) {
       int xDif = mouseLocation.x - this.initialPoint.x;
       return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);
@@ -129,7 +129,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected void initManipulator(InputState startInput) {
-    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().transform(this.rotateAxis.immutable()).mutable();
+    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().transform(this.rotateAxis);
     this.initialPoint = new Point(startInput.getMouseLocation());
   }
 
@@ -170,7 +170,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
     this.standUpReference.setParent(this.manipulatedTransformable);
     this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
     this.standUpReference.setAxesOnlyToStandUp();
-    this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis.immutable(), snappedAngle, this.standUpReference);
+    this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis, snappedAngle, this.standUpReference);
   }
 
   @Override

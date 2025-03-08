@@ -73,7 +73,7 @@ public class CylinderImp extends AbstractCylinderImp {
 
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation, getHeight(), radius.getValue());
+    return new CylinderHull(getAbsoluteTransformation().translation().asPoint(), getHeight(), radius.getValue());
   }
 
   private final SCylinder abstraction;

@@ -3,9 +3,9 @@ package org.lgna.project.io;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.alice.tweedle.file.*;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -163,13 +163,13 @@ public class JsonModelIo extends DataSourceIo {
   }
 
   private static List<Float> getOrientationAsFloatList(OrthogonalMatrix3x3 orientation) {
-    UnitQuaternion quaternion = orientation.createUnitQuaternion();
+    UnitQuaternion quaternion = orientation.asUnitQuaternion();
     List<Float> orientationList = new ArrayList<>(4);
 
-    orientationList.add((float) quaternion.w);
-    orientationList.add((float) quaternion.x);
-    orientationList.add((float) quaternion.y);
-    orientationList.add((float) quaternion.z);
+    orientationList.add((float) quaternion.w());
+    orientationList.add((float) quaternion.x());
+    orientationList.add((float) quaternion.y());
+    orientationList.add((float) quaternion.z());
 
     return orientationList;
   }
@@ -186,8 +186,8 @@ public class JsonModelIo extends DataSourceIo {
     for (JointIdTransformationPair jointData : modelPose.getJointIdTransformationPairs()) {
       ModelManifest.JointTransform jointTransform = new ModelManifest.JointTransform();
       jointTransform.jointName = jointData.getJointId().toString();
-      jointTransform.orientation = getOrientationAsFloatList(jointData.getTransformation().orientation);
-      jointTransform.position = jointData.getTransformation().translation.getAsFloatList();
+      jointTransform.orientation = getOrientationAsFloatList(jointData.getTransformation().orientation());
+      jointTransform.position = jointData.getTransformation().translation().asFloatList();
       newPose.transforms.add(jointTransform);
     }
     return newPose;

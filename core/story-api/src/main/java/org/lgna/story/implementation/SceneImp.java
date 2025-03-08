@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;

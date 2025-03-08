@@ -57,9 +57,9 @@ import org.lgna.ik.core.solver.Bone.Axis;
 import org.lgna.story.implementation.JointImp;
 
 import Jama.Matrix;
-import edu.cmu.cs.dennisc.math.AxisRotation;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AxisRotation;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -220,24 +220,21 @@ public class Solver {
 
       OrthogonalMatrix3x3 currentOrientation = bone.getCurrentOrientationFromJoint();
 
-      OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(currentOrientation);
-      m.invert();
-      //tried the other way around, didn't matter. FIXME but it should be desired X current's inverse according to maths
-      m.setToMultiplication(m, desiredOrientation);
-      OrthogonalMatrix3x3 rotation = m;
+      //tried multiplying the other way around, didn't matter. FIXME but it should be desired X current's inverse according to maths
+      OrthogonalMatrix3x3 rotation = (OrthogonalMatrix3x3) currentOrientation.invert().times(desiredOrientation);
 
-      AxisRotation axisRotation = rotation.createAxisRotation();
+      AxisRotation axisRotation = rotation.asAxisRotation();
 
       double scale = IkConstants.NULLSPACE_DEFAULT_POSE_MOTION_SCALE;
 
-      double amount = axisRotation.angle.getAsRadians() * scale;
+      double amount = axisRotation.angle().getAsRadians() * scale;
 
-      Vector3 rotationAxis = axisRotation.axis;
+      Vector3 rotationAxis = axisRotation.axis();
 
       //project rotation axis on the three axes. then scale with amount and add to them.
       //I could have projected the scaled vector but it's the same thing. I guess that requires less computation so I'll do that instead.
 
-      Vector3 rotationVector = Vector3.createMultiplication(rotationAxis, amount);
+      Vector3 rotationVector = rotationAxis.times(amount);
 
       //project this on the axes, later project the whole thing on the nullspace and then add the result to angleSpeeds.
       for (Entry<Axis, Double> e : axisToSpeed.entrySet()) {
@@ -247,7 +244,7 @@ public class Solver {
 
         assert !additionalSpeeds.containsKey(axis);
 
-        double value = Vector3.calculateDotProduct(rotationVector, localAxis);
+        double value = rotationVector.dotProduct(localAxis);
 
         additionalSpeedsForBone.put(axis, value);
       }
@@ -399,7 +396,7 @@ public class Solver {
             }
           }
           if (!found) {
-            contributions[row] = Vector3.accessOrigin();
+            contributions[row] = Vector3.ZERO;
           }
 
           desiredVelocities[row] = constraint.desiredValue;
@@ -454,9 +451,9 @@ public class Solver {
 
     int row = 0;
     for (DesiredVelocity desiredVelocity : desiredVelocities2) {
-      rv.set(row, 0, desiredVelocity.velocity.x);
-      rv.set(row + 1, 0, desiredVelocity.velocity.y);
-      rv.set(row + 2, 0, desiredVelocity.velocity.z);
+      rv.set(row, 0, desiredVelocity.velocity.x());
+      rv.set(row + 1, 0, desiredVelocity.velocity.y());
+      rv.set(row + 2, 0, desiredVelocity.velocity.z());
       row += 3;
     }
 
@@ -498,9 +495,9 @@ public class Solver {
 
         int row = 0;
         for (Vector3 contribution : contributions) {
-          j.set(row, column, contribution.x * weight);
-          j.set(row + 1, column, contribution.y * weight);
-          j.set(row + 2, column, contribution.z * weight);
+          j.set(row, column, contribution.x() * weight);
+          j.set(row + 1, column, contribution.y() * weight);
+          j.set(row + 2, column, contribution.z() * weight);
 
           row += 3;
         }

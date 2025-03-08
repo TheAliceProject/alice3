@@ -6,7 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import edu.cmu.cs.dennisc.math.AxisRotation;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.AxisRotation;
+
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Chain;
@@ -16,11 +21,6 @@ import org.lgna.ik.core.solver.Solver.JacobianAndInverse;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 
 public class JointedModelIkEnforcer extends IkEnforcer {
 
@@ -217,12 +217,11 @@ public class JointedModelIkEnforcer extends IkEnforcer {
         Point3 eePosition = chain.getEndEffectorPosition();
 
         //calculate the error vector
-        Vector3 errorVector = Vector3.createSubtraction(desiredPosition, eePosition);
+        Vector3 errorVector = desiredPosition.minus(eePosition);
 
         //calculate the desired velocity
-        if (errorVector.calculateMagnitudeSquared() > (maxLinearSpeedForEe * maxLinearSpeedForEe)) {
-          errorVector.normalize();
-          errorVector.multiply(maxLinearSpeedForEe);
+        if (errorVector.magnitudeSquared() > (maxLinearSpeedForEe * maxLinearSpeedForEe)) {
+          errorVector = errorVector.normalized().times(maxLinearSpeedForEe);
         }
         eeLinearVelocityToUse = errorVector;
       }
@@ -249,21 +248,19 @@ public class JointedModelIkEnforcer extends IkEnforcer {
         //get the current ee reference position in world (these all should be the same for each loop iteration)
         OrthogonalMatrix3x3 endEffectorOrientation = chain.getEndEffectorOrientation();
 
-        OrthogonalMatrix3x3 inverseCurrent = new OrthogonalMatrix3x3(endEffectorOrientation);
-        inverseCurrent.invert();
+        OrthogonalMatrix3x3 inverseCurrent = (OrthogonalMatrix3x3) endEffectorOrientation.invert();
 
-        OrthogonalMatrix3x3 diff = new OrthogonalMatrix3x3();
-        diff.setToMultiplication(desiredOrientation, inverseCurrent);
+        OrthogonalMatrix3x3 diff = (OrthogonalMatrix3x3) desiredOrientation.times(inverseCurrent);
 
-        AxisRotation diffAxisRotation = new AxisRotation(diff);
+        AxisRotation diffAxisRotation = diff.asAxisRotation();
 
-        Vector3 errorAngularDistance = Vector3.createMultiplication(diffAxisRotation.axis, diffAxisRotation.angle.getAsRadians());
+        Vector3 errorAngularDistance = diffAxisRotation.axis().times(diffAxisRotation.angle().getAsRadians());
 
         //not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
 
-        if (errorAngularDistance.calculateMagnitude() > maxAngularSpeedForEe) {
-          errorAngularDistance.normalize();
-          eeAngularVelocityToUse = Vector3.createMultiplication(errorAngularDistance, maxAngularSpeedForEe);
+        if (errorAngularDistance.magnitude() > maxAngularSpeedForEe) {
+          errorAngularDistance = errorAngularDistance.normalized();
+          eeAngularVelocityToUse = errorAngularDistance.times(maxAngularSpeedForEe);
         } else {
           eeAngularVelocityToUse = errorAngularDistance;
         }
@@ -382,7 +379,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
           axis.applyRotation(deltaTime * speed * weight);
         }
       } else {
-        Vector3 cumulativeAxisAngle = Vector3.createZero();
+        Vector3 cumulativeAxisAngle = Vector3.ZERO;
         //        System.out.println( "=========" );
         for (Entry<Axis, Double> ea : jointSpeedsForBone.entrySet()) {
           Axis axis = ea.getKey();
@@ -391,17 +388,17 @@ public class JointedModelIkEnforcer extends IkEnforcer {
           //          System.out.println( "ea: " + ea );
           //          System.out.println( "ea.key: " + ea.getKey() );
           //          System.out.println( "speed: " + speed );
-          Vector3 contribution = Vector3.createMultiplication(axis.getLocalAxis(), deltaTime * speed * weight);
+          Vector3 contribution = axis.getLocalAxis().times(deltaTime * speed * weight);
           //          System.out.println( "cumulativeAxisAngle: " + cumulativeAxisAngle );
           //          System.out.println( "contribution: " + contribution );
-          cumulativeAxisAngle.add(contribution);
+          cumulativeAxisAngle = cumulativeAxisAngle.plus(contribution);
         }
         //        System.out.println( "=========" );
 
         //        System.out.println( "cumulativeAxisAngle: " + cumulativeAxisAngle );
-        double angle = cumulativeAxisAngle.calculateMagnitude();
+        double angle = cumulativeAxisAngle.magnitude();
         if (!EpsilonUtilities.isWithinReasonableEpsilon(0, angle)) {
-          Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
+          Vector3 axis = cumulativeAxisAngle.dividedBy(angle);
           bone.applyLocalRotation(axis, angle);
         }
 
@@ -436,7 +433,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 
     Iterable<JointImp> joints = jointedModelImp.getJoints();
     for (JointImp jointImp : joints) {
-      fullBodyDefaultPose.put(jointImp, new OrthogonalMatrix3x3(jointImp.getLocalOrientation()));
+      fullBodyDefaultPose.put(jointImp, jointImp.getLocalOrientation());
     }
     currentFullBodyDefaultPose = fullBodyDefaultPose;
   }

@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class VantagePoint {
-  public static final VantagePoint IDENTITY = new VantagePoint(AffineMatrix4x4.createIdentity());
+  public static final VantagePoint IDENTITY = new VantagePoint(AffineMatrix4x4.IDENTITY);
   private final AffineMatrix4x4 internal;
 
   private VantagePoint(AffineMatrix4x4 internal) {
@@ -56,7 +56,7 @@ public final class VantagePoint {
   }
 
   public VantagePoint(Orientation orientation, Position position) {
-    this(new AffineMatrix4x4(orientation.getInternal(), position.getInternal()));
+    this(new AffineMatrix4x4(orientation.getInternal(), position.getInternal().asVector()));
   }
 
   /* package-private */
@@ -89,10 +89,10 @@ public final class VantagePoint {
   }
 
   public Orientation getOrientation() {
-    return new Orientation(this.internal.orientation);
+    return new Orientation(this.internal.orientation());
   }
 
   public Position getPosition() {
-    return new Position(this.internal.translation);
+    return new Position(this.internal.translation().asPoint());
   }
 }
