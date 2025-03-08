@@ -45,12 +45,12 @@ package org.alice.stageide.modelviewer;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+import org.alice.math.immutable.Vector3;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SunImp;
@@ -78,7 +78,7 @@ abstract class Viewer extends BorderPanel {
   public Viewer() {
     this.camera.setVehicle(this.scene);
     this.sunLight.setVehicle(this.scene);
-    this.sunLight.applyRotationInRevolutions(Vector3.accessNegativeXAxis(), 0.25);
+    this.sunLight.applyRotationInRevolutions(Vector3.NEGATIVE_X_AXIS, 0.25);
     this.getAwtComponent().add(this.onscreenRenderTarget.getAwtComponent(), BorderLayout.CENTER);
   }
 

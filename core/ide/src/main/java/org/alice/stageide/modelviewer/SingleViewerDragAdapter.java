@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -61,6 +60,7 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
 import java.awt.event.KeyEvent;

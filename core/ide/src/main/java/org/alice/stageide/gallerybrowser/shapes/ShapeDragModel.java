@@ -94,7 +94,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   }
 
   public AxisAlignedBox getBoundingBox() {
-    return sModel.getImplementation().getAxisAlignedMinimumBoundingBox();
+    return sModel.getImplementation().getAxisAlignedMinimumBoundingBox().mutable();
   }
 
   public IconFactory getIconFactory() {

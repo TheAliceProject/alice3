@@ -327,7 +327,7 @@ public class TimeLine {
     List<JointIdTransformationPair> builderList = Lists.newArrayList();
     for (JointId joint : map.keySet()) {
       UnitQuaternion interpolatedQuaternion = UnitQuaternion.createInterpolation(map.get(joint).getStartQuaternion(), map.get(joint).getEndQuaternion(), k);
-      builderList.add(new JointIdTransformationPair(joint, interpolatedQuaternion));
+      builderList.add(new JointIdTransformationPair(joint, interpolatedQuaternion.immutable()));
     }
     PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(init.getClass());
     for (JointIdTransformationPair key : builderList) {
@@ -441,9 +441,9 @@ public class TimeLine {
       PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(data.getPoseActual().getClass());
       for (JointId id : usedIds) {
         if (contains(data.getPose().getJointIdTransformationPairs(), id)) {
-          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose())));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose()).immutable()));
         } else {
-          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose)));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose).immutable()));
           //          builder.addCustom( orientationForId( id, prev ), id );
           // thought this would be correct changed to other open to either
         }
@@ -456,7 +456,7 @@ public class TimeLine {
   private static UnitQuaternion findQuaternionForJointId(JointId id, Pose<?> pose) {
     for (JointIdTransformationPair jqPair : pose.getJointIdTransformationPairs()) {
       if (jqPair.getJointId().equals(id)) {
-        return jqPair.getTransformation().orientation.createUnitQuaternion();
+        return jqPair.getTransformation().orientation().asUnitQuaternion().mutable();
       }
     }
     return null;

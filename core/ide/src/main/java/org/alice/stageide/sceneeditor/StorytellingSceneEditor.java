@@ -196,14 +196,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           globalDragAdapter.dragExited(dragStep);
         }
       }
-      AffineMatrix4x4 t = globalDragAdapter.getDropTargetTransformation();
+      AffineMatrix4x4 t = globalDragAdapter.getDropTargetTransformation().mutable();
       return t != null ? new SceneDropSite(t) : null;
     }
 
     @Override
     protected Triggerable dragDroppedPostRejectorCheck(DragStep dragStep) {
       if (isDropLocationOverLookingGlass(dragStep)) {
-        DropSite dropSite = new SceneDropSite(globalDragAdapter.getDropTargetTransformation());
+        DropSite dropSite = new SceneDropSite(globalDragAdapter.getDropTargetTransformation().mutable());
         return dragStep.getModel().getDropOperation(dragStep, dropSite);
       }
       return null;
@@ -359,7 +359,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
-    movableSceneCameraImp.setLocalTransformation(transform);
+    movableSceneCameraImp.setLocalTransformation(transform.immutable());
   }
 
   public static class SceneEditorProgramImp extends ProgramImp {
@@ -771,7 +771,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     super.setActiveScene(sceneField);
     // Restore to origin and upright
     if (movableSceneCameraImp != null) {
-      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+      movableSceneCameraImp.setLocalTransformation(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
     }
 
     if (sceneField != null) {
@@ -926,10 +926,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   public void setFieldToState(UserField field, Statement... statements) {
     EntityImp fieldImp = getImplementation(field);
-    AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
+    AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation().mutable();
     super.setFieldToState(field, statements);
     if ((fieldImp == movableSceneCameraImp) && (mainCameraMarkerList.getValue() != CameraOption.STARTING_CAMERA_VIEW)) {
-      movableSceneCameraImp.setTransformation(movableSceneCameraImp.getScene(), originalTransform);
+      movableSceneCameraImp.setTransformation(movableSceneCameraImp.getScene(), originalTransform.immutable());
     }
   }
 
@@ -1239,14 +1239,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public AffineMatrix4x4 getTransformForNewCameraMarker() {
-    return movableSceneCameraImp.getAbsoluteTransformation();
+    return movableSceneCameraImp.getAbsoluteTransformation().mutable();
   }
 
   public AffineMatrix4x4 getTransformForNewObjectMarker() {
     EntityImp selectedImp = this.getImplementation(this.getSelectedField());
     AffineMatrix4x4 initialTransform = null;
     if (selectedImp != null) {
-      initialTransform = selectedImp.getAbsoluteTransformation();
+      initialTransform = selectedImp.getAbsoluteTransformation().mutable();
     } else {
       initialTransform = AffineMatrix4x4.createIdentity();
     }

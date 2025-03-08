@@ -86,9 +86,9 @@ public class MoveAndOrientToEdit extends AbstractEdit {
   protected void doOrRedoInternal(boolean isDo) {
     if ((this.toMove != null) && (this.target != null)) {
       this.transformable = this.toMove.getImplementation();
-      this.m = this.transformable.getAbsoluteTransformation();
+      this.m = this.transformable.getAbsoluteTransformation().mutable();
       EntityImp targetImp = this.target.getImplementation();
-      AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
+      org.alice.math.immutable.AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
       this.transformable.animateTransformation(AsSeenBy.SCENE, targetTransform);
     } else {
       this.transformable = null;
@@ -99,7 +99,7 @@ public class MoveAndOrientToEdit extends AbstractEdit {
   @Override
   protected void undoInternal() {
     if ((this.transformable != null) && (this.m != null)) {
-      this.transformable.animateTransformation(AsSeenBy.SCENE, this.m);
+      this.transformable.animateTransformation(AsSeenBy.SCENE, this.m.immutable());
     }
   }
 

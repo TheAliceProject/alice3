@@ -175,7 +175,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilities.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name());
+    return AliceResourceUtilities.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name()).mutable();
   }
 
   @Override

@@ -76,7 +76,7 @@ public class SetPointOfViewAction implements Action {
 
   private void animate(AffineMatrix4x4 pov) {
     if (m_animator != null) {
-      m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(new PointOfViewAnimation(m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov), null);
+      m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(new PointOfViewAnimation(m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov.immutable()), null);
     }
   }
 

@@ -234,14 +234,14 @@ public class SetUpMethodGenerator {
     if (initialTransform != null) {
       if (javaType.isAssignableTo(STurnable.class)) {
         try {
-          statements.add(createOrientationStatement(isThis, field, new Orientation(initialTransform.orientation), 0));
+          statements.add(createOrientationStatement(isThis, field, new Orientation(initialTransform.orientation.immutable()), 0));
         } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
           throw new RuntimeException(ccee);
         }
       }
       if (javaType.isAssignableTo(SMovableTurnable.class)) {
         try {
-          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation), 0));
+          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation.immutable()), 0));
 
           //todo
           if ((initialTransform.translation.y == 0.0) && shouldPlaceModelAboveGround(abstractType)) {

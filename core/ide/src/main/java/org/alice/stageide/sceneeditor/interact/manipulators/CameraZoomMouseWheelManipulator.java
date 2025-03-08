@@ -277,7 +277,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
         Point3 targetPosition = getNewPointForX(this.currentX);
         OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX(this.currentX);
         AffineMatrix4x4 targetTransform = new AffineMatrix4x4(targetOrientation, targetPosition);
-        this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
+        this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform.immutable()));
       } else {
         Logger.severe("Mouse Wheel Camera Zoom: null cameraAnimation.");
       }
@@ -321,11 +321,11 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
       if (this.cameraAnimation != null) {
         this.animator.removeFrameObserver(this.cameraAnimation);
       }
-      this.cameraAnimation = new QuaternionAndTranslationTargetBasedAnimation(new QuaternionAndTranslation(this.manipulatedTransformable.getAbsoluteTransformation().mutable()), CAMERA_SPEED) {
+      this.cameraAnimation = new QuaternionAndTranslationTargetBasedAnimation(new QuaternionAndTranslation(this.manipulatedTransformable.getAbsoluteTransformation()), CAMERA_SPEED) {
         @Override
         protected void updateValue(QuaternionAndTranslation value) {
           if (CameraZoomMouseWheelManipulator.this.camera != null) {
-            AffineMatrix4x4 m = value.getAffineMatrix();
+            AffineMatrix4x4 m = value.getAffineMatrix().mutable();
             manipulatedTransformable.setTransformation(m.immutable(), AsSeenBy.SCENE);
           }
         }

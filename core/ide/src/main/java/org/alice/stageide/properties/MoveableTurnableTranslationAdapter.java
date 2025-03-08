@@ -97,7 +97,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   @Override
   public Point3 getValue() {
     if (this.instance != null) {
-      return instance.getImplementation().getAbsoluteTransformation().translation;
+      return instance.getImplementation().getAbsoluteTransformation().translation().mutablePoint();
     }
     return null;
   }
@@ -106,7 +106,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   public void setValue(Point3 newValue) {
     super.setValue(newValue);
     if (this.instance != null) {
-      AffineMatrix4x4 currentTrans = this.instance.getImplementation().getAbsoluteTransformation();
+      AffineMatrix4x4 currentTrans = this.instance.getImplementation().getAbsoluteTransformation().mutable();
       double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
       double duration = 1;
       if (dist < .02) {
@@ -116,7 +116,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
       }
 
       AbstractTransformableImp implementation = this.instance.getImplementation();
-      implementation.animatePositionOnly(AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue, false, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
+      implementation.animatePositionOnly(AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue.immutable(), false, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
   }
 

@@ -203,7 +203,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
       if (dotVector != null) {
         Vector3 normalizedDotVector = new Vector3(dotVector);
         normalizedDotVector.normalize();
-        double dot = Vector3.calculateDotProduct(event.getMovementDescription().direction.getVector(), normalizedDotVector);
+        double dot = event.getMovementDescription().direction.getVector().dotProduct(normalizedDotVector.immutable());
         if (!Double.isNaN(dot) && (dot > 0.0d)) {
           this.dragAdapter.triggerManipulationEvent(event, true);
         } else {

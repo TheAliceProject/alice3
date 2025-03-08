@@ -150,7 +150,7 @@ public class FieldIcon extends AsynchronousIcon {
 
           final AbstractTransformable sgTransformable = fieldImp.getSgComposite();
           final AffineMatrix4x4 absoluteTransform = sgTransformable.getAbsoluteTransformation().mutable();
-          final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox();
+          final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox().mutable();
           Point3 center = bbox.getCenter();
           absoluteTransform.transform(center);
           final Point3 p = center;

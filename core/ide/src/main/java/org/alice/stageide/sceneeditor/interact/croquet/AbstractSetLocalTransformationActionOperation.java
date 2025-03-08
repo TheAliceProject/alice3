@@ -81,7 +81,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
       return;
     }
     if (this.getAnimator() != null) {
-      PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt);
+      PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt.immutable());
       povAnimation.setDuration(0.5);
       this.getAnimator().invokeLater(povAnimation, null);
     } else {

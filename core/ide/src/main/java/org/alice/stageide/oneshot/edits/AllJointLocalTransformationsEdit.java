@@ -67,16 +67,17 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
     public JointUndoRunnable(JointImp joint) {
       this.joint = joint;
-      this.orientation = this.joint.getLocalTransformation().orientation;
+      this.orientation = this.joint.getLocalTransformation().orientation().mutable();
     }
 
     public boolean isUndoNecessary() {
-      return this.joint.getOriginalOrientation().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.orientation.createUnitQuaternion()) == false;
+      return !this.joint.getOriginalOrientation().
+          isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(orientation.createUnitQuaternion().immutable());
     }
 
     @Override
     public void run() {
-      this.joint.animateLocalOrientationOnly(this.orientation, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY);
+      this.joint.animateLocalOrientationOnly(this.orientation.immutable(), 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
   }
 

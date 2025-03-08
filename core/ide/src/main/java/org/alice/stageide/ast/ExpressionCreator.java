@@ -89,7 +89,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createOrientationExpression(Orientation orientation) {
     if (orientation != null) {
-      UnitQuaternion q = orientation.createUnitQuaternion();
+      UnitQuaternion q = orientation.createUnitQuaternion().mutable();
       Class<?> cls = Orientation.class;
       JavaConstructor constructor = JavaConstructor.getInstance(cls, Number.class, Number.class, Number.class, Number.class);
       return AstUtilities.createInstanceCreation(constructor, this.createDoubleExpression(q.x, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.y, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.z, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.w, MICRO_DECIMAL_PLACES));
@@ -208,7 +208,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
         //NOTE: this does not take into account that poses may affect translation as well.
         //TODO: check jtPair.affectsTranslation() to see if creating a different pose entry is necessary
-        UnitQuaternion q = jtPair.getTransformation().orientation.createUnitQuaternion();
+        UnitQuaternion q = jtPair.getTransformation().orientation().asUnitQuaternion().mutable();
         Orientation orientation = new Orientation(q.x, q.y, q.z, q.w);
 
         Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;

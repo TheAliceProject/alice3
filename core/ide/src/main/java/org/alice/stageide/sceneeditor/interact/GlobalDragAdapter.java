@@ -101,6 +101,7 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
@@ -114,7 +115,6 @@ import org.alice.stageide.sceneeditor.interact.manipulators.ResizeDragManipulato
 import org.alice.stageide.sceneeditor.interact.manipulators.ScaleDragManipulator;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.Application;
@@ -658,7 +658,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
   public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
     AbstractTransformable sgManipulatedTransformable = manipulator.getManipulatedTransformable();
     if (sgManipulatedTransformable != null) {
-      AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation().mutable();
+      AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
 
       if (newTransformation.equals(originalTransformation)) {
         Logger.warning("Adding an undoable action for a manipulation that didn't actually change the transformation.");

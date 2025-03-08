@@ -135,7 +135,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
       JointId anchor = getAnchorForEndJoint(end);
       if (anchor != null) {
         JointImp anchor2 = model.getJoint(anchor).getImplementation();
-        IKCore.moveChainToPointInSceneSpace(anchor2, end, jss.getImplementation().getAbsoluteTransformation().translation);
+        IKCore.moveChainToPointInSceneSpace(anchor2, end, jss.getImplementation().getAbsoluteTransformation().translation().asPoint());
       }
       jss.setVehicle(end.getAbstraction());
     }

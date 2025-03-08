@@ -164,7 +164,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   public void updateMarkersForNewScene(SceneImp sceneImp, TransformableImp startingCamera) {
-    AffineMatrix4x4 openingViewTransform = startingCamera.getAbsoluteTransformation();
+    AffineMatrix4x4 openingViewTransform = startingCamera.getAbsoluteTransformation().mutable();
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
       marker.resetForScene(sceneImp, openingViewTransform);
     }
@@ -201,7 +201,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private static AxisAlignedBox getBoundingBox(UserField field) {
     Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(field);
     EntityImp target = ((SThing) instanceInJava).getImplementation();
-    return target.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
+    return target.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE).mutable();
   }
 
   private double clampCameraValue(double val) {
@@ -301,7 +301,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       if (transformsAreWithinReasonableEpsilonOfEachOther(lastCamTransform, targetTransform)) {
         startTrackingCamera();
       } else {
-        pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, lastCamTransform, targetTransform) {
+        pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, lastCamTransform.immutable(), targetTransform.immutable()) {
           @Override
           protected void epilogue() {
             if (doEpilogue) {
@@ -420,12 +420,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return markerImp.getAbsoluteTransformation();
+      return markerImp.getAbsoluteTransformation().mutable();
     }
 
     @Override
     public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
-      markerImp.setLocalTransformation(startingView);
+      markerImp.setLocalTransformation(startingView.immutable());
     }
 
     @Override
@@ -512,7 +512,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     private void setLocalTransformation(AffineMatrix4x4 layoutTransform) {
       if (isActive()) {
-        markerImp.setLocalTransformation(layoutTransform);
+        markerImp.setLocalTransformation(layoutTransform.immutable());
       } else {
         getCamera().getMovableParent().setLocalTransformation(layoutTransform.immutable());
       }
@@ -520,7 +520,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return markerImp.getAbsoluteTransformation();
+      return markerImp.getAbsoluteTransformation().mutable();
     }
 
     @Override
@@ -581,7 +581,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     // Move marker in the scene graph to be directly under scene, not camera, while maintaining the absolute position
     @Override
     protected void stopTrackingCamera() {
-      AffineMatrix4x4 previousMarkerTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+      AffineMatrix4x4 previousMarkerTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).mutable();
       markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
       markerImp.getSgComposite().setTransformation(previousMarkerTransform.immutable(), AsSeenBy.SCENE);
       markerImp.setShowing(true);
@@ -595,12 +595,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       AbstractTransformable cameraParent = getCamera().getMovableParent();
       Composite root = cameraParent.getRoot();
       if (root != null) {
-        cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).immutable(), root);
+        cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
       } else {
         Logger.severe(cameraParent);
       }
       markerImp.setShowing(false);
-      markerImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+      markerImp.setLocalTransformation(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
       markerImp.getSgComposite().setParent(cameraParent);
       sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
@@ -623,7 +623,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+      return markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).mutable();
     }
   }
 
@@ -641,7 +641,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       topTransform.orientation.right.set(-1, 0, 0);
       topTransform.orientation.backward.set(0, 1, 0);
       assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-      markerImp.setLocalTransformation(topTransform);
+      markerImp.setLocalTransformation(topTransform.immutable());
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(16));
     }
 
@@ -660,7 +660,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       topTransform.orientation.up.set(0, 0, 1);
       topTransform.orientation.right.set(-1, 0, 0);
       topTransform.orientation.backward.set(0, 1, 0);
-      markerImp.setLocalTransformation(topTransform);
+      markerImp.setLocalTransformation(topTransform.immutable());
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       double height = clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetWidth));
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(height));
@@ -679,7 +679,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       sideTransform.translation.y = 1;
       sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
       assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-      markerImp.setLocalTransformation(sideTransform);
+      markerImp.setLocalTransformation(sideTransform.immutable());
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
 
@@ -696,7 +696,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       sideTransform.translation.y = targetTranslation.y;
       sideTransform.translation.z = targetTranslation.z;
       sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
-      markerImp.setLocalTransformation(sideTransform);
+      markerImp.setLocalTransformation(sideTransform.immutable());
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       double height = clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight));
@@ -716,7 +716,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       frontTransform.translation.y = 1;
       frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
       assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-      markerImp.setLocalTransformation(frontTransform);
+      markerImp.setLocalTransformation(frontTransform.immutable());
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
 
@@ -733,7 +733,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       frontTransform.translation.y = targetTranslation.y;
       frontTransform.translation.z = targetTranslation.z - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET);
       frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
-      markerImp.setLocalTransformation(frontTransform);
+      markerImp.setLocalTransformation(frontTransform.immutable());
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       double height = clampPictureValue(Math.max(targetWidth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetHeight));

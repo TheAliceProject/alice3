@@ -119,8 +119,8 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
           //Check to see if we're already at a "good look" position of the target. If so, don't do anything
           SymmetricPerspectiveCameraImp cameraImp = storytellingCamera.getImplementation();
           StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(toLookAtEntity.getImplementation());
-          AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
-          AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
+          AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation().mutable();
+          AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation().mutable();
           if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {
             //Do nothing since we're already where we're supposed to be
             return;

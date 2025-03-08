@@ -98,7 +98,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return dynamicResource.getBoundingBox();
+    return dynamicResource.getBoundingBox().mutable();
   }
 
   @Override

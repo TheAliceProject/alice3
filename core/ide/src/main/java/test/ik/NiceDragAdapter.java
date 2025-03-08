@@ -136,7 +136,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     } else {
       if (m_sgDragAcceptor != null) {
         Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera).mutable();
-        m_xyzInAbsoluteAtPress = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
+        m_xyzInAbsoluteAtPress = PlaneUtilities.getPointInPlane(m_planeInAbsolute.immutable(), ray.immutable()).mutable();
         //m_xyzInAbsoluteAtPress.y += this.yDelta;
       }
     }
@@ -181,7 +181,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
       } else {
         //linear drag
         Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera).mutable();
-        final Point3 xyzInAbsolutePlane = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
+        final Point3 xyzInAbsolutePlane = PlaneUtilities.getPointInPlane(m_planeInAbsolute.immutable(), ray.immutable()).mutable();
         xyzInAbsolutePlane.subtract(m_offset);
         GlrRenderFactory.getInstance().invokeLater(new Runnable() {
           @Override

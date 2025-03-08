@@ -56,6 +56,7 @@ import org.alice.interact.handle.JointRotationRingHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
@@ -65,7 +66,6 @@ import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 import java.awt.event.MouseEvent;
 

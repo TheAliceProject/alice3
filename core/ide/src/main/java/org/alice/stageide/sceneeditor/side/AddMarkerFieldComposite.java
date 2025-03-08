@@ -119,13 +119,13 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
     AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
     rv.addDoStatement(SetUpMethodGenerator.createSetterStatement(false, field, COLOR_ID_SETTER, this.colorIdState.getValue()));
     try {
-      Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(false, field, new Orientation(initialMarkerTransform.orientation));
+      Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(false, field, new Orientation(initialMarkerTransform.orientation.immutable()));
       rv.addDoStatement(orientationStatement);
     } catch (CannotCreateExpressionException ccee) {
       ccee.printStackTrace();
     }
     try {
-      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, new Position(initialMarkerTransform.translation));
+      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, new Position(initialMarkerTransform.translation.immutable()));
       rv.addDoStatement(positionStatement);
     } catch (CannotCreateExpressionException ccee) {
       ccee.printStackTrace();

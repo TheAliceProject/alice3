@@ -72,31 +72,32 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
     public JointUndoRunnable(JointImp joint) {
       this.joint = joint;
-      this.transformation = this.joint.getLocalTransformation();
+      this.transformation = this.joint.getLocalTransformation().mutable();
     }
 
     //Returns true if the pose will actually change the orientation and position of the joint
     //Scale is passed in because poses that affect the translation of a joint must apply the model's scale to the translation
     public boolean isUndoNecessary(Pose<? extends SJointedModel> pose, Dimension3 scale) {
-      AffineMatrix4x4 poseTransform = null;
+      org.alice.math.immutable.AffineMatrix4x4 poseTransform = null;
       boolean willNotRotateJoint = true;
       boolean willNotTranslateJoint = true;
       boolean affectsTranslation = false;
       for (JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs()) {
         if (idTransformPair.getJointId() == this.joint.getJointId()) {
-          poseTransform = new AffineMatrix4x4(idTransformPair.getTransformation());
+          poseTransform = idTransformPair.getTransformation();
           if (idTransformPair.affectsTranslation()) {
             //Apply the scale of the model to the translation
-            poseTransform.translation.multiply(scale);
+            poseTransform.scaleTranslation(scale.asScaleMatrix());
             affectsTranslation = true;
           }
           break;
         }
       }
       if (poseTransform != null) {
-        willNotRotateJoint = poseTransform.orientation.createUnitQuaternion().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation.createUnitQuaternion());
+        willNotRotateJoint = poseTransform.orientation().asUnitQuaternion().
+            isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation.createUnitQuaternion().immutable());
         if (affectsTranslation) {
-          willNotTranslateJoint = poseTransform.translation.isWithinReasonableEpsilonOf(this.transformation.translation);
+          willNotTranslateJoint = poseTransform.translation().isWithinReasonableEpsilonOf(this.transformation.translation.immutableVector());
         }
       }
       return !willNotRotateJoint || !willNotTranslateJoint;
@@ -104,7 +105,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
     @Override
     public void run() {
-      this.joint.animateTransformation(this.joint.getVehicle(), this.transformation);
+      this.joint.animateTransformation(this.joint.getVehicle(), this.transformation.immutable());
     }
   }
 

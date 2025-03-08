@@ -20,7 +20,7 @@ public class MoveTransformableEdit extends AbstractEdit<ActionOperation> {
   public MoveTransformableEdit(UserActivity userActivity, TransformableImp toMove, AffineMatrix4x4 end) {
     super(userActivity);
     this.toMove = toMove;
-    this.start = toMove.getAbsoluteTransformation();
+    this.start = toMove.getAbsoluteTransformation().mutable();
     this.end = end;
   }
 
@@ -33,14 +33,14 @@ public class MoveTransformableEdit extends AbstractEdit<ActionOperation> {
   @Override
   protected void doOrRedoInternal(boolean isDo) {
     if (toMove != null && end != null) {
-      toMove.animateTransformation(AsSeenBy.SCENE, end);
+      toMove.animateTransformation(AsSeenBy.SCENE, end.immutable());
     }
   }
 
   @Override
   protected void undoInternal() {
     if (start != null) {
-      toMove.animateTransformation(AsSeenBy.SCENE, start);
+      toMove.animateTransformation(AsSeenBy.SCENE, start.immutable());
     }
   }
 

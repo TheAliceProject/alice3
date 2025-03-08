@@ -85,7 +85,7 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
   }
 
   private double getDistance() {
-    Point3 modelLoc = model.getAbsoluteTransformation().translation;
+    Point3 modelLoc = model.getAbsoluteTransformation().translation().mutablePoint();
     Point3 cameraLoc = camera.getAbsoluteTransformation().translation().mutablePoint();
     modelLoc.z = 1;
     cameraLoc.z = 1;
@@ -112,7 +112,7 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
       movementDirection.multiply(getZoomSpeed());
       originalTransformation.translation.add(movementDirection);
       AffineMatrix4x4 targetTransform = new AffineMatrix4x4(orientation, originalTransformation.translation);
-      this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
+      this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform.immutable()));
     } else {
       super.zoomCamera(direction);
     }

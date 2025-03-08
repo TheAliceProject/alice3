@@ -69,7 +69,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
     if (instance instanceof STurnable) {
       STurnable turnable = (STurnable) instance;
       this.transformable = turnable.getImplementation();
-      this.m = this.transformable.getLocalTransformation();
+      this.m = this.transformable.getLocalTransformation().mutable();
     } else {
       Logger.severe(instance);
       this.transformable = null;
@@ -80,7 +80,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
   @Override
   protected void undoInternal() {
     if ((this.transformable != null) && (this.m != null)) {
-      this.transformable.animateTransformation(AsSeenBy.PARENT, this.m);
+      this.transformable.animateTransformation(AsSeenBy.PARENT, this.m.immutable());
     }
   }
 }

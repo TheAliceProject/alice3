@@ -64,14 +64,14 @@ import org.lgna.croquet.views.ViewController;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
@@ -95,18 +95,18 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
       this.initializeEventMessages();
       this.hasMoved = false;
       this.hidCursor = false;
-      this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation().mutablePoint();
-      AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation().mutable();
-      Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
+      this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation().asPoint();
+      AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+      Vector3 cameraFacingNormal = cameraTransform.orientation().backward().negate();
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
-      Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
+      Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
       Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
-      this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
+      this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint);
 
       Point3 initialClickPoint = this.getInitialClickPoint(startInput);
 
-      this.offsetFromOrigin = Point3.createSubtraction(initialClickPoint, this.originalPosition);
+      this.offsetFromOrigin = initialClickPoint.minus(this.originalPosition);
       this.mousePlaneOffset = calculateMousePlaneOffset(startInput.getMouseLocation(), this.objectToCopy);
 
       //We don't need special planes for the orthographic camera
@@ -114,17 +114,12 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
         Point mousePoint = new Point(startInput.getMouseLocation().x + this.mousePlaneOffset.x, startInput.getMouseLocation().y + this.mousePlaneOffset.y);
         setUpPlanes(this.originalPosition, mousePoint);
 
-        Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation().backward().mutable();
-        cameraBackward.y = 0.0;
-        cameraBackward.normalize();
+        Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation().backward().withY(0).normalized();
         if (cameraBackward.isNaN()) {
-          cameraBackward = this.camera.getAbsoluteTransformation().orientation().up().mutable();
-          cameraBackward.multiply(-1);
-          cameraBackward.y = 0.0;
-          cameraBackward.normalize();
+          cameraBackward = this.camera.getAbsoluteTransformation().orientation().up().negate().withY(0).normalized();
         }
-        OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
-        this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput).immutable(), AsSeenBy.SCENE);
+        OrthogonalMatrix3x3 facingCameraOrientation = (new ForwardAndUpGuide(cameraBackward, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3();
+        this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
       }
       addPlaneTransitionPointSphereToScene();
       AxisAlignedBox box = null;
@@ -144,7 +139,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
         this.sgBoundingBoxDecorator.isShowing.setValue(false);
         this.sgAxes = new ModestAxes(1.0);
       } else {
-        this.sgBoundingBoxDecorator.setBox(box.immutable());
+        this.sgBoundingBoxDecorator.setBox(box);
         this.sgAxes = new ModestAxes(box.getWidth() * .5);
       }
       this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
