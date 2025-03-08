@@ -178,12 +178,11 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
     this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
     if (this.objectOriginInPlane == null) {
-      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis.times(-1.0d));
+      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis.negate());
       this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
     }
     if (this.objectOriginInPlane != null) {
-      Vector3 toMouse = this.initialClickPoint.minus(this.objectOriginInPlane);
-      toMouse.normalized();
+      Vector3 toMouse = this.initialClickPoint.minus(this.objectOriginInPlane).normalized();
       this.originalMouseDirection = toMouse;
       this.originalMouseRightDirection = this.originalMouseDirection.crossProduct(rotationAxis);
 
