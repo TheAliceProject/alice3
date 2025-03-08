@@ -67,27 +67,9 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
     return new Point3(x, y, z);
   }
 
-  default Vector3f transform(Vector3f b) {
-    if (this.isIdentity()) {
-      return b;
-    }
-    float x = (float) ((e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14());
-    float y = (float) ((e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24());
-    float z = (float) ((e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34());
-    return new Vector3f(x, y, z);
-  }
-
+  // Alice treats Vector3 (& 3f) as direction only and does not expect the translation (4th column) to contribute.
+  // If that is the required behavior consider using Point3, or Vector4
   default Vector3 transform(Vector3 b) {
-    if (this.isIdentity()) {
-      return b;
-    }
-    double x = (e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()) + e14();
-    double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()) + e24();
-    double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()) + e34();
-    return new Vector3(x, y, z);
-  }
-
-  default Vector3 transformByOrientationOnly(Vector3 b) {
     if (this.isIdentity()) {
       return b;
     }
@@ -95,6 +77,16 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
     double y = (e21() * b.x()) + (e22() * b.y()) + (e23() * b.z());
     double z = (e31() * b.x()) + (e32() * b.y()) + (e33() * b.z());
     return new Vector3(x, y, z);
+  }
+
+  default Vector3f transform(Vector3f b) {
+    if (this.isIdentity()) {
+      return b;
+    }
+    float x = (float) ((e11() * b.x()) + (e12() * b.y()) + (e13() * b.z()));
+    float y = (float) ((e21() * b.x()) + (e22() * b.y()) + (e23() * b.z()));
+    float z = (float) ((e31() * b.x()) + (e32() * b.y()) + (e33() * b.z()));
+    return new Vector3f(x, y, z);
   }
 
   default Vector4 transform(Vector4 b) {
@@ -112,7 +104,7 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
     if (this.isIdentity()) {
       return ray;
     }
-    return new Ray(transform(ray.origin()), transformByOrientationOnly(ray.direction()).normalized());
+    return new Ray(transform(ray.origin()), transform(ray.direction()).normalized());
   }
 
   // Transform with full matrix multiplication
