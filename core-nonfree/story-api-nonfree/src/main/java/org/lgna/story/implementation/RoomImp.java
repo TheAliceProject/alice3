@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.HorizontalSurface;
@@ -53,6 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.Paint;
 import org.lgna.story.SRoom;
 
@@ -211,7 +211,7 @@ public class RoomImp extends VisualScaleModelImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    internalSetSize((float) size.x, (float) size.y, (float) size.z);
+    internalSetSize((float) size.x(), (float) size.y(), (float) size.z());
   }
 
   @Override

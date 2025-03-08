@@ -48,10 +48,11 @@ import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
@@ -231,7 +232,7 @@ public abstract class Model extends Geometry {
 
   public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
     synchronized (renderLock) {
-      setLocalTransformationForPartNamed(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), localTrans.getAsColumnMajorArray12());
+      setLocalTransformationForPartNamed(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), localTrans.asColumnMajorArray12());
     }
   }
 
@@ -261,8 +262,8 @@ public abstract class Model extends Geometry {
   public AxisAlignedBox getAxisAlignedBoundingBoxForJoint(JointId joint) {
     double[] bboxData = new double[6];
     getAxisAlignedBoundingBoxForJoint(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), bboxData);
-    AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
-    bbox.scale(this.sgAssociatedVisual.scale.getValue().mutable());
+    AxisAlignedBox bbox = AxisAlignedBox.createAxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
+    bbox.scale(this.sgAssociatedVisual.scale.getValue());
     return bbox;
   }
 
@@ -316,7 +317,7 @@ public abstract class Model extends Geometry {
           }
         }
         AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
-        InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix.immutable());
+        InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix);
         if (iawp != null) {
           weightInfo.addReference(joint.toString(), iawp);
         }
@@ -413,7 +414,7 @@ public abstract class Model extends Geometry {
       Joint j = new Joint();
       j.jointID.setValue(currentJointId.toString());
       j.setName(currentJointId.toString());
-      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId).immutable());
+      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
       processedJoints.add(j);
       if (currentJointId.getParent() == null) {
         rootJoint = j;
@@ -499,9 +500,9 @@ public abstract class Model extends Geometry {
     skeletonVisual.setName(getName());
     skeletonVisual.frontFacingAppearance.setValue(new SimpleAppearance());
     skeletonVisual.skeleton.setValue(skeleton);
-    skeletonVisual.geometries.setValue(unWeightedMeshes.toArray(new Mesh[unWeightedMeshes.size()]));
-    skeletonVisual.weightedMeshes.setValue(weightedMeshes.toArray(new WeightedMesh[weightedMeshes.size()]));
-    skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[textures.size()]));
+    skeletonVisual.geometries.setValue(unWeightedMeshes.toArray(new Mesh[0]));
+    skeletonVisual.weightedMeshes.setValue(weightedMeshes.toArray(new WeightedMesh[0]));
+    skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[0]));
 
     return skeletonVisual;
   }

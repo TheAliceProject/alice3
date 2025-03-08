@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.story.implementation.sims2;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
@@ -92,7 +92,7 @@ public class JointImplementation extends JointImp {
 
   @Override
   public UnitQuaternion getOriginalOrientation() {
-    return this.sgJoint.getScaledOriginalLocalTransformation().orientation.createUnitQuaternion();
+    return this.sgJoint.getScaledOriginalLocalTransformation().orientation().asUnitQuaternion();
   }
 
   @Override
@@ -107,12 +107,12 @@ public class JointImplementation extends JointImp {
 
   @Override
   public boolean isReoriented() {
-    return !getLocalTransformation().orientation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation);
+    return !getLocalTransformation().orientation().isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation());
   }
 
   @Override
   public boolean isRelocated() {
-    return !getLocalTransformation().translation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation);
+    return !getLocalTransformation().translation().isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation());
   }
 
   @Override
@@ -120,12 +120,12 @@ public class JointImplementation extends JointImp {
     newJoint.setScale(sgJoint.getScale());
     Point3 position = isRelocated() ? getLocalPosition() : newJoint.getLocalPosition();
     OrthogonalMatrix3x3 orientation = isReoriented() ? getLocalOrientation() : newJoint.getLocalOrientation();
-    newJoint.setLocalTransformation(new AffineMatrix4x4(orientation, position));
+    newJoint.setLocalTransformation(new AffineMatrix4x4(orientation, position.asVector()));
   }
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(sgJoint.getAxisAlignedBoundingBox().immutable(), trans.immutable());
+    rv.addBoundingBox(sgJoint.getAxisAlignedBoundingBox(), trans);
   }
 
 }

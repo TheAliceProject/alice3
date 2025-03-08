@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -61,6 +60,7 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
 import java.awt.event.KeyEvent;
@@ -144,7 +144,7 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
       AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
       if (manipulator instanceof CameraTranslateKeyManipulator) {
-        ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds);
+        ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds.immutable());
       }
     }
   }

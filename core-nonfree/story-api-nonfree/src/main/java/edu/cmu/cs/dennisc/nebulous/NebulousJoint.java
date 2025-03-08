@@ -43,14 +43,15 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ModelJoint;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.resources.JointId;
 
 /**
@@ -81,32 +82,24 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
 
   public AffineMatrix4x4 getScaledOriginalLocalTransformation() {
     AffineMatrix4x4 aliceTransform = nebModel.getOriginalTransformationForJoint(this.jointId);
-    aliceTransform.translation.setToMultiplication(aliceTransform.translation, scale);
-    return aliceTransform;
+    return (AffineMatrix4x4) aliceTransform.scaleTranslation(scale.asScaleMatrix());
   }
 
   @Override
   public org.alice.math.immutable.AffineMatrix4x4 getLocalTransformation() {
     AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint(this.jointId);
     if (this.actualTranslation != null) {
-      aliceTransform.translation.set(this.actualTranslation);
+      aliceTransform = aliceTransform.withTranslation(this.actualTranslation.asVector());
     }
-    aliceTransform.translation.setToMultiplication(aliceTransform.translation, scale);
-    return aliceTransform.immutable();
+    return (AffineMatrix4x4) aliceTransform.scaleTranslation(scale.asScaleMatrix());
   }
 
   @Override
   protected void touchLocalTransformation(org.alice.math.immutable.AffineMatrix4x4 m) {
-    AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint(this.jointId);
-    current.orientation.setValue(m.orientation().mutable());
-    final Point3 unscaledTranslation = m.translation().mutablePoint();
     // Remove scale before sending to native library
-    unscaledTranslation.divide(scale);
-    current.translation.set(unscaledTranslation);
-    if (this.actualTranslation == null) {
-      this.actualTranslation = new Point3();
-    }
-    this.actualTranslation.set(unscaledTranslation);
+    final Vector3 unscaledTranslation = m.translation().dividedBy(scale);
+    AffineMatrix4x4 current = new AffineMatrix4x4(m.orientation(), unscaledTranslation);
+    this.actualTranslation = unscaledTranslation.asPoint();
     this.nebModel.setLocalTransformationForJoint(this.jointId, current);
     notifyTransformationListeners();
   }

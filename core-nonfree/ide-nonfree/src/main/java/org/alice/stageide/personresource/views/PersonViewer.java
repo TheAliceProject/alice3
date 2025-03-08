@@ -82,15 +82,15 @@ public class PersonViewer extends ModelViewer {
     yFactor *= 0.65;
     xzFactor *= 0.65;
     if (this.getScene() != null) {
-      AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
+      AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation().mutable();
       this.getCamera().setTransformation(this.getScene().createOffsetStandIn(-0.3 * xzFactor, height * yFactor, -height * xzFactor));
       this.getCamera().setOrientationOnlyToPointAt(this.getScene().createOffsetStandIn(0, height * pointAtFactor, 0));
       Animator animator = this.getAnimator();
       if ((duration > 0.0) && (animator != null)) {
-        AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
-        this.getCamera().setLocalTransformation(prevPOV);
+        AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation().mutable();
+        this.getCamera().setLocalTransformation(prevPOV.immutable());
 
-        PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV);
+        PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV.immutable());
         povAnimation.setDuration(duration);
 
         animator.completeAll();

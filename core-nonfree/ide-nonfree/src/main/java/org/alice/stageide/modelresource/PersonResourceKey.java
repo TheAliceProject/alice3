@@ -245,7 +245,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilities.getBoundingBox(getModelResourceCls());
+    return AliceResourceUtilities.getBoundingBox(getModelResourceCls()).mutable();
   }
 
   @Override
