@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.TransformableVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Vector3;
 
 /**
@@ -98,11 +99,6 @@ public class Arrow extends Transformable {
     this(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, frontFacingAppearance, frontFacingAppearance, isBottomCapDesired);
   }
 
-  private void setConeTranslation(double lengthCylinder) {
-    Vector3 translation = new Vector3(lengthCylinder, lengthCylinder, lengthCylinder).times(this.bottomToTopAxis.accessVector());
-    sgVisualCone.setTranslation(translation);
-  }
-
   public void resize(double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone) {
     this.sgCylinder.topRadius.setValue(radiusCylinder);
     this.sgCylinder.bottomRadius.setValue(radiusCylinder);
@@ -111,7 +107,16 @@ public class Arrow extends Transformable {
     this.sgCone.bottomRadius.setValue(radiusCone);
     this.sgCone.length.setValue(lengthCone);
     setConeTranslation(lengthCylinder);
+    // Trigger transformation events so arrow tips move
+    fireAbsoluteTransformationChange();
+  }
 
+  private void setConeTranslation(double lengthCylinder) {
+    Vector3 translation = this.bottomToTopAxis.accessVector().times(lengthCylinder);
+    Transformable coneTransformable = sgVisualCone.getTransformable();
+    // Setting local triggers property events
+    coneTransformable.setLocalTransformation(
+        new AffineMatrix4x4(coneTransformable.getLocalTransformation().orientation(), translation));
   }
 
   public Visual[] getVisuals() {

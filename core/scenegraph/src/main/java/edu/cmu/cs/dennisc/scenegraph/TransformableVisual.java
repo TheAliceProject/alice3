@@ -44,8 +44,6 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 
 /**
  * @author dculyba
@@ -77,31 +75,13 @@ public class TransformableVisual extends Visual {
 
   @Override
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-    AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox();
-
-    if (transformedRV == null) {
+    AxisAlignedBox aabb = super.getAxisAlignedMinimumBoundingBox();
+    if (aabb == null) {
       return null;
     }
-
-    Point3 maximum = transformedRV.maximum();
-    maximum = sgTransformable.getLocalTransformation().transform(maximum);
-
-    Point3 minimum = transformedRV.minimum();
-    minimum = sgTransformable.getLocalTransformation().transform(minimum);
-
-    return new AxisAlignedBox(minimum, maximum);
+    AffineMatrix4x4 localTransform = sgTransformable.getLocalTransformation();
+    return new AxisAlignedBox(localTransform.transform(aabb.minimum()), localTransform.transform(aabb.maximum()));
   }
 
   private final Transformable sgTransformable = new Transformable();
-
-  public void setTranslation(Vector3 translation) {
-    // Update value
-    AffineMatrix4x4 currentTransform = sgTransformable.localTransformation.getValue();
-    sgTransformable.localTransformation.setValue(new AffineMatrix4x4(currentTransform.orientation(), translation));
-
-    // Trigger property event
-    sgTransformable.localTransformation.setValue(currentTransform);
-    // Trigger transformation event
-    fireAbsoluteTransformationChange();
-  }
 }
