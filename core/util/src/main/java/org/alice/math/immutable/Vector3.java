@@ -23,8 +23,8 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
         return new Vector3(x - b.x, y - b.y, z - b.z);
     }
 
-    public Vector3 times(Vector3 b) {
-        return new Vector3(x * b.x, y * b.y, z * b.z);
+    public Vector3 times(Tuple3 b) {
+        return new Vector3(x * b.x(), y * b.y(), z * b.z());
     }
 
     public Vector3 times(double factor) {
@@ -136,6 +136,18 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
     @Deprecated(forRemoval = true)
     public edu.cmu.cs.dennisc.math.Point3 mutablePoint() {
         return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
+    }
+
+    public Vector3 withX(double newX) {
+        return new Vector3(newX, y, z);
+    }
+
+    public Vector3 withY(double newY) {
+        return new Vector3(x, newY, z);
+    }
+
+    public Vector3 withZ(double newZ) {
+        return new Vector3(x, y, newZ);
     }
     //</editor-fold>
 }

@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 public record UnitQuaternion(double x, double y, double z, double w) implements Orientation {
   public static final UnitQuaternion IDENTITY = new UnitQuaternion(0, 0, 0, 1);
+  public static final UnitQuaternion NaN = new UnitQuaternion(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
 
   //<editor-fold desc="Condition Checks">
   @Override
@@ -76,7 +77,7 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
         (w * aPortion) + (bPrime.w * bPortion));
   }
 
-  private UnitQuaternion negated() {
+  public UnitQuaternion negated() {
     return new UnitQuaternion(-x, -y, -z, -w);
   }
 

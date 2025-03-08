@@ -10,8 +10,15 @@ public record Point3(double x, double y, double z) implements Serializable, Tupl
     public Point3 plus(Tuple3 b) {
         return new Point3(x + b.x(), y + b.y(), z + b.z());
     }
-    public Vector3 minus(Tuple3 b) {
+
+    // The difference between two points is a vector
+    public Vector3 minus(Point3 b) {
         return new Vector3(x - b.x(), y - b.y(), z - b.z());
+    }
+
+    // Applying a vector to a point produces a new point
+    public Point3 minus(Vector3 b) {
+        return new Point3(x - b.x(), y - b.y(), z - b.z());
     }
 
     public Point3 times(double factor) {
@@ -32,5 +39,17 @@ public record Point3(double x, double y, double z) implements Serializable, Tupl
 
     public Vector3 asVector() {
         return new Vector3(x, y, z);
+    }
+
+    public Point3 withX(double newX) {
+        return new Point3(newX, y, z);
+    }
+
+    public Point3 withY(double newY) {
+        return new Point3(x, newY, z);
+    }
+
+    public Point3 withZ(double newZ) {
+        return new Point3(x, y, newZ);
     }
 }

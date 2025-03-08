@@ -9,7 +9,7 @@ public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEn
   // TODO Make min very high and max very low so all points get added?
   public static AxisAlignedBox Empty = new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN);
 
-  public AxisAlignedBox createAxisAlignedBox(double minimumX, double minimumY, double minimumZ, double maximumX, double maximumY, double maximumZ) {
+  public static AxisAlignedBox createAxisAlignedBox(double minimumX, double minimumY, double minimumZ, double maximumX, double maximumY, double maximumZ) {
     return new AxisAlignedBox(new Point3(minimumX, minimumY, minimumZ), new Point3(maximumX, maximumY, maximumZ));
   }
 

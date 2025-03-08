@@ -360,4 +360,8 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     orientation.encode(binaryEncoder);
     translation.encode(binaryEncoder);
   }
+
+  public AffineMatrix4x4 withTranslation(Vector3 newTranslation) {
+    return new AffineMatrix4x4(orientation, newTranslation);
+  }
 }
