@@ -247,13 +247,16 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     if (storedClassName.equals("edu.cmu.cs.dennisc.math.EulerAngles")) {
       return (E) decodeEulerAngles();
     }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.Matrix3x3")) {
+    if (storedClassName.equals("edu.cmu.cs.dennisc.math.Matrix3x3")
+        || storedClassName.equals("org.alice.math.immutable.OrthogonalMatrix3x3")) {
       return (E) decodeMatrix3x3();
     }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AxisAlignedBox")) {
+    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AxisAlignedBox")
+        || storedClassName.equals("org.alice.math.immutable.AxisAlignedBox")) {
       return (E) decodeAxisAlignedBox();
     }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AffineMatrix4x4")) {
+    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AffineMatrix4x4")
+        || storedClassName.equals("org.alice.math.immutable.AffineMatrix4x4")) {
       return (E) decodeAffineMatrix();
     }
 
