@@ -1046,7 +1046,7 @@ public class ASG {
             for (int rowIndex = 0; rowIndex < 4; rowIndex++) {
               decodeDoubleArray(getNodeText(xmlRows[rowIndex]), values, 4 * rowIndex,  4);
             }
-            value = AffineMatrix4x4.createFromRowMajorArray12(values);
+            value = AffineMatrix4x4.createFromRowMajorArray(values);
           } else if (Matrix3x3.class.isAssignableFrom(propertyValueClass)) {
             Element[] xmlRows = getChildren(xmlProperty, "row");
             double[] values = new double[9];

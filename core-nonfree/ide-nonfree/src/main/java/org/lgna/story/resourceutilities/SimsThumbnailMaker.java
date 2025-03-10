@@ -47,11 +47,11 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory;
 import org.lgna.story.implementation.sims2.NebulousPersonVisualData;
 import org.lgna.story.implementation.sims2.NebulousVisualData;
@@ -92,18 +92,18 @@ public class SimsThumbnailMaker extends AliceThumbnailMaker {
 
   private AffineMatrix4x4 getThumbnailCameraOrientationForLifeStage(LifeStage lifeStage) {
     if ((lifeStage == LifeStage.ADULT) || (lifeStage == LifeStage.ELDER) || (lifeStage == LifeStage.TEEN)) {
-      return getThumbnailCameraOrientation(new AxisAlignedBox(-.4, 0, -.4, .4, 1.6, .5));
+      return getThumbnailCameraOrientation(AxisAlignedBox.createAxisAlignedBox(-.4, 0, -.4, .4, 1.6, .5));
     } else {
-      return getThumbnailCameraOrientation(new AxisAlignedBox(-.2, 0, -.2, .2, 1.1, .2));
+      return getThumbnailCameraOrientation(AxisAlignedBox.createAxisAlignedBox(-.2, 0, -.2, .2, 1.1, .2));
     }
   }
 
   private AffineMatrix4x4 getGalleryThumbnailCameraOrientationForLifeStage(LifeStage lifeStage) {
     Vector3 cameraDir = new Vector3(-1.0, -.5, 3.0);
     if ((lifeStage == LifeStage.ADULT) || (lifeStage == LifeStage.ELDER) || (lifeStage == LifeStage.TEEN)) {
-      return getThumbnailCameraOrientation(new AxisAlignedBox(-.4, 0, -.4, .4, 1.6, .5), cameraDir);
+      return getThumbnailCameraOrientation(AxisAlignedBox.createAxisAlignedBox(-.4, 0, -.4, .4, 1.6, .5), cameraDir);
     } else {
-      return getThumbnailCameraOrientation(new AxisAlignedBox(-.2, 0, -.2, .2, 1.6, .2), cameraDir);
+      return getThumbnailCameraOrientation(AxisAlignedBox.createAxisAlignedBox(-.2, 0, -.2, .2, 1.6, .2), cameraDir);
     }
   }
 

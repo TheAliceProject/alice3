@@ -126,7 +126,7 @@ public class DoTogetherCustomizer extends javax.swing.JPanel {
 
     jSpinner1.setMinimumSize(new java.awt.Dimension(39, 20));
     jSpinner1.setPreferredSize(new java.awt.Dimension(39, 20));
-    jSpinner1.setValue(new Integer(2));
+    jSpinner1.setValue(2);
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.insets = new java.awt.Insets(10, 0, 4, 10);
     add(jSpinner1, gridBagConstraints);

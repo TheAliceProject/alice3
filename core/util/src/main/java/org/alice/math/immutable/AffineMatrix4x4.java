@@ -265,7 +265,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
   }
 
 
-  public static AffineMatrix4x4 createFromRowMajorArray12(double[] rowMajorArray) {
+  public static AffineMatrix4x4 createFromRowMajorArray(double[] rowMajorArray) {
     assert rowMajorArray.length >= 12;
     Vector3 right = new Vector3(rowMajorArray[0], rowMajorArray[4], rowMajorArray[8]);
     Vector3 up = new Vector3(rowMajorArray[1], rowMajorArray[5], rowMajorArray[9]);

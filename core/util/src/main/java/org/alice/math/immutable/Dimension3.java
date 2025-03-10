@@ -15,7 +15,7 @@ public record Dimension3(double x, double y, double z) implements Serializable, 
     public Dimension3 times(double factor) {
         return new Dimension3(x * factor, y * factor, z * factor);
     }
-    
+
     public Dimension3 times(Dimension3 b) {
         return new Dimension3(x * b.x(), y * b.y(), z * b.z());
     }

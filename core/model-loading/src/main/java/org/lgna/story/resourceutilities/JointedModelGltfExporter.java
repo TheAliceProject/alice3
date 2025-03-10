@@ -62,7 +62,6 @@ import de.javagl.jgltf.model.io.v2.GltfAssetV2;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.BlendShape;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -73,6 +72,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.WeightInfo;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.io.JointedModelExporter;
 
@@ -341,9 +341,9 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     Node node = new Node();
     node.setName(getUserJointIdentifier(joint.jointID.getValue()));
 
-    final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue().mutable();
+    final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue();
     float[] matrixValues = new float[16];
-    matrixValues = jointTransform.getAsColumnMajorArray16(matrixValues);
+    matrixValues = jointTransform.asColumnMajorArray16(matrixValues);
     node.setMatrix(matrixValues);
     return node;
   }
@@ -659,8 +659,8 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     int index = 0;
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : entries) {
       skin.addJoints(jointNodes.get(getUserJointIdentifier(entry.getKey())));
-      AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation().mutable();
-      inverseBindMatrix.getAsColumnMajorArray16(matrix);
+      AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation();
+      inverseBindMatrix.asColumnMajorArray16(matrix);
       System.arraycopy(matrix, 0, matrices, index, 16);
       index += 16;
     }

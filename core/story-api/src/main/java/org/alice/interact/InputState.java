@@ -145,7 +145,7 @@ public class InputState {
   }
 
   public void setKeyState(int keyIndex, boolean isDown) {
-    currentKeysToStatesMap.put(keyIndex, new Boolean(isDown));
+    currentKeysToStatesMap.put(keyIndex, isDown);
   }
 
   public void clearKeyState() {
@@ -161,8 +161,7 @@ public class InputState {
   }
 
   public void setMouseState(int mouseButton, boolean isDown) {
-    Integer mouseInt = new Integer(mouseButton);
-    currentMouseButtonsToStatesMap.put(mouseInt, new Boolean(isDown));
+    currentMouseButtonsToStatesMap.put(mouseButton, isDown);
   }
 
   public boolean isAnyMouseButtonDown() {

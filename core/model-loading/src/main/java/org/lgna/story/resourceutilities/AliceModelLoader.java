@@ -2,11 +2,11 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
@@ -31,8 +31,8 @@ public class AliceModelLoader {
     System.out.println(indent + "Joint " + j.jointID.getValue());
     PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation(), j.localTransformation.getValue().orientation());
     System.out.println();
-    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation().mutable();
-    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation);
+    AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
+    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation(), absoluteTransform.orientation());
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
@@ -64,19 +64,19 @@ public class AliceModelLoader {
     Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-      AffineMatrix4x4 inverseTransform = iatwp.getInverseAbsoluteTransformation().mutable();
-      AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse(inverseTransform);
+      AffineMatrix4x4 inverseTransform = iatwp.getInverseAbsoluteTransformation();
+      AffineMatrix4x4 originalTransform = inverseTransform.invert();
       System.out.println("  joint: " + pair.getKey());
       System.out.println("  inverse absolute transform:");
-      System.out.println("    t: " + inverseTransform.translation);
-      System.out.println("    x: " + inverseTransform.orientation.right);
-      System.out.println("    y: " + inverseTransform.orientation.up);
-      System.out.println("    z: " + inverseTransform.orientation.backward);
+      System.out.println("    t: " + inverseTransform.translation());
+      System.out.println("    x: " + inverseTransform.orientation().right());
+      System.out.println("    y: " + inverseTransform.orientation().up());
+      System.out.println("    z: " + inverseTransform.orientation().backward());
       System.out.println("  original absolute transform:");
-      System.out.println("    t: " + originalTransform.translation);
-      System.out.println("    x: " + originalTransform.orientation.right);
-      System.out.println("    y: " + originalTransform.orientation.up);
-      System.out.println("    z: " + originalTransform.orientation.backward);
+      System.out.println("    t: " + originalTransform.translation());
+      System.out.println("    x: " + originalTransform.orientation().right());
+      System.out.println("    y: " + originalTransform.orientation().up());
+      System.out.println("    z: " + originalTransform.orientation().backward());
       //      System.out.println( "  weights:" );
       //      System.out.print(   "   ");
       //
@@ -112,11 +112,9 @@ public class AliceModelLoader {
 
   public static void translateSkeletonVisual(SkeletonVisual sv, Vector3 translation) {
     if (sv.skeleton.getValue() != null) {
-      AffineMatrix4x4 rootTransform = sv.skeleton.getValue().localTransformation.getValue().mutable();
-      rootTransform.translation.x += translation.x();
-      rootTransform.translation.y += translation.y();
-      rootTransform.translation.z += translation.z();
-      sv.skeleton.getValue().localTransformation.setValue(rootTransform.immutable());
+      AffineMatrix4x4 rootTransform = sv.skeleton.getValue().localTransformation.getValue();
+      rootTransform = rootTransform.withTranslation(rootTransform.translation().plus(translation));
+      sv.skeleton.getValue().localTransformation.setValue(rootTransform);
     }
     for (Geometry g : sv.geometries.getValue()) {
       if (g instanceof Mesh) {

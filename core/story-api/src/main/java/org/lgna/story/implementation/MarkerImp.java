@@ -143,7 +143,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
     if ((visuals != null) && (visuals.length > 0)) {
       for (Visual v : this.getSgVisuals()) {
         for (Geometry g : v.geometries.getValue()) {
-          bbox.union(g.getAxisAlignedMinimumBoundingBox());
+          bbox =  bbox.union(g.getAxisAlignedMinimumBoundingBox());
         }
       }
     }
