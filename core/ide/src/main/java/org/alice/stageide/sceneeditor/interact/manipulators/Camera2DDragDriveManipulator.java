@@ -44,15 +44,15 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
+import edu.cmu.cs.dennisc.math.Vector2;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
+import org.alice.math.immutable.Vector3;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author David Culyba
@@ -80,28 +80,24 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 
   @Override
   protected Vector3 getMovementVectorForColor(Color color) {
-    Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
-    if (color != null) {
-      if (color.equals(UP)) {
-        initialMove.z = -INITIAL_MOVE_FACTOR;
-      } else if (color.equals(DOWN)) {
-        initialMove.z = INITIAL_MOVE_FACTOR;
-      }
+    if (UP.equals(color)) {
+      return new Vector3(0, 0, -INITIAL_MOVE_FACTOR);
     }
-    return initialMove;
+    if (DOWN.equals(color)) {
+      return new Vector3(0, 0, INITIAL_MOVE_FACTOR);
+    }
+    return Vector3.ZERO;
   }
 
   @Override
   protected Vector3 getRotationVectorForColor(Color color) {
-    Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
-    if (color != null) {
-      if (color.equals(LEFT)) {
-        initialRotate.y = INITIAL_ROTATE_FACTOR;
-      } else if (color.equals(RIGHT)) {
-        initialRotate.y = -INITIAL_ROTATE_FACTOR;
-      }
+    if (LEFT.equals(color)) {
+      return new Vector3(0, INITIAL_ROTATE_FACTOR, 0);
     }
-    return initialRotate;
+    if (RIGHT.equals(color)) {
+      return new Vector3(0, -INITIAL_ROTATE_FACTOR, 0);
+    }
+    return Vector3.ZERO;
   }
 
   @Override

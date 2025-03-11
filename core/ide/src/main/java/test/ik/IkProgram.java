@@ -73,7 +73,7 @@ import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 import test.ik.croquet.AnchorJointIdState;
 import test.ik.croquet.BonesState;
 import test.ik.croquet.EndJointIdState;
@@ -255,8 +255,8 @@ class IkProgram extends SProgram {
         ikEnforcer.setChainBetween(anchorId, endId);
       }
       setDragAdornmentsVisible(true);
-      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation().mutablePoint();
-      scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
+      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation().asPoint();
+      scene.anchor.setPositionRelativeToVehicle(new Position(ap));
     } else {
       setDragAdornmentsVisible(false);
     }
@@ -397,10 +397,10 @@ class IkProgram extends SProgram {
 
             ikEnforcer.advanceTime(deltaTime);
 
-            Point3 ep = ikEnforcer.getEndEffectorPosition(eeId).mutable();
-            Point3 ap = ikEnforcer.getAnchorPosition(anchorId).mutable();
-            scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
-            scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
+            Point3 ep = ikEnforcer.getEndEffectorPosition(eeId);
+            Point3 ap = ikEnforcer.getAnchorPosition(anchorId);
+            scene.anchor.setPositionRelativeToVehicle(new Position(ap));
+            scene.ee.setPositionRelativeToVehicle(new Position(ep));
 
             //force bone reprint
             //this should be fine even if the chain is not valid anymore.

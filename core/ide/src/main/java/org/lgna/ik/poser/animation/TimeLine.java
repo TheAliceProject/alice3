@@ -43,7 +43,6 @@
 package org.lgna.ik.poser.animation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author Matt May
@@ -119,12 +118,7 @@ public class TimeLine {
   public void moveExistingKeyFrameData(KeyFrameData data, double newTime) {
     if ((newTime > 0) && (newTime < endTime)) {
       data.setTime(newTime);
-      Collections.sort(datas, new Comparator<KeyFrameData>() {
-        @Override
-        public int compare(KeyFrameData o1, KeyFrameData o2) {
-          return new Double(o1.getEventTime()).compareTo(o2.getEventTime());
-        }
-      });
+      datas.sort(Comparator.comparingDouble(KeyFrameData::getEventTime));
       fireKeyFrameModified(data);
     }
   }
@@ -326,8 +320,8 @@ public class TimeLine {
     double k = (targetTime - prevTime) / (key2.getEventTime() - prevTime);
     List<JointIdTransformationPair> builderList = Lists.newArrayList();
     for (JointId joint : map.keySet()) {
-      UnitQuaternion interpolatedQuaternion = UnitQuaternion.createInterpolation(map.get(joint).getStartQuaternion(), map.get(joint).getEndQuaternion(), k);
-      builderList.add(new JointIdTransformationPair(joint, interpolatedQuaternion.immutable()));
+      UnitQuaternion interpolatedQuaternion = map.get(joint).getStartQuaternion().interpolate(map.get(joint).getEndQuaternion(), k);
+      builderList.add(new JointIdTransformationPair(joint, interpolatedQuaternion));
     }
     PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(init.getClass());
     for (JointIdTransformationPair key : builderList) {
@@ -441,9 +435,9 @@ public class TimeLine {
       PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass(data.getPoseActual().getClass());
       for (JointId id : usedIds) {
         if (contains(data.getPose().getJointIdTransformationPairs(), id)) {
-          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose()).immutable()));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, data.getPose())));
         } else {
-          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose).immutable()));
+          builder.addJointIdQuaternionPair(new JointIdTransformationPair(id, findQuaternionForJointId(id, initialPose)));
           //          builder.addCustom( orientationForId( id, prev ), id );
           // thought this would be correct changed to other open to either
         }
@@ -456,7 +450,7 @@ public class TimeLine {
   private static UnitQuaternion findQuaternionForJointId(JointId id, Pose<?> pose) {
     for (JointIdTransformationPair jqPair : pose.getJointIdTransformationPairs()) {
       if (jqPair.getJointId().equals(id)) {
-        return jqPair.getTransformation().orientation().asUnitQuaternion().mutable();
+        return jqPair.getTransformation().orientation().asUnitQuaternion();
       }
     }
     return null;

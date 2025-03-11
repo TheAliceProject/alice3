@@ -196,7 +196,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
       boolean placeOnGround = false;
       AxisAlignedBox box = null;
       if (galleryDragModel != null) {
-        box = galleryDragModel.getBoundingBox().immutable();
+        box = galleryDragModel.getBoundingBox();
         placeOnGround = galleryDragModel.placeOnGround();
       }
 

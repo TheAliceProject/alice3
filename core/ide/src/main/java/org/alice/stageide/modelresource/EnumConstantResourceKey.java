@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.typemanager.TypeManager;
@@ -175,7 +175,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilities.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name()).mutable();
+    return AliceResourceUtilities.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name());
   }
 
   @Override

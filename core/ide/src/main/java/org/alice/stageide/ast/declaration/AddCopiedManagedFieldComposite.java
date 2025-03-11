@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.declaration.AddManagedFieldComposite;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
@@ -126,7 +126,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
       JavaType javaType = type.getFirstEncounteredJavaType();
       Class<?> cls = javaType.getClassReflectionProxy().getReification();
       if (SModel.class.isAssignableFrom(cls)) {
-        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls)).mutable();
+        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
       } else {
         initialTransform = null;
       }

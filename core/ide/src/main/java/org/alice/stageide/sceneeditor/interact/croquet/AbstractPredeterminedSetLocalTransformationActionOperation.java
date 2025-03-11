@@ -65,13 +65,13 @@ public abstract class AbstractPredeterminedSetLocalTransformationActionOperation
   }
 
   @Override
-  protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation() {
-    return this.nextLT.mutable();
+  protected AffineMatrix4x4 getNextLocalTransformation() {
+    return this.nextLT;
   }
 
   @Override
-  protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation() {
-    return this.prevLT.mutable();
+  protected AffineMatrix4x4 getPrevLocalTransformation() {
+    return this.prevLT;
   }
 
   @Override

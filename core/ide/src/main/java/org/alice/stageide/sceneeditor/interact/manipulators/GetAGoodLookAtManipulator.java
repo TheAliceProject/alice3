@@ -44,7 +44,6 @@
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -54,6 +53,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
 import org.lgna.croquet.Application;
@@ -119,9 +119,9 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
           //Check to see if we're already at a "good look" position of the target. If so, don't do anything
           SymmetricPerspectiveCameraImp cameraImp = storytellingCamera.getImplementation();
           StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(toLookAtEntity.getImplementation());
-          AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation().mutable();
-          AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation().mutable();
-          if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {
+          AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
+          AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
+          if (currentTransform.isWithinReasonableEpsilonOf(goalTransform)) {
             //Do nothing since we're already where we're supposed to be
             return;
           }

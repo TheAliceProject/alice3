@@ -49,10 +49,6 @@ import com.jogamp.opengl.glu.GLU;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
 import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
 import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
@@ -70,8 +66,12 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.GoodLookAtUtils;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.TrimmedIcon;
@@ -149,11 +149,11 @@ public class FieldIcon extends AsynchronousIcon {
           AbstractTransformableImp fieldImp = sceneEditor.getImplementation(field);
 
           final AbstractTransformable sgTransformable = fieldImp.getSgComposite();
-          final AffineMatrix4x4 absoluteTransform = sgTransformable.getAbsoluteTransformation().mutable();
-          final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox().mutable();
+          final AffineMatrix4x4 absoluteTransform = sgTransformable.getAbsoluteTransformation();
+          final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox();
           Point3 center = bbox.getCenter();
           absoluteTransform.transform(center);
-          final Point3 p = center;
+          final Vector3 p = center.asVector();
 
           SceneImp sceneImp = sceneEditor.getActiveSceneImplementation();
           final Scene sgScene = sceneImp.getSgComposite();
@@ -217,7 +217,7 @@ public class FieldIcon extends AsynchronousIcon {
               if (sgVisual != null) {
                 distance = GoodLookAtUtils.calculateGoodLookAtDistance(sgVisual, verticalViewingAngle, aspectRatio, sgCamera);
               } else {
-                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox.immutable(), absoluteTransform.immutable(), verticalViewingAngle, aspectRatio, sgCamera);
+                distance = GoodLookAtUtils.calculateGoodLookAtDistance(bbox, absoluteTransform, verticalViewingAngle, aspectRatio, sgCamera);
               }
               //m = null;
               if (Double.isNaN(distance) == false) {
@@ -226,18 +226,15 @@ public class FieldIcon extends AsynchronousIcon {
                 //                  m.getAsColumnMajorArray16( array );
                 //                  gl.glLoadMatrixd( buffer );
 
-                AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation().mutable();
+                AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-                Vector3 v = Vector3.createSubtraction(cameraAbsolute.translation, p);
-                v.normalize();
-                v.multiply(distance);
-                v.add(p);
+                Vector3 v = cameraAbsolute.translation().minus(p).normalized().times(distance).plus(p);
 
                 gl.glLoadIdentity();
-                glu.gluLookAt(v.x, v.y, v.z, p.x, p.y, p.z, cameraAbsolute.orientation.up.x, cameraAbsolute.orientation.up.y, cameraAbsolute.orientation.up.z);
+                glu.gluLookAt(v.x(), v.y(), v.z(), p.x(), p.y(), p.z(), cameraAbsolute.orientation().up().x(), cameraAbsolute.orientation().up().y(), cameraAbsolute.orientation().up().z());
               } else {
                 gl.glLoadIdentity();
-                glu.gluLookAt(p.x + 8, p.y + 8, p.z - 8, p.x, p.y, p.z, 0, 1, 0);
+                glu.gluLookAt(p.x() + 8, p.y() + 8, p.z() - 8, p.x(), p.y(), p.z(), 0, 1, 0);
               }
 
               GlrScene sceneAdapter = AdapterFactory.getAdapterFor(sgScene);

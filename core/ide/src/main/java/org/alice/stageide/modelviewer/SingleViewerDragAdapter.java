@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
@@ -133,18 +133,14 @@ public class SingleViewerDragAdapter extends DragAdapter {
   @Override
   public void setSGCamera(AbstractCamera camera) {
     super.setSGCamera(camera);
-    AxisAlignedBox cameraBounds = new AxisAlignedBox();
-    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward().mutable();
+    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
 
-    Point3 cameraMin = camera.getAbsoluteTransformation().translation().mutablePoint();
-    Point3 cameraMax = new Point3(cameraMin);
-    double originalY = cameraMin.y;
-    cameraMin.add(Vector3.createMultiplication(cameraBackwards, 1.5d));
-    cameraMin.y = .25d;
-    cameraMax.subtract(Vector3.createMultiplication(cameraBackwards, 4.5d));
-    cameraMax.y = originalY + 1.5d;
-    cameraBounds.setMinimum(cameraMin);
-    cameraBounds.setMaximum(cameraMax);
+    Point3 cameraMin = camera.getAbsoluteTransformation().translation().asPoint();
+    Point3 cameraMax = cameraMin;
+    double originalY = cameraMin.y();
+    cameraMin = cameraMin.plus(cameraBackwards.times(1.5d)).withY(.25d);
+    cameraMax = cameraMax.minus(cameraBackwards.times(4.5d)).withY(originalY + 1.5d);
+    AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin,  cameraMax);
   }
 
   @Override

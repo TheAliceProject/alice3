@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
 import edu.cmu.cs.dennisc.clock.Clock;
 import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
@@ -60,6 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.Point3;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -193,12 +193,8 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
     }
   }
 
-  public void requestTarget(double x, double y, double z) {
-    m_function.requestTarget(x, y, z);
-  }
-
   public void requestTarget(Point3 target) {
-    m_function.requestTarget(target.x, target.y, target.z);
+    m_function.requestTarget(target);
   }
 
   public void requestYaw(Angle yaw) {
@@ -221,14 +217,6 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
     return m_function.getDistanceRequested();
   }
 
-  public Point3 accessTargetRequested() {
-    return m_function.accessTargetRequested();
-  }
-
-  public Point3 getTargetRequested(Point3 rv) {
-    return m_function.getTargetRequested(rv);
-  }
-
   public Point3 getTargetRequested() {
     return m_function.getTargetRequested();
   }
@@ -247,7 +235,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
     if (m_isEnabled) {
       RungeKuttaUtilities.rk4(m_function, 0, tDelta);
       //edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m_function.getTransformation() );
-      getSGCameraTransformable().setLocalTransformation(m_function.getTransformation().immutable());
+      getSGCameraTransformable().setLocalTransformation(m_function.getTransformation());
     }
   }
 

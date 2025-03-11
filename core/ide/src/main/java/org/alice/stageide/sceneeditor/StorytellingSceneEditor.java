@@ -62,11 +62,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -94,7 +89,11 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.ClippedZPlane;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
@@ -196,14 +195,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           globalDragAdapter.dragExited(dragStep);
         }
       }
-      AffineMatrix4x4 t = globalDragAdapter.getDropTargetTransformation().mutable();
+      AffineMatrix4x4 t = globalDragAdapter.getDropTargetTransformation();
       return t != null ? new SceneDropSite(t) : null;
     }
 
     @Override
     protected Triggerable dragDroppedPostRejectorCheck(DragStep dragStep) {
       if (isDropLocationOverLookingGlass(dragStep)) {
-        DropSite dropSite = new SceneDropSite(globalDragAdapter.getDropTargetTransformation().mutable());
+        DropSite dropSite = new SceneDropSite(globalDragAdapter.getDropTargetTransformation());
         return dragStep.getModel().getDropOperation(dragStep, dropSite);
       }
       return null;
@@ -359,7 +358,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
-    movableSceneCameraImp.setLocalTransformation(transform.immutable());
+    movableSceneCameraImp.setLocalTransformation(transform);
   }
 
   public static class SceneEditorProgramImp extends ProgramImp {
@@ -926,10 +925,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   public void setFieldToState(UserField field, Statement... statements) {
     EntityImp fieldImp = getImplementation(field);
-    AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation().mutable();
+    AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
     super.setFieldToState(field, statements);
     if ((fieldImp == movableSceneCameraImp) && (mainCameraMarkerList.getValue() != CameraOption.STARTING_CAMERA_VIEW)) {
-      movableSceneCameraImp.setTransformation(movableSceneCameraImp.getScene(), originalTransform.immutable());
+      movableSceneCameraImp.setTransformation(movableSceneCameraImp.getScene(), originalTransform);
     }
   }
 
@@ -1061,18 +1060,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (SModel.class.isAssignableFrom(cls)) {
         resourceCls = AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls);
       }
-      Point3 location;
+      Vector3 location;
       if (resourceCls != null) {
         ClassResourceKey childKey = new ClassResourceKey((Class<? extends ModelResource>) cls);
         AxisAlignedBox box = childKey.getBoundingBox();
         boolean shouldPlaceOnGround = childKey.getPlaceOnGround();
         double y = (box != null) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
-        location = new Point3(0, y, 0);
+        location = new Vector3(0, y, 0);
       } else {
-        location = Point3.createZero();
+        location = Vector3.ZERO;
       }
 
-      initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.createIdentity(), location);
+      initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, location);
     }
     return SetUpMethodGenerator.getSetupStatementsForField(false, field, this.getActiveSceneInstance(), null, initialTransform);
   }
@@ -1185,20 +1184,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private void paintHorizonLine(Graphics graphics, OnscreenRenderTarget renderTarget, OrthographicCamera camera) {
-    AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation().mutable();
-    double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+    AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+    double dotProd = cameraTransform.orientation().up().dotProduct(Vector3.POSITIVE_Y_AXIS);
     if ((dotProd == 1) || (dotProd == -1)) {
       //TODO: Make this handle retina displays and the fact that surface size and screen size may be different
       Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
-      Point3 cameraPosition = camera.getAbsoluteTransformation().translation().mutablePoint();
+      Vector3 cameraPosition = camera.getAbsoluteTransformation().translation();
 
       ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 
       double lookingGlassHeight = lookingGlassSize.getHeight();
 
       double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
-      double horizonInCameraSpace = 0.0d - cameraPosition.y;
+      double horizonInCameraSpace = 0.0d - cameraPosition.y();
       double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
       int horizonLinePixelVal = (int) (yRatio * distanceFromMaxY);
       if ((horizonLinePixelVal >= 0) && (horizonLinePixelVal <= lookingGlassHeight)) {
@@ -1239,16 +1238,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public AffineMatrix4x4 getTransformForNewCameraMarker() {
-    return movableSceneCameraImp.getAbsoluteTransformation().mutable();
+    return movableSceneCameraImp.getAbsoluteTransformation();
   }
 
   public AffineMatrix4x4 getTransformForNewObjectMarker() {
     EntityImp selectedImp = this.getImplementation(this.getSelectedField());
     AffineMatrix4x4 initialTransform = null;
     if (selectedImp != null) {
-      initialTransform = selectedImp.getAbsoluteTransformation().mutable();
+      initialTransform = selectedImp.getAbsoluteTransformation();
     } else {
-      initialTransform = AffineMatrix4x4.createIdentity();
+      initialTransform = AffineMatrix4x4.IDENTITY;
     }
     return initialTransform;
   }

@@ -42,17 +42,16 @@
  */
 package org.lgna.ik.poser.scene;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.InputState;
 import org.alice.interact.QuaternionAndTranslation;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.lgna.story.implementation.ModelImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author Matt May
@@ -85,12 +84,9 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
   }
 
   private double getDistance() {
-    Point3 modelLoc = model.getAbsoluteTransformation().translation().mutablePoint();
-    Point3 cameraLoc = camera.getAbsoluteTransformation().translation().mutablePoint();
-    modelLoc.z = 1;
-    cameraLoc.z = 1;
-    double distance = Point3.calculateDistanceBetween(modelLoc, cameraLoc);
-    return distance;
+    Vector3 modelLoc = model.getAbsoluteTransformation().translation().withZ(1);
+    Vector3 cameraLoc = camera.getAbsoluteTransformation().translation().withZ(1);
+    return modelLoc.distanceFrom(cameraLoc);
   }
 
   @Override
@@ -105,14 +101,12 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
     if (this.camera instanceof SymmetricPerspectiveCamera) {
       AbstractTransformable cameraTransformable = getManipulatedTransformable();
       //      super.zoomCamera( direction );
-      AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation().mutable();
-      OrthogonalMatrix3x3 orientation = originalTransformation.orientation;
-      Vector3 movementDirection = Vector3.createMultiplication(orientation.backward, direction);
-      movementDirection.normalize();
-      movementDirection.multiply(getZoomSpeed());
-      originalTransformation.translation.add(movementDirection);
-      AffineMatrix4x4 targetTransform = new AffineMatrix4x4(orientation, originalTransformation.translation);
-      this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform.immutable()));
+      AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation();
+      OrthogonalMatrix3x3 orientation = originalTransformation.orientation();
+      Vector3 movementDirection = orientation.backward().times(direction).normalized().times(getZoomSpeed());
+      Vector3 translation = originalTransformation.translation().plus(movementDirection);
+      AffineMatrix4x4 targetTransform = new AffineMatrix4x4(orientation, translation);
+      this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
     } else {
       super.zoomCamera(direction);
     }

@@ -364,4 +364,16 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
   public AffineMatrix4x4 withTranslation(Vector3 newTranslation) {
     return new AffineMatrix4x4(orientation, newTranslation);
   }
+
+  public AffineMatrix4x4 withOrientation(OrthogonalMatrix3x3 newOrientation) {
+    return new AffineMatrix4x4(newOrientation, translation);
+  }
+
+  public AffineMatrix4x4 rotateAboutXAxis(Angle angle) {
+    return this.times(AffineMatrix4x4.createOrientation(AxisRotation.createXAxisRotation(angle)));
+  }
+
+  public AffineMatrix4x4 rotateAboutYAxis(Angle angle) {
+    return this.times(AffineMatrix4x4.createOrientation(AxisRotation.createYAxisRotation(angle)));
+  }
 }

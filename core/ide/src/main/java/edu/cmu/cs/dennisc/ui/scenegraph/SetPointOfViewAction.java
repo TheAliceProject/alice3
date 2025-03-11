@@ -44,10 +44,10 @@ package edu.cmu.cs.dennisc.ui.scenegraph;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Action;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -70,13 +70,13 @@ public class SetPointOfViewAction implements Action {
   @Override
   public void run() {
     assert m_undoPOV == null;
-    m_undoPOV = m_sgSubject.getTransformation(m_sgAsSeenBy).mutable();
+    m_undoPOV = m_sgSubject.getTransformation(m_sgAsSeenBy);
     redo();
   }
 
   private void animate(AffineMatrix4x4 pov) {
     if (m_animator != null) {
-      m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(new PointOfViewAnimation(m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov.immutable()), null);
+      m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(new PointOfViewAnimation(m_sgSubject, m_sgAsSeenBy, PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov), null);
     }
   }
 

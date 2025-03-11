@@ -1,17 +1,16 @@
 package org.alice.stageide.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.croquet.components.SuperclassPopupButton;
 import org.alice.ide.icons.Icons;
 import org.alice.ide.name.NameValidator;
 import org.alice.ide.name.validators.TypeNameValidator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
@@ -163,7 +162,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     List<ModelManifest.Joint> modelJoints = getModelJoints(skeletonVisual);
     List<ModelManifest.Joint> extraJoints = getExtraJoints(modelJoints, baseJoints, true);
 
-    ModelManifest modelManifest = createSimpleManifest(detailsComposite.modelName.getValue(), detailsComposite.author.getValue(), AliceResourceClassUtilities.getAliceClassName(parentJavaClass), skeletonVisual.getAxisAlignedMinimumBoundingBox().mutable());
+    ModelManifest modelManifest = createSimpleManifest(detailsComposite.modelName.getValue(), detailsComposite.author.getValue(), AliceResourceClassUtilities.getAliceClassName(parentJavaClass), skeletonVisual.getAxisAlignedMinimumBoundingBox());
     modelManifest.additionalJoints = extraJoints;
     for (ModelManifest.Joint rootJoint : getRootJoints(modelJoints)) {
       rootJoint.visibility = Visibility.COMPLETELY_HIDDEN;
@@ -292,8 +291,8 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     modelManifest.provenance.aliceVersion = ProjectVersion.getCurrentVersionText();
 
     modelManifest.boundingBox = new ModelManifest.BoundingBox();
-    modelManifest.boundingBox.max = boundingBox.getMaximum().getAsFloatList();
-    modelManifest.boundingBox.min = boundingBox.getMinimum().getAsFloatList();
+    modelManifest.boundingBox.max = boundingBox.maximum().asFloatList();
+    modelManifest.boundingBox.min = boundingBox.minimum().asFloatList();
 
     StructureReference structureReference = new StructureReference();
     structureReference.name = modelName;
@@ -312,8 +311,8 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     return modelManifest;
   }
 
-  private static final AffineMatrix4x4 ROTATE_LEFT_AROUND_Y = new AffineMatrix4x4(new OrthogonalMatrix3x3(new Vector3(0, 0, -1), new Vector3(0, 1, 0), new Vector3(1, 0, 0)), Point3.ORIGIN);
-  private static final AffineMatrix4x4 ROTATE_RIGHT_AROUND_Y = new AffineMatrix4x4(new OrthogonalMatrix3x3(new Vector3(0, 0, 1), new Vector3(0, 1, 0), new Vector3(-1, 0, 0)), Point3.ORIGIN);
+  private static final AffineMatrix4x4 ROTATE_LEFT_AROUND_Y = AffineMatrix4x4.createOrientation(new OrthogonalMatrix3x3(Vector3.NEGATIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_X_AXIS));
+  private static final AffineMatrix4x4 ROTATE_RIGHT_AROUND_Y = AffineMatrix4x4.createOrientation(new OrthogonalMatrix3x3(Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.NEGATIVE_X_AXIS));
 
   private class ModelDetailsComposite extends SimpleComposite<BorderPanel> {
     StringState author = createStringState("author");
@@ -327,7 +326,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
     private ActionOperation rotateOperation(String rotateDir, AffineMatrix4x4 rotation) {
       return createActionOperation(rotateDir, (userActivity, source) -> {
-        skeletonVisual.rotate(rotation.immutable());
+        skeletonVisual.rotate(rotation);
         return null;
       });
     }

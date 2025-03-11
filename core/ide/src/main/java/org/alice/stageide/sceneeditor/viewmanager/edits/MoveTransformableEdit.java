@@ -1,7 +1,7 @@
 package org.alice.stageide.sceneeditor.viewmanager.edits;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
@@ -20,7 +20,7 @@ public class MoveTransformableEdit extends AbstractEdit<ActionOperation> {
   public MoveTransformableEdit(UserActivity userActivity, TransformableImp toMove, AffineMatrix4x4 end) {
     super(userActivity);
     this.toMove = toMove;
-    this.start = toMove.getAbsoluteTransformation().mutable();
+    this.start = toMove.getAbsoluteTransformation();
     this.end = end;
   }
 
@@ -33,14 +33,14 @@ public class MoveTransformableEdit extends AbstractEdit<ActionOperation> {
   @Override
   protected void doOrRedoInternal(boolean isDo) {
     if (toMove != null && end != null) {
-      toMove.animateTransformation(AsSeenBy.SCENE, end.immutable());
+      toMove.animateTransformation(AsSeenBy.SCENE, end);
     }
   }
 
   @Override
   protected void undoInternal() {
     if (start != null) {
-      toMove.animateTransformation(AsSeenBy.SCENE, start.immutable());
+      toMove.animateTransformation(AsSeenBy.SCENE, start);
     }
   }
 

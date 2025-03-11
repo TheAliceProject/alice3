@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Sets;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.ast.declaration.views.AddManagedFieldView;
@@ -54,6 +53,7 @@ import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
 import org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
@@ -229,7 +229,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
       JavaType javaType = type.getFirstEncounteredJavaType();
       Class<?> cls = javaType.getClassReflectionProxy().getReification();
       if (SModel.class.isAssignableFrom(cls)) {
-        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls)).mutable();
+        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
       } else {
         initialTransform = null;
       }

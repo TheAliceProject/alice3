@@ -84,6 +84,30 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   private double dotProduct(UnitQuaternion b) {
     return (x * b.x) + (y * b.y) + (z * b.z) + (w * b.w);
   }
+
+  public UnitQuaternion plus(UnitQuaternion b) {
+    return new UnitQuaternion(x + b.x, y + b.y, z + b.z, w + b.w);
+  }
+
+  public UnitQuaternion times(UnitQuaternion b) {
+    return new UnitQuaternion(x * b.x, y * b.y, z * b.z, w * b.w);
+  }
+
+  public UnitQuaternion times(double factor) {
+    return new UnitQuaternion(x * factor, y * factor, z * factor, w * factor);
+  }
+
+  public UnitQuaternion normalized() {
+    double magnitudeSquared = magnitudeSquared();
+    if (magnitudeSquared == 1.0 || magnitudeSquared == 0) {
+      return this;
+    }
+    return this.times(1.0 / Math.sqrt(magnitudeSquared));
+  }
+
+  private double magnitudeSquared() {
+    return (x * x) + (y * y) + (z * z) + (w * w);
+  }
   //</editor-fold>
 
   //<editor-fold desc="Orientation Conversions">

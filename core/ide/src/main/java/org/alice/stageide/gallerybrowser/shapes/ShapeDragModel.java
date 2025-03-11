@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
@@ -94,7 +94,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   }
 
   public AxisAlignedBox getBoundingBox() {
-    return sModel.getImplementation().getAxisAlignedMinimumBoundingBox().mutable();
+    return sModel.getImplementation().getAxisAlignedMinimumBoundingBox();
   }
 
   public IconFactory getIconFactory() {

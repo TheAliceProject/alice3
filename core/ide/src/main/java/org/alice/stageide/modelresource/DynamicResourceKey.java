@@ -1,6 +1,6 @@
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.typemanager.TypeManager;
@@ -98,7 +98,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return dynamicResource.getBoundingBox().mutable();
+    return dynamicResource.getBoundingBox();
   }
 
   @Override

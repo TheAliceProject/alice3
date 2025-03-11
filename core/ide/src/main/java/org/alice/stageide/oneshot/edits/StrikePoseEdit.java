@@ -44,7 +44,7 @@ package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Dimension3;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.common.ThreadUtilities;
@@ -72,7 +72,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
     public JointUndoRunnable(JointImp joint) {
       this.joint = joint;
-      this.transformation = this.joint.getLocalTransformation().mutable();
+      this.transformation = this.joint.getLocalTransformation();
     }
 
     //Returns true if the pose will actually change the orientation and position of the joint
@@ -95,9 +95,9 @@ public class StrikePoseEdit extends MethodInvocationEdit {
       }
       if (poseTransform != null) {
         willNotRotateJoint = poseTransform.orientation().asUnitQuaternion().
-            isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation.createUnitQuaternion().immutable());
+            isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation().asUnitQuaternion());
         if (affectsTranslation) {
-          willNotTranslateJoint = poseTransform.translation().isWithinReasonableEpsilonOf(this.transformation.translation.immutableVector());
+          willNotTranslateJoint = poseTransform.translation().isWithinReasonableEpsilonOf(this.transformation.translation());
         }
       }
       return !willNotRotateJoint || !willNotTranslateJoint;
@@ -105,7 +105,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
     @Override
     public void run() {
-      this.joint.animateTransformation(this.joint.getVehicle(), this.transformation.immutable());
+      this.joint.animateTransformation(this.joint.getVehicle(), this.transformation);
     }
   }
 

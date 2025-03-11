@@ -45,7 +45,7 @@ package org.alice.stageide.oneshot.edits;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.common.ThreadUtilities;
 import org.lgna.croquet.history.UserActivity;
@@ -67,17 +67,17 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
     public JointUndoRunnable(JointImp joint) {
       this.joint = joint;
-      this.orientation = this.joint.getLocalTransformation().orientation().mutable();
+      this.orientation = this.joint.getLocalTransformation().orientation();
     }
 
     public boolean isUndoNecessary() {
       return !this.joint.getOriginalOrientation().
-          isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(orientation.createUnitQuaternion().immutable());
+          isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(orientation.asUnitQuaternion());
     }
 
     @Override
     public void run() {
-      this.joint.animateLocalOrientationOnly(this.orientation.immutable(), 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY);
+      this.joint.animateLocalOrientationOnly(this.orientation, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
   }
 

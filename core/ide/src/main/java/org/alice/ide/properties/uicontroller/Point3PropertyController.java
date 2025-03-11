@@ -58,7 +58,7 @@ import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingAdapter;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3> {
 
@@ -233,9 +233,9 @@ public class Point3PropertyController extends AbstractAdapterController<Point3> 
   protected void setValueOnUI(Point3 point3Value) {
     this.doUpdateOnAdapter = false;
     if (point3Value != null) {
-      this.xField.setValue(point3Value.x);
-      this.yField.setValue(point3Value.y);
-      this.zField.setValue(point3Value.z);
+      this.xField.setValue(point3Value.x());
+      this.yField.setValue(point3Value.y());
+      this.zField.setValue(point3Value.z());
     } else {
       this.xField.setValue(null);
       this.yField.setValue(null);

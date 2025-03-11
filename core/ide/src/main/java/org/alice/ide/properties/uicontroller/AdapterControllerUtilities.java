@@ -52,7 +52,7 @@ import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
 import org.alice.stageide.properties.uicontroller.SelectedInstancePropertyController;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 public class AdapterControllerUtilities {
   //TODO: base this lookup on a (type -> property controller) registration that happens in the IDE

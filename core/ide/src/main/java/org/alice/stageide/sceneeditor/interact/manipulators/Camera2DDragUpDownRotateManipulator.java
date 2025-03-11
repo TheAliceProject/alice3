@@ -44,15 +44,15 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
+import edu.cmu.cs.dennisc.math.Vector2;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author David Culyba
@@ -75,15 +75,13 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 
   @Override
   protected Vector3 getRotationVectorForColor(Color color) {
-    Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
-    if (color != null) {
-      if (color.equals(FORWARD)) {
-        initialRotate.x = -INITIAL_ROTATE_FACTOR;
-      } else if (color.equals(BACKWARD)) {
-        initialRotate.x = INITIAL_ROTATE_FACTOR;
-      }
+    if (FORWARD.equals(color)) {
+      return new Vector3(-INITIAL_ROTATE_FACTOR, 0, 0);
     }
-    return initialRotate;
+    if (BACKWARD.equals(color)) {
+      return new Vector3(INITIAL_ROTATE_FACTOR, 0, 0);
+    }
+    return Vector3.ZERO;
   }
 
   @Override

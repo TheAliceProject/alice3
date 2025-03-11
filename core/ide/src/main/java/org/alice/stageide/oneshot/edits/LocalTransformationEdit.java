@@ -44,7 +44,7 @@
 package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
@@ -69,7 +69,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
     if (instance instanceof STurnable) {
       STurnable turnable = (STurnable) instance;
       this.transformable = turnable.getImplementation();
-      this.m = this.transformable.getLocalTransformation().mutable();
+      this.m = this.transformable.getLocalTransformation();
     } else {
       Logger.severe(instance);
       this.transformable = null;
@@ -80,7 +80,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
   @Override
   protected void undoInternal() {
     if ((this.transformable != null) && (this.m != null)) {
-      this.transformable.animateTransformation(AsSeenBy.PARENT, this.m.immutable());
+      this.transformable.animateTransformation(AsSeenBy.PARENT, this.m);
     }
   }
 }

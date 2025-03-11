@@ -47,20 +47,19 @@ import java.awt.Color;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Vector2;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.math.immutable.ClippedZPlane;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
-
-import edu.cmu.cs.dennisc.math.Vector2;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.lgna.croquet.Application;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator {
@@ -114,15 +113,13 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
   }
 
   protected double getZoomValueForColor(Color color) {
-    double initialZoom = 0.0d;
-    if (color != null) {
-      if (color.equals(IN)) {
-        initialZoom = -INITIAL_ZOOM_FACTOR;
-      } else if (color.equals(OUT)) {
-        initialZoom = INITIAL_ZOOM_FACTOR;
-      }
+    if (IN.equals(color)) {
+      return  -INITIAL_ZOOM_FACTOR;
     }
-    return initialZoom;
+    if (OUT.equals(color)) {
+      return INITIAL_ZOOM_FACTOR;
+    }
+    return 0;
   }
 
   @Override

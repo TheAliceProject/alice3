@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
@@ -234,17 +234,17 @@ public class SetUpMethodGenerator {
     if (initialTransform != null) {
       if (javaType.isAssignableTo(STurnable.class)) {
         try {
-          statements.add(createOrientationStatement(isThis, field, new Orientation(initialTransform.orientation.immutable()), 0));
+          statements.add(createOrientationStatement(isThis, field, new Orientation(initialTransform.orientation()), 0));
         } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
           throw new RuntimeException(ccee);
         }
       }
       if (javaType.isAssignableTo(SMovableTurnable.class)) {
         try {
-          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation.immutable()), 0));
+          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation().asPoint()), 0));
 
           //todo
-          if ((initialTransform.translation.y == 0.0) && shouldPlaceModelAboveGround(abstractType)) {
+          if ((initialTransform.translation().y() == 0.0) && shouldPlaceModelAboveGround(abstractType)) {
             //place above ground
             Expression targetExpression = new NullLiteral();
             ExpressionStatement placeStatement = createStatement(SMovableTurnable.class, "place", new Class[] {SpatialRelation.class, SThing.class, Place.Detail[].class}, SetUpMethodGenerator.createInstanceExpression(isThis, field), getExpressionCreator().createExpression(SpatialRelation.ABOVE), targetExpression);
