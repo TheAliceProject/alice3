@@ -435,7 +435,7 @@ public class JsonModelIo extends DataSourceIo {
     if (root == null) {
       return;
     }
-    root.visitJoints((joint) -> manifest.addBoundsForJoint(getJointNameForOutput(joint.jointID.getValue()), joint.getBoundingBox(false).mutable()));
+    root.visitJoints((joint) -> manifest.addBoundsForJoint(getJointNameForOutput(joint.jointID.getValue()), joint.getBoundingBox(false)));
   }
 
   private String getJointNameForOutput(String jointName) {

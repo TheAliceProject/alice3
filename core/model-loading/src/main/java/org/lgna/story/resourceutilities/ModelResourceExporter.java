@@ -1548,7 +1548,7 @@ public class ModelResourceExporter {
     if (doc != null) {
       try {
         TransformerFactory transfac = TransformerFactory.newInstance();
-        transfac.setAttribute("indent-number",4);
+        transfac.setAttribute("indent-number", 4);
         Transformer trans = transfac.newTransformer();
         //                  trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         trans.setOutputProperty(OutputKeys.INDENT, "yes");

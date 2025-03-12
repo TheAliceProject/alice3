@@ -176,10 +176,4 @@ public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEn
   public AxisAlignedBox scale(Matrix3x3 m) {
     return new AxisAlignedBox(m.transform(minimum), m.transform(maximum));
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.AxisAlignedBox mutable() {
-    return new edu.cmu.cs.dennisc.math.AxisAlignedBox(minimum.mutable(), maximum.mutable());
-  }
 }

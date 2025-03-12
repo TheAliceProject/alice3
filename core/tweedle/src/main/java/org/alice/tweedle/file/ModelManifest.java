@@ -1,6 +1,6 @@
 package org.alice.tweedle.file;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.project.annotations.Visibility;
 
 import java.util.*;
@@ -131,8 +131,8 @@ public class ModelManifest extends Manifest {
 
     public JointBounds(String jointName, AxisAlignedBox box) {
       name = jointName;
-      bounds.max = box.getMaximum().getAsFloatList();
-      bounds.min = box.getMinimum().getAsFloatList();
+      bounds.max = box.maximum().asFloatList();
+      bounds.min = box.minimum().asFloatList();
     }
 
     public JointBounds() {
