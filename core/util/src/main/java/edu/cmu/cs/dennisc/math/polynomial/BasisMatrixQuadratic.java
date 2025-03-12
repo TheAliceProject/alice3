@@ -43,8 +43,8 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -66,12 +66,12 @@ public abstract class BasisMatrixQuadratic implements Quadratic {
   @Override
   public double evaluate(double t) {
     double tt = t * t;
-    return (((tt * m_h.right.x) + (t * m_h.right.y) + m_h.right.z) * m_g.x) + (((tt * m_h.up.x) + (t * m_h.up.y) + m_h.up.z) * m_g.y) + (((tt * m_h.backward.x) + (t * m_h.backward.y) + m_h.backward.z) * m_g.z);
+    return (((tt * m_h.getRight().x()) + (t * m_h.getRight().y()) + m_h.getRight().z()) * m_g.x()) + (((tt * m_h.getUp().x()) + (t * m_h.getUp().y()) + m_h.getUp().z()) * m_g.y()) + (((tt * m_h.getBackward().x()) + (t * m_h.getBackward().y()) + m_h.getBackward().z()) * m_g.z());
   }
 
   @Override
   public double evaluateDerivative(double t) {
     double t2 = t * 2;
-    return (((t2 * m_h.right.x) + m_h.right.y) * m_g.x) + (((t2 * m_h.up.x) + m_h.up.y) * m_g.y) + (((t2 * m_h.backward.x) + m_h.backward.y) * m_g.z);
+    return (((t2 * m_h.getRight().x()) + m_h.getRight().y()) * m_g.x()) + (((t2 * m_h.getUp().x()) + m_h.getUp().y()) * m_g.y()) + (((t2 * m_h.getBackward().x()) + m_h.getBackward().y()) * m_g.z());
   }
 }
