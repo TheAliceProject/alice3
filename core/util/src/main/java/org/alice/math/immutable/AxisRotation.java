@@ -88,11 +88,4 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
     return asMatrix3x3().asForwardAndUpGuide();
   }
   //</editor-fold>
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public edu.cmu.cs.dennisc.math.AxisRotation mutable() {
-    return new edu.cmu.cs.dennisc.math.AxisRotation(axis.mutable(), angle);
-  }
 }

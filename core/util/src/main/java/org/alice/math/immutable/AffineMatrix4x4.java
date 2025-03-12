@@ -247,12 +247,6 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     return 1.0;
   }
 
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.AffineMatrix4x4 mutable() {
-    return new edu.cmu.cs.dennisc.math.AffineMatrix4x4(orientation.mutable(), translation.mutablePoint());
-  }
-
   public static AffineMatrix4x4 createFromColumnMajorArray12(double[] columnMajorArray) {
     assert columnMajorArray.length == 12;
 

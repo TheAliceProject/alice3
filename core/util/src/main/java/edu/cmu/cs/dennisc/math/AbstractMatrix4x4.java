@@ -129,8 +129,4 @@ public abstract class AbstractMatrix4x4 implements Printable {
   public boolean isWithinReasonableEpsilonOfIdentity() {
     return this.isWithinEpsilonOfIdentity(EpsilonUtilities.REASONABLE_EPSILON);
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public abstract org.alice.math.immutable.Matrix4x4 immutable();
 }

@@ -519,11 +519,4 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
     up.z = 0;
     backward.z = 1;
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public org.alice.math.immutable.OrthogonalMatrix3x3 immutable() {
-    return new org.alice.math.immutable.OrthogonalMatrix3x3(right.immutable(), up.immutable(), backward.immutable());
-  }
 }

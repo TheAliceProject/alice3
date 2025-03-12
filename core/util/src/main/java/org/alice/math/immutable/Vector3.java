@@ -130,18 +130,6 @@ public record Vector3(double x, double y, double z) implements Serializable, Tup
         return new Point3(x, y, z);
     }
 
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    public edu.cmu.cs.dennisc.math.Vector3 mutable() {
-        return new edu.cmu.cs.dennisc.math.Vector3(x, y, z);
-    }
-
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    public edu.cmu.cs.dennisc.math.Point3 mutablePoint() {
-        return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
-    }
-
     public Vector3 withX(double newX) {
         return new Vector3(newX, y, z);
     }

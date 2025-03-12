@@ -155,11 +155,4 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
     return asMatrix3x3().asForwardAndUpGuide();
   }
   //</editor-fold>
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public edu.cmu.cs.dennisc.math.UnitQuaternion mutable() {
-    return new edu.cmu.cs.dennisc.math.UnitQuaternion(x, y, z, w);
-  }
 }

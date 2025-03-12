@@ -49,15 +49,6 @@ public interface Tuple3 extends BinaryEncodableAndDecodable {
     return Math.sqrt(distanceSquaredFrom(b));
   }
 
-  // Temporary use during transition
-  @Deprecated
-  default double distanceSquaredFrom(edu.cmu.cs.dennisc.math.Point3 b) {
-    double xDelta = b.x - x();
-    double yDelta = b.y - y();
-    double zDelta = b.z - z();
-    return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
-  }
-
   default List<Float> asFloatList() {
     return Arrays.asList((float) x(), (float) y(), (float) z());
   }

@@ -84,10 +84,4 @@ public record Vector4(double x, double y, double z, double w) implements BinaryE
     binaryEncoder.encode(z);
     binaryEncoder.encode(w);
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.Vector4 mutable() {
-    return new edu.cmu.cs.dennisc.math.Vector4(x, y, z, w);
-  }
 }

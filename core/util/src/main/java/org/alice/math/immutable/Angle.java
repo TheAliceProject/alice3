@@ -34,11 +34,6 @@ public interface Angle {
     return a + ((b - a) * portion);
   }
 
-  @Deprecated
-  default edu.cmu.cs.dennisc.math.Angle mutable() {
-    return new edu.cmu.cs.dennisc.math.AngleInRadians(getAsRadians());
-  }
-
   default Angle toNearestPi() {
     return toNearest(PI);
   }

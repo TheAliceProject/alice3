@@ -208,8 +208,4 @@ public final class Plane {
     }
     return createInstance(values);
   }
-
-  public org.alice.math.immutable.Plane immutable() {
-    return new org.alice.math.immutable.Plane(a, b, c, d);
-  }
 }

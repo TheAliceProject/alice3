@@ -371,8 +371,4 @@ public abstract class AbstractMatrix3x3 implements BinaryEncodableAndDecodable, 
     afRV[offsetDest + 1] = (float) ((right.y * afSrc[offsetSrc]) + (up.y * afSrc[offsetSrc + 1]) + (backward.y * afSrc[offsetSrc + 2]));
     afRV[offsetDest + 2] = (float) ((right.z * afSrc[offsetSrc]) + (up.z * afSrc[offsetSrc + 1]) + (backward.z * afSrc[offsetSrc + 2]));
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public abstract org.alice.math.immutable.Matrix3x3 immutable();
 }

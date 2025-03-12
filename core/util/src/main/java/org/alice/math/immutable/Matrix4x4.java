@@ -294,8 +294,4 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
   }
 
   Matrix4x4 scaleTranslation(Matrix3x3 scale);
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  edu.cmu.cs.dennisc.math.AbstractMatrix4x4 mutable();
 }

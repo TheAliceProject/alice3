@@ -185,12 +185,6 @@ public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4
     throw new RuntimeException("Unexpected scaling of non affine translation");
   }
 
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.Matrix4x4 mutable() {
-    return new edu.cmu.cs.dennisc.math.Matrix4x4(asColumnMajorArray16());
-  }
-
   @Override
   public void encode(BinaryEncoder binaryEncoder) {
     right.encode(binaryEncoder);

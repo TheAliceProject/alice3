@@ -594,11 +594,4 @@ public class UnitQuaternion implements Orientation, Printable {
   public String toString() {
     return getClass().getName() + "[x=" + x + ";y=" + y + ";z=" + z + ";w=" + w + "]";
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public org.alice.math.immutable.UnitQuaternion immutable() {
-    return new org.alice.math.immutable.UnitQuaternion(x, y, z, w);
-  }
 }

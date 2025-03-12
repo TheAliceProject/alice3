@@ -138,11 +138,4 @@ public class AngleInRadians implements Angle {
   public String toString() {
     return getClass().getName() + "[" + m_radians + "]";
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public org.alice.math.immutable.AngleInRadians immutable() {
-    return new org.alice.math.immutable.AngleInRadians(getAsRadians());
-  }
 }

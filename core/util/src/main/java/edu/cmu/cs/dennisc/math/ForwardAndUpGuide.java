@@ -225,12 +225,4 @@ public class ForwardAndUpGuide implements Orientation {
   public String toString() {
     return ForwardAndUpGuide.class.getName() + "[forward=" + forward + ";upGuide=" + upGuide + "]";
   }
-
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public org.alice.math.immutable.ForwardAndUpGuide immutable() {
-    return new org.alice.math.immutable.ForwardAndUpGuide(forward.immutable(), upGuide.immutable());
-  }
 }

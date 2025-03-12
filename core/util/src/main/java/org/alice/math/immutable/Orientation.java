@@ -11,8 +11,4 @@ public interface Orientation {
     EulerAngles asEulerAngles();
     // This one was not used
     ForwardAndUpGuide asForwardAndUpGuide();
-
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    edu.cmu.cs.dennisc.math.Orientation mutable();
 }

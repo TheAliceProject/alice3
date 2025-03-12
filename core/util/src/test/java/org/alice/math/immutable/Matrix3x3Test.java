@@ -160,22 +160,6 @@ class Matrix3x3Test {
   }
 
   @Test
-  void conversionToMutableShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.AbstractMatrix3x3 mutable = M1.mutable();
-    Matrix3x3 twiceConverted = mutable.immutable();
-    assertEquals(M1, twiceConverted, "Matrix should be the same");
-  }
-
-  @Test
-  void conversionToMutableAndTwiceInvertedShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.AbstractMatrix3x3 mutable = M1.mutable();
-    mutable.invert();
-    mutable.invert();
-    Matrix3x3 twiceConverted = mutable.immutable();
-    assertTrue(M1.isWithinReasonableEpsilonOf(twiceConverted), "Matrix should be the same");
-  }
-
-  @Test
   void rotatedIdentityMatrixShouldBeOrthogonal() {
     assertInstanceOf(OrthogonalMatrix3x3.class, rotatedMatrix);
   }

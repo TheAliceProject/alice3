@@ -222,12 +222,5 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
     return new OrthogonalMatrix3x3(xAxis, Vector3.POSITIVE_Y_AXIS, zAxis);
   }
   //</editor-fold>
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mutable() {
-    return new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3(right.mutable(), up.mutable(), backward.mutable());
-  }
 }
 

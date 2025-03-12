@@ -112,6 +112,6 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
 
   @Override
   public void encodeDefinition(Encoder processor) {
-    processor.appendNewJointTransformation(id.getCodeIdentifier(processor), transformation.mutable());
+    processor.appendNewJointTransformation(id.getCodeIdentifier(processor), transformation);
   }
 }

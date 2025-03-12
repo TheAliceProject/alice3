@@ -239,8 +239,4 @@ public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
     appendable.append(isLines ? "  |\n" : "  ] ");
   }
   //</editor-fold>
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  edu.cmu.cs.dennisc.math.AbstractMatrix3x3 mutable();
 }

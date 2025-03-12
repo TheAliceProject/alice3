@@ -85,8 +85,4 @@ public interface Orientation extends BinaryEncodableAndDecodable {
   public void setValue(EulerAngles ea);
 
   public void setValue(ForwardAndUpGuide faug);
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  org.alice.math.immutable.Orientation immutable();
 }

@@ -123,16 +123,4 @@ public final class Point3 extends Tuple3 {
   public static double calculateDistanceBetween(Tuple3 a, Tuple3 b) {
     return Math.sqrt(calculateDistanceSquaredBetween(a, b));
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public org.alice.math.immutable.Point3 immutable() {
-    return new org.alice.math.immutable.Point3(x, y, z);
-  }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public org.alice.math.immutable.Vector3 immutableVector() {
-    return new org.alice.math.immutable.Vector3(x, y, z);
-  }
 }

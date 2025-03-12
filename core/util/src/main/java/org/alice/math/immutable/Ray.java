@@ -27,10 +27,4 @@ public record Ray(Point3 origin, Vector3 direction) {
   public Ray normalized() {
     return direction.isNormalized() ? this : new Ray(origin, direction.normalized());
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.Ray mutable() {
-    return new edu.cmu.cs.dennisc.math.Ray(origin.mutable(), direction.mutable());
-  }
 }

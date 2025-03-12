@@ -31,12 +31,6 @@ public record Point3(double x, double y, double z) implements Serializable, Tupl
                           z + ((b.z - z) * portion));
     }
 
-    // Temporary use during transition to immutable Records
-    @Deprecated(forRemoval = true)
-    public edu.cmu.cs.dennisc.math.Point3 mutable() {
-        return new edu.cmu.cs.dennisc.math.Point3(x, y, z);
-    }
-
     public Vector3 asVector() {
         return new Vector3(x, y, z);
     }

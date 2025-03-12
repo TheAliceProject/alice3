@@ -130,13 +130,6 @@ public final class Matrix3x3 extends AbstractMatrix3x3 {
     this.backward.z = m22;
   }
 
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  @Override
-  public org.alice.math.immutable.FullMatrix3x3 immutable() {
-    return new FullMatrix3x3(right.immutable(), up.immutable(), backward.immutable());
-  }
-
   //  @Override
   //  public void setToMultiplication( AbstractMatrix3x3 a, AbstractMatrix3x3 b ) {
   //    super.setToMultiplication( a, b );

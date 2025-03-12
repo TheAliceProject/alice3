@@ -715,10 +715,4 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     }
     return rv;
   }
-
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public org.alice.math.immutable.Matrix4x4 immutable() {
-    return new FullMatrix4x4(right.immutable(), up.immutable(), backward.immutable(), translation.immutable());
-  }
 }

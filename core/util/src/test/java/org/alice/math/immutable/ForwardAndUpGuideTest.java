@@ -11,14 +11,6 @@ public class ForwardAndUpGuideTest {
   ForwardAndUpGuide lookUp = new ForwardAndUpGuide(up, forward);
 
   @Test
-  void arbitraryMutableAndImmutableForwardUpConversionsToMatrixShouldBeEqual() {
-    edu.cmu.cs.dennisc.math.ForwardAndUpGuide mRot = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide(forward.mutable(), up.mutable() );
-    edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mm = mRot.createOrthogonalMatrix3x3();
-    OrthogonalMatrix3x3 im = rotated.asMatrix3x3();
-    assertEquals(mm.immutable().toString(), im.toString());
-  }
-
-  @Test
   void identityForwardAndUpGuideConversionsToAndFromShouldBeEqual() {
     checkConversionsAndBack(ForwardAndUpGuide.IDENTITY);
   }
