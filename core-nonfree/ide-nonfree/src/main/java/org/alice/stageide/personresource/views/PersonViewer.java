@@ -44,10 +44,10 @@ package org.alice.stageide.personresource.views;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.modelviewer.ModelViewer;
 import org.alice.stageide.personresource.PersonImp;
 import org.lgna.story.resources.sims2.LifeStage;
@@ -82,15 +82,15 @@ public class PersonViewer extends ModelViewer {
     yFactor *= 0.65;
     xzFactor *= 0.65;
     if (this.getScene() != null) {
-      AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation().mutable();
+      AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
       this.getCamera().setTransformation(this.getScene().createOffsetStandIn(-0.3 * xzFactor, height * yFactor, -height * xzFactor));
       this.getCamera().setOrientationOnlyToPointAt(this.getScene().createOffsetStandIn(0, height * pointAtFactor, 0));
       Animator animator = this.getAnimator();
       if ((duration > 0.0) && (animator != null)) {
-        AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation().mutable();
-        this.getCamera().setLocalTransformation(prevPOV.immutable());
+        AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
+        this.getCamera().setLocalTransformation(prevPOV);
 
-        PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV.immutable());
+        PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV);
         povAnimation.setDuration(duration);
 
         animator.completeAll();
