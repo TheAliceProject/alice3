@@ -119,6 +119,19 @@ public abstract class Application<D extends DocumentFrame> {
   public void initialize(String[] args) {
     if (SystemUtilities.isMac()) {
       Desktop application = Desktop.getDesktop();
+
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+      // set the name of the application menu item
+      // doesn't seem to work, at least from IntelliJ
+      //System.setProperty("apple.awt.application.name", "Alice 3");
+
+      try {
+        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      } catch (Exception  e) {
+        e.printStackTrace();
+      }
+
       application.setAboutHandler(e -> {
         Operation aboutOperation = Application.this.getAboutOperation();
         if (aboutOperation != null) {
