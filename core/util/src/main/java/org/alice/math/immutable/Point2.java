@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.alice.math.immutable;
 
-package org.lgna.story.implementation.eventhandling;
+public record Point2(double x, double y) implements Tuple2 {
+  public static Point2 ORIGIN = new Point2(0, 0);
+  public static Point2 NaN = new Point2(Double.NaN, Double.NaN);
 
-import org.alice.math.immutable.Point2;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class CylinderHull extends VerticalPrismCollisionHull {
-  private static final int APPROXIMATION_VERTEX_COUNT = 12;
-  private final double radius;
-
-  public CylinderHull(Point3 centerBase, double height, double radius) {
-    super(centerBase, height);
-    this.radius = radius;
+  //Operations
+  // Applying a vector to a point produces a new point
+  public Point2 plus(Vector2 b) {
+    return new Point2(x + b.x(), y + b.y());
   }
 
-  @Override
-  public double distanceAlong(double xDistance, double zDistance) {
-    return radius;
+  public Point2 minus(Vector2 b) {
+    return new Point2(x - b.x(), y - b.y());
   }
 
-  @Override
-  protected List<Point2> getCrossSectionVertices(Point3 newCenter) {
-    List<Point2> vertices = new ArrayList<>();
-    Vector3 offset = newCenter == null ? Vector3.ZERO : newCenter.minus(centerBase);
-    for (int i = 0; i < APPROXIMATION_VERTEX_COUNT; i++) {
-      double x = Math.sin(i * 2 * Math.PI / APPROXIMATION_VERTEX_COUNT) * radius;
-      double z = Math.cos(i * 2 * Math.PI / APPROXIMATION_VERTEX_COUNT) * radius;
-      vertices.add(new Point2(x + offset.x(), z + offset.z()));
-    }
-    return vertices;
+  // The difference between two points is a vector
+  public Vector2 minus(Point2 b) {
+    return new Vector2(x - b.x(), y - b.y());
+  }
+
+  public Point2 times(double factor) {
+    return new Point2(x * factor, y * factor);
   }
 }

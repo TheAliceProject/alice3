@@ -44,9 +44,9 @@
 package org.lgna.story.implementation.eventhandling;
 
 import edu.cmu.cs.dennisc.math.ConvexPolygon;
-import edu.cmu.cs.dennisc.math.Point2;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point2;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 
@@ -106,7 +106,7 @@ public class PolygonPrismHull extends VerticalPrismCollisionHull {
     Vector3 offset = newCenter.minus(centerBase);
     List<Point2> vertices = new ArrayList<>();
     for (Point2 vertex : crossSection.getVertices()) {
-      vertices.add(new Point2(vertex.x + offset.x(), vertex.y + offset.z()));
+      vertices.add(new Point2(vertex.x() + offset.x(), vertex.y() + offset.z()));
     }
     return vertices;
   }

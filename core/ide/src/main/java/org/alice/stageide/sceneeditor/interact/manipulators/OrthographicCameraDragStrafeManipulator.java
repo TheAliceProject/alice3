@@ -44,12 +44,12 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
-import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
@@ -101,37 +101,27 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
 
   @Override
   protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time) {
-    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
-    if (this.initialHandleColor != null) {
-      if (this.initialHandleColor.equals(LEFT) || this.initialHandleColor.equals(RIGHT)) {
-        if (Math.abs(relativeMousePos.y) < MIN_PIXEL_MOVE_AMOUNT) {
-          relativeMousePos.y = 0.0d;
-        } else {
-          if (relativeMousePos.y < 0.0d) {
-            relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
-          } else {
-            relativeMousePos.y -= MIN_PIXEL_MOVE_AMOUNT;
-          }
-        }
-      } else if (this.initialHandleColor.equals(UP) || this.initialHandleColor.equals(DOWN)) {
-        if (Math.abs(relativeMousePos.x) < MIN_PIXEL_MOVE_AMOUNT) {
-          relativeMousePos.x = 0.0d;
-        } else {
-          if (relativeMousePos.x < 0.0d) {
-            relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
-          } else {
-            relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
-          }
-        }
-      }
+    Vector2 relativeMousePos = mousePos.minus(this.initialMousePosition);
+    double moveY = relativeMousePos.y();
+    double moveX = relativeMousePos.x();
+    if (LEFT.equals(this.initialHandleColor) || RIGHT.equals(this.initialHandleColor)) {
+      moveY = quantizedMove(moveY);
+    } else if (UP.equals(this.initialHandleColor) || DOWN.equals(this.initialHandleColor)) {
+      moveX = quantizedMove(moveX);
     }
+    moveY *= -1.0d;
 
-    relativeMousePos.y *= -1.0d;
-
-    double amountToMoveY = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-    double amountToMoveX = relativeMousePos.x * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+    double amountToMoveY = moveY * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+    double amountToMoveX = moveX * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
     Vector3 amountToMoveMouse = new Vector3(amountToMoveX, amountToMoveY, 0.0d);
     return amountToMoveMouse;
+  }
+
+  private static double quantizedMove(double move) {
+    if (Math.abs(move) < MIN_PIXEL_MOVE_AMOUNT) {
+      return 0.0d;
+    }
+    return move < 0.0d ? move + MIN_PIXEL_MOVE_AMOUNT : move - MIN_PIXEL_MOVE_AMOUNT;
   }
 
   @Override

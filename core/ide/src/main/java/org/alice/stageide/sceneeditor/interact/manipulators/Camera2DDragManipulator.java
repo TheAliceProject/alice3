@@ -50,11 +50,11 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
 
 /**
@@ -126,10 +126,9 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
       this.standUpReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
       this.initialTransform = this.manipulatedTransformable.getAbsoluteTransformation();
       this.standUpReference.setAxesOnlyToStandUp();
-      this.initialMousePosition.x = startInput.getMouseLocation().x;
-      this.initialMousePosition.y = startInput.getMouseLocation().y;
+      this.initialMousePosition = new Vector2(startInput.getMouseLocation().x, startInput.getMouseLocation().y);
       if (this.handle instanceof ImageBasedManipulationHandle2D) {
-        this.initialHandleColor = ((ImageBasedManipulationHandle2D) this.handle).getColor((int) this.initialMousePosition.x, (int) this.initialMousePosition.y);
+        this.initialHandleColor = ((ImageBasedManipulationHandle2D) this.handle).getColor((int) this.initialMousePosition.x(), (int) this.initialMousePosition.y());
       }
       this.initialMoveFactor = this.getMovementVectorForColor(this.initialHandleColor);
       this.initialRotateFactor = this.getRotationVectorForColor(this.initialHandleColor);
@@ -216,7 +215,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
   private Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
   protected Transformable standUpReference = new Transformable();
   protected Color initialHandleColor = null;
-  protected Vector2 initialMousePosition = new Vector2();
+  protected Vector2 initialMousePosition = null;
   private InputState mouseDownState = null;
   private AffineMatrix4x4 initialTransform;
 }

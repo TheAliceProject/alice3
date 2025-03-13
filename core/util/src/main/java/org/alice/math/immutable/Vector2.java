@@ -40,74 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.math;
+package org.alice.math.immutable;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class Point2 extends Tuple2 {
-  public Point2() {
+public record Vector2(double x, double y) implements Tuple2 {
+  public static final Vector2 ZERO = new Vector2(0, 0);
+  public static final Vector2 NaN = new Vector2(Double.NaN, Double.NaN);
+
+  // Operations. These create new records.
+  public Vector2 plus(Vector2 b) {
+    return new Vector2(x + b.x, y + b.y);
   }
 
-  public Point2(Tuple2 other) {
-    super(other);
+  public Vector2 minus(Vector2 b) {
+    return new Vector2(x - b.x, y - b.y);
   }
 
-  public Point2(double x, double y) {
-    super(x, y);
+  public Vector2 times(double factor) {
+    return new Vector2(factor * x, factor * y);
   }
 
-  public static Point2 createZero() {
-    return (Point2) setReturnValueToZero(new Point2());
+  public Vector2 dividedBy(double divisor) {
+    return new Vector2(x / divisor, y / divisor);
   }
 
-  public static Point2 createNaN() {
-    return (Point2) setReturnValueToNaN(new Point2());
+  public Vector2 negate() {
+    return new Vector2(-x, -y);
   }
 
-  public static Point2 createAddition(Tuple2 a, Tuple2 b) {
-    return (Point2) setReturnValueToAddition(new Point2(), a, b);
+  public double magnitudeSquared() {
+    return (x * x) + (y * y);
   }
 
-  public static Point2 createSubtraction(Tuple2 a, Tuple2 b) {
-    return (Point2) setReturnValueToSubtraction(new Point2(), a, b);
-  }
-
-  public static Point2 createNegation(Tuple2 a) {
-    return (Point2) setReturnValueToNegation(new Point2(), a);
-  }
-
-  public static Point2 createMultiplication(Tuple2 a, Tuple2 b) {
-    return (Point2) setReturnValueToMultiplication(new Point2(), a, b);
-  }
-
-  public static Point2 createMultiplication(Tuple2 a, double b) {
-    return (Point2) setReturnValueToMultiplication(new Point2(), a, b);
-  }
-
-  public static Point2 createDivision(Tuple2 a, Tuple2 b) {
-    return (Point2) setReturnValueToDivision(new Point2(), a, b);
-  }
-
-  public static Point2 createDivision(Tuple2 a, double b) {
-    return (Point2) setReturnValueToDivision(new Point2(), a, b);
-  }
-
-  public static Point2 createInterpolation(Tuple2 a, Tuple2 b, double portion) {
-    return (Point2) setReturnValueToInterpolation(new Point2(), a, b, portion);
-  }
-
-  public static Point2 createNormalized(Tuple2 a) {
-    return (Point2) setReturnValueToNormalized(new Point2(), a);
-  }
-
-  public static double calculateDistanceSquaredBetween(Point2 a, Point2 b) {
-    double xDelta = b.x - a.x;
-    double yDelta = b.y - a.y;
-    return (xDelta * xDelta) + (yDelta * yDelta);
-  }
-
-  public static double calculateDistanceBetween(Point2 a, Point2 b) {
-    return Math.sqrt(calculateDistanceSquaredBetween(a, b));
+  public double magnitude() {
+    double magnitudeSquared = magnitudeSquared();
+    return magnitudeSquared == 1.0 ? 1.0 : Math.sqrt(magnitudeSquared);
   }
 }

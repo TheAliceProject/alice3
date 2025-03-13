@@ -44,12 +44,12 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
-import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
@@ -96,8 +96,8 @@ public class Camera2DDragUpDownRotateManipulator extends Camera2DDragManipulator
 
   @Override
   protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time) {
-    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
-    double amountToRotateX = relativeMousePos.y * RADIANS_PER_PIXEL_SECONDS * time;
+    Vector2 relativeMousePos = mousePos.minus(this.initialMousePosition);
+    double amountToRotateX = relativeMousePos.y() * RADIANS_PER_PIXEL_SECONDS * time;
     Vector3 amountToRotateMouse = new Vector3(amountToRotateX, 0.0d, 0.0d);
     return amountToRotateMouse;
   }

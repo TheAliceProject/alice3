@@ -43,7 +43,7 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.math.Point2;
+import org.alice.math.immutable.Point2;
 import org.alice.math.immutable.Point3;
 
 import java.util.List;

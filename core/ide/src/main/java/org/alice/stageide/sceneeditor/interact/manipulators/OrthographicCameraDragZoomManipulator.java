@@ -47,7 +47,6 @@ import java.awt.Color;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -57,6 +56,7 @@ import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.math.immutable.ClippedZPlane;
+import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
@@ -154,8 +154,8 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
   }
 
   protected double getRelativeZoomAmount(Vector2 mousePos, double time) {
-    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
-    double amountToZoom = relativeMousePos.y * ZOOMS_PER_SECOND * time;
+    Vector2 relativeMousePos = mousePos.minus(this.initialMousePosition);
+    double amountToZoom = relativeMousePos.y() * ZOOMS_PER_SECOND * time;
     return amountToZoom;
   }
 
