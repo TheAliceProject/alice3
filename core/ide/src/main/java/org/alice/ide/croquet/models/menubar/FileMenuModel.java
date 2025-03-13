@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.menubar;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.alice.ide.IdeApp;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.croquet.models.projecturi.ExitOperation;
 import org.alice.ide.croquet.models.projecturi.ExportProjectOperation;
@@ -78,16 +77,16 @@ public class FileMenuModel extends StaticMenuModel {
   protected StandardMenuItemPrepModel[] createModels() {
     List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
         projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
-            projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
-            MenuModel.SEPARATOR,
-            RecentProjectsMenuModel.getInstance(),
-            MenuModel.SEPARATOR,
-            new ImportGalleryResourceOperation().getMenuItemPrepModel(),
-            MenuModel.SEPARATOR,
-            PreferencesMenuModel.getInstance(),
-            MenuModel.SEPARATOR,
-            SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-            SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
+        projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
+        MenuModel.SEPARATOR,
+        RecentProjectsMenuModel.getInstance(),
+        MenuModel.SEPARATOR,
+        new ImportGalleryResourceOperation().getMenuItemPrepModel(),
+        MenuModel.SEPARATOR,
+        PreferencesMenuModel.getInstance(),
+        MenuModel.SEPARATOR,
+        SaveProjectOperation.getInstance().getMenuItemPrepModel(),
+        SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
     if (ENABLE_EXPORT) {
       list.add(new ExportProjectOperation().getMenuItemPrepModel());
     }
