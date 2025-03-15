@@ -40,68 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.math;
+package org.alice.math.immutable;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class Vector2f extends Tuple2f {
-  public Vector2f() {
+public record Vector2f(float x, float y) implements Tuple2f {
+  public static final Vector2f ZERO = new Vector2f(0, 0);
+  public static final Vector2f NaN = new Vector2f(Float.NaN, Float.NaN);
+
+  // Operations. These create new records.
+  public Vector2f plus(Vector2f b) {
+    return new Vector2f(x + b.x, y + b.y);
   }
 
-  public Vector2f(Tuple2f other) {
-    super(other);
+  public Vector2f minus(Vector2f b) {
+    return new Vector2f(x - b.x, y - b.y);
   }
 
-  public Vector2f(float x, float y) {
-    super(x, y);
+  public Vector2f times(float factor) {
+    return new Vector2f(factor * x, factor * y);
   }
 
-  public static Vector2f createZero() {
-    return (Vector2f) setReturnValueToZero(new Vector2f());
+  public Vector2f dividedBy(float divisor) {
+    return new Vector2f(x / divisor, y / divisor);
   }
 
-  public static Vector2f createNaN() {
-    return (Vector2f) setReturnValueToNaN(new Vector2f());
+  public Vector2f negate() {
+    return new Vector2f(-x, -y);
   }
 
-  public static Vector2f createAddition(Tuple2f a, Tuple2f b) {
-    return (Vector2f) setReturnValueToAddition(new Vector2f(), a, b);
+  public float magnitudeSquared() {
+    return (x * x) + (y * y);
   }
 
-  public static Vector2f createSubtraction(Tuple2f a, Tuple2f b) {
-    return (Vector2f) setReturnValueToSubtraction(new Vector2f(), a, b);
-  }
-
-  public static Vector2f createNegation(Tuple2f a) {
-    return (Vector2f) setReturnValueToNegation(new Vector2f(), a);
-  }
-
-  public static Vector2f createMultiplication(Tuple2f a, Tuple2f b) {
-    return (Vector2f) setReturnValueToMultiplication(new Vector2f(), a, b);
-  }
-
-  public static Vector2f createMultiplication(Tuple2f a, float b) {
-    return (Vector2f) setReturnValueToMultiplication(new Vector2f(), a, b);
-  }
-
-  public static Vector2f createDivision(Tuple2f a, Tuple2f b) {
-    return (Vector2f) setReturnValueToDivision(new Vector2f(), a, b);
-  }
-
-  public static Vector2f createDivision(Tuple2f a, float b) {
-    return (Vector2f) setReturnValueToDivision(new Vector2f(), a, b);
-  }
-
-  public static Vector2f createInterpolation(Tuple2f a, Tuple2f b, float portion) {
-    return (Vector2f) setReturnValueToInterpolation(new Vector2f(), a, b, portion);
-  }
-
-  public static Vector2f createNormalized(Tuple2f a) {
-    return (Vector2f) setReturnValueToNormalized(new Vector2f(), a);
-  }
-
-  public static float calculateDotProduct(Vector2f a, Vector2f b) {
-    return (a.x * b.x) + (a.y * b.y);
+  public float magnitude() {
+    float magnitudeSquared = magnitudeSquared();
+    return (float) (magnitudeSquared == 1.0 ? 1.0 : Math.sqrt(magnitudeSquared));
   }
 }

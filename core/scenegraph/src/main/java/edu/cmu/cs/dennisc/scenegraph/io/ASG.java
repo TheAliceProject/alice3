@@ -46,8 +46,6 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.math.Tuple2f;
-import edu.cmu.cs.dennisc.math.Vector2f;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -58,6 +56,7 @@ import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Tuple3f;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.Vector2f;
 import org.alice.math.immutable.Vector3f;
 import org.alice.math.immutable.Vector4;
 
@@ -605,13 +604,12 @@ public class ASG {
     return new Vector3f(x, y, z);
   }
 
-  private static void decodeTuple2f(String s, Tuple2f tuple2f) {
+  private static Vector2f decodeVector2f(String s) {
     int begin = 0;
     int end = s.indexOf(' ', begin);
-    tuple2f.x = Float.parseFloat(s.substring(begin, end));
     begin = end + 1;
     end = s.length();
-    tuple2f.y = Float.parseFloat(s.substring(begin, end));
+    return new Vector2f(Float.parseFloat(s.substring(begin, end)), Float.parseFloat(s.substring(begin, end)));
   }
 
   private static String encodeTexCoord2f(TextureCoordinate2f tc2f) {
@@ -1101,9 +1099,7 @@ public class ASG {
             Element[] xmlTextureCoords = getChildren(xmlProperty, "textureCoordinate");
             Vector2f[] array = new Vector2f[xmlTextureCoords.length];
             for (int tupleIndex = 0; tupleIndex < xmlTextureCoords.length; tupleIndex++) {
-              Vector2f v = new Vector2f();
-              decodeTuple2f(getNodeText(xmlTextureCoords[tupleIndex]), v);
-              array[tupleIndex] = v;
+              array[tupleIndex] = decodeVector2f(getNodeText(xmlTextureCoords[tupleIndex]));
             }
             value = array;
           } else if (Vertex[].class.isAssignableFrom(propertyValueClass)) {
