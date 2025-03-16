@@ -57,7 +57,7 @@ public abstract class Dimension3Animation extends InterpolationAnimation<Dimensi
 
   @Override
   protected Dimension3 newE(Dimension3 other) {
-    return other;
+    return other == null ? Dimension3.NaN : other;
   }
 
   @Override

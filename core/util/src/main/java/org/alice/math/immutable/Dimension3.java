@@ -37,8 +37,6 @@ public record Dimension3(double x, double y, double z) implements Serializable, 
             new Vector3(0, 0, z));
     }
 
-    // Temporary use during transition to immutable Records
-
     public Vector3 asVector() {
         return new Vector3(x, y, z);
     }

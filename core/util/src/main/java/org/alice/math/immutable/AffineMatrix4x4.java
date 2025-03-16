@@ -2,7 +2,8 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
+// This is a 3x4 matrix that is ready to be used for affine transformation math.
+// The top 3x3 is orientation, with translation in the final column and a final row of 0, 0, 0, 1
 public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4 {
 
   public static AffineMatrix4x4 createTranslation(double x, double y, double z) {
