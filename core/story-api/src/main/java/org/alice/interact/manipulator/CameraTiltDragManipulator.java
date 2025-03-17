@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.debug.DebugSphere;
 import org.alice.math.immutable.AffineMatrix4x4;
@@ -116,8 +115,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
     Ray oldPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(previousInput.getMouseLocation(), this.getCamera());
     Ray newPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
-    Point3 oldPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, oldPickRay);
-    Point3 newPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, newPickRay);
+    Point3 oldPickPoint = this.cameraFacingPickPlane.getIntersection(oldPickRay);
+    Point3 newPickPoint = this.cameraFacingPickPlane.getIntersection(newPickRay);
     if (newPickPoint == null || oldPickPoint == null) {
       return;
     }
@@ -187,7 +186,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
       Point3 planePoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(cameraForward).asPoint();
       this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward());
 
-      Point3 pickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, pickRay);
+      Point3 pickPoint = this.cameraFacingPickPlane.getIntersection(pickRay);
       if (pickPoint != null) {
         this.setPlaneDiscPoint(pickPoint);
         success = true;

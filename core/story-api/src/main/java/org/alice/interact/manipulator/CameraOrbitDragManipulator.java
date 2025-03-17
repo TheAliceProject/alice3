@@ -58,7 +58,6 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AngleInDegrees;
 import org.alice.math.immutable.Plane;
@@ -189,7 +188,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
           double downwardShiftFactor = ((.5 - dotWithVertical) / .5) * -.2;
           cameraForward = cameraForward.plus(new Vector3(0, downwardShiftFactor, 0)).normalized();
         }
-        Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
+        Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
         if (pickPoint != null) {
           this.setPivotPoint(pickPoint);
           success = true;

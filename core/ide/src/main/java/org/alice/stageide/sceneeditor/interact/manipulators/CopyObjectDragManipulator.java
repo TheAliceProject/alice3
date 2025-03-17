@@ -48,7 +48,6 @@ import java.awt.event.MouseEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.ide.IDE;
 import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 import org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
@@ -101,8 +100,10 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
       Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
-      Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
-      this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint);
+      Point3 orthoPickPoint = orthographicPickPlane.getIntersection(orthoPickRay);
+      orthographicOffsetToOrigin = orthoPickPoint != null
+          ? originalPosition.minus(orthoPickPoint)
+          : originalPosition.asVector();
 
       Point3 initialClickPoint = this.getInitialClickPoint(startInput);
 

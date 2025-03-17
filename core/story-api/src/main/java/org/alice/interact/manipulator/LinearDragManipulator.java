@@ -53,7 +53,6 @@ import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
@@ -126,7 +125,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
       Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation().backward();
       double axisCameraDot = this.absoluteDragAxis.dotProduct(cameraBack);
       if (Math.abs(axisCameraDot) > .98d) {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.cameraFacingPlane, pickRay);
+        Point3 pointInPlane = this.cameraFacingPlane.getIntersection(pickRay);
         if (pointInPlane == null || pointInPlane.isNaN()) {
           return 0;
         }
@@ -149,7 +148,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
         double newDistance = this.currentDistanceAlongAxis + mouseYDistance + mouseXDistance;
         return newDistance;
       } else {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.handleAlignedPlane, pickRay);
+        Point3 pointInPlane = this.handleAlignedPlane.getIntersection(pickRay);
         if (pointInPlane != null) {
           Vector3 pointVector = pointInPlane.minus(this.originalOrigin);
           double dragAmount = pointVector.dotProduct(this.absoluteDragAxis);

@@ -47,7 +47,6 @@ import java.awt.Point;
 
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
@@ -143,9 +142,13 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
   @Override
   protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
-    Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
-    if (isHorizonInView()) {
-      pickPoint = pickPoint.withY(0);
+    Point3 pickPoint = this.orthographicPickPlane.getIntersection(pickRay);
+    if (pickPoint != null) {
+      if (isHorizonInView()) {
+        pickPoint = pickPoint.withY(0);
+      }
+    } else {
+      pickPoint = Point3.ORIGIN;
     }
     Point3 newPosition = pickPoint.plus(this.orthographicOffsetToOrigin);
     return newPosition.minus(this.getManipulatedTransformable().getAbsoluteTransformation().translation());

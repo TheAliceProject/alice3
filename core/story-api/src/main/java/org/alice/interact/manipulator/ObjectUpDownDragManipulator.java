@@ -44,7 +44,6 @@ package org.alice.interact.manipulator;
 
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -84,13 +83,14 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 
   @Override
   protected Point3 getPositionForPlane(Plane movementPlane, Ray pickRay) {
-    if (pickRay != null) {
-      Point3 pointInPlane = PlaneUtilities.getPointInPlane(movementPlane, pickRay);
-      Point3 newPosition = this.offsetToOrigin.plus(pointInPlane);
-      return newPosition.withX(initialObjectPosition.x()).withZ(initialObjectPosition.z());
-    } else {
+    if (pickRay == null) {
       return null;
     }
+    Point3 pointInPlane = movementPlane.getIntersection(pickRay);
+    if (pointInPlane == null) {
+      return null;
+    }
+    return pointInPlane.plus(offsetToOrigin).withX(initialObjectPosition.x()).withZ(initialObjectPosition.z());
   }
 
   @Override

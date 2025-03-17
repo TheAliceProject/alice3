@@ -53,7 +53,6 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
@@ -176,10 +175,10 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
     Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis);
 
-    this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
+    this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     if (this.objectOriginInPlane == null) {
       originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis.negate());
-      this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
+      this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     }
     if (this.objectOriginInPlane != null) {
       Vector3 toMouse = this.initialClickPoint.minus(this.objectOriginInPlane).normalized();
@@ -216,47 +215,50 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera());
-    if (pickRay != null) {
-      AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation().backward());
-      double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
-      if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.cameraFacingPlane, pickRay);
-        Vector3 fromOriginalMouseToCurrentMouse = pointInPlane.minus(this.initialClickPoint);
-        Vector3 rotationRightAxis = this.absoluteRotationAxis.crossProduct(this.getCamera().getAbsoluteTransformation().orientation().backward());
-        double mouseDistance = fromOriginalMouseToCurrentMouse.dotProduct(rotationRightAxis);
-
-        return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
-      } else {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, pickRay);
-        if (pointInPlane != null) {
-
-          //<DEBUG>
-          //          Point3 pickOrigin = new Point3(pickRay.accessOrigin());
-          //          pickOrigin.y = 0;
-          //          DEBUG_setDebugSpherePosition(pickOrigin);
-          //</DEBUG>
-
-          Vector3 toMouse = pointInPlane.minus(this.objectOriginInPlane);
-          double toMouseDotOriginalRight = toMouse.dotProduct(this.originalMouseRightDirection);
-          //          double toMouseDotOriginalRight =  toMouse.dotProduct(this.originalAbsoluteTransformation.orientation().getRight() );
-          boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
-          Vector3 toMouseDirection = toMouse.normalized();
-          double cosOfAngleBetween = this.originalMouseDirection.dotProduct(toMouseDirection);
-          //          double cosOfAngleBetween = this.originalAbsoluteTransformation.orientation().getBackward().times(-1).dotProduct(toMouseDirection );
-          if (cosOfAngleBetween > 1.0d) {
-            cosOfAngleBetween = 1.0d;
-          } else if (cosOfAngleBetween < -1.0d) {
-            cosOfAngleBetween = -1.0d;
-          }
-          double angleInRadians = Math.acos(cosOfAngleBetween);
-          if (isToTheRight) {
-            angleInRadians = (Math.PI * 2.0d) - angleInRadians;
-          }
-          return new AngleInRadians(angleInRadians);
-        }
-      }
+    if (pickRay == null) {
+      return null;
     }
-    return null;
+    AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation().backward());
+    double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
+    if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
+      Point3 pointInPlane = this.cameraFacingPlane.getIntersection(pickRay);
+      if (pointInPlane == null) {
+        return null;
+      }
+      Vector3 fromOriginalMouseToCurrentMouse = pointInPlane.minus(this.initialClickPoint);
+      Vector3 rotationRightAxis = this.absoluteRotationAxis.crossProduct(this.getCamera().getAbsoluteTransformation().orientation().backward());
+      double mouseDistance = fromOriginalMouseToCurrentMouse.dotProduct(rotationRightAxis);
+
+      return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
+    }
+    Point3 pointInPlane = this.rotationPlane.getIntersection(pickRay);
+    if (pointInPlane == null) {
+      return null;
+    }
+
+    //<DEBUG>
+    //          Point3 pickOrigin = new Point3(pickRay.accessOrigin());
+    //          pickOrigin.y = 0;
+    //          DEBUG_setDebugSpherePosition(pickOrigin);
+    //</DEBUG>
+
+    Vector3 toMouse = pointInPlane.minus(this.objectOriginInPlane);
+    double toMouseDotOriginalRight = toMouse.dotProduct(this.originalMouseRightDirection);
+    //          double toMouseDotOriginalRight =  toMouse.dotProduct(this.originalAbsoluteTransformation.orientation().getRight() );
+    boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
+    Vector3 toMouseDirection = toMouse.normalized();
+    double cosOfAngleBetween = this.originalMouseDirection.dotProduct(toMouseDirection);
+    //          double cosOfAngleBetween = this.originalAbsoluteTransformation.orientation().getBackward().times(-1).dotProduct(toMouseDirection );
+    if (cosOfAngleBetween > 1.0d) {
+      cosOfAngleBetween = 1.0d;
+    } else if (cosOfAngleBetween < -1.0d) {
+      cosOfAngleBetween = -1.0d;
+    }
+    double angleInRadians = Math.acos(cosOfAngleBetween);
+    if (isToTheRight) {
+      angleInRadians = (Math.PI * 2.0d) - angleInRadians;
+    }
+    return new AngleInRadians(angleInRadians);
   }
 
   @Override

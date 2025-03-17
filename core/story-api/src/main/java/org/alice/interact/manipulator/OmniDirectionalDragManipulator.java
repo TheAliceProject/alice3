@@ -56,7 +56,6 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.debug.DebugSphere;
@@ -183,8 +182,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
-    Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
-    Point3 newPosition = pickPoint.plus(this.orthographicOffsetToOrigin);
+    Point3 pickPoint = this.orthographicPickPlane.getIntersection(pickRay);
+    Point3 newPosition = pickPoint != null ? pickPoint.plus(this.orthographicOffsetToOrigin) : pickPoint;
 
     return newPosition.minus(this.getManipulatedTransformable().getAbsoluteTransformation().translation());
   }
@@ -197,14 +196,14 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     Point3 levelPickPoint = null;
     Point3 skewedPickPoint = null;
     if (this.pickPlane != null) {
-      levelPickPoint = PlaneUtilities.getPointInPlane(this.pickPlane, pickRay);
+      levelPickPoint = this.pickPlane.getIntersection(pickRay);
       //force the pick point to be at the original Y level
       if (levelPickPoint != null) {
         levelPickPoint = levelPickPoint.withY(originalPosition.y());
       }
     }
     if (this.backPlane != null) {
-      skewedPickPoint = PlaneUtilities.getPointInPlane(this.backPlane, pickRay);
+      skewedPickPoint = this.backPlane.getIntersection(pickRay);
       //force the pick point to be at the original Y level
       if (skewedPickPoint != null) {
         skewedPickPoint = skewedPickPoint.withY(originalPosition.y());
@@ -332,8 +331,10 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
       Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
-      Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
-      this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint);
+      Point3 orthoPickPoint = orthographicPickPlane.getIntersection(orthoPickRay);
+      orthographicOffsetToOrigin = orthoPickPoint != null
+          ? originalPosition.minus(orthoPickPoint)
+          : originalPosition.asVector();
 
       Point3 initialClickPoint = this.getInitialClickPoint(startInput);
 
@@ -357,7 +358,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
     boolean isAbove = cameraTransform.translation().y() > planePosition.y();
 
-    Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(Plane.createInstance(cameraTransform.translation().asPoint(), cameraTransform.orientation().getRight()), planePosition);
+    Point3 pointInCameraSidewaysPlane = Plane.createInstance(cameraTransform.translation().asPoint(), cameraTransform.orientation().getRight()).projected(planePosition);
     Vector3 toCamera = cameraTransform.translation().minus(pointInCameraSidewaysPlane.asVector()).normalized();
     double verticalDistance = Math.abs(cameraTransform.translation().y() - planePosition.y());
     double distance = planePosition.distanceFrom(cameraTransform.translation());
@@ -387,9 +388,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     Ray centerRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera());
     Ray oneUp = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y - 1), this.getCamera());
     Ray oneDown = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y + 1), this.getCamera());
-    Point3 centerPoint = PlaneUtilities.getPointInPlane(horizontalPlane, centerRay);
-    Point3 upPoint = PlaneUtilities.getPointInPlane(horizontalPlane, oneUp);
-    Point3 downPoint = PlaneUtilities.getPointInPlane(horizontalPlane, oneDown);
+    Point3 centerPoint = horizontalPlane.getIntersection(centerRay);
+    Point3 upPoint = horizontalPlane.getIntersection(oneUp);
+    Point3 downPoint = horizontalPlane.getIntersection(oneDown);
 
     boolean shouldUseHorizontalPlane = false;
     if ((centerPoint != null) && (upPoint != null) && (downPoint != null)) {

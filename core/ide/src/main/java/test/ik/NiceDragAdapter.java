@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
-import org.alice.interact.PlaneUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.Plane;
@@ -136,7 +135,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     } else {
       if (m_sgDragAcceptor != null) {
         Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera);
-        m_xyzInAbsoluteAtPress = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
+        m_xyzInAbsoluteAtPress = m_planeInAbsolute.getIntersection(ray);
         //m_xyzInAbsoluteAtPress.y += this.yDelta;
       }
     }
@@ -179,8 +178,11 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         }
       } else {
         //linear drag
-        Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera);
-        final Point3 xyzInAbsolutePlane = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray).minus(m_offset);
+        Point3 pt = m_planeInAbsolute.getIntersection(getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera));
+        if (pt == null) {
+          return;
+        }
+        final Point3 xyzInAbsolutePlane = pt.minus(m_offset);
         GlrRenderFactory.getInstance().invokeLater(new Runnable() {
           @Override
           public void run() {

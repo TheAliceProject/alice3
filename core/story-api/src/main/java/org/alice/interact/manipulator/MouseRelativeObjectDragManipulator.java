@@ -55,7 +55,6 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -123,7 +122,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
     //    horizontalPlacementPlane = calculateCameraFacingPlane();
     if (horizontalPlacementPlane != null) {
       Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
-      Point3 pickPoint = PlaneUtilities.getPointInPlane(horizontalPlacementPlane, pickRay);
+      Point3 pickPoint = horizontalPlacementPlane.getIntersection(pickRay);
       pickPoint = pickPoint.minus(this.offsetFromOrigin).withY(0);
       Vector3 translationX = pickPoint.minus(this.originalPosition);
       Vector3 translationY = moveYVector.times(yChange * worldUnitsPerPixelY);
@@ -137,7 +136,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
   private Vector3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
-    Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
+    Point3 pickPoint = this.orthographicPickPlane.getIntersection(pickRay);
     Point3 newPosition = pickPoint.plus(this.orthographicOffsetToOrigin);
 
     return newPosition.minus(this.originalPosition);
@@ -216,7 +215,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, this.getCamera().getAxes(AsSeenBy.SCENE).backward());
 
       Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
-      Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
+      Point3 orthoPickPoint = orthographicPickPlane.getIntersection(orthoPickRay);
       this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint).asPoint();
 
       Point3 initialClickPoint = startInput.getClickPickResult().getPositionInSource();
@@ -249,7 +248,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       initialDistanceToGround = Math.abs(cameraTransform.translation().y());
       pickDistance = -1;
       Vector3 cameraForward = cameraTransform.orientation().getBackward().negate();
-      Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
+      Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
       if (pickPoint != null) {
         pickDistance = pickPoint.distanceFrom(cameraTransform.translation());
       }
@@ -274,30 +273,30 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
     double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
     double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
     double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
-    Point3 centerPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, centerRay);
+    Point3 centerPoint = Plane.XZ_PLANE.getIntersection(centerRay);
     if (centerPoint != null) {
-      Point3 offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneUp);
+      Point3 offsetPoint = Plane.XZ_PLANE.getIntersection(oneUp);
       if (offsetPoint != null) {
         double pixelDistance = centerPoint.distanceFrom(offsetPoint);
         if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
           distancePerUpPixel = pixelDistance;
         }
       }
-      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneDown);
+      offsetPoint = Plane.XZ_PLANE.getIntersection(oneDown);
       if (offsetPoint != null) {
         double pixelDistance = centerPoint.distanceFrom(offsetPoint);
         if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
           distancePerDownPixel = pixelDistance;
         }
       }
-      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneRight);
+      offsetPoint = Plane.XZ_PLANE.getIntersection(oneRight);
       if (offsetPoint != null) {
         double pixelDistance = centerPoint.distanceFrom(offsetPoint);
         if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
           distancePerRightPixel = pixelDistance;
         }
       }
-      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneLeft);
+      offsetPoint = Plane.XZ_PLANE.getIntersection(oneLeft);
       if (offsetPoint != null) {
         double pixelDistance = centerPoint.distanceFrom(offsetPoint);
         if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
