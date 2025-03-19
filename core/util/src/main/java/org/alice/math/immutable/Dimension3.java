@@ -1,8 +1,6 @@
 package org.alice.math.immutable;
 
-import java.io.Serializable;
-
-public record Dimension3(double x, double y, double z) implements Serializable, Tuple3 {
+public record Dimension3(double x, double y, double z) implements Tuple3 {
     public static final Dimension3 UNIT_SIZE = new Dimension3(1, 1, 1);
     public static Dimension3 TOO_SMALL = new Dimension3(0.0, 0.0, 0.0);
     public static Dimension3 NaN = new Dimension3(Double.NaN, Double.NaN, Double.NaN);

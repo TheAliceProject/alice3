@@ -1,8 +1,6 @@
 package org.alice.math.immutable;
 
-import java.io.Serializable;
-
-public record Point3(double x, double y, double z) implements Serializable, Tuple3 {
+public record Point3(double x, double y, double z) implements Tuple3 {
     public static Point3 ORIGIN = new Point3(0.0, 0.0, 0.0);
     public static Point3 NaN = new Point3(Double.NaN, Double.NaN, Double.NaN);
 

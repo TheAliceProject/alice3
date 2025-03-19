@@ -1,5 +1,7 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 public record FullMatrix3x3(Vector3 right, Vector3 up, Vector3 backward) implements Matrix3x3 {
   //<editor-fold desc="Accessors">
   @Override
@@ -17,4 +19,9 @@ public record FullMatrix3x3(Vector3 right, Vector3 up, Vector3 backward) impleme
     return backward;
   }
   //</editor-fold>
+
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encodeRecord(this);
+  }
 }

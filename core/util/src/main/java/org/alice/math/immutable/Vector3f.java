@@ -1,10 +1,9 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
-import java.io.Serializable;
-
-public record Vector3f(float x, float y, float z) implements Serializable, Tuple3f {
+public record Vector3f(float x, float y, float z) implements Tuple3f {
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
     public static final Vector3f NaN = new Vector3f(Float.NaN, Float.NaN, Float.NaN);
 
@@ -97,5 +96,9 @@ public record Vector3f(float x, float y, float z) implements Serializable, Tuple
         return magnitudeSquared == 1.0 ? this : dividedBy((float) Math.sqrt(magnitudeSquared));
     }
     //</editor-fold>
+
+    public void encode(BinaryEncoder binaryEncoder) {
+        binaryEncoder.encodeRecord(this);
+    }
 }
 

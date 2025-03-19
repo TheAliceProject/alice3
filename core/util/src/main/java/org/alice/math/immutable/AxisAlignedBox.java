@@ -1,10 +1,11 @@
 package org.alice.math.immutable;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
-public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEncodableAndDecodable {
+import java.io.Serializable;
+
+public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEncodableAndDecodable, Serializable {
   public static AxisAlignedBox NaN = new AxisAlignedBox(Point3.NaN, Point3.NaN);
   // TODO Make min very high and max very low so all points get added?
   public static AxisAlignedBox Empty = new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN);
@@ -13,14 +14,9 @@ public record AxisAlignedBox(Point3 minimum, Point3 maximum) implements BinaryEn
     return new AxisAlignedBox(new Point3(minimumX, minimumY, minimumZ), new Point3(maximumX, maximumY, maximumZ));
   }
 
-  public static AxisAlignedBox decode(BinaryDecoder binaryDecoder) {
-    return new AxisAlignedBox(binaryDecoder.decodeRecord(), binaryDecoder.decodeRecord());
-  }
-
   @Override
   public void encode(BinaryEncoder binaryEncoder) {
-    minimum.encode(binaryEncoder);
-    maximum.encode(binaryEncoder);
+    binaryEncoder.encodeRecord(this);
   }
 
   public boolean isNaN() {

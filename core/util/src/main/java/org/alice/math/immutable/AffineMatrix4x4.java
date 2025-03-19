@@ -2,9 +2,12 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.Serializable;
+
 // This is a 3x4 matrix that is ready to be used for affine transformation math.
 // The top 3x3 is orientation, with translation in the final column and a final row of 0, 0, 0, 1
-public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4 {
+public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4, Serializable {
 
   public static AffineMatrix4x4 createTranslation(double x, double y, double z) {
     return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Vector3(x, y, z));
@@ -352,8 +355,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
 
   @Override
   public void encode(BinaryEncoder binaryEncoder) {
-    orientation.encode(binaryEncoder);
-    translation.encode(binaryEncoder);
+    binaryEncoder.encodeRecord(this);
   }
 
   public AffineMatrix4x4 withTranslation(Vector3 newTranslation) {

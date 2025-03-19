@@ -1,14 +1,14 @@
 package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.print.Printable;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
+public interface Matrix3x3 extends Printable, Serializable, BinaryEncodableAndDecodable {
   OrthogonalMatrix3x3 IDENTITY = new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.POSITIVE_Z_AXIS);
   FullMatrix3x3 ZERO = new FullMatrix3x3(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO);
 
@@ -48,12 +48,6 @@ public interface Matrix3x3 extends Printable, BinaryEncodableAndDecodable {
     return new FullMatrix3x3(right, up, backward);
   }
   //</editor-fold>
-
-  default void encode(BinaryEncoder binaryEncoder) {
-    getRight().encode(binaryEncoder);
-    getUp().encode(binaryEncoder);
-    getBackward().encode(binaryEncoder);
-  }
 
   //<editor-fold desc="Condition Checks">
 

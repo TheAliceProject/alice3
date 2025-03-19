@@ -1,8 +1,7 @@
 package org.alice.math.immutable;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-
-import java.io.Serializable;
 
 /**
  * Orthogonal3x3Matrix is generally expected to be orthonormal, meaning its three vectors are mutually perpendicular
@@ -16,7 +15,7 @@ import java.io.Serializable;
  *
  */
 public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
-    implements Matrix3x3, Serializable, Orientation {
+    implements Matrix3x3, Orientation {
   static OrthogonalMatrix3x3 NaN = new OrthogonalMatrix3x3(Vector3.NaN, Vector3.NaN, Vector3.NaN);
 
   //<editor-fold desc="Accessors">
@@ -222,5 +221,10 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
     return new OrthogonalMatrix3x3(xAxis, Vector3.POSITIVE_Y_AXIS, zAxis);
   }
   //</editor-fold>
+
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encodeRecord(this);
+  }
 }
 

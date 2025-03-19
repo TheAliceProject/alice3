@@ -2,9 +2,7 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
-import java.io.Serializable;
-
-public record Vector3(double x, double y, double z) implements Serializable, Tuple3 {
+public record Vector3(double x, double y, double z) implements Tuple3 {
     public static final Vector3 ZERO = new Vector3(0, 0, 0);
     public static final Vector3 NaN = new Vector3(Double.NaN, Double.NaN, Double.NaN);
     public static final Vector3 POSITIVE_X_AXIS = new Vector3(1, 0, 0);

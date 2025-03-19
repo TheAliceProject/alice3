@@ -1,13 +1,13 @@
 package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public interface Tuple3f extends BinaryEncodableAndDecodable {
+public interface Tuple3f extends BinaryEncodableAndDecodable, Serializable {
   float x();
   float y();
   float z();
@@ -45,11 +45,5 @@ public interface Tuple3f extends BinaryEncodableAndDecodable {
 
   default List<Float> asFloatList() {
     return Arrays.asList((float) x(), (float) y(), (float) z());
-  }
-
-  default void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encode(x());
-    binaryEncoder.encode(y());
-    binaryEncoder.encode(z());
   }
 }

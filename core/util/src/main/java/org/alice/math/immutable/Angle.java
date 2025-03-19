@@ -2,7 +2,9 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
-public interface Angle {
+import java.io.Serializable;
+
+public interface Angle extends Serializable {
   Angle NaN = new AngleInRadians(Double.NaN);
   Angle ZERO = new AngleInRadians(0);
   Angle PI = new AngleInRadians(Math.PI);
