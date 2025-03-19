@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonPrismHull extends VerticalPrismCollisionHull {
+  // The points in the cross-section are offsets relative to the center so changing the position (without
+  // chnging the orientation) will not affect these values.
   private final ConvexPolygon crossSection = new ConvexPolygon();
 
   public PolygonPrismHull(Point3 centerBase, double height, AffineMatrix4x4 transformation, AxisAlignedBox aabbLocal) {
@@ -61,7 +63,7 @@ public class PolygonPrismHull extends VerticalPrismCollisionHull {
     for (Point3 localPoint : aabbLocal.getPoints()) {
       Point3 p = transformation.transform(localPoint);
       Vector3 offset = p.minus(centerBase);
-      crossSection.includePoint(new Point2(p.x(), p.z()));
+      crossSection.includePoint(new Point2(offset.x(), offset.z()));
     }
   }
 
