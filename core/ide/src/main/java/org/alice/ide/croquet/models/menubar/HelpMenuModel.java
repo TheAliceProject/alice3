@@ -70,6 +70,6 @@ public class HelpMenuModel extends PredeterminedMenuModel {
   }
 
   public HelpMenuModel(IdeApp app) {
-    super(UUID.fromString("435770a7-fb94-49ee-8c4d-b55a80618a09"), createMenuItemPrepModels(app));
+    super(UUID.fromString("435770a7-fb94-49ee-8c4d-b55a80618a09"), false, createMenuItemPrepModels(app));
   }
 }

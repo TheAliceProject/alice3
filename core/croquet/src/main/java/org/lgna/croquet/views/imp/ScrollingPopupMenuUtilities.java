@@ -46,6 +46,8 @@ import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.LayoutManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -73,12 +75,54 @@ public class ScrollingPopupMenuUtilities {
     }
   };
 
+  private static final KeyListener keyListener = new KeyListener() {
+    @Override
+    public void keyTyped(KeyEvent e) {
+      System.out.println("KEY WAS TYPED: " + e.getKeyCode());
+      Component component = e.getComponent();
+      if (component instanceof JPopupMenu) {
+        JPopupMenu jPopupMenu = (JPopupMenu) component;
+        LayoutManager layoutManager = jPopupMenu.getLayout();
+        if (layoutManager instanceof ScrollingPopupMenuLayout) {
+          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+
+          System.out.println("CHECKING ACTUAL KEY");
+
+          int indexDelta = 0;
+          if (e.getKeyCode() == KeyEvent.VK_UP) {
+            indexDelta--;
+          }  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            indexDelta++;
+          }
+
+          scrollingPopupMenuLayout.adjustIndex(indexDelta);
+        }
+      }
+      e.consume();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+      System.out.println("keyPressed: " + e.getKeyCode());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+      System.out.println("keyReleased: " + e.getKeyCode());
+    }
+  };
+
   public static void initializeScrollingCapability(JPopupMenu jPopupMenu) {
     ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout(jPopupMenu);
     jPopupMenu.setLayout(layout);
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
-    //jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
-    //jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.DOWN), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
+    //jPopupMenu.addKeyListener(keyListener);
+    JScrollMenuItem upScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
+    //upScroll.setFocusable(false);
+    JScrollMenuItem downScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
+    //downScroll.setFocusable(false);
+    jPopupMenu.add(upScroll, ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
+    jPopupMenu.add(downScroll, ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
   }
 
   public static void addSideMenu(JPopupMenu jPopupMenu, JMenu jSideMenu) {

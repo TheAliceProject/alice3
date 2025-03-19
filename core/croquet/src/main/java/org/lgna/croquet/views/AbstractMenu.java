@@ -44,6 +44,7 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.StaticMenuModel;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities;
 
@@ -101,7 +102,17 @@ public abstract class AbstractMenu<M extends PrepModel> extends ViewController<J
         }
       }
     };
-    ScrollingPopupMenuUtilities.initializeScrollingCapability(rv.getPopupMenu());
+
+    boolean showingScroll = true;
+
+    if (getModel() instanceof StaticMenuModel staticModel) {
+      showingScroll = staticModel.showScrollArrows();
+    }
+
+    if (showingScroll) {
+      ScrollingPopupMenuUtilities.initializeScrollingCapability(rv.getPopupMenu());
+    }
+
     return rv;
   }
 

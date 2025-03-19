@@ -69,7 +69,7 @@ public class FileMenuModel extends StaticMenuModel {
   private static final boolean ENABLE_EXPORT = true;
 
   public FileMenuModel(ProjectDocumentFrame projectDocumentFrame) {
-    super(UUID.fromString("121c8088-7297-43d4-b7b7-61416f1d4eb0"));
+    super(UUID.fromString("121c8088-7297-43d4-b7b7-61416f1d4eb0"), false);
     this.projectDocumentFrame = projectDocumentFrame;
   }
 

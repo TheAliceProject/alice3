@@ -72,7 +72,7 @@ public class FileMenuModel extends PredeterminedMenuModel {
   }
 
   public FileMenuModel(ProjectDocumentFrame projectDocumentFrame) {
-    super(UUID.fromString("f35b5ea2-315e-487d-af62-52f99f1c6306"), createMenuItemPrepModels(projectDocumentFrame));
+    super(UUID.fromString("f35b5ea2-315e-487d-af62-52f99f1c6306"), false, createMenuItemPrepModels(projectDocumentFrame));
   }
 
   @Override
