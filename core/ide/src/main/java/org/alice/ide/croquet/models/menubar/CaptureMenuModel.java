@@ -61,6 +61,7 @@ public class CaptureMenuModel extends PredeterminedMenuModel {
 
   private CaptureMenuModel() {
     super(UUID.fromString("e21b65a4-1989-4b66-a5c8-81795cac3fba"),
+          false,
           //org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
           ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(), SEPARATOR, ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel());
   }
