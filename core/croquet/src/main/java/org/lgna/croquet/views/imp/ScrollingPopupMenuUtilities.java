@@ -44,10 +44,11 @@ package org.lgna.croquet.views.imp;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
 import java.awt.Component;
-import java.awt.LayoutManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -62,12 +63,8 @@ public class ScrollingPopupMenuUtilities {
   private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-      Component component = e.getComponent();
-      if (component instanceof JPopupMenu) {
-        JPopupMenu jPopupMenu = (JPopupMenu) component;
-        LayoutManager layoutManager = jPopupMenu.getLayout();
-        if (layoutManager instanceof ScrollingPopupMenuLayout) {
-          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+      if (e.getComponent() instanceof JPopupMenu jPopupMenu) {
+        if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
           scrollingPopupMenuLayout.adjustIndex(e.getWheelRotation());
         }
       }
@@ -75,19 +72,16 @@ public class ScrollingPopupMenuUtilities {
     }
   };
 
-  private static final KeyListener keyListener = new KeyListener() {
+  private static final MenuKeyListener menuKeyListener = new MenuKeyListener() {
     @Override
-    public void keyTyped(KeyEvent e) {
-      System.out.println("KEY WAS TYPED: " + e.getKeyCode());
-      Component component = e.getComponent();
-      if (component instanceof JPopupMenu) {
-        JPopupMenu jPopupMenu = (JPopupMenu) component;
-        LayoutManager layoutManager = jPopupMenu.getLayout();
-        if (layoutManager instanceof ScrollingPopupMenuLayout) {
-          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+    public void menuKeyTyped(MenuKeyEvent e) {
+    }
 
-          System.out.println("CHECKING ACTUAL KEY");
-
+    @Override
+    public void menuKeyPressed(MenuKeyEvent e) {
+      MenuElement[] menus = e.getPath();
+      if (menus.length > 0 && menus[menus.length - 1] instanceof JPopupMenu jPopupMenu) {
+        if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
           int indexDelta = 0;
           if (e.getKeyCode() == KeyEvent.VK_UP) {
             indexDelta--;
@@ -98,17 +92,10 @@ public class ScrollingPopupMenuUtilities {
           scrollingPopupMenuLayout.adjustIndex(indexDelta);
         }
       }
-      e.consume();
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-      System.out.println("keyPressed: " + e.getKeyCode());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-      System.out.println("keyReleased: " + e.getKeyCode());
+    public void menuKeyReleased(MenuKeyEvent e) {
     }
   };
 
@@ -116,7 +103,7 @@ public class ScrollingPopupMenuUtilities {
     ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout(jPopupMenu);
     jPopupMenu.setLayout(layout);
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
-    //jPopupMenu.addKeyListener(keyListener);
+    jPopupMenu.addMenuKeyListener(menuKeyListener);
     JScrollMenuItem upScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
     //upScroll.setFocusable(false);
     JScrollMenuItem downScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
