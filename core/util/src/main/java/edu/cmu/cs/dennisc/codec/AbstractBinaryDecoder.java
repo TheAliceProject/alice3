@@ -54,6 +54,7 @@ import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector3f;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -205,11 +206,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     boolean isNotNull = decodeBoolean();
     if (isNotNull) {
       String clsName = decodeString();
-
-      // Hack for special cases. Catch older classes to replace.
-      if (clsName.equals("edu.cmu.cs.dennisc.math.EulerAngles$Order")) {
-        clsName = "org.alice.math.immutable.EulerAngles$Order";
-      }
       String name = decodeString();
       Class<E> clsActual = (Class<E>) ReflectionUtilities.getClassForName(clsName);
       return Enum.valueOf(clsActual, name);
@@ -243,25 +239,14 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     if (storedClassName.isEmpty()) {
       return null;
     }
-    // Hack for special cases. Catch older classes to replace.
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.EulerAngles")) {
-      return (E) decodeEulerAngles();
-    }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.Matrix3x3")
-        || storedClassName.equals("org.alice.math.immutable.OrthogonalMatrix3x3")) {
-      return (E) decodeMatrix3x3();
-    }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AxisAlignedBox")
-        || storedClassName.equals("org.alice.math.immutable.AxisAlignedBox")) {
-      return (E) decodeAxisAlignedBox();
-    }
-    if (storedClassName.equals("edu.cmu.cs.dennisc.math.AffineMatrix4x4")
-        || storedClassName.equals("org.alice.math.immutable.AffineMatrix4x4")) {
-      return (E) decodeAffineMatrix();
-    }
-
     try {
+      if (storedClassName.startsWith("edu.cmu.cs.dennisc.math.")) {
+        return (E) decodeObsoleteClass(storedClassName);
+      }
       Class<E> cls = (Class<E>) Class.forName(storedClassName);
+      if (cls.isRecord()) {
+        return decodeRecord();
+      }
       try {
         return instantiateWithConstructor(cls, parameterTypes, args);
       } catch (NoSuchMethodException nsme) {
@@ -272,20 +257,28 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
     }
   }
 
-  private AxisAlignedBox decodeAxisAlignedBox() {
-    return new AxisAlignedBox(decodePoint3(), decodePoint3());
-  }
-
-  private AffineMatrix4x4 decodeAffineMatrix() {
-    return new AffineMatrix4x4((OrthogonalMatrix3x3) decodeMatrix3x3(), decodeVector3());
-  }
-
-  private EulerAngles decodeEulerAngles() {
-    return new EulerAngles(decodeAngle(), decodeAngle(), decodeAngle(), decodeEnum());
-  }
-
-  private Matrix3x3 decodeMatrix3x3() {
-    return Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3());
+  // Catch older classes to be replaced so earlier files can still be read.
+  // For this to work the return values continue to implement BinaryEncodableAndDecodable
+  // although the encode methods should never be called
+  private BinaryEncodableAndDecodable decodeObsoleteClass(String storedClassName) {
+    switch (storedClassName) {
+      case "edu.cmu.cs.dennisc.math.EulerAngles" -> {
+        return new EulerAngles(decodeAngle(), decodeAngle(), decodeAngle(), decodeEnum());
+      }
+      case "edu.cmu.cs.dennisc.math.Matrix3x3" -> {
+        return Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3());
+      }
+      case "edu.cmu.cs.dennisc.math.AxisAlignedBox" -> {
+        return new AxisAlignedBox(decodePoint3(), decodePoint3());
+      }
+      case "edu.cmu.cs.dennisc.math.AffineMatrix4x4" -> {
+        return new AffineMatrix4x4((OrthogonalMatrix3x3) Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3()), decodeVector3());
+      }
+      case "edu.cmu.cs.dennisc.math.Vector3f" -> {
+        return new Vector3f(decodeFloat(), decodeFloat(), decodeFloat());
+      }
+    }
+    throw new RuntimeException("Unexpected math class : " + storedClassName);
   }
 
   private Vector3 decodeVector3() {

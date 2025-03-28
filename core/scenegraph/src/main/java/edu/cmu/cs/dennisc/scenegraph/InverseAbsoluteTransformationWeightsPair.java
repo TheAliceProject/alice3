@@ -84,7 +84,7 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
 
   @Override
   public void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encode(this.inverseAbsoluteTransformation);
+    binaryEncoder.encodeRecord(this.inverseAbsoluteTransformation);
     binaryEncoder.encode(this.weights);
   }
 

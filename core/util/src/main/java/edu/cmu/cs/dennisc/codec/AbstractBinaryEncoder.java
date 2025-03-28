@@ -283,7 +283,9 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
     if (value != null) {
       Class<?> valueCls = value.getClass();
 
-      if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+      if (valueCls.isRecord()) {
+        encodeRecord((Record) value);
+      } else if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
         encode((BinaryEncodableAndDecodable) value);
       } else if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
         encode((ReferenceableBinaryEncodableAndDecodable) value, map);
@@ -327,10 +329,5 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
     } else {
       encode("");
     }
-  }
-
-  @Override
-  public void encodeRecord(Record record) {
-
   }
 }

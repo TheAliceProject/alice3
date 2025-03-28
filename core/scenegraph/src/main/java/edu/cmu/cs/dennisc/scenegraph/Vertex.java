@@ -90,7 +90,7 @@ public final class Vertex implements BinaryEncodableAndDecodable {
 
   @Override
   public void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encode(position);
+    binaryEncoder.encodeRecord(position);
     binaryEncoder.encode(normal);
     binaryEncoder.encode(diffuseColor);
     binaryEncoder.encode(specularHighlightColor);
