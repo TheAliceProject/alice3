@@ -968,11 +968,6 @@
     ]
   },
   {
-    "clsName": "org.lgna.story.EmployeesOnly",
-    "constructorInfos": [],
-    "methodInfos": []
-  },
-  {
     "clsName": "org.lgna.story.SScene",
     "constructorInfos": [
       {
