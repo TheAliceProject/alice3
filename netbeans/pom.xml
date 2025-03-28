@@ -303,7 +303,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>3.11.2</version>
         <configuration>
           <sourcepath>
             ${project.basedir}/../core/util/src/main/java/:
@@ -316,8 +316,7 @@
           <doctitle>Alice 3</doctitle>
           <subpackages>org.lgna.story</subpackages>
           <excludePackageNames>org.lgna.story.implementation:org.lgna.story.resourceutilities</excludePackageNames>
-          <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
-          <destDir>target/javadoc</destDir>
+          <outputDirectory>${project.build.directory}</outputDirectory>
         </configuration>
         <executions>
           <execution>
@@ -331,7 +330,7 @@
 
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -417,7 +416,7 @@
       <plugin>
         <groupId>org.apache.netbeans.utilities</groupId>
         <artifactId>nbm-maven-plugin</artifactId>
-        <version>4.8</version>
+        <version>14.2</version>
         <extensions>true</extensions>
         <configuration>
           <licenseName>Alice 3 License</licenseName>
@@ -432,7 +431,7 @@
       <plugin> <!-- required since nbm-plugin 3.0-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
