@@ -57,4 +57,12 @@ public record Dimension3(double x, double y, double z) implements Tuple3 {
     public boolean hasNegativeComponents() {
         return x < 0.0 || y < 0.0 || z < 0.0;
     }
+
+    public Point3 applyScale(Point3 p) {
+        return new Point3(x * p.x(), y * p.y(), z * p.z());
+    }
+
+    public Point3 removeScale(Point3 p) {
+        return new Point3(p.x() / x, p.y() / y, p.z() / z);
+    }
 }

@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.UnitQuaternion;
-import org.alice.math.immutable.Vector3;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 
@@ -94,14 +94,14 @@ public class PoseAnimation extends DurationBasedAnimation {
     public void setPortion(double portion) {
       // Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and
       // position, they inherently encode the scale they were created at. This multiplication accounts for that.
-      Vector3 t = m_m0.translation().interpolate(m_m1.translation().times(this.jointImp.getJointedModelImplementation().getScale()), portion);
+      Point3 t = m_m0.translation().interpolate(this.jointImp.getJointedModelImplementation().getScale().applyScale(m_m1.translation()), portion);
       UnitQuaternion q  = m_q0.interpolate(m_q1, portion);
       jointImp.setLocalTransformation(new AffineMatrix4x4(q.asMatrix3x3(), t));
     }
 
     public void epilogue() {
       //Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
-      jointImp.setLocalTransformation(new AffineMatrix4x4(m_q1.asMatrix3x3(), m_m1.translation().times(this.jointImp.getJointedModelImplementation().getScale())));
+      jointImp.setLocalTransformation(new AffineMatrix4x4(m_q1.asMatrix3x3(), this.jointImp.getJointedModelImplementation().getScale().applyScale(m_m1.translation())));
     }
   }
 

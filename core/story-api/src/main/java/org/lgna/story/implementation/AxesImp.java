@@ -88,7 +88,7 @@ public class AxesImp extends VisualScaleModelImp {
   protected void applyScale(Dimension3 axis, boolean isScootDesired) {
     if (isScootDesired) {
       AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
-      m = new AffineMatrix4x4(m.orientation(), m.translation().times(axis));
+      m = new AffineMatrix4x4(m.orientation(), axis.applyScale(m.translation()));
       this.getSgComposite().localTransformation.setValue(m);
     }
     Matrix3x3 scale = sgAxes.getScale();

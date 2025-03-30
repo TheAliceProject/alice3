@@ -103,7 +103,7 @@ public class JointImplementation extends JointImp {
   @Override
   public AffineMatrix4x4 getScaledOriginalTransformation() {
     final AffineMatrix4x4 originalTransformation = getOriginalTransformation();
-    return new AffineMatrix4x4(originalTransformation.orientation(), originalTransformation.translation().times(scale));
+    return new AffineMatrix4x4(originalTransformation.orientation(), scale.applyScale(originalTransformation.translation()));
   }
 
   private AffineMatrix4x4 getOriginalTransformation() {
@@ -115,7 +115,7 @@ public class JointImplementation extends JointImp {
     Dimension3 scaleChange = newScale.dividedBy(scale);
     this.scale = newScale;
     AffineMatrix4x4 lt = getLocalTransformation();
-    setLocalTransformation(new AffineMatrix4x4(lt.orientation(), lt.translation().times(scaleChange)));
+    setLocalTransformation(new AffineMatrix4x4(lt.orientation(), scaleChange.applyScale(lt.translation())));
   }
 
   @Override
