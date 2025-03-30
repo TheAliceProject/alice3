@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -76,7 +76,7 @@ public enum TransformationAffect {
   public AffineMatrix4x4 set(AffineMatrix4x4 old, AffineMatrix4x4 change) {
     return new AffineMatrix4x4(
         m_isAffectOrientationDesired ? change.orientation() : old.orientation(),
-        new Vector3(
+        new Point3(
             m_isAffectTranslationXDesired ? change.translation().x() : old.translation().x(),
             m_isAffectTranslationYDesired ? change.translation().y() : old.translation().y(),
             m_isAffectTranslationZDesired ? change.translation().z() : old.translation().z()));

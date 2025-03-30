@@ -899,7 +899,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
   public PositionConstraint createPositionConstraint(int level, JointId anchorId, JointId endId) {
     Chain chain = Chain.createInstance(jointedModelImp, anchorId, endId);
 
-    Point3 endPosition = jointedModelImp.getJointImplementation(endId).getTransformation(AsSeenBy.SCENE).translation().plus(Vector3.POSITIVE_Y_AXIS).asPoint();
+    Point3 endPosition = jointedModelImp.getJointImplementation(endId).getTransformation(AsSeenBy.SCENE).translation().plus(Vector3.POSITIVE_Y_AXIS);
 
     PositionConstraint positionConstraint = new PositionConstraint(chain, endPosition);
 

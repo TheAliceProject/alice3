@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.animation.Vector3Animation;
+import edu.cmu.cs.dennisc.math.animation.Point3Animation;
 import edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation;
 import edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation;
 import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
@@ -87,7 +87,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   public Point3 getLocalPosition() {
-    return this.getLocalTransformation().translation().asPoint();
+    return this.getLocalTransformation().translation();
   }
 
   public OrthogonalMatrix3x3 getLocalOrientation() {
@@ -273,18 +273,18 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     protected abstract AffineMatrix4x4 getM1();
 
-    protected abstract Vector3 getT0();
+    protected abstract Point3 getT0();
 
-    protected abstract Vector3 getT1();
+    protected abstract Point3 getT1();
 
     protected abstract UnitQuaternion getQ0();
 
     protected abstract UnitQuaternion getQ1();
 
     public void setPortion(double portion) {
-      Vector3 t0 = this.getT0();
-      Vector3 t1 = this.getT1();
-      Vector3 t = t0.interpolate(t1, portion);
+      Point3 t0 = this.getT0();
+      Point3 t1 = this.getT1();
+      Point3 t = t0.interpolate(t1, portion);
       UnitQuaternion q0 = this.getQ0();
       UnitQuaternion q1 = this.getQ1();
       UnitQuaternion q = q0.interpolate(q1, portion);
@@ -333,12 +333,12 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     }
 
     @Override
-    protected Vector3 getT0() {
+    protected Point3 getT0() {
       return this.m0.translation();
     }
 
     @Override
-    protected Vector3 getT1() {
+    protected Point3 getT1() {
       return this.m1.translation();
     }
 
@@ -483,7 +483,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     StandInImp standInA = acquireStandIn(subject);
     try {
       standInA.setPositionOnly(subject);
-      Vector3 targetPos = target.getTransformation(subject).translation();
+      Vector3 targetPos = target.getTransformation(subject).translation().asVector();
       if (EpsilonUtilities.isWithinReasonableEpsilon(targetPos.x(), 0.0) && EpsilonUtilities.isWithinReasonableEpsilon(targetPos.z(), 0.0)) {
         //todo
         return subject.getLocalOrientation();
@@ -493,7 +493,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
         try {
           //Move a standin to the position of the target
           standInB.applyTranslation(targetPos.x(), targetPos.y(), targetPos.z(), standInB);
-          Vector3 standinPosition = standInB.getTransformation(subject.getVehicle()).translation();
+          Point3 standinPosition = standInB.getTransformation(subject.getVehicle()).translation();
           //Calculate the vector pointing from the subject to the target all in the reference frame of the subject's vehicle
           //Take that vector and normalize it to create the new "forward" vector for the subject
           Vector3 newForward = standinPosition.minus(subject.getLocalTransformation().translation()).normalized();
@@ -539,8 +539,8 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     public static OrientToPointAtData createInstance(AbstractTransformableImp subject, EntityImp target, ReferenceFrame upAsSeenBy) {
       AffineMatrix4x4 m0 = subject.getTransformation(upAsSeenBy);
-      Vector3 t0 = m0.translation();
-      Vector3 t1 = target.getTransformation(upAsSeenBy).translation();
+      Point3 t0 = m0.translation();
+      Point3 t1 = target.getTransformation(upAsSeenBy).translation();
       Vector3 forward = t1.minus(t0);
       OrthogonalMatrix3x3 o1;
       if (forward.isZero()) {
@@ -761,9 +761,9 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
   private static class PlaceAnimation extends DurationBasedAnimation {
     private final PlaceData placeData;
-    private Vector3 p0;
+    private Point3 p0;
     private UnitQuaternion q0;
-    private Vector3 p1;
+    private Point3 p1;
     private UnitQuaternion q1;
 
     PlaceAnimation(PlaceData placeData, double duration, Style style) {
@@ -783,7 +783,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
     @Override
     protected void setPortion(double portion) {
-      Vector3 p = p0.interpolate(p1, portion);
+      Point3 p = p0.interpolate(p1, portion);
       UnitQuaternion q = q0.interpolate(q1, portion);
       this.placeData.setTranslation(new AffineMatrix4x4(q.asMatrix3x3(), p));
     }
@@ -818,15 +818,15 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
         this.perform(new SmoothPositionAnimation(this, AffineMatrix4x4.IDENTITY, target, duration, style));
       } else {
         AffineMatrix4x4 m0 = this.getTransformation(target);
-        perform(new Vector3Animation(duration, style, m0.translation(), offset != null ? offset.asVector() : Vector3.ZERO) {
+        perform(new Point3Animation(duration, style, m0.translation(), offset != null ? offset : Point3.ORIGIN) {
           @Override
           public Animated getAnimated() {
             return AbstractTransformableImp.this;
           }
 
           @Override
-          protected void updateValue(Vector3 t) {
-            AbstractTransformableImp.this.setPositionOnly(target, t.asPoint());
+          protected void updateValue(Point3 t) {
+            AbstractTransformableImp.this.setPositionOnly(target, t);
           }
         });
       }

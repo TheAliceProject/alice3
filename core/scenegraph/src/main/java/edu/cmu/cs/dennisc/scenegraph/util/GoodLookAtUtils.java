@@ -63,7 +63,7 @@ public class GoodLookAtUtils {
 
     return new AffineMatrix4x4(
         new OrthogonalMatrix3x3(s, u, f.negate()),
-        new Vector3(-eyeX, -eyeY, -eyeZ));
+        new Point3(-eyeX, -eyeY, -eyeZ));
   }
 
   private static AffineMatrix4x4 createLookAtMatrix(Vector3 eye, Vector3 center, Vector3 up) {
@@ -81,9 +81,9 @@ public class GoodLookAtUtils {
         transformedPoints[i] = visualAbsoluteTransform.transform(localPoints[i]);
       }
 
-      Point3 averageAbsolutePoint = Point3.ORIGIN;
+      Vector3 averageAbsolutePoint = Vector3.ZERO;
       for (Point3 absolutePoint : transformedPoints) {
-        averageAbsolutePoint = averageAbsolutePoint.plus(absolutePoint);
+        averageAbsolutePoint = averageAbsolutePoint.plus(absolutePoint.asVector());
       }
       averageAbsolutePoint = averageAbsolutePoint.times(-1.0 / transformedPoints.length);
 
@@ -96,7 +96,7 @@ public class GoodLookAtUtils {
         //todo: investigate
         AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-        AffineMatrix4x4 m = createLookAtMatrix(cameraAbsolute.translation(), visualAbsoluteTransform.translation(), cameraAbsolute.orientation().up());
+        AffineMatrix4x4 m = createLookAtMatrix(cameraAbsolute.translation().asVector(), visualAbsoluteTransform.translation().asVector(), cameraAbsolute.orientation().up());
 
         for (int i = 0; i < localPoints.length; i++) {
           transformedPoints[i] = m.transform(transformedPoints[i]);

@@ -356,7 +356,7 @@ public abstract class AbstractThumbnailMaker {
     Ray cameraRay = new Ray(centerPoint, negCameraDir);
     Point3 cameraLocation = cameraRay.getPointAlong(zoom);
     OrthogonalMatrix3x3 pointAtOrientation = new ForwardAndUpGuide(cameraDir, Vector3.POSITIVE_Y_AXIS).asMatrix3x3();
-    return new AffineMatrix4x4(pointAtOrientation, cameraLocation.asVector());
+    return new AffineMatrix4x4(pointAtOrientation, cameraLocation);
   }
 
   protected AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox, Vector3 cameraDir) {
@@ -380,7 +380,7 @@ public abstract class AbstractThumbnailMaker {
 
     Point3 cameraLocation = cameraRay.getPointAlong(minVal);
     OrthogonalMatrix3x3 pointAtOrientation = new ForwardAndUpGuide(cameraDir, Vector3.POSITIVE_Y_AXIS).asMatrix3x3();
-    AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation.asVector());
+    AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
     assert !rv.isNaN() : "Failed to make a useful camera orientation from " + bbox;
     return rv;
   }

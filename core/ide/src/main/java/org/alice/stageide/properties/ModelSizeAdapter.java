@@ -66,7 +66,7 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
     Dimension3 currentValue = getValue();
     super.setValue(value);
     if (this.instance != null) {
-      double dist = currentValue.asVector().minus(value.asVector()).magnitude();
+      double dist = currentValue.minus(value).magnitude();
       double duration = 1;
       if (dist < .02) {
         duration = 0;

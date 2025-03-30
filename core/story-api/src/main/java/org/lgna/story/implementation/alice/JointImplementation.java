@@ -133,7 +133,7 @@ public class JointImplementation extends JointImp {
     newJoint.setScale(scale);
     Point3 position = isRelocated() ? getLocalPosition() : newJoint.getLocalPosition();
     OrthogonalMatrix3x3 orientation = isReoriented() ? getLocalOrientation() : newJoint.getLocalOrientation();
-    newJoint.setLocalTransformation(new AffineMatrix4x4(orientation, position.asVector()));
+    newJoint.setLocalTransformation(new AffineMatrix4x4(orientation, position));
   }
 
   @Override

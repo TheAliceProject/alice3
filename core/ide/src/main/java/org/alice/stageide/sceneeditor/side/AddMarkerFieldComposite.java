@@ -125,7 +125,7 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
       ccee.printStackTrace();
     }
     try {
-      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, new Position(initialMarkerTransform.translation().asPoint()));
+      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, new Position(initialMarkerTransform.translation()));
       rv.addDoStatement(positionStatement);
     } catch (CannotCreateExpressionException ccee) {
       ccee.printStackTrace();

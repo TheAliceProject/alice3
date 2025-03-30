@@ -61,7 +61,7 @@ public class CameraOrbitAboutTargetDragManipulator extends CameraOrbitDragManipu
   @Override
   public void setPivotPoint(Point3 pivotPoint) {
     if (target != null) {
-      super.setPivotPoint(target.getAbsoluteTransformation().translation().asPoint());
+      super.setPivotPoint(target.getAbsoluteTransformation().translation());
     } else {
       super.setPivotPoint(pivotPoint);
     }

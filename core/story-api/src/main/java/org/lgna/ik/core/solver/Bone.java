@@ -310,7 +310,7 @@ public class Bone {
 
   public void updateStateFromJoint() {
     //get anchor
-    anchor = getA().getTransformation(AsSeenBy.SCENE).translation().asPoint();
+    anchor = getA().getTransformation(AsSeenBy.SCENE).translation();
 
     //get axes
     //    if( !isABallJoint() ) {

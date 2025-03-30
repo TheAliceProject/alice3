@@ -150,11 +150,11 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     rightVector = Vector3.POSITIVE_Y_AXIS.crossProduct(lowBackwardVector).normalized();
     if (currentTransform.translation().y() > TARGET_LOW_HEIGHT) {
       originalX = (currentTransform.translation().y() - TARGET_LOW_HEIGHT) / COEFFICIENT;
-      inflectionPoint = currentTransform.translation().plus(movementDirection.times(currentX)).withY(TARGET_LOW_HEIGHT).asPoint();
+      inflectionPoint = currentTransform.translation().plus(movementDirection.times(currentX)).withY(TARGET_LOW_HEIGHT);
       useUpCurve = false;
     } else {
       originalX = 0;
-      inflectionPoint = originalTransformation.translation().asPoint();
+      inflectionPoint = originalTransformation.translation();
       distanceUp = TARGET_LOW_HEIGHT - inflectionPoint.y();
       distanceUpScale = distanceUp / 2.0;
       lateralDistanceForUp = distanceUp;
@@ -255,7 +255,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
       if (this.cameraAnimation != null) {
         Point3 targetPosition = getNewPointForX(this.currentX);
         OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX(this.currentX);
-        AffineMatrix4x4 targetTransform = new AffineMatrix4x4(targetOrientation, targetPosition.asVector());
+        AffineMatrix4x4 targetTransform = new AffineMatrix4x4(targetOrientation, targetPosition);
         this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
       } else {
         Logger.severe("Mouse Wheel Camera Zoom: null cameraAnimation.");

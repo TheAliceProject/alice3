@@ -65,10 +65,6 @@ public class Cylinder extends Shape {
       axis = new Vector3(x, y, z);
     }
 
-    public Vector3 accessVector() {
-      return this.axis;
-    }
-
     public Vector3 getVector() {
       return axis;
     }

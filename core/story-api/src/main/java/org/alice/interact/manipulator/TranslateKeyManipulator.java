@@ -66,7 +66,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
     if (!super.shouldApplyEnding(currentTime, amountToMove)) {
       return false;
     }
-    Vector3 positionDif = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialPoint.asVector());
+    Vector3 positionDif = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialPoint);
     double distanceAlreadyMoved = positionDif.magnitude();
     return amountToMove > distanceAlreadyMoved;
   }

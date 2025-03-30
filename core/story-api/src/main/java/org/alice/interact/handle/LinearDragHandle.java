@@ -203,7 +203,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
         this.standUpReference.setParent(this.getParentTransformable().getRoot());
         Point3 translation = this.getParentTransformable().getTranslation(AsSeenBy.SCENE);
         this.standUpReference.localTransformation.setValue(
-            new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, translation.asVector()));
+            new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, translation));
         return this.standUpReference;
       } else {
         return this.getParentTransformable();

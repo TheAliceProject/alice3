@@ -93,6 +93,7 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
@@ -1060,15 +1061,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (SModel.class.isAssignableFrom(cls)) {
         resourceCls = AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls);
       }
-      Vector3 location;
+      Point3 location;
       if (resourceCls != null) {
         ClassResourceKey childKey = new ClassResourceKey((Class<? extends ModelResource>) cls);
         AxisAlignedBox box = childKey.getBoundingBox();
         boolean shouldPlaceOnGround = childKey.getPlaceOnGround();
         double y = (box != null) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
-        location = new Vector3(0, y, 0);
+        location = new Point3(0, y, 0);
       } else {
-        location = Vector3.ZERO;
+        location = Point3.ORIGIN;
       }
 
       initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, location);
@@ -1190,7 +1191,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       //TODO: Make this handle retina displays and the fact that surface size and screen size may be different
       Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
-      Vector3 cameraPosition = camera.getAbsoluteTransformation().translation();
+      Point3 cameraPosition = camera.getAbsoluteTransformation().translation();
 
       ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 

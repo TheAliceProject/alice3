@@ -166,7 +166,7 @@ public class JointedModelColladaImporter {
         aliceMatrix = colladaMatrixToAliceMatrix((Matrix) xform);
       } else if (xform instanceof Translate translate) {
         // TODO orient to Alice
-        aliceMatrix = aliceMatrix.withTranslation(new Vector3(translate.getX(), translate.getY(), translate.getZ()));
+        aliceMatrix = aliceMatrix.withTranslation(new Point3(translate.getX(), translate.getY(), translate.getZ()));
       } else if (xform instanceof Scale scale) {
         // TODO orient to Alice
         OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3(
@@ -684,7 +684,7 @@ public class JointedModelColladaImporter {
   private static void printWeightInfo(WeightInfo wi) {
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      Point3 t = iatwp.getInverseAbsoluteTransformation().translation().asPoint();
+      Point3 t = iatwp.getInverseAbsoluteTransformation().translation();
       OrthogonalMatrix3x3 o = iatwp.getInverseAbsoluteTransformation().orientation();
 
       System.out.println(entry.getKey() + ":");

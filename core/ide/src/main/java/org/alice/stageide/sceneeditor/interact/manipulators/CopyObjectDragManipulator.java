@@ -94,7 +94,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
       this.initializeEventMessages();
       this.hasMoved = false;
       this.hidCursor = false;
-      this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation().asPoint();
+      this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation();
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
       Vector3 cameraFacingNormal = cameraTransform.orientation().backward().negate();
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);

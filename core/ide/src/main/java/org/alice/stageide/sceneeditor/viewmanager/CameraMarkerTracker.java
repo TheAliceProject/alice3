@@ -347,7 +347,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       final Point3 adjustedPos = new Point3(targetTranslation.x(),  adjustedY, targetTranslation.z());
 
       // if the camera is already above it, great, otherwise we get the best results by using the same adjusted y.
-      Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation().asPoint();
+      Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation();
       adjustedCameraPos.withY(Math.max(adjustedCameraPos.y(), adjustedY));
 
       Vector3 direction = adjustedCameraPos.minus(adjustedPos);
@@ -365,7 +365,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       OrthogonalMatrix3x3 layoutCamOrientation = forwardAndUpGuide.asMatrix3x3();
 
       AffineMatrix4x4 layoutTransform = AffineMatrix4x4.IDENTITY
-          .withTranslation(layoutCamTranslation.asVector())
+          .withTranslation(layoutCamTranslation)
           .withOrientation(layoutCamOrientation);
       return adjustForVRIfNeeded(layoutTransform);
     }
@@ -516,10 +516,10 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
-      Vector3 translation = startingView.translation();
+      Point3 translation = startingView.translation();
       AffineMatrix4x4 layoutTransform = startingView
           .withTranslation(
-              new Vector3(translation.x(),
+              new Point3(translation.x(),
                   translation.y() + DEFAULT_LAYOUT_CAMERA_Y_OFFSET,
                   translation.z() + DEFAULT_LAYOUT_CAMERA_Z_OFFSET))
           .rotateAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
@@ -630,7 +630,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected void initialize() {
       AffineMatrix4x4 topTransform = new AffineMatrix4x4(
           new OrthogonalMatrix3x3(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS),
-          new Vector3(0, 10, -10));
+          new Point3(0, 10, -10));
       assert topTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(topTransform);
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(16));
@@ -646,7 +646,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
       AffineMatrix4x4 topTransform = new AffineMatrix4x4(
           new OrthogonalMatrix3x3(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS),
-          new Vector3(targetTranslation.x(),
+          new Point3(targetTranslation.x(),
               targetTranslation.y() + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET),
               targetTranslation.z()));
       markerImp.setLocalTransformation(topTransform);
@@ -665,7 +665,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected void initialize() {
       AffineMatrix4x4 sideTransform = new AffineMatrix4x4(
           (new ForwardAndUpGuide(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
-          new Vector3(10, 1, 0));
+          new Point3(10, 1, 0));
       assert sideTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(sideTransform);
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
@@ -681,7 +681,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
       AffineMatrix4x4 sideTransform = new AffineMatrix4x4(
           (new ForwardAndUpGuide(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
-          new Vector3(
+          new Point3(
               targetTranslation.x() + (targetWidth != 0 ? clampCameraValue(targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET),
               targetTranslation.y(),
               targetTranslation.z()));
@@ -702,7 +702,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected void initialize() {
       AffineMatrix4x4 frontTransform = new AffineMatrix4x4(
           (new ForwardAndUpGuide(Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
-          new Vector3(0, 1, -10)
+          new Point3(0, 1, -10)
       );
       assert frontTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(frontTransform);
@@ -719,7 +719,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
       AffineMatrix4x4 frontTransform = new AffineMatrix4x4(
           (new ForwardAndUpGuide(Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
-          new Vector3(targetTranslation.x(),
+          new Point3(targetTranslation.x(),
               targetTranslation.y(),
               targetTranslation.z() - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET)));
       markerImp.setLocalTransformation(frontTransform);

@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
 import edu.cmu.cs.dennisc.property.FloatBufferProperty;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 
 public class Orientation {
@@ -34,7 +35,7 @@ public class Orientation {
   }
 
   private AffineMatrix4x4 orient4() {
-    return new AffineMatrix4x4(orient3, Vector3.ZERO);
+    return new AffineMatrix4x4(orient3, Point3.ORIGIN);
   }
 
   double[] orientVertices(float[] sourceVertices, DoubleBufferProperty destination) {

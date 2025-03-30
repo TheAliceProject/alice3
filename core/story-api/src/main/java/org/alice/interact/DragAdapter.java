@@ -111,7 +111,7 @@ public abstract class DragAdapter {
     if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
       if (getActiveCamera() == camera) {
-        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().asPoint());
+        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation());
       }
     }
   };
@@ -263,7 +263,7 @@ public abstract class DragAdapter {
       }
     }
     if (camera instanceof SymmetricPerspectiveCamera) {
-      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation().asPoint());
+      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation());
     } else {
       this.handleManager.updateCameraPosition(null);
     }
@@ -375,7 +375,7 @@ public abstract class DragAdapter {
   private void addCameraView(CameraView viewType, CameraSet cameras) {
     if (cameras.mainCamera != null) {
       cameras.mainCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
-      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation().asPoint());
+      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation());
     }
     this.cameraMap.put(viewType, cameras);
   }

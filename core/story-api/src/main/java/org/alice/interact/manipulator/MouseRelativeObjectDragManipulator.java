@@ -163,7 +163,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
 
       //Send manipulation events
-      Vector3 movementDif = newPosition.minus(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint()).normalized();
+      Vector3 movementDif = newPosition.minus(this.manipulatedTransformable.getAbsoluteTransformation().translation()).normalized();
       for (ManipulationEvent event : this.getManipulationEvents()) {
         double dot = event.getMovementDescription().direction.getVector().dotProduct(movementDif);
         if (dot > 0.1d) {
@@ -211,12 +211,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
       this.originalLocalTransformation = manipulatedTransformable.getLocalTransformation();
       this.originalMousePoint = new Point(startInput.getMouseLocation());
-      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint();
+      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation();
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, this.getCamera().getAxes(AsSeenBy.SCENE).backward());
 
       Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
       Point3 orthoPickPoint = orthographicPickPlane.getIntersection(orthoPickRay);
-      this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint).asPoint();
+      this.orthographicOffsetToOrigin = this.originalPosition.minus(orthoPickPoint);
 
       Point3 initialClickPoint = startInput.getClickPickResult().getPositionInSource();
       initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
@@ -248,7 +248,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
       initialDistanceToGround = Math.abs(cameraTransform.translation().y());
       pickDistance = -1;
       Vector3 cameraForward = cameraTransform.orientation().getBackward().negate();
-      Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
+      Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), cameraForward));
       if (pickPoint != null) {
         pickDistance = pickPoint.distanceFrom(cameraTransform.translation());
       }
@@ -313,7 +313,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
     AffineMatrix4x4 cameraTransform = this.camera.getParent().getAbsoluteTransformation();
     Vector3 cameraFacingVector = cameraTransform.orientation().getBackward().withY(0).normalized();
     if (!cameraFacingVector.isNaN()) {
-      Point3 planeLocation = manipulatedTransformable.getAbsoluteTransformation().translation().plus(offsetFromOrigin).asPoint();
+      Point3 planeLocation = manipulatedTransformable.getAbsoluteTransformation().translation().plus(offsetFromOrigin);
       return Plane.createInstance(planeLocation, cameraFacingVector);
     }
     return null;
@@ -343,7 +343,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
   protected void showCursor() {
     try {
-      Point3 new3DPoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(offsetFromOrigin).asPoint();
+      Point3 new3DPoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(offsetFromOrigin);
 
       Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
       Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
@@ -363,7 +363,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
   private double initialCameraDotVertical;
   private double pickDistance;
   protected Plane orthographicPickPlane = Plane.XZ_PLANE;
-  protected Point3 orthographicOffsetToOrigin = null;
+  protected Vector3 orthographicOffsetToOrigin = null;
   protected Point3 originalPosition = null;
   protected Boolean hasMoved = false;
   protected Vector3 offsetFromOrigin = null;

@@ -93,6 +93,6 @@ public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
       System.out.println("Unhandled LIMB: " + reachingLimb);
       return;
     }
-    IKCore.moveChainToPointInSceneSpace(anchor, end, entity.getImplementation().getTransformation(AsSeenBy.SCENE).translation().asPoint());
+    IKCore.moveChainToPointInSceneSpace(anchor, end, entity.getImplementation().getTransformation(AsSeenBy.SCENE).translation());
   }
 }

@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.animation.affine;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.UnitQuaternion;
-import org.alice.math.immutable.Vector3;
 
 import java.util.Objects;
 
@@ -66,9 +66,9 @@ public class PointOfViewAnimation extends AffineAnimation {
   private UnitQuaternion m_q1 = UnitQuaternion.NaN;
   private UnitQuaternion m_q = UnitQuaternion.NaN;
 
-  private Vector3 m_t0 = Vector3.ZERO;
-  private Vector3 m_t1 = Vector3.ZERO;
-  private Vector3 m_t = Vector3.ZERO;
+  private Point3 m_t0 = Point3.ORIGIN;
+  private Point3 m_t1 = Point3.ORIGIN;
+  private Point3 m_t = Point3.ORIGIN;
 
   public PointOfViewAnimation() {
     this(null, null, null, null);

@@ -109,7 +109,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
   @Override
   protected Point3 getInitialClickPoint(InputState startInput) {
-    return this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint();
+    return this.manipulatedTransformable.getAbsoluteTransformation().translation();
   }
 
   private int getHorizonPixelLocation() {
@@ -118,7 +118,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
     AffineMatrix4x4 cameraTransform = orthoCamera.getAbsoluteTransformation();
     double dotProd = cameraTransform.orientation().up().dotProduct(Vector3.POSITIVE_Y_AXIS);
     if ((dotProd == 1) || (dotProd == -1)) {
-      Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation().asPoint();
+      Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation();
       ClippedZPlane dummyPlane = orthoCamera.picturePlane.getValue().completeFrom(this.onscreenRenderTarget.getActualViewport(orthoCamera));
       double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
       double horizonInCameraSpace = 0.0d - cameraPosition.y();
@@ -140,7 +140,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
   }
 
   @Override
-  protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
+  protected Vector3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
     Point3 pickPoint = this.orthographicPickPlane.getIntersection(pickRay);
     if (pickPoint != null) {
@@ -190,7 +190,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
         this.sgBoundingBoxTransformable.setAxesOnly(facingCameraOrientation, AsSeenBy.SCENE);
         this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
       }
-      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint();
+      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation();
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
       Vector3 cameraFacingNormal = cameraTransform.orientation().backward().negate();
       this.orthographicPickPlane = Plane.createInstance(new Point3(0, 0, 0), cameraFacingNormal);

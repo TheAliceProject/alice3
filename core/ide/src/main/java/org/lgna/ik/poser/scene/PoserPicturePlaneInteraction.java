@@ -153,7 +153,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
   private double getSphereRayIntersection(Ray ray, SSphere sSphere) {
     EntityImp sphere = sSphere.getImplementation();
-    Point3 center = sphere.getTransformation(camera).translation().asPoint();
+    Point3 center = sphere.getTransformation(camera).translation();
 
     final boolean IS_USING_MATH_CLASSES = true;
     if (IS_USING_MATH_CLASSES) {

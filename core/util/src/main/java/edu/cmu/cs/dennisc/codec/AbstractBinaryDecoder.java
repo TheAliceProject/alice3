@@ -272,7 +272,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
         return new AxisAlignedBox(decodePoint3(), decodePoint3());
       }
       case "edu.cmu.cs.dennisc.math.AffineMatrix4x4" -> {
-        return new AffineMatrix4x4((OrthogonalMatrix3x3) Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3()), decodeVector3());
+        return new AffineMatrix4x4((OrthogonalMatrix3x3) Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3()), decodePoint3());
       }
       case "edu.cmu.cs.dennisc.math.Vector3f" -> {
         return new Vector3f(decodeFloat(), decodeFloat(), decodeFloat());

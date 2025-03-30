@@ -96,7 +96,7 @@ public class Mesh extends Geometry {
     assert ijks.length >= 3;
 
     Vector3 forward = (new Vector3(ijks[0], ijks[1], ijks[2])).normalized().negate();
-    Vector3 translation = new Vector3(xyzs[0], xyzs[1], xyzs[2]);
+    Point3 translation = new Point3(xyzs[0], xyzs[1], xyzs[2]);
     Vector3 upGuide = (new Vector3(translation.x() - xyzs[3], translation.y() - xyzs[4], translation.z() - xyzs[5])).normalized();
 
     return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation);

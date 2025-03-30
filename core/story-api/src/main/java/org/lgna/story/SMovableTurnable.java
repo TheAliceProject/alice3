@@ -71,8 +71,8 @@ public abstract class SMovableTurnable extends STurnable {
   }
 
   private void internalMoveToward(SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle) {
-    Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation().asPoint();
-    Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation().asPoint();
+    Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation();
+    Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation();
     Vector3 v = tTarget.minus(tThis);
     double length = v.magnitude();
     if (length > 0) {
@@ -128,7 +128,7 @@ public abstract class SMovableTurnable extends STurnable {
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
       AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
-      sgTransformable.setLocalTransformation(new AffineMatrix4x4(m.orientation(), position.getInternal().asVector()));
+      sgTransformable.setLocalTransformation(new AffineMatrix4x4(m.orientation(), position.getInternal()));
       Logger.severe(this);
     }
   }

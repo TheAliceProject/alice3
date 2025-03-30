@@ -113,7 +113,7 @@ public class SphereImp extends ShapeImp {
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
     double r = radius.getValue();
-    Point3 centerBase = getAbsoluteTransformation().translation().asPoint();
+    Point3 centerBase = getAbsoluteTransformation().translation();
     centerBase = centerBase.withY(centerBase.y() - r);
     return new CylinderHull(centerBase, 2.0 * r, r);
   }

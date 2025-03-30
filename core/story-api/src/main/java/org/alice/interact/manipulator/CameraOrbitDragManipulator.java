@@ -63,7 +63,6 @@ import org.alice.math.immutable.AngleInDegrees;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Tuple3;
 import org.alice.math.immutable.Vector3;
 
 /**
@@ -107,10 +106,10 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
     }
   }
 
-  private void setPivotSpherePosition(Tuple3 position) {
+  private void setPivotSpherePosition(Point3 position) {
     if (SHOW_SPHERE) {
       AffineMatrix4x4 transform = this.pivotSphereTransformable.localTransformation.getValue();
-      transform = new AffineMatrix4x4(transform.orientation(), position.asVector());
+      transform = new AffineMatrix4x4(transform.orientation(), position);
       this.pivotSphereTransformable.localTransformation.setValue(transform);
     }
   }
@@ -178,7 +177,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 
       AbstractTransformable clickedObject = startInput.getClickPickTransformable();
       if (clickedObject != null) {
-        this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation().asPoint());
+        this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation());
         success = true;
       } else {
         Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().negate();
@@ -188,7 +187,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
           double downwardShiftFactor = ((.5 - dotWithVertical) / .5) * -.2;
           cameraForward = cameraForward.plus(new Vector3(0, downwardShiftFactor, 0)).normalized();
         }
-        Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
+        Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), cameraForward));
         if (pickPoint != null) {
           this.setPivotPoint(pickPoint);
           success = true;

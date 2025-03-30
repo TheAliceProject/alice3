@@ -71,7 +71,6 @@ import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.TrimmedIcon;
@@ -153,7 +152,7 @@ public class FieldIcon extends AsynchronousIcon {
           final AxisAlignedBox bbox = fieldImp.getAxisAlignedMinimumBoundingBox();
           Point3 center = bbox.getCenter();
           absoluteTransform.transform(center);
-          final Vector3 p = center.asVector();
+          final Point3 p = center;
 
           SceneImp sceneImp = sceneEditor.getActiveSceneImplementation();
           final Scene sgScene = sceneImp.getSgComposite();
@@ -228,7 +227,7 @@ public class FieldIcon extends AsynchronousIcon {
 
                 AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-                Vector3 v = cameraAbsolute.translation().minus(p).normalized().times(distance).plus(p);
+                Point3 v = p.plus(cameraAbsolute.translation().minus(p).normalized().times(distance));
 
                 gl.glLoadIdentity();
                 glu.gluLookAt(v.x(), v.y(), v.z(), p.x(), p.y(), p.z(), cameraAbsolute.orientation().up().x(), cameraAbsolute.orientation().up().y(), cameraAbsolute.orientation().up().z());

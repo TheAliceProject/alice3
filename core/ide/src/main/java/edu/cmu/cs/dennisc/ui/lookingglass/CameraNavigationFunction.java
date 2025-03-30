@@ -236,8 +236,8 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
 
     return AffineMatrix4x4.IDENTITY
         .rotateAboutYAxis(new AngleInRadians(m_yawRequested))
-        .withTranslation(new Vector3(0, height, m_distanceRequested))
-        .withTranslation(getTranslation().asVector())
+        .withTranslation(new Point3(0, height, m_distanceRequested))
+        .withTranslation(getTranslation())
         .rotateAboutXAxis(new AngleInRadians(-pitch));
   }
 }

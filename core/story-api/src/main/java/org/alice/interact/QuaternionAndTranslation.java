@@ -64,7 +64,7 @@ public class QuaternionAndTranslation {
   }
 
   public QuaternionAndTranslation(AffineMatrix4x4 matrix) {
-    this.translation = matrix.translation().asPoint();
+    this.translation = matrix.translation();
     this.quaternion = matrix.orientation().asUnitQuaternion();
   }
 
@@ -74,7 +74,7 @@ public class QuaternionAndTranslation {
   }
 
   public AffineMatrix4x4 getAffineMatrix() {
-    return new AffineMatrix4x4(quaternion.asMatrix3x3().normalized(), translation.asVector());
+    return new AffineMatrix4x4(quaternion.asMatrix3x3().normalized(), translation);
   }
 
   public UnitQuaternion getQuaternion() {

@@ -131,7 +131,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 
     writeDebugImageIfAppropriate("initial.png", testImage);
 
-    Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation().asPoint(), bbox);
+    Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation(), bbox);
     getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
     Point3 lastGoodPosition = testPosition;
 

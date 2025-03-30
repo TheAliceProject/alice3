@@ -112,7 +112,7 @@ public class DiscImp extends ShapeImp {
 
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation().asPoint(), 0.01, outerRadius.getValue());
+    return new CylinderHull(getAbsoluteTransformation().translation(), 0.01, outerRadius.getValue());
   }
 
   private final SDisc abstraction;

@@ -255,7 +255,7 @@ class IkProgram extends SProgram {
         ikEnforcer.setChainBetween(anchorId, endId);
       }
       setDragAdornmentsVisible(true);
-      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation().asPoint();
+      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation();
       scene.anchor.setPositionRelativeToVehicle(new Position(ap));
     } else {
       setDragAdornmentsVisible(false);
@@ -388,7 +388,7 @@ class IkProgram extends SProgram {
 
             org.alice.math.immutable.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
             if (isLinearEnabled) {
-              ikEnforcer.setEeDesiredPosition(eeId, targetTransformation.translation().asPoint(), maxLinearSpeedForEe);
+              ikEnforcer.setEeDesiredPosition(eeId, targetTransformation.translation(), maxLinearSpeedForEe);
             }
 
             if (isAngularEnabled) {
@@ -454,7 +454,7 @@ class IkProgram extends SProgram {
 
           AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
 
-          myPositionConstraint.setEeDesiredPosition(targetTransformation.translation().asPoint());
+          myPositionConstraint.setEeDesiredPosition(targetTransformation.translation());
 
           //          //this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
           //          for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {

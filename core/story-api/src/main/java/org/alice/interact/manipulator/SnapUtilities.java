@@ -210,7 +210,7 @@ public class SnapUtilities {
 
   public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition) {
 
-    Vector3 movementDelta = newPosition.minus(toSnap.getAbsoluteTransformation().translation().asPoint());
+    Vector3 movementDelta = newPosition.minus(toSnap.getAbsoluteTransformation().translation());
     if (movementDelta.y() != 0) {
       //move the bounding box to where the newPosition would place it
       AxisAlignedBox bbox = getBoundingBox(toSnap).translate(movementDelta);
@@ -304,7 +304,7 @@ public class SnapUtilities {
     AffineMatrix4x4 backToScene = getFrameTransform(referenceFrame);
     Point3 originalPosition = toReferenceFrame.transform(originalPositionIn);
     Point3 returnSnapPosition = originalPosition;
-    Point3 currentPosition = toSnap.getAbsoluteTransformation().translation().asPoint();
+    Point3 currentPosition = toSnap.getAbsoluteTransformation().translation();
     currentPosition = toReferenceFrame.transform(currentPosition);
     Vector3 movementDelta = originalPosition.minus(currentPosition);
     if (movementDelta.x() != 0) {
@@ -476,8 +476,8 @@ public class SnapUtilities {
   public static void showSnapRotation(RotationRingHandle rotationHandle) {
     AffineMatrix4x4 handleTransform = rotationHandle.getAbsoluteTransformation();
     Vector3 snapDirection = handleTransform.orientation().getBackward().times(rotationHandle.getRadius() * -1);
-    Point3 snapSphereLocation = handleTransform.translation().plus(snapDirection).asPoint();
-    showSnapSphere(snapSphereLocation, handleTransform.translation().asPoint(), rotationHandle.getRoot());
+    Point3 snapSphereLocation = handleTransform.translation().plus(snapDirection);
+    showSnapSphere(snapSphereLocation, handleTransform.translation(), rotationHandle.getRoot());
   }
 
   public static Angle doRotationSnapping(Angle currentAngle, DragAdapter dragAdapter) {

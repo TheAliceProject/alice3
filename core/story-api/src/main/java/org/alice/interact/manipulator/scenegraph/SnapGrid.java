@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author David Culyba
@@ -208,12 +208,12 @@ public class SnapGrid extends Transformable implements PropertyListener {
     }
   }
 
-  private Vector3 getClosestSnapLocation(Vector3 point) {
+  private Point3 getClosestSnapLocation(Point3 point) {
     int xMultiplier = (int) (point.x() / this.gridSpacing);
     int zMultiplier = (int) (point.z() / this.gridSpacing);
     double x = xMultiplier * this.gridSpacing;
     double z = zMultiplier * this.gridSpacing;
-    return new Vector3(x, 0, z);
+    return new Point3(x, 0, z);
   }
 
   @Override

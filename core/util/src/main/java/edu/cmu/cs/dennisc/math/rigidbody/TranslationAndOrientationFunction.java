@@ -117,11 +117,11 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
   }
 
   public AffineMatrix4x4 getTransformation() {
-    return new AffineMatrix4x4(m_orientation.asMatrix3x3(), getTranslation().asVector());
+    return new AffineMatrix4x4(m_orientation.asMatrix3x3(), getTranslation());
   }
 
   public void setTransformation(AffineMatrix4x4 transformation) {
-    setTranslation(transformation.translation().asPoint());
+    setTranslation(transformation.translation());
     setOrientation(transformation.orientation().asUnitQuaternion());
   }
 

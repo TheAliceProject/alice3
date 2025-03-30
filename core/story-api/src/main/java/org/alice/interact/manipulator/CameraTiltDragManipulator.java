@@ -183,7 +183,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
       Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
 
-      Point3 planePoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(cameraForward).asPoint();
+      Point3 planePoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(cameraForward);
       this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward());
 
       Point3 pickPoint = this.cameraFacingPickPlane.getIntersection(pickRay);

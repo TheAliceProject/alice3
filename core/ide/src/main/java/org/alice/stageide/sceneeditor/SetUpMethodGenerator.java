@@ -241,7 +241,7 @@ public class SetUpMethodGenerator {
       }
       if (javaType.isAssignableTo(SMovableTurnable.class)) {
         try {
-          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation().asPoint()), 0));
+          statements.add(createPositionStatement(isThis, field, new Position(initialTransform.translation()), 0));
 
           //todo
           if ((initialTransform.translation().y() == 0.0) && shouldPlaceModelAboveGround(abstractType)) {

@@ -51,6 +51,7 @@ import org.alice.math.immutable.AxisRotation;
 import org.alice.math.immutable.ForwardAndUpGuide;
 import org.alice.math.immutable.Orientation;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Tuple3;
 import org.alice.math.immutable.Vector3;
 
@@ -161,7 +162,7 @@ public abstract class AbstractTransformable extends Composite {
   }
 
   public void setAxesOnly(Orientation orientation, ReferenceFrame asSeenBy) {
-    setTransformation(new AffineMatrix4x4(orientation.asMatrix3x3(), Vector3.ZERO), asSeenBy, TransformationAffect.AFFECT_ORIENTAION_ONLY);
+    setTransformation(new AffineMatrix4x4(orientation.asMatrix3x3(), Point3.ORIGIN), asSeenBy, TransformationAffect.AFFECT_ORIENTAION_ONLY);
   }
 
   public void setAxesOnlyToPointAt(Component target) {

@@ -53,8 +53,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
 
 
 import java.awt.Point;
@@ -124,7 +124,7 @@ import java.util.Comparator;
         double x = pickParameters.getX();
         double y = pickParameters.getFlippedY(actualViewport);
 
-        Matrix4x4 m = Matrix4x4.fromTranslation(new Vector3(
+        Matrix4x4 m = Matrix4x4.fromTranslation(new Point3(
             actualViewport.width - (2 * (x - actualViewport.x)),
             actualViewport.height - (2 * (y - actualViewport.y)),
             0));

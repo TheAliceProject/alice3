@@ -7,18 +7,18 @@ import java.io.Serializable;
 
 // This is a 3x4 matrix that is ready to be used for affine transformation math.
 // The top 3x3 is orientation, with translation in the final column and a final row of 0, 0, 0, 1
-public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translation) implements Matrix4x4, Serializable {
+public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Point3 translation) implements Matrix4x4, Serializable {
 
   public static AffineMatrix4x4 createTranslation(double x, double y, double z) {
-    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Vector3(x, y, z));
+    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Point3(x, y, z));
   }
 
   public static AffineMatrix4x4 createOrientation(Orientation orientation) {
-    return new AffineMatrix4x4(orientation.asMatrix3x3(), Vector3.ZERO);
+    return new AffineMatrix4x4(orientation.asMatrix3x3(), Point3.ORIGIN);
   }
 
   public static AffineMatrix4x4 createWithDiagonal(Dimension3 diagonal) {
-    return new AffineMatrix4x4(diagonal.asScaleMatrix(), Vector3.ZERO);
+    return new AffineMatrix4x4(diagonal.asScaleMatrix(), Point3.ORIGIN);
   }
 
   @Override
@@ -81,7 +81,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     if (isNaN()) {
       return b;
     }
-    return new AffineMatrix4x4(orientation.plus(b.orientation), translation.plus(b.translation));
+    return new AffineMatrix4x4(orientation.plus(b.orientation), translation.plus(b.translation.asVector()));
   }
   //</editor-fold>
 
@@ -91,7 +91,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
       return this;
     }
     return new AffineMatrix4x4(orientation(),
-        new Vector3(
+        new Point3(
             translation.x() * scale.getRight().x(),
             translation.y() * scale.getUp().y(),
             translation.z() * scale.getBackward().z()));
@@ -102,7 +102,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
       return this;
     }
     return new AffineMatrix4x4(orientation(),
-        new Vector3(
+        new Point3(
             translation.x() * scale,
             translation.y() * scale,
             translation.z() * scale));
@@ -258,7 +258,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     Vector3 up = new Vector3(columnMajorArray[3], columnMajorArray[4], columnMajorArray[5]);
     Vector3 back = new Vector3(columnMajorArray[6], columnMajorArray[7], columnMajorArray[8]);
     OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(right, up, back);
-    Vector3 translation = new Vector3(columnMajorArray[9], columnMajorArray[10], columnMajorArray[11]);
+    Point3 translation = new Point3(columnMajorArray[9], columnMajorArray[10], columnMajorArray[11]);
     return new AffineMatrix4x4(orientation, translation);
   }
 
@@ -269,7 +269,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     Vector3 up = new Vector3(rowMajorArray[1], rowMajorArray[5], rowMajorArray[9]);
     Vector3 back = new Vector3(rowMajorArray[2], rowMajorArray[6], rowMajorArray[10]);
     OrthogonalMatrix3x3 orientation = new OrthogonalMatrix3x3(right, up, back);
-    Vector3 translation = new Vector3(rowMajorArray[3], rowMajorArray[7], rowMajorArray[11]);
+    Point3 translation = new Point3(rowMajorArray[3], rowMajorArray[7], rowMajorArray[11]);
     if (rowMajorArray.length == 16) {
       if (rowMajorArray[12] != 0 || rowMajorArray[13] != 0 || rowMajorArray[14] != 0 || rowMajorArray[15] != 1.0) {
         Logger.warning("Row major array was not affine");
@@ -358,7 +358,7 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Vector3 translati
     binaryEncoder.encodeRecord(this);
   }
 
-  public AffineMatrix4x4 withTranslation(Vector3 newTranslation) {
+  public AffineMatrix4x4 withTranslation(Point3 newTranslation) {
     return new AffineMatrix4x4(orientation, newTranslation);
   }
 

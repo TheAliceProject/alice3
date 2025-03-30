@@ -129,7 +129,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
       initialDistanceToGround = Math.abs(absoluteTransform.translation().y());
       pickDistance = -1;
       Vector3 cameraForward = absoluteTransform.orientation().getBackward().negate();
-      Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), cameraForward));
+      Point3 pickPoint = Plane.XZ_PLANE.getIntersection(new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), cameraForward));
       if (pickPoint != null) {
         pickDistance = pickPoint.distanceFrom(absoluteTransform.translation());
       }

@@ -88,7 +88,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public final Point3 getTranslation(ReferenceFrame asSeenBy) {
-    return getTransformation(asSeenBy).translation().asPoint();
+    return getTransformation(asSeenBy).translation();
   }
 
   public OrthogonalMatrix3x3 getAxes(ReferenceFrame asSeenBy) {

@@ -48,6 +48,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.QuaternionAndTranslation;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.lgna.story.implementation.ModelImp;
@@ -84,8 +85,8 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
   }
 
   private double getDistance() {
-    Vector3 modelLoc = model.getAbsoluteTransformation().translation().withZ(1);
-    Vector3 cameraLoc = camera.getAbsoluteTransformation().translation().withZ(1);
+    Point3 modelLoc = model.getAbsoluteTransformation().translation().withZ(1);
+    Point3 cameraLoc = camera.getAbsoluteTransformation().translation().withZ(1);
     return modelLoc.distanceFrom(cameraLoc);
   }
 
@@ -104,7 +105,7 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
       AffineMatrix4x4 originalTransformation = cameraTransformable.getAbsoluteTransformation();
       OrthogonalMatrix3x3 orientation = originalTransformation.orientation();
       Vector3 movementDirection = orientation.backward().times(direction).normalized().times(getZoomSpeed());
-      Vector3 translation = originalTransformation.translation().plus(movementDirection);
+      Point3 translation = originalTransformation.translation().plus(movementDirection);
       AffineMatrix4x4 targetTransform = new AffineMatrix4x4(orientation, translation);
       this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
     } else {

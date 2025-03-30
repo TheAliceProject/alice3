@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -77,7 +77,7 @@ public class BadLocalTransformation implements Problem {
       replacement = AffineMatrix4x4.IDENTITY;
     }
     OrthogonalMatrix3x3 orientation = isOrientationMendingRequired ? replacement.orientation() : original.orientation();
-    Vector3 translation = isTranslationMendingRequired ? replacement.translation() : original.translation();
+    Point3 translation = isTranslationMendingRequired ? replacement.translation() : original.translation();
     sgTransformable.setLocalTransformation(new AffineMatrix4x4(orientation, translation));
   }
 

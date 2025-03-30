@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.TransformableVisual;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -112,7 +112,7 @@ public class Arrow extends Transformable {
   }
 
   private void setConeTranslation(double lengthCylinder) {
-    Vector3 translation = this.bottomToTopAxis.accessVector().times(lengthCylinder);
+    Point3 translation = this.bottomToTopAxis.getVector().times(lengthCylinder).asPoint();
     Transformable coneTransformable = sgVisualCone.getTransformable();
     // Setting local triggers property events
     coneTransformable.setLocalTransformation(

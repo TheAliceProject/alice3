@@ -75,7 +75,7 @@ public class JointIdTransformationPair implements InstantiableTweedleNode {
   }
 
   public JointIdTransformationPair(JointId id, UnitQuaternion quaternion, Point3 translation, boolean affectsTranslation) {
-    this(id, new AffineMatrix4x4(quaternion.asMatrix3x3(), translation.asVector()), affectsTranslation);
+    this(id, new AffineMatrix4x4(quaternion.asMatrix3x3(), translation), affectsTranslation);
   }
 
   public JointIdTransformationPair(JointId id, UnitQuaternion quaternion) {

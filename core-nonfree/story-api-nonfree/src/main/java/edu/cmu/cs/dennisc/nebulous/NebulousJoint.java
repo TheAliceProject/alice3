@@ -51,7 +51,6 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Dimension3;
 import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 import org.lgna.story.resources.JointId;
 
 /**
@@ -89,7 +88,7 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
   public org.alice.math.immutable.AffineMatrix4x4 getLocalTransformation() {
     AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint(this.jointId);
     if (this.actualTranslation != null) {
-      aliceTransform = aliceTransform.withTranslation(this.actualTranslation.asVector());
+      aliceTransform = aliceTransform.withTranslation(this.actualTranslation);
     }
     return (AffineMatrix4x4) aliceTransform.scaleTranslation(scale.asScaleMatrix());
   }
@@ -99,7 +98,7 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
     // Remove scale before sending to native library
     final Vector3 unscaledTranslation = m.translation().dividedBy(scale);
     AffineMatrix4x4 current = new AffineMatrix4x4(m.orientation(), unscaledTranslation);
-    this.actualTranslation = unscaledTranslation.asPoint();
+    this.actualTranslation = unscaledTranslation;
     this.nebModel.setLocalTransformationForJoint(this.jointId, current);
     notifyTransformationListeners();
   }

@@ -5,7 +5,7 @@ public record Point3(double x, double y, double z) implements Tuple3 {
     public static Point3 NaN = new Point3(Double.NaN, Double.NaN, Double.NaN);
 
     //Operations
-    public Point3 plus(Tuple3 b) {
+    public Point3 plus(Vector3 b) {
         return new Point3(x + b.x(), y + b.y(), z + b.z());
     }
 
@@ -29,6 +29,7 @@ public record Point3(double x, double y, double z) implements Tuple3 {
                           z + ((b.z - z) * portion));
     }
 
+    // Point-Vector conversions should be avoided and may indicate a problem.
     public Vector3 asVector() {
         return new Vector3(x, y, z);
     }

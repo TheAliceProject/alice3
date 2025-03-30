@@ -273,7 +273,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     if (ManipulationHandle3D.this.dragAdapter != null) {
       AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
       if (activeCamera instanceof SymmetricPerspectiveCamera) {
-        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation().asPoint();
+        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation();
         ManipulationHandle3D.this.setCameraPosition(cameraLocation);
       }
     }
@@ -475,7 +475,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   public float calculateCameraRelativeOpacity(Point3 cameraPosition) {
     if ((this.getParentTransformable() != null) && (cameraPosition != null)) {
-      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation().asPoint();
+      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation();
       double distance = cameraPosition.distanceFrom(handlePosition);
       if (distance < .2) {
         return 0.0f;

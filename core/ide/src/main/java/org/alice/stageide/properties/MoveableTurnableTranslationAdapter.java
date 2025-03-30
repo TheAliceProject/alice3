@@ -97,7 +97,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   @Override
   public Point3 getValue() {
     if (this.instance != null) {
-      return instance.getImplementation().getAbsoluteTransformation().translation().asPoint();
+      return instance.getImplementation().getAbsoluteTransformation().translation();
     }
     return null;
   }

@@ -47,6 +47,7 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRevolutions;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
@@ -72,10 +73,10 @@ public class SCamera extends SMovableTurnable implements MutableRider {
   static {
     OrthogonalMatrix3x3 o = OrthogonalMatrix3x3.IDENTITY.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, DEFAULT_CAMERA_FACING);
     o = o.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, DEFAULT_CAMERA_TILT);
-    AffineMatrix4x4 m = new AffineMatrix4x4(o, Vector3.ZERO);
+    AffineMatrix4x4 m = new AffineMatrix4x4(o, Point3.ORIGIN);
     m = m.times(AffineMatrix4x4.createTranslation(0, 0, 8));
     DEFAULT_ORIENTATION = new Orientation(m.orientation());
-    DEFAULT_POSITION = new Position(m.translation().asPoint());
+    DEFAULT_POSITION = new Position(m.translation());
   }
 
   @Override

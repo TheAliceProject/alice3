@@ -66,7 +66,7 @@ public class ModestConnection extends Connection {
 
   public void update() {
     AffineMatrix4x4 m = getTarget().getTransformation(this);
-    double s = m.translation().magnitude();
+    double s = m.translation().asVector().magnitude();
     s *= 2;
     HermiteCubic x = new HermiteCubic(0, m.translation().x(), 0, s * m.orientation().backward().x());
     HermiteCubic y = new HermiteCubic(0, m.translation().y(), 0, s * m.orientation().backward().y());

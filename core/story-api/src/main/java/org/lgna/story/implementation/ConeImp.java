@@ -75,7 +75,7 @@ public class ConeImp extends AbstractCylinderImp {
 
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation().asPoint(), getHeight(), baseRadius.getValue());
+    return new CylinderHull(getAbsoluteTransformation().translation(), getHeight(), baseRadius.getValue());
   }
 
   private final SCone abstraction;

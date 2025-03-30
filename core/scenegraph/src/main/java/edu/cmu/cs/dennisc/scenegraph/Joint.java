@@ -50,7 +50,6 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.EulerAngles;
 import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 import org.alice.math.immutable.Vector3f;
 
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class Joint extends Transformable implements ModelJoint {
 
   public void scale(double scale) {
     AffineMatrix4x4 newTransform = localTransformation.getValue();
-    Vector3 scaled = newTransform.translation().times(scale);
+    Point3 scaled = newTransform.translation().times(scale);
     localTransformation.setValue(new AffineMatrix4x4(newTransform.orientation(), scaled));
     AxisAlignedBox bb = boundingBox.getValue();
     if (bb != null) {

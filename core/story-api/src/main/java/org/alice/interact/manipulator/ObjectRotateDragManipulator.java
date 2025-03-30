@@ -173,11 +173,11 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
     this.rotationHandle.initializeSnapReferenceFrame();
 
-    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis);
+    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), rotationAxis);
 
     this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     if (this.objectOriginInPlane == null) {
-      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation().asPoint(), rotationAxis.negate());
+      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), rotationAxis.negate());
       this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     }
     if (this.objectOriginInPlane != null) {

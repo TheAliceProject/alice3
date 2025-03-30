@@ -21,10 +21,6 @@ public record Vector3(double x, double y, double z) implements Tuple3 {
         return new Vector3(x - b.x, y - b.y, z - b.z);
     }
 
-    public Vector3 times(Tuple3 b) {
-        return new Vector3(x * b.x(), y * b.y(), z * b.z());
-    }
-
     public Vector3 times(double factor) {
         return new Vector3(factor * x, factor * y, factor * z);
     }
@@ -118,12 +114,6 @@ public record Vector3(double x, double y, double z) implements Tuple3 {
     }
 
     //<editor-fold desc="Conversions">
-    // Point-Vector conversions should be avoided and may indicate a problem.
-    @Override
-    public Vector3 asVector() {
-        return this;
-    }
-
     public Point3 asPoint() {
         return new Point3(x, y, z);
     }

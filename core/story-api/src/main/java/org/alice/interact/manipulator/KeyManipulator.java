@@ -75,7 +75,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
   public boolean doStartManipulator(InputState startInput) {
     if (manipulatedTransformable != null) {
       startTime = System.currentTimeMillis() * .001d;
-      initialPoint = manipulatedTransformable.getAbsoluteTransformation().translation().asPoint();
+      initialPoint = manipulatedTransformable.getAbsoluteTransformation().translation();
       return true;
     } else {
       return false;

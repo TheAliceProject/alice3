@@ -56,7 +56,7 @@ public final class VantagePoint {
   }
 
   public VantagePoint(Orientation orientation, Position position) {
-    this(new AffineMatrix4x4(orientation.getInternal(), position.getInternal().asVector()));
+    this(new AffineMatrix4x4(orientation.getInternal(), position.getInternal()));
   }
 
   /* package-private */
@@ -93,6 +93,6 @@ public final class VantagePoint {
   }
 
   public Position getPosition() {
-    return new Position(this.internal.translation().asPoint());
+    return new Position(this.internal.translation());
   }
 }

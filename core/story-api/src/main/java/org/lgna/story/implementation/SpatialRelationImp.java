@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -66,7 +65,7 @@ public enum SpatialRelationImp {
     this.placeAxis = placeAxis;
   }
 
-  public Vector3 getPlaceLocation(double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox) {
+  public Point3 getPlaceLocation(double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox) {
     double x = alongAxisOffset * this.placeAxis.x();
     double y = alongAxisOffset * this.placeAxis.y();
     double z = alongAxisOffset * this.placeAxis.z();
@@ -93,7 +92,7 @@ public enum SpatialRelationImp {
       z -= subjectBoundingBox.maximum().z();
     }
 
-    return new Vector3(x, y, z);
+    return new Point3(x, y, z);
   }
 
   private final Point3 placeAxis;

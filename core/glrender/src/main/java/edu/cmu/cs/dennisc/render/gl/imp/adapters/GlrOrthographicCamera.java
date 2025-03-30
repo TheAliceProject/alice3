@@ -95,7 +95,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
         new Vector3(2 / (right - left), 0, 0),
         new Vector3(0, 2 / (top - bottom), 0),
         new Vector3(0, 0, -2 / (far - near))
-        ), new Vector3(-(right + left) / (right - left),
+        ), new Point3(-(right + left) / (right - left),
                       -(top + bottom) / (top - bottom),
                       -(far + near) / (far - near)));
   }

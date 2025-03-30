@@ -83,8 +83,8 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.UnitQuaternion;
-import org.alice.math.immutable.Vector3;
 import org.lgna.story.BipedPose;
 import org.lgna.story.BipedPoseBuilder;
 import org.lgna.story.FlyerPose;
@@ -1321,7 +1321,7 @@ public class ModelResourceExporter {
           for (Entry<String, AffineMatrix4x4> poseDataEntry : poseData.entrySet()) {
             count++;
             UnitQuaternion quat = poseDataEntry.getValue().orientation().asUnitQuaternion();
-            Vector3 pos = poseDataEntry.getValue().translation();
+            Point3 pos = poseDataEntry.getValue().translation();
             sb.append("\t\tnew JointIdTransformationPair( " + poseDataEntry.getKey() + ", new Orientation(" + quat.x() + ", " + quat.y() + ", " + quat.z() + ", " + quat.w() + "), new Position(" + pos.x() + ", " + pos.y() + ", " + pos.z() + ") )");
             if (count != poseData.size()) {
               sb.append(",");

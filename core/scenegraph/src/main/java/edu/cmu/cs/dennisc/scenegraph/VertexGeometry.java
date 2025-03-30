@@ -96,7 +96,7 @@ public abstract class VertexGeometry extends Geometry {
     Vector3 forward = (new Vector3(normal.x(), normal.y(), normal.z())).normalized().negate();
     Vector3 upGuide = translation.minus(point1).normalized();
 
-    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation.asVector());
+    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation);
   }
 
   @Override

@@ -4,8 +4,8 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 public interface Matrix4x4 extends BinaryEncodableAndDecodable {
-  AffineMatrix4x4 IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Vector3.ZERO);
-  AffineMatrix4x4 NaN = new AffineMatrix4x4(OrthogonalMatrix3x3.NaN, Vector3.NaN);
+  AffineMatrix4x4 IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Point3.ORIGIN);
+  AffineMatrix4x4 NaN = new AffineMatrix4x4(OrthogonalMatrix3x3.NaN, Point3.NaN);
 
   boolean isAffine();
   boolean isNaN();
@@ -34,7 +34,7 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
             + "\n  back  X    up: " + orientation.getBackward().dotProduct(orientation.getUp())
             + "\n  sum deviation: " + orientation.deviationFromNormal());
       }
-      return new AffineMatrix4x4(orientation, new Vector3(e14, e24, e34));
+      return new AffineMatrix4x4(orientation, new Point3(e14, e24, e34));
     }
     // FullMatrix stores a column in each vector
     return new FullMatrix4x4(
@@ -44,7 +44,7 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
         new Vector4(e14, e24, e34, e44));
   }
 
-  static Matrix4x4 fromTranslation(Vector3 p) {
+  static Matrix4x4 fromTranslation(Point3 p) {
     return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, p);
   }
 
@@ -54,7 +54,7 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
             new Vector3(x, 0, 0),
             new Vector3(0, y, 0),
             new Vector3(0, 0, z)),
-        Vector3.ZERO);
+        Point3.ORIGIN);
   }
 
   default Point3 transform(Point3 b) {

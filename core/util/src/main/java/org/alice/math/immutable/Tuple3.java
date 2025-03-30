@@ -51,6 +51,4 @@ public interface Tuple3 extends Serializable {
   default List<Float> asFloatList() {
     return Arrays.asList((float) x(), (float) y(), (float) z());
   }
-
-  Vector3 asVector();
 }

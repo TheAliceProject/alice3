@@ -145,10 +145,10 @@ public class IKCore {
 
   private static Point3 correctTarget(JointImp anchor, JointImp end, Point3 target) {
     double lengthOfLimb = getLengthOfLimb(anchor, end);
-    Vector3 vec = target.minus(anchor.getAbsoluteTransformation().translation()).asVector();
+    Vector3 vec = target.minus(anchor.getAbsoluteTransformation().translation());
     if (lengthOfLimb < vec.magnitude()) {
       vec = vec.normalized().times(lengthOfLimb);
-      return anchor.getAbsoluteTransformation().translation().plus(vec).asPoint();
+      return anchor.getAbsoluteTransformation().translation().plus(vec);
     }
     return target;
   }
@@ -172,7 +172,7 @@ public class IKCore {
     JointId anchorId = anchor.getJointId();
     JointId eeId = end.getJointId();
     enforcer.setChainBetween(anchorId, eeId);
-    Point3 currTransformation = end.getTransformation(AsSeenBy.SCENE).translation().asPoint();
+    Point3 currTransformation = end.getTransformation(AsSeenBy.SCENE).translation();
     Point3 prevTransformation = new Point3(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
     double delta = .001; //arbitrary
     while (currTransformation.distanceFrom(prevTransformation) > delta) {
@@ -224,7 +224,7 @@ public class IKCore {
         //            });
       }
 
-      currTransformation = end.getTransformation(AsSeenBy.SCENE).translation().asPoint();
+      currTransformation = end.getTransformation(AsSeenBy.SCENE).translation();
     }
   }
 
