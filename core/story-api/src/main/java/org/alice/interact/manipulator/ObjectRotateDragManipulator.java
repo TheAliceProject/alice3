@@ -53,7 +53,6 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -218,7 +217,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     if (pickRay == null) {
       return null;
     }
-    AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation().backward());
+    Angle angleBetweenVector = this.absoluteRotationAxis.angleWith(this.getCamera().getAbsoluteTransformation().orientation().backward());
     double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
     if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
       Point3 pointInPlane = this.cameraFacingPlane.getIntersection(pickRay);

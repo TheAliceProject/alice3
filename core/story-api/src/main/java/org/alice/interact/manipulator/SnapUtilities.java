@@ -53,7 +53,6 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.interact.DragAdapter;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.manipulator.scenegraph.SnapLine;
 import org.alice.interact.manipulator.scenegraph.SnapSphere;
@@ -402,7 +401,7 @@ public class SnapUtilities {
   private static Vector3 snapAxis(Vector3 inputAxis, Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapDegrees) {
     List<Vector3> snapVectors = getSnapVectors(guideForwardAxis, guideUpAxis, snapDegrees);
     for (Vector3 snapVector : snapVectors) {
-      AngleInRadians angleBetween = VectorUtilities.getAngleBetweenVectors(inputAxis, snapVector);
+      Angle angleBetween = inputAxis.angleWith(snapVector);
       if (Math.abs(angleBetween.getAsRadians()) <= ANGLE_SNAP_DISTANCE_IN_RADIANS) {
         return snapVector;
       }
