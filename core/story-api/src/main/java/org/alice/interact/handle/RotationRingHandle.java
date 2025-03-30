@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.interact.MovementDirection;
-import org.alice.interact.VectorUtilities;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
@@ -161,8 +160,8 @@ public class RotationRingHandle extends ManipulationHandle3D {
     if (this.getParentTransformable() != null) {
       AxisAlignedBox bbox = this.getManipulatedObjectBox();
 
-      Vector3 maxVector = VectorUtilities.projectOntoVector(bbox.maximum().asVector(), this.rotationAxis);
-      Vector3 minVector = VectorUtilities.projectOntoVector(bbox.minimum().asVector(), this.rotationAxis);
+      Vector3 maxVector = bbox.maximum().asVector().projectedOnto(this.rotationAxis);
+      Vector3 minVector = bbox.minimum().asVector().projectedOnto(this.rotationAxis);
       this.handleOffset = Vector3.ZERO;
       switch (this.handlePosition) {
       case TOP:

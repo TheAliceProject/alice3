@@ -136,6 +136,12 @@ public record Vector3(double x, double y, double z) implements Tuple3 {
     public Vector3 withZ(double newZ) {
         return new Vector3(x, y, newZ);
     }
+
+    // Projects this vector onto the target
+    public Vector3 projectedOnto(Vector3 target) {
+        Vector3 unitTarget = target.normalized();
+        return unitTarget.times(this.dotProduct(unitTarget));
+    }
     //</editor-fold>
 }
 
