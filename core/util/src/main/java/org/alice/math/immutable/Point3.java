@@ -5,16 +5,17 @@ public record Point3(double x, double y, double z) implements Tuple3 {
     public static Point3 NaN = new Point3(Double.NaN, Double.NaN, Double.NaN);
 
     //Operations
-    public Point3 plus(Vector3 b) {
-        return new Point3(x + b.x(), y + b.y(), z + b.z());
-    }
 
     // The difference between two points is a vector
     public Vector3 minus(Point3 b) {
         return new Vector3(x - b.x(), y - b.y(), z - b.z());
     }
 
-    // Applying a vector to a point produces a new point
+    // Adding or subtracting a vector to a point produces a new point
+    public Point3 plus(Vector3 b) {
+        return new Point3(x + b.x(), y + b.y(), z + b.z());
+    }
+
     public Point3 minus(Vector3 b) {
         return new Point3(x - b.x(), y - b.y(), z - b.z());
     }
@@ -27,6 +28,17 @@ public record Point3(double x, double y, double z) implements Tuple3 {
         return new Point3(x + ((b.x - x) * portion),
                           y + ((b.y - y) * portion),
                           z + ((b.z - z) * portion));
+    }
+
+    public double distanceSquaredFrom(Point3 b) {
+        double xDelta = b.x() - x();
+        double yDelta = b.y() - y();
+        double zDelta = b.z() - z();
+        return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
+    }
+
+    public double distanceFrom(Point3 b) {
+        return Math.sqrt(distanceSquaredFrom(b));
     }
 
     // Point-Vector conversions should be avoided and may indicate a problem.

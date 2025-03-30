@@ -37,17 +37,6 @@ public interface Tuple3 extends Serializable {
     return isWithinEpsilonOfZero(EpsilonUtilities.REASONABLE_EPSILON);
   }
 
-  default double distanceSquaredFrom(Tuple3 b) {
-    double xDelta = b.x() - x();
-    double yDelta = b.y() - y();
-    double zDelta = b.z() - z();
-    return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
-  }
-
-  default double distanceFrom(Tuple3 b) {
-    return Math.sqrt(distanceSquaredFrom(b));
-  }
-
   default List<Float> asFloatList() {
     return Arrays.asList((float) x(), (float) y(), (float) z());
   }
