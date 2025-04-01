@@ -114,18 +114,22 @@ public abstract class DragAdapter {
   private static final double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
 
   protected static final MovementKey[] DEFAULT_MOVEMENT_KEYS = {
-      // Forward
-      new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
-      // Backward
-      new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
-      // Left
-      new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
-      // Right
-      new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
-      // Up
-      new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
-      // Down
-      new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
+    // Forward
+    new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
+    new MovementKey(KeyEvent.VK_W, new MovementDescription(MovementDirection.FORWARD)),
+    // Backward
+    new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
+    new MovementKey(KeyEvent.VK_S, new MovementDescription(MovementDirection.BACKWARD)),
+    // Left
+    new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
+    new MovementKey(KeyEvent.VK_A, new MovementDescription(MovementDirection.LEFT)),
+    // Right
+    new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
+    new MovementKey(KeyEvent.VK_D,  new MovementDescription(MovementDirection.RIGHT)),
+    // Up
+    new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
+    // Down
+    new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
   };
 
   protected static final MovementKey[] DEFAULT_ZOOM_KEYS = {
