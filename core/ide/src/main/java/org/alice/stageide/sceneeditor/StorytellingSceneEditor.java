@@ -465,9 +465,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           }
         }
       }
-      if (this.globalDragAdapter != null) {
-        setSelectedFieldOnManipulator(field);
-      }
+      setSelectedFieldOnManipulator(field);
       this.selectionIsFromMain = false;
     }
 
