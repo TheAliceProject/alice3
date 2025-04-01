@@ -73,37 +73,24 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
 
   @Override
   protected void manipulate(double amountToMove, MovementKey key) {
+    Point3 previousPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
     key.applyTranslation(manipulatedTransformable, amountToMove);
-    enforceBounds();
+    enforceBounds(previousPos);
   }
 
   public void setBounds(AxisAlignedBox bounds) {
     this.bounds = bounds;
   }
 
-  private void enforceBounds() {
+  private void enforceBounds(Point3 previousPos) {
+    // if any dimension is out of bounds, stick at the previous position
     if (this.bounds != null) {
       Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
-      if (currentPos.x() > this.bounds.getXMaximum()) {
-        currentPos = currentPos.withX(bounds.getXMaximum());
+      if (currentPos.x() > this.bounds.getXMaximum() || currentPos.x() < this.bounds.getXMinimum()
+          || currentPos.y() > this.bounds.getYMaximum() || currentPos.y() < this.bounds.getYMinimum()
+          || currentPos.z() > this.bounds.getZMaximum() || currentPos.z() < this.bounds.getZMinimum()) {
+        this.manipulatedTransformable.setTranslationOnly(previousPos, AsSeenBy.SCENE);
       }
-      if (currentPos.x() < this.bounds.getXMinimum()) {
-        currentPos = currentPos.withX(bounds.getXMinimum());
-      }
-      if (currentPos.y() > this.bounds.getYMaximum()) {
-        currentPos = currentPos.withY(bounds.getYMaximum());
-      }
-      if (currentPos.y() < this.bounds.getYMinimum()) {
-        currentPos = currentPos.withY(bounds.getYMinimum());
-      }
-      if (currentPos.z() > this.bounds.getZMaximum()) {
-        currentPos = currentPos.withZ(bounds.getZMaximum());
-      }
-      if (currentPos.z() < this.bounds.getZMinimum()) {
-        currentPos = currentPos.withZ(bounds.getZMinimum());
-      }
-
-      this.manipulatedTransformable.setTranslationOnly(currentPos, AsSeenBy.SCENE);
     }
   }
 
