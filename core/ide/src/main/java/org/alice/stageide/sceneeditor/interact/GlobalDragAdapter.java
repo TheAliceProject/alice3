@@ -261,34 +261,32 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
     // ux handles
     setupHandles();
-    
-    if (this.sceneEditor != null) {
-      // Interaction groups
-      final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER, ObjectType.MAIN_CAMERA);
-      final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects(ObjectType.JOINT);
-      final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects(ObjectType.ANY);
 
-      InteractionGroup defaultInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE));
+    // Interaction groups
+    final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER, ObjectType.MAIN_CAMERA);
+    final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects(ObjectType.JOINT);
+    final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects(ObjectType.ANY);
 
-      // rotation, translation, resize interaction groups
-      //TODO: Make joint and non joint interactions
-      InteractionGroup rotationInteraction = new InteractionGroup();
-      rotationInteraction.addInteractionInfo(notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
-      rotationInteraction.addInteractionInfo(joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
+    InteractionGroup defaultInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE));
 
-      InteractionGroup translationInteraction = new InteractionGroup();
-      translationInteraction.addInteractionInfo(notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
-      translationInteraction.addInteractionInfo(joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
+    // rotation, translation, resize interaction groups
+    //TODO: Make joint and non joint interactions
+    InteractionGroup rotationInteraction = new InteractionGroup();
+    rotationInteraction.addInteractionInfo(notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
+    rotationInteraction.addInteractionInfo(joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE);
 
-      InteractionGroup resizeInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, PickHint.PickType.RESIZABLE));
+    InteractionGroup translationInteraction = new InteractionGroup();
+    translationInteraction.addInteractionInfo(notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
+    translationInteraction.addInteractionInfo(joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE);
 
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.DEFAULT, defaultInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, rotationInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.TRANSLATION, translationInteraction);
-      this.mapHandleStyleToInteractionGroup.put(HandleStyle.RESIZE, resizeInteraction);
-      SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener(this.handleStyleListener);
-      this.setHandleSelectionState(HandleStyle.DEFAULT);
-    }
+    InteractionGroup resizeInteraction = new InteractionGroup(new InteractionGroup.InteractionInfo(notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, PickHint.PickType.RESIZABLE));
+
+    this.mapHandleStyleToInteractionGroup.put(HandleStyle.DEFAULT, defaultInteraction);
+    this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, rotationInteraction);
+    this.mapHandleStyleToInteractionGroup.put(HandleStyle.TRANSLATION, translationInteraction);
+    this.mapHandleStyleToInteractionGroup.put(HandleStyle.RESIZE, resizeInteraction);
+    SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener(this.handleStyleListener);
+    this.setHandleSelectionState(HandleStyle.DEFAULT);
 
     RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
     if (renderCapabilities.getStencilBits() > 0) {
