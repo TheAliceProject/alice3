@@ -104,9 +104,9 @@ import java.util.Map;
  * CroquetSupporting/Global DragAdapter- an absolute unit of a class, hugely interwoven with the scene editor, because it handles
  * dragging into and out of the scene editor AND all the manipulations inside.  fun!
  *
- * CreateAPersonDragAdapter- might be able to be merged with SingleViewer
+ * CreateAPersonDragAdapter- has special hard-coded zoom defaults and controls for sim creation.
  * PoserAnimatorDragAdapter- you're not supposed to pick favorites of all your children. This one is absolutely not it.
- * SingleViewerDragAdapter- skeleton viewer & model imports, might be able to absorb CreateAPerson
+ * SingleViewerDragAdapter- used by the skeleton viewer (aka model imports)
  */
 public abstract class DragAdapter {
   public static final Element.Key<AxisAlignedBox> BOUNDING_BOX_KEY = Element.Key.createInstance("BOUNDING_BOX_KEY");
@@ -357,6 +357,7 @@ public abstract class DragAdapter {
     }
   }
 
+  // not every drag adapter uses this, but this is an attempt to capture the common behavior so that it stays consistent
   protected void addCameraMouseControl() {
     MouseDragCondition leftAndNoModifiers = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     MouseDragCondition leftAndShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_SHIFT));
