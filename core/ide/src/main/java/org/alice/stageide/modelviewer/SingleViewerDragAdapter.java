@@ -42,10 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
@@ -59,8 +55,6 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -113,19 +107,6 @@ public class SingleViewerDragAdapter extends DragAdapter {
       cameraOrbit.addCondition(new KeyPressCondition(movementKey.keyValue));
     }
     addManipulatorConditionSet(cameraOrbit);
-  }
-
-  @Override
-  public void setSGCamera(AbstractCamera camera) {
-    super.setSGCamera(camera);
-    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
-
-    Point3 cameraMin = camera.getAbsoluteTransformation().translation();
-    Point3 cameraMax = cameraMin;
-    double originalY = cameraMin.y();
-    cameraMin = cameraMin.plus(cameraBackwards.times(1.5d)).withY(.25d);
-    cameraMax = cameraMax.minus(cameraBackwards.times(4.5d)).withY(originalY + 1.5d);
-    AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin,  cameraMax);
   }
 
   @Override
