@@ -266,77 +266,30 @@ public class BufferUtilities {
 
   public static ByteBuffer decodeByteBuffer(BinaryDecoder decoder) {
     BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer rv = header.createByteBuffer(decoder);
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeByte() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return header.createByteBuffer(decoder);
   }
 
   public static CharBuffer decodeCharBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    CharBuffer rv = byteBuffer.asCharBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeChar() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asCharBuffer();
   }
 
   public static ShortBuffer decodeShortBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    ShortBuffer rv = byteBuffer.asShortBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeShort() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asShortBuffer();
   }
 
   public static IntBuffer decodeIntBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    IntBuffer rv = byteBuffer.asIntBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeInt() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asIntBuffer();
   }
 
   public static LongBuffer decodeLongBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    LongBuffer rv = byteBuffer.asLongBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeLong() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asLongBuffer();
   }
 
   public static FloatBuffer decodeFloatBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    FloatBuffer rv = byteBuffer.asFloatBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeFloat() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asFloatBuffer();
   }
 
   public static DoubleBuffer decodeDoubleBuffer(BinaryDecoder decoder) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    DoubleBuffer rv = byteBuffer.asDoubleBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeDouble() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return decodeByteBuffer(decoder).asDoubleBuffer();
   }
 }
