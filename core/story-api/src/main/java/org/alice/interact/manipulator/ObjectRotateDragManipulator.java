@@ -272,19 +272,18 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
     if ((currentAngle != null) && (this.originalAngleBasedOnMouse != null)) {
       Angle angleDif = currentAngle.minus(this.originalAngleBasedOnMouse);
-      //The angleDif is the amount the object as rotated relative to the start of the manipulation
+      //The angleDif is the amount the object is rotated relative to the start of the manipulation
       //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
       Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
-      boolean didSnap = !snappedAngle.isCloseTo(angleDif);
 
       this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
       this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), snappedAngle, this.rotationHandle.getReferenceFrame());
       manipulatedTransformable.notifyTransformationListeners();
 
-      if (didSnap) {
-        SnapUtilities.showSnapRotation(this.rotationHandle);
-      } else {
+      if (snappedAngle.isCloseTo(angleDif)) {
         SnapUtilities.hideRotationSnapVisualization();
+      } else {
+        SnapUtilities.showSnapRotation(this.rotationHandle);
       }
     }
   }
