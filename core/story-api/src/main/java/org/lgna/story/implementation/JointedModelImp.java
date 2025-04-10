@@ -640,11 +640,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   @Override
-  public org.alice.math.immutable.Dimension3 getSize() {
+  public Dimension3 getSize() {
     return getAxisAlignedMinimumBoundingBox().getSize();
   }
 
-  public org.alice.math.immutable.Dimension3 getSize(boolean ignoreJointOrientations) {
+  public Dimension3 getSize(boolean ignoreJointOrientations) {
     return getAxisAlignedMinimumBoundingBox(ignoreJointOrientations).getSize();
   }
 

@@ -62,7 +62,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
   }
 
   protected void setSgVisualsScale(Matrix3x3 m) {
-    org.alice.math.immutable.Matrix3x3 i = m;
+    Matrix3x3 i = m;
     for (Visual sgVisual : this.getSgVisuals()) {
       sgVisual.scale.setValue(i);
     }
@@ -78,7 +78,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
       this.getSgComposite().localTransformation.setValue(new AffineMatrix4x4(m.orientation(), axis.applyScale(m.translation())));
     }
     for (Visual sgVisual : this.getSgVisuals()) {
-      org.alice.math.immutable.Matrix3x3 scale = sgVisual.scale.getValue();
+      Matrix3x3 scale = sgVisual.scale.getValue();
       scale = scale.times(axis.asScaleMatrix());
       sgVisual.scale.setValue(scale);
     }

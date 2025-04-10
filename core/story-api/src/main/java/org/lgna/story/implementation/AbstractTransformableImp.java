@@ -611,7 +611,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   //    return m.orientation;
   //  }
   private void setOrientationOnly(EntityImp target, Orientation offset) {
-    this.getSgComposite().setAxesOnly(offset != null ? offset : org.alice.math.immutable.OrthogonalMatrix3x3.IDENTITY, target.getSgComposite());
+    this.getSgComposite().setAxesOnly(offset != null ? offset : OrthogonalMatrix3x3.IDENTITY, target.getSgComposite());
   }
 
   public void animateOrientationOnly(final EntityImp target, Orientation offset, double duration, Style style) {
@@ -800,7 +800,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
   }
 
   private void setPositionOnly(EntityImp target, Point3 offset) {
-    this.getSgComposite().setTranslationOnly(offset != null ? offset : org.alice.math.immutable.Point3.ORIGIN,
+    this.getSgComposite().setTranslationOnly(offset != null ? offset : Point3.ORIGIN,
                                              target != null ? target.getSgComposite() : AsSeenBy.SCENE);
   }
 

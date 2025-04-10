@@ -78,7 +78,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
     //Returns true if the pose will actually change the orientation and position of the joint
     //Scale is passed in because poses that affect the translation of a joint must apply the model's scale to the translation
     public boolean isUndoNecessary(Pose<? extends SJointedModel> pose, Dimension3 scale) {
-      org.alice.math.immutable.AffineMatrix4x4 poseTransform = null;
+      AffineMatrix4x4 poseTransform = null;
       boolean willNotRotateJoint = true;
       boolean willNotTranslateJoint = true;
       boolean affectsTranslation = false;

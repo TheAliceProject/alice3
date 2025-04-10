@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
@@ -71,8 +72,8 @@ public class Text extends Geometry {
     if (this.unalignedBoundingBox.isNaN()) {
       Rectangle2D.Float bounds = this.glyphVector.getBounds();
       this.unalignedBoundingBox = new AxisAlignedBox(
-          new org.alice.math.immutable.Point3(bounds.x, bounds.y, 0),
-          new org.alice.math.immutable.Point3(bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue()));
+          new Point3(bounds.x, bounds.y, 0),
+          new Point3(bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue()));
     }
 
     if (this.unalignedBoundingBox.isNaN()) {

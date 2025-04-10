@@ -53,6 +53,8 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
@@ -255,7 +257,7 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  public void transform(org.alice.math.immutable.Matrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     throw new RuntimeException("todo");
   }
 
@@ -268,13 +270,13 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  protected org.alice.math.immutable.AxisAlignedBox updateBoundingBox() {
+  protected AxisAlignedBox updateBoundingBox() {
     //the bounding boxes come in the form (double[6])
     double[] bboxData = new double[6];
     updateAxisAlignedBoundingBox(bboxData);
-    return new org.alice.math.immutable.AxisAlignedBox(
-        new org.alice.math.immutable.Point3(bboxData[0], bboxData[1], bboxData[2]),
-        new org.alice.math.immutable.Point3(bboxData[3], bboxData[4], bboxData[5]));
+    return new AxisAlignedBox(
+        new Point3(bboxData[0], bboxData[1], bboxData[2]),
+        new Point3(bboxData[3], bboxData[4], bboxData[5]));
   }
 
   private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex) {
@@ -508,7 +510,7 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  public org.alice.math.immutable.AffineMatrix4x4 getPlane() {
+  public AffineMatrix4x4 getPlane() {
     throw new RuntimeException("todo");
   }
 

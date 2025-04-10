@@ -129,8 +129,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgBoxVisual.setName("Camera Box Visual");
     sgBoxVisual.frontFacingAppearance.setValue(paint);
     Box sgBox = new Box();
-    sgBox.setMinimum(new org.alice.math.immutable.Point3(-WIDTH / 2, -HEIGHT / 2, 0));
-    sgBox.setMaximum(new org.alice.math.immutable.Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
+    sgBox.setMinimum(new Point3(-WIDTH / 2, -HEIGHT / 2, 0));
+    sgBox.setMaximum(new Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
     sgBoxVisual.geometries.setValue(new Geometry[] {sgBox});
     sgBoxVisual.setParent(parent);
     return sgBoxVisual;
@@ -142,7 +142,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     visual.frontFacingAppearance.setValue(paint);
     Transformable transformable = new Transformable();
     transformable.setName(name);
-    transformable.applyTranslation(new org.alice.math.immutable.Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
+    transformable.applyTranslation(new Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
     visual.geometries.setValue(new Geometry[]{createFilmCylinder()});
     visual.setParent(transformable);
     transformable.setParent(parent);

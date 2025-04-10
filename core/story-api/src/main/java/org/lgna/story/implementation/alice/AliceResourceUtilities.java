@@ -572,7 +572,7 @@ public class AliceResourceUtilities {
     WeightedMesh[] sgDefaultPoseWeightedMeshes = sgOriginal.defaultPoseWeightedMeshes.getValue();
     boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
-    org.alice.math.immutable.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
+    AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
     Matrix3x3 scaleCopy = sgOriginal.scale.getValue();
     Appearance sgFrontAppearanceCopy;
     if (sgOriginal.frontFacingAppearance.getValue() != null) {
@@ -613,7 +613,7 @@ public class AliceResourceUtilities {
     SkeletonVisual sgToReplaceWith = getVisual(resource);
     Geometry[] sgGeometries = sgToReplaceWith.geometries.getValue();
     WeightedMesh[] sgWeightedMeshes = sgToReplaceWith.weightedMeshes.getValue();
-    org.alice.math.immutable.AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
+    AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
     Joint sgNewSkeletonRoot = sgToReplaceWith.skeleton.getValue();
     final Joint sgNewSkeleton;
     if (sgNewSkeletonRoot != null) {

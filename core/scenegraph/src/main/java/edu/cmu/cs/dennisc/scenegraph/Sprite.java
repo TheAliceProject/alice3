@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +55,7 @@ public class Sprite extends Geometry {
   @Override
   protected AxisAlignedBox updateBoundingBox() {
     double d = radius.getValue();
-    return new AxisAlignedBox(new org.alice.math.immutable.Point3(-d, -d, 0), new org.alice.math.immutable.Point3(d, d, 0));
+    return new AxisAlignedBox(new Point3(-d, -d, 0), new Point3(d, d, 0));
   }
 
   @Override

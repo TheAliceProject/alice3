@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.render;
 import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector4;
@@ -108,7 +109,7 @@ public interface RenderTarget {
   void clearUnusedTextures();
 
   //todo: remove?
-  org.alice.math.immutable.Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
+  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
   FixedRectangle getActualViewport(AbstractCamera sgCamera);
 

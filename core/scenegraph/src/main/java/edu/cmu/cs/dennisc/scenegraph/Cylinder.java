@@ -154,28 +154,28 @@ public class Cylinder extends Shape {
     BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
     switch (bottomToTopAxis) {
       case POSITIVE_X -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(bottom, -maxRadius, -maxRadius),
-            new org.alice.math.immutable.Point3(top, +maxRadius, +maxRadius));
+        return new AxisAlignedBox(new Point3(bottom, -maxRadius, -maxRadius),
+            new Point3(top, +maxRadius, +maxRadius));
       }
       case POSITIVE_Y -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, bottom, -maxRadius),
-            new org.alice.math.immutable.Point3(+maxRadius, top, +maxRadius));
+        return new AxisAlignedBox(new Point3(-maxRadius, bottom, -maxRadius),
+            new Point3(+maxRadius, top, +maxRadius));
       }
       case POSITIVE_Z -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, -maxRadius, bottom),
-            new org.alice.math.immutable.Point3(+maxRadius, +maxRadius, top));
+        return new AxisAlignedBox(new Point3(-maxRadius, -maxRadius, bottom),
+            new Point3(+maxRadius, +maxRadius, top));
       }
       case NEGATIVE_X -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(top, -maxRadius, -maxRadius),
-            new org.alice.math.immutable.Point3(bottom, +maxRadius, +maxRadius));
+        return new AxisAlignedBox(new Point3(top, -maxRadius, -maxRadius),
+            new Point3(bottom, +maxRadius, +maxRadius));
       }
       case NEGATIVE_Y -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, top, -maxRadius),
-            new org.alice.math.immutable.Point3(+maxRadius, bottom, +maxRadius));
+        return new AxisAlignedBox(new Point3(-maxRadius, top, -maxRadius),
+            new Point3(+maxRadius, bottom, +maxRadius));
       }
       case NEGATIVE_Z -> {
-        return new AxisAlignedBox(new org.alice.math.immutable.Point3(-maxRadius, -maxRadius, top),
-            new org.alice.math.immutable.Point3(+maxRadius, +maxRadius, bottom));
+        return new AxisAlignedBox(new Point3(-maxRadius, -maxRadius, top),
+            new Point3(+maxRadius, +maxRadius, bottom));
       }
       default -> throw new RuntimeException();
     }

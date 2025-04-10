@@ -123,7 +123,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
       this.mouseDownState = new InputState(startInput);
       this.initializeEventMessages();
       this.standUpReference.setParent(this.getCamera().getParent());
-      this.standUpReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
+      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
       this.initialTransform = this.manipulatedTransformable.getAbsoluteTransformation();
       this.standUpReference.setAxesOnlyToStandUp();
       this.initialMousePosition = new Vector2(startInput.getMouseLocation().x, startInput.getMouseLocation().y);

@@ -196,7 +196,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     if (this.getParentTransformable() != null) {
       if (this.dragDescription.type == MovementType.STOOD_UP) {
         this.standUpReference.setParent(this.getParentTransformable());
-        this.standUpReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
+        this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
         this.standUpReference.setAxesOnlyToStandUp();
         return this.standUpReference;
       } else if (this.dragDescription.type == MovementType.ABSOLUTE) {
@@ -223,7 +223,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
         return this.snapReference;
       } else if (this.dragDescription.type == MovementType.ABSOLUTE) {
         this.snapReference.setParent(this.getParentTransformable().getRoot());
-        this.snapReference.localTransformation.setValue(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
+        this.snapReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
         return this.snapReference;
       } else {
         this.snapReference.setParent(this.getParentTransformable().getRoot());

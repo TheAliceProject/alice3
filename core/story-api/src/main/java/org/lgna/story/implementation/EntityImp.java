@@ -328,7 +328,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   public Point transformToAwt(Vector4 xyzw, CameraImp<?> cameraImp) {
     final AbstractCamera camera = cameraImp.getSgCamera();
     // get the position relative to the camera, first.
-    org.alice.math.immutable.Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
+    Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
     // 3d -> 2d conversion
     return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos, camera);
 
@@ -767,13 +767,13 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   public void mendSceneGraphIfNecessary() {
     QualityAssuranceUtilities.inspectAndMendIfNecessary(this.getSgComposite(), new Mender() {
       @Override
-      public org.alice.math.immutable.AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
+      public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
         EntityImp imp = EntityImp.getInstance(sgJoint);
         if (imp instanceof JointImp) {
           JointImp jointImp = (JointImp) imp;
           return jointImp.getScaledOriginalTransformation();
         } else {
-          return org.alice.math.immutable.AffineMatrix4x4.IDENTITY;
+          return AffineMatrix4x4.IDENTITY;
         }
       }
     });

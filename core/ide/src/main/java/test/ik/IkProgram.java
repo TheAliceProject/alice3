@@ -386,7 +386,7 @@ class IkProgram extends SProgram {
             //I could make chain setter not race with this
             //However, racing is fine, as long as the old chain is still valid. It is.
 
-            org.alice.math.immutable.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
+            AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
             if (isLinearEnabled) {
               ikEnforcer.setEeDesiredPosition(eeId, targetTransformation.translation(), maxLinearSpeedForEe);
             }

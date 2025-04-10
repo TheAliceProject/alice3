@@ -771,7 +771,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     super.setActiveScene(sceneField);
     // Restore to origin and upright
     if (movableSceneCameraImp != null) {
-      movableSceneCameraImp.setLocalTransformation(org.alice.math.immutable.AffineMatrix4x4.IDENTITY);
+      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.IDENTITY);
     }
 
     if (sceneField != null) {
