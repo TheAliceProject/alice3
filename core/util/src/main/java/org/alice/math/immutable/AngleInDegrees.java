@@ -37,6 +37,11 @@ public record AngleInDegrees(double degrees) implements Angle {
   }
 
   @Override
+  public Angle times(double factor) {
+    return new AngleInDegrees(degrees * factor);
+  }
+
+  @Override
   public Angle interpolateToward(Angle b, double portion) {
     return new AngleInDegrees(Angle.interpolate(degrees, b.getAsDegrees(), portion));
   }

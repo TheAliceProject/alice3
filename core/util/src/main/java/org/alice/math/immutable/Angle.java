@@ -29,6 +29,7 @@ public interface Angle extends Serializable {
 
   Angle negated();
   Angle minus(Angle b);
+  Angle times(double factor);
 
   Angle interpolateToward(Angle b, double portion);
 

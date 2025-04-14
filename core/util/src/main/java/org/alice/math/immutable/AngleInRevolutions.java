@@ -37,6 +37,11 @@ public record AngleInRevolutions(double revolutions) implements Angle {
   }
 
   @Override
+  public Angle times(double factor) {
+    return new AngleInRevolutions(revolutions * factor);
+  }
+
+  @Override
   public Angle interpolateToward(Angle b, double portion) {
     return new AngleInRevolutions(Angle.interpolate(revolutions, b.getAsRevolutions(), portion));
   }
