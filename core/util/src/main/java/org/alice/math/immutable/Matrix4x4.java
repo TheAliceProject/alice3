@@ -222,75 +222,73 @@ public interface Matrix4x4 extends BinaryEncodableAndDecodable {
   double e44();
 
   default double[] asColumnMajorArray16() {
-    return asColumnMajorArray16(new double[16]);
+    double[] array = new double[16];
+    writeColumnMajorArray16(array);
+    return array;
   }
 
-  default double[] asColumnMajorArray16(double[] rv) {
-    assert rv.length == 16;
-    rv[0] = e11();
-    rv[1] = e21();
-    rv[2] = e31();
-    rv[3] = e41();
-    rv[4] = e12();
-    rv[5] = e22();
-    rv[6] = e32();
-    rv[7] = e42();
-    rv[8] = e13();
-    rv[9] = e23();
-    rv[10] = e33();
-    rv[11] = e43();
-    rv[12] = e14();
-    rv[13] = e24();
-    rv[14] = e34();
-    rv[15] = e44();
-    return rv;
+  default void writeColumnMajorArray16(double[] dest) {
+    assert dest.length == 16;
+    int offset = 0;
+    dest[offset++] = e11();
+    dest[offset++] = e21();
+    dest[offset++] = e31();
+    dest[offset++] = e41();
+    dest[offset++] = e12();
+    dest[offset++] = e22();
+    dest[offset++] = e32();
+    dest[offset++] = e42();
+    dest[offset++] = e13();
+    dest[offset++] = e23();
+    dest[offset++] = e33();
+    dest[offset++] = e43();
+    dest[offset++] = e14();
+    dest[offset++] = e24();
+    dest[offset++] = e34();
+    dest[offset] = e44();
   }
 
-  default float[] asColumnMajorArray16(float[] rv) {
-    assert rv.length == 16;
-    rv[0] = (float) e11();
-    rv[1] = (float) e21();
-    rv[2] = (float) e31();
-    rv[3] = (float) e41();
-    rv[4] = (float) e12();
-    rv[5] = (float) e22();
-    rv[6] = (float) e32();
-    rv[7] = (float) e42();
-    rv[8] = (float) e13();
-    rv[9] = (float) e23();
-    rv[10] = (float) e33();
-    rv[11] = (float) e43();
-    rv[12] = (float) e14();
-    rv[13] = (float) e24();
-    rv[14] = (float) e34();
-    rv[15] = (float) e44();
-    return rv;
-  }
-
-  default double[] asRowMajorArray16(double[] rv) {
-    assert rv.length == 16;
-    rv[0] = e11();
-    rv[1] = e12();
-    rv[2] = e13();
-    rv[3] = e14();
-    rv[4] = e21();
-    rv[5] = e22();
-    rv[6] = e23();
-    rv[7] = e24();
-    rv[8] = e31();
-    rv[9] = e32();
-    rv[10] = e33();
-    rv[11] = e34();
-    rv[12] = e41();
-    rv[13] = e42();
-    rv[14] = e43();
-    rv[15] = e44();
-
-    return rv;
+  default void writeColumnMajorArray16(float[] dest) {
+    assert dest.length == 16;
+    int offset = 0;
+    dest[offset++] = (float) e11();
+    dest[offset++] = (float) e21();
+    dest[offset++] = (float) e31();
+    dest[offset++] = (float) e41();
+    dest[offset++] = (float) e12();
+    dest[offset++] = (float) e22();
+    dest[offset++] = (float) e32();
+    dest[offset++] = (float) e42();
+    dest[offset++] = (float) e13();
+    dest[offset++] = (float) e23();
+    dest[offset++] = (float) e33();
+    dest[offset++] = (float) e43();
+    dest[offset++] = (float) e14();
+    dest[offset++] = (float) e24();
+    dest[offset++] = (float) e34();
+    dest[offset] = (float) e44();
   }
 
   default double[] asRowMajorArray16() {
-    return asRowMajorArray16(new double[16]);
+    double[] dest = new double[16];
+    int offset = 0;
+    dest[offset++] = e11();
+    dest[offset++] = e12();
+    dest[offset++] = e13();
+    dest[offset++] = e14();
+    dest[offset++] = e21();
+    dest[offset++] = e22();
+    dest[offset++] = e23();
+    dest[offset++] = e24();
+    dest[offset++] = e31();
+    dest[offset++] = e32();
+    dest[offset++] = e33();
+    dest[offset++] = e34();
+    dest[offset++] = e41();
+    dest[offset++] = e42();
+    dest[offset++] = e43();
+    dest[offset] = e44();
+    return dest;
   }
 
   Matrix4x4 scaleTranslation(Matrix3x3 scale);

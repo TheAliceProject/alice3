@@ -96,7 +96,7 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
     public void pushJoint(JointImp joint) {
 
       AffineMatrix4x4 m = joint.getTransformation(this.asSeenBy);
-      m.asColumnMajorArray16(array);
+      m.writeColumnMajorArray16(array);
       this.context.gl.glPushMatrix();
       this.context.gl.glMultMatrixd(buffer);
       this.preJoint(joint);

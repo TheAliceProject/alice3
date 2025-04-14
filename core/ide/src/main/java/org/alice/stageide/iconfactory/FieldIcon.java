@@ -222,7 +222,7 @@ public class FieldIcon extends AsynchronousIcon {
               if (Double.isNaN(distance) == false) {
                 //                  double[] array = new double[ 16 ];
                 //                  java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
-                //                  m.getAsColumnMajorArray16( array );
+                //                  m.writeColumnMajorArray16( array );
                 //                  gl.glLoadMatrixd( buffer );
 
                 AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();

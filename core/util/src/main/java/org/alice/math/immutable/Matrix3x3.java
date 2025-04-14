@@ -169,17 +169,9 @@ public interface Matrix3x3 extends Printable, Serializable, BinaryEncodableAndDe
   }
   //</editor-fold>
 
-  //<editor-fold desc="Arrays">
-  default double[] getAsColumnMajorArray16() {
-    return getAsColumnMajorArray16(new double[16]);
-  }
-
-  default double[] getAsColumnMajorArray16(double[] dest) {
-    return getAsColumnMajorArray16(dest, 0);
-  }
-
-  default double[] getAsColumnMajorArray16(double[] dest, int offset) {
-    assert dest.length >= 16 + offset;
+  default void writeColumnMajorArray16(double[] dest) {
+    assert dest.length >= 16;
+    int offset = 0;
     dest[offset++] = getRight().x();
     dest[offset++] = getRight().y();
     dest[offset++] = getRight().z();
@@ -196,8 +188,8 @@ public interface Matrix3x3 extends Printable, Serializable, BinaryEncodableAndDe
     dest[offset++] = 0.0;
     dest[offset++] = 0.0;
     dest[offset] = 1.0;
-    return dest;
   }
+
   //</editor-fold>
 
   //<editor-fold desc="Printing">

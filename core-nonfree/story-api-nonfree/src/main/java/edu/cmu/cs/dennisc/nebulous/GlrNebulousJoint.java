@@ -54,7 +54,7 @@ public class GlrNebulousJoint extends GlrAbstractTransformable<NebulousJoint> {
 
   private void updateLocalTransformation() {
     m_localTransformationMatrix = owner.getLocalTransformation();
-    this.m_localTransformationMatrix.asColumnMajorArray16(m_localTransformation);
+    this.m_localTransformationMatrix.writeColumnMajorArray16(m_localTransformation);
   }
 
   @Override

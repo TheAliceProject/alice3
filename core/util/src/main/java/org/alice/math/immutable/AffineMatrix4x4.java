@@ -278,51 +278,22 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Point3 translatio
     return new AffineMatrix4x4(orientation, translation);
   }
 
-  public double[] asColumnMajorArray12(double[] rv) {
-    assert rv.length == 12;
-    rv[0] = e11();
-    rv[1] = e21();
-    rv[2] = e31();
-
-    rv[3] = e12();
-    rv[4] = e22();
-    rv[5] = e32();
-
-    rv[6] = e13();
-    rv[7] = e23();
-    rv[8] = e33();
-
-    rv[9] = e14();
-    rv[10] = e24();
-    rv[11] = e34();
-    return rv;
-  }
-
   public double[] asColumnMajorArray12() {
-    return asColumnMajorArray12(new double[12]);
-  }
-
-  public double[] asRowMajorArray12(double[] rv) {
-    assert rv.length == 12;
-    rv[0] = e11();
-    rv[1] = e12();
-    rv[2] = e13();
-    rv[3] = e14();
-
-    rv[4] = e21();
-    rv[5] = e22();
-    rv[6] = e23();
-    rv[7] = e24();
-
-    rv[8] = e31();
-    rv[9] = e32();
-    rv[10] = e33();
-    rv[11] = e34();
-    return rv;
-  }
-
-  public double[] asRowMajorArray12() {
-    return asRowMajorArray12(new double[12]);
+    double[] dest = new double[12];
+    int offset = 0;
+    dest[offset++] = e11();
+    dest[offset++] = e21();
+    dest[offset++] = e31();
+    dest[offset++] = e12();
+    dest[offset++] = e22();
+    dest[offset++] = e32();
+    dest[offset++] = e13();
+    dest[offset++] = e23();
+    dest[offset++] = e33();
+    dest[offset++] = e14();
+    dest[offset++] = e24();
+    dest[offset] = e34();
+    return dest;
   }
 
   public AffineMatrix4x4 normalizeOnlyOrientation() {

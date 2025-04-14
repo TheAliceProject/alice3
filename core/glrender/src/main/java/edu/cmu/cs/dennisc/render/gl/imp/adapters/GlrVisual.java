@@ -145,7 +145,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   private void updateScale(Matrix3x3 m) {
     this.isScaleIdentity = m.isIdentity();
-    m.getAsColumnMajorArray16(this.scale);
+    m.writeColumnMajorArray16(this.scale);
   }
 
   @Override
