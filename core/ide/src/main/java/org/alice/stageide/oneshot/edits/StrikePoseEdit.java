@@ -94,8 +94,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
         }
       }
       if (poseTransform != null) {
-        willNotRotateJoint = poseTransform.orientation().asUnitQuaternion().
-            isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation().asUnitQuaternion());
+        willNotRotateJoint = poseTransform.orientation().isAlignedWith(this.transformation.orientation());
         if (affectsTranslation) {
           willNotTranslateJoint = poseTransform.translation().isWithinReasonableEpsilonOf(this.transformation.translation());
         }

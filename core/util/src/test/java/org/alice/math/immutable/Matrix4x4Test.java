@@ -14,9 +14,9 @@ class Matrix4x4Test {
   );
   static final double M1_DET = -781.0;
 
-  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Vector3(4, 6, 2));
+  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Point3(4, 6, 2));
 
-  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Vector3.ZERO);
+  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Point3.ORIGIN);
 
   @Test
   void createShouldMakeMatrix() {

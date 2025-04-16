@@ -55,12 +55,12 @@ class Matrix3x3Test {
   }
 
   @Test
-  void createOrthogonalButNotUnitByValuesShouldNotBeOrthogonalMatrix() {
+  void createOrthogonalButNotUnitByValuesShouldBeOrthogonalMatrix() {
     Matrix3x3 m = Matrix3x3.create(
         2, 0, 0,
         0,1, 0,
         0, 0, 1);
-    assertInstanceOf(FullMatrix3x3.class, m, "Matrix should not be OrthogonalMatrix3x3");
+    assertInstanceOf(OrthogonalMatrix3x3.class, m, "Matrix should be OrthogonalMatrix3x3");
   }
 
   @Test

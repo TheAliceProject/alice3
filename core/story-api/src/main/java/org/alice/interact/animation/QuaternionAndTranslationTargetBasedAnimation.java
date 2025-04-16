@@ -78,8 +78,7 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
     UnitQuaternion currentQ = this.currentValue.getQuaternion();
     UnitQuaternion targetQ = this.targetValue.getQuaternion();
 
-    UnitQuaternion targetQNegative = targetQ.negated();
-    boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
+    boolean quaternionDone = currentQ.isAlignedWith(targetQ);
     double translationDist = this.currentValue.getTranslation().distanceFrom(this.targetValue.getTranslation());
 
     boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;

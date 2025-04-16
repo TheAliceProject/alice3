@@ -25,7 +25,6 @@ public class UnitQuaternionTest {
   }
 
   private static void compareTo(UnitQuaternion src, Orientation uq) {
-    UnitQuaternion dest = uq.asUnitQuaternion();
-    assertTrue(src.isAlignedWith(dest), "Source:\n" + src + "\nShould be the same as destination:\n" + dest);
+    assertTrue(src.isAlignedWith(uq), "Source:\n" + src + "\nShould be the same as destination:\n" + uq);
   }
 }

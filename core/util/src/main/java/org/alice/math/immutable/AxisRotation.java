@@ -33,7 +33,9 @@ public record AxisRotation(Vector3 axis, Angle angle) implements Orientation {
   @Override
   public boolean isAlignedWith(Orientation other) {
     AxisRotation o = other.asAxisRotation();
-    return this.axis.isWithinReasonableEpsilonOf(o.axis) && this.angle.isCloseTo(o.angle);
+    // Check if the values are a match first. If not, check if they match after matrix conversion
+    return (this.axis.isWithinReasonableEpsilonOf(o.axis) && this.angle.isCloseTo(o.angle))
+        || this.asMatrix3x3().isWithinReasonableEpsilonOf(o.asMatrix3x3());
   }
   //</editor-fold>
 

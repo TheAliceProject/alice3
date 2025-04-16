@@ -873,15 +873,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       this.jointImp = jointImp;
       this.q0 = this.jointImp.getLocalOrientation().asUnitQuaternion();
       UnitQuaternion q = this.jointImp.getOriginalOrientation();
-      if (q != null) {
-        if (this.q0.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(q)) {
-          this.q1 = null;
-        } else {
-          this.q1 = q;
-        }
-      } else {
-        this.q1 = null;
-      }
+      this.q1 = ((q == null) || this.q0.isAlignedWith(q)) ? null : q;
     }
 
     //    public JointImp getJointImp() {

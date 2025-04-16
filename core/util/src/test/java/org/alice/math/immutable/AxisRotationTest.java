@@ -13,6 +13,12 @@ public class AxisRotationTest {
   }
 
   @Test
+  void identityAxisShouldNotMatter() {
+    compareTo(new AxisRotation(Vector3.POSITIVE_Y_AXIS, Angle.ZERO), AxisRotation.IDENTITY);
+    compareTo(new AxisRotation(Vector3.POSITIVE_Z_AXIS, Angle.ZERO), AxisRotation.IDENTITY);
+  }
+
+  @Test
   void arbitraryAxisRotationConversionsToAndFromShouldBeEqual() {
     AxisRotation rotated = new AxisRotation((new Vector3(3, 4, 5)).normalized(), new AngleInRadians(0.7));
     checkConversionsAndBack(rotated);

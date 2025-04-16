@@ -71,8 +71,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
     }
 
     public boolean isUndoNecessary() {
-      return !this.joint.getOriginalOrientation().
-          isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(orientation.asUnitQuaternion());
+      return !this.joint.getOriginalOrientation().isAlignedWith(orientation.asUnitQuaternion());
     }
 
     @Override

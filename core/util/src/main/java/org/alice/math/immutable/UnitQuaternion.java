@@ -26,7 +26,11 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
   //<editor-fold desc="Comparisons">
   @Override
   public boolean isAlignedWith(Orientation other) {
-    return this.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(other.asUnitQuaternion());
+    return isAlignedWith(other.asUnitQuaternion(), EpsilonUtilities.REASONABLE_EPSILON);
+  }
+
+  private boolean isAlignedWith(UnitQuaternion q, double epsilon) {
+    return isWithinEpsilon(q, epsilon) || this.negated().isWithinEpsilon(q, epsilon);
   }
 
   private boolean isWithinEpsilon(UnitQuaternion q, double epsilon) {
@@ -36,13 +40,6 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
         && (Math.abs(w - q.w) < epsilon);
   }
 
-  public boolean isWithinEpsilonOrIsNegativeWithinEpsilon(UnitQuaternion q, double epsilon) {
-    return isWithinEpsilon(q, epsilon) || this.negated().isWithinEpsilon(q, epsilon);
-  }
-
-  public boolean isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(UnitQuaternion q) {
-    return isWithinEpsilonOrIsNegativeWithinEpsilon(q, EpsilonUtilities.REASONABLE_EPSILON);
-  }
   //</editor-fold>
 
   //<editor-fold desc="Operations">
@@ -53,7 +50,7 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
     if (portion == 0.0) {
       return this;
     }
-    if (portion == 1.0 || this.isWithinEpsilonOrIsNegativeWithinEpsilon(b, EPSILON)) {
+    if (portion == 1.0 || this.isAlignedWith(b, EPSILON)) {
       return b;
     }
     double dotProduct = dotProduct(b);
