@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
@@ -79,7 +78,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   @Override
   public AffineMatrix4x4 getInverseAbsoluteTransformation() {
-    return vehicle != null ? vehicle.getInverseAbsoluteTransformation() : Matrix4x4.IDENTITY;
+    return vehicle != null ? vehicle.getInverseAbsoluteTransformation() : AffineMatrix4x4.IDENTITY;
   }
 
   @Override

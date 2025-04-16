@@ -57,7 +57,7 @@ public class SymmetricPerspectiveCamera extends AbstractNearPlaneAndFarPlaneCame
   public static final AngleInRadians DEFAULT_VERTICAL_VIEW_ANGLE = new AngleInRadians(0.5);
   public static final double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
   public final AngleProperty verticalViewingAngle = new AngleProperty(this, DEFAULT_VERTICAL_VIEW_ANGLE, true);
-  public final AngleProperty horizontalViewingAngle = new AngleProperty(this, new AngleInRadians(Double.NaN), true);
+  public final AngleProperty horizontalViewingAngle = new AngleProperty(this, Angle.NaN, true);
   private Angle effectiveHorizontalViewingAngle;
   private Angle effectiveVerticalViewingAngle;
 

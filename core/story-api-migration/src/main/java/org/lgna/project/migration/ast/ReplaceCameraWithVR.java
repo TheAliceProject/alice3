@@ -3,7 +3,6 @@ package org.lgna.project.migration.ast;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import org.alice.math.immutable.Angle;
-import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.EulerAngles;
 import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.project.ProjectVersion;
@@ -31,7 +30,6 @@ public class ReplaceCameraWithVR extends AstMigration {
   private final String getHeadset = "getHeadset";
   private final String setPositionRelativeToVehicle = "setPositionRelativeToVehicle";
   private final String setOrientationRelativeToVehicle = "setOrientationRelativeToVehicle";
-  private final AngleInRadians zero = new AngleInRadians(0);
   private final double defaultHeight = 1.56;
 
   public ReplaceCameraWithVR() {
@@ -169,7 +167,7 @@ public class ReplaceCameraWithVR extends AstMigration {
     EulerAngles angles = cameraOrientation.asEulerAngles();
     Angle flatPitchOffset = angles.pitch().minus(angles.pitch().toNearestPi());
     Angle flatRollOffset = angles.roll().minus(angles.roll().toNearestPi());
-    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, zero, flatRollOffset, angles.order());
+    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, Angle.ZERO, flatRollOffset, angles.order());
     return headsetAngles.asUnitQuaternion();
   }
 
