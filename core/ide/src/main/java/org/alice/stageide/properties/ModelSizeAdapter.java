@@ -49,6 +49,7 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
 
 import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.ModelImp;
 
 public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, ModelImp> {
@@ -66,16 +67,19 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
     Dimension3 currentValue = getValue();
     super.setValue(value);
     if (this.instance != null) {
-      double dist = currentValue.minus(value).magnitude();
-      double duration = 1;
-      if (dist < .02) {
-        duration = 0;
-      } else if (dist < .5) {
-        duration = (dist - .02) / (.5 - .02);
-      }
-
-      this.instance.animateSetSize(value, duration, TraditionalStyle.BEGIN_AND_END_GENTLY);
+      this.instance.animateSetSize(value, duration(currentValue, value), TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
+  }
+
+  private double duration(Dimension3 a, Dimension3 b) {
+    double dist =  new Vector3(a.x() - b.x(), a.y() - b.y(), a.z() - b.z()).magnitude();
+    if (dist < .02) {
+      return 0;
+    }
+    if (dist < .5) {
+      return  (dist - .02) / (.5 - .02);
+    }
+    return 1.0;
   }
 
   @Override

@@ -21,11 +21,6 @@ public record Dimension3(double x, double y, double z) implements Tuple3 {
         return new Dimension3(x / b.x(), y / b.y(), z / b.z());
     }
 
-    // This is not a particularly meaningful result, but useful for animation.
-    public Vector3 minus(Dimension3 b) {
-        return new Vector3(x - b.x, y - b.y, z - b.z);
-    }
-
     public Dimension3 interpolate(Dimension3 b, double portion) {
         return new Dimension3(x + ((b.x - x) * portion),
                           y + ((b.y - y) * portion),
