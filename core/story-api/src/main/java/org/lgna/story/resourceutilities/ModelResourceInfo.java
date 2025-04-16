@@ -212,12 +212,9 @@ public class ModelResourceInfo {
     }
     assert modelElement != null;
     List<Element> bboxNodeList = getImmediateChildElementsByTagName(modelElement, "BoundingBox");
-    if (bboxNodeList.size() > 0) {
-      this.boundingBox = getBoundingBoxFromXML(bboxNodeList.get(0));
-    } else {
-      // TODO Check this works.
-      this.boundingBox = AxisAlignedBox.Empty;
-    }
+    this.boundingBox = bboxNodeList.isEmpty()
+        ? AxisAlignedBox.Empty
+        : getBoundingBoxFromXML(bboxNodeList.get(0));
     this.modelName = modelElement.getAttribute("name");
     this.creator = modelElement.getAttribute("creator");
     int creationYearTemp = -1;
