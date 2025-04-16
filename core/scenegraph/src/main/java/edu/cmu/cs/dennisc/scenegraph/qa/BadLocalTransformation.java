@@ -67,12 +67,8 @@ public class BadLocalTransformation implements Problem {
   public void mend(Mender mender) {
     AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
     AffineMatrix4x4 replacement;
-    if (sgTransformable instanceof Joint sgJoint) {
+    if ((isOrientationMendingRequired || isTranslationMendingRequired) && sgTransformable instanceof Joint sgJoint) {
       replacement = mender.getMendTransformationFor(sgJoint);
-      //      if( isOrientationMendingRequired( m ) || isTranslationMendingRequired( m ) ) {
-      //        edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sgJoint );
-      //        m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-      //      }
     } else {
       replacement = AffineMatrix4x4.IDENTITY;
     }

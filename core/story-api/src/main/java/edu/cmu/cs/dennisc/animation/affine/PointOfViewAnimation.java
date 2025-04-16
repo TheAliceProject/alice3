@@ -70,30 +70,10 @@ public class PointOfViewAnimation extends AffineAnimation {
   private Point3 m_t1 = Point3.ORIGIN;
   private Point3 m_t = Point3.ORIGIN;
 
-  public PointOfViewAnimation() {
-    this(null, null, null, null);
-  }
-
   public PointOfViewAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, AffineMatrix4x4 povBegin, AffineMatrix4x4 povEnd) {
     super(sgSubject, sgAsSeenBy);
     setPointOfViewBegin(povBegin);
     setPointOfViewEnd(povEnd);
-  }
-
-  public AffineMatrix4x4 accessPointOfViewBeginUsedAtRuntime() {
-    return m_pov0Runtime;
-  }
-
-  public AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime() {
-    return m_pov0Runtime;
-  }
-
-  public AffineMatrix4x4 accessPointOfViewBegin() {
-    return m_povBegin;
-  }
-
-  public AffineMatrix4x4 getPointOfViewBegin() {
-    return m_povBegin;
   }
 
   public void setPointOfViewBegin(AffineMatrix4x4 povBegin) {
@@ -102,14 +82,6 @@ public class PointOfViewAnimation extends AffineAnimation {
     } else {
       m_povBegin = AffineMatrix4x4.NaN;
     }
-  }
-
-  public AffineMatrix4x4 accessPointOfViewEnd() {
-    return m_povEnd;
-  }
-
-  public AffineMatrix4x4 getPointOfViewEnd() {
-    return m_povEnd;
   }
 
   public void setPointOfViewEnd(AffineMatrix4x4 povEnd) {

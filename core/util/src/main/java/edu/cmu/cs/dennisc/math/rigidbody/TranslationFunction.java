@@ -114,8 +114,6 @@ public abstract class TranslationFunction<E extends TranslationDerivative> imple
 
   //todo: better name
   protected void update(double t, double dt, E derivative) {
-    //todo?
-    //m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt, derivative.velocity ) );
     m_translation = m_translation.plus(derivative.velocity.times(dt));
     m_momentum = m_momentum.plus(derivative.force.times(dt));
   }
@@ -143,8 +141,6 @@ public abstract class TranslationFunction<E extends TranslationDerivative> imple
 
   @Override
   public void update(E a, E b, E c, E d, double dt) {
-    //todo?
-    //m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt / 6, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( a.velocity, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( 2.0, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( b.velocity, c.velocity ) ), d.velocity ) ) ) );
     m_translation = m_translation.plus(a.velocity.plus(b.velocity.plus(c.velocity).times(2.0).plus(d.velocity)).times(dt / 6));
     m_momentum =  m_momentum.plus(a.force.plus(b.force.plus(c.force).times(2.0).plus(d.force)).times(dt / 6));
   }

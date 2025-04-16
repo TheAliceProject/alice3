@@ -155,33 +155,7 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
   public void update(TranslationAndOrientationDerivative a, TranslationAndOrientationDerivative b, TranslationAndOrientationDerivative c, TranslationAndOrientationDerivative d, double dt) {
     super.update(a, b, c, d, dt);
     m_orientation = m_orientation.plus(a.spin.plus((b.spin.plus(c.spin)).times(2.0).plus(d.spin)).times(dt / 6)).normalized();
-/*    m_orientation.add(
-        UnitQuaternion.createMultiplication(
-            UnitQuaternion.createAddition(
-                a.spin,
-                UnitQuaternion.createAddition(
-                    UnitQuaternion.createMultiplication(
-                        UnitQuaternion.createAddition(
-                            b.spin,
-                            c.spin),
-                        2.0),
-                    d.spin)),
-            dt / 6));
-    m_orientation.normalize();*/
     m_angularMomentum = m_angularMomentum.plus(a.torque.plus((b.torque.plus(c.torque).times(2.0).plus(d.torque))).times(dt / 6));
-
-/*    m_angularMomentum.add(
-        Vector3.createMultiplication(
-            Vector3.createAddition(
-                a.torque,
-                Vector3.createAddition(
-                    Vector3.createMultiplication(
-                        Vector3.createAddition(
-                            b.torque,
-                            c.torque),
-                        2.0),
-                    d.torque)),
-            dt / 6));*/
   }
 
   @Override

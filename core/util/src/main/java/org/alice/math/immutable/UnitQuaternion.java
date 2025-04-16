@@ -65,7 +65,6 @@ public record UnitQuaternion(double x, double y, double z, double w) implements 
     final double THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION = 0.05;
     if (!((1 - dotProduct) < THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION)) {
       double halfAngle = Math.acos(dotProduct);
-      //        double sineHalfAngle = Math.sin( halfAngle );
       double sineHalfAngle = Math.sqrt(1.0 - (dotProduct * dotProduct));
       aPortion = Math.sin(aPortion * halfAngle) / sineHalfAngle;
       bPortion = Math.sin(bPortion * halfAngle) / sineHalfAngle;
