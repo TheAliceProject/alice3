@@ -120,11 +120,11 @@ public abstract class STurnable extends SThing {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(orientation, 0);
     EntityImp vehicle = this.getImplementation().getVehicle();
     if (vehicle != null) {
-      this.getImplementation().animateOrientationOnly(vehicle, orientation.getInternal(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+      this.getImplementation().animateOrientationOnly(vehicle, orientation.asMatrix3x3(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
       AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
-      sgTransformable.setLocalTransformation(new AffineMatrix4x4(orientation.getInternal(), m.translation()));
+      sgTransformable.setLocalTransformation(new AffineMatrix4x4(orientation.asMatrix3x3(), m.translation()));
       Logger.severe(this);
     }
   }

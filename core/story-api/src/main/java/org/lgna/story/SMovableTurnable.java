@@ -124,11 +124,11 @@ public abstract class SMovableTurnable extends STurnable {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(position, 0);
     EntityImp vehicle = this.getImplementation().getVehicle();
     if (vehicle != null) {
-      this.getImplementation().animatePositionOnly(vehicle, position.getInternal(), PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+      this.getImplementation().animatePositionOnly(vehicle, position.asPoint(), PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
       AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
-      sgTransformable.setLocalTransformation(new AffineMatrix4x4(m.orientation(), position.getInternal()));
+      sgTransformable.setLocalTransformation(new AffineMatrix4x4(m.orientation(), position.asPoint()));
       Logger.severe(this);
     }
   }

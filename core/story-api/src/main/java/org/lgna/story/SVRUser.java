@@ -66,9 +66,9 @@ public class SVRUser extends SMovableTurnable implements MutableRider {
   public static final Position LEFT_HAND_POSITION = new Position(-HAND_OFFSET, HAND_HEIGHT, 0);
   public static final Position RIGHT_HAND_POSITION = new Position(HAND_OFFSET, HAND_HEIGHT, 0);
   static {
-    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.getInternal();
+    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.asMatrix3x3();
     headMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, SCamera.DEFAULT_CAMERA_TILT);
-    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.getInternal();
+    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.asMatrix3x3();
     baseMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, SCamera.DEFAULT_CAMERA_FACING);
   }
 

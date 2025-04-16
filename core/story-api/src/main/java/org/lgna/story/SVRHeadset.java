@@ -110,7 +110,7 @@ public class SVRHeadset extends SThing {
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public void setOrientationRelativeToVehicle(Orientation orientation, SetOrientationRelativeToVehicle.Detail... details) {
     implementation.animateOrientationOnly(implementation.getVehicle(),
-        orientation.getInternal(),
+        orientation.asMatrix3x3(),
         Duration.getValue(details),
         AnimationStyle.getValue(details).getInternal());
   }
@@ -124,7 +124,7 @@ public class SVRHeadset extends SThing {
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public void setPositionRelativeToVehicle(Position position, SetPositionRelativeToVehicle.Detail... details) {
     implementation.animatePositionOnly(implementation.getVehicle(),
-        position.getInternal(),
+        position.asPoint(),
         PathStyle.getValue(details).isSmooth(),
         Duration.getValue(details),
         AnimationStyle.getValue(details).getInternal());

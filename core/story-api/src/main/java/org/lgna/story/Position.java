@@ -50,7 +50,6 @@ import org.alice.math.immutable.Point3;
 public final class Position {
   private final Point3 internal;
 
-  // TODO Either use immutable value or make a copy - after checking  we do not depend on side effects
   public Position(Point3 internal) {
     this.internal = internal;
   }
@@ -59,18 +58,13 @@ public final class Position {
     this(new Point3(right.doubleValue(), up.doubleValue(), backward.doubleValue()));
   }
 
-  /* package-private */Point3 getInternal() {
+  public Point3 asPoint() {
     return this.internal;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Position) {
-      Position other = (Position) obj;
-      return this.internal.equals(other.internal);
-    } else {
-      return false;
-    }
+    return obj instanceof Position other && this.internal.equals(other.internal);
   }
 
   @Override

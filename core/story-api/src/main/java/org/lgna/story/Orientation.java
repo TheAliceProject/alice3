@@ -52,7 +52,6 @@ import org.alice.math.immutable.EulerAngles;
 public final class Orientation {
   private final OrthogonalMatrix3x3 internal;
 
-  // TODO Either use immutable matrices or make a copy - after checking  we do not depend on side effects
   public Orientation(OrthogonalMatrix3x3 internal) {
     this.internal = internal;
   }
@@ -65,11 +64,11 @@ public final class Orientation {
     this((new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())).asMatrix3x3());
   }
 
-  OrthogonalMatrix3x3 getInternal() {
+  OrthogonalMatrix3x3 asMatrix3x3() {
     return this.internal;
   }
 
-  public UnitQuaternion createUnitQuaternion() {
+  public UnitQuaternion asUnitQuaternion() {
     return this.internal.asUnitQuaternion();
   }
 
@@ -79,11 +78,7 @@ public final class Orientation {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Orientation other) {
-      return this.internal.equals(other.internal);
-    } else {
-      return false;
-    }
+    return obj instanceof Orientation other && this.internal.equals(other.internal);
   }
 
   @Override
