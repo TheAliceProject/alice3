@@ -82,14 +82,11 @@ public class ScrollingPopupMenuUtilities {
       MenuElement[] menus = e.getPath();
       if (menus.length > 0 && menus[menus.length - 1] instanceof JPopupMenu jPopupMenu) {
         if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
-          int indexDelta = 0;
           if (e.getKeyCode() == KeyEvent.VK_UP) {
-            indexDelta--;
+            scrollingPopupMenuLayout.adjustIndex(-1);
           }  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            indexDelta++;
+            scrollingPopupMenuLayout.adjustIndex(1);
           }
-
-          scrollingPopupMenuLayout.adjustIndex(indexDelta);
         }
       }
     }
