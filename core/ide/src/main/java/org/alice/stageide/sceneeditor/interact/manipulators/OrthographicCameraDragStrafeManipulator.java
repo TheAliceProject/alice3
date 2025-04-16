@@ -80,16 +80,16 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
   @Override
   protected Vector3 getMovementVectorForColor(Color color) {
     if (UP.equals(color)) {
-      return new Vector3(0, INITIAL_ROTATE_FACTOR, 0);
+      return new Vector3(0, INITIAL_MOVE_FACTOR, 0);
     }
     if (DOWN.equals(color)) {
-      return new Vector3(0, -INITIAL_ROTATE_FACTOR, 0);
+      return new Vector3(0, -INITIAL_MOVE_FACTOR, 0);
     }
     if (LEFT.equals(color)) {
-      return new Vector3(-INITIAL_ROTATE_FACTOR, 0, 0);
+      return new Vector3(-INITIAL_MOVE_FACTOR, 0, 0);
     }
     if (RIGHT.equals(color)) {
-      return new Vector3(INITIAL_ROTATE_FACTOR, 0, 0);
+      return new Vector3(INITIAL_MOVE_FACTOR, 0, 0);
     }
     return Vector3.ZERO;
   }
