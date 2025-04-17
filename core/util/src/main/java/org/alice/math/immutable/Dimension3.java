@@ -1,12 +1,16 @@
 package org.alice.math.immutable;
 
 public record Dimension3(double x, double y, double z) implements Tuple3 {
+    //<editor-fold desc="Constants">
     public static final Dimension3 UNIT_SIZE = new Dimension3(1, 1, 1);
     public static Dimension3 NaN = new Dimension3(Double.NaN, Double.NaN, Double.NaN);
+    //</editor-fold>
 
+    //<editor-fold desc="Static Constructor">
     public static Dimension3 uniformScale(double factor) {
         return new Dimension3(factor, factor, factor);
     }
+    //</editor-fold>
 
     //<editor-fold desc="Operations">
     public Dimension3 times(double factor) {
