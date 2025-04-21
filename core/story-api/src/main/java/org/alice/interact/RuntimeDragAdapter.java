@@ -59,7 +59,6 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.lgna.story.SModel;
 import org.lgna.story.Visual;
 
-import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author David Culyba

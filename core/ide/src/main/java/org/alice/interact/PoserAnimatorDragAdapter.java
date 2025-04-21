@@ -55,7 +55,6 @@ import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
