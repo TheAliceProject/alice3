@@ -613,8 +613,8 @@ public class RenderContext extends Context {
       gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);
     }
     if (this.isShadingEnabled) {
-      gl.glNormal3f(vertex.normal.x, vertex.normal.y, vertex.normal.z);
+      gl.glNormal3f(vertex.normal.x(), vertex.normal.y(), vertex.normal.z());
     }
-    gl.glVertex3d(vertex.position.x, vertex.position.y, vertex.position.z);
+    gl.glVertex3d(vertex.position.x(), vertex.position.y(), vertex.position.z());
   }
 }

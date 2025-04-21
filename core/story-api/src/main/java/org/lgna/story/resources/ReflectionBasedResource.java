@@ -1,6 +1,6 @@
 package org.lgna.story.resources;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
 

@@ -43,12 +43,12 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SGround;
 
 import static edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV;

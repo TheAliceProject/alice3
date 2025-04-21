@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AngleInRadians;
+import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.math.property.AngleProperty;
 import edu.cmu.cs.dennisc.property.DoubleProperty;
 

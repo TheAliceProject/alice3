@@ -43,35 +43,28 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Sprite extends Geometry {
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double d = radius.getValue();
-    boundingBox.setMinimum(-d, -d, 0);
-    boundingBox.setMaximum(d, d, 0);
+    return new AxisAlignedBox(new Point3(-d, -d, 0), new Point3(d, d, 0));
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = radius.getValue();
-  }
-
-  @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     throw new RuntimeException("TODO");
   }
 
   @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public AffineMatrix4x4 getPlane() {
     throw new RuntimeException("TODO");
   }
 

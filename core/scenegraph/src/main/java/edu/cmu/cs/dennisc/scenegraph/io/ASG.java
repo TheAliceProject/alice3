@@ -46,22 +46,22 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Tuple2f;
-import edu.cmu.cs.dennisc.math.Tuple3;
-import edu.cmu.cs.dennisc.math.Tuple3f;
-import edu.cmu.cs.dennisc.math.Vector2f;
-import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Tuple3f;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.Vector2f;
+import org.alice.math.immutable.Vector3f;
+import org.alice.math.immutable.Vector4;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
@@ -160,122 +160,41 @@ class PropertyReferenceToElement extends AbstractPropertyReference {
  * @author Dennis Cosgrove
  */
 class MatrixUtilities {
-  public static double[] getRow(double[] rv, AffineMatrix4x4 m, int row) {
-    switch (row) {
-    case 0:
-      rv[0] = m.orientation.right.x;
-      rv[1] = m.orientation.up.x;
-      rv[2] = m.orientation.backward.x;
-      rv[3] = m.translation.x;
-      break;
-    case 1:
-      rv[0] = m.orientation.right.y;
-      rv[1] = m.orientation.up.y;
-      rv[2] = m.orientation.backward.y;
-      rv[3] = m.translation.y;
-      break;
-    case 2:
-      rv[0] = m.orientation.right.z;
-      rv[1] = m.orientation.up.z;
-      rv[2] = m.orientation.backward.z;
-      rv[3] = m.translation.z;
-      break;
-    case 3:
-      rv[0] = 0.0;
-      rv[1] = 0.0;
-      rv[2] = 0.0;
-      rv[3] = 1.0;
-      break;
-    default:
-      throw new IllegalArgumentException();
-    }
-    return rv;
+  public static void getRow(double[] rv, AffineMatrix4x4 m, int row) {
+    Vector4 rowValues = switch (row) {
+      case 0 -> m.rowX();
+      case 1 -> m.rowY();
+      case 2 -> m.rowZ();
+      case 3 -> m.rowW();
+      default -> throw new IllegalArgumentException();
+    };
+    rv[0] = rowValues.x();
+    rv[1] = rowValues.y();
+    rv[2] = rowValues.z();
+    rv[3] = rowValues.w();
   }
 
-  public static void setRow(AffineMatrix4x4 m, int row, double a, double b, double c, double d) {
+  public static void getRow(double[] rv, Matrix3x3 m, int row) {
     switch (row) {
     case 0:
-      m.orientation.right.x = a;
-      m.orientation.up.x = b;
-      m.orientation.backward.x = c;
-      m.translation.x = d;
+      rv[0] = m.getRight().x();
+      rv[1] = m.getUp().x();
+      rv[2] = m.getBackward().x();
       break;
     case 1:
-      m.orientation.right.y = a;
-      m.orientation.up.y = b;
-      m.orientation.backward.y = c;
-      m.translation.y = d;
+      rv[0] = m.getRight().y();
+      rv[1] = m.getUp().y();
+      rv[2] = m.getBackward().y();
       break;
     case 2:
-      m.orientation.right.z = a;
-      m.orientation.up.z = b;
-      m.orientation.backward.z = c;
-      m.translation.z = d;
-      break;
-    case 3:
-      assert (a == 0.0);
-      assert (b == 0.0);
-      assert (c == 0.0);
-      assert (d == 1.0);
+      rv[0] = m.getRight().z();
+      rv[1] = m.getUp().z();
+      rv[2] = m.getBackward().z();
       break;
     default:
       throw new IllegalArgumentException();
     }
   }
-
-  public static void setRow(AffineMatrix4x4 m, int row, double[] abcd) {
-    setRow(m, row, abcd[0], abcd[1], abcd[2], abcd[3]);
-  }
-
-  public static double[] getRow(double[] rv, Matrix3x3 m, int row) {
-    switch (row) {
-    case 0:
-      rv[0] = m.right.x;
-      rv[1] = m.up.x;
-      rv[2] = m.backward.x;
-      break;
-    case 1:
-      rv[0] = m.right.y;
-      rv[1] = m.up.y;
-      rv[2] = m.backward.y;
-      break;
-    case 2:
-      rv[0] = m.right.z;
-      rv[1] = m.up.z;
-      rv[2] = m.backward.z;
-      break;
-    default:
-      throw new IllegalArgumentException();
-    }
-    return rv;
-  }
-
-  public static void setRow(Matrix3x3 m, int row, double a, double b, double c) {
-    switch (row) {
-    case 0:
-      m.right.x = a;
-      m.up.x = b;
-      m.backward.x = c;
-      break;
-    case 1:
-      m.right.y = a;
-      m.up.y = b;
-      m.backward.y = c;
-      break;
-    case 2:
-      m.right.y = a;
-      m.up.y = b;
-      m.backward.y = c;
-      break;
-    default:
-      throw new IllegalArgumentException();
-    }
-  }
-
-  public static void setRow(Matrix3x3 m, int row, double[] abc) {
-    setRow(m, row, abc[0], abc[1], abc[2]);
-  }
-
 }
 
 /**
@@ -348,14 +267,14 @@ public class ASG {
         int format = vertice.getFormat();
         dos.writeInt(format);
         if ((format & Vertex.FORMAT_POSITION) != 0) {
-          dos.writeDouble(vertice.position.x);
-          dos.writeDouble(vertice.position.y);
-          dos.writeDouble(vertice.position.z);
+          dos.writeDouble(vertice.position.x());
+          dos.writeDouble(vertice.position.y());
+          dos.writeDouble(vertice.position.z());
         }
         if ((format & Vertex.FORMAT_NORMAL) != 0) {
-          dos.writeDouble(vertice.normal.x);
-          dos.writeDouble(vertice.normal.y);
-          dos.writeDouble(vertice.normal.z);
+          dos.writeDouble(vertice.normal.x());
+          dos.writeDouble(vertice.normal.y());
+          dos.writeDouble(vertice.normal.z());
         }
         if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
           dos.writeFloat(vertice.diffuseColor.red);
@@ -405,17 +324,13 @@ public class ASG {
         vertices = new Vertex[vertexCount];
         for (int index = 0; index < vertices.length; index++) {
           int format = dis.readInt();
-          final Point3 position = Point3.createNaN();
+          Point3 position = Point3.NaN;
           if ((format & Vertex.FORMAT_POSITION) != 0) {
-            position.x = dis.readDouble();
-            position.y = dis.readDouble();
-            position.z = dis.readDouble();
+            position = new Point3(dis.readDouble(), dis.readDouble(), dis.readDouble());
           }
-          final Vector3f normal = Vector3f.createNaN();
+          Vector3f normal = Vector3f.NaN;
           if ((format & Vertex.FORMAT_NORMAL) != 0) {
-            normal.x = (float) dis.readDouble();
-            normal.y = (float) dis.readDouble();
-            normal.z = (float) dis.readDouble();
+            normal = new Vector3f(dis.readFloat(), dis.readFloat(), dis.readFloat());
           }
           final Color4f diffuseColor;
           if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
@@ -444,17 +359,13 @@ public class ASG {
         vertices = new Vertex[vertexCount];
         for (int index = 0; index < vertices.length; index++) {
           int format = dis.readInt();
-          final Point3 position = Point3.createNaN();
+          Point3 position = Point3.NaN;
           if ((format & Vertex.FORMAT_POSITION) != 0) {
-            position.x = dis.readDouble();
-            position.y = dis.readDouble();
-            position.z = dis.readDouble();
+            position = new Point3(dis.readDouble(), dis.readDouble(), dis.readDouble());
           }
-          final Vector3f normal = Vector3f.createNaN();
+          Vector3f normal = Vector3f.NaN;
           if ((format & Vertex.FORMAT_NORMAL) != 0) {
-            normal.x = (float) dis.readDouble();
-            normal.y = (float) dis.readDouble();
-            normal.z = (float) dis.readDouble();
+            normal = new Vector3f(dis.readFloat(), dis.readFloat(), dis.readFloat());
           }
           final Color4f diffuseColor;
           if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
@@ -659,49 +570,46 @@ public class ASG {
     return encodeDoubleArray(array, 0, array.length);
   }
 
-  private static void decodeDoubleArray(String s, double[] array) {
-    decodeDoubleArray(s, array, 0, array.length);
-  }
-
   private static String encodeTuple3d(Tuple3 tuple3d) {
-    return Double.toString(tuple3d.x) + ' ' + tuple3d.y + ' ' + tuple3d.z;
+    return Double.toString(tuple3d.x()) + ' ' + tuple3d.y() + ' ' + tuple3d.z();
   }
 
-  private static void decodeTuple3d(String s, Tuple3 tuple3d) {
+  private static Point3 decodePoint3(String s) {
     int begin = 0;
     int end = s.indexOf(' ', begin);
-    tuple3d.x = Double.parseDouble(s.substring(begin, end));
+    double x = Double.parseDouble(s.substring(begin, end));
     begin = end + 1;
     end = s.indexOf(' ', begin);
-    tuple3d.y = Double.parseDouble(s.substring(begin, end));
+    double y = Double.parseDouble(s.substring(begin, end));
     begin = end + 1;
     end = s.length();
-    tuple3d.z = Double.parseDouble(s.substring(begin, end));
+    double z = Double.parseDouble(s.substring(begin, end));
+    return new Point3(x, y, z);
   }
 
   private static String encodeTuple3f(Tuple3f tuple3d) {
-    return Double.toString(tuple3d.x) + ' ' + Double.toString(tuple3d.y) + ' ' + Double.toString(tuple3d.z);
+    return Double.toString(tuple3d.x()) + ' ' + Double.toString(tuple3d.y()) + ' ' + Double.toString(tuple3d.z());
   }
 
-  private static void decodeTuple3f(String s, Tuple3f tuple3d) {
+  private static Vector3f decodeVector3f(String s) {
     int begin = 0;
     int end = s.indexOf(' ', begin);
-    tuple3d.x = Float.parseFloat(s.substring(begin, end));
+    float x = Float.parseFloat(s.substring(begin, end));
     begin = end + 1;
     end = s.indexOf(' ', begin);
-    tuple3d.y = Float.parseFloat(s.substring(begin, end));
+    float y = Float.parseFloat(s.substring(begin, end));
     begin = end + 1;
     end = s.length();
-    tuple3d.z = Float.parseFloat(s.substring(begin, end));
+    float z = Float.parseFloat(s.substring(begin, end));
+    return new Vector3f(x, y, z);
   }
 
-  private static void decodeTuple2f(String s, Tuple2f tuple2f) {
+  private static Vector2f decodeVector2f(String s) {
     int begin = 0;
     int end = s.indexOf(' ', begin);
-    tuple2f.x = Float.parseFloat(s.substring(begin, end));
     begin = end + 1;
     end = s.length();
-    tuple2f.y = Float.parseFloat(s.substring(begin, end));
+    return new Vector2f(Float.parseFloat(s.substring(begin, end)), Float.parseFloat(s.substring(begin, end)));
   }
 
   private static String encodeTexCoord2f(TextureCoordinate2f tc2f) {
@@ -1060,9 +968,9 @@ public class ASG {
     if (String.class.isAssignableFrom(cls)) {
       return text;
     } else if (cls.equals(Double.class) && text.equals("Infinity")) {
-      return new Double(Double.POSITIVE_INFINITY);
+      return Double.POSITIVE_INFINITY;
     } else if (cls.equals(Double.class) && text.equals("NaN")) {
-      return new Double(Double.NaN);
+      return Double.NaN;
     } else {
       Class<?>[] parameterTypes = {String.class};
       try {
@@ -1131,23 +1039,19 @@ public class ASG {
           }
         } else {
           if (AffineMatrix4x4.class.isAssignableFrom(propertyValueClass)) {
-            AffineMatrix4x4 m = AffineMatrix4x4.createNaN();
             Element[] xmlRows = getChildren(xmlProperty, "row");
-            double[] row = new double[4];
+            double[] values = new double[16];
             for (int rowIndex = 0; rowIndex < 4; rowIndex++) {
-              decodeDoubleArray(getNodeText(xmlRows[rowIndex]), row);
-              MatrixUtilities.setRow(m, rowIndex, row);
+              decodeDoubleArray(getNodeText(xmlRows[rowIndex]), values, 4 * rowIndex,  4);
             }
-            value = m;
+            value = AffineMatrix4x4.createFromRowMajorArray(values);
           } else if (Matrix3x3.class.isAssignableFrom(propertyValueClass)) {
-            Matrix3x3 m = Matrix3x3.createNaN();
             Element[] xmlRows = getChildren(xmlProperty, "row");
-            double[] row = new double[3];
+            double[] values = new double[9];
             for (int rowIndex = 0; rowIndex < 3; rowIndex++) {
-              decodeDoubleArray(getNodeText(xmlRows[rowIndex]), row);
-              MatrixUtilities.setRow(m, rowIndex, row);
+              decodeDoubleArray(getNodeText(xmlRows[rowIndex]), values, 3 * rowIndex,  3);
             }
-            value = m;
+            value = Matrix3x3.create(values);
           } else if (Image.class.isAssignableFrom(propertyValueClass)) {
             int width = Integer.parseInt(xmlProperty.getAttribute("width"));
             int height = Integer.parseInt(xmlProperty.getAttribute("height"));
@@ -1174,23 +1078,20 @@ public class ASG {
           } else if (double[].class.isAssignableFrom(propertyValueClass)) {
             int length = Integer.parseInt(xmlProperty.getAttribute("length"));
             double[] array = new double[length];
-            decodeDoubleArray(getNodeText(xmlProperty), array);
+            decodeDoubleArray(getNodeText(xmlProperty), array, 0, length);
             value = array;
           } else if (Point3[].class.isAssignableFrom(propertyValueClass)) {
             Element[] xmlPoints = getChildren(xmlProperty, "point");
             Point3[] array = new Point3[xmlPoints.length];
             for (int tupleIndex = 0; tupleIndex < xmlPoints.length; tupleIndex++) {
-              Point3 point = new Point3();
-              decodeTuple3d(getNodeText(xmlPoints[tupleIndex]), point);
-              array[tupleIndex] = point;
+              array[tupleIndex] = decodePoint3(getNodeText(xmlPoints[tupleIndex]));
             }
             value = array;
           } else if (Vector3f[].class.isAssignableFrom(propertyValueClass)) {
             Element[] xmlNormals = getChildren(xmlProperty, "normal");
             Vector3f[] array = new Vector3f[xmlNormals.length];
             for (int tupleIndex = 0; tupleIndex < xmlNormals.length; tupleIndex++) {
-              Vector3f v = new Vector3f();
-              decodeTuple3f(getNodeText(xmlNormals[tupleIndex]), v);
+              Vector3f v = decodeVector3f(getNodeText(xmlNormals[tupleIndex]));
               array[tupleIndex] = v;
             }
             value = array;
@@ -1198,9 +1099,7 @@ public class ASG {
             Element[] xmlTextureCoords = getChildren(xmlProperty, "textureCoordinate");
             Vector2f[] array = new Vector2f[xmlTextureCoords.length];
             for (int tupleIndex = 0; tupleIndex < xmlTextureCoords.length; tupleIndex++) {
-              Vector2f v = new Vector2f();
-              decodeTuple2f(getNodeText(xmlTextureCoords[tupleIndex]), v);
-              array[tupleIndex] = v;
+              array[tupleIndex] = decodeVector2f(getNodeText(xmlTextureCoords[tupleIndex]));
             }
             value = array;
           } else if (Vertex[].class.isAssignableFrom(propertyValueClass)) {
@@ -1209,14 +1108,14 @@ public class ASG {
             for (int vertexIndex = 0; vertexIndex < xmlVertices.length; vertexIndex++) {
               Element xmlVertex = xmlVertices[vertexIndex];
               Element xmlPosition = getFirstChild(xmlVertex, "position");
-              Point3 position = Point3.createNaN();
+              Point3 position = Point3.NaN;
               if (xmlPosition != null) {
-                decodeTuple3d(getNodeText(xmlPosition), position);
+                position = decodePoint3(getNodeText(xmlPosition));
               }
               Element xmlNormal = getFirstChild(xmlVertex, "normal");
-              Vector3f normal = Vector3f.createNaN();
+              Vector3f normal = Vector3f.NaN;
               if (xmlNormal != null) {
-                decodeTuple3f(getNodeText(xmlNormal), normal);
+                normal = decodeVector3f(getNodeText(xmlNormal));
               }
               Element xmlDiffuseColor = getFirstChild(xmlVertex, "diffuseColor");
               final Color4f diffuseColor;

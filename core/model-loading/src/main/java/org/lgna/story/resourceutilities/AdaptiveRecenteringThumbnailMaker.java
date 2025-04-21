@@ -43,15 +43,14 @@
 
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
@@ -110,11 +109,9 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     double shiftUpAmount = shiftUpPercent * bbox.getHeight() * .75;
     double shiftRightAmount = shiftRightPercent * bbox.getWidth() * .75;
 
-    Point3 testPosition = new Point3(currentPosition);
-
-    testPosition.y += shiftUpAmount;
-    testPosition.x += shiftRightAmount;
-
+    Point3 testPosition = currentPosition;
+    testPosition = testPosition.withY(testPosition.y() + shiftUpAmount);
+    testPosition = testPosition.withX(testPosition.x() + shiftRightAmount);
     return testPosition;
   }
 
@@ -134,14 +131,13 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 
     writeDebugImageIfAppropriate("initial.png", testImage);
 
-    Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
+    Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation(), bbox);
     getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
-    Point3 lastGoodPosition = new Point3(testPosition);
+    Point3 lastGoodPosition = testPosition;
 
-    Ray cameraRay = new Ray(testPosition, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
-    double distanceToCenter = Point3.calculateDistanceBetween(cameraRay.accessOrigin(), bbox.getCenter());
-    double bboxDiagonal = Point3.calculateDistanceBetween(bbox.getMinimum(), bbox.getMaximum());
-    double distanceToEdge = distanceToCenter - bboxDiagonal;
+    Ray cameraRay = new Ray(testPosition, cameraTransform.orientation().backward().negate());
+    double distanceToCenter = cameraRay.origin().distanceFrom(bbox.getCenter());
+    double distanceToEdge = distanceToCenter - bbox.getDiagonal();
     double distanceStep = distanceToCenter / 20;
     double currentT = 0;
     boolean framed = isFullyFramed(testImage);
@@ -149,7 +145,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     final int COUNT_LIMIT = 30;
     int limitCount = 0;
     while (!framed && (limitCount < COUNT_LIMIT)) {
-      cameraRay.getPointAlong(testPosition, currentT);
+      testPosition = cameraRay.getPointAlong(currentT);
       getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
       testImageRT.clearAndRenderOffscreen();
       testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
@@ -158,7 +154,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 
       framed = isFullyFramed(testImage);
       if (framed) {
-        lastGoodPosition.set(testPosition);
+        lastGoodPosition = testPosition;
       }
       limitCount++;
       currentT -= distanceStep;
@@ -170,7 +166,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
     limitCount = 0;
     //zoom in until just framed
     while ((limitCount < COUNT_LIMIT) && framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue())) {
-      cameraRay.getPointAlong(testPosition, currentT);
+      testPosition = cameraRay.getPointAlong(currentT);
       getSGCameraVehicle().setTranslationOnly(testPosition, this.getScene().getSgReferenceFrame());
       testImageRT.clearAndRenderOffscreen();
       testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
@@ -179,7 +175,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 
       framed = isFullyFramed(testImage);
       if (framed) {
-        lastGoodPosition.set(testPosition);
+        lastGoodPosition = testPosition;
       }
       limitCount++;
       currentT += distanceStep;

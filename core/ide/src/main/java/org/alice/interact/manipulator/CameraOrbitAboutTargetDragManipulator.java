@@ -45,7 +45,7 @@ package org.alice.interact.manipulator;
 import org.lgna.story.SModel;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Matt May
@@ -61,7 +61,7 @@ public class CameraOrbitAboutTargetDragManipulator extends CameraOrbitDragManipu
   @Override
   public void setPivotPoint(Point3 pivotPoint) {
     if (target != null) {
-      super.setPivotPoint(target.getAbsoluteTransformation().translation);
+      super.setPivotPoint(target.getAbsoluteTransformation().translation());
     } else {
       super.setPivotPoint(pivotPoint);
     }

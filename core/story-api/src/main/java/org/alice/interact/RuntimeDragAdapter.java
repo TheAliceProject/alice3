@@ -65,7 +65,7 @@ import org.lgna.story.SModel;
 import org.lgna.story.Visual;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author David Culyba

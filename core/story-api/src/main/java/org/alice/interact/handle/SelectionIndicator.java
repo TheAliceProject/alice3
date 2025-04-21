@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dave Culyba
@@ -54,9 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 public class SelectionIndicator extends ManipulationHandle3D {
   public SelectionIndicator() {
     this.sgBoundingBoxOffsetTransformable.setParent(this);
-    AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
-    offsetTransform.translation.y = .01;
-    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
+    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0.1, 0));
     this.sgBoundingBoxDecorator.setParent(this.sgBoundingBoxOffsetTransformable);
   }
 

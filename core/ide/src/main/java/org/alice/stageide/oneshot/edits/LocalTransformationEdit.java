@@ -44,7 +44,7 @@
 package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;

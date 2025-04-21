@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.math.animation;
 
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author Dennis Cosgrove
@@ -56,20 +56,13 @@ public abstract class UnitQuaternionAnimation extends InterpolationAnimation<Uni
 
   @Override
   protected UnitQuaternion newE(UnitQuaternion other) {
-    UnitQuaternion rv;
-    if (other != null) {
-      rv = new UnitQuaternion(other);
-    } else {
-      rv = new UnitQuaternion(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
-    }
-    return rv;
+    return other != null ? other : UnitQuaternion.NaN;
   }
 
   @Override
-  protected UnitQuaternion interpolate(UnitQuaternion rv, UnitQuaternion v0, UnitQuaternion v1, double portion) {
-    assert v0.isNaN() == false;
-    assert v1.isNaN() == false;
-    rv.setToInterpolation(v0, v1, portion);
-    return rv;
+  protected UnitQuaternion interpolate(UnitQuaternion v0, UnitQuaternion v1, double portion) {
+    assert !v0.isNaN();
+    assert !v1.isNaN();
+    return v0.interpolate(v1, portion);
   }
 }

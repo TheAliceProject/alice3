@@ -90,16 +90,6 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
   }
 
   @Override
-  public byte[] readFully(byte[] rv, int offset, int length) {
-    try {
-      m_ois.readFully(rv, offset, length);
-      return rv;
-    } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
-    }
-  }
-
-  @Override
   public boolean decodeBoolean() {
     try {
       return m_ois.readBoolean();
@@ -191,6 +181,14 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
       throw new RuntimeException(utfdfe);
     } catch (IOException ioe) {
       throw new RuntimeException(ioe);
+    }
+  }
+
+  public <C> C decodeRecord() {
+    try {
+      return  (C) m_ois.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
   }
 }

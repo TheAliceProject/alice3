@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.io;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.project.ast.InstanceCreation;
@@ -103,7 +103,7 @@ public class JsonPersonIo extends JsonModelIo {
     }
     structureReference.boundingBox = new ModelManifest.BoundingBox();
     AxisAlignedBox svBounds = sv.getAxisAlignedMinimumBoundingBox();
-    structureReference.boundingBox.max = svBounds.getMaximum().getAsFloatList();
-    structureReference.boundingBox.min = svBounds.getMinimum().getAsFloatList();
+    structureReference.boundingBox.max = svBounds.maximum().asFloatList();
+    structureReference.boundingBox.min = svBounds.minimum().asFloatList();
   }
 }

@@ -140,17 +140,17 @@ public class SJoint extends SMovableTurnable {
 
   @MethodTemplate()
   public Double getWidth() {
-    return this.getImplementation().getSize().x;
+    return this.getImplementation().getSize().x();
   }
 
   @MethodTemplate()
   public Double getHeight() {
-    return this.getImplementation().getSize().y;
+    return this.getImplementation().getSize().y();
   }
 
   @MethodTemplate()
   public Double getDepth() {
-    return this.getImplementation().getSize().z;
+    return this.getImplementation().getSize().z();
   }
 
 }

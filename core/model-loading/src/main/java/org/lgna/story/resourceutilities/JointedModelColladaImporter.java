@@ -17,12 +17,13 @@ import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.*;
 import com.jogamp.common.nio.Buffers;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.math.*;
+import org.alice.math.immutable.*;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.math.immutable.AngleInDegrees;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
@@ -87,14 +88,13 @@ public class JointedModelColladaImporter {
 
   private AffineMatrix4x4 collapsedRootTransform(List<Node> nodes, Node root) throws ModelLoadingException {
     if (nodes.contains(root)) {
-      return AffineMatrix4x4.createIdentity();
+      return AffineMatrix4x4.IDENTITY;
     }
     for (Node n : nodes) {
       AffineMatrix4x4 childTransform = collapsedRootTransform(n.getChildNodes(), root);
       if (childTransform != null) {
         final AffineMatrix4x4 nodeTransform = getNodeTransform(n);
-        nodeTransform.multiply(childTransform);
-        return nodeTransform;
+        return nodeTransform.times(childTransform);
       }
     }
     return null;
@@ -119,10 +119,8 @@ public class JointedModelColladaImporter {
       doubleData[i] = floatData[i];
     }
     AffineMatrix4x4 srcMatrix;
-    if (doubleData.length == 12) {
-      srcMatrix = AffineMatrix4x4.createFromRowMajorArray12(doubleData);
-    } else if (doubleData.length == 16) {
-      srcMatrix = AffineMatrix4x4.createFromRowMajorArray16(doubleData);
+    if (doubleData.length == 12 || doubleData.length == 16) {
+      srcMatrix = AffineMatrix4x4.createFromRowMajorArray(doubleData);
     } else {
       throw new ModelLoadingException("Error converting collada matrix to Alice matrix. Expected array of size 12 or 16, instead got " + floatData.length);
     }
@@ -161,25 +159,27 @@ public class JointedModelColladaImporter {
   }
 
   private AffineMatrix4x4 getNodeTransform(Node node) throws ModelLoadingException {
-    AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.createIdentity();
+    AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.IDENTITY;
     for (int i = 0; i < node.getXforms().size(); i++) {
       BaseXform xform = node.getXforms().get(i);
       if (xform instanceof Matrix) {
         aliceMatrix = colladaMatrixToAliceMatrix((Matrix) xform);
-      } else if (xform instanceof Translate) {
-        Translate translate = (Translate) xform;
+      } else if (xform instanceof Translate translate) {
         // TODO orient to Alice
-        aliceMatrix.translation.set(translate.getX(), translate.getY(), translate.getZ());
-      } else if (xform instanceof Scale) {
-        Scale scale = (Scale) xform;
+        aliceMatrix = aliceMatrix.withTranslation(new Point3(translate.getX(), translate.getY(), translate.getZ()));
+      } else if (xform instanceof Scale scale) {
         // TODO orient to Alice
-        OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3(new Vector3(scale.getX(), 0, 0), new Vector3(0, scale.getY(), 0), new Vector3(0, 0, scale.getZ()));
-        aliceMatrix.orientation.applyMultiplication(scaleMatrix);
-      } else if (xform instanceof Rotate) {
-        Rotate rotate = (Rotate) xform;
+        OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3(
+            new Vector3(scale.getX(), 0, 0),
+            new Vector3(0, scale.getY(), 0),
+            new Vector3(0, 0, scale.getZ()));
+        aliceMatrix = new AffineMatrix4x4((OrthogonalMatrix3x3) aliceMatrix.orientation().times(scaleMatrix), aliceMatrix.translation());
+      } else if (xform instanceof Rotate rotate) {
         // TODO orient to Alice
         Vector3 axis = new Vector3(rotate.getX(), rotate.getY(), rotate.getZ());
-        aliceMatrix.orientation.applyRotationAboutArbitraryAxis(axis, new AngleInDegrees(rotate.getAngle()));
+        aliceMatrix = new AffineMatrix4x4(
+            aliceMatrix.orientation().applyRotationAboutArbitraryAxis(axis, new AngleInDegrees(rotate.getAngle())),
+            aliceMatrix.translation());
       }
     }
     return aliceMatrix;
@@ -370,7 +370,7 @@ public class JointedModelColladaImporter {
       AffineMatrix4x4 bindMatrix = floatArrayToAliceMatrix(bindMatrixData);
       double[] bindSpaceVertices = new double[vertices.length];
       for (int i = 0; i < vertices.length; i += 3) {
-        bindMatrix.transformVertex(bindSpaceVertices, i, vertices, i);
+        bindMatrix.transformPoint3(bindSpaceVertices, i, vertices, i);
       }
       sgMesh.vertexBuffer.setValue(Buffers.newDirectDoubleBuffer(bindSpaceVertices));
     }
@@ -581,7 +581,7 @@ public class JointedModelColladaImporter {
       aliceSkeleton = createAliceSkeletonFromNode(rootNode);
       AffineMatrix4x4 rootTransform = collapsedRootTransform(scene.getNodes(), rootNode);
       if (rootTransform != null && !rootTransform.isIdentity()) {
-        rootTransform.multiply(aliceSkeleton.getLocalTransformation());
+        rootTransform = rootTransform.times(aliceSkeleton.getLocalTransformation());
         aliceSkeleton.setLocalTransformation(rootTransform);
       }
     }
@@ -615,7 +615,7 @@ public class JointedModelColladaImporter {
 
     float extraScale = colladaModel.getUnit().getMeter();
     if (extraScale != 1.0f) {
-      skeletonVisual.scale(new Vector3(extraScale, extraScale, extraScale));
+      skeletonVisual.scale(extraScale);
     }
 
     List<TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada(colladaModel, rootPath, aliceMeshes);
@@ -668,10 +668,10 @@ public class JointedModelColladaImporter {
 
   private static void printJoints(Joint j, String indent) {
     System.out.println(indent + "Joint " + j.jointID.getValue());
-    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation, j.localTransformation.getValue().orientation);
+    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation(), j.localTransformation.getValue().orientation());
     System.out.println();
     AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
-    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation);
+    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation(), absoluteTransform.orientation());
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
@@ -684,11 +684,11 @@ public class JointedModelColladaImporter {
   private static void printWeightInfo(WeightInfo wi) {
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      Point3 t = iatwp.getInverseAbsoluteTransformation().translation;
-      OrthogonalMatrix3x3 o = iatwp.getInverseAbsoluteTransformation().orientation;
+      Point3 t = iatwp.getInverseAbsoluteTransformation().translation();
+      OrthogonalMatrix3x3 o = iatwp.getInverseAbsoluteTransformation().orientation();
 
       System.out.println(entry.getKey() + ":");
-      System.out.println(" inverse transform = (" + t.x + ", " + t.y + ", " + t.z + "), [[" + o.right.x + ", " + o.right.y + ", " + o.right.z + "], [" + o.up.x + ", " + o.up.y + ", " + o.up.z + "], [" + o.backward.x + ", " + o.backward.y + ", " + o.backward.z + "]]");
+      System.out.println(" inverse transform = (" + t.x() + ", " + t.y() + ", " + t.z() + "), [[" + o.right().x() + ", " + o.right().y() + ", " + o.right().z() + "], [" + o.up().x() + ", " + o.up().y() + ", " + o.up().z() + "], [" + o.backward().x() + ", " + o.backward().y() + ", " + o.backward().z() + "]]");
       List<Float> weights = new ArrayList<Float>();
       List<Integer> indices = new ArrayList<Integer>();
       InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();

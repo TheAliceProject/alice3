@@ -43,7 +43,7 @@
 package org.alice.stageide.modelresource;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.resources.ModelResource;

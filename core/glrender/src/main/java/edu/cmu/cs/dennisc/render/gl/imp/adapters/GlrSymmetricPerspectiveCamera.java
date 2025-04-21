@@ -43,12 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.FullMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
@@ -90,12 +88,12 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
-    double fovX = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
-    double fovY = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double aspect = fovX / fovY;
-    double f = 1 / Math.tan(fovY / 2);
-    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovX));
-    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovY));
+    Angle fovX = getActualHorizontalViewingAngle(actualViewport);
+    Angle fovY = getActualVerticalViewingAngle(actualViewport);
+    double aspect = fovX.getAsRadians() / fovY.getAsRadians();
+    double f = 1 / Math.tan(fovY.getAsRadians() / 2);
+    owner.setEffectiveHorizontalViewingAngle(fovX);
+    owner.setEffectiveVerticalViewingAngle(fovY);
 
     return new FullMatrix4x4(
         new Vector4(f / aspect, 0, 0, 0),
@@ -122,45 +120,31 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   }
 
   private double getAspectRatio(Rectangle rect) {
-    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
-      if (this.isLetterboxed()) {
-        return SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO;
-      } else {
-        return rect.width / (double) rect.height;
-      }
-    } else {
-      return this.horizontalInDegrees / this.verticalInDegrees;
+    if (!horizontalView.isNaN() && !verticalView.isNaN()) {
+      return horizontalView.getAsRadians() / verticalView.getAsRadians();
     }
+    if (this.isLetterboxed()) {
+      return SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO;
+    }
+    return rect.width / (double) rect.height;
   }
 
-  public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
-    double angle;
-    if (Double.isNaN(this.horizontalInDegrees)) {
-      double aspect = getAspectRatio(actualViewport);
-      if (Double.isNaN(this.verticalInDegrees)) {
-        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees() * aspect;
-      } else {
-        angle = this.verticalInDegrees * aspect;
-      }
-    } else {
-      angle = this.horizontalInDegrees;
+  private Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
+    if (!horizontalView.isNaN()) {
+      return horizontalView;
     }
-    return new AngleInDegrees(angle);
+    Angle vertical = verticalView.isNaN() ? SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE : verticalView;
+    return vertical.times(getAspectRatio(actualViewport));
   }
 
-  public Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
-    double angle;
-    if (Double.isNaN(this.verticalInDegrees)) {
-      double aspect = getAspectRatio(actualViewport);
-      if (Double.isNaN(this.horizontalInDegrees)) {
-        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees();
-      } else {
-        angle = this.horizontalInDegrees / aspect;
-      }
-    } else {
-      angle = this.verticalInDegrees;
+  private Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
+    if (!verticalView.isNaN()) {
+      return verticalView;
     }
-    return new AngleInDegrees(angle);
+    if (horizontalView.isNaN()) {
+      return SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE;
+    }
+    return horizontalView.times(1 / getAspectRatio(actualViewport));
   }
 
   @Override
@@ -173,14 +157,14 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.verticalViewingAngle) {
-      this.verticalInDegrees = owner.verticalViewingAngle.getValue().getAsDegrees();
+      this.verticalView = owner.verticalViewingAngle.getValue();
     } else if (property == owner.horizontalViewingAngle) {
-      this.horizontalInDegrees = owner.horizontalViewingAngle.getValue().getAsDegrees();
+      this.horizontalView = owner.horizontalViewingAngle.getValue();
     } else {
       super.propertyChanged(property);
     }
   }
 
-  private double verticalInDegrees;
-  private double horizontalInDegrees;
+  private Angle verticalView;
+  private Angle horizontalView;
 }

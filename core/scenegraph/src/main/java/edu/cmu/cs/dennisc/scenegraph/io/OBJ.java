@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph.io;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3f;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -203,23 +203,23 @@ public class OBJ {
       if (groupName != null) {
         pw.println("g " + groupName);
       }
-      Point3 p = new Point3();
-      Vector3f n = new Vector3f();
-      for (Vertex vertice : vertices) {
-        p.set(vertice.position);
-        n.set(vertice.normal);
-        double u = vertice.textureCoordinate0.u;
-        double v = vertice.textureCoordinate0.v;
+      Point3 p;
+      Vector3f n;
+      for (Vertex vertex : vertices) {
+        p = vertex.position;
+        n = vertex.normal;
+        double u = vertex.textureCoordinate0.u;
+        double v = vertex.textureCoordinate0.v;
         if (m != null) {
           m.transform(p);
           m.transform(n);
         }
         pw.print("v ");
-        pw.print(p.x);
+        pw.print(p.x());
         pw.print(" ");
-        pw.print(p.y);
+        pw.print(p.y());
         pw.print(" ");
-        pw.print(p.z);
+        pw.print(p.z());
         pw.println();
         pw.print("vt ");
         pw.print(u);
@@ -227,11 +227,11 @@ public class OBJ {
         pw.print(v);
         pw.println();
         pw.print("vn ");
-        pw.print(n.x);
+        pw.print(n.x());
         pw.print(" ");
-        pw.print(n.y);
+        pw.print(n.y());
         pw.print(" ");
-        pw.print(n.z);
+        pw.print(n.z());
         pw.println();
       }
       for (int i = 0; i < indices.length; i += 3) {

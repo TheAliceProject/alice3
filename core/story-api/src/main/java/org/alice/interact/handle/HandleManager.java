@@ -46,15 +46,15 @@ import edu.cmu.cs.dennisc.java.util.DStack;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
+import org.alice.math.immutable.Point3;
 
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.story.implementation.AxesImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ModelImp;
@@ -82,13 +82,7 @@ public class HandleManager implements ManipulationListener {
   }
 
   public void updateCameraPosition(Point3 position) {
-    if (position == null) {
-      this.cameraPosition = null;
-    } else if (this.cameraPosition == null) {
-      this.cameraPosition = new Point3(position);
-    } else {
-      this.cameraPosition.set(position);
-    }
+    this.cameraPosition = position;
     for (ManipulationHandle handle : this.handles) {
       handle.setCameraPosition(this.cameraPosition);
     }

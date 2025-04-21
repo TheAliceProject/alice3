@@ -43,13 +43,13 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public enum RollDirection {
-  LEFT(Vector3.createPositiveZAxis()), RIGHT(Vector3.createNegativeZAxis());
+  LEFT(Vector3.POSITIVE_Z_AXIS), RIGHT(Vector3.NEGATIVE_Z_AXIS);
   private final Vector3 axis;
 
   private RollDirection(Vector3 axis) {

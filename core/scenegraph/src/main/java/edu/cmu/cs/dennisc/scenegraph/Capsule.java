@@ -44,8 +44,9 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -56,28 +57,20 @@ public class Capsule extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double major = (this.distanceBetweenSphereCenters.getValue() / 2) + this.radius.getValue();
     double minor = this.radius.getValue();
     Axis axis = this.axis.getValue();
     if (axis == Axis.X) {
-      boundingBox.setMinimum(-major, -minor, -minor);
-      boundingBox.setMinimum(+major, +minor, +minor);
-    } else if (axis == Axis.Y) {
-      boundingBox.setMinimum(-minor, -major, -minor);
-      boundingBox.setMinimum(+minor, +major, +minor);
-    } else if (axis == Axis.Z) {
-      boundingBox.setMinimum(-minor, -minor, -major);
-      boundingBox.setMinimum(+minor, +minor, +major);
-    } else {
-      boundingBox.setNaN();
+      return new AxisAlignedBox(new Point3(-major, -minor, -minor), new Point3(+major, +minor, +minor));
     }
-  }
-
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + (this.radius.getValue() * 2);
+    if (axis == Axis.Y) {
+      return new AxisAlignedBox(new Point3(-minor, -major, -minor), new Point3(+minor, +major, +minor));
+    }
+    if (axis == Axis.Z) {
+      return new AxisAlignedBox(new Point3(-minor, -minor, -major), new Point3(+minor, +minor, +major));
+    }
+    return null;
   }
 
   public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty(this, 1.0) {

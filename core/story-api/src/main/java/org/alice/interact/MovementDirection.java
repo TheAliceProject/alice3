@@ -44,7 +44,7 @@ package org.alice.interact;
 
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -73,7 +73,7 @@ public enum MovementDirection {
 
   private MovementDirection(double x, double y, double z) {
     this.directionVector = new Vector3(x, y, z);
-    this.directionVector.normalize();
+    this.directionVector.normalized();
   }
 
   public Vector3 getVector() {
@@ -120,7 +120,7 @@ public enum MovementDirection {
   }
 
   public boolean hasDirection(Vector3 vector) {
-    double dot = Vector3.calculateDotProduct(this.directionVector, vector);
+    double dot = this.directionVector.dotProduct(vector);
     if (dot > 0.0d) {
       return true;
     } else {

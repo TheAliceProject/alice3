@@ -2,9 +2,9 @@ package org.alice.serialization.tweedle;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
@@ -17,7 +17,6 @@ import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class Encoder extends SourceCodeGenerator {
   private static final String INDENTION = "  ";
@@ -86,31 +85,33 @@ public class Encoder extends SourceCodeGenerator {
 
     typesWithAddedCode.put(
         "Person",
-        "\n  SJoint getRightEye() {\n"
-            + "    SJoint eye <- super.getRightEye();\n"
-            + "    $SceneGraph.trackFacialJoint(joint: eye, person: this);\n"
-            + "    return eye;\n"
-            + "  }\n\n"
-            + "  SJoint getLeftEye() {\n"
-            + "    SJoint eye <- super.getLeftEye();\n"
-            + "    $SceneGraph.trackFacialJoint(joint: eye, person: this);\n"
-            + "    return eye;\n"
-            + "  }\n\n"
-            + "  SJoint getLeftEyelid() {\n"
-            + "    SJoint eyelid <- super.getLeftEyelid();\n"
-            + "    $SceneGraph.trackFacialJoint(joint: eyelid, person: this);\n"
-            + "    return eyelid;\n"
-            + "  }\n\n"
-            + "  SJoint getRightEyelid() {\n"
-            + "    SJoint eyelid <- super.getRightEyelid();\n"
-            + "    $SceneGraph.trackFacialJoint(joint: eyelid, person: this);\n"
-            + "    return eyelid;\n"
-            + "  }\n\n"
-            + "  SJoint getMouth() {\n"
-            + "    SJoint mouth <- super.getMouth();\n"
-            + "    $SceneGraph.trackFacialJoint(joint: mouth, person: this);\n"
-            + "    return mouth;\n"
-            + "  }\n");
+        """
+              SJoint getRightEye() {
+                SJoint eye <- super.getRightEye();
+                $SceneGraph.trackFacialJoint(joint: eye, person: this);
+                return eye;
+              }
+              SJoint getLeftEye() {
+                SJoint eye <- super.getLeftEye();
+                $SceneGraph.trackFacialJoint(joint: eye, person: this);
+                return eye;
+              }
+              SJoint getLeftEyelid() {
+                SJoint eyelid <- super.getLeftEyelid();
+                $SceneGraph.trackFacialJoint(joint: eyelid, person: this);
+                return eyelid;
+              }
+              SJoint getRightEyelid() {
+                SJoint eyelid <- super.getRightEyelid();
+                $SceneGraph.trackFacialJoint(joint: eyelid, person: this);
+                return eyelid;
+              }
+              SJoint getMouth() {
+                SJoint mouth <- super.getMouth();
+                $SceneGraph.trackFacialJoint(joint: mouth, person: this);
+                return mouth;
+              }
+            """);
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -311,7 +312,7 @@ public class Encoder extends SourceCodeGenerator {
       return;
     }
     final String className = resourceClass.getSimpleName();
-    final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
+    final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).toList();
     for (String resourceName: resourceNames) {
       appendResourceInstance(className, resourceName);
     }
@@ -433,20 +434,20 @@ public class Encoder extends SourceCodeGenerator {
     appendInstantiation("JointIdTransformationPair", () -> {
       appendArg("joint", jointId);
       appendAnotherArg("orientation", () -> {
-        final UnitQuaternion orientationUnitQuaternion = transformation.orientation.createUnitQuaternion();
+        final UnitQuaternion orientationUnitQuaternion = transformation.orientation().asUnitQuaternion();
         appendInstantiation("Orientation", () -> {
-          appendArg("x", Double.toString(orientationUnitQuaternion.x));
-          appendAnotherArg("y", Double.toString(orientationUnitQuaternion.y));
-          appendAnotherArg("z", Double.toString(orientationUnitQuaternion.z));
-          appendAnotherArg("w", Double.toString(orientationUnitQuaternion.w));
+          appendArg("x", Double.toString(orientationUnitQuaternion.x()));
+          appendAnotherArg("y", Double.toString(orientationUnitQuaternion.y()));
+          appendAnotherArg("z", Double.toString(orientationUnitQuaternion.z()));
+          appendAnotherArg("w", Double.toString(orientationUnitQuaternion.w()));
         });
       });
       appendAnotherArg("position", () -> {
-        final Point3 position = transformation.translation;
+        final Tuple3 position = transformation.translation();
         appendInstantiation("Position", () -> {
-          appendArg("x", Double.toString(position.x));
-          appendAnotherArg("y", Double.toString(position.y));
-          appendAnotherArg("z", Double.toString(position.z));
+          appendArg("x", Double.toString(position.x()));
+          appendAnotherArg("y", Double.toString(position.y()));
+          appendAnotherArg("z", Double.toString(position.z()));
         });
       });
     });
@@ -512,7 +513,7 @@ public class Encoder extends SourceCodeGenerator {
         InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
         final Object summary = vm.createInstance(creation);
         if (summary != null) {
-          appendInstantiation("PersonResource", () -> appendArg("name", () -> appendEscapedString("Person/" + summary.toString())));
+          appendInstantiation("PersonResource", () -> appendArg("name", () -> appendEscapedString("Person/" + summary)));
           return;
         }
       }
@@ -597,8 +598,7 @@ public class Encoder extends SourceCodeGenerator {
   @Override
   public void processKeyedArgument(JavaKeyedArgument arg) {
     Expression expressionValue = arg.expression.getValue();
-    if (expressionValue instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expressionValue;
+    if (expressionValue instanceof MethodInvocation methodInvocation) {
       AbstractMethod method = methodInvocation.method.getValue();
       AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType(arg);
       if (factoryType != null) {
@@ -616,7 +616,7 @@ public class Encoder extends SourceCodeGenerator {
     if (!argumentOwner.getVariableArgumentsProperty().isEmpty() || !argumentOwner.getKeyedArgumentsProperty().isEmpty() || argumentOwner.getRequiredArgumentsProperty().size() != 1) {
       Logger.errln("Expected a single argument.", argumentOwner);
     }
-    if (argumentOwner.getRequiredArgumentsProperty().size() > 0) {
+    if (!argumentOwner.getRequiredArgumentsProperty().isEmpty()) {
       final String methodName = argumentOwner.method.getValue().getName();
       Map<String, String> wrappedParams = optionalParamsToWrap.containsKey(methodName) ? optionalParamsToWrap : null;
       appendWrappedArg(argumentOwner.getRequiredArgumentsProperty().get(0), methodName, wrappedParams);

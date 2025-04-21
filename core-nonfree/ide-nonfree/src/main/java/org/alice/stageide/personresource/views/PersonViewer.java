@@ -44,10 +44,10 @@ package org.alice.stageide.personresource.views;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.modelviewer.ModelViewer;
 import org.alice.stageide.personresource.PersonImp;
 import org.lgna.story.resources.sims2.LifeStage;

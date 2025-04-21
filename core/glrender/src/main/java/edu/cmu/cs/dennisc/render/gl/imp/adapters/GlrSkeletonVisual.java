@@ -61,7 +61,6 @@ import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -81,6 +80,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Matrix4x4;
 
@@ -114,7 +114,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         this.weightedJointMatrices = new AffineMatrix4x4[nVertexCount];
         this.weights = new float[nVertexCount];
         for (int i = 0; i < nVertexCount; i++) {
-          this.weightedJointMatrices[i] = AffineMatrix4x4.ZERO;
+          this.weightedJointMatrices[i] = AffineMatrix4x4.NaN;
           this.weights[i] = 0f;
         }
         needsInitialization = false;
@@ -123,7 +123,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
     void preProcess() {
       for (int i = 0; i < this.weightedJointMatrices.length; i++) {
-        this.weightedJointMatrices[i] = AffineMatrix4x4.ZERO;
+        this.weightedJointMatrices[i] = AffineMatrix4x4.NaN;
         this.weights[i] = 0f;
       }
     }
@@ -134,7 +134,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         return;
       }
       // jointTransform * IBMi - This is the reverse of the Collada skin weighting spec which is IBMi * JMi
-      Matrix4x4 oDelta = jointTransform.times(iatwp.getInverseAbsoluteTransformation().immutable());
+      Matrix4x4 oDelta = jointTransform.times(iatwp.getInverseAbsoluteTransformation());
       //        System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
       //        System.out.println( "  On Joint " + joint.jointID.getValue() );
       //        System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
@@ -149,6 +149,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       while (weightIterator.hasNext()) {
         int vertexIndex = weightIterator.getIndex();
         float weight = weightIterator.next();
+        // Accumulating the transforms by weight produces interim that breaks the Orientation's normalization
+        // until the total weight is 1, or any other value is corrected for in postProcess.
         AffineMatrix4x4 transform = (AffineMatrix4x4) oDelta.times(weight);
         this.weightedJointMatrices[vertexIndex] = weightedJointMatrices[vertexIndex].plusPreservingAffine(transform);
         this.weights[vertexIndex] += weight;
@@ -160,6 +162,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         float weight = weights[i];
         if ((!(0.999f < weight)) || (!(weight < 1.001f))) {
           if (weight != 0) {
+            // Adjust for accumulated weight. Once done the Orientation should be normalized again.
             weightedJointMatrices[i] = weightedJointMatrices[i].times(1.0 / weight);
           }
         }
@@ -340,29 +343,27 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
     initializeDataIfNecessary();
     if (this.skeletonIsDirty) {
       this.processWeightedMesh();
     }
+    AxisAlignedBox aabb = AxisAlignedBox.NaN;
     for (Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet()) {
       WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get(appearanceEntry.getKey());
       if (weightedMeshControls != null) {
         for (WeightedMeshControl wmc : weightedMeshControls) {
-          AxisAlignedBox b = new AxisAlignedBox();
-          BoundUtilities.getBoundingBox(b, wmc.vertexBuffer);
-          rv.union(b);
+          aabb = BoundUtilities.getBoundingBox(wmc.vertexBuffer).union(aabb);
         }
       }
       GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get(appearanceEntry.getKey());
       if (meshAdapters != null) {
         for (GlrMesh<Mesh> ma : meshAdapters) {
-          AxisAlignedBox b = ma.owner.getAxisAlignedMinimumBoundingBox();
-          rv.union(b);
+          aabb = ma.owner.getAxisAlignedMinimumBoundingBox().union(aabb);
         }
       }
     }
-    return rv;
+    return aabb;
   }
 
   private void renderJoint(RenderContext rc, Composite currentNode, Matrix4x4 oTransformationPre) {
@@ -372,7 +373,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
     Matrix4x4 oTransformationPost = oTransformationPre;
     if (currentNode instanceof Transformable) {
-      oTransformationPost = oTransformationPre.times(((Transformable) currentNode).localTransformation.getValue().immutable());
+      oTransformationPost = oTransformationPre.times(((Transformable) currentNode).localTransformation.getValue());
 
       if ((currentNode instanceof Joint)) {
         rc.gl.glPushMatrix();
@@ -591,7 +592,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
             wmc.preProcess();
           }
         }
-        Matrix3x3 inverseScale = owner.scale.getValue().immutable().invert();
+        Matrix3x3 inverseScale = owner.scale.getValue().invert();
         synchronized (this.currentSkeleton) {
           processWeightedMesh(this.currentSkeleton, AffineMatrix4x4.IDENTITY, inverseScale);
         }
@@ -609,7 +610,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     if (joint == null) {
       return;
     }
-    Matrix4x4 absoluteLocalTransform = parentTransform.times(joint.localTransformation.getValue().immutable());
+    Matrix4x4 absoluteLocalTransform = parentTransform.times(joint.localTransformation.getValue());
 
 //    AffineMatrix4x4 unscaledJointTransform = new AffineMatrix4x4(absoluteLocalTransform.orientation(),
 //        new Point3(inverseScale.right().x(), inverseScale.up().y(), inverseScale.backward().z()));

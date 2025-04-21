@@ -44,10 +44,11 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.DoubleProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -58,27 +59,22 @@ public class Disc extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     double d = outerRadius.getValue();
-    Axis axis = this.axis.getValue();
-    if (axis == Axis.X) {
-      boundingBox.setMinimum(0, -d, -d);
-      boundingBox.setMaximum(0, d, d);
-    } else if (axis == Axis.Y) {
-      boundingBox.setMinimum(-d, 0, -d);
-      boundingBox.setMaximum(d, 0, d);
-    } else if (axis == Axis.Z) {
-      boundingBox.setMinimum(-d, -d, 0);
-      boundingBox.setMaximum(d, d, 0);
-    } else {
-      boundingBox.setNaN();
+    switch (axis.getValue()) {
+      case X -> {
+        return new AxisAlignedBox(new Point3(0, -d, -d), new Point3(0, d, d));
+      }
+      case Y -> {
+        return new AxisAlignedBox(new Point3(-d, 0, -d), new Point3(d, 0, d));
+      }
+      case Z -> {
+        return new AxisAlignedBox(new Point3(-d, -d, 0), new Point3(d, d, 0));
+      }
+      default -> {
+        return null;
+      }
     }
-  }
-
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    boundingSphere.center.set(0, 0, 0);
-    boundingSphere.radius = outerRadius.getValue();
   }
 
   public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>(this, Axis.Y) {

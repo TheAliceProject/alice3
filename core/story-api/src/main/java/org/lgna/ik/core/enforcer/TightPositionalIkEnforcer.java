@@ -21,10 +21,10 @@ import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
 import Jama.Matrix;
-import edu.cmu.cs.dennisc.math.AxisRotation;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AxisRotation;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 public class TightPositionalIkEnforcer extends IkEnforcer {
 
@@ -517,9 +517,9 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
         Matrix mj = new Matrix(3, jacobianAxes.length);
 
         for (Vector3 contribution : contributionsList) {
-          mj.set(0, ji, contribution.x);
-          mj.set(1, ji, contribution.y);
-          mj.set(2, ji, contribution.z);
+          mj.set(0, ji, contribution.x());
+          mj.set(1, ji, contribution.y());
+          mj.set(2, ji, contribution.z());
 
           ++ji;
         }
@@ -539,9 +539,9 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
           Vector3 contribution = velocityContributions.get(axis.getBone()).get(axis);
 
-          jacobian.matrix.set(0, ji, contribution.x);
-          jacobian.matrix.set(1, ji, contribution.y);
-          jacobian.matrix.set(2, ji, contribution.z);
+          jacobian.matrix.set(0, ji, contribution.x());
+          jacobian.matrix.set(1, ji, contribution.y());
+          jacobian.matrix.set(2, ji, contribution.z());
         }
 
         jacobian.matrixWasUpdated();
@@ -560,7 +560,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
     @Override
     public boolean isMet() {
       Vector3 desiredVector = computeDesiredVector();
-      return desiredVector.calculateMagnitudeSquared() < MIN_DISTANCE_SQUARED_BEFORE_CONSTRAINT_IS_MET;
+      return desiredVector.magnitudeSquared() < MIN_DISTANCE_SQUARED_BEFORE_CONSTRAINT_IS_MET;
     }
 
     public void setEeDesiredPosition(Point3 position) {
@@ -571,11 +571,11 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
     public Displacement computeDesiredDisplacement() {
       //know the desired position. know the ee local position. should ask for ee position and compute.
       Vector3 dispPoint = computeDesiredVector();
-      return new Displacement(new double[] {dispPoint.x, dispPoint.y, dispPoint.z});
+      return new Displacement(new double[] {dispPoint.x(), dispPoint.y(), dispPoint.z()});
     }
 
     private Vector3 computeDesiredVector() {
-      return Vector3.createSubtraction(eeDesiredPosition, chain.getEndEffectorPosition());
+      return eeDesiredPosition.minus(chain.getEndEffectorPosition());
     }
 
     @Override
@@ -612,7 +612,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
     public boolean isMet() {
       AxisRotation axisRotation = computeDesiredAxisRotation();
 
-      return axisRotation.angle.getAsRadians() < MIN_ANGLE_IN_RADIANS_BEFORE_CONSTRAINT_IS_MET;
+      return axisRotation.angle().getAsRadians() < MIN_ANGLE_IN_RADIANS_BEFORE_CONSTRAINT_IS_MET;
     }
 
     public void setEeDesiredOrientation(OrthogonalMatrix3x3 orientation) {
@@ -623,23 +623,21 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
     public Displacement computeDesiredDisplacement() {
       AxisRotation axisRotation = computeDesiredAxisRotation();
 
-      Vector3 displacementVector = Vector3.createMultiplication(axisRotation.axis, axisRotation.angle.getAsRadians());
+      Vector3 displacementVector = axisRotation.axis().times(axisRotation.angle().getAsRadians());
 
-      return new Displacement(new double[] {displacementVector.x, displacementVector.y, displacementVector.z});
+      return new Displacement(new double[] {displacementVector.x(), displacementVector.y(), displacementVector.z()});
     }
 
     private AxisRotation computeDesiredAxisRotation() {
       OrthogonalMatrix3x3 endEffectorOrientation = chain.getEndEffectorOrientation();
 
-      OrthogonalMatrix3x3 inv = new OrthogonalMatrix3x3(endEffectorOrientation);
-      inv.invert();
+      OrthogonalMatrix3x3 inv = (OrthogonalMatrix3x3) endEffectorOrientation.invert();
 
       //how do you multiply? it's change X current = desired, because the change is around global axes.
 
-      OrthogonalMatrix3x3 desiredRotation = new OrthogonalMatrix3x3(eeDesiredOrientation);
-      desiredRotation.applyMultiplication(inv);
+      OrthogonalMatrix3x3 desiredRotation = (OrthogonalMatrix3x3) eeDesiredOrientation.times(inv);
 
-      AxisRotation axisRotation = desiredRotation.createAxisRotation();
+      AxisRotation axisRotation = desiredRotation.asAxisRotation();
       return axisRotation;
     }
 
@@ -901,9 +899,9 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
   public PositionConstraint createPositionConstraint(int level, JointId anchorId, JointId endId) {
     Chain chain = Chain.createInstance(jointedModelImp, anchorId, endId);
 
-    Point3 endPosition = jointedModelImp.getJointImplementation(endId).getTransformation(AsSeenBy.SCENE).translation;
+    Point3 endPosition = jointedModelImp.getJointImplementation(endId).getTransformation(AsSeenBy.SCENE).translation().plus(Vector3.POSITIVE_Y_AXIS);
 
-    PositionConstraint positionConstraint = new PositionConstraint(chain, Point3.createAddition(endPosition, new Point3(0, 1, 0)));
+    PositionConstraint positionConstraint = new PositionConstraint(chain, endPosition);
 
     // call setEeDesiredPosition
 
@@ -1122,40 +1120,33 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
           //they only need to be local axes
           double delta = angleDeltas.getForAxis(axis);
 
-          Vector3 rotationAroundThisAxis;
+          Vector3 rotationAroundThisAxis = switch (axisIndexInJoint) {
+            case 0 -> Vector3.POSITIVE_X_AXIS;
+            case 1 -> Vector3.POSITIVE_Y_AXIS;
+            case 2 -> Vector3.POSITIVE_Z_AXIS;
+            default -> {
+              assert false;
+              yield Vector3.POSITIVE_X_AXIS;
+            }
+          };
 
-          switch (axisIndexInJoint) {
-          case 0:
-            rotationAroundThisAxis = Vector3.createPositiveXAxis();
-            break;
-          case 1:
-            rotationAroundThisAxis = Vector3.createPositiveYAxis();
-            break;
-          case 2:
-            rotationAroundThisAxis = Vector3.createPositiveZAxis();
-            break;
-          default:
-            assert false;
-            rotationAroundThisAxis = Vector3.createPositiveXAxis(); //against compile-time error
-          }
-
-          rotationAroundThisAxis.multiply(delta);
+          rotationAroundThisAxis = rotationAroundThisAxis.times(delta);
 
           //this is local rotation
 
           if (combinedRotation == null) {
             combinedRotation = rotationAroundThisAxis;
           } else {
-            combinedRotation.add(rotationAroundThisAxis);
+            combinedRotation = combinedRotation.plus(rotationAroundThisAxis);
           }
 
           ++axisIndexInJoint;
         }
 
+        // TODO Justify how this is different from normalized()
         //apply
-        double angleInRadians = combinedRotation.calculateMagnitude();
-        combinedRotation.divide(angleInRadians);
-        Vector3 axis = combinedRotation;
+        double angleInRadians = combinedRotation.magnitude();
+        Vector3 axis = combinedRotation.dividedBy(angleInRadians);
 
         //local rotation
         if (!axis.isNaN()) {
@@ -1211,40 +1202,33 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
           int globalIndex = axisToIndex.get(axis);
           double delta = angleDeltas.getByGlobalIndex(globalIndex);
 
-          Vector3 rotationAroundThisAxis;
+          Vector3 rotationAroundThisAxis = switch (axisIndexInJoint) {
+            case 0 -> Vector3.POSITIVE_X_AXIS;
+            case 1 -> Vector3.POSITIVE_Y_AXIS;
+            case 2 -> Vector3.POSITIVE_Z_AXIS;
+            default -> {
+              assert false;
+              yield Vector3.POSITIVE_X_AXIS;
+            }
+          };
 
-          switch (axisIndexInJoint) {
-          case 0:
-            rotationAroundThisAxis = Vector3.createPositiveXAxis();
-            break;
-          case 1:
-            rotationAroundThisAxis = Vector3.createPositiveYAxis();
-            break;
-          case 2:
-            rotationAroundThisAxis = Vector3.createPositiveZAxis();
-            break;
-          default:
-            assert false;
-            rotationAroundThisAxis = Vector3.createPositiveXAxis(); //against compile-time error
-          }
-
-          rotationAroundThisAxis.multiply(delta);
+          rotationAroundThisAxis = rotationAroundThisAxis.times(delta);
 
           //this is local rotation
 
           if (combinedRotation == null) {
             combinedRotation = rotationAroundThisAxis;
           } else {
-            combinedRotation.add(rotationAroundThisAxis);
+            combinedRotation = combinedRotation.plus(rotationAroundThisAxis);
           }
 
           ++axisIndexInJoint;
         }
 
+        // TODO Justify how this is different from normalized()
         //apply
-        double angleInRadians = combinedRotation.calculateMagnitude();
-        combinedRotation.divide(angleInRadians);
-        Vector3 axis = combinedRotation;
+        double angleInRadians = combinedRotation.magnitude();
+        Vector3 axis = combinedRotation.dividedBy(angleInRadians);
 
         //local rotation
         OrthogonalMatrix3x3 initialOrientation = jointImp.getLocalOrientation();

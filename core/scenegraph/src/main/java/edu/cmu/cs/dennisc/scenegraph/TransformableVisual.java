@@ -42,10 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author dculyba
@@ -68,7 +66,7 @@ public class TransformableVisual extends Visual {
   }
 
   public void setTransform(Transformable transform) {
-    this.sgTransformable.setLocalTransformation(transform.accessLocalTransformation());
+    this.sgTransformable.setLocalTransformation(transform.getLocalTransformation());
   }
 
   public Transformable getTransformable() {
@@ -76,43 +74,14 @@ public class TransformableVisual extends Visual {
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox(rv);
-
-    if (!transformedRV.isNaN()) {
-      Point3 maximum = transformedRV.getMaximum();
-      this.sgTransformable.accessLocalTransformation().transform(maximum);
-      transformedRV.setMaximum(maximum);
-
-      Point3 minimum = transformedRV.getMinimum();
-      this.sgTransformable.accessLocalTransformation().transform(minimum);
-      transformedRV.setMinimum(minimum);
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    AxisAlignedBox aabb = super.getAxisAlignedMinimumBoundingBox();
+    if (aabb == null) {
+      return null;
     }
-
-    return transformedRV;
-  }
-
-  @Override
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    edu.cmu.cs.dennisc.math.Sphere transformedRV = super.getBoundingSphere(rv);
-
-    if (!transformedRV.isNaN()) {
-      this.sgTransformable.accessLocalTransformation().transform(transformedRV.center);
-    }
-
-    return rv;
+    AffineMatrix4x4 localTransform = sgTransformable.getLocalTransformation();
+    return new AxisAlignedBox(localTransform.transform(aabb.minimum()), localTransform.transform(aabb.maximum()));
   }
 
   private final Transformable sgTransformable = new Transformable();
-
-  public void setTranslation(Vector3 translation) {
-    // Update value
-    AffineMatrix4x4 currentTransform = sgTransformable.localTransformation.getValue();
-    currentTransform.translation.set(translation);
-
-    // Trigger property event
-    sgTransformable.localTransformation.setValue(currentTransform);
-    // Trigger transformation event
-    fireAbsoluteTransformationChange();
-  }
 }

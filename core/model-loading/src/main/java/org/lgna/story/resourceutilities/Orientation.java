@@ -1,12 +1,12 @@
 package org.lgna.story.resourceutilities;
 
 import com.jogamp.common.nio.Buffers;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
 import edu.cmu.cs.dennisc.property.FloatBufferProperty;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 public class Orientation {
 
@@ -31,7 +31,7 @@ public class Orientation {
   }
 
   AffineMatrix4x4 orientMatrixToAlice(AffineMatrix4x4 matrix) {
-    return orient4().multiply(matrix).multiply(inverse4);
+    return orient4().times(matrix).times(inverse4);
   }
 
   private AffineMatrix4x4 orient4() {
@@ -55,11 +55,14 @@ public class Orientation {
     destination.setValue(Buffers.newDirectFloatBuffer(transformedNormals));
   }
 
-  private static final OrthogonalMatrix3x3 ABOUT_FACE_AROUND_Y = new OrthogonalMatrix3x3(new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, -1));
+  private static final OrthogonalMatrix3x3 ABOUT_FACE_AROUND_Y =
+      new OrthogonalMatrix3x3(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS, Vector3.NEGATIVE_Z_AXIS);
 
-  private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_Z = new OrthogonalMatrix3x3(new Vector3(0, 1, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1));
+  private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_Z =
+      new OrthogonalMatrix3x3(Vector3.POSITIVE_Y_AXIS, Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Z_AXIS);
 
-  private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_X = new OrthogonalMatrix3x3(new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(0, 1, 0));
+  private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_X =
+      new OrthogonalMatrix3x3(Vector3.POSITIVE_X_AXIS, Vector3.NEGATIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS);
 
   private final OrthogonalMatrix3x3 orient3;
   private final AffineMatrix4x4 inverse4;

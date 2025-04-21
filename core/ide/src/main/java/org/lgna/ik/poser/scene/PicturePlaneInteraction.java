@@ -45,9 +45,9 @@ package org.lgna.ik.poser.scene;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -148,8 +148,8 @@ public abstract class PicturePlaneInteraction {
 
   private void startPlaneDrag(MouseEvent e) {
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
-    Vector4 xyzwInCameraSpace = new Vector4(p.x, p.y, p.z, 1.0);
-    org.alice.math.immutable.Vector4 xyzwInViewportSpace = this.onscreenRenderTarget.transformFromCameraToViewport(xyzwInCameraSpace.immutable(), this.sgCamera);
+    Vector4 xyzwInCameraSpace = new Vector4(p.x(), p.y(), p.z(), 1.0);
+    Vector4 xyzwInViewportSpace = this.onscreenRenderTarget.transformFromCameraToViewport(xyzwInCameraSpace, this.sgCamera);
     this.planeZ0 = xyzwInViewportSpace.z() / xyzwInViewportSpace.w();
   }
 
@@ -160,7 +160,7 @@ public abstract class PicturePlaneInteraction {
 
     Vector4 xyzwInViewportSpace = new Vector4(x, y, this.planeZ0, 1.0);
 
-    org.alice.math.immutable.Vector4 xyzwInCameraSpace = this.onscreenRenderTarget.transformFromViewportToCamera(xyzwInViewportSpace.immutable(), this.sgCamera);
+    Vector4 xyzwInCameraSpace = this.onscreenRenderTarget.transformFromViewportToCamera(xyzwInViewportSpace, this.sgCamera);
 
     Point3 p = new Point3(xyzwInCameraSpace.x() / xyzwInCameraSpace.w(), xyzwInCameraSpace.y() / xyzwInCameraSpace.w(), xyzwInCameraSpace.z() / xyzwInCameraSpace.w());
     this.sgTransformable.setTranslationOnly(p, this.sgCamera);
@@ -178,7 +178,7 @@ public abstract class PicturePlaneInteraction {
   private void startRayDrag(MouseEvent e) {
     // TODO- I made the assumption that this camera would work in order to simplify the RenderTarget API.
     // If this code is resurrected and this was incorrect, the solution is to call the renderTarget's getCameraAtPixel
-    this.ray = this.onscreenRenderTarget.getRayAtAwtPoint(e.getPoint(), this.sgCamera).mutable();
+    this.ray = this.onscreenRenderTarget.getRayAtAwtPoint(e.getPoint(), this.sgCamera);
     this.rayPixelY0 = e.getY();
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
     this.rayT0 = this.ray.getProjectedPointT(p);
@@ -197,7 +197,7 @@ public abstract class PicturePlaneInteraction {
 
   private void stopRayDrag(MouseEvent e) {
     Point3 p = this.sgTransformable.getTranslation(this.sgCamera);
-    Point xyInPixels = this.onscreenRenderTarget.transformFromCameraToAWT(p.immutable(), this.sgCamera);
+    Point xyInPixels = this.onscreenRenderTarget.transformFromCameraToAWT(p, this.sgCamera);
 
     this.isInTheMidstOfACursorWarp = true;
     try {

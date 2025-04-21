@@ -43,10 +43,10 @@
 package edu.cmu.cs.dennisc.scenegraph.io;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3f;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -84,17 +84,13 @@ public class BIN {
       vertices = new Vertex[vertexCount];
       for (int index = 0; index < vertices.length; index++) {
         int format = dis.readInt();
-        final Point3 position = Point3.createNaN();
+        Point3 position = Point3.NaN;
         if ((format & Vertex.FORMAT_POSITION) != 0) {
-          position.x = dis.readDouble();
-          position.y = dis.readDouble();
-          position.z = dis.readDouble();
+          position = new Point3(dis.readDouble(), dis.readDouble(), dis.readDouble());
         }
-        final Vector3f normal = Vector3f.createNaN();
-        if ((format & Vertex.FORMAT_NORMAL) != 0) {
-          normal.x = (float) dis.readDouble();
-          normal.y = (float) dis.readDouble();
-          normal.z = (float) dis.readDouble();
+        Vector3f normal = Vector3f.NaN;
+        if ((format & Vertex.FORMAT_POSITION) != 0) {
+          normal = new Vector3f((float) dis.readDouble(), (float) dis.readDouble(), (float) dis.readDouble());
         }
         final Color4f diffuseColor;
         if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
@@ -123,17 +119,13 @@ public class BIN {
       vertices = new Vertex[vertexCount];
       for (int index = 0; index < vertices.length; index++) {
         int format = dis.readInt();
-        final Point3 position = Point3.createNaN();
+        Point3 position = Point3.NaN;
         if ((format & Vertex.FORMAT_POSITION) != 0) {
-          position.x = dis.readDouble();
-          position.y = dis.readDouble();
-          position.z = dis.readDouble();
+          position = new Point3(dis.readDouble(), dis.readDouble(), dis.readDouble());
         }
-        final Vector3f normal = Vector3f.createNaN();
-        if ((format & Vertex.FORMAT_NORMAL) != 0) {
-          normal.x = (float) dis.readDouble();
-          normal.y = (float) dis.readDouble();
-          normal.z = (float) dis.readDouble();
+        Vector3f normal = Vector3f.NaN;
+        if ((format & Vertex.FORMAT_POSITION) != 0) {
+          normal = new Vector3f((float) dis.readDouble(), (float) dis.readDouble(), (float) dis.readDouble());
         }
         final Color4f diffuseColor;
         if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
@@ -180,14 +172,14 @@ public class BIN {
       int format = vertice.getFormat();
       dos.writeInt(format);
       if ((format & Vertex.FORMAT_POSITION) != 0) {
-        dos.writeDouble(vertice.position.x);
-        dos.writeDouble(vertice.position.y);
-        dos.writeDouble(vertice.position.z);
+        dos.writeDouble(vertice.position.x());
+        dos.writeDouble(vertice.position.y());
+        dos.writeDouble(vertice.position.z());
       }
       if ((format & Vertex.FORMAT_NORMAL) != 0) {
-        dos.writeDouble(vertice.normal.x);
-        dos.writeDouble(vertice.normal.y);
-        dos.writeDouble(vertice.normal.z);
+        dos.writeDouble(vertice.normal.x());
+        dos.writeDouble(vertice.normal.y());
+        dos.writeDouble(vertice.normal.z());
       }
       if ((format & Vertex.FORMAT_DIFFUSE_COLOR) != 0) {
         dos.writeFloat(vertice.diffuseColor.red);

@@ -53,6 +53,8 @@ import java.util.Map;
  */
 public class ClassUtilities {
   private static final Map<String, Class<?>> s_primitiveTypeMap;
+  // Catch older classes to replace.
+  private static final Map<String, String> s_replacementTypeMap;
 
   static {
     Map<String, Class<?>> map = Maps.newHashMap();
@@ -66,6 +68,14 @@ public class ClassUtilities {
     map.put(Double.TYPE.getName(), Double.TYPE);
     map.put(Float.TYPE.getName(), Float.TYPE);
     s_primitiveTypeMap = Collections.unmodifiableMap(map);
+    Map<String, String> subs =  Maps.newHashMap();
+    subs.put("edu.cmu.cs.dennisc.math.EulerAngles$Order", "org.alice.math.immutable.EulerAngles$Order");
+    subs.put("edu.cmu.cs.dennisc.math.EulerAngles", "org.alice.math.immutable.EulerAngles");
+    subs.put("edu.cmu.cs.dennisc.math.Matrix3x3", "org.alice.math.immutable.OrthogonalMatrix3x3");
+    subs.put("edu.cmu.cs.dennisc.math.AxisAlignedBox", "org.alice.math.immutable.AxisAlignedBox");
+    subs.put("edu.cmu.cs.dennisc.math.AffineMatrix4x4", "org.alice.math.immutable.AffineMatrix4x4");
+    subs.put("edu.cmu.cs.dennisc.math.Vector3f", "org.alice.math.immutable.Vector3f");
+    s_replacementTypeMap = Collections.unmodifiableMap(subs);
   }
 
   public static <E> E getInstance(Object o, Class<E> cls) {
@@ -81,6 +91,9 @@ public class ClassUtilities {
   public static Class<?> forName(String className) throws ClassNotFoundException {
     assert className != null;
     assert className.length() > 0;
+    if (s_replacementTypeMap.containsKey(className)) {
+      className = s_replacementTypeMap.get(className);
+    }
     try {
       return Class.forName(className);
     } catch (ClassNotFoundException cnfe) {

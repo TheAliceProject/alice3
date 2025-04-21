@@ -45,12 +45,11 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.SVRUser;
+import org.alice.math.immutable.AxisAlignedBox;
 
 public class VrUserImp extends TransformableImp {
 
@@ -61,7 +60,7 @@ public class VrUserImp extends TransformableImp {
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
+    rv.addBoundingBox(AxisAlignedBox.Empty, trans);
   }
 
   public void animateSetScale(double newScale, double duration, Style style) {

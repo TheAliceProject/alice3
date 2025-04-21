@@ -62,11 +62,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -94,7 +89,12 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.ClippedZPlane;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
@@ -771,7 +771,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     super.setActiveScene(sceneField);
     // Restore to origin and upright
     if (movableSceneCameraImp != null) {
-      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.IDENTITY);
     }
 
     if (sceneField != null) {
@@ -1069,10 +1069,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         double y = (box != null) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
         location = new Point3(0, y, 0);
       } else {
-        location = Point3.createZero();
+        location = Point3.ORIGIN;
       }
 
-      initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.createIdentity(), location);
+      initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, location);
     }
     return SetUpMethodGenerator.getSetupStatementsForField(false, field, this.getActiveSceneInstance(), null, initialTransform);
   }
@@ -1186,19 +1186,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private void paintHorizonLine(Graphics graphics, OnscreenRenderTarget renderTarget, OrthographicCamera camera) {
     AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
-    double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+    double dotProd = cameraTransform.orientation().up().dotProduct(Vector3.POSITIVE_Y_AXIS);
     if ((dotProd == 1) || (dotProd == -1)) {
       //TODO: Make this handle retina displays and the fact that surface size and screen size may be different
       Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
-      Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
+      Point3 cameraPosition = camera.getAbsoluteTransformation().translation();
 
       ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 
       double lookingGlassHeight = lookingGlassSize.getHeight();
 
       double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
-      double horizonInCameraSpace = 0.0d - cameraPosition.y;
+      double horizonInCameraSpace = 0.0d - cameraPosition.y();
       double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
       int horizonLinePixelVal = (int) (yRatio * distanceFromMaxY);
       if ((horizonLinePixelVal >= 0) && (horizonLinePixelVal <= lookingGlassHeight)) {
@@ -1248,7 +1248,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     if (selectedImp != null) {
       initialTransform = selectedImp.getAbsoluteTransformation();
     } else {
-      initialTransform = AffineMatrix4x4.createIdentity();
+      initialTransform = AffineMatrix4x4.IDENTITY;
     }
     return initialTransform;
   }

@@ -43,8 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +56,7 @@ public class Transformable extends AbstractTransformable {
   }
 
   @Override
-  protected AffineMatrix4x4 accessLocalTransformation() {
+  public AffineMatrix4x4 getLocalTransformation() {
     return this.localTransformation.getValue();
   }
 
@@ -65,5 +65,5 @@ public class Transformable extends AbstractTransformable {
     localTransformation.setValue(m);
   }
 
-  public final AffineMatrix4x4Property localTransformation = new AffineMatrix4x4Property(this, AffineMatrix4x4.createIdentity());
+  public final InstanceProperty<AffineMatrix4x4> localTransformation = new InstanceProperty<>(this, AffineMatrix4x4.IDENTITY);
 }

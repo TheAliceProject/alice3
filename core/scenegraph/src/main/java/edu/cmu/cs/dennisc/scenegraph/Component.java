@@ -44,17 +44,17 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.pattern.Visitable;
 import edu.cmu.cs.dennisc.pattern.Visitor;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector4;
 
 import java.util.List;
 
@@ -68,77 +68,34 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public Composite getRoot() {
-    if (this.vehicle != null) {
-      return this.vehicle.getRoot();
-    } else {
-      return null;
-    }
+    return vehicle != null ? vehicle.getRoot() : null;
   }
 
   @Override
-  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
-    if (this.vehicle != null) {
-      rv = this.vehicle.getAbsoluteTransformation(rv);
-    } else {
-      rv.setIdentity();
-    }
-    return rv;
+  public AffineMatrix4x4 getAbsoluteTransformation() {
+    return vehicle != null ? vehicle.getAbsoluteTransformation() : AffineMatrix4x4.IDENTITY;
   }
 
   @Override
-  public final AffineMatrix4x4 getAbsoluteTransformation() {
-    return getAbsoluteTransformation(AffineMatrix4x4.createNaN());
+  public AffineMatrix4x4 getInverseAbsoluteTransformation() {
+    return vehicle != null ? vehicle.getInverseAbsoluteTransformation() : AffineMatrix4x4.IDENTITY;
   }
 
   @Override
-  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
-    if (this.vehicle != null) {
-      rv = this.vehicle.getInverseAbsoluteTransformation(rv);
-    } else {
-      rv.setIdentity();
-    }
-    return rv;
-  }
-
-  @Override
-  public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
-    return getInverseAbsoluteTransformation(AffineMatrix4x4.createNaN());
-  }
-
-  @Override
-  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame asSeenBy) {
-    if (this.vehicle != null) {
-      return this.vehicle.getTransformation(rv, asSeenBy);
-    } else {
-      return asSeenBy.getInverseAbsoluteTransformation(rv);
-    }
-  }
-
-  @Override
-  public final AffineMatrix4x4 getTransformation(ReferenceFrame asSeenBy) {
-    return getTransformation(AffineMatrix4x4.createNaN(), asSeenBy);
-  }
-
-  public Point3 getTranslation(Point3 rv, ReferenceFrame asSeenBy) {
-    rv.set(getTransformation(asSeenBy).translation);
-    return rv;
+  public AffineMatrix4x4 getTransformation(ReferenceFrame asSeenBy) {
+    return vehicle != null ? vehicle.getTransformation(asSeenBy) : asSeenBy.getInverseAbsoluteTransformation();
   }
 
   public final Point3 getTranslation(ReferenceFrame asSeenBy) {
-    return getTranslation(new Point3(), asSeenBy);
+    return getTransformation(asSeenBy).translation();
   }
 
-  public OrthogonalMatrix3x3 getAxes(OrthogonalMatrix3x3 rv, ReferenceFrame asSeenBy) {
-    rv.setValue(getTransformation(asSeenBy).orientation);
-    return rv;
-  }
-
-  public final OrthogonalMatrix3x3 getAxes(ReferenceFrame asSeenBy) {
-    return getAxes(OrthogonalMatrix3x3.createNaN(), asSeenBy);
+  public OrthogonalMatrix3x3 getAxes(ReferenceFrame asSeenBy) {
+    return getTransformation(asSeenBy).orientation();
   }
 
   public Composite getParent() {
-    return this.vehicle;
+    return vehicle;
   }
 
   public void setParent(Composite parent) {
@@ -236,21 +193,19 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   // Vector4
   public Vector4 transformToAbsolute(Vector4 xyz) {
-    Vector4 rv = new Vector4(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Vector4 transformFromAbsolute(Vector4 xyz) {
-    Vector4 rv = new Vector4(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getInverseAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Vector4 transformTo(Vector4 xyzw, Component to) {
@@ -264,21 +219,19 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   // Vector3
   public Vector3 transformToAbsolute(Vector3 xyz) {
-    Vector3 rv = new Vector3(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Vector3 transformFromAbsolute(Vector3 xyz) {
-    Vector3 rv = new Vector3(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getInverseAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Vector3 transformTo(Vector3 xyz, Component to) {
@@ -288,21 +241,19 @@ public abstract class Component extends Element implements Visitable, ReferenceF
 
   //Point3d
   public Point3 transformToAbsolute(Point3 xyz) {
-    Point3 rv = new Point3(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Point3 transformFromAbsolute(Point3 xyz) {
-    Point3 rv = new Point3(xyz);
     if (!isAbsolute()) {
       AffineMatrix4x4 m = getInverseAbsoluteTransformation();
-      m.transform(rv);
+      return m.transform(xyz);
     }
-    return rv;
+    return xyz;
   }
 
   public Point3 transformTo(Point3 xyz, Component to) {

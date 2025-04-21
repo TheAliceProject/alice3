@@ -44,7 +44,7 @@ package org.lgna.story;
 
 import java.util.List;
 
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 
@@ -59,7 +59,7 @@ public abstract class PoseBuilder<M extends SJointedModel, P extends Pose<M>> {
   }
 
   protected void addJointIdQuaternionPair(JointId jointId, Orientation orientation) {
-    UnitQuaternion quaternion = orientation.createUnitQuaternion();
+    UnitQuaternion quaternion = orientation.asUnitQuaternion();
     this.addJointIdQuaternionPair(new JointIdTransformationPair(jointId, quaternion));
   }
 

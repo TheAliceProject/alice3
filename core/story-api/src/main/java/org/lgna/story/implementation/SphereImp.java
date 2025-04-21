@@ -44,12 +44,12 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Point3;
 import org.lgna.story.SSphere;
 import org.lgna.story.implementation.eventhandling.CylinderHull;
 import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
@@ -104,17 +104,17 @@ public class SphereImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    if ((size.x != size.y) || (size.y != size.z)) {
+    if ((size.x() != size.y()) || (size.y() != size.z())) {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
-    this.radius.setValue(size.x * .5);
+    this.radius.setValue(size.x() * .5);
   }
 
   @Override
   public VerticalPrismCollisionHull getCollisionHull() {
     double r = radius.getValue();
-    Point3 centerBase = getAbsoluteTransformation().translation;
-    centerBase.y -= r;
+    Point3 centerBase = getAbsoluteTransformation().translation();
+    centerBase = centerBase.withY(centerBase.y() - r);
     return new CylinderHull(centerBase, 2.0 * r, r);
   }
 

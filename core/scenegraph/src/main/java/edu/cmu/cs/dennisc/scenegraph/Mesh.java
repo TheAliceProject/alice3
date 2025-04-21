@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
 import edu.cmu.cs.dennisc.property.FloatBufferProperty;
 import edu.cmu.cs.dennisc.property.IntBufferProperty;
 import edu.cmu.cs.dennisc.property.IntegerProperty;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -82,50 +84,40 @@ public class Mesh extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    BoundUtilities.getBoundingBox(boundingBox, vertexBuffer.getValue());
+  protected AxisAlignedBox updateBoundingBox() {
+    return BoundUtilities.getBoundingBox(vertexBuffer.getValue());
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    BoundUtilities.getBoundingSphere(boundingSphere, vertexBuffer.getValue().array());
-  }
-
-  @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
-
+  public AffineMatrix4x4 getPlane() {
     double[] xyzs = vertexBuffer.getValue().array();
     float[] ijks = normalBuffer.getValue().array();
-
     assert xyzs.length >= 6;
     assert ijks.length >= 3;
 
-    forward.set(ijks[0], ijks[1], ijks[2]);
-    forward.normalize();
-    forward.negate();
+    Vector3 forward = (new Vector3(ijks[0], ijks[1], ijks[2])).normalized().negate();
+    Point3 translation = new Point3(xyzs[0], xyzs[1], xyzs[2]);
+    Vector3 upGuide = (new Vector3(translation.x() - xyzs[3], translation.y() - xyzs[4], translation.z() - xyzs[5])).normalized();
 
-    translation.set(xyzs[0], xyzs[1], xyzs[2]);
-    upGuide.set(translation.x - xyzs[3], translation.y - xyzs[4], translation.z - xyzs[5]);
-    upGuide.normalize();
-
+    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation);
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     DoubleBuffer buffer = vertexBuffer.getValue();
 
     buffer.rewind();
 
     int n = buffer.remaining();
 
-    Point3 p = Point3.createNaN();
+    Point3 p;
     for (int i = 0; i < n; i += 3) {
-      p.set(buffer.get(i), buffer.get(i + 1), buffer.get(i + 2));
-      trans.transform(p);
+      p = new Point3(buffer.get(i), buffer.get(i + 1), buffer.get(i + 2));
+      p = trans.transform(p);
 
-      buffer.put(i, p.x);
-      buffer.put(i + 1, p.y);
-      buffer.put(i + 2, p.z);
+      buffer.put(i, p.x());
+      buffer.put(i + 1, p.y());
+      buffer.put(i + 2, p.z());
     }
 
     vertexBuffer.setValue(buffer);
@@ -135,7 +127,7 @@ public class Mesh extends Geometry {
     return new Mesh(this);
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     DoubleBuffer buffer =  vertexBuffer.getValue();
 
     buffer.rewind();
@@ -143,9 +135,9 @@ public class Mesh extends Geometry {
     int n = buffer.remaining();
 
     for (int i = 0; i < n; i += 3) {
-      buffer.put(i, buffer.get(i) * scale.x);
-      buffer.put(i + 1, buffer.get(i + 1) * scale.y);
-      buffer.put(i + 2, buffer.get(i + 2) * scale.z);
+      buffer.put(i, buffer.get(i) * scale);
+      buffer.put(i + 1, buffer.get(i + 1) * scale);
+      buffer.put(i + 2, buffer.get(i + 2) * scale);
     }
 
     vertexBuffer.setValue(buffer);

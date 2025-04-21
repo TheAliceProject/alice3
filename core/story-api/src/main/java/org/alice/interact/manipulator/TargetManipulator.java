@@ -43,7 +43,7 @@
 
 package org.alice.interact.manipulator;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 public interface TargetManipulator {
 

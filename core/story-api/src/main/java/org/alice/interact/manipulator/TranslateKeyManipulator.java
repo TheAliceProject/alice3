@@ -42,10 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import org.alice.interact.MovementKey;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -65,8 +66,8 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
     if (!super.shouldApplyEnding(currentTime, amountToMove)) {
       return false;
     }
-    Point3 positionDif = Point3.createSubtraction(manipulatedTransformable.getAbsoluteTransformation().translation, initialPoint);
-    double distanceAlreadyMoved = positionDif.calculateMagnitude();
+    Vector3 positionDif = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialPoint);
+    double distanceAlreadyMoved = positionDif.magnitude();
     return amountToMove > distanceAlreadyMoved;
   }
 
@@ -83,23 +84,23 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
   private void enforceBounds() {
     if (this.bounds != null) {
       Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
-      if (currentPos.x > this.bounds.getXMaximum()) {
-        currentPos.x = this.bounds.getXMaximum();
+      if (currentPos.x() > this.bounds.getXMaximum()) {
+        currentPos = currentPos.withX(bounds.getXMaximum());
       }
-      if (currentPos.x < this.bounds.getXMinimum()) {
-        currentPos.x = this.bounds.getXMinimum();
+      if (currentPos.x() < this.bounds.getXMinimum()) {
+        currentPos = currentPos.withX(bounds.getXMinimum());
       }
-      if (currentPos.y > this.bounds.getYMaximum()) {
-        currentPos.y = this.bounds.getYMaximum();
+      if (currentPos.y() > this.bounds.getYMaximum()) {
+        currentPos = currentPos.withY(bounds.getYMaximum());
       }
-      if (currentPos.y < this.bounds.getYMinimum()) {
-        currentPos.y = this.bounds.getYMinimum();
+      if (currentPos.y() < this.bounds.getYMinimum()) {
+        currentPos = currentPos.withY(bounds.getYMinimum());
       }
-      if (currentPos.z > this.bounds.getZMaximum()) {
-        currentPos.z = this.bounds.getZMaximum();
+      if (currentPos.z() > this.bounds.getZMaximum()) {
+        currentPos = currentPos.withZ(bounds.getZMaximum());
       }
-      if (currentPos.z < this.bounds.getZMinimum()) {
-        currentPos.z = this.bounds.getZMinimum();
+      if (currentPos.z() < this.bounds.getZMinimum()) {
+        currentPos = currentPos.withZ(bounds.getZMinimum());
       }
 
       this.manipulatedTransformable.setTranslationOnly(currentPos, AsSeenBy.SCENE);

@@ -85,11 +85,6 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   }
 
   @Override
-  public double getBoundingSphereRadius() {
-    return 1.0;
-  }
-
-  @Override
   public void setSGParent(Composite parent) {
     nebModel.setSGParent(parent);
     for (Visual sgVisual : this.getSgVisuals()) {

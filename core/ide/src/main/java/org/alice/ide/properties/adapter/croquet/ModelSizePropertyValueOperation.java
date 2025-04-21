@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter.croquet;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.math.immutable.Dimension3;
 
 import java.util.UUID;
 

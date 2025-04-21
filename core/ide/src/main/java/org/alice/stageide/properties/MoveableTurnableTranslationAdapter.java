@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -91,13 +91,13 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 
   @Override
   public Point3 getValueCopyIfMutable() {
-    return new Point3(this.getValue());
+    return getValue();
   }
 
   @Override
   public Point3 getValue() {
     if (this.instance != null) {
-      return instance.getImplementation().getAbsoluteTransformation().translation;
+      return instance.getImplementation().getAbsoluteTransformation().translation();
     }
     return null;
   }
@@ -107,7 +107,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
     super.setValue(newValue);
     if (this.instance != null) {
       AffineMatrix4x4 currentTrans = this.instance.getImplementation().getAbsoluteTransformation();
-      double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
+      double dist = currentTrans.translation().distanceFrom(newValue);
       double duration = 1;
       if (dist < .02) {
         duration = 0;

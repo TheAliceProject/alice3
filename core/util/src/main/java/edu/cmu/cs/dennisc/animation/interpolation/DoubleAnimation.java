@@ -60,7 +60,7 @@ public abstract class DoubleAnimation extends InterpolationAnimation<Double> {
   }
 
   @Override
-  protected Double interpolate(Double rv, Double v0, Double v1, double portion) {
+  protected Double interpolate(Double v0, Double v1, double portion) {
     return v0 + ((v1 - v0) * portion);
   }
 }

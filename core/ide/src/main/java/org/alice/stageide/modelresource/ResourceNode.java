@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;

@@ -124,7 +124,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
   @Override
   @MethodTemplate()
   public Double getWidth() {
-    return this.getImplementation().getSize().x;
+    return this.getImplementation().getSize().x();
   }
 
   @Override
@@ -139,7 +139,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
   @Override
   @MethodTemplate()
   public Double getHeight() {
-    return this.getImplementation().getSize().y;
+    return this.getImplementation().getSize().y();
   }
 
   @Override
@@ -154,7 +154,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
   @Override
   @MethodTemplate()
   public Double getDepth() {
-    return this.getImplementation().getSize().z;
+    return this.getImplementation().getSize().z();
   }
 
   @Override

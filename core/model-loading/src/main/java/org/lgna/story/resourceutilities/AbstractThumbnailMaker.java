@@ -50,12 +50,6 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
@@ -68,6 +62,13 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.SceneImp;
 
 /**
@@ -351,19 +352,15 @@ public abstract class AbstractThumbnailMaker {
   }
 
   protected AffineMatrix4x4 getThumbnailCameraOrientation(Point3 centerPoint, Vector3 cameraDir, double zoom) {
-    cameraDir.normalize();
-    Vector3 negCameraDir = new Vector3(cameraDir);
-    negCameraDir.multiply(-1);
+    Vector3 negCameraDir = cameraDir.normalized().negate();
     Ray cameraRay = new Ray(centerPoint, negCameraDir);
     Point3 cameraLocation = cameraRay.getPointAlong(zoom);
-    OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
-    AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
-    return rv;
+    OrthogonalMatrix3x3 pointAtOrientation = new ForwardAndUpGuide(cameraDir, Vector3.POSITIVE_Y_AXIS).asMatrix3x3();
+    return new AffineMatrix4x4(pointAtOrientation, cameraLocation);
   }
 
   protected AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox, Vector3 cameraDir) {
-    cameraDir.normalize();
-    Ray cameraRay = new Ray(bbox.getCenter(), cameraDir);
+    Ray cameraRay = new Ray(bbox.getCenter(), cameraDir.normalized());
     double horizontalAngle = getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
     double verticalAngle = getSGCamera().verticalViewingAngle.getValue().getAsRadians();
     double halfCameraFOV = (horizontalAngle < verticalAngle) ? horizontalAngle : verticalAngle;
@@ -373,7 +370,7 @@ public abstract class AbstractThumbnailMaker {
     for (Point3 p : bbox.getPoints()) {
       double t = cameraRay.getProjectedPointT(p);
       Point3 rayPoint = cameraRay.getPointAlong(t);
-      double distanceToRay = Point3.calculateDistanceBetween(p, rayPoint);
+      double distanceToRay = p.distanceFrom(rayPoint);
       double distanceProjectedPointNeedsToBeFromCamera = (distanceToRay / Math.tan(halfCameraFOV));
       double val = t - distanceProjectedPointNeedsToBeFromCamera;
       if (val < minVal) {
@@ -382,7 +379,7 @@ public abstract class AbstractThumbnailMaker {
     }
 
     Point3 cameraLocation = cameraRay.getPointAlong(minVal);
-    OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
+    OrthogonalMatrix3x3 pointAtOrientation = new ForwardAndUpGuide(cameraDir, Vector3.POSITIVE_Y_AXIS).asMatrix3x3();
     AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
     assert !rv.isNaN() : "Failed to make a useful camera orientation from " + bbox;
     return rv;

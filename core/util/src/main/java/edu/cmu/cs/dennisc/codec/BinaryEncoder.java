@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,61 +51,65 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface BinaryEncoder {
-  public void write(byte[] data);
+  void write(byte[] data);
 
-  public void write(byte[] data, int offset, int length);
+  void write(byte[] data, int offset, int length);
 
-  public void encode(boolean value);
+  void encode(boolean value);
 
-  public void encode(byte value);
+  void encode(byte value);
 
-  public void encode(char value);
+  void encode(char value);
 
-  public void encode(double value);
+  void encode(double value);
 
-  public void encode(float value);
+  void encode(float value);
 
-  public void encode(int value);
+  void encode(int value);
 
-  public void encode(long value);
+  void encode(long value);
 
-  public void encode(short value);
+  void encode(short value);
 
-  public void encode(String value);
+  void encode(String value);
 
-  public void encode(Enum<?> value);
+  void encode(Enum<?> value);
 
-  public void encode(UUID value);
+  void encode(UUID value);
 
-  public void encode(BinaryEncodableAndDecodable value);
+  void encode(BinaryEncodableAndDecodable value);
 
-  public void encode(ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
+  void encode(ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
 
-  public void encode(boolean[] array);
+  void encode(boolean[] array);
 
-  public void encode(byte[] array);
+  void encode(byte[] array);
 
-  public void encode(char[] array);
+  void encode(char[] array);
 
-  public void encode(double[] array);
+  void encode(double[] array);
 
-  public void encode(float[] array);
+  void encode(float[] array);
 
-  public void encode(int[] array);
+  void encode(int[] array);
 
-  public void encode(long[] array);
+  void encode(long[] array);
 
-  public void encode(short[] array);
+  void encode(short[] array);
 
-  public void encode(String[] array);
+  void encode(String[] array);
 
-  public void encode(Enum<?>[] array);
+  void encode(Enum<?>[] array);
 
-  public void encode(UUID[] array);
+  void encode(UUID[] array);
 
-  public void encode(BinaryEncodableAndDecodable[] array);
+  void encode(BinaryEncodableAndDecodable[] array);
 
-  public void encode(ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
+  void encode(ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
 
-  public void flush();
+  void flush();
+
+  void encodeProperties(InstancePropertyOwner owner, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
+
+  void encodeRecord(Record record);
 }

@@ -45,14 +45,14 @@ package org.alice.ide.swing;
 import org.alice.interact.handle.ManipulationHandle3D;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix3x3;
 
 /*package-private*/class SceneGraphTreeNode extends BasicTreeNode {
   //  protected AffineMatrix4x4 localTransform;
@@ -146,7 +146,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
           this.color = new Color4f(appearance.diffuseColor.getValue());
           this.opacity = appearance.opacity.getValue();
         }
-        this.scale = new Matrix3x3(visual.scale.getValue());
+        this.scale = visual.scale.getValue();
         this.isShowing = visual.isShowing.getValue();
       }
       this.hasExtras = true;
@@ -165,10 +165,10 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
   private boolean isSceneGraphDifferent(SceneGraphTreeNode other) {
     if ((other.absoluteTransform != null) && (this.absoluteTransform != null)) {
 
-      if (!other.absoluteTransform.translation.isWithinReasonableEpsilonOf(other.absoluteTransform.translation)) {
+      if (!other.absoluteTransform.translation().isWithinReasonableEpsilonOf(other.absoluteTransform.translation())) {
         return true;
       }
-      if (!other.absoluteTransform.orientation.isWithinReasonableEpsilonOf(other.absoluteTransform.orientation)) {
+      if (!other.absoluteTransform.orientation().isWithinReasonableEpsilonOf(other.absoluteTransform.orientation())) {
         return true;
       }
     }

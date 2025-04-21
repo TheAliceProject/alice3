@@ -1,5 +1,7 @@
 package edu.cmu.cs.dennisc.math;
 
+import org.alice.math.immutable.Point2;
+import org.alice.math.immutable.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +76,9 @@ public class ConvexPolygon {
     for (int i = 0; i < vertexCount; i++) {
       Point2 pointA = vertices.get(i);
       Point2 pointB = vertices.get((i + 1) % vertexCount);
-      Point2 intersection = intersectionWithRay(pointA.x, pointA.y, pointB.x, pointB.y, x, y);
+      Vector2 intersection = intersectionWithRay(pointA.x(), pointA.y(), pointB.x(), pointB.y(), x, y);
       if (intersection != null) {
-        return intersection.calculateMagnitude();
+        return intersection.magnitude();
       }
     }
     // No edge found
@@ -96,12 +98,12 @@ public class ConvexPolygon {
   }
 
   private boolean isLeftOfEdge(Point2 start, Point2 end, Point2 point) {
-    return (point.y - start.y) * (end.x - start.x) > (point.x - start.x) * (end.y - start.y);
+    return (point.y() - start.y()) * (end.x() - start.x()) > (point.x() - start.x()) * (end.y() - start.y());
   }
 
   // Guided by segment intersection in https://en.wikipedia.org/wiki/Line–line_intersection
   // Second segment is ray starting at origin, allowing simplifications.
-  private static Point2 intersectionWithRay(double x1, double y1,
+  private static Vector2 intersectionWithRay(double x1, double y1,
                                             double x2, double y2,
                                             double x4, double y4) {
     double denominator = (x2 - x1) * y4 - (y2 - y1) * x4;
@@ -113,7 +115,7 @@ public class ConvexPolygon {
       if (uNumerator < denominator && (uNumerator * denominator) > 0) {
         double xNumerator = (y1 * x2 - x1 * y2) * x4;
         double yNumerator = (y1 * x2 - x1 * y2) * y4;
-        return new Point2(xNumerator / denominator, yNumerator / denominator);
+        return new Vector2(xNumerator / denominator, yNumerator / denominator);
       }
     }
     return null;

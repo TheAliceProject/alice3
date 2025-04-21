@@ -43,14 +43,18 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Vector4;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BezierCubic extends BasisMatrixCubic {
-  private static final Matrix4x4 s_h = new Matrix4x4(-1, 3, -3, 1, 3, -6, 3, 0, -3, 3, 0, 0, 1, 0, 0, 0);
+  private static final Matrix4x4 s_h = Matrix4x4.create(
+      -1, 3, -3, 1,
+      3, -6, 3, 0,
+      -3, 3, 0, 0,
+      1, 0, 0, 0);
 
   public BezierCubic(Vector4 g) {
     super(s_h, g);

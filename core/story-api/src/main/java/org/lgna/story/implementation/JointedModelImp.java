@@ -53,18 +53,12 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import org.alice.math.immutable.*;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
 import org.lgna.story.Paint;
@@ -77,7 +71,6 @@ import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
@@ -90,8 +83,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     SkeletonVisual getSgVisualForExporting(R resource);
 
     SimpleAppearance[] getSgAppearances();
-
-    double getBoundingSphereRadius();
 
     void setSGParent(Composite parent);
 
@@ -556,25 +547,15 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   protected Vector4 getFrontOffsetForJoint(JointImp jointImp) {
-    Vector4 offsetAsSeenBySubject = new Vector4();
     AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
     Point3 point = bbox.getCenterOfFrontFace();
-    offsetAsSeenBySubject.x = point.x;
-    offsetAsSeenBySubject.y = point.y;
-    offsetAsSeenBySubject.z = point.z;
-    offsetAsSeenBySubject.w = 1;
-    return offsetAsSeenBySubject;
+    return new Vector4(point.x(), point.y(), point.z(), 1);
   }
 
   protected Vector4 getTopOffsetForJoint(JointImp jointImp) {
-    Vector4 offsetAsSeenBySubject = new Vector4();
     AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
     Point3 point = bbox.getCenterOfTopFace();
-    offsetAsSeenBySubject.x = point.x;
-    offsetAsSeenBySubject.y = point.y;
-    offsetAsSeenBySubject.z = point.z;
-    offsetAsSeenBySubject.w = 1;
-    return offsetAsSeenBySubject;
+    return new Vector4(point.x(), point.y(), point.z(), 1);
   }
 
   public UnitQuaternion getOriginalJointOrientation(JointId jointId) {
@@ -607,19 +588,16 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       return this.sgScalable.scale.getValue();
     } else {
       Matrix3x3 scale = this.visualData.getSgVisuals()[0].scale.getValue();
-      return new Dimension3(scale.right.x, scale.up.y, scale.backward.z);
+      return new Dimension3(scale.getRight().x(), scale.getUp().y(), scale.getBackward().z());
     }
   }
 
   @Override
   public void setScale(Dimension3 scale) {
     if (this.sgScalable != null) {
-      this.sgScalable.scale.setValue(new Dimension3(scale));
+      this.sgScalable.scale.setValue(scale);
     } else {
-      Matrix3x3 m = Matrix3x3.createZero();
-      m.right.x = scale.x;
-      m.up.y = scale.y;
-      m.backward.z = scale.z;
+      Matrix3x3 m = scale.asScaleMatrix();
 
       for (Visual sgVisual : this.visualData.getSgVisuals()) {
         sgVisual.scale.setValue(m);
@@ -893,17 +871,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     public JointData(JointImp jointImp) {
       this.jointImp = jointImp;
-      this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
+      this.q0 = this.jointImp.getLocalOrientation().asUnitQuaternion();
       UnitQuaternion q = this.jointImp.getOriginalOrientation();
-      if (q != null) {
-        if (this.q0.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(q)) {
-          this.q1 = null;
-        } else {
-          this.q1 = q;
-        }
-      } else {
-        this.q1 = null;
-      }
+      this.q1 = ((q == null) || this.q0.isAlignedWith(q)) ? null : q;
     }
 
     //    public JointImp getJointImp() {
@@ -917,7 +887,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     //    }
     public void setPortion(double portion) {
       if (this.q1 != null) {
-        this.jointImp.setLocalOrientationOnly(UnitQuaternion.createInterpolation(this.q0, this.q1, portion).createOrthogonalMatrix3x3());
+        this.jointImp.setLocalOrientationOnly(this.q0.interpolate(this.q1, portion).asMatrix3x3());
       } else {
         //System.err.println( "skipping: " + this.jointImp );
       }
@@ -925,7 +895,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     public void epilogue() {
       if (this.q1 != null) {
-        this.jointImp.setLocalOrientationOnly(this.q1.createOrthogonalMatrix3x3());
+        this.jointImp.setLocalOrientationOnly(this.q1.asMatrix3x3());
       } else {
         //System.err.println( "skipping: " + this.jointImp );
       }

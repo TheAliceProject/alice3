@@ -42,11 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dave Culyba
  */
 public interface SkeletonVisualBoundingBoxTracker {
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv);
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox();
 }

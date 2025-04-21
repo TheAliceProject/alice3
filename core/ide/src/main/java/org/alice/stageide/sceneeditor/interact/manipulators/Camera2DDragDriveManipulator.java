@@ -44,15 +44,15 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Color;
 
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
+import org.alice.math.immutable.Vector2;
+import org.alice.math.immutable.Vector3;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 
-import edu.cmu.cs.dennisc.math.Vector2;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author David Culyba
@@ -80,71 +80,60 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 
   @Override
   protected Vector3 getMovementVectorForColor(Color color) {
-    Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
-    if (color != null) {
-      if (color.equals(UP)) {
-        initialMove.z = -INITIAL_MOVE_FACTOR;
-      } else if (color.equals(DOWN)) {
-        initialMove.z = INITIAL_MOVE_FACTOR;
-      }
+    if (UP.equals(color)) {
+      return new Vector3(0, 0, -INITIAL_MOVE_FACTOR);
     }
-    return initialMove;
+    if (DOWN.equals(color)) {
+      return new Vector3(0, 0, INITIAL_MOVE_FACTOR);
+    }
+    return Vector3.ZERO;
   }
 
   @Override
   protected Vector3 getRotationVectorForColor(Color color) {
-    Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
-    if (color != null) {
-      if (color.equals(LEFT)) {
-        initialRotate.y = INITIAL_ROTATE_FACTOR;
-      } else if (color.equals(RIGHT)) {
-        initialRotate.y = -INITIAL_ROTATE_FACTOR;
-      }
+    if (LEFT.equals(color)) {
+      return new Vector3(0, INITIAL_ROTATE_FACTOR, 0);
     }
-    return initialRotate;
+    if (RIGHT.equals(color)) {
+      return new Vector3(0, -INITIAL_ROTATE_FACTOR, 0);
+    }
+    return Vector3.ZERO;
   }
 
   @Override
   protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time) {
-    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
-
+    Vector2 relativeMousePos = mousePos.minus(this.initialMousePosition);
+    double movement = relativeMousePos.y();
     if ((this.initialHandleColor != null) && (this.initialHandleColor.equals(LEFT) || this.initialHandleColor.equals(RIGHT))) {
-      if (Math.abs(relativeMousePos.y) < MIN_PIXEL_MOVE_AMOUNT) {
-        relativeMousePos.y = 0.0d;
+      if (Math.abs(movement) < MIN_PIXEL_MOVE_AMOUNT) {
+        movement = 0;
       } else {
-        if (relativeMousePos.y < 0.0d) {
-          relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
-        } else {
+        if (movement < 0.0d) {
+          movement = movement + MIN_PIXEL_MOVE_AMOUNT;
         }
       }
     }
 
-    double amountToMoveZ = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-    Vector3 amountToMoveMouse = new Vector3(0.0d, 0.0d, amountToMoveZ);
-    return amountToMoveMouse;
+    double amountToMoveZ = movement * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+    return new Vector3(0.0d, 0.0d, amountToMoveZ);
   }
 
   @Override
   protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time) {
-    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
-
+    Vector2 relativeMousePos = mousePos.minus(this.initialMousePosition);
+    double rotation = relativeMousePos.x();
     if (this.initialHandleColor != null) {
       if (this.initialHandleColor.equals(UP) || this.initialHandleColor.equals(DOWN)) {
-        if (Math.abs(relativeMousePos.x) < MIN_PIXEL_MOVE_AMOUNT) {
-          relativeMousePos.x = 0.0d;
+        if (Math.abs(rotation) < MIN_PIXEL_MOVE_AMOUNT) {
+          rotation = 0;
         } else {
-          if (relativeMousePos.x < 0.0d) {
-            relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
-          } else {
-            relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
-          }
+          rotation = rotation + (rotation < 0.0d ? MIN_PIXEL_MOVE_AMOUNT : -MIN_PIXEL_MOVE_AMOUNT);
         }
       }
     }
 
-    double amountToRotateY = -relativeMousePos.x * RADIANS_PER_PIXEL_SECONDS * time;
-    Vector3 amountToRotateMouse = new Vector3(0.0d, amountToRotateY, 0.0d);
-    return amountToRotateMouse;
+    double amountToRotateY = -rotation * RADIANS_PER_PIXEL_SECONDS * time;
+    return new Vector3(0.0d, amountToRotateY, 0.0d);
   }
 
   @Override

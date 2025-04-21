@@ -72,7 +72,7 @@ import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Matt May
@@ -135,7 +135,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
       JointId anchor = getAnchorForEndJoint(end);
       if (anchor != null) {
         JointImp anchor2 = model.getJoint(anchor).getImplementation();
-        IKCore.moveChainToPointInSceneSpace(anchor2, end, jss.getImplementation().getAbsoluteTransformation().translation);
+        IKCore.moveChainToPointInSceneSpace(anchor2, end, jss.getImplementation().getAbsoluteTransformation().translation());
       }
       jss.setVehicle(end.getAbstraction());
     }

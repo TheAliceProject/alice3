@@ -44,13 +44,13 @@
 package org.alice.interact.debug;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 
 public class DebugSphere extends Transformable {
   public DebugSphere() {
@@ -70,9 +70,8 @@ public class DebugSphere extends Transformable {
     sgSphereVisual.setParent(this);
   }
 
-  public void setLocalTranslation(Tuple3 position) {
+  public void setLocalTranslation(Point3 position) {
     AffineMatrix4x4 transform = this.localTransformation.getValue();
-    transform.translation.set(position);
-    this.localTransformation.setValue(transform);
+    this.localTransformation.setValue(new AffineMatrix4x4(transform.orientation(), position));
   }
 }

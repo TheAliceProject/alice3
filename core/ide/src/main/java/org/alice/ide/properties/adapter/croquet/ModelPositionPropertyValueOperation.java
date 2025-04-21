@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter.croquet;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 import java.util.UUID;

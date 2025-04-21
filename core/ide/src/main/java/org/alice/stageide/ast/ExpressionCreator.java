@@ -67,7 +67,7 @@ import org.lgna.story.fontattributes.Attribute;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
 
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.resources.JointId;
 
 import java.lang.reflect.Field;
@@ -89,10 +89,14 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createOrientationExpression(Orientation orientation) {
     if (orientation != null) {
-      UnitQuaternion q = orientation.createUnitQuaternion();
+      UnitQuaternion q = orientation.asUnitQuaternion();
       Class<?> cls = Orientation.class;
       JavaConstructor constructor = JavaConstructor.getInstance(cls, Number.class, Number.class, Number.class, Number.class);
-      return AstUtilities.createInstanceCreation(constructor, this.createDoubleExpression(q.x, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.y, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.z, MICRO_DECIMAL_PLACES), this.createDoubleExpression(q.w, MICRO_DECIMAL_PLACES));
+      return AstUtilities.createInstanceCreation(constructor,
+          this.createDoubleExpression(q.x(), MICRO_DECIMAL_PLACES),
+          this.createDoubleExpression(q.y(), MICRO_DECIMAL_PLACES),
+          this.createDoubleExpression(q.z(), MICRO_DECIMAL_PLACES),
+          this.createDoubleExpression(q.w(), MICRO_DECIMAL_PLACES));
     } else {
       return new NullLiteral();
     }
@@ -208,8 +212,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
         //NOTE: this does not take into account that poses may affect translation as well.
         //TODO: check jtPair.affectsTranslation() to see if creating a different pose entry is necessary
-        UnitQuaternion q = jtPair.getTransformation().orientation.createUnitQuaternion();
-        Orientation orientation = new Orientation(q.x, q.y, q.z, q.w);
+        UnitQuaternion q = jtPair.getTransformation().orientation().asUnitQuaternion();
+        Orientation orientation = new Orientation(q.x(), q.y(), q.z(), q.w());
 
         Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;
         Method jSpecificMethod = PoseUtilities.getSpecificPoseBuilderMethod(builderCls, jtPair.getJointId());

@@ -130,7 +130,7 @@ public class PopupMenuUtilities {
       popupMenu.addPopupMenuListener(new PopupMenuListener() {
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-          layeredPane.add(eventConsumer, new Integer(JLayeredPane.MODAL_LAYER));
+          layeredPane.add(eventConsumer, JLayeredPane.MODAL_LAYER);
         }
 
         @Override

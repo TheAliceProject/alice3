@@ -43,10 +43,30 @@
 package edu.cmu.cs.dennisc.codec;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.EulerAngles;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector3f;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -214,42 +234,77 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   }
 
   private <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Class<?>[] parameterTypes, Object[] args) {
-    String clsName = this.decodeString();
-    if (clsName.length() > 0) {
-      try {
-        Constructor<E> cnstrctr = CodecUtilities.getPublicDecodeConstructor(clsName, parameterTypes);
-        return ReflectionUtilities.newInstance(cnstrctr, args);
-      } catch (NoSuchMethodException nsme) {
-        try {
-          Class<E> cls = (Class<E>) Class.forName(clsName);
-          Constructor<E> cnstrctr = ReflectionUtilities.getConstructor(cls);
-          Method mthd = ReflectionUtilities.getMethod(cls, "decode", BinaryDecoder.class);
-          E rv = ReflectionUtilities.newInstance(cnstrctr);
-          ReflectionUtilities.invoke(rv, mthd, this);
-          //          rv.decode( this );
-          return rv;
-        } catch (ClassNotFoundException cnfe) {
-          throw new RuntimeException(cnfe);
-        }
-        //        throw new RuntimeException( nsme );
-      } catch (ClassNotFoundException cnfe) {
-        throw new RuntimeException(cnfe);
-      }
-      //      Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-      //      java.lang.reflect.Constructor< E > cnstrctr;
-      //      E rv;
-      //      try {
-      //        cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-      //        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-      //      } catch( NoSuchMethodException nsme ) {
-      //        cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-      //        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-      //        rv.decode( this );
-      //      }
-      //      return rv;
-    } else {
+    String storedClassName = decodeString();
+
+    if (storedClassName.isEmpty()) {
       return null;
     }
+    try {
+      if (storedClassName.startsWith("edu.cmu.cs.dennisc.math.")) {
+        return (E) decodeObsoleteClass(storedClassName);
+      }
+      Class<E> cls = (Class<E>) Class.forName(storedClassName);
+      if (cls.isRecord()) {
+        return decodeRecord();
+      }
+      try {
+        return instantiateWithConstructor(cls, parameterTypes, args);
+      } catch (NoSuchMethodException nsme) {
+        return instantiateWithDecode(cls);
+      }
+    } catch (ClassNotFoundException cnfe) {
+      throw new RuntimeException(cnfe);
+    }
+  }
+
+  // Catch older classes to be replaced so earlier files can still be read.
+  // For this to work the return values continue to implement BinaryEncodableAndDecodable
+  // although the encode methods should never be called
+  private BinaryEncodableAndDecodable decodeObsoleteClass(String storedClassName) {
+    switch (storedClassName) {
+      case "edu.cmu.cs.dennisc.math.EulerAngles" -> {
+        return new EulerAngles(decodeAngle(), decodeAngle(), decodeAngle(), decodeEnum());
+      }
+      case "edu.cmu.cs.dennisc.math.Matrix3x3" -> {
+        return Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3());
+      }
+      case "edu.cmu.cs.dennisc.math.AxisAlignedBox" -> {
+        return new AxisAlignedBox(decodePoint3(), decodePoint3());
+      }
+      case "edu.cmu.cs.dennisc.math.AffineMatrix4x4" -> {
+        return new AffineMatrix4x4((OrthogonalMatrix3x3) Matrix3x3.create(decodeVector3(), decodeVector3(), decodeVector3()), decodePoint3());
+      }
+      case "edu.cmu.cs.dennisc.math.Vector3f" -> {
+        return new Vector3f(decodeFloat(), decodeFloat(), decodeFloat());
+      }
+    }
+    throw new RuntimeException("Unexpected math class : " + storedClassName);
+  }
+
+  private Vector3 decodeVector3() {
+    return new Vector3(decodeDouble(), decodeDouble(), decodeDouble());
+  }
+
+  private Point3 decodePoint3() {
+    return new Point3(decodeDouble(), decodeDouble(), decodeDouble());
+  }
+
+  private Angle decodeAngle() {
+    return new AngleInRadians(decodeDouble());
+  }
+
+  private static <E extends BinaryEncodableAndDecodable> E instantiateWithConstructor(Class<E> cls, Class<?>[] parameterTypes, Object[] args) throws ClassNotFoundException, NoSuchMethodException {
+    Constructor<E> cnstrctr = cls.getConstructor(parameterTypes);
+    return ReflectionUtilities.newInstance(cnstrctr, args);
+  }
+
+  private <E extends BinaryEncodableAndDecodable> E instantiateWithDecode(Class<E> cls) {
+    Constructor<E> cnstrctr = ReflectionUtilities.getConstructor(cls);
+    E newInstance = ReflectionUtilities.newInstance(cnstrctr);
+
+    Method decode = ReflectionUtilities.getMethod(cls, "decode", BinaryDecoder.class);
+    ReflectionUtilities.invoke(newInstance, decode, this);
+    return newInstance;
   }
 
   private static final Class<?>[] EMPTY_PARAMETER_TYPES = {BinaryDecoder.class};
@@ -264,64 +319,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable(Object context) {
     return (E) decodeBinaryEncodableAndDecodable(OBJECT_PARAMETER_TYPES, new Object[] {this, context});
   }
-
-  //  public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
-  //    String clsName = this.decodeString();
-  //    if( clsName.length() > 0 ) {
-  //      try {
-  //        java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, EMPTY_PARAMETER_TYPES );
-  //        return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-  //      } catch( NoSuchMethodException nsme ) {
-  ////        try {
-  ////          Class<E> cls = (Class<E>)Class.forName( clsName );
-  ////          java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
-  ////          E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-  ////          rv.decode( this );
-  ////          return rv;
-  ////        } catch( ClassNotFoundException cnfe ) {
-  ////          throw new RuntimeException( cnfe );
-  ////        }
-  //        throw new RuntimeException( nsme );
-  //      } catch( ClassNotFoundException cnfe ) {
-  //        throw new RuntimeException( cnfe );
-  //      }
-  ////      Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-  ////      java.lang.reflect.Constructor< E > cnstrctr;
-  ////      E rv;
-  ////      try {
-  ////        cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-  ////        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
-  ////      } catch( NoSuchMethodException nsme ) {
-  ////        cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-  ////        rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-  ////        rv.decode( this );
-  ////      }
-  ////      return rv;
-  //    } else {
-  //      return null;
-  //    }
-  //  }
-  @Override
-  public <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray(Class<E> componentCls, Object context) {
-    throw new RuntimeException("todo");
-  }
-
-  //  @Deprecated
-  //  public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
-  //    E rv = decodeBinaryEncodableAndDecodable();
-  //    assert cls.isInstance( rv );
-  //    return rv;
-  //  }
-  //  public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
-  //    String clsName = decodeString();
-  //    if( rv != null ) {
-  //      assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
-  //      rv.decode( this );
-  //    } else {
-  //      assert clsName.length() == 0;
-  //    }
-  //    return rv;
-  //  }
   @Override
   public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
     String clsName = decodeString();
@@ -365,21 +362,144 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   }
 
   @Override
-  public final ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable(ReferenceableBinaryEncodableAndDecodable rv, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
-    String clsName = decodeString();
-    if (rv != null) {
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( clsName, rv.getClass().getName() );
-      //assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
-      int reference = decodeInt();
-      if (map.containsKey(reference)) {
-        assert rv == map.get(reference);
-      } else {
-        map.put(reference, rv);
-        rv.decode(this, map);
+  public void decodeProperties(InstancePropertyOwner owner, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    while (true) {
+      String propertyName = decodeString();
+      if (propertyName.isEmpty()) {
+        break;
       }
-    } else {
-      assert clsName.length() == 0;
+      InstanceProperty property = owner.getPropertyNamed(propertyName);
+      assert property != null;
+      property.setValue(decodeValue(map));
     }
-    return rv;
+  }
+
+  private Object decodeValue(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    String valueClsName = decodeString();
+    assert valueClsName != null;
+    if (valueClsName.isEmpty()) {
+      return null;
+    }
+    Class<?> valueCls = ReflectionUtilities.getClassForName(valueClsName);
+    if (valueCls.isArray()) {
+      return decodeArray(map, valueCls);
+    }
+    if (Collection.class.isAssignableFrom(valueCls)) {
+      int size = decodeInt();
+      var collection = (Collection) ReflectionUtilities.newInstance(valueCls);
+      for (int i = 0; i < size; i++) {
+        String componentTypeName = decodeString();
+        Class<?> componentType = ReflectionUtilities.getClassForName(componentTypeName);
+        collection.add(decodeObject(componentType, map));
+      }
+      return null;
+    }
+    return decodeObject(valueCls, map);
+  }
+
+  private Object decodeArray(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map, Class valueCls) {
+    if (boolean[].class == valueCls) {
+      return decodeBooleanArray();
+    }
+    if (byte[].class == valueCls) {
+      return decodeByteArray();
+    }
+    if (char[].class == valueCls) {
+      return decodeCharArray();
+    }
+    if (double[].class == valueCls) {
+      return decodeDoubleArray();
+    }
+    if (float[].class == valueCls) {
+      return decodeFloatArray();
+    }
+    if (int[].class == valueCls) {
+      return decodeIntArray();
+    }
+    if (long[].class == valueCls) {
+      return decodeLongArray();
+    }
+    if (short[].class == valueCls) {
+      return decodeShortArray();
+    }
+    if (String[].class == valueCls) {
+      return decodeStringArray();
+    }
+    if (Enum[].class.isAssignableFrom(valueCls)) {
+      return decodeEnumArray(valueCls.getComponentType());
+    }
+    if (BinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+      return decodeBinaryEncodableAndDecodableArray(valueCls.getComponentType());
+    }
+    if (ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom(valueCls)) {
+      return decodeReferenceableBinaryEncodableAndDecodableArray(valueCls.getComponentType(), map);
+    }
+    int length = decodeInt();
+    Object value = Array.newInstance(valueCls.getComponentType(), length);
+    for (int i = 0; i < length; i++) {
+      Array.set(value, i, decodeObject(valueCls.getComponentType(), map));
+    }
+    return value;
+  }
+
+  private Object decodeObject(Class valueCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    if (BinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+      return decodeBinaryEncodableAndDecodable();
+    }
+    if (ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom(valueCls)) {
+      return decodeReferenceableBinaryEncodableAndDecodable(map);
+    }
+    if (ByteBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeByteBuffer(this);
+    }
+    if (CharBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeCharBuffer(this);
+    }
+    if (ShortBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeShortBuffer(this);
+    }
+    if (IntBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeIntBuffer(this);
+    }
+    if (LongBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeLongBuffer(this);
+    }
+    if (FloatBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeFloatBuffer(this);
+    }
+    if (DoubleBuffer.class.isAssignableFrom(valueCls)) {
+      return BufferUtilities.decodeDoubleBuffer(this);
+    }
+    if (Boolean.class == valueCls) {
+      return decodeBoolean();
+    }
+    if (Byte.class == valueCls) {
+      return decodeByte();
+    }
+    if (Character.class == valueCls) {
+      return decodeChar();
+    }
+    if (Double.class == valueCls) {
+      return decodeDouble();
+    }
+    if (Float.class == valueCls) {
+      return decodeFloat();
+    }
+    if (Integer.class == valueCls) {
+      return decodeInt();
+    }
+    if (Long.class == valueCls) {
+      return decodeLong();
+    }
+    if (Short.class == valueCls) {
+      return decodeShort();
+    }
+    if (String.class == valueCls) {
+      return decodeString();
+    }
+    if (Enum.class.isAssignableFrom(valueCls)) {
+      return this.<Enum>decodeEnum();
+    }
+    throw new RuntimeException(valueCls.getName());
   }
 }

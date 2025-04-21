@@ -43,7 +43,8 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
@@ -65,10 +66,10 @@ public class SVRUser extends SMovableTurnable implements MutableRider {
   public static final Position LEFT_HAND_POSITION = new Position(-HAND_OFFSET, HAND_HEIGHT, 0);
   public static final Position RIGHT_HAND_POSITION = new Position(HAND_OFFSET, HAND_HEIGHT, 0);
   static {
-    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.getInternal();
-    headMatrix.applyRotationAboutXAxis(SCamera.DEFAULT_CAMERA_TILT);
-    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.getInternal();
-    baseMatrix.applyRotationAboutYAxis(SCamera.DEFAULT_CAMERA_FACING);
+    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.asMatrix3x3();
+    headMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, SCamera.DEFAULT_CAMERA_TILT);
+    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.asMatrix3x3();
+    baseMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, SCamera.DEFAULT_CAMERA_FACING);
   }
 
   private final VrUserImp implementation = new VrUserImp("VRUser", this);

@@ -45,6 +45,8 @@ package org.alice.interact.manipulator;
 import java.awt.Point;
 
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -54,15 +56,11 @@ import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AngleUtilities;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -122,7 +120,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera());
     if (pickRay != null) {
       int xDif = mouseLocation.x - this.initialPoint.x;
       return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);
@@ -131,7 +129,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   }
 
   protected void initManipulator(InputState startInput) {
-    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed(this.rotateAxis);
+    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().transform(this.rotateAxis);
     this.initialPoint = new Point(startInput.getMouseLocation());
   }
 
@@ -157,25 +155,22 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-    if (!currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
-      Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
-      Angle previousAngle = getRotationBasedOnMouse(previousInput.getMouseLocation());
-      if ((currentAngle != null) && (previousAngle != null)) {
-        Angle angleDif = AngleUtilities.createSubtraction(currentAngle, previousAngle);
-        //The angleDif is the amount the object as rotated relative to the start of the manipulation
-        //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
-        Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
-        boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
-        if (didSnap) {
-          angleDif = snappedAngle;
-        }
-        this.standUpReference.setParent(this.manipulatedTransformable);
-        this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
-        this.standUpReference.setAxesOnlyToStandUp();
-        this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis, angleDif, this.standUpReference);
-      }
+    if (currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
+      return;
     }
-
+    Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
+    Angle previousAngle = getRotationBasedOnMouse(previousInput.getMouseLocation());
+    if ((currentAngle == null) || (previousAngle == null)) {
+      return;
+    }
+    Angle angleDif = currentAngle.minus(previousAngle);
+    //The angleDif is the amount the object was rotated relative to the start of the manipulation
+    //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+    Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
+    this.standUpReference.setParent(this.manipulatedTransformable);
+    this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
+    this.standUpReference.setAxesOnlyToStandUp();
+    this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis, snappedAngle, this.standUpReference);
   }
 
   @Override

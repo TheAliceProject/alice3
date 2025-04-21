@@ -50,8 +50,7 @@ import java.util.Map.Entry;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 public class WeightInfo implements BinaryEncodableAndDecodable {
   private Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs;
@@ -72,15 +71,14 @@ public class WeightInfo implements BinaryEncodableAndDecodable {
     return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs;
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = getMap();
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
       AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
-      AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse(originalInverseTransform);
+      AffineMatrix4x4 newTransform = originalInverseTransform.invert();
       //These need to have the scale removed just from the translation
-      newTransform.translation.multiply(scale);
-      newTransform.invert();
+      newTransform = newTransform.scaleTranslation(scale).invert();
       iatwp.setInverseAbsoluteTransformation(newTransform);
     }
   }

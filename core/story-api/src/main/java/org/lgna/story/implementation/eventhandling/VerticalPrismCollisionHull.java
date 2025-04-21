@@ -43,8 +43,8 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.math.Point2;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point2;
+import org.alice.math.immutable.Point3;
 
 import java.util.List;
 
@@ -67,8 +67,8 @@ public abstract class VerticalPrismCollisionHull {
     if (other == null || isBeyondHeight(other, proximity)) {
       return false;
     }
-    double xDistance = centerBase.x - other.centerBase.x;
-    double zDistance = centerBase.z - other.centerBase.z;
+    double xDistance = centerBase.x() - other.centerBase.x();
+    double zDistance = centerBase.z() - other.centerBase.z();
     double radius = distanceAlong(xDistance, zDistance);
     double otherRadius = other.distanceAlong(-xDistance, -zDistance);
     double allowedDistance = radius + otherRadius + proximity;
@@ -76,8 +76,8 @@ public abstract class VerticalPrismCollisionHull {
   }
 
   private boolean isBeyondHeight(VerticalPrismCollisionHull other, double proximity) {
-    double bottom = centerBase.y;
-    double otherBottom = other.centerBase.y;
+    double bottom = centerBase.y();
+    double otherBottom = other.centerBase.y();
     double top = bottom + height;
     double otherTop = otherBottom + other.height;
     return otherTop + proximity <= bottom || otherBottom - proximity >= top;

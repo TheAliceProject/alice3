@@ -300,7 +300,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
       SceneGraphTreeNode sgNode = (SceneGraphTreeNode) node;
       String positionString = "NO POSITION";
       if (sgNode.absoluteTransform != null) {
-        positionString = String.format("[%.3f, %.3f, %.3f]", sgNode.absoluteTransform.translation.x, sgNode.absoluteTransform.translation.y, sgNode.absoluteTransform.translation.z).toString();
+        positionString = String.format("[%.3f, %.3f, %.3f]", sgNode.absoluteTransform.translation().x(), sgNode.absoluteTransform.translation().y(), sgNode.absoluteTransform.translation().z());
       }
       this.transformLabel.setText(positionString);
       if (sgNode.stackTrace != null) {

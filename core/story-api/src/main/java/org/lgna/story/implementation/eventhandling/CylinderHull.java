@@ -43,8 +43,9 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.math.Point2;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point2;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,11 +67,11 @@ public class CylinderHull extends VerticalPrismCollisionHull {
   @Override
   protected List<Point2> getCrossSectionVertices(Point3 newCenter) {
     List<Point2> vertices = new ArrayList<>();
-    Point3 offset = newCenter == null ? Point3.createZero() : Point3.createSubtraction(newCenter, centerBase);
+    Vector3 offset = newCenter == null ? Vector3.ZERO : newCenter.minus(centerBase);
     for (int i = 0; i < APPROXIMATION_VERTEX_COUNT; i++) {
       double x = Math.sin(i * 2 * Math.PI / APPROXIMATION_VERTEX_COUNT) * radius;
       double z = Math.cos(i * 2 * Math.PI / APPROXIMATION_VERTEX_COUNT) * radius;
-      vertices.add(new Point2(x + offset.x, z + offset.z));
+      vertices.add(new Point2(x + offset.x(), z + offset.z()));
     }
     return vertices;
   }

@@ -43,14 +43,18 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Vector4;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CatmullRomCubic extends BasisMatrixCubic {
-  private static final Matrix4x4 s_h = new Matrix4x4(-0.5, 1.5, -1.5, 0.5, 1, -2.5, 2, -0.5, -0.5, 0, 0.5, 0, 0, 1, 0, 0);
+  private static final Matrix4x4 s_h = Matrix4x4.create(
+      -0.5, 1.5, -1.5, 0.5,
+      1, -2.5, 2, -0.5,
+      -0.5, 0, 0.5, 0,
+      0, 1, 0, 0);
 
   public CatmullRomCubic(Vector4 g) {
     super(s_h, g);

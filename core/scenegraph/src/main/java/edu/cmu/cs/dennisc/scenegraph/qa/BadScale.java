@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.qa;
 
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Matrix3x3;
 
 /**
  * @author Dennis Cosgrove
@@ -58,7 +58,7 @@ public class BadScale implements Problem {
 
   @Override
   public void mend(Mender mender) {
-    sgVisual.scale.setValue(Matrix3x3.createIdentity());
+    sgVisual.scale.setValue(Matrix3x3.IDENTITY);
   }
 
   @Override

@@ -42,10 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
@@ -61,6 +57,10 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
 import java.awt.event.KeyEvent;
@@ -129,18 +129,14 @@ public class CreateAPersonDragAdapter extends DragAdapter {
   @Override
   public void setSGCamera(AbstractCamera camera) {
     super.setSGCamera(camera);
-    AxisAlignedBox cameraBounds = new AxisAlignedBox();
-    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
+    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
 
-    Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation);
-    Point3 cameraMax = new Point3(cameraMin);
-    double originalY = cameraMin.y;
-    cameraMin.add(Vector3.createMultiplication(cameraBackwards, 1.5d));
-    cameraMin.y = .25d;
-    cameraMax.subtract(Vector3.createMultiplication(cameraBackwards, 4.5d));
-    cameraMax.y = originalY + 1.5d;
-    cameraBounds.setMinimum(cameraMin);
-    cameraBounds.setMaximum(cameraMax);
+    Point3 cameraMin = camera.getAbsoluteTransformation().translation();
+    Point3 cameraMax = cameraMin;
+    double originalY = cameraMin.y();
+    cameraMin = cameraMin.plus(cameraBackwards.times(1.5d)).withY(.25d);
+    cameraMax = cameraMax.minus(cameraBackwards.times(4.5d)).withY(originalY + 1.5d);
+    AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin, cameraMax);
     for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
       AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
       if (manipulator instanceof CameraTranslateKeyManipulator) {

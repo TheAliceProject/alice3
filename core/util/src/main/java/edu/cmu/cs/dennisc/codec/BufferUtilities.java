@@ -190,141 +190,106 @@ public class BufferUtilities {
   private BufferUtilities() {
   }
 
-  private static void encodeHeader(BinaryEncoder encoder, Buffer buffer, int bitsPerPrimitive, boolean isDirect, boolean isNativeRequired) {
+  private static void encodeHeader(BinaryEncoder encoder, Buffer buffer, int bitsPerPrimitive) {
+    encodeHeader(encoder, buffer, bitsPerPrimitive, true);
+  }
+
+  private static void encodeHeader(BinaryEncoder encoder, Buffer buffer, int bitsPerPrimitive, boolean isNativeRequired) {
     buffer.rewind();
-    BufferDetails bufferDetails = new BufferDetails(buffer, bitsPerPrimitive, isDirect, isNativeRequired);
+    BufferDetails bufferDetails = new BufferDetails(buffer, bitsPerPrimitive, buffer.isDirect(), isNativeRequired);
     bufferDetails.encodeHeader(encoder);
   }
 
-  public static void encode(BinaryEncoder encoder, ByteBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Character.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, ByteBuffer buffer) {
+    encodeHeader(encoder, buffer, Character.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, CharBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Character.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, CharBuffer buffer) {
+    encodeHeader(encoder, buffer, Character.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, ShortBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Short.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, ShortBuffer buffer) {
+    encodeHeader(encoder, buffer, Short.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, IntBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Integer.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, IntBuffer buffer) {
+    encode(encoder, buffer, true);
+  }
+
+  public static void encodeNativeOptional(BinaryEncoder encoder, IntBuffer buffer) {
+    encode(encoder, buffer, false);
+  }
+
+  private static void encode(BinaryEncoder encoder, IntBuffer buffer, boolean isNativeRequired) {
+    encodeHeader(encoder, buffer, Integer.SIZE, isNativeRequired);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, LongBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Long.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, LongBuffer buffer) {
+    encodeHeader(encoder, buffer, Long.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, FloatBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Float.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, FloatBuffer buffer) {
+    encodeHeader(encoder, buffer, Float.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static void encode(BinaryEncoder encoder, DoubleBuffer buffer, boolean isNativeRequired) {
-    encodeHeader(encoder, buffer, Double.SIZE, buffer.isDirect(), isNativeRequired);
+  public static void encode(BinaryEncoder encoder, DoubleBuffer buffer) {
+    encodeHeader(encoder, buffer, Double.SIZE);
     while (buffer.hasRemaining()) {
       encoder.encode(buffer.get());
     }
     encoder.flush();
   }
 
-  public static ByteBuffer decodeByteBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
+  public static ByteBuffer decodeByteBuffer(BinaryDecoder decoder) {
     BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer rv = header.createByteBuffer(decoder);
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeByte() );
-    //    }
-    //    rv.rewind();
-    return rv;
+    return header.createByteBuffer(decoder);
   }
 
-  public static CharBuffer decodeCharBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    CharBuffer rv = byteBuffer.asCharBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeChar() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static CharBuffer decodeCharBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asCharBuffer();
   }
 
-  public static ShortBuffer decodeShortBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    ShortBuffer rv = byteBuffer.asShortBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeShort() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static ShortBuffer decodeShortBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asShortBuffer();
   }
 
-  public static IntBuffer decodeIntBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    IntBuffer rv = byteBuffer.asIntBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeInt() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static IntBuffer decodeIntBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asIntBuffer();
   }
 
-  public static LongBuffer decodeLongBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    LongBuffer rv = byteBuffer.asLongBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeLong() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static LongBuffer decodeLongBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asLongBuffer();
   }
 
-  public static FloatBuffer decodeFloatBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    FloatBuffer rv = byteBuffer.asFloatBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeFloat() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static FloatBuffer decodeFloatBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asFloatBuffer();
   }
 
-  public static DoubleBuffer decodeDoubleBuffer(BinaryDecoder decoder, boolean isNativeRequired) {
-    BufferDetails header = new BufferDetails(decoder);
-    ByteBuffer byteBuffer = header.createByteBuffer(decoder);
-    DoubleBuffer rv = byteBuffer.asDoubleBuffer();
-    //    while( rv.hasRemaining() ) {
-    //      rv.put( decoder.decodeDouble() );
-    //    }
-    //    rv.rewind();
-    return rv;
+  public static DoubleBuffer decodeDoubleBuffer(BinaryDecoder decoder) {
+    return decodeByteBuffer(decoder).asDoubleBuffer();
   }
 }

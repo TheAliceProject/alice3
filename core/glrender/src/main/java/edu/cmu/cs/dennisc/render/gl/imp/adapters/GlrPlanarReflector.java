@@ -66,7 +66,7 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
     if ((sgGeometries != null) && (sgGeometries.length > 0)) {
       Geometry sgGeometry = sgGeometries[0];
 
-      geometryTransformation = sgGeometry.getPlane(geometryTransformation);
+      geometryTransformation = sgGeometry.getPlane();
       //      edu.cmu.cs.dennisc.math.PointD3 point0;
       //      edu.cmu.cs.dennisc.math.PointD3 point1;
       //      edu.cmu.cs.dennisc.math.VectorF3 normal;
@@ -139,13 +139,12 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
   //  }
 
   public boolean isFacing(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter) {
-    AffineMatrix4x4 m = owner.getTransformation(cameraAdapter.owner).immutable();
+    AffineMatrix4x4 m = owner.getTransformation(cameraAdapter.owner);
     return m.orientation().backward().z() > 0;
   }
 
   public synchronized void applyReflection(RenderContext rc) {
-    AffineMatrix4x4 m = owner.getAbsoluteTransformation().immutable();
-    m.times(geometryTransformation);
+    AffineMatrix4x4 m = owner.getAbsoluteTransformation().times(geometryTransformation);
 
     Plane plane = Plane.createInstance(m);
     plane.getEquation(this.equation);

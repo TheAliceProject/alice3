@@ -77,7 +77,7 @@ public class PickParameters {
   }
 
   public void addPickResult(Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource) {
-    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource.mutable()));
+    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource));
   }
 
   public List<PickResult> accessAllPickResults() {

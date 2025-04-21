@@ -50,8 +50,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.manipulator.SnapUtilities;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -64,6 +62,8 @@ import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author David Culyba
@@ -197,7 +197,7 @@ public class SnapGrid extends Transformable implements PropertyListener {
   private void setSnapGridBasedOnCameraPosition() {
     if (this.currentCamera != null) {
       AffineMatrix4x4 currentCameraPosition = this.currentCamera.getAbsoluteTransformation();
-      this.setTranslationOnly(getClosestSnapLocation(currentCameraPosition.translation), AsSeenBy.SCENE);
+      this.setTranslationOnly(getClosestSnapLocation(currentCameraPosition.translation()), AsSeenBy.SCENE);
     }
   }
 
@@ -209,8 +209,8 @@ public class SnapGrid extends Transformable implements PropertyListener {
   }
 
   private Point3 getClosestSnapLocation(Point3 point) {
-    int xMultiplier = (int) (point.x / this.gridSpacing);
-    int zMultiplier = (int) (point.z / this.gridSpacing);
+    int xMultiplier = (int) (point.x() / this.gridSpacing);
+    int zMultiplier = (int) (point.z() / this.gridSpacing);
     double x = xMultiplier * this.gridSpacing;
     double z = zMultiplier * this.gridSpacing;
     return new Point3(x, 0, z);
