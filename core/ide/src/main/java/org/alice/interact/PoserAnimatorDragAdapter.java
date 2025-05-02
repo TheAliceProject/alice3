@@ -53,16 +53,13 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
 import org.lgna.story.SModel;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -91,7 +88,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(orbiter);
     //    cameraOrbit.addCondition(rightMouseAndNonInteractive);
     cameraOrbit.addCondition(middleMouseAndAnything);
-    this.manipulators.add(cameraOrbit);
+    addManipulatorConditionSet(cameraOrbit);
 
     JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle(MovementDirection.BACKWARD, Color4f.BLUE);
     rotateJointAboutZAxis.setManipulation(new ObjectRotateDragManipulator());
@@ -118,7 +115,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet(manipulator);
     MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     mouseWheelCameraZoom.addCondition(mouseWheelCondition);
-    this.manipulators.add(mouseWheelCameraZoom);
+    addManipulatorConditionSet(mouseWheelCameraZoom);
 
     selectObject = new ManipulatorConditionSet(new ObjectRotateDragManipulator());
 
@@ -130,19 +127,7 @@ public class PoserAnimatorDragAdapter extends DragAdapter {
     this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, group);
     setInteractionState(HandleStyle.ROTATION);
 
-    this.manipulators.add(selectObject);
-
-    for (int i = 0; i < this.manipulators.size(); i++) {
-      this.manipulators.get(i).getManipulator().setDragAdapter(this);
-    }
-  }
-
-  @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
+    addManipulatorConditionSet(selectObject);
   }
 
   public final void setTarget(SModel model) {

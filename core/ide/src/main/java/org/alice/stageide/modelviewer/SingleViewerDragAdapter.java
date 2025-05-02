@@ -42,10 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
@@ -56,12 +52,9 @@ import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
-import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -72,9 +65,6 @@ public class SingleViewerDragAdapter extends DragAdapter {
     addZoomKeyControl();
     addCameraKeyControl();
 
-    for (ManipulatorConditionSet manipulatorConditionSet : getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   private void addDragControl() {
@@ -85,17 +75,10 @@ public class SingleViewerDragAdapter extends DragAdapter {
   }
 
   private void addZoomKeyControl() {
-    MovementKey[] zoomKeys = {
-        //Zoom out
-        new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-        new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-        //Zoom in
-        new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-        new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-    };
-    CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(zoomKeys);
+    // camera translate
+    CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator(DEFAULT_ZOOM_KEYS);
     ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet(cameraTranslateManip);
-    for (MovementKey zoomKey : zoomKeys) {
+    for (MovementKey zoomKey : DEFAULT_ZOOM_KEYS) {
       cameraTranslate.addCondition(new KeyPressCondition(zoomKey.keyValue));
     }
     addManipulatorConditionSet(cameraTranslate);
@@ -127,30 +110,10 @@ public class SingleViewerDragAdapter extends DragAdapter {
   }
 
   @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
-
-  @Override
-  public void setSGCamera(AbstractCamera camera) {
-    super.setSGCamera(camera);
-    Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation().backward();
-
-    Point3 cameraMin = camera.getAbsoluteTransformation().translation();
-    Point3 cameraMax = cameraMin;
-    double originalY = cameraMin.y();
-    cameraMin = cameraMin.plus(cameraBackwards.times(1.5d)).withY(.25d);
-    cameraMax = cameraMax.minus(cameraBackwards.times(4.5d)).withY(originalY + 1.5d);
-    AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin,  cameraMax);
-  }
-
-  @Override
   protected void handleMouseMoved(MouseEvent e) {
     //Overridden to prevent picking every frame since there is no need for rollover events
     currentInputState.setMouseLocation(e.getPoint());
     fireStateChange();
   }
 
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
-  }
 }

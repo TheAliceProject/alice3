@@ -57,11 +57,10 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
-import org.lgna.story.implementation.AbstractTransformableImp;
+
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -117,13 +116,6 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     mouseRotateObjectLeftRight.addCondition(moveableObjectWithCtrl);
     this.addManipulatorConditionSet(mouseRotateObjectLeftRight);
 
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
-  }
-
-  @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
   }
 
   @Override
@@ -135,7 +127,7 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     Point3 cameraMax = cameraMin;
     double originalY = cameraMin.y();
     cameraMin = cameraMin.plus(cameraBackwards.times(1.5d)).withY(.25d);
-    cameraMax = cameraMax.minus(cameraBackwards.times(4.5d)).withY(originalY + 1.5d);
+    cameraMax = cameraMax.minus(cameraBackwards.times(3.65d)).withY(originalY + 1.5d);
     AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin, cameraMax);
     for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
       AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
@@ -143,9 +135,5 @@ public class CreateAPersonDragAdapter extends DragAdapter {
         ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds);
       }
     }
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
   }
 }
