@@ -86,9 +86,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
     // if any dimension is out of bounds, stick at the previous position
     if (this.bounds != null) {
       Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
-      if (currentPos.x() > this.bounds.getXMaximum() || currentPos.x() < this.bounds.getXMinimum()
-          || currentPos.y() > this.bounds.getYMaximum() || currentPos.y() < this.bounds.getYMinimum()
-          || currentPos.z() > this.bounds.getZMaximum() || currentPos.z() < this.bounds.getZMinimum()) {
+      if (!bounds.contains(currentPos)) {
         this.manipulatedTransformable.setTranslationOnly(previousPos, AsSeenBy.SCENE);
       }
     }

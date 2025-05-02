@@ -200,14 +200,14 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
     // movable objects- translate, default interaction group
     ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet(new OmniDirectionalDragManipulator(), "Mouse Translate");
-    MouseDragCondition leftClickMoveableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    MouseDragCondition leftClickMoveableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), noModifiers);
     leftClickMouseTranslateObject.addCondition(leftClickMoveableObjects);
     this.addManipulatorConditionSet(leftClickMouseTranslateObject);
 
     // turnable objects- rotate
     // This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
     ManipulatorConditionSet leftClickMouseRotateObjectLeftRight = new ManipulatorConditionSet(new HandlelessObjectRotateDragManipulator(MovementDirection.UP));
-    MouseDragCondition leftClickTurnableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    MouseDragCondition leftClickTurnableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), noModifiers);
     leftClickMouseRotateObjectLeftRight.addCondition(leftClickTurnableObjects);
     leftClickMouseRotateObjectLeftRight.setEnabled(false);
     this.addManipulatorConditionSet(leftClickMouseRotateObjectLeftRight);
@@ -215,7 +215,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
     // resizable objects - scale
     // This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
     ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet(new ResizeDragManipulator(Resizer.UNIFORM, Resizer.XY_PLANE, Resizer.XZ_PLANE, Resizer.YZ_PLANE));
-    MouseDragCondition leftClickResizableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.RESIZABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    MouseDragCondition leftClickResizableObjects = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.RESIZABLE.pickHint()), noModifiers);
     leftClickMouseResizeObject.addCondition(leftClickResizableObjects);
     leftClickMouseResizeObject.setEnabled(false);
     this.addManipulatorConditionSet(leftClickMouseResizeObject);
@@ -240,8 +240,8 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
     // click + drag -> drag/move
     ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet(new ObjectGlobalHandleDragManipulator());
-    MouseDragCondition handleObjectCondition = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.THREE_D_HANDLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    MouseCondition handleObjectClickCondition = new MouseCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TWO_D_HANDLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    MouseDragCondition handleObjectCondition = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.THREE_D_HANDLE.pickHint()), noModifiers);
+    MouseCondition handleObjectClickCondition = new MouseCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TWO_D_HANDLE.pickHint()), noModifiers);
     mouseHandleDrag.addCondition(handleObjectCondition);
     mouseHandleDrag.addCondition(handleObjectClickCondition);
     this.addManipulatorConditionSet(mouseHandleDrag);
