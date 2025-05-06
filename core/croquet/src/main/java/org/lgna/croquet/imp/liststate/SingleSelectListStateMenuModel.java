@@ -82,6 +82,15 @@ public class SingleSelectListStateMenuModel<T, D extends ListData<T>> extends Me
   protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
     Logger.todo(menuItemContainer, e);
     super.handleShowing(menuItemContainer, e);
+
+    initContents(menuItemContainer);
+  }
+
+  @Override
+  protected void initContents(MenuItemContainer menuItemContainer) {
+    menuItemContainer.getViewController().getAwtComponent().removeAll();
+    menuItemContainer.getViewController().getAwtComponent().validate();
+
     ButtonGroup buttonGroup = new ButtonGroup();
     for (final Object item : this.listSelectionState) {
       Operation operation = this.listSelectionState.getItemSelectionOperation((T) item);

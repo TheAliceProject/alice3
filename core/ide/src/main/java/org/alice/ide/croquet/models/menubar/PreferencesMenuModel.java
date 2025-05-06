@@ -74,8 +74,6 @@ public class PreferencesMenuModel extends PredeterminedMenuModel {
           LocaleState.getInstance().getMenuModel(),
           MenuModel.SEPARATOR, IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),
           MenuModel.SEPARATOR, IsIncludingThisForFieldAccessesState.getInstance().getMenuModel(),
-          //org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-          //org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
           MenuModel.SEPARATOR, IdeApp.INSTANCE.getIsRecursionAllowedPreferenceDialogLaunchOperation().getMenuItemPrepModel(),
           IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
           IsIncludingProgramType.getInstance().getMenuItemPrepModel(),

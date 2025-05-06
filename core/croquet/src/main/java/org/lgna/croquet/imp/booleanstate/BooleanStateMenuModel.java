@@ -74,10 +74,6 @@ import java.util.UUID;
     return "menu";
   }
 
-  public BooleanState getBooleanState() {
-    return this.state;
-  }
-
   @Override
   public boolean isEnabled() {
     return this.state.isEnabled();
@@ -92,6 +88,15 @@ import java.util.UUID;
   protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
     Logger.todo(menuItemContainer, e);
     super.handleShowing(menuItemContainer, e);
+
+    initContents(menuItemContainer);
+  }
+
+  @Override
+  protected void initContents(MenuItemContainer menuItemContainer) {
+    menuItemContainer.getViewController().getAwtComponent().removeAll();
+    menuItemContainer.getViewController().getAwtComponent().validate();
+
     ButtonGroup buttonGroup = new ButtonGroup();
     for (boolean isTrue : new boolean[] {true, false}) {
       Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();

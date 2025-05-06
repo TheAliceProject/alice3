@@ -104,11 +104,6 @@ public final class ImmutableListData<T> extends ListData<T> {
   }
 
   @Override
-  public void internalSetItemAt(int index, T item) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public Iterator<T> iterator() {
     return Arrays.asList(this.values).iterator();
   }
