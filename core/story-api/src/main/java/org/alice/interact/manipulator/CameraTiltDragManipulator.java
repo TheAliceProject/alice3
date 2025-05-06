@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.debug.DebugSphere;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
@@ -130,11 +129,11 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
     Vector3 oldDirection = oldPointInCamera.asVector().normalized();
 
-    Angle xAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, xDif);
+    Angle xAngle = oldDirection.angleWith(xDif);
     if (currentInput.getMouseLocation().x < previousInput.getMouseLocation().x) {
       xAngle = xAngle.negated();
     }
-    Angle yAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, yDif);
+    Angle yAngle = oldDirection.angleWith(yDif);
     if (currentInput.getMouseLocation().y < previousInput.getMouseLocation().y) {
       yAngle = yAngle.negated();
     }

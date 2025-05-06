@@ -56,13 +56,12 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.debug.DebugSphere;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -364,8 +363,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     double distance = planePosition.distanceFrom(cameraTransform.translation());
     double dot = toCamera.dotProduct(cameraTransform.orientation().getBackward());
     double dotLevel = Vector3.POSITIVE_Y_AXIS.dotProduct(cameraTransform.orientation().getUp());
-    AngleInRadians angle = VectorUtilities.getAngleBetweenVectors(toCamera, cameraTransform.orientation().getBackward());
-    AngleInRadians angleUp = VectorUtilities.getAngleBetweenVectors(cameraTransform.orientation().getUp(), Vector3.POSITIVE_Y_AXIS);
+    Angle angle = toCamera.angleWith(cameraTransform.orientation().getBackward());
+    Angle angleUp = cameraTransform.orientation().getUp().angleWith(Vector3.POSITIVE_Y_AXIS);
 
     Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera());
     double pickDotHorizontal = pickRay.direction().dotProduct(Vector3.POSITIVE_Y_AXIS);

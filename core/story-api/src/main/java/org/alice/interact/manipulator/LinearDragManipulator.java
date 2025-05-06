@@ -53,7 +53,6 @@ import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -225,7 +224,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
         if (Math.abs(toCamera.dotProduct(this.absoluteDragAxis)) > .99d) {
           axisAlignedNormal = toCamera;
         } else {
-          Vector3 axisAlignedCameraVector = VectorUtilities.projectOntoVector(toCamera, this.absoluteDragAxis);
+          Vector3 axisAlignedCameraVector = toCamera.projectedOnto(this.absoluteDragAxis);
           axisAlignedNormal = toCamera.minus(axisAlignedCameraVector).normalized();
         }
         this.handleAlignedPlane = Plane.createInstance(this.linearHandle.getAbsoluteTransformation().translation(), axisAlignedNormal);

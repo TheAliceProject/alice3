@@ -53,11 +53,10 @@ import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
-import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -150,7 +149,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
   protected double getBadAngleAmount(Plane plane, Ray pickRay) {
     Vector3 cameraDirection = this.getCamera().getAbsoluteTransformation().orientation().backward();
     double cameraDistanceFactor = Math.abs(plane.distanceTo(this.getCamera().getAbsoluteTransformation().translation()));
-    AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(cameraDirection, plane.getNormal());
+    Angle angleBetweenVector = cameraDirection.angleWith(plane.getNormal());
     double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
 
     double scaledBadAngleThreshold = BAD_ANGLE_THRESHOLD / cameraDistanceFactor;
