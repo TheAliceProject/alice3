@@ -106,6 +106,7 @@ public class PickParameters {
     return this.mousePos.x;
   }
 
+  // We use this "flipped" y to account for the viewport vs AWT (mouse click)
   public int getFlippedY(Rectangle actualViewport) {
     return actualViewport.height - this.mousePos.y;
   }
