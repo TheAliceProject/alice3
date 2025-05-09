@@ -102,7 +102,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 
   @Override
   public String getUndoRedoDescription() {
-    return "Object Move";
+    return "LinearDrag - Object Move";
   }
 
   @Override

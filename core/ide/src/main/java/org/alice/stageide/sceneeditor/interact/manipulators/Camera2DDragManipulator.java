@@ -114,7 +114,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 
   @Override
   public String getUndoRedoDescription() {
-    return "Camera Move";
+    return "Camera Move (2D Drag)";
   }
 
   @Override

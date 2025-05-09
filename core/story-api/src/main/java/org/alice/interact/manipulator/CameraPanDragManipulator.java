@@ -59,7 +59,7 @@ public class CameraPanDragManipulator extends CameraManipulator {
 
   @Override
   public String getUndoRedoDescription() {
-    return "Camera Move";
+    return "Camera Move (Pan)";
   }
 
   @Override

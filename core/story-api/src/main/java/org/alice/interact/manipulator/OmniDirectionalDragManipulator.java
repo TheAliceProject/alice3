@@ -126,7 +126,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   @Override
   public String getUndoRedoDescription() {
-    return "Object Move";
+    return "Omni-Drag - Object Move";
   }
 
   @Override

@@ -73,7 +73,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 
   @Override
   public String getUndoRedoDescription() {
-    return "Camera Move";
+    return "Camera Move (Drag)";
   }
 
   @Override
