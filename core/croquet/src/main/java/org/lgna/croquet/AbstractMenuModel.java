@@ -188,7 +188,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
     Menu rv = this.createMenu();
     menuItemContainer.addMenu(rv);
 
-    // normally, the contents of a submenu is initialized menu open event handelr. However, that handler doesn't get called on
+    // normally, the contents of a submenu is initialized in the menu open event handler. However, that handler doesn't get called on
     // Mac for submenus in the menu bar, so this is a workaround
     if (SystemUtilities.isMac()) {
       initContents(rv);

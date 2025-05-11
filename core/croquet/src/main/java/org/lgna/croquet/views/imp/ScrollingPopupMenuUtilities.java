@@ -101,12 +101,8 @@ public class ScrollingPopupMenuUtilities {
     jPopupMenu.setLayout(layout);
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
     jPopupMenu.addMenuKeyListener(menuKeyListener);
-    JScrollMenuItem upScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
-    //upScroll.setFocusable(false);
-    JScrollMenuItem downScroll = new JScrollMenuItem(layout, ScrollDirection.UP);
-    //downScroll.setFocusable(false);
-    jPopupMenu.add(upScroll, ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
-    jPopupMenu.add(downScroll, ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
   }
 
   public static void addSideMenu(JPopupMenu jPopupMenu, JMenu jSideMenu) {
