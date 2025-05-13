@@ -410,11 +410,9 @@
             <configuration>
               <rules>
               <requireMavenVersion>
-                <version>[3.6.3,3.9.6]</version>
-                <message>The build requires maven version 3.6.3-3.9.6.
-  Problems have been seen with 3.9.7.
-  There is no guarantee with newer maven versions.
-  If you want try (at your own risk) use:
+                <version>[3.9.9]</version>
+                <message>The build requires maven version 3.9.9.
+  If you want to try another use:
            mvn -Denforcer.skip</message>
               </requireMavenVersion>
               </rules>
