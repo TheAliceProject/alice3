@@ -376,7 +376,7 @@
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version>
+        <version>3.5.3</version>
         <scope>test</scope>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-webp -->
@@ -463,7 +463,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.2</version>
+          <version>3.5.3</version>
           <dependencies>
             <dependency>
               <groupId>org.apache.maven.surefire</groupId>
