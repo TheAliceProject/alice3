@@ -34,7 +34,7 @@
       <variable name="included_jre_version" value="17" />
     </variables>
     <codeSigning windowsEnabled="true" windowsPkcs12File="../../The Alice Project.p12" />
-    <jreBundles jdkProviderId="AdoptOpenJDK" release="17/jdk-17+35" />
+    <jreBundles jdkProviderId="AdoptOpenJDK" release="21/jdk-21.0.7+6" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="*.sha1,*.lastUpdated,*.pom,*.repositories,*.DS_Store" defaultOverwriteMode="2">
     <mountPoints>
