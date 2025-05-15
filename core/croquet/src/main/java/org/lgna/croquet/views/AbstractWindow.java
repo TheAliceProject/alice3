@@ -390,9 +390,6 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
   public void setMenuBarComposite(MenuBarComposite menuBarComposite) {
     if (this.menuBarComposite != menuBarComposite) {
       synchronized (this.getAwtComponent().getTreeLock()) {
-        if (this.menuBarComposite != null) {
-          this.menuBarComposite.handlePostDeactivation();
-        }
         this.menuBarComposite = menuBarComposite;
         updateMenuBar();
       }
