@@ -53,13 +53,9 @@ import java.util.UUID;
 public abstract class PredeterminedMenuModel extends StaticMenuModel {
   private final StandardMenuItemPrepModel[] models;
 
-  public PredeterminedMenuModel(UUID individualId, boolean showScrollArrows, StandardMenuItemPrepModel... models) {
-    super(individualId, showScrollArrows);
-    this.models = models;
-  }
-
   public PredeterminedMenuModel(UUID individualId, StandardMenuItemPrepModel... models) {
-    this(individualId, true, models);
+    super(individualId);
+    this.models = models;
   }
 
   public PredeterminedMenuModel(UUID individualId, List<StandardMenuItemPrepModel> models) {

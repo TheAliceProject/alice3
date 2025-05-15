@@ -44,6 +44,7 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.MenuItemPrepModel;
 import org.lgna.croquet.StaticMenuModel;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities;
@@ -55,7 +56,7 @@ import javax.swing.event.PopupMenuListener;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu<M extends PrepModel> extends ViewController<JMenu, M> implements MenuItemContainer {
+public abstract class AbstractMenu<M extends MenuItemPrepModel> extends ViewController<JMenu, M> implements MenuItemContainer {
   private boolean isIconSet;
   private Icon setIcon;
 
@@ -103,13 +104,7 @@ public abstract class AbstractMenu<M extends PrepModel> extends ViewController<J
       }
     };
 
-    boolean showingScroll = true;
-
-    if (getModel() instanceof StaticMenuModel staticModel) {
-      showingScroll = staticModel.showScrollArrows();
-    }
-
-    if (showingScroll) {
+    if (getModel().showScrollArrows()) {
       ScrollingPopupMenuUtilities.initializeScrollingCapability(rv.getPopupMenu());
     }
 

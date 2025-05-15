@@ -116,7 +116,6 @@ public class InternalTestingMenuModel extends PredeterminedMenuModel {
 
   private InternalTestingMenuModel() {
     super(UUID.fromString("6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8"),
-          false,
           createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
           createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
           createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),

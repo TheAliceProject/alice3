@@ -69,8 +69,13 @@ public class MethodHeaderMenuModel extends StaticMenuModel {
   }
 
   private MethodHeaderMenuModel(UserMethod method) {
-    super(UUID.fromString("e5c3fed5-6498-421e-9208-0484725adcef"), true);
+    super(UUID.fromString("e5c3fed5-6498-421e-9208-0484725adcef"));
     this.method = method;
+  }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
   }
 
   @Override

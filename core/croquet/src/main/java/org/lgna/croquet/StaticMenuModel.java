@@ -54,15 +54,9 @@ import java.util.UUID;
  */
 public abstract class StaticMenuModel extends MenuModel {
   private StandardMenuItemPrepModel[] models;
-  private final boolean showScrollArrows;
 
-  public StaticMenuModel(UUID individualId, boolean showScrollArrows) {
+  public StaticMenuModel(UUID individualId) {
     super(individualId);
-    this.showScrollArrows = showScrollArrows;
-  }
-
-  public boolean showScrollArrows() {
-    return showScrollArrows;
   }
 
   protected abstract StandardMenuItemPrepModel[] createModels();

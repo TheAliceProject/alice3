@@ -56,4 +56,9 @@ import java.util.UUID;
   public FieldMenu(UserField field) {
     super(UUID.fromString("525cb5c8-1490-4468-8eca-cee0affff602"), RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel(), DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
   }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
 }

@@ -60,6 +60,11 @@ public abstract class MemberMenuModel<M extends AbstractMember> extends Predeter
     this.member = member;
   }
 
+  @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
+
   public M getMember() {
     return this.member;
   }

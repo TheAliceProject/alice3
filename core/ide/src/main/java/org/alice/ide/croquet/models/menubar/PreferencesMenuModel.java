@@ -69,7 +69,6 @@ public class PreferencesMenuModel extends PredeterminedMenuModel {
 
   private PreferencesMenuModel() {
     super(UUID.fromString("e8f8a5b3-83be-4519-8956-3ef2b9546e23"),
-          false,
           FormatterState.getInstance().getMenuModel(),
           LocaleState.getInstance().getMenuModel(),
           MenuModel.SEPARATOR, IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),

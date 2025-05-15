@@ -54,7 +54,7 @@ import java.util.UUID;
  */
 public class ProjectMenuModel extends StaticMenuModel {
   public ProjectMenuModel(ProjectDocumentFrame projectDocumentFrame) {
-    super(UUID.fromString("f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4"), false);
+    super(UUID.fromString("f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4"));
     this.projectDocumentFrame = projectDocumentFrame;
   }
 

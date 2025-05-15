@@ -63,10 +63,6 @@ public class GalleryMenuModel extends PredeterminedMenuModel {
 
   private GalleryMenuModel() {
     super(UUID.fromString("502915e7-f12b-47b6-a5d0-5fa49d378eca"),
-          false,
-          //todo:
-          //        org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptingUserForFieldNamesState.getInstance(),
-          //        edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
           IsPromptProvidingInitialFieldNamesState.getInstance().getMenuItemPrepModel(),
           IsPromptIncludingTypeAndInitializerState.getInstance().getMenuItemPrepModel(),
           IsPromptIncludingPreviewState.getInstance().getMenuItemPrepModel());

@@ -57,7 +57,7 @@ import java.util.UUID;
  */
 public class EditMenuModel extends PredeterminedMenuModel {
   public EditMenuModel(ProjectDocumentFrame projectDocumentFrame) {
-    super(UUID.fromString("dbfe00f8-a401-4858-be5c-a544cad7c938"), false);
+    super(UUID.fromString("dbfe00f8-a401-4858-be5c-a544cad7c938"));
     this.projectDocumentFrame = projectDocumentFrame;
   }
 

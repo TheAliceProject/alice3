@@ -62,7 +62,6 @@ public class AllowNullMenuModel extends PredeterminedMenuModel {
 
   private AllowNullMenuModel() {
     super(UUID.fromString("95c7c508-4aea-4ada-ac3c-0ff2972f9766"),
-          false,
           IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(),
           IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel());
   }
