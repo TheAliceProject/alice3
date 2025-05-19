@@ -45,8 +45,6 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.MenuItemPrepModel;
-import org.lgna.croquet.StaticMenuModel;
-import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities;
 
 import javax.swing.Icon;
