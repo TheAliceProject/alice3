@@ -75,7 +75,18 @@ public class FileMenuModel extends StaticMenuModel {
 
   @Override
   protected StandardMenuItemPrepModel[] createModels() {
-    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(), projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, RecentProjectsMenuModel.getInstance(), MenuModel.SEPARATOR, new ImportGalleryResourceOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, SaveProjectOperation.getInstance().getMenuItemPrepModel(), SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
+    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
+        projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
+        projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
+        MenuModel.SEPARATOR,
+        RecentProjectsMenuModel.getInstance(),
+        MenuModel.SEPARATOR,
+        new ImportGalleryResourceOperation().getMenuItemPrepModel(),
+        MenuModel.SEPARATOR,
+        PreferencesMenuModel.getInstance(),
+        MenuModel.SEPARATOR,
+        SaveProjectOperation.getInstance().getMenuItemPrepModel(),
+        SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
     if (ENABLE_EXPORT) {
       list.add(new ExportProjectOperation().getMenuItemPrepModel());
     }

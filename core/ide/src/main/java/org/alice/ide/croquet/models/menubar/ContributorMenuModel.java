@@ -54,4 +54,9 @@ public class ContributorMenuModel extends PredeterminedMenuModel {
   public ContributorMenuModel(BooleanState localizeReviewIsShowingState) {
     super(UUID.fromString("4215bc20-55ec-4b7e-9dc0-d573501ea985"), localizeReviewIsShowingState.getMenuItemPrepModel());
   }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
 }

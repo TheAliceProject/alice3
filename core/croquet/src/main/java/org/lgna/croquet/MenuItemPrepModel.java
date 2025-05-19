@@ -52,4 +52,8 @@ public abstract class MenuItemPrepModel extends AbstractModel implements PrepMod
   MenuItemPrepModel(UUID id) {
     super(id);
   }
+
+  public boolean showScrollArrows() {
+    return false;
+  }
 }

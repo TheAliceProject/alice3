@@ -119,6 +119,9 @@ public abstract class Application<D extends DocumentFrame> {
   public void initialize(String[] args) {
     if (SystemUtilities.isMac()) {
       Desktop application = Desktop.getDesktop();
+
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+
       application.setAboutHandler(e -> {
         Operation aboutOperation = Application.this.getAboutOperation();
         if (aboutOperation != null) {

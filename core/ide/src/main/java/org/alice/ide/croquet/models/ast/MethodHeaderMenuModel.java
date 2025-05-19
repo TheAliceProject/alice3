@@ -74,6 +74,11 @@ public class MethodHeaderMenuModel extends StaticMenuModel {
   }
 
   @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
+
+  @Override
   protected StandardMenuItemPrepModel[] createModels() {
     //todo
     ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();

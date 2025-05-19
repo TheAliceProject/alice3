@@ -239,7 +239,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
   public final void handleCancel(UserActivity userActivity) {
     try {
-      if (userActivity.getCompletionModel() == null) {
+      if (userActivity != null && userActivity.getCompletionModel() == null) {
         userActivity.setCompletionModel(getCompletionModel());
       }
     } finally {

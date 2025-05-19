@@ -54,7 +54,6 @@ import org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.DefaultRadioButtons;
 import org.lgna.croquet.views.List;
-import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
@@ -387,11 +386,7 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 
       this.dataIndexPair.data.internalSetAllItems(items);
 
-      //    if( items.contains( previousSelectedValue ) ) {
       this.dataIndexPair.index = this.indexOf(previousSelectedValue);
-      //    } else {
-      //      this.index = -1;
-      //    }
 
       this.fireContentsChanged(0, this.getItemCount());
     } finally {
@@ -432,12 +427,6 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 
   public List<T> createList() {
     return new List<T>(this);
-  }
-
-  public List<T> createListWithItemCodecListCellRenderer() {
-    List<T> rv = this.createList();
-    rv.setCellRenderer(new ItemCodecListCellRenderer<T>(this.getItemCodec()));
-    return rv;
   }
 
   public DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {

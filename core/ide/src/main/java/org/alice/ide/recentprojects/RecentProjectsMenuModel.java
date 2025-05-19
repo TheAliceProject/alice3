@@ -225,4 +225,12 @@ public class RecentProjectsMenuModel extends MenuModel {
     }
     super.handleShowing(menuItemContainer, e);
   }
+
+  @Override
+  protected void initContents(MenuItemContainer menuItemContainer) {
+    menuItemContainer.getViewController().getAwtComponent().removeAll();
+    menuItemContainer.getViewController().getAwtComponent().validate();
+
+    setChildren(menuItemContainer);
+  }
 }

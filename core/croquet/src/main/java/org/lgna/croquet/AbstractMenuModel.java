@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 import org.lgna.croquet.history.MenuItemSelectStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Menu;
@@ -178,10 +180,20 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
     return new Menu(this);
   }
 
+  protected void initContents(MenuItemContainer menuItemContainer) {
+  }
+
   @Override
   public Menu createMenuItemAndAddTo(MenuItemContainer menuItemContainer) {
     Menu rv = this.createMenu();
     menuItemContainer.addMenu(rv);
+
+    // normally, the contents of a submenu is initialized in the menu open event handler. However, that handler doesn't get called on
+    // Mac for submenus in the menu bar, so this is a workaround
+    if (SystemUtilities.isMac()) {
+      initContents(rv);
+    }
+
     return rv;
   }
 }

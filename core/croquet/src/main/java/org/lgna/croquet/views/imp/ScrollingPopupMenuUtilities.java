@@ -44,8 +44,11 @@ package org.lgna.croquet.views.imp;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
 import java.awt.Component;
-import java.awt.LayoutManager;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -60,12 +63,8 @@ public class ScrollingPopupMenuUtilities {
   private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-      Component component = e.getComponent();
-      if (component instanceof JPopupMenu) {
-        JPopupMenu jPopupMenu = (JPopupMenu) component;
-        LayoutManager layoutManager = jPopupMenu.getLayout();
-        if (layoutManager instanceof ScrollingPopupMenuLayout) {
-          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+      if (e.getComponent() instanceof JPopupMenu jPopupMenu) {
+        if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
           scrollingPopupMenuLayout.adjustIndex(e.getWheelRotation());
         }
       }
@@ -73,12 +72,37 @@ public class ScrollingPopupMenuUtilities {
     }
   };
 
+  private static final MenuKeyListener menuKeyListener = new MenuKeyListener() {
+    @Override
+    public void menuKeyTyped(MenuKeyEvent e) {
+    }
+
+    @Override
+    public void menuKeyPressed(MenuKeyEvent e) {
+      MenuElement[] menus = e.getPath();
+      if (menus.length > 0 && menus[menus.length - 1] instanceof JPopupMenu jPopupMenu) {
+        if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
+          if (e.getKeyCode() == KeyEvent.VK_UP) {
+            scrollingPopupMenuLayout.adjustIndex(-1);
+          }  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            scrollingPopupMenuLayout.adjustIndex(1);
+          }
+        }
+      }
+    }
+
+    @Override
+    public void menuKeyReleased(MenuKeyEvent e) {
+    }
+  };
+
   public static void initializeScrollingCapability(JPopupMenu jPopupMenu) {
     ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout(jPopupMenu);
     jPopupMenu.setLayout(layout);
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
+    jPopupMenu.addMenuKeyListener(menuKeyListener);
     jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
-    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.DOWN), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
   }
 
   public static void addSideMenu(JPopupMenu jPopupMenu, JMenu jSideMenu) {

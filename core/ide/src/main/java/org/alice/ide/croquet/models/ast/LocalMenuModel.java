@@ -68,4 +68,9 @@ public class LocalMenuModel extends PredeterminedMenuModel {
   private LocalMenuModel(UserLocal local) {
     super(UUID.fromString("b225cc92-f2c6-4a47-9818-1bbd0319091b"), RenameLocalComposite.getInstance(local).getLaunchOperation().getMenuItemPrepModel());
   }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
 }
