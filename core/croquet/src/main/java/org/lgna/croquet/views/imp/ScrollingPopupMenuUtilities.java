@@ -102,7 +102,7 @@ public class ScrollingPopupMenuUtilities {
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
     jPopupMenu.addMenuKeyListener(menuKeyListener);
     jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
-    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.DOWN), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
   }
 
   public static void addSideMenu(JPopupMenu jPopupMenu, JMenu jSideMenu) {
