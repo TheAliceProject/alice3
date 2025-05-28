@@ -160,14 +160,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     @Override
     public void dragStarted(DragStep step) {
-      DragModel model = step.getModel();
       DragComponent dragSource = step.getDragSource();
       dragSource.showDragProxy();
-      if (model instanceof GalleryDragModel) {
-        GalleryDragModel galleryDragModel = (GalleryDragModel) model;
-        System.err.println("galleryNode.setDesiredTransformation(null);");
-        //galleryNode.setDesiredTransformation(null);
-      }
     }
 
     @Override
