@@ -105,11 +105,12 @@ public final class IssueReportWorker extends SwingWorker<Boolean, String> {
     try {
       uploadToJiraViaRest();
       this.process("SUCCEEDED.\n");
+      return true;
     } catch (Exception e) {
       e.printStackTrace();
       this.process("FAILED.\n");
+      return false;
     }
-    return true;
   }
 
   @Override
