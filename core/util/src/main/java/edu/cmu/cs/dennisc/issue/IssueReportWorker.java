@@ -43,12 +43,13 @@
 
 package edu.cmu.cs.dennisc.issue;
 
-import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 import edu.cmu.cs.dennisc.jira.rest.RestUtilities;
+import net.rcarz.jiraclient.Issue;
 
 import javax.swing.SwingWorker;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -80,15 +81,14 @@ public final class IssueReportWorker extends SwingWorker<Boolean, String> {
   private void uploadToJiraViaRest() throws Exception {
     JIRAReport jiraReport = issueReportGenerator.generateIssue();
     if (jiraReport != null) {
-      BasicIssue result = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
-      this.key = result.getKey();
-
+      Issue issue = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
+      this.key = issue.getKey();
       List<Attachment> attachments = jiraReport.getAttachments();
-      if ((attachments != null) && (attachments.size() > 0)) {
+      if (attachments != null && !attachments.isEmpty()) {
         this.process("\n");
         for (Attachment attachment : attachments) {
           this.process("\t" + attachment.getFileName() + "... ");
-          RestUtilities.addAttachment(reportSubmissionConfiguration.getJIRAViaRestServer(), result, attachment);
+          issue.addAttachment(new File(attachment.getFileName()));
           this.process("done.\n");
         }
       }

@@ -44,9 +44,9 @@
 package org.lgna.croquet.preferences;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.apache.axis.encoding.Base64;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.StringState;
+import redstone.xmlrpc.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -57,6 +57,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.prefs.Preferences;
@@ -88,7 +89,7 @@ public abstract class PreferenceStringState extends StringState {
       if (encryptionKey != null) {
         try {
           Cipher cipher = getCypher(encryptionKey, Cipher.DECRYPT_MODE);
-          byte[] base64 = Base64.decode(rv);
+          byte[] base64 = Base64.decode(rv.getBytes());
           byte[] bytes = cipher.doFinal(base64);
           rv = new String(bytes, CHARSET_NAME);
         } catch (Exception e) {
@@ -119,7 +120,7 @@ public abstract class PreferenceStringState extends StringState {
         try {
           Cipher cipher = getCypher(state.encryptionKey, Cipher.ENCRYPT_MODE);
           byte[] bytes = cipher.doFinal(value.getBytes(CHARSET_NAME));
-          possiblyEncryptedValue = Base64.encode(bytes);
+          possiblyEncryptedValue = Arrays.toString(Base64.encode(bytes));
         } catch (Exception e) {
           possiblyEncryptedValue = null;
         }
