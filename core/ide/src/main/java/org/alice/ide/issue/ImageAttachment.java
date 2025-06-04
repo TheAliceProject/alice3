@@ -66,11 +66,6 @@ public class ImageAttachment implements Attachment {
   }
 
   @Override
-  public String getMIMEType() {
-    return "image/png";
-  }
-
-  @Override
   public String getFileName() {
     return this.fileName;
   }

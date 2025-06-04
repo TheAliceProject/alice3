@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
-import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.Initializer;
 import org.lgna.croquet.Operation;
@@ -77,7 +76,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
   public ReportIssueComposite() {
     super(UUID.fromString("96e23d44-c8b1-4da1-8d59-aea9f7ee7b42"), IsModal.FALSE);
     this.reportTypeState = createImmutableListStateForEnum("reportTypeState", IssueType.class, null);
-    this.registerSubComposite(logInOutComposite);
     this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation("reportBug", new IssueTypeInitializer(IssueType.BUG));
   }
 
@@ -135,10 +133,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 
   public ImmutableDataSingleSelectListState<BugSubmitAttachment> getAttachmentState() {
     return this.attachmentState;
-  }
-
-  public CardOwnerComposite getLogInOutCardComposite() {
-    return this.logInOutComposite;
   }
 
   @Override
@@ -203,7 +197,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
   private final StringState descriptionState = createStringState("descriptionState");
   private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum("attachmentState", BugSubmitAttachment.class, null);
   private final Operation browserOperation = new BrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
-  private final LogInOutComposite logInOutComposite = new LogInOutComposite(UUID.fromString("079f108d-c3bb-4581-b107-f21b8d7286ca"), BugLoginComposite.getInstance());
   private final Operation reportBugLaunchOperation;
 
   private final ValueListener<String> adapter = e -> getSubmitBugOperation().setEnabled(summaryState.getValue().length() > 0);

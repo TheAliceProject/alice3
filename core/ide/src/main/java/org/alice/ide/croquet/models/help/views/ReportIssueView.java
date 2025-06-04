@@ -48,10 +48,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
-import org.alice.ide.IDE;
-import org.alice.ide.IdeConfiguration;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
-import org.alice.ide.issue.swing.views.HeaderPane;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FormPanel;
 import org.lgna.croquet.views.Hyperlink;
@@ -62,13 +59,12 @@ import org.lgna.croquet.views.TextArea;
 import org.lgna.croquet.views.VerticalAlignment;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.lgna.issue.IssueReportingHub;
 
 /**
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-  private static final Icon headerIcon = IconUtilities.createImageIcon(HeaderPane.class.getResource("images/logo.png"));
+  private static final Icon headerIcon = IconUtilities.createImageIcon(ReportIssueView.class.getResource("/org/alice/ide/issue/swing/views/images/logo.png"));
 
   public ReportIssueView(final ReportIssueComposite composite) {
     super(composite);
@@ -102,14 +98,6 @@ public class ReportIssueView extends AbstractIssueView {
     BorderPanel header = new BorderPanel();
     header.addLineStartComponent(lineStartPanel);
 
-    IDE ide = IDE.getActiveInstance();
-    if (ide != null) {
-      IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
-      IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
-      if (issueReportingHub.isLoginSupported()) {
-        header.addLineEndComponent(composite.getLogInOutCardComposite().getView());
-      }
-    }
     header.setBackgroundColor(backgroundColor);
     header.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     centerComponent.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));

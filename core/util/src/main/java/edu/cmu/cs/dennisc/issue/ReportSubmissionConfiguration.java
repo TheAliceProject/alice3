@@ -42,26 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
-import edu.cmu.cs.dennisc.jira.soap.Authenticator;
-
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 public interface ReportSubmissionConfiguration {
-  public URI getJIRAViaRestServer();
-
-  public URL getJIRAViaRPCServer() throws MalformedURLException;
-
-  public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator();
-
-  public URL getJIRAViaSOAPServer() throws MalformedURLException;
-
-  public Authenticator getJIRAViaSOAPAuthenticator();
-
-  //  public String getMailServer();
-  //
-  //  public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
-  //
-  //  public String getMailRecipient();
+  URI getJIRAViaRestServer();
 }

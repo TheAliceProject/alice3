@@ -42,23 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
-import com.atlassian.jira.rpc.soap.client.JiraSoapService;
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
 import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
 import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
-import edu.cmu.cs.dennisc.jira.rpc.RPCUtilities;
-import edu.cmu.cs.dennisc.jira.soap.Authenticator;
-import edu.cmu.cs.dennisc.login.AccountInformation;
-import edu.cmu.cs.dennisc.login.AccountManager;
 import org.alice.ide.croquet.models.help.views.AbstractIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
-import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.swing.views.IssueReportPane;
-import org.alice.ide.issue.swing.views.LogInStatusPane;
 import org.alice.ide.issue.swing.views.ProgressPane;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
@@ -69,12 +62,8 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ProjectVersion;
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcFault;
 
 import javax.swing.JOptionPane;
-import java.rmi.RemoteException;
 import java.util.UUID;
 
 /**
@@ -143,12 +132,6 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
     return rv;
   }
 
-  @Override
-  public JIRAReport generateIssueForRPC() {
-    JIRAReport rv = this.createJiraReport();
-    return rv;
-  }
-
   protected void addAttachments(JIRAReport report) {
     report.addAttachment(new SystemPropertiesAttachment());
     Throwable throwable = this.getThrowable();
@@ -161,44 +144,10 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
   }
 
   @Override
-  public JIRAReport generateIssueForSOAP() {
+  public JIRAReport generateIssue() {
     JIRAReport rv = this.createJiraReport();
     this.addAttachments(rv);
     return rv;
-  }
-
-  private ReportSubmissionConfiguration createReportSubmissionConfiguration() {
-    return new ReportSubmissionConfiguration() {
-      @Override
-      public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-        final AccountInformation accountInformation = AccountManager.get(LogInStatusPane.BUGS_ALICE_ORG_KEY);
-        if (accountInformation != null) {
-          return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
-            @Override
-            public Object login(XmlRpcClient client) throws XmlRpcException, XmlRpcFault {
-              return RPCUtilities.logIn(client, accountInformation.getID(), accountInformation.getPassword());
-            }
-          };
-        } else {
-          return super.getJIRAViaRPCAuthenticator();
-        }
-      }
-
-      @Override
-      public Authenticator getJIRAViaSOAPAuthenticator() {
-        final AccountInformation accountInformation = AccountManager.get(LogInStatusPane.BUGS_ALICE_ORG_KEY);
-        if (accountInformation != null) {
-          return new Authenticator() {
-            @Override
-            public String login(JiraSoapService service) throws RemoteException {
-              return service.login(accountInformation.getID(), accountInformation.getPassword());
-            }
-          };
-        } else {
-          return super.getJIRAViaSOAPAuthenticator();
-        }
-      }
-    };
   }
 
   private final StringState stepsState = createStringState("stepsState");
@@ -210,7 +159,7 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
       submitBugOperation.setEnabled(false);
       try {
         if (isClearedToSubmitBug()) {
-          ProgressPane progressPane = SubmitReportUtilities.submitReport(AbstractIssueComposite.this, createReportSubmissionConfiguration());
+          ProgressPane progressPane = SubmitReportUtilities.submitReport(AbstractIssueComposite.this, null);
           AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
           if (root != null) {
             if (progressPane.isDone()) {

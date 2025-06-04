@@ -269,13 +269,7 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   }
 
   @Override
-  public JIRAReport generateIssueForRPC() {
-    JIRAReport rv = this.createJiraReport();
-    return rv;
-  }
-
-  @Override
-  public JIRAReport generateIssueForSOAP() {
+  public JIRAReport generateIssue() {
     JIRAReport rv = this.createJiraReport();
     this.addAttachments(rv);
     return rv;
