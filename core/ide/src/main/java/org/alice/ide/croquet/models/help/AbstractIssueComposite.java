@@ -123,13 +123,19 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
   }
 
   private Issue.Builder createIssueBuilder() {
-    return new Issue.Builder().type(this.getReportType()).summary(this.getSummaryText()).description(this.getDescriptionText()).environment(IssueReportPane.getEnvironmentShortDescription()).steps(this.getStepsText()).threadAndThrowable(this.getThread(), this.getThrowable()).version(ProjectVersion.getCurrentVersionText());
+    return new Issue.Builder()
+        .type(this.getReportType())
+        .summary(this.getSummaryText())
+        .description(this.getDescriptionText())
+        .environment(IssueReportPane.getEnvironmentShortDescription())
+        .steps(this.getStepsText())
+        .threadAndThrowable(this.getThread(), this.getThrowable())
+        .version(ProjectVersion.getCurrentVersionText());
   }
 
   private JIRAReport createJiraReport() {
     Issue.Builder builder = this.createIssueBuilder();
-    JIRAReport rv = new JIRAReport(builder.build(), this.getProjectKey());
-    return rv;
+    return new JIRAReport(builder.build(), this.getProjectKey());
   }
 
   protected void addAttachments(JIRAReport report) {

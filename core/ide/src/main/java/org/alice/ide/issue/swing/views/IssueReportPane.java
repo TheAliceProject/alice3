@@ -259,7 +259,16 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   }
 
   private Issue.Builder createIssueBuilder() {
-    return new Issue.Builder().type(this.getIssueType()).summary(this.getSummaryText()).description(this.getDescriptionText()).environment(this.getEnvironmentText()).steps(this.getStepsText()).threadAndThrowable(this.getThread(), this.getThrowable()).version(ProjectVersion.getCurrentVersionText()).reportedBy(this.getSMTPReplyToPersonal()).emailAddress(this.getSMTPReplyTo());
+    return new Issue.Builder()
+        .type(this.getIssueType())
+        .summary(this.getSummaryText())
+        .description(this.getDescriptionText())
+        .environment(this.getEnvironmentText())
+        .steps(this.getStepsText())
+        .threadAndThrowable(this.getThread(), this.getThrowable())
+        .version(ProjectVersion.getCurrentVersionText())
+        .reportedBy(this.getSMTPReplyToPersonal())
+        .emailAddress(this.getSMTPReplyTo());
   }
 
   private JIRAReport createJiraReport() {

@@ -151,22 +151,19 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 
   @Override
   protected boolean isClearedToSubmitBug() {
-    boolean rv;
     if (this.attachmentState.getValue() != null) {
-      rv = true;
-    } else {
-      YesNoCancelResult result = Dialogs.confirmOrCancel("Attach current project?", "Is your current project relevant to this issue report?");
-      if (result == YesNoCancelResult.YES) {
-        this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.YES);
-        rv = true;
-      } else if (result == YesNoCancelResult.NO) {
-        this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.NO);
-        rv = true;
-      } else {
-        rv = false;
-      }
+      return true;
     }
-    return rv;
+    YesNoCancelResult result = Dialogs.confirmOrCancel("Attach current project?", "Is your current project relevant to this issue report?");
+    if (result == YesNoCancelResult.YES) {
+      this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.YES);
+      return true;
+    }
+    if (result == YesNoCancelResult.NO) {
+      this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.NO);
+      return true;
+    }
+    return false;
   }
 
   @Override
