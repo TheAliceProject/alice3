@@ -117,8 +117,8 @@ public class SubmitReportUtilities {
     try {
       String subject = EMAIL_SUBJECT.formatted(ProjectVersion.getCurrentVersionText(), report.getType(), report.getTruncatedSummary());
       String body = EMAIL_BODY.formatted(report.getDescription(), report.getSteps(), report.getException(), report.getEnvironment());
-      subject = URLEncoder.encode(subject, StandardCharsets.UTF_8);
-      body = URLEncoder.encode(body, StandardCharsets.UTF_8);
+      subject = URLEncoder.encode(subject, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+      body = URLEncoder.encode(body, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
       URI mailto = new URI(EMAIL_URI.formatted(subject, body));
       desktop.mail(mailto);
       if (root != null) {
