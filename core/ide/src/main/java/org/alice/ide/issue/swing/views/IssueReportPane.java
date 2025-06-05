@@ -282,7 +282,6 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   private boolean isSubmitAttempted = false;
   private boolean isSubmitSuccessful = false;
   private boolean isSubmitDone = false;
-  private URL urlResult = null;
 
   public boolean isSubmitAttempted() {
     return this.isSubmitAttempted;
@@ -296,17 +295,11 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     return this.isSubmitSuccessful;
   }
 
-  public URL getURLResult() {
-    return this.urlResult;
-  }
-
   protected void submit() {
     this.isSubmitSuccessful = false;
     this.isSubmitDone = false;
-    this.urlResult = null;
     this.isSubmitAttempted = true;
     ProgressPane progressPane = SubmitReportUtilities.submitReport(this);
-    this.urlResult = progressPane.getURLResult();
     this.isSubmitSuccessful = progressPane.isSuccessful();
     this.isSubmitDone = progressPane.isDone();
     Component root = SwingUtilities.getRoot(this);

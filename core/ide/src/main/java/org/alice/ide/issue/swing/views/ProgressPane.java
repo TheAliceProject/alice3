@@ -68,7 +68,6 @@ public class ProgressPane extends JPanel {
   private IssueReportWorker issueReportWorker;
   private boolean isDone = false;
   private boolean isSuccessful = false;
-  private URL urlResult = null;
 
   public ProgressPane() {
     this.console.setPreferredSize(new Dimension(400, 240));
@@ -85,7 +84,7 @@ public class ProgressPane extends JPanel {
 
       @Override
       public void done(boolean isSuccessful, URL urlResult) {
-        handleDone(isSuccessful, urlResult);
+        handleDone(isSuccessful);
       }
     }, issueReportGenerator, BrowserOperation.JIRA_URI);
     this.issueReportWorker.execute();
@@ -110,10 +109,9 @@ public class ProgressPane extends JPanel {
     }
   }
 
-  public void handleDone(boolean isSuccessful, URL urlResult) {
+  public void handleDone(boolean isSuccessful) {
     this.isDone = true;
     this.isSuccessful = isSuccessful;
-    this.urlResult = urlResult;
     this.hideRoot();
   }
 
@@ -123,9 +121,5 @@ public class ProgressPane extends JPanel {
 
   public boolean isSuccessful() {
     return this.isSuccessful;
-  }
-
-  public URL getURLResult() {
-    return this.urlResult;
   }
 }

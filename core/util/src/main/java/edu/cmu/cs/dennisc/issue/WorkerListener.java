@@ -49,7 +49,6 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface WorkerListener {
-  public void process(List<String> chunks);
-
-  public void done(boolean isSuccessful, URL urlResult);
+  void process(List<String> chunks);
+  void done(boolean isSuccessful);
 }
