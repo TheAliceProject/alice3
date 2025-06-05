@@ -49,6 +49,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
+import org.alice.ide.issue.SubmitReportUtilities;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FormPanel;
 import org.lgna.croquet.views.Hyperlink;
@@ -74,13 +75,17 @@ public class ReportIssueView extends AbstractIssueView {
     FormPanel centerComponent = new FormPanel() {
       @Override
       protected void appendRows(List<LabeledFormRow> rows) {
-        rows.add(new LabeledFormRow(composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        if (SubmitReportUtilities.USE_REST_INTERFACE) {
+          rows.add(new LabeledFormRow(composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        }
         rows.add(new LabeledFormRow(composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBoxWithItemCodecListCellRenderer(), VerticalAlignment.CENTER, false));
         rows.add(new LabeledFormRow(composite.getSummaryState().getSidekickLabel(), composite.getSummaryState().createTextField()));
         rows.add(new LabeledFormRow(composite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea(composite.getDescriptionState()), VerticalAlignment.TOP));
         rows.add(new LabeledFormRow(composite.getStepsState().getSidekickLabel(), createScrollPaneTextArea(composite.getStepsState()), VerticalAlignment.TOP));
         rows.add(new LabeledFormRow(composite.getEnvironmentState().getSidekickLabel(), environmentTextArea, VerticalAlignment.TOP));
-        rows.add(new LabeledFormRow(composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        if (SubmitReportUtilities.USE_REST_INTERFACE) {
+          rows.add(new LabeledFormRow(composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        }
       }
     };
 
