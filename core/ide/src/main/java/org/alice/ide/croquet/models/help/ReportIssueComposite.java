@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
+import org.alice.ide.issue.SubmitReportUtilities;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.Initializer;
 import org.lgna.croquet.Operation;
@@ -145,12 +146,12 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 
   @Override
   protected boolean isProjectAttachmentDesired() {
-    return this.attachmentState.getValue().equals(BugSubmitAttachment.YES);
+    return BugSubmitAttachment.YES.equals(this.attachmentState.getValue());
   }
 
   @Override
   protected boolean isClearedToSubmitBug() {
-    if (this.attachmentState.getValue() != null) {
+    if (!SubmitReportUtilities.USE_REST_INTERFACE || this.attachmentState.getValue() != null) {
       return true;
     }
     YesNoCancelResult result = Dialogs.confirmOrCancel("Attach current project?", "Is your current project relevant to this issue report?");

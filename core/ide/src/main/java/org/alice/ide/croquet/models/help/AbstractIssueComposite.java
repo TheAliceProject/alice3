@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.help;
 
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
-import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
 import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
@@ -52,7 +51,6 @@ import org.alice.ide.croquet.models.help.views.AbstractIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.swing.views.IssueReportPane;
-import org.alice.ide.issue.swing.views.ProgressPane;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.LaunchOperationUnadornedDialogCoreComposite;
@@ -60,16 +58,14 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ProjectVersion;
 
-import javax.swing.JOptionPane;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIssueComposite<V extends AbstractIssueView> extends LaunchOperationUnadornedDialogCoreComposite<V> implements ReportGenerator {
+public abstract class AbstractIssueComposite<V extends AbstractIssueView> extends LaunchOperationUnadornedDialogCoreComposite<V> {
   public static final Group ISSUE_GROUP = Group.getInstance(UUID.fromString("af49d17b-9299-4a0d-b931-0a18a8abf0dd"), "ISSUE_GROUP");
 
   public AbstractIssueComposite(UUID migrationId, IsModal isModal) {
@@ -149,7 +145,6 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
     }
   }
 
-  @Override
   public JIRAReport generateIssue() {
     JIRAReport rv = this.createJiraReport();
     this.addAttachments(rv);
@@ -165,20 +160,7 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
       submitBugOperation.setEnabled(false);
       try {
         if (isClearedToSubmitBug()) {
-          ProgressPane progressPane = SubmitReportUtilities.submitReport(AbstractIssueComposite.this, null);
-          AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
-          if (root != null) {
-            if (progressPane.isDone()) {
-              if (progressPane.isSuccessful()) {
-                JOptionPane.showMessageDialog(root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you.");
-                root.setVisible(false);
-              } else {
-                JOptionPane.showMessageDialog(root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying.");
-              }
-            } else {
-              root.setVisible(false);
-            }
-          }
+          SubmitReportUtilities.submitReport(generateIssue(), AbstractIssueComposite.this.getView().getRoot().getAwtComponent());
         }
       } finally {
         submitBugOperation.setEnabled(true);

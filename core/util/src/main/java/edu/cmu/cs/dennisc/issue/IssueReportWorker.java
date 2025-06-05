@@ -59,14 +59,13 @@ import java.util.concurrent.ExecutionException;
  */
 public final class IssueReportWorker extends SwingWorker<Boolean, String> {
   private final WorkerListener workerListener;
-  private final ReportGenerator issueReportGenerator;
+  private final JIRAReport jiraReport;
   private final URI reportSubmission;
-  private String key = null;
 
-  public IssueReportWorker(WorkerListener workerListener, ReportGenerator issueReportGenerator, URI reportSubmission) {
+  public IssueReportWorker(WorkerListener workerListener, JIRAReport report, URI reportSubmission) {
     assert workerListener != null;
     this.workerListener = workerListener;
-    this.issueReportGenerator = issueReportGenerator;
+    this.jiraReport = report;
     this.reportSubmission = reportSubmission;
   }
 
@@ -80,26 +79,23 @@ public final class IssueReportWorker extends SwingWorker<Boolean, String> {
   }
 
   private void uploadToJiraViaRest() throws Exception {
-    JIRAReport jiraReport = issueReportGenerator.generateIssue();
-    if (jiraReport != null) {
-      Issue issue = RestUtilities.createIssue(reportSubmission, jiraReport);
-      this.key = issue.getKey();
-      List<Attachment> attachments = jiraReport.getAttachments();
-      if (attachments != null && !attachments.isEmpty()) {
-        this.process("\n");
-        for (Attachment attachment : attachments) {
-          this.process("\t" + attachment.getFileName() + "... ");
-          issue.addAttachment(new File(attachment.getFileName()));
-          this.process("done.\n");
-        }
-      }
-    } else {
+    if (jiraReport == null) {
       throw new Exception("pass");
+    }
+    Issue issue = RestUtilities.createIssue(reportSubmission, jiraReport);
+    List<Attachment> attachments = jiraReport.getAttachments();
+    if (attachments != null && !attachments.isEmpty()) {
+      this.process("\n");
+      for (Attachment attachment : attachments) {
+        this.process("\t" + attachment.getFileName() + "... ");
+        issue.addAttachment(new File(attachment.getFileName()));
+        this.process("done.\n");
+      }
     }
   }
 
   @Override
-  protected Boolean doInBackground() throws Exception {
+  protected Boolean doInBackground() {
     this.process("attempting to submit bug report...\n");
 
     this.process("* uploading directly to database via REST... ");
@@ -119,7 +115,7 @@ public final class IssueReportWorker extends SwingWorker<Boolean, String> {
     try {
       Boolean isSuccessful = this.get();
       if (isSuccessful != null) {
-        this.workerListener.done(isSuccessful, null);
+        this.workerListener.done(isSuccessful);
       } else {
         System.out.println("IssueReportWorker: isSuccessful is null.");
       }

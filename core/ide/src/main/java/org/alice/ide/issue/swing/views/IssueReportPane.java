@@ -45,7 +45,6 @@ package org.alice.ide.issue.swing.views;
 import edu.cmu.cs.dennisc.issue.AbstractReport;
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
-import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
 import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
@@ -73,14 +72,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueReportPane extends JPanel implements ReportGenerator {
+public abstract class IssueReportPane extends JPanel {
   private static final List<String> systemPropertiesForEnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
 
   public static List<String> getSystemPropertiesForEnvironmentField() {
@@ -268,7 +266,6 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
         .emailAddress(this.getSMTPReplyTo());
   }
 
-  @Override
   public JIRAReport generateIssue() {
     JIRAReport report = new JIRAReport(this.createIssueBuilder().build(), this.getJIRAProjectKey());
     this.addAttachments(report);
@@ -299,7 +296,7 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     this.isSubmitSuccessful = false;
     this.isSubmitDone = false;
     this.isSubmitAttempted = true;
-    ProgressPane progressPane = SubmitReportUtilities.submitReport(this);
+    ProgressPane progressPane = SubmitReportUtilities.submitReport(generateIssue(), SwingUtilities.getRoot(this));
     this.isSubmitSuccessful = progressPane.isSuccessful();
     this.isSubmitDone = progressPane.isDone();
     Component root = SwingUtilities.getRoot(this);

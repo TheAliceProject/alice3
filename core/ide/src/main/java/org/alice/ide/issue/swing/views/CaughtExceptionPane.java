@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.javax.swing.components.JMigPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane;
 import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
 import org.alice.ide.issue.CurrentProjectAttachment;
+import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.UserProgramRunningStateUtilities;
 import org.alice.ide.issue.swing.CheckForNewAliceVersionAction;
 import org.lgna.project.ProjectVersion;
@@ -151,13 +152,14 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
 
   @Override
   protected void submit() {
-    int option = JOptionPane.showConfirmDialog(this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
-    if (option == JOptionPane.CANCEL_OPTION) {
-      //pass
-    } else {
+    if (SubmitReportUtilities.USE_REST_INTERFACE) {
+      int option = JOptionPane.showConfirmDialog(this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
+      if (option == JOptionPane.CANCEL_OPTION) {
+        return;
+      }
       this.isClearedToAttachCurrentProject = option == JOptionPane.YES_OPTION;
-      super.submit();
     }
+    super.submit();
   }
 
   @Override

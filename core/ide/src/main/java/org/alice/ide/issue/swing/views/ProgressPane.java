@@ -44,8 +44,8 @@
 package org.alice.ide.issue.swing.views;
 
 import edu.cmu.cs.dennisc.issue.IssueReportWorker;
-import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.WorkerListener;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
 import org.alice.ide.browser.BrowserOperation;
 
 import javax.swing.JPanel;
@@ -57,15 +57,13 @@ import javax.swing.text.Document;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.net.URL;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProgressPane extends JPanel {
-  private JTextPane console = new JTextPane();
-  private IssueReportWorker issueReportWorker;
+public class ProgressPane extends JPanel implements WorkerListener {
+  private final JTextPane console = new JTextPane();
   private boolean isDone = false;
   private boolean isSuccessful = false;
 
@@ -75,19 +73,9 @@ public class ProgressPane extends JPanel {
     this.add(new JScrollPane(this.console), BorderLayout.CENTER);
   }
 
-  public void initializeAndExecuteWorker(ReportGenerator issueReportGenerator) {
-    this.issueReportWorker = new IssueReportWorker(new WorkerListener() {
-      @Override
-      public void process(List<String> chunks) {
-        handleProcess(chunks);
-      }
-
-      @Override
-      public void done(boolean isSuccessful, URL urlResult) {
-        handleDone(isSuccessful);
-      }
-    }, issueReportGenerator, BrowserOperation.JIRA_URI);
-    this.issueReportWorker.execute();
+  public void initializeAndExecuteWorker(JIRAReport report) {
+    IssueReportWorker issueReportWorker = new IssueReportWorker(this, report, BrowserOperation.JIRA_URI);
+    issueReportWorker.execute();
   }
 
   private void hideRoot() {
@@ -97,7 +85,7 @@ public class ProgressPane extends JPanel {
     }
   }
 
-  public void handleProcess(List<String> chunks) {
+  public void process(List<String> chunks) {
     for (String chunk : chunks) {
       Document document = ProgressPane.this.console.getDocument();
       try {
@@ -109,7 +97,7 @@ public class ProgressPane extends JPanel {
     }
   }
 
-  public void handleDone(boolean isSuccessful) {
+  public void done(boolean isSuccessful) {
     this.isDone = true;
     this.isSuccessful = isSuccessful;
     this.hideRoot();
