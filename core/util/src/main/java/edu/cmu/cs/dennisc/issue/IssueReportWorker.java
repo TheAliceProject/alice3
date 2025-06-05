@@ -50,6 +50,7 @@ import net.rcarz.jiraclient.Issue;
 
 import javax.swing.SwingWorker;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -59,14 +60,14 @@ import java.util.concurrent.ExecutionException;
 public final class IssueReportWorker extends SwingWorker<Boolean, String> {
   private final WorkerListener workerListener;
   private final ReportGenerator issueReportGenerator;
-  private final ReportSubmissionConfiguration reportSubmissionConfiguration;
+  private final URI reportSubmission;
   private String key = null;
 
-  public IssueReportWorker(WorkerListener workerListener, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration) {
+  public IssueReportWorker(WorkerListener workerListener, ReportGenerator issueReportGenerator, URI reportSubmission) {
     assert workerListener != null;
     this.workerListener = workerListener;
     this.issueReportGenerator = issueReportGenerator;
-    this.reportSubmissionConfiguration = reportSubmissionConfiguration;
+    this.reportSubmission = reportSubmission;
   }
 
   @Override
@@ -81,7 +82,7 @@ public final class IssueReportWorker extends SwingWorker<Boolean, String> {
   private void uploadToJiraViaRest() throws Exception {
     JIRAReport jiraReport = issueReportGenerator.generateIssue();
     if (jiraReport != null) {
-      Issue issue = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
+      Issue issue = RestUtilities.createIssue(reportSubmission, jiraReport);
       this.key = issue.getKey();
       List<Attachment> attachments = jiraReport.getAttachments();
       if (attachments != null && !attachments.isEmpty()) {

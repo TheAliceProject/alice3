@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.javax.swing.components.JMigPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane;
 import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
 import org.alice.ide.issue.CurrentProjectAttachment;
-import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.issue.UserProgramRunningStateUtilities;
 import org.alice.ide.issue.swing.CheckForNewAliceVersionAction;
 import org.lgna.project.ProjectVersion;
@@ -136,11 +135,6 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
     pane.setOpaque(true);
 
     this.add(pane, BorderLayout.NORTH);
-  }
-
-  @Override
-  protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-    return new ReportSubmissionConfiguration();
   }
 
   @Override

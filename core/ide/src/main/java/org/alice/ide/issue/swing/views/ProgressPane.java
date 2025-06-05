@@ -45,8 +45,8 @@ package org.alice.ide.issue.swing.views;
 
 import edu.cmu.cs.dennisc.issue.IssueReportWorker;
 import edu.cmu.cs.dennisc.issue.ReportGenerator;
-import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 import edu.cmu.cs.dennisc.issue.WorkerListener;
+import org.alice.ide.browser.BrowserOperation;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -76,7 +76,7 @@ public class ProgressPane extends JPanel {
     this.add(new JScrollPane(this.console), BorderLayout.CENTER);
   }
 
-  public void initializeAndExecuteWorker(ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration) {
+  public void initializeAndExecuteWorker(ReportGenerator issueReportGenerator) {
     this.issueReportWorker = new IssueReportWorker(new WorkerListener() {
       @Override
       public void process(List<String> chunks) {
@@ -87,7 +87,7 @@ public class ProgressPane extends JPanel {
       public void done(boolean isSuccessful, URL urlResult) {
         handleDone(isSuccessful, urlResult);
       }
-    }, issueReportGenerator, reportSubmissionConfiguration);
+    }, issueReportGenerator, BrowserOperation.JIRA_URI);
     this.issueReportWorker.execute();
   }
 

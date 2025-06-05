@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
-import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.Initializer;
 import org.lgna.croquet.Operation;
@@ -193,7 +192,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
   private final StringState summaryState = createStringState("summaryState");
   private final StringState descriptionState = createStringState("descriptionState");
   private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum("attachmentState", BugSubmitAttachment.class, null);
-  private final Operation browserOperation = new BrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
+  private final Operation browserOperation = new BrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), BrowserOperation.JIRA_URI);
   private final Operation reportBugLaunchOperation;
 
   private final ValueListener<String> adapter = e -> getSubmitBugOperation().setEnabled(summaryState.getValue().length() > 0);

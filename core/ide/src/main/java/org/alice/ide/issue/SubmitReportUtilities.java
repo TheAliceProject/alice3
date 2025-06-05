@@ -56,9 +56,9 @@ public class SubmitReportUtilities {
     throw new AssertionError();
   }
 
-  public static ProgressPane submitReport(ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration) {
+  public static ProgressPane submitReport(ReportGenerator issueReportGenerator) {
     ProgressPane progressPane = new ProgressPane();
-    progressPane.initializeAndExecuteWorker(issueReportGenerator, reportSubmissionConfiguration);
+    progressPane.initializeAndExecuteWorker(issueReportGenerator);
 
     Component owner = null;
     String title = "Uploading Bug Report";

@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.issue.AbstractReport;
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
 import edu.cmu.cs.dennisc.issue.ReportGenerator;
-import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
 import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
@@ -82,8 +81,6 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class IssueReportPane extends JPanel implements ReportGenerator {
-  protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
-
   private static final List<String> systemPropertiesForEnnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
 
   public static List<String> getSystemPropertiesForEnvironmentField() {
@@ -324,7 +321,7 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     this.isSubmitDone = false;
     this.urlResult = null;
     this.isSubmitAttempted = true;
-    ProgressPane progressPane = SubmitReportUtilities.submitReport(this, this.getReportSubmissionConfiguration());
+    ProgressPane progressPane = SubmitReportUtilities.submitReport(this);
     this.urlResult = progressPane.getURLResult();
     this.isSubmitSuccessful = progressPane.isSuccessful();
     this.isSubmitDone = progressPane.isDone();
