@@ -42,7 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
-import java.net.URL;
 import java.util.List;
 
 /**
