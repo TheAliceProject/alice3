@@ -70,7 +70,7 @@ import org.lgna.story.Pose;
 public class TimeLineView extends Panel {
 
   private JTimeLineView jView;
-  private final Map<KeyFrameData, JTimeLinePoseMarker> map = Maps.newConcurrentHashMap();
+  private final Map<KeyFrameData, TimeLinePoseMarker> map = Maps.newConcurrentHashMap();
 
   public TimeLineView(TimeLineComposite composite) {
     super(composite);
@@ -83,8 +83,8 @@ public class TimeLineView extends Panel {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        select(((JTimeLinePoseMarker) e.getSource()).getKeyFrameData());
-        JTimeLinePoseMarker source = (JTimeLinePoseMarker) e.getSource();
+        select(((TimeLinePoseMarker) e.getSource()).getKeyFrameData());
+        TimeLinePoseMarker source = (TimeLinePoseMarker) e.getSource();
         KeyFrameData data = source.getKeyFrameData();
         if (((TimeLineComposite) getComposite()).getSelectedKeyFrame() == data) {
           // do nothing
@@ -113,7 +113,7 @@ public class TimeLineView extends Panel {
 
     @Override
     public void keyFrameAdded(KeyFrameData event) {
-      JTimeLinePoseMarker comp = new JTimeLinePoseMarker(event, jView);
+      TimeLinePoseMarker comp = new TimeLinePoseMarker(event, jView);
       comp.addActionListener(actionListener);
       map.put(event, comp);
       jView.add(comp);
@@ -135,7 +135,7 @@ public class TimeLineView extends Panel {
 
     List<KeyFrameData> keyFrames = ((TimeLineComposite) getComposite()).getTimeLine().getKeyFrames();
     for (KeyFrameData data : keyFrames) {
-      JTimeLinePoseMarker button = map.get(data);
+      TimeLinePoseMarker button = map.get(data);
       if (button != null) {
         if (button.getKeyFrameData() != selected) {
           button.setSelected(false);
@@ -178,12 +178,12 @@ class TimeLineLayout implements LayoutManager {
 
   public static int calculateMinX(Container parent) {
     Insets insets = parent.getInsets();
-    return insets.left + (JTimeLinePoseMarker.SIZE.width / 2);
+    return insets.left + (TimeLinePoseMarker.SIZE.width / 2);
   }
 
   public static int calculateMaxX(Container parent) {
     Insets insets = parent.getInsets();
-    return parent.getWidth() - insets.right - (JTimeLinePoseMarker.SIZE.width / 2);
+    return parent.getWidth() - insets.right - (TimeLinePoseMarker.SIZE.width / 2);
   }
 
   public static int calculateCenterXForJTimeLinePoseMarker(Container parent, double portion) {
@@ -204,15 +204,15 @@ class TimeLineLayout implements LayoutManager {
   }
 
   public static int calculateLeftXForJTimeLinePoseMarker(Container parent, double portion) {
-    return calculateCenterXForJTimeLinePoseMarker(parent, portion) - (JTimeLinePoseMarker.SIZE.width / 2);
+    return calculateCenterXForJTimeLinePoseMarker(parent, portion) - (TimeLinePoseMarker.SIZE.width / 2);
   }
 
   @Override
   public void layoutContainer(Container parent) {
     assert parent instanceof JTimeLineView;
     for (Component child : parent.getComponents()) {
-      if (child instanceof JTimeLinePoseMarker) {
-        JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker) child;
+      if (child instanceof TimeLinePoseMarker) {
+        TimeLinePoseMarker jMarker = (TimeLinePoseMarker) child;
         double time = jMarker.getKeyFrameData().getEventTime();
         int x = calculateLeftXForJTimeLinePoseMarker(parent, time / composite.getTimeLine().getEndTime());
         child.setLocation(x, 0);

@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
@@ -71,7 +70,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
   public void addOcclusionEventListener(Object occlusionEventListener, List<SModel> groupA, List<SModel> groupB, MultipleEventPolicy policy) {
     startTrackingListener(occlusionEventListener, groupA, groupB, policy);
     if ((groupA.size() > 0) && (groupA.get(0) != null) && (camera == null)) {
-      camera = EmployeesOnly.getImplementation(groupA.get(0)).getScene().findFirstCamera();
+      camera = groupA.get(0).getImplementation().getScene().findFirstCamera();
       camera.getSgComposite().addAbsoluteTransformationListener(this);
     }
   }
@@ -92,7 +91,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
   @Override
   protected void checkForEvents(SThing changedThing) {
     if (camera == null) {
-      camera = EmployeesOnly.getImplementation(changedThing).getScene().findFirstCamera();
+      camera = changedThing.getImplementation().getScene().findFirstCamera();
       if (camera == null) {
         return;
       }
@@ -123,7 +122,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
       if (!isOcclusionStart && !isOcclusionEnd) {
         continue;
       }
-      final boolean isChangedModelInBackground = camera.getDistanceTo(EmployeesOnly.getImplementation(model)) < camera.getDistanceTo(EmployeesOnly.getImplementation(changedModel));
+      final boolean isChangedModelInBackground = camera.getDistanceTo(model.getImplementation()) < camera.getDistanceTo(changedModel.getImplementation());
       SModel foreground = isChangedModelInBackground ? model : changedModel;
       SModel background = isChangedModelInBackground ? changedModel : model;
       for (Object listener : listeners) {

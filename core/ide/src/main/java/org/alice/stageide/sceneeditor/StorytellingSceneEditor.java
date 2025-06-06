@@ -62,14 +62,18 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
-import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderUtils;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import org.alice.ide.IDE;
@@ -90,6 +94,7 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
@@ -131,7 +136,6 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 
-import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
@@ -253,7 +257,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       StorytellingSceneEditor.this.animator.update();
     }
   };
-  private LightweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
+  private OnscreenRenderTarget onscreenRenderTarget = GlrRenderFactory.getInstance().createOnscreenRenderTarget(new RenderCapabilities.Builder().stencilBits(0).build());
 
   private class LookingGlassPanel extends CompassPointSpringPanel {
     @Override
@@ -337,7 +341,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private final Button runButton = IsToolBarShowing.getValue() ? null : RunComposite.getInstance().getLaunchOperation().createButton();
 
   private OrthographicCameraImp orthographicCameraImp = null;
-  private SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp();
+  private final SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp(null);
 
   private ComboBox<CameraOption> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
@@ -380,7 +384,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       SThing selectedEntity = this.getInstanceInJavaVMForField(field, SThing.class);
       TransformableImp transImp = null;
       if (selectedEntity != null) {
-        EntityImp imp = EmployeesOnly.getImplementation(selectedEntity);
+        EntityImp imp = selectedEntity.getImplementation();
         if (imp instanceof TransformableImp) {
           transImp = (TransformableImp) imp;
         }
@@ -394,7 +398,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       SThing selectedEntity = this.getInstanceInJavaVMForExpression(expression, SThing.class);
       AbstractTransformableImp transImp = null;
       if (selectedEntity != null) {
-        EntityImp imp = EmployeesOnly.getImplementation(selectedEntity);
+        EntityImp imp = selectedEntity.getImplementation();
         if (imp instanceof AbstractTransformableImp) {
           transImp = (AbstractTransformableImp) imp;
         }
@@ -506,6 +510,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private void setCameras() {
     SymmetricPerspectiveCamera mainCamera = sceneCameraImp.getSgCamera();
     SymmetricPerspectiveCamera layoutCamera = layoutCameraImp.getSgCamera();
+    onscreenRenderTarget.setLetterboxed(layoutCamera, false);
     OrthographicCamera orthographicCamera = orthographicCameraImp.getSgCamera();
     globalDragAdapter.addCameraView(CameraView.MAIN, mainCamera, layoutCamera, orthographicCamera);
     globalDragAdapter.makeCameraActive(mainCamera);
@@ -735,7 +740,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     super.addField(declaringType, field, index, statements);
     if (field.getValueType().isAssignableTo(SMarker.class)) {
       SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
-      MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+      MarkerImp markerImp = marker.getImplementation();
       markerImp.setDisplayVisuals(true);
       markerImp.setShowing(true);
 
@@ -750,12 +755,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     if (SystemUtilities.isPropertyTrue(SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY)) {
       if (field.getValueType().isAssignableTo(SJointedModel.class)) {
         SJointedModel jointedModel = this.getInstanceInJavaVMForField(field, SJointedModel.class);
-        JointedModelImp jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+        JointedModelImp jointedModelImp = jointedModel.getImplementation();
         jointedModelImp.opacity.setValue(0.25f);
         jointedModelImp.showVisualization();
       } else if (field.getValueType().isAssignableTo(SModel.class)) {
         SModel model = this.getInstanceInJavaVMForField(field, SModel.class);
-        ModelImp modelImp = EmployeesOnly.getImplementation(model);
+        ModelImp modelImp = model.getImplementation();
         modelImp.showVisualization();
       }
     }
@@ -770,13 +775,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
 
     if (sceneField != null) {
-      EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
+      SProgram program = getProgramInstanceInJava();
+      program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
 
       UserInstance sceneAliceInstance = getActiveSceneInstance();
-      SProgram program = getProgramInstanceInJava();
       SScene scene = sceneAliceInstance.getJavaInstance(SScene.class);
 
-      SceneImp ACCEPTABLE_HACK_sceneImp = EmployeesOnly.getImplementation(scene);
+      SceneImp ACCEPTABLE_HACK_sceneImp = scene.getImplementation();
       ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
       try {
         program.setActiveScene(scene);
@@ -799,7 +804,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         }
         if (field.getValueType().isAssignableTo(SVRUser.class)) {
           VrUserImp vrUserImp = getImplementation(field);
-          sceneCameraImp = EmployeesOnly.getImplementation(vrUserImp.getAbstraction().getHeadset());
+          sceneCameraImp = vrUserImp.getAbstraction().getHeadset().getImplementation();
           movableSceneCameraImp = vrUserImp;
           setIsVrActive(true);
           break;
@@ -841,7 +846,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         // we have to manually make them visible to see them in the scene editor)
         if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
-          MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+          MarkerImp markerImp = marker.getImplementation();
           if (field.getValueType().isAssignableTo(CameraMarker.class)) {
             ((PerspectiveCameraMarkerImp) markerImp).setVrActive(isVrActive());
           }
@@ -855,7 +860,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           }
         }
       }
-      EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(1.0);
+      program.setSimulationSpeedFactor(1.0);
     }
   }
 
@@ -1166,7 +1171,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void handleShowing() {
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.incrementAutomaticDisplayCount();
     renderFactory.addAutomaticDisplayListener(this.automaticDisplayListener);
     this.showLookingGlassPanel();
@@ -1174,12 +1179,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   public void handleHiding() {
     this.hideLookingGlassPanel();
-    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
     renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
     renderFactory.decrementAutomaticDisplayCount();
   }
 
-  private void paintHorizonLine(Graphics graphics, LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera) {
+  private void paintHorizonLine(Graphics graphics, OnscreenRenderTarget renderTarget, OrthographicCamera camera) {
     AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
     double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
     if ((dotProd == 1) || (dotProd == -1)) {
@@ -1188,7 +1193,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
-      ClippedZPlane dummyPlane = new ClippedZPlane(camera.picturePlane.getValue(), renderTarget.getActualViewport(camera));
+      ClippedZPlane dummyPlane = camera.picturePlane.getValue().completeFrom(renderTarget.getActualViewport(camera));
 
       double lookingGlassHeight = lookingGlassSize.getHeight();
 
@@ -1263,7 +1268,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public MarkerImp getMarkerForField(UserField field) {
     Object obj = this.getInstanceInJavaVMForField(field);
     if (obj instanceof SMarker) {
-      return EmployeesOnly.getImplementation((SMarker) obj);
+      return ((SMarker) obj).getImplementation();
     }
     return null;
   }
@@ -1288,7 +1293,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  public LightweightOnscreenRenderTarget getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 }

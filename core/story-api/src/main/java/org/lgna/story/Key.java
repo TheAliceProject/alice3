@@ -252,12 +252,11 @@ public enum Key {
     MapContainer.map.put(this.keyCode, this);
   }
 
-  /* package-private */int getInternal() {
+  public int getKeyCode() {
     return this.keyCode;
   }
 
-  /* package-private */
-  static Key getInstanceFromKeyCode(int keyCode) {
+  public static Key getInstanceFromKeyCode(int keyCode) {
     return MapContainer.map.get(keyCode);
   }
 }

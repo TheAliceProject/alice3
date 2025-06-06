@@ -55,7 +55,6 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
-import org.alice.ide.custom.PortionCustomExpressionCreatorComposite;
 import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.icons.Icons;
 import org.alice.ide.identifier.IdentifierNameGenerator;
@@ -68,7 +67,6 @@ import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
-import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
 import org.alice.stageide.iconfactory.StoryIconFactoryManager;
 import org.alice.stageide.icons.*;
 import org.alice.stageide.instancefactory.croquet.joint.all.LocalAccessJointedTypeMenuModel;
@@ -96,18 +94,14 @@ import org.alice.stageide.member.TextProceduresComposite;
 import org.alice.stageide.member.TimingProceduresComposite;
 import org.alice.stageide.member.VehicleProceduresComposite;
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.icon.ImageIconFactory;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
-import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.*;
 import org.lgna.story.*;
-import org.lgna.story.annotation.PortionDetails;
-import org.lgna.story.annotation.VolumeLevelDetails;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
@@ -147,18 +141,18 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   public StoryApiConfigurationManager() {
     BeveledShapeForType.addRoundType(SThing.class);
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon.class));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon.class));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon.class));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/256x256/Camera.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
@@ -405,18 +399,6 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       }
     }
     return null;
-  }
-
-  @Override
-  public CascadeItem<?, ?> getCustomFillInFor(ValueDetails<?> valueDetails) {
-    if (valueDetails instanceof PortionDetails) {
-      return PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-    } else if (valueDetails instanceof VolumeLevelDetails) {
-      //      return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
-      return VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-    } else {
-      return null;
-    }
   }
 
   @Override

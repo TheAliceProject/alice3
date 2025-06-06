@@ -43,9 +43,14 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Paint {
 
+    default Texture getTextureIfPresent() {
+        return null;
+    };
 }

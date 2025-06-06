@@ -43,6 +43,8 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.TextModelImp;
 
 /**
@@ -52,7 +54,8 @@ public class STextModel extends SModel {
   private final TextModelImp implementation = new TextModelImp(this);
 
   @Override
-    /* package-private */TextModelImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public TextModelImp getImplementation() {
     return this.implementation;
   }
 

@@ -42,46 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface RenderTarget {
-  RenderFactory getRenderFactory();
-
-  RenderCapabilities getRequestedCapabilities();
-
   RenderCapabilities getActualCapabilities();
+
+  void repaint();
 
   int getSurfaceWidth();
 
   int getSurfaceHeight();
 
   Dimension getSurfaceSize();
-
-  int getDrawableWidth();
-
-  int getDrawableHeight();
-
-  Dimension getDrawableSize();
-
-  String getDescription();
-
-  void setDescription(String description);
 
   void addSgCamera(AbstractCamera sgCamera);
 
@@ -99,27 +82,14 @@ public interface RenderTarget {
 
   void removeRenderTargetListener(RenderTargetListener listener);
 
-  List<RenderTargetListener> getRenderTargetListeners();
+  AbstractCamera getCameraAtAwtPoint(Point point);
 
-  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
+  // Takes a point in awt space, returns a ray in viewport space
+  Ray getRayAtAwtPoint(Point point, AbstractCamera sgCamera);
 
-  ClippedZPlane getActualPicturePlane(OrthographicCamera sgOrthographicCamera);
+  boolean isLetterboxed(AbstractCamera sgCamera);
 
-  ClippedZPlane getActualPicturePlane(FrustumPerspectiveCamera sgFrustumPerspectiveCamera);
-
-  Angle getActualHorizontalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
-
-  Angle getActualVerticalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
-
-  AbstractCamera getCameraAtPixel(int xPixel, int yPixel);
-
-  Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera);
-
-  Ray getRayAtPixel(int xPixel, int yPixel);
-
-  boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera);
-
-  void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted);
+  void setLetterboxed(AbstractCamera sgCamera, boolean isLetterboxed);
 
   boolean isRenderingEnabled();
 
@@ -138,27 +108,18 @@ public interface RenderTarget {
   void clearUnusedTextures();
 
   //todo: remove?
-  Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera sgCamera);
+  org.alice.math.immutable.Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
-  //todo: remove?
-  void release();
+  FixedRectangle getActualViewport(AbstractCamera sgCamera);
 
-  MRectangleI getActualViewport(AbstractCamera sgCamera);
-
-  MRectangleI getSpecifiedViewport(AbstractCamera sgCamera);
-
-  void setSpecifiedViewport(AbstractCamera sgCamera, MRectangleI viewport);
-
-  @Deprecated
   Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
 
-  @Deprecated
-  Rectangle getSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera);
+  Vector4 transformFromViewportToCamera(Vector4 xyzw, AbstractCamera sgCamera);
+  Vector4 transformFromCameraToViewport(Vector4 xyzw, AbstractCamera sgCamera);
 
-  @Deprecated
-  void setSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera, Rectangle viewport);
 
-  //todo: remove?
-  @Deprecated
-  Rectangle getActualViewportAsAwtRectangle(Rectangle rv, AbstractCamera sgCamera);
+  // AWT (yes, java's ancient ui code) transformations are used by aabb collision, isInView, and speech/thought bubbles
+  // where we need to know what's actually showing in the ui
+  Point transformFromCameraToAWT(Vector4 xyzw, AbstractCamera sgCamera);
+  Point transformFromCameraToAWT(Point3 xyzw, AbstractCamera sgCamera);
 }

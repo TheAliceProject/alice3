@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.scenegraph.Scene;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.debug.tree.core.ZTreeNode;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 
@@ -78,7 +77,7 @@ public class SgDebugFrame extends DebugFrame<Component> {
   protected ZTreeNode.Builder<Component> capture() {
     UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
     SScene scene = sceneUserInstance.getJavaInstance(SScene.class);
-    SceneImp sceneImp = EmployeesOnly.getImplementation(scene);
+    SceneImp sceneImp = scene.getImplementation();
     Scene sgScene = sceneImp.getSgComposite();
     return createBuilder(sgScene);
   }

@@ -68,6 +68,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.Collections;
 import java.util.List;
@@ -110,10 +111,6 @@ public class RenderTargetImp {
     this.renderTargetListeners.remove(listener);
   }
 
-  public List<RenderTargetListener> getRenderTargetListeners() {
-    return Collections.unmodifiableList(this.renderTargetListeners);
-  }
-
   public void addSgCamera(AbstractCamera sgCamera, GLAutoDrawable glAutoDrawable) {
     assert sgCamera != null : this;
     this.sgCameras.add(sgCamera);
@@ -153,30 +150,29 @@ public class RenderTargetImp {
     return Collections.unmodifiableList(this.sgCameras);
   }
 
-  public AbstractCamera getCameraAtPixel(int xPixel, int yPixel) {
+  public AbstractCamera getCameraAtAwtPoint(Point p) {
     ListIterator<AbstractCamera> iterator = this.sgCameras.listIterator(this.sgCameras.size());
     while (iterator.hasPrevious()) {
       AbstractCamera sgCamera = iterator.previous();
-      synchronized (s_actualViewportBufferForReuse) {
-        this.renderTarget.getActualViewportAsAwtRectangle(s_actualViewportBufferForReuse, sgCamera);
-        if (s_actualViewportBufferForReuse.contains(xPixel, yPixel)) {
-          return sgCamera;
-        }
+      Rectangle actualViewport = this.renderTarget.getActualViewportAsAwtRectangle(sgCamera);
+      if (actualViewport.contains(p)) {
+        return sgCamera;
       }
+
     }
     return null;
   }
 
   public void forgetAllCachedItems() {
-    if (this.renderContext != null) {
       this.renderContext.forgetAllCachedItems();
-    }
   }
 
   public void clearUnusedTextures() {
-    if (this.renderContext != null) {
-      this.renderContext.clearUnusedTextures();
+    // Without a gl (GL2) there is nothing to clear
+    if (this.renderContext.gl == null) {
+        return;
     }
+    this.renderContext.clearUnusedTextures();
   }
 
   /*package-private*/void addDisplayTask(DisplayTask displayTask) {
@@ -458,22 +454,6 @@ public class RenderTargetImp {
     return rv;
   }
 
-  public int getDrawableWidth() {
-    return this.drawableWidth;
-  }
-
-  public int getDrawableHeight() {
-    return this.drawableHeight;
-  }
-
-  public int getScreenHeight() {
-    return this.screenHeight;
-  }
-
-  public int getScreenWidth() {
-    return this.screenWidth;
-  }
-
   private void initialize(GLAutoDrawable drawable) {
     //edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
     assert drawable == this.drawable;
@@ -590,7 +570,6 @@ public class RenderTargetImp {
   private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
 
   //
-  private static final Rectangle s_actualViewportBufferForReuse = new Rectangle();
   private final GLEventListener glEventListener = new GLEventListener() {
     @Override
     public void init(GLAutoDrawable drawable) {

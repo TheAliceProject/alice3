@@ -70,7 +70,6 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
@@ -230,7 +229,7 @@ public abstract class AbstractSceneEditor extends BorderPanel {
     }
     SThing entity = getInstanceInJavaVMForField(field, SThing.class);
     if (entity != null) {
-      return EmployeesOnly.getImplementation(entity);
+      return (T) entity.getImplementation();
     } else {
       return null;
     }
@@ -322,7 +321,7 @@ public abstract class AbstractSceneEditor extends BorderPanel {
   public <T extends EntityImp> T getActiveSceneImplementation() {
     SThing entity = getInstanceInJavaVMForField(getActiveSceneField(), SThing.class);
     if (entity != null) {
-      return EmployeesOnly.getImplementation(entity);
+      return (T) entity.getImplementation();
     } else {
       return null;
     }

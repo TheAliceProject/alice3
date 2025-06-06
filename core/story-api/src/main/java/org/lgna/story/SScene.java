@@ -80,11 +80,12 @@ public abstract class SScene extends SThing {
   private final SceneImp implementation = new SceneImp(this);
 
   @Override
-    /* package-private */SceneImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SceneImp getImplementation() {
     return this.implementation;
   }
 
-  protected abstract void handleActiveChanged(Boolean isActive, Integer activationCount);
+  public abstract void handleActiveChanged(Boolean isActive, Integer activationCount);
 
   protected void preserveStateAndEventListeners() {
     this.implementation.preserveStateAndEventListeners();

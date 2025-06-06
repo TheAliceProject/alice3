@@ -55,13 +55,11 @@ import edu.cmu.cs.dennisc.scenegraph.Background;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
-import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Ghost;
 import edu.cmu.cs.dennisc.scenegraph.Graphic;
 import edu.cmu.cs.dennisc.scenegraph.Layer;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.ProjectionCamera;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -203,16 +201,8 @@ public class AdapterFactory {
     return (GlrAbstractCamera<?>) getAdapterForElement(sgCamera);
   }
 
-  public static GlrProjectionCamera getAdapterFor(ProjectionCamera sgProjectionCamera) {
-    return (GlrProjectionCamera) getAdapterForElement(sgProjectionCamera);
-  }
-
   public static GlrOrthographicCamera getAdapterFor(OrthographicCamera sgOrthographicCamera) {
     return (GlrOrthographicCamera) getAdapterForElement(sgOrthographicCamera);
-  }
-
-  public static GlrFrustumPerspectiveCamera getAdapterFor(FrustumPerspectiveCamera sgFrustumPerspectiveCamera) {
-    return (GlrFrustumPerspectiveCamera) getAdapterForElement(sgFrustumPerspectiveCamera);
   }
 
   public static GlrSymmetricPerspectiveCamera getAdapterFor(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {

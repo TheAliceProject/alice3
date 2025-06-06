@@ -46,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.PointOfViewChangeListener;
@@ -69,7 +68,7 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
     for (SThing m : allObserving) {
       if (!getModelList().contains(m)) {
         getModelList().add(m);
-        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+        m.getImplementation().getSgComposite().addAbsoluteTransformationListener(this);
         //        collisionEventHandler.register( collisionListener, groupOne, groupTwo );
       }
     }

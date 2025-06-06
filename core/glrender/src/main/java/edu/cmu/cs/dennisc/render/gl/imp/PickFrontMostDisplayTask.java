@@ -46,12 +46,14 @@ import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class PickFrontMostDisplayTask extends PickDisplayTask {
-  public PickFrontMostDisplayTask(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
-    super(xPixel, yPixel, pickSubElementPolicy, criterion);
+  public PickFrontMostDisplayTask(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
+    super(mousePos, pickSubElementPolicy, criterion);
     this.observer = observer;
   }
 

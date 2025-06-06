@@ -56,7 +56,8 @@ public class SFlyer extends SJointedModel implements Articulable {
   private final FlyerImp implementation;
 
   @Override
-    /* package-private */FlyerImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public FlyerImp getImplementation() {
     return this.implementation;
   }
 

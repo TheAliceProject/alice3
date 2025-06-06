@@ -46,7 +46,6 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.math.Vector4;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.BipedResource;
@@ -75,25 +74,25 @@ public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
     JointImp end;
     switch (reachingLimb) {
     case RIGHT_ARM:
-      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getRightClavicle());
-      end = EmployeesOnly.getImplementation(this.getAbstraction().getRightWrist());
+      anchor = this.getAbstraction().getRightClavicle().getImplementation();
+      end = this.getAbstraction().getRightWrist().getImplementation();
       break;
     case LEFT_ARM:
-      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getLeftClavicle());
-      end = EmployeesOnly.getImplementation(this.getAbstraction().getLeftWrist());
+      anchor = this.getAbstraction().getLeftClavicle().getImplementation();
+      end = this.getAbstraction().getLeftWrist().getImplementation();
       break;
     case RIGHT_LEG:
-      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getRightHip());
-      end = EmployeesOnly.getImplementation(this.getAbstraction().getRightFoot());
+      anchor = this.getAbstraction().getRightHip().getImplementation();
+      end = this.getAbstraction().getRightFoot().getImplementation();
       break;
     case LEFT_LEG:
-      anchor = EmployeesOnly.getImplementation(this.getAbstraction().getLeftHip());
-      end = EmployeesOnly.getImplementation(this.getAbstraction().getLeftFoot());
+      anchor = this.getAbstraction().getLeftHip().getImplementation();
+      end = this.getAbstraction().getLeftFoot().getImplementation();
       break;
     default:
       System.out.println("Unhandled LIMB: " + reachingLimb);
       return;
     }
-    IKCore.moveChainToPointInSceneSpace(anchor, end, EmployeesOnly.getImplementation(entity).getTransformation(AsSeenBy.SCENE).translation);
+    IKCore.moveChainToPointInSceneSpace(anchor, end, entity.getImplementation().getTransformation(AsSeenBy.SCENE).translation);
   }
 }

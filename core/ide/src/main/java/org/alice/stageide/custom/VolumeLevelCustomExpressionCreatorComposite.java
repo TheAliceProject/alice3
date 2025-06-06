@@ -43,9 +43,11 @@
 
 package org.alice.stageide.custom;
 
-import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn;
+import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView;
 import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.StringValue;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -55,7 +57,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<VolumeLevelCustomExpressionCreatorView> {
+public class VolumeLevelCustomExpressionCreatorComposite extends ExpressionWithRecentValuesCreatorComposite<VolumeLevelCustomExpressionCreatorView, Double> {
   private static class SingletonHolder {
     private static VolumeLevelCustomExpressionCreatorComposite instance = new VolumeLevelCustomExpressionCreatorComposite();
   }
@@ -120,5 +122,15 @@ public class VolumeLevelCustomExpressionCreatorComposite extends CustomExpressio
       int value = VolumeLevelUtilities.toInt(actualVolume);
       this.valueState.setValueTransactionlessly(value);
     }
+  }
+
+  @Override
+  protected Double getLastCustomValue() {
+    return ((DoubleLiteral) this.getValue()).value.getValue();
+  }
+
+  @Override
+  protected CascadeBlankChild getValueFillIn(Double value) {
+    return DoubleLiteralFillIn.getInstance(value);
   }
 }

@@ -49,13 +49,14 @@ import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
  */
 @ClassTemplate(isFollowToSuperClassDesired = false) public abstract class SThing implements Rider {
-  /* package-private */
-  abstract EntityImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract <T extends EntityImp> T getImplementation();
 
   @GetterTemplate(isPersistent = true)
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
@@ -130,5 +131,10 @@ import org.lgna.story.implementation.EntityImp;
       sb.append(this.getClass().getSimpleName());
       return sb.toString();
     }
+  }
+
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public VerticalPrismCollisionHull getCollisionHull() {
+    return getImplementation().getCollisionHull();
   }
 }

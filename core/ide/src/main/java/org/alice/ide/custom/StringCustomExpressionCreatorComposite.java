@@ -43,7 +43,9 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn;
 import org.alice.ide.custom.components.StringCustomExpressionCreatorView;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.StringState;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.StringLiteral;
@@ -53,7 +55,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<StringCustomExpressionCreatorView> {
+public class StringCustomExpressionCreatorComposite extends ExpressionWithRecentValuesCreatorComposite<StringCustomExpressionCreatorView, String> {
   private static class SingletonHolder {
     private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
   }
@@ -98,5 +100,15 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
     }
     this.valueState.setValueTransactionlessly(value);
     this.valueState.selectAll();
+  }
+
+  @Override
+  protected String getLastCustomValue() {
+    return ((StringLiteral) getValue()).value.getValue();
+  }
+
+  @Override
+  protected CascadeBlankChild getValueFillIn(String value) {
+    return StringLiteralFillIn.getInstance(value);
   }
 }

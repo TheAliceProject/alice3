@@ -1,5 +1,7 @@
 package org.alice.tweedle.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.File;
 import java.net.URI;
 import java.time.ZonedDateTime;
@@ -19,10 +21,12 @@ public class Manifest {
 
   private File rootFile;
 
+  @JsonIgnore
   public String getId() {
     return metadata.identifier.name;
   }
 
+  @JsonIgnore
   public String getName() {
     return description.name;
   }

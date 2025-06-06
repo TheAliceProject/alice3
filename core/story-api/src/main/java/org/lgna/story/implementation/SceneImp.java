@@ -63,7 +63,6 @@ import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SScene;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.implementation.eventhandling.EventManager;
@@ -142,7 +141,7 @@ public class SceneImp extends EntityImp {
     double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
     program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
     if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-      EmployeesOnly.invokeHandleActiveChanged(this.getAbstraction(), isActive, activationCount);
+      this.getAbstraction().handleActiveChanged(isActive, activationCount);
     }
     program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
     if (isActive) {
@@ -332,12 +331,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty atmosphereColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgBackground.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgBackground.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
+      Color4f color = value.toColor4f();
       SceneImp.this.sgBackground.color.setValue(color);
       SceneImp.this.sgFog.color.setValue(color);
     }
@@ -345,12 +344,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty fromAboveLightColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgAmbientLight.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgAmbientLight.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
+      Color4f color = value.toColor4f();
       SceneImp.this.sgAmbientLight.color.setValue(color);
       SceneImp.this.sgFromAboveDirectionalLightA.color.setValue(color);
       SceneImp.this.sgFromAboveDirectionalLightB.color.setValue(color);
@@ -360,13 +359,12 @@ public class SceneImp extends EntityImp {
   public final ColorProperty fromBelowLightColor = new ColorProperty(SceneImp.this) {
     @Override
     public Color getValue() {
-      return EmployeesOnly.createColor(SceneImp.this.sgFromBelowDirectionalLight.color.getValue());
+      return Color.fromProperty(SceneImp.this.sgFromBelowDirectionalLight.color);
     }
 
     @Override
     protected void handleSetValue(Color value) {
-      Color4f color = EmployeesOnly.getColor4f(value);
-      SceneImp.this.sgFromBelowDirectionalLight.color.setValue(color);
+      SceneImp.this.sgFromBelowDirectionalLight.color.setValue(value.toColor4f());
     }
   };
   public final FloatProperty globalLightBrightness = new FloatProperty(SceneImp.this) {

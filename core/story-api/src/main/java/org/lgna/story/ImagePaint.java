@@ -43,11 +43,37 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+
+import javax.imageio.ImageIO;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface ImagePaint extends Paint {
-  public URL getResource();
+  URL getResource();
+
+  default Texture getTextureIfPresent() {
+    BufferedImageTexture cachedTexture = TEXTURE_CACHE.get(this);
+    if (cachedTexture != null) {
+        return cachedTexture;
+    }
+    BufferedImageTexture newTexture = new BufferedImageTexture();
+    try {
+      newTexture.setBufferedImage(ImageIO.read(getResource()));
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    newTexture.setMipMappingDesired(true);
+    TEXTURE_CACHE.put(this, newTexture);
+    return newTexture;
+  }
+
+  // TODO look into removing this static cache
+  Map<ImagePaint, BufferedImageTexture> TEXTURE_CACHE = Maps.newHashMap();
 }

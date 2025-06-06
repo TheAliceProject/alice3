@@ -49,13 +49,11 @@ import edu.cmu.cs.dennisc.java.util.Queues;
 import edu.cmu.cs.dennisc.pattern.Releasable;
 import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
 import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
-import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
-import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
-import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer;
@@ -93,7 +91,7 @@ public class GlrRenderFactory implements RenderFactory {
   //todo: just force start and stop? or rename methods
   private int automaticDisplayCount = 0;
 
-  private static boolean isDisplayDesired(GlrOnscreenRenderTarget<?> lg) {
+  private static boolean isDisplayDesired(GlrOnscreenRenderTarget lg) {
     if (lg.isRenderingEnabled()) {
       Component component = lg.getAwtComponent();
       return component.isVisible() && component.isValid()
@@ -107,16 +105,10 @@ public class GlrRenderFactory implements RenderFactory {
     Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
     synchronized (this.toBeReleased) {
       for (Releasable releasable : this.toBeReleased) {
-        if (releasable instanceof GlrOnscreenRenderTarget<?>) {
-          GlrOnscreenRenderTarget<?> onscreenLookingGlass = (GlrOnscreenRenderTarget<?>) releasable;
-          if (onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget) {
-            this.heavyweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
-          } else if (onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget) {
-            this.lightweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
-          } else {
-            assert false;
-          }
-          //this.animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
+        if (releasable instanceof GlrOnscreenRenderTarget) {
+          GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget) releasable;
+          this.onscreenLookingGlasses.remove(onscreenLookingGlass);
+          //this.animator.remove(onscreenLookingGlass.getGLAutoDrawable() );
         } else if (releasable instanceof GlrOffscreenRenderTarget) {
           this.offscreenLookingGlasses.remove(releasable);
         } else {
@@ -130,19 +122,11 @@ public class GlrRenderFactory implements RenderFactory {
       acquireRenderingLock();
       try {
         ChangeHandler.pushRenderingMode();
-        for (GlrOnscreenRenderTarget<?> lg : this.heavyweightOnscreenLookingGlasses) {
-          if (isDisplayDesired(lg)) {
-            //lg.getGLAutoDrawable().display();
-            lg.repaint();
-            //              edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
-            rv = Animator.ThreadDeferenceAction.YIELD;
-          }
-        }
         try {
           if (ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
             ChangeHandler.resetEventCount();
             //isJustCreatedOnscreenLookingGlassAccountedFor = true;
-            for (GlrOnscreenRenderTarget<?> lg : this.lightweightOnscreenLookingGlasses) {
+            for (GlrOnscreenRenderTarget lg : this.onscreenLookingGlasses) {
               if (isDisplayDesired(lg)) {
                 //lg.getGLAutoDrawable().display();
                 lg.repaint();
@@ -198,25 +182,16 @@ public class GlrRenderFactory implements RenderFactory {
   }
 
   @Override
-  public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
-    GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget(this, requestedCapabilities);
-    holg.addReleaseListener(this.releaseListener);
-    this.heavyweightOnscreenLookingGlasses.add(holg);
-    return holg;
-  }
-
-  @Override
-  public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
-    GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget(this, requestedCapabilities);
+  public OnscreenRenderTarget createOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    GlrOnscreenRenderTarget lolg = new GlrOnscreenRenderTarget(requestedCapabilities);
     lolg.addReleaseListener(this.releaseListener);
-    this.lightweightOnscreenLookingGlasses.add(lolg);
+    this.onscreenLookingGlasses.add(lolg);
     return lolg;
   }
 
   @Override
-  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
-    assert (renderTargetToShareContextWith == null) || (renderTargetToShareContextWith instanceof GlrRenderTarget);
-    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(this, width, height, (GlrRenderTarget) renderTargetToShareContextWith, requestedCapabilities);
+  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderCapabilities requestedCapabilities) {
+    GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget(width, height, requestedCapabilities);
     olg.addReleaseListener(this.releaseListener);
     this.offscreenLookingGlasses.add(olg);
     return olg;
@@ -260,8 +235,7 @@ public class GlrRenderFactory implements RenderFactory {
     }
   };
 
-  private final List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
-  private final List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
+  private final List<GlrOnscreenRenderTarget> onscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
   private final List<GlrOffscreenRenderTarget> offscreenLookingGlasses = Lists.newCopyOnWriteArrayList();
 
   private final List<Releasable> toBeReleased = Lists.newLinkedList();

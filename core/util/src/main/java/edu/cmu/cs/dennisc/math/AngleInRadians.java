@@ -131,7 +131,7 @@ public class AngleInRadians implements Angle {
 
   @Override
   public void setToInterpolation(Angle a0, Angle a1, double portion) {
-    setAsRadians(InterpolationUtilities.interpolate(a0.getAsRadians(), a1.getAsRadians(), portion));
+    setAsRadians(AngleUtilities.interpolate(a0.getAsRadians(), a1.getAsRadians(), portion));
   }
 
   @Override

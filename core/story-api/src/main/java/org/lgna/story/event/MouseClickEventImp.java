@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.render.PickResult;
 import org.alice.interact.PickUtilities;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
@@ -76,9 +75,9 @@ public class MouseClickEventImp {
     this.scene = scene;
   }
 
-  private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  private OnscreenRenderTarget getOnscreenRenderTarget() {
     if (this.scene != null) {
-      SceneImp sceneImp = EmployeesOnly.getImplementation(this.scene);
+      SceneImp sceneImp = this.scene.getImplementation();
       ProgramImp programImp = sceneImp.getProgram();
       if (programImp != null) {
         return programImp.getOnscreenRenderTarget();
@@ -89,7 +88,7 @@ public class MouseClickEventImp {
 
   private Rectangle getActualViewport() {
     if (this.viewport == null) {
-      OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+      OnscreenRenderTarget rt = this.getOnscreenRenderTarget();
       //todo: search through cameras for the one that contains mouse point, or default to [0] if outside
       AbstractCamera sgCamera = rt.getSgCameraAt(0);
       this.viewport = rt.getActualViewportAsAwtRectangle(sgCamera);
@@ -102,9 +101,9 @@ public class MouseClickEventImp {
       //pass
     } else {
       if (this.scene != null) {
-        OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+        OnscreenRenderTarget rt = this.getOnscreenRenderTarget();
         if (rt != null) {
-          PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED);
+          PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
           if (pickResult != null) {
             SThing e = PickUtilities.getEntityFromPickedObject(pickResult.getVisual());
             if (e instanceof SModel) {

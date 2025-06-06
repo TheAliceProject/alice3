@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.TargetImp;
 
 /**
@@ -52,7 +54,8 @@ public class STarget extends SMovableTurnable {
   private final TargetImp implementation = new TargetImp(this);
 
   @Override
-    /* package-private */TargetImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public TargetImp getImplementation() {
     return this.implementation;
   }
 }

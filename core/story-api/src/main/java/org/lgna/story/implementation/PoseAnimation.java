@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
@@ -121,7 +120,7 @@ public class PoseAnimation extends DurationBasedAnimation {
   @Override
   protected void prologue() {
     this.jointInfos.clear();
-    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(this.pose)) {
+    for (JointIdTransformationPair jtPair : this.pose.getJointIdTransformationPairs()) {
       appendJointInfos(this.jointInfos, this.jointedModel, jtPair);
     }
   }

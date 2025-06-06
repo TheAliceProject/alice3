@@ -60,7 +60,8 @@ public class SBiped extends SJointedModel implements Articulable {
   }
 
   @Override
-    /* package-private */BipedImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public BipedImp getImplementation() {
     return this.implementation;
   }
 

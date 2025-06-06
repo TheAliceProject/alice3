@@ -42,38 +42,24 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 
 import java.awt.*;
-import java.lang.reflect.Constructor;
+import java.util.function.Function;
 
 /**
  * @author Jen Smith
  */
 
 public class ShapeIconFactory extends ResolutionIndependentIconFactory {
-  Constructor<? extends ShapeIcon> iconConstructor;
+  final Function<Dimension, ShapeIcon> iconConstructor;
 
-  public ShapeIconFactory(Class<? extends ShapeIcon> cls)  {
-    try {
-      iconConstructor = cls.getConstructor(Dimension.class);
-    } catch (Exception e) {
-      Logger.warning(String.format("Unable to find constructor for %s, blank icons will be created.", cls.getName()));
-    }
+  public ShapeIconFactory(Function<Dimension, ShapeIcon> iconC)  {
+    iconConstructor = iconC;
   }
 
   @Override
   protected ShapeIcon createIcon(Dimension size) {
-    try {
-      return iconConstructor.newInstance(size);
-    } catch (Exception e) {
-
-      return new ShapeIcon(size) {
-        @Override
-        protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-        }
-      };
-    }
+      return iconConstructor.apply(size);
   }
 }

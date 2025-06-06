@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.TransportImp;
 import org.lgna.story.resources.TransportResource;
 
@@ -53,7 +55,8 @@ public class STransport extends SJointedModel {
   }
 
   @Override
-  TransportImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public TransportImp getImplementation() {
     return implementation;
   }
 }

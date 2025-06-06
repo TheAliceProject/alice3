@@ -44,10 +44,6 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
@@ -55,7 +51,13 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
+
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -67,9 +69,8 @@ import java.util.Comparator;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class PickDisplayTask extends DisplayTask {
-  public PickDisplayTask(int x, int y, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion) {
-    this.x = x;
-    this.y = y;
+  public PickDisplayTask(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion) {
+    this.mousePosition = mousePos;
     this.pickSubElementPolicy = pickSubElementPolicy;
     this.criterion = criterion;
 
@@ -89,8 +90,8 @@ import java.util.Comparator;
     ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary(gl);
 
     RenderTarget rt = rtImp.getRenderTarget();
-    AbstractCamera sgCamera = rtImp.getCameraAtPixel(this.x, this.y);
-    PickParameters pickParameters = new PickParameters(rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
+    AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(this.mousePosition);
+    PickParameters pickParameters = new PickParameters(rt, sgCamera, this.mousePosition, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
 
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
 
@@ -123,65 +124,28 @@ import java.util.Comparator;
         double x = pickParameters.getX();
         double y = pickParameters.getFlippedY(actualViewport);
 
-        Matrix4x4 m = new Matrix4x4();
-        m.translation.set(actualViewport.width - (2 * (x - actualViewport.x)), actualViewport.height - (2 * (y - actualViewport.y)), 0, 1);
-        ScaleUtilities.applyScale(m, actualViewport.width, actualViewport.height, 1.0);
+        Matrix4x4 m = Matrix4x4.fromTranslation(new Vector3(
+            actualViewport.width - (2 * (x - actualViewport.x)),
+            actualViewport.height - (2 * (y - actualViewport.y)),
+            0));
 
-        Matrix4x4 p = new Matrix4x4();
-        cameraAdapter.getActualProjectionMatrix(p, actualViewport);
+        Matrix4x4 scale = Matrix4x4.fromScale(actualViewport.width, actualViewport.height, 1.0);
+        Matrix4x4 p = cameraAdapter.getActualProjectionMatrix(actualViewport);
 
-        m.applyMultiplication(p);
-        m.invert();
+        m = m.times(scale).times(p).invert();
         for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
           selectionBufferInfo.updatePointInSource(m);
         }
       } else {
-        Ray ray = new Ray();
-        ray.setNaN();
-        cameraAdapter.getRayAtPixel(ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
-        ray.accessDirection().normalize();
-        AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
+        Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport);
+        ray = ray.normalized();
+        AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
         for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
           selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
         }
       }
 
       if (length > 1) {
-        //        float front0 = selectionBufferInfos[ 0 ].getZFront();
-        //        boolean isDifferentiated = false;
-        //        for( int i=1; i<length; i++ ) {
-        //          if( front0 == selectionBufferInfos[ i ].getZFront() ) {
-        //            //pass
-        //          } else {
-        //            isDifferentiated = true;
-        //            break;
-        //          }
-        //        }
-        //        java.util.Comparator< SelectionBufferInfo > comparator;
-        //        if( isDifferentiated ) {
-        //          comparator = new java.util.Comparator< SelectionBufferInfo >() {
-        //            public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-        //              return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
-        //            }
-        //          };
-        //        } else {
-        //          if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-        //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: conformance test reports pick is functioning correctly" );
-        //            comparator = null;
-        //          } else {
-        //            edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
-        //            ray.setNaN();
-        //            cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
-        //            for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-        //              selectionBufferInfo.updatePointInSource( ray );
-        //            }
-        //            comparator = new java.util.Comparator< SelectionBufferInfo >() {
-        //              public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-        //                return Double.compare( sbi1.getPointInSource().z, sbi2.getPointInSource().z );
-        //              }
-        //            };
-        //          }
-        //        }
         Comparator<SelectionBufferInfo> comparator;
         if (isPickFunctioningCorrectly) {
           comparator = new Comparator<SelectionBufferInfo>() {
@@ -194,8 +158,8 @@ import java.util.Comparator;
           comparator = new Comparator<SelectionBufferInfo>() {
             @Override
             public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-              double z1 = -sbi1.getPointInSource().z;
-              double z2 = -sbi2.getPointInSource().z;
+              double z1 = -sbi1.getPointInSource().z();
+              double z2 = -sbi2.getPointInSource().z();
               return Double.compare(z1, z2);
             }
           };
@@ -211,8 +175,7 @@ import java.util.Comparator;
     return IsFrameBufferIntact.TRUE;
   }
 
-  private final int x;
-  private final int y;
+  private final Point mousePosition;
   private final PickSubElementPolicy pickSubElementPolicy;
   private final VisualInclusionCriterion criterion;
 

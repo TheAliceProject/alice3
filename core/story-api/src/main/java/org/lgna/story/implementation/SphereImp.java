@@ -120,7 +120,7 @@ public class SphereImp extends ShapeImp {
 
   private final SSphere abstraction;
   private final Sphere sgSphere = new Sphere();
-  public final DoubleProperty radius = new DoubleProperty(SphereImp.this) {
+  public final DoubleProperty radius = new DoubleProperty(SphereImp.this, 0.0) {
     @Override
     public Double getValue() {
       return SphereImp.this.sgSphere.radius.getValue();

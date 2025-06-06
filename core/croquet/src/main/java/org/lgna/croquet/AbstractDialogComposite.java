@@ -110,6 +110,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
       @Override
       public void windowOpened(WindowEvent e) {
         handleDialogOpened();
+        dialog.getAwtComponent().toFront();
       }
 
       @Override

@@ -54,7 +54,7 @@ import org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent;
 import org.lgna.project.virtualmachine.events.StatementExecutionEvent;
 import org.lgna.project.virtualmachine.events.VirtualMachineListener;
 import org.lgna.project.virtualmachine.events.WhileLoopIterationEvent;
-import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.SProgram;
 
 import java.util.UUID;
 
@@ -76,7 +76,7 @@ public class FastForwardToStatementOperation extends Operation {
   public void pre(RunProgramContext runProgramContext) {
     this.runProgramContext = runProgramContext;
     this.runProgramContext.getVirtualMachine().addVirtualMachineListener(this.virtualMachineListener);
-    this.runProgramContext.getProgramImp().setSimulationSpeedFactor(10.0);
+    this.runProgramContext.getProgram().setSimulationSpeedFactor(10.0);
   }
 
   public void post() {
@@ -92,9 +92,9 @@ public class FastForwardToStatementOperation extends Operation {
     public void statementExecuting(StatementExecutionEvent statementExecutionEvent) {
       if (statementExecutionEvent.getStatement() == statement) {
         if (runProgramContext != null) {
-          ProgramImp programImp = runProgramContext.getProgramImp();
-          if (programImp != null) {
-            programImp.setSimulationSpeedFactor(1.0);
+          SProgram program = runProgramContext.getProgram();
+          if (program != null) {
+            program.setSimulationSpeedFactor(1.0);
           }
           runProgramContext.getVirtualMachine().removeVirtualMachineListener(this);
           runProgramContext = null;

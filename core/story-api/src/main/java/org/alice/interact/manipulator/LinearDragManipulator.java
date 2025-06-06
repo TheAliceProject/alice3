@@ -122,7 +122,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
   }
 
   protected double getDistanceAlongAxisBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
       Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation.backward;
       double axisCameraDot = Vector3.calculateDotProduct(this.absoluteDragAxis, cameraBack);
@@ -221,8 +221,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
         this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed(this.linearHandle.getDragAxis());
 
         startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-        startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
-
+        this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
         this.previousClickPoint.set(this.initialClickPoint);
 
         Vector3 toCamera = Vector3.createSubtraction(this.getCamera().getAbsoluteTransformation().translation, this.manipulatedTransformable.getAbsoluteTransformation().translation);

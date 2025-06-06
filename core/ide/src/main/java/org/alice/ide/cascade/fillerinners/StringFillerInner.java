@@ -43,12 +43,15 @@
 package org.alice.ide.cascade.fillerinners;
 
 import org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn;
+import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.StringCustomExpressionCreatorComposite;
+
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,11 +68,17 @@ public class StringFillerInner extends ExpressionFillerInner {
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    String[] literals = getLiterals();
+    List<String> literals = Arrays.asList(getLiterals());
+
     for (String s : literals) {
       items.add(StringLiteralFillIn.getInstance(s));
     }
+
+    ExpressionWithRecentValuesCreatorComposite creatorComposite = StringCustomExpressionCreatorComposite.getInstance();
+
+    items.addAll(creatorComposite.getRecentFillIns(literals));
+
     items.add(CascadeLineSeparator.getInstance());
-    items.add(StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    items.add(creatorComposite.getValueCreator().getFillIn());
   }
 }

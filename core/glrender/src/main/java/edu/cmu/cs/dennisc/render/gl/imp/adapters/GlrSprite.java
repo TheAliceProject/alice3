@@ -43,14 +43,13 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Sprite;
-
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 /**
  * @author Dennis Cosgrove
  */
@@ -81,8 +80,7 @@ public class GlrSprite extends GlrGeometry<Sprite> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    rv.setNaN();
-    return rv;
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
+    return Point3.NaN;
   }
 }

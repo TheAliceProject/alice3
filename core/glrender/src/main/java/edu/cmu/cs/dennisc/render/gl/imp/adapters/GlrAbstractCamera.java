@@ -45,8 +45,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.Graphics2D;
 import edu.cmu.cs.dennisc.render.RenderTarget;
@@ -55,6 +53,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Ray;
 
 import java.awt.Rectangle;
 
@@ -62,46 +62,31 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
-  public abstract Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport);
+  public abstract Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport);
 
-  protected abstract Rectangle performLetterboxing(Rectangle rv);
+  protected abstract Rectangle performLetterboxing(Rectangle rect);
 
-  public Rectangle getActualViewport(Rectangle rv, int surfaceWidth, int surfaceHeight) {
+  public Rectangle getActualViewport(int surfaceWidth, int surfaceHeight) {
+    Rectangle rv = new Rectangle();
     if (this.specifiedViewport != null) {
       rv.setBounds(this.specifiedViewport);
     } else {
       rv.setBounds(0, 0, surfaceWidth, surfaceHeight);
     }
-    if (this.isLetterboxedAsOpposedToDistorted) {
-      performLetterboxing(rv);
+    if (this.isLetterboxed) {
+      rv = performLetterboxing(rv);
     }
     return rv;
   }
 
-  public abstract Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport);
+  public abstract Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport);
 
-  public Rectangle getSpecifiedViewport() {
-    if (this.specifiedViewport != null) {
-      return new Rectangle(this.specifiedViewport);
-    } else {
-      return null;
-    }
+  public boolean isLetterboxed() {
+    return this.isLetterboxed;
   }
 
-  public void setSpecifiedViewport(Rectangle specifiedViewport) {
-    if (specifiedViewport != null) {
-      this.specifiedViewport = new Rectangle(specifiedViewport);
-    } else {
-      this.specifiedViewport = null;
-    }
-  }
-
-  public boolean isLetterboxedAsOpposedToDistorted() {
-    return this.isLetterboxedAsOpposedToDistorted;
-  }
-
-  public void setIsLetterboxedAsOpposedToDistorted(boolean isLetterboxedAsOpposedToDistorted) {
-    this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
+  public void setIsLetterboxed(boolean isLetterboxed) {
+    this.isLetterboxed = isLetterboxed;
   }
 
   protected abstract void setupProjection(Context context, Rectangle actualViewport);
@@ -109,7 +94,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
   public void performClearAndRenderOffscreen(RenderContext rc, int surfaceWidth, int surfaceHeight) {
     GlrScene sceneAdapter = getGlrScene();
     if (sceneAdapter != null) {
-      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      Rectangle actualViewport = getActualViewport(surfaceWidth, surfaceHeight);
       rc.gl.glMatrixMode(GL_PROJECTION);
       rc.gl.glLoadIdentity();
       setupProjection(rc, actualViewport);
@@ -120,7 +105,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
 
   public void postRender(RenderContext rc, int surfaceWidth, int surfaceHeight, RenderTarget renderTarget, Graphics2D g2) {
     if (this.glrLayers != null) {
-      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      Rectangle actualViewport = getActualViewport(surfaceWidth, surfaceHeight);
       for (GlrLayer layerAdapter : this.glrLayers) {
         layerAdapter.render(g2, renderTarget, actualViewport, this.owner);
       }
@@ -136,14 +121,11 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
       pc.gl.glMatrixMode(GL_PROJECTION);
       pc.gl.glLoadIdentity();
 
+      // actualViewport.x & y are set > 0 when letterboxing
       double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
-      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) - actualViewport.y));
+      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
       pc.gl.glTranslated(tx, ty, 0.0);
       pc.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
-      //      int[] vp = { actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height };
-      //      java.nio.IntBuffer vpBuffer = java.nio.IntBuffer.wrap( vp );
-      //      pc.glu.gluPickMatrix( pickParameters.getX(), pickParameters.getFlippedY( actualViewport ), 1.0, 1.0, vpBuffer );
-
       setupProjection(pc, actualViewport);
 
       pc.pickScene(this, sceneAdapter, pickParameters);
@@ -165,5 +147,5 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
   private GlrLayer[] glrLayers;
 
   private Rectangle specifiedViewport;
-  private boolean isLetterboxedAsOpposedToDistorted = true;
+  private boolean isLetterboxed = true;
 }

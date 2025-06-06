@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLOffscreenAutoDrawable;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
@@ -56,39 +55,25 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
-  private final GLOffscreenAutoDrawable glPbuffer;
+  private final GLOffscreenAutoDrawable drawable;
 
-  GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
-    super(lookingGlassFactory, requestedCapabilities);
-    GLContext share;
-    if (renderTargetToShareContextWith != null) {
-      share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
-    } else {
-      share = null;
-    }
-    this.glPbuffer = GlDrawableUtils.createGlPixelBuffer(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share);
+  GlrOffscreenRenderTarget(int width, int height, RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities);
+    drawable = GlDrawableUtils.createOffscreenAutoDrawable(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height);
   }
 
   @Override
-  protected Dimension getSurfaceSize(Dimension rv) {
+  public Dimension getSurfaceSize() {
+    Dimension rv = new Dimension();
     //TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
-    if (this.glPbuffer != null) {
-      rv.setSize(GlDrawableUtils.getGlDrawableWidth(this.glPbuffer), GlDrawableUtils.getGlDrawableHeight(this.glPbuffer));
+    if (drawable != null) {
+      rv.setSize(GlDrawableUtils.getGlDrawableWidth(drawable), GlDrawableUtils.getGlDrawableHeight(drawable));
     } else {
       rv.setSize(0, 0);
     }
     return rv;
   }
 
-  @Override
-  protected Dimension getDrawableSize(Dimension rv) {
-    if (this.glPbuffer != null) {
-      rv.setSize(GlDrawableUtils.getGlDrawableWidth(this.glPbuffer), GlDrawableUtils.getGlDrawableHeight(this.glPbuffer));
-    } else {
-      rv.setSize(0, 0);
-    }
-    return rv;
-  }
 
   @Override
   public void clearAndRenderOffscreen() {
@@ -98,20 +83,20 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
   @Override
   protected void actuallyRelease() {
     super.actuallyRelease();
-    if (this.glPbuffer != null) {
-      this.glPbuffer.destroy();
+    if (drawable != null) {
+      drawable.destroy();
     }
   }
 
   @Override
   public GLAutoDrawable getGLAutoDrawable() {
-    if (glPbuffer == null) {
-      Logger.severe("GlrOffscreenRenderTarget has null glPbuffer/GLAutoDrawable. This may be part of the pick bug.");
+    if (drawable == null) {
+      Logger.severe("GlrOffscreenRenderTarget has null GLAutoDrawable. This may be part of the pick bug.");
     }
-    return glPbuffer;
+    return drawable;
   }
 
   @Override
-  protected void repaintIfAppropriate() {
+  public void repaint() {
   }
 }

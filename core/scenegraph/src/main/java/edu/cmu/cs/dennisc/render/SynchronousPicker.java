@@ -43,17 +43,18 @@
 
 package edu.cmu.cs.dennisc.render;
 
+import java.awt.Point;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface SynchronousPicker {
-  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver);
+  public PickResult pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver);
 
-  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy);
+  public PickResult pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy);
 
-  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver);
+  public List<PickResult> pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver);
 
-  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy);
+  public List<PickResult> pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy);
 }

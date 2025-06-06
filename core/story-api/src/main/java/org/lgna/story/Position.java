@@ -50,7 +50,8 @@ import edu.cmu.cs.dennisc.math.Point3;
 public final class Position {
   private final Point3 internal;
 
-  private Position(Point3 internal) {
+  // TODO Either use immutable value or make a copy - after checking  we do not depend on side effects
+  public Position(Point3 internal) {
     this.internal = internal;
   }
 
@@ -58,18 +59,8 @@ public final class Position {
     this(new Point3(right.doubleValue(), up.doubleValue(), backward.doubleValue()));
   }
 
-  /* package-private */
-  static Position createInstance(Point3 internal) {
-    return internal != null ? new Position(internal) : null;
-  }
-
   /* package-private */Point3 getInternal() {
     return this.internal;
-  }
-
-  /* package-private */
-  static Point3 getInternal(Position vantagePoint) {
-    return vantagePoint != null ? vantagePoint.internal : null;
   }
 
   @Override

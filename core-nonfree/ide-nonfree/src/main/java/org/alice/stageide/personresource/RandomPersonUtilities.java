@@ -45,7 +45,6 @@ package org.alice.stageide.personresource;
 
 import org.lgna.common.RandomUtilities;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.resources.sims2.BaseEyeColor;
 import org.lgna.story.resources.sims2.BaseFace;
 import org.lgna.story.resources.sims2.BaseSkinTone;
@@ -100,7 +99,7 @@ public class RandomPersonUtilities {
     }
     Gender gender = Gender.getRandom();
     BaseSkinTone skinTone = BaseSkinTone.getRandom();
-    Color skinColor = EmployeesOnly.createColor(skinTone.getColor());
+    Color skinColor = Color.createInstance(skinTone.getColor());
     EyeColor eyeColor = BaseEyeColor.getRandom();
     Outfit outfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
     Hair hair = getRandomHair(lifeStage, gender);

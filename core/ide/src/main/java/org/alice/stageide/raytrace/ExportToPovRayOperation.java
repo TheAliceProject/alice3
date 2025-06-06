@@ -52,7 +52,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 
@@ -81,7 +80,7 @@ public class ExportToPovRayOperation extends ActionOperation {
     UserField sceneField = sceneEditor.getActiveSceneField();
     AbstractField cameraField = sceneField.getValueType().getDeclaredField("camera");
     SCamera camera = (SCamera) sceneEditor.getInstanceInJavaVMForField(cameraField);
-    SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation(camera);
+    SymmetricPerspectiveCameraImp cameraImp = camera.getImplementation();
     SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
     POVRayUtilities.export(new PrintWriter(System.out), sgCamera);
     activity.finish();

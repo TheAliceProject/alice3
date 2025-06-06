@@ -65,7 +65,7 @@ public enum KeyFrameStyles {
     return isSlowInDesired;
   }
 
-  public static AnimationStyle getAnimationStyleFromTwoKeyFramStyles(KeyFrameStyles previous, KeyFrameStyles current) {
+  public static AnimationStyle getAnimationStyleFromTwoKeyFrameStyles(KeyFrameStyles previous, KeyFrameStyles current) {
     return getAnimationStyleForBooleanPair((previous == null) || previous.isSlowOutDesired, current.isSlowInDesired);
   }
 

@@ -46,7 +46,6 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.nebulous.Person;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.resources.sims2.EyeColor;
 import org.lgna.story.resources.sims2.Face;
 import org.lgna.story.resources.sims2.Gender;
@@ -136,7 +135,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<Person> {
   }
 
   private Object getValueForSkinTone() {
-    java.awt.Color awtColor = EmployeesOnly.getAwtColor(this.skinColor);
+    java.awt.Color awtColor = this.skinColor.toAwtColor();
     return awtColor.getRGB();
   }
 

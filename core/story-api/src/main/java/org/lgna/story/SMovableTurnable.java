@@ -60,7 +60,7 @@ import org.lgna.story.implementation.ReferenceFrame;
 public abstract class SMovableTurnable extends STurnable {
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public Position getPositionRelativeToVehicle() {
-    return Position.createInstance(this.getImplementation().getLocalPosition());
+    return new Position(this.getImplementation().getLocalPosition());
   }
 
   @MethodTemplate()

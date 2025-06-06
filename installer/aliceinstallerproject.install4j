@@ -45,7 +45,7 @@
       <mountPoint id="23" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.0.0.jar" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.0.1.jar" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" subDirectory="externalDependencies" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" />
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" subDirectory="distribution" />
@@ -131,7 +131,7 @@
           <versionLine x="461" y="262" text="version ${compiler:sys.version}" />
         </text>
       </splashScreen>
-      <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED">
+      <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-da -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED">
         <classPath>
           <scanDirectory location="lib" failOnError="false" />
         </classPath>
@@ -967,13 +967,11 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" downloadURL="http://www.alice.org/downloads/installerOnlineData" architecture="universal" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -981,8 +979,6 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" />
@@ -990,19 +986,18 @@
     <unixInstaller name="Unix Installer Offline" id="111" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice3" downloadURL="http://www.alice.org/downloads/installerOnlineData">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
     </unixInstaller>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" launcherId="24">
+    <macosArchive name="Mac OS X Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" architecture="universal" launcherId="24">
       <exclude>
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
-        <entry location="platform/linux-amd64" />
         <entry location="platform/linux-i586" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
+        <entry location="platform/linux-amd64" />
+        <entry location="platform/win32" />
       </exclude>
     </macosArchive>
     <windowsArchive name="Windows Archive" id="891" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" architecture="64">
@@ -1010,14 +1005,12 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
         <entry location="platform/macosx" />
       </exclude>
     </windowsArchive>
     <linuxDeb name="Linux Deb Archive" id="1294" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
@@ -1028,7 +1021,6 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     <unixArchive name="Unix Archive" id="1295" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
@@ -1036,7 +1028,6 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     <linuxRPM name="Linux RPM" id="1296" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />

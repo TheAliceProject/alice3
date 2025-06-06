@@ -43,6 +43,7 @@
 
 package org.alice.stageide.perspectives.code;
 
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
@@ -50,7 +51,6 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.members.MembersComposite;
 import org.alice.ide.sceneeditor.SceneComposite;
 import org.alice.ide.typehierarchy.TypeHierarchyComposite;
-import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.typecontext.NonSceneTypeComposite;
 import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.Composite;
@@ -177,7 +177,7 @@ public class CodeContextSplitComposite extends ImmutableSplitComposite {
       } else {
         SplitPane otherSplitPane = codePerspectiveComposite.getView();
         int prevValue = otherSplitPane.getDividerLocation();
-        int nextValue = (int) ((Integer) e.getNewValue() * RunComposite.WIDTH_TO_HEIGHT_RATIO);
+        int nextValue = (int) ((Integer) e.getNewValue() * SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO);
         if (prevValue != nextValue) {
           codePerspectiveComposite.incrementIgnoreDividerLocationChangeCount();
           try {

@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -57,11 +59,17 @@ public class ClassInfo {
   private transient Class<?> cls;
   private final String clsName;
 
-  private final List<ConstructorInfo> constructorInfos = new LinkedList<ConstructorInfo>();
-  private final List<MethodInfo> methodInfos = new LinkedList<MethodInfo>();
+  private final List<ConstructorInfo> constructorInfos;
+  private final List<MethodInfo> methodInfos;
 
-  private ClassInfo(String clsName) {
+  @JsonCreator
+  public ClassInfo(
+          @JsonProperty("clsName") String clsName,
+          @JsonProperty("constructorInfos") List<ConstructorInfo> constructorInfos,
+          @JsonProperty("methodInfos") List<MethodInfo> methodInfos) {
     this.clsName = clsName;
+    this.constructorInfos = constructorInfos;
+    this.methodInfos = methodInfos;
   }
 
   public String getClsName() {
@@ -83,7 +91,7 @@ public class ClassInfo {
     }
   }
 
-  Class getWrappedClass() {
+  Class<?> getWrappedClass() {
     return cls;
   }
 

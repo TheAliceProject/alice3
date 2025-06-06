@@ -43,8 +43,8 @@
 
 package org.alice.stageide.perspectives.code;
 
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.stageide.run.RunComposite;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.LazyImmutableSplitComposite;
 import org.lgna.croquet.views.SplitPane;
@@ -101,7 +101,7 @@ public class CodePerspectiveComposite extends LazyImmutableSplitComposite<CodeCo
         CodeContextSplitComposite otherComposite = getLeadingComposite();
         SplitPane otherSplitPane = otherComposite.getView();
         int prevValue = otherSplitPane.getDividerLocation();
-        int nextValue = (int) ((Integer) e.getNewValue() / RunComposite.WIDTH_TO_HEIGHT_RATIO);
+        int nextValue = (int) ((Integer) e.getNewValue() / SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO);
         if (prevValue != nextValue) {
           otherComposite.incrementIgnoreDividerLocationChangeCount();
           try {

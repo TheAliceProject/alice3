@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
@@ -59,6 +58,7 @@ import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.implementation.ModelImp;
 
 /**
  * @author Matt May
@@ -72,7 +72,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
   @Override
   protected void check(SThing changedEntity) {
     if (camera == null) { //should not really be hit
-      camera = EmployeesOnly.getImplementation(changedEntity).getScene().findFirstCamera();
+      camera = changedEntity.getImplementation().getScene().findFirstCamera();
       if (camera == null) {
         return;
       } else {
@@ -136,9 +136,10 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
     for (SModel m : models) {
       if (!getModelList().contains(m)) {
         getModelList().add(m);
-        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+        ModelImp mImp = m.getImplementation();
+        mImp.getSgComposite().addAbsoluteTransformationListener(this);
         if (camera == null) {
-          camera = EmployeesOnly.getImplementation(m).getScene().findFirstCamera();
+          camera = mImp.getScene().findFirstCamera();
           camera.getSgComposite().addAbsoluteTransformationListener(this);
         }
       }

@@ -56,7 +56,7 @@ public class ClassInfoManager {
   private ClassInfoManager() {
   }
 
-  public static void addClassInfos(List<ClassInfo> infos) {
+  public static void addClassInfos(ClassInfo[] infos) {
     for (ClassInfo info : infos) {
       info.initialize();
       s_map.put(info.getClsName(), info);

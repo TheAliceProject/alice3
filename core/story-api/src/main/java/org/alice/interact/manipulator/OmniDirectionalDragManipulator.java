@@ -46,7 +46,6 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -162,7 +161,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     }
 
     Vector3 mouseRelativeMovement = new Vector3(mouseVector.x, 0d, mouseVector.y);
-    getCamera().getRoot().transformFrom_AffectReturnValuePassedIn(mouseRelativeMovement, getCamera());
+    mouseRelativeMovement = getCamera().getRoot().transformFrom(mouseRelativeMovement, getCamera());
     mouseRelativeMovement.y = 0d;
     mouseRelativeMovement.normalize();
 
@@ -186,7 +185,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
 
@@ -197,7 +196,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     Point mousePoint = new Point(currentInput.getMouseLocation().x + this.mousePlaneOffset.x, currentInput.getMouseLocation().y + this.mousePlaneOffset.y);
     Vector3 cameraForward = this.getCamera().getParent().getAbsoluteTransformation().orientation.backward;
     cameraForward.multiply(-1);
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
 
     Point3 levelPickPoint = null;
     Point3 skewedPickPoint = null;
@@ -332,7 +331,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   protected Point3 getInitialClickPoint(InputState startInput) {
     Point3 initialClickPoint = new Point3();
     startInput.getClickPickResult().getPositionInSource(initialClickPoint);
-    startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+    initialClickPoint = startInput.getClickPickResult().getSource().transformTo(initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
     return initialClickPoint;
   }
 
@@ -345,12 +344,10 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
       this.hasMoved = false;
       this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-      Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
-      toOrigin.normalize();
       Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
       this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
-      Ray orthoPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray orthoPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
       Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
       this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
 
@@ -386,7 +383,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     AngleInRadians angle = VectorUtilities.getAngleBetweenVectors(toCamera, cameraTransform.orientation.backward);
     AngleInRadians angleUp = VectorUtilities.getAngleBetweenVectors(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
 
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
     double pickDotHorizontal = Vector3.calculateDotProduct(pickRay.accessDirection(), Vector3.accessPositiveYAxis());
     //    PrintUtilities.println("pick: "+pickDotHorizontal+", object dot: "+dot+", leveDot: "+dotLevel+", angle: "+angle.getAsDegrees()+", angle up: "+angleUp.getAsDegrees());
     if (Math.abs(pickDotHorizontal) < .001) {
@@ -407,9 +404,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
     }
     worstCasePlaneNormal.normalize();
 
-    Ray centerRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
-    Ray oneUp = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1);
-    Ray oneDown = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1);
+    Ray centerRay = this.onscreenRenderTarget.getRayAtAwtPoint(mousePoint, this.getCamera()).mutable();
+    Ray oneUp = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y - 1), this.getCamera()).mutable();
+    Ray oneDown = this.onscreenRenderTarget.getRayAtAwtPoint(new Point(mousePoint.x, mousePoint.y + 1), this.getCamera()).mutable();
     Point3 centerPoint = PlaneUtilities.getPointInPlane(horizontalPlane, centerRay);
     Point3 upPoint = PlaneUtilities.getPointInPlane(horizontalPlane, oneUp);
     Point3 downPoint = PlaneUtilities.getPointInPlane(horizontalPlane, oneDown);
@@ -456,7 +453,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected Point calculateMousePlaneOffset(Point mousePosition, AbstractTransformable transformable) {
     Point3 pointInCamera = transformable.getTranslation(this.getCamera());
-    Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+    Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
     return new Point(awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y);
   }
 
@@ -466,8 +463,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   protected Point getMouseCursorPositionInLookingGlass() {
     Point3 new3DPoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
-    Point3 pointInCamera = this.camera.transformFrom_New(new3DPoint, this.camera.getRoot());
-    Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New(pointInCamera, this.onscreenRenderTarget, this.getCamera());
+    Point3 pointInCamera = this.camera.transformFrom(new3DPoint, this.camera.getRoot());
+    Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
     return awtPoint;
   }
 

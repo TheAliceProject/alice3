@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.nio.IntBuffer;
 
@@ -144,22 +144,14 @@ import java.nio.IntBuffer;
   }
 
   public void updatePointInSource(Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource) {
-    if (this.visualAdapter != null) {
-      this.visualAdapter.getIntersectionInSource(this.pointInSource, ray, inverseAbsoluteTransformationOfSource, this.geometryIndex, this.subElement);
-    } else {
-      this.pointInSource.setNaN();
-    }
+    pointInSource = visualAdapter == null ? Point3.NaN :
+        visualAdapter.getIntersectionInSource(ray, inverseAbsoluteTransformationOfSource, geometryIndex, subElement);
   }
 
   public void updatePointInSource(Matrix4x4 m) {
-    double z = this.zFront;
-    z *= 2;
-    z -= 1;
-
-    Vector4 v = new Vector4(0, 0, z, 1);
-    m.transform(v);
-
-    this.pointInSource.set(v.x / v.w, v.y / v.w, v.z / v.w);
+    double z = 2 * zFront - 1;
+    Vector4 v = m.transform(new Vector4(0, 0, z, 1));
+    pointInSource = new Point3(v.x() / v.w(), v.y() / v.w(), v.z() / v.w());
   }
 
   public Point3 getPointInSource() {
@@ -173,5 +165,5 @@ import java.nio.IntBuffer;
   private final int geometryIndex;
   private final int subElement;
 
-  private Point3 pointInSource = Point3.createNaN();
+  private Point3 pointInSource = Point3.NaN;
 }

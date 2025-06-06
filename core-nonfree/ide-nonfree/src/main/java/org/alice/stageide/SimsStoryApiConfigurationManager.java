@@ -61,7 +61,7 @@ public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManag
 
   public SimsStoryApiConfigurationManager() {
     super();
-    IconFactoryManager.registerIconFactory(SRoom.class, new ShapeIconFactory(RoomIcon.class));
+    IconFactoryManager.registerIconFactory(SRoom.class, new ShapeIconFactory(RoomIcon::new));
   }
 
   private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance(PersonResource.class);

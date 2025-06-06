@@ -53,16 +53,17 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
+import org.alice.interact.PlaneUtilities;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -116,37 +117,27 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     return m_sgDragAcceptor;
   }
 
-  private Point3 getPointInPlane(Plane plane, int xPixel, int yPixel) {
-    Ray ray = getOnscreenRenderTarget().getRayAtPixel(xPixel, yPixel, m_sgCamera);
-    AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
-    ray.transform(m);
-    double t = plane.intersect(ray);
-    return ray.getPointAlong(t);
-  }
-
   private double yDelta = 0.0;
 
   @Override
   protected void handleMousePress(Point current, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
     if (isOriginalAsOpposedToStyleChange) {
       PickObserver pickObserver = null;
-      PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(current.x, current.y, PickSubElementPolicy.NOT_REQUIRED, pickObserver);
+      PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost(current, PickSubElementPolicy.NOT_REQUIRED, pickObserver);
       m_sgCamera = (AbstractCamera) pickResult.getSource();
       Visual sgVisual = pickResult.getVisual();
       if (sgVisual != null) {
         m_sgDragAcceptor = lookupDragAcceptor(sgVisual);
         if (m_sgDragAcceptor != null) {
           m_undoPOV = m_sgDragAcceptor.getTransformation(AsSeenBy.SCENE);
-          m_xyzInAbsoluteAtPress = TransformationUtilities.transformToAbsolute_New(pickResult.getPositionInSource(), m_sgCamera);
+          m_xyzInAbsoluteAtPress = m_sgCamera.transformToAbsolute(pickResult.getPositionInSource());
         }
       }
       this.yDelta = 0.0;
     } else {
       if (m_sgDragAcceptor != null) {
-        Ray ray = getOnscreenRenderTarget().getRayAtPixel(current.x, current.y, m_sgCamera);
-        ray.transform(m_sgCamera.getAbsoluteTransformation());
-        double t = m_planeInAbsolute.intersect(ray);
-        m_xyzInAbsoluteAtPress = ray.getPointAlong(t);
+        Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera).mutable();
+        m_xyzInAbsoluteAtPress = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
         //m_xyzInAbsoluteAtPress.y += this.yDelta;
       }
     }
@@ -154,7 +145,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
     if (m_sgDragAcceptor != null) {
       AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
       m_offset = Vector3.createSubtraction(m_xyzInAbsoluteAtPress, m.translation);
-      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
+      m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo(m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
       if (!dragStyle.isShiftDown()) {
         AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
         Vector3 axis = Vector3.createSubtraction(cameraAbsolute.translation, m_xyzInAbsoluteAtPress);
@@ -190,9 +181,10 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
         }
       } else {
         //linear drag
-        final Point3 xyzInAbsolutePlane = getPointInPlane(m_planeInAbsolute, current.x, current.y);
+        Ray ray = getOnscreenRenderTarget().getRayAtAwtPoint(current, m_sgCamera).mutable();
+        final Point3 xyzInAbsolutePlane = PlaneUtilities.getPointInPlane(m_planeInAbsolute, ray);
         xyzInAbsolutePlane.subtract(m_offset);
-        getOnscreenRenderTarget().getRenderFactory().invokeLater(new Runnable() {
+        GlrRenderFactory.getInstance().invokeLater(new Runnable() {
           @Override
           public void run() {
             updateTranslation(m_sgDragAcceptor, xyzInAbsolutePlane, AsSeenBy.SCENE);
@@ -206,7 +198,7 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
   protected Point handleMouseRelease(Point rv, DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange) {
     if ((m_sgCamera != null) && (m_sgDragAcceptor != null)) {
       //      if( dragStyle.isControlDown() ) {
-      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenRenderTarget(), m_sgCamera );
+      //        java.awt.Point p = m_sgDragAcceptor.transformToAWT( m_xyzInDragAcceptorAtPress, getOnscreenRenderTarget(), m_sgCamera );
       //        warpCursor( p );
       //        showCursor();
       //        rv.setLocation( p );

@@ -101,4 +101,10 @@ public final class Dimension3 extends Tuple3 {
   public static Dimension3 createNormalized(Tuple3 a) {
     return (Dimension3) setReturnValueToNormalized(new Dimension3(), a);
   }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Vector3 immutable() {
+    return new org.alice.math.immutable.Vector3(x, y, z);
+  }
 }

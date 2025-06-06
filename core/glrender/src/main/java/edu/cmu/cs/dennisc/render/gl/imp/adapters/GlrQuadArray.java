@@ -45,12 +45,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2GL3.GL_QUADS;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.QuadArray;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 /**
  * @author Dennis Cosgrove
@@ -67,10 +67,9 @@ public class GlrQuadArray extends GlrVertexGeometry<QuadArray> {
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     //todo
-    rv.setNaN();
-    return rv;
+    return Point3.NaN;
   }
 
   @Override

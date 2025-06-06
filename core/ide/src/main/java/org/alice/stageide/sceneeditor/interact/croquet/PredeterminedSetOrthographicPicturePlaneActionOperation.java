@@ -46,8 +46,8 @@ package org.alice.stageide.sceneeditor.interact.croquet;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import org.alice.math.immutable.ClippedZPlane;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
@@ -76,10 +76,9 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends Act
     this.editPresentationKey = editPresentationKey;
   }
 
-  private void setHeightOnCamera(OrthographicCamera camera, double height) {
-    ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.getValue();
-    picturePlane.setHeight(height);
-    PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.setValue(picturePlane);
+  private void setHeightOnCamera(double height) {
+    ClippedZPlane picturePlane = orthoCamera.picturePlane.getValue();
+    orthoCamera.picturePlane.setValue(picturePlane.withHeight(height));
   }
 
   private void setPicturePlaneHeight(final double height) {
@@ -91,12 +90,12 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends Act
 
         @Override
         protected void updateValue(Double newHeight) {
-          setHeightOnCamera(orthoCamera, newHeight.doubleValue());
+          setHeightOnCamera(newHeight);
         }
       }
       this.animator.invokeLater(new ZoomAnimation(), null);
     } else {
-      setHeightOnCamera(orthoCamera, height);
+      setHeightOnCamera(height);
     }
 
   }

@@ -57,7 +57,7 @@ import javax.swing.WindowConstants;
   private final ProgramImp implementation = ProgramImp.createInstance(this);
   private SScene activeScene;
 
-  /* package-private */ProgramImp getImplementation() {
+  public ProgramImp getImplementation() {
     return this.implementation;
   }
 

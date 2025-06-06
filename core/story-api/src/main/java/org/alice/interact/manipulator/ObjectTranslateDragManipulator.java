@@ -134,7 +134,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
   }
 
   protected Point3 getPositionBasedOnMouseLocation(Point mouseLocation) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
     if (pickRay != null) {
       Plane toMoveIn = this.movementPlane;
       double badAngleAmount = this.getBadAngleAmount(this.movementPlane, pickRay);
@@ -244,11 +244,11 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
       this.hasMoved = false;
       this.initialObjectPosition.set(this.manipulatedTransformable.getAbsoluteTransformation().translation);
       startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-      startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
+      this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
       this.movementPlane = createPickPlane(this.initialClickPoint);
       this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 
-      Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
       if (pickRay != null) {
         this.initialClickPoint = PlaneUtilities.getPointInPlane(this.movementPlane, pickRay);
         this.offsetToOrigin = Point3.createSubtraction(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.initialClickPoint);

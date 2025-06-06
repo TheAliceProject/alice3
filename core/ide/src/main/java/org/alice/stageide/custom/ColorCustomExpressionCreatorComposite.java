@@ -58,7 +58,6 @@ import org.lgna.croquet.views.SwingAdapter;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 
 import javax.swing.JColorChooser;
 import javax.swing.event.ChangeEvent;
@@ -110,7 +109,7 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
     java.awt.Color awtColor = this.jColorChooser.getColor();
     IDE ide = IDE.getActiveInstance();
     ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
-    Color color = EmployeesOnly.createColor(awtColor);
+    Color color = Color.createInstance(awtColor);
     try {
       return expressionCreator.createExpression(color);
     } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
@@ -130,7 +129,7 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
       try {
         Color color = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(expression, Color.class);
         if (color != null) {
-          Color4f color4f = EmployeesOnly.getColor4f(color);
+          Color4f color4f = color.toColor4f();
           this.jColorChooser.setColor(ColorUtilities.toAwtColor(color4f));
         }
       } catch (Throwable t) {

@@ -59,7 +59,6 @@ import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
@@ -118,8 +117,8 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
           }
 
           //Check to see if we're already at a "good look" position of the target. If so, don't do anything
-          SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation(storytellingCamera);
-          StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(EmployeesOnly.getImplementation(toLookAtEntity));
+          SymmetricPerspectiveCameraImp cameraImp = storytellingCamera.getImplementation();
+          StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(toLookAtEntity.getImplementation());
           AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
           AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
           if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {

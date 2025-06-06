@@ -51,10 +51,6 @@ import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
@@ -63,6 +59,10 @@ import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 import java.nio.DoubleBuffer;
 
@@ -80,13 +80,13 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
     return this.glrFrontFacingAppearance;
   }
 
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
     if ((0 <= geometryIndex) && (geometryIndex < this.glrGeometries.length)) {
-      AffineMatrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
-      AffineMatrix4x4 m = AffineMatrix4x4.createMultiplication(inverseAbsoluteTransformationOfSource, absoluteTransformation);
-      this.glrGeometries[geometryIndex].getIntersectionInSource(rv, ray, m, subElement);
+      Matrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation().immutable();
+      Matrix4x4 m = inverseAbsoluteTransformationOfSource.times(absoluteTransformation);
+      return this.glrGeometries[geometryIndex].getIntersectionInSource(ray, m, subElement);
     }
-    return rv;
+    return Point3.NaN;
   }
 
   private boolean isEthereal() {
@@ -383,7 +383,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
     } else if (property == owner.scale) {
       //todo: accessScale?
-      updateScale(owner.scale.getValue());
+      updateScale(owner.scale.getValue().immutable());
     } else if (property == owner.isShowing) {
       this.isShowing = owner.isShowing.getValue();
     } else if (property == owner.silouette) {

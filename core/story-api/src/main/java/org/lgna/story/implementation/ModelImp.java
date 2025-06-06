@@ -69,7 +69,6 @@ import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.texture.Texture;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.overlay.BubbleAnimation;
 import org.lgna.story.implementation.overlay.BubbleImp;
@@ -105,8 +104,8 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   public final PaintProperty paint = new PaintProperty(ModelImp.this) {
     @Override
     protected void internalSetValue(Paint value) {
-      Color4f color4f = EmployeesOnly.getColor4f(value, Color4f.WHITE);
-      Texture texture = EmployeesOnly.getTexture(value, null);
+      Color4f color4f = org.lgna.story.Color.getColor4fOrWhite(value);
+      Texture texture = value.getTextureIfPresent();
       for (SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances()) {
         if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
           sgAppearance.diffuseColor.setValue(color4f);
@@ -465,9 +464,9 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         } else {
           offsetAsSeenBySubject = getThoughtBubbleOffset();
         }
-        Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo_New(offsetAsSeenBySubject, sgCamera);
+        Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo(offsetAsSeenBySubject, sgCamera);
         //      edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
-        Point p = sgCamera.transformToAWT_New(offsetAsSeenByCamera, renderTarget);
+        Point p = renderTarget.transformFromCameraToAWT(offsetAsSeenByCamera.immutable(), sgCamera);
         //      float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
         //      float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 

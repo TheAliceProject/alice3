@@ -48,6 +48,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation;
@@ -544,6 +545,19 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
       if (newScale != null) {
         if (!newScale.equals(this.propertyAdapter.getValue())) {
           if ((this.propertyAdapter.getLastSetValue() == null) || !this.propertyAdapter.getLastSetValue().equals(newScale)) {
+            if (newScale.hasNegativeComponents()) {
+              String modelName = this.propertyAdapter.getInstance().getClass().getSimpleName();
+              Logger.outln("Restricting size for " + modelName + " to a near-zero non-negative value");
+
+              Dimension3 oldScale = propertyAdapter.getValue();
+
+              double maxDim = Math.max(oldScale.x, Math.max(oldScale.y, oldScale.z));
+
+              double scaleFactor = .01; // set the size close to zero, instead of negative
+
+              newScale = Dimension3.createMultiplication(oldScale, scaleFactor / maxDim);
+            }
+
             Operation operation = new ModelSizePropertyValueOperation(this.propertyAdapter, newScale);
             operation.fire(ActionEventTrigger.createUserActivity(e));
           }

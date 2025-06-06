@@ -51,13 +51,13 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.math.immutable.ClippedZPlane;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DragComponent;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -120,7 +120,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
     double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
     if ((dotProd == 1) || (dotProd == -1)) {
       Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
-      ClippedZPlane dummyPlane = new ClippedZPlane(orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport(orthoCamera));
+      ClippedZPlane dummyPlane = orthoCamera.picturePlane.getValue().completeFrom(this.onscreenRenderTarget.getActualViewport(orthoCamera));
       double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
       double horizonInCameraSpace = 0.0d - cameraPosition.y;
       double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
@@ -142,7 +142,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
   @Override
   protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
-    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     if (isHorizonInView()) {
       pickPoint.y = 0;
@@ -194,8 +194,6 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
       }
       this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-      Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
-      toOrigin.normalize();
       Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
       this.orthographicPickPlane = Plane.createInstance(new Point3(0, 0, 0), cameraFacingNormal);
       addPlaneTransitionPointSphereToScene();

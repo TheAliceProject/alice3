@@ -53,12 +53,10 @@ import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.stageide.StoryApiConfigurationManager;
-import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
-import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractConstructor;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -254,8 +252,6 @@ public abstract class ApiConfigurationManager {
   public abstract AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType);
 
   public abstract SwingComponentView<?> createReplacementForFieldAccessIfAppropriate(FieldAccess fieldAccess);
-
-  public abstract CascadeItem<?, ?> getCustomFillInFor(ValueDetails<?> valueDetails);
 
   public abstract ExpressionCreator getExpressionCreator();
 

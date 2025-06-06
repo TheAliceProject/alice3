@@ -90,7 +90,7 @@ public class JTimeLineView extends JPanel {
 
   @Override
   public Dimension getPreferredSize() {
-    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), (JTimeLinePoseMarker.SIZE.height - 0) * 2);
+    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), (TimeLinePoseMarker.SIZE.height - 0) * 2);
   }
 
   private int calculateTimeMarkerOffset() {

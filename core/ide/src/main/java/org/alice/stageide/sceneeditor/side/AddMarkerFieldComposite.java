@@ -57,9 +57,10 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.story.Orientation;
+import org.lgna.story.Position;
 import org.lgna.story.SMarker;
 
 import java.util.UUID;
@@ -118,13 +119,13 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
     AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
     rv.addDoStatement(SetUpMethodGenerator.createSetterStatement(false, field, COLOR_ID_SETTER, this.colorIdState.getValue()));
     try {
-      Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(false, field, EmployeesOnly.createOrientation(initialMarkerTransform.orientation));
+      Statement orientationStatement = SetUpMethodGenerator.createOrientationStatement(false, field, new Orientation(initialMarkerTransform.orientation));
       rv.addDoStatement(orientationStatement);
     } catch (CannotCreateExpressionException ccee) {
       ccee.printStackTrace();
     }
     try {
-      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, EmployeesOnly.createPosition(initialMarkerTransform.translation));
+      Statement positionStatement = SetUpMethodGenerator.createPositionStatement(false, field, new Position(initialMarkerTransform.translation));
       rv.addDoStatement(positionStatement);
     } catch (CannotCreateExpressionException ccee) {
       ccee.printStackTrace();

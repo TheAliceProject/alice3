@@ -1,7 +1,22 @@
 package org.alice.tweedle.file;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.lgna.common.Resource;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TypeReference.class, name = "Class"),
+        @JsonSubTypes.Type(value = AliceTextureReference.class, name = "aliceTexture"),
+        @JsonSubTypes.Type(value = AudioReference.class, name = "audio"),
+        @JsonSubTypes.Type(value = StructureReference.class, name = "skeletonMesh"),
+        @JsonSubTypes.Type(value = ModelReference.class, name = "model"),
+        @JsonSubTypes.Type(value = ImageReference.class, name = "image") }
+)
 public abstract class ResourceReference implements Cloneable {
 
   public String name;

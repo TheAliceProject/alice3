@@ -144,7 +144,7 @@ public class TorusImp extends ShapeImp {
 
   private final STorus abstraction;
   private final Torus sgTorus = new Torus();
-  public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this) {
+  public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this, 0.0) {
 
     @Override
     public Double getValue() {
@@ -161,7 +161,7 @@ public class TorusImp extends ShapeImp {
       }
     }
   };
-  public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this) {
+  public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this, DoubleProperty.CLOSE_TO_ZERO) {
 
     @Override
     public Double getValue() {

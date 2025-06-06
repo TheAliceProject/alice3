@@ -42,9 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 
 /**
@@ -57,7 +55,7 @@ public class TexturedPaintUtilities {
 
   protected static void setPaint(TexturedVisual sgTexturedVisual, Paint paint) {
     //sgTexturedVisual.setPaint( paint );
-    sgTexturedVisual.getAppearance().setDiffuseColor(EmployeesOnly.getColor4f(paint, Color4f.WHITE));
-    sgTexturedVisual.setTexture(EmployeesOnly.getTexture(paint, null));
+    sgTexturedVisual.getAppearance().setDiffuseColor(org.lgna.story.Color.getColor4fOrWhite(paint));
+    sgTexturedVisual.setTexture(paint.getTextureIfPresent());
   }
 }

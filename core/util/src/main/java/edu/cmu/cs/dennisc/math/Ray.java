@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.math;
 
-import edu.cmu.cs.dennisc.math.immutable.MRay;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -181,10 +179,6 @@ public final class Ray {
     //    this.direction = LinearAlgebra.newVector3d( transformedDirection );
   }
 
-  public MRay createImmutable() {
-    return new MRay(this.origin.createImmutable(), this.direction.createImmutable());
-  }
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -196,5 +190,11 @@ public final class Ray {
     sb.append(this.direction);
     sb.append("]");
     return sb.toString();
+  }
+
+  // Temporary use during transition to immutable Records
+  @Deprecated(forRemoval = true)
+  public org.alice.math.immutable.Ray immutable() {
+    return new org.alice.math.immutable.Ray(origin.immutable(), direction.immutable());
   }
 }

@@ -50,7 +50,6 @@ import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.ik.core.solver.Bone;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
@@ -72,7 +71,7 @@ public class IKCore {
 
   private static final SBiped ogre = new SBiped(null);
   private static final boolean USING_OLD = false;
-  private static List<JointId> defaultAnchors = Lists.newArrayList(((JointImp) EmployeesOnly.getImplementation(ogre.getRightShoulder())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getLeftShoulder())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getRightHip())).getJointId(), ((JointImp) EmployeesOnly.getImplementation(ogre.getLeftHip())).getJointId());
+  private static List<JointId> defaultAnchors = Lists.newArrayList(ogre.getRightShoulder().getImplementation().getJointId(), ogre.getLeftShoulder().getImplementation().getJointId(), ogre.getRightHip().getImplementation().getJointId(), ogre.getLeftHip().getImplementation().getJointId());
 
   public static void moveChainToPointInSceneSpace(JointImp anchor, JointImp end, Point3 target) {
     //this because anchor does not behave as expected...

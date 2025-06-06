@@ -53,7 +53,6 @@ import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaField;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.implementation.JointIdTransformationPair;
@@ -147,7 +146,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
   protected void preserveUndoInfo(Object instance, boolean isDo) {
     if (instance instanceof SJointedModel) {
       SJointedModel jointedModel = (SJointedModel) instance;
-      JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+      JointedModelImp<?, ?> jointedModelImp = jointedModel.getImplementation();
       Iterable<JointImp> joints = jointedModelImp.getJoints();
       List<JointUndoRunnable> list = Lists.newLinkedList();
       //TODO: Possibly use the captured pose to determine if undo is appropriate per joint?

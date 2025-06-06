@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.RenderTarget;
@@ -52,8 +51,10 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
 
 import java.awt.Rectangle;
+import java.awt.Point;
 import java.util.List;
 
 /**
@@ -63,22 +64,20 @@ public class PickParameters {
   private final List<PickResult> pickResults = Lists.newLinkedList();
   private final RenderTarget renderTarget;
   private final AbstractCamera sgCamera;
-  private final int x;
-  private final int y;
+  private final Point mousePos;
   private final boolean isSubElementRequired;
   private final PickObserver pickObserver;
 
-  public PickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver) {
+  public PickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, Point p, boolean isSubElementRequired, PickObserver pickObserver) {
     this.renderTarget = renderTarget;
     this.sgCamera = sgCamera;
-    this.x = x;
-    this.y = y;
+    this.mousePos = p;
     this.isSubElementRequired = isSubElementRequired;
     this.pickObserver = pickObserver;
   }
 
   public void addPickResult(Component source, Visual sgVisual, boolean isFrontFacing, Geometry sgGeometry, int subElement, Point3 xyzInSource) {
-    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource));
+    this.pickResults.add(new PickResult(source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource.mutable()));
   }
 
   public List<PickResult> accessAllPickResults() {
@@ -104,15 +103,11 @@ public class PickParameters {
   }
 
   public int getX() {
-    return this.x;
-  }
-
-  public int getY() {
-    return this.y;
+    return this.mousePos.x;
   }
 
   public int getFlippedY(Rectangle actualViewport) {
-    return actualViewport.height - this.y;
+    return actualViewport.height - this.mousePos.y;
   }
 
   public boolean isSubElementRequired() {

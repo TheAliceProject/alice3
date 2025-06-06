@@ -53,12 +53,13 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.media.Player;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.media.MediaFactory;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -298,7 +299,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return scene != null ? scene.getProgram() : null;
   }
 
-  protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  protected OnscreenRenderTarget getOnscreenRenderTarget() {
     ProgramImp program = this.getProgram();
     return program != null ? program.getOnscreenRenderTarget() : null;
   }
@@ -325,8 +326,13 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return rv;
   }
 
-  public Point transformToAwt(Point3 xyz, CameraImp<?> camera) {
-    return this.getSgComposite().transformToAWT_New(xyz, this.getOnscreenRenderTarget(), camera.getSgCamera());
+  public Point transformToAwt(Vector4 xyzw, CameraImp<?> cameraImp) {
+    final AbstractCamera camera = cameraImp.getSgCamera();
+    // get the position relative to the camera, first.
+    Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
+    // 3d -> 2d conversion
+    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos.immutable(), camera);
+
   }
 
   protected static final double DEFAULT_DURATION = 1.0;
@@ -368,7 +374,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   private Component getParentComponent() {
     SceneImp scene = this.getScene();
     if (scene != null) {
-      OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+      OnscreenRenderTarget onscreenRenderTarget = this.getOnscreenRenderTarget();
       if (onscreenRenderTarget != null) {
         return onscreenRenderTarget.getAwtComponent();
       }

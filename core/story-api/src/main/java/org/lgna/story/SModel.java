@@ -56,7 +56,8 @@ import org.lgna.story.implementation.ModelImp;
  */
 public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, VisualWithPaint {
   @Override
-  /* package-private */ abstract ModelImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract ModelImp getImplementation();
 
   @Override
   public void setVehicle(SThing vehicle) {
@@ -203,7 +204,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
     double textScale = TextScale.getValue(details);
     int textSize = (int) (16 * textScale);
     int textStyle = TextStyle.getValue(details).getInternal();
-    this.getImplementation().say(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).getInternal(), BubbleFillColor.getValue(details, Color.WHITE).getInternal(), BubbleOutlineColor.getValue(details, Color.WHITE).getInternal(), BubblePosition.getValue(details).getInternal());
+    this.getImplementation().say(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).toColor4f(), BubbleFillColor.getValue(details, Color.WHITE).toColor4f(), BubbleOutlineColor.getValue(details, Color.WHITE).toColor4f(), BubblePosition.getValue(details).getInternal());
   }
 
   @MethodTemplate()
@@ -212,7 +213,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
     double textScale = TextScale.getValue(details);
     int textSize = (int) (16 * textScale);
     int textStyle = TextStyle.getValue(details).getInternal();
-    this.getImplementation().think(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).getInternal(), BubbleFillColor.getValue(details, Color.WHITE).getInternal(), BubbleOutlineColor.getValue(details, Color.WHITE).getInternal(), BubblePosition.getValue(details).getInternal());
+    this.getImplementation().think(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).toColor4f(), BubbleFillColor.getValue(details, Color.WHITE).toColor4f(), BubbleOutlineColor.getValue(details, Color.WHITE).toColor4f(), BubblePosition.getValue(details).getInternal());
   }
 
   //TODO: Get this to work

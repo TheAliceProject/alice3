@@ -259,7 +259,7 @@ public class EventManager {
   public void addDragAdapter(Visual[] visuals) {
     if (this.dragAdapter == null) {
       this.dragAdapter = new RuntimeDragAdapter(visuals);
-      OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
+      OnscreenRenderTarget renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
       this.dragAdapter.setOnscreenRenderTarget(renderTarget);
       this.dragAdapter.addCameraView(CameraView.MAIN, camera);

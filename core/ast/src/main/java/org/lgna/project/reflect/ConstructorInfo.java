@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
@@ -53,8 +55,11 @@ import java.lang.reflect.Constructor;
 public class ConstructorInfo extends MemberInfo {
   private transient Constructor<?> cnstrctr = null;
 
-  public ConstructorInfo(ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames) {
-    super(classInfo, parameterClassNames, parameterNames);
+  @JsonCreator
+  public ConstructorInfo(
+          @JsonProperty("parameterClassNames") String[] parameterClassNames,
+          @JsonProperty("parameterNames") String[] parameterNames) {
+    super(parameterClassNames, parameterNames);
   }
 
   @Override

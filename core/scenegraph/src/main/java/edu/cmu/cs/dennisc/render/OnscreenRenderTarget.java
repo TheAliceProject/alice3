@@ -42,13 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import java.awt.Component;
+import javax.swing.JPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface OnscreenRenderTarget<C extends Component> extends RenderTarget {
-  public C getAwtComponent();
-
-  public void repaint();
+public interface OnscreenRenderTarget extends RenderTarget {
+  public JPanel getAwtComponent();
 }

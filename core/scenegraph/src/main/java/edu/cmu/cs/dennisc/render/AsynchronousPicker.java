@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface AsynchronousPicker {
-  void pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer);
+  void pickFrontMost(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer);
 
-  void pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer);
+  void pickAll(Point mousePos, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer);
 }

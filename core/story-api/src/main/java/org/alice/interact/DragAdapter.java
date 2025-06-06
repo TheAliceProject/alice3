@@ -57,6 +57,7 @@ import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Element;
@@ -188,26 +189,21 @@ public abstract class DragAdapter {
     return this.manipulators;
   }
 
-  private Component getAWTComponentToAddListenersTo(OnscreenRenderTarget<?> onscreenRenderTarget) {
-    if (onscreenRenderTarget != null) {
-      return onscreenRenderTarget.getAwtComponent();
-    } else {
-      return null;
-    }
-  }
-
-  public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
     return this.onscreenRenderTarget;
   }
 
-  public void setOnscreenRenderTarget(OnscreenRenderTarget<?> onscreenRenderTarget) {
+  public void setOnscreenRenderTarget(OnscreenRenderTarget target) {
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
+      GlrRenderFactory.getInstance().removeAutomaticDisplayListener(this.automaticDisplayAdapter);
     }
-    this.onscreenRenderTarget = onscreenRenderTarget;
-    setAWTComponent(getAWTComponentToAddListenersTo(this.onscreenRenderTarget));
+    this.onscreenRenderTarget = target;
+
     if (this.onscreenRenderTarget != null) {
-      this.onscreenRenderTarget.getRenderFactory().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+      setAWTComponent(this.onscreenRenderTarget.getAwtComponent());
+      GlrRenderFactory.getInstance().addAutomaticDisplayListener(this.automaticDisplayAdapter);
+    } else {
+      setAWTComponent(null);
     }
   }
 
@@ -631,7 +627,7 @@ public abstract class DragAdapter {
   }
 
   private AbstractCamera getSGCamera() {
-    OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+    OnscreenRenderTarget onscreenRenderTarget = this.getOnscreenRenderTarget();
     if (onscreenRenderTarget != null && 0 < onscreenRenderTarget.getSgCameraCount()) {
       return onscreenRenderTarget.getSgCameraAt(0);
     }
@@ -677,11 +673,11 @@ public abstract class DragAdapter {
   }
 
   private void pickIntoScene(Point mouseLocation, PickFrontMostObserver observer) {
-    OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+    OnscreenRenderTarget onscreenRenderTarget = this.getOnscreenRenderTarget();
     assert onscreenRenderTarget != null;
     // Once IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME we could switch to
-    // getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED, null, observer );
-    PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED);
+    // getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation, PickSubElementPolicy.NOT_REQUIRED, null, observer );
+    PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(mouseLocation, PickSubElementPolicy.NOT_REQUIRED);
     observer.done(pickResult);
   }
 
@@ -907,7 +903,7 @@ public abstract class DragAdapter {
 
   protected/*private*/ final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
   private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-  private OnscreenRenderTarget<?> onscreenRenderTarget;
+  private OnscreenRenderTarget onscreenRenderTarget;
   private Component lookingGlassComponent = null;
   private Component currentRolloverComponent = null;
   private Animator animator;

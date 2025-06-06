@@ -70,8 +70,8 @@ public class SCamera extends SMovableTurnable implements MutableRider {
     m.applyRotationAboutYAxis(DEFAULT_CAMERA_FACING);
     m.applyRotationAboutXAxis(DEFAULT_CAMERA_TILT);
     m.applyTranslationAlongZAxis(8);
-    DEFAULT_ORIENTATION = Orientation.createInstance(m.orientation);
-    DEFAULT_POSITION = Position.createInstance(m.translation);
+    DEFAULT_ORIENTATION = new Orientation(m.orientation);
+    DEFAULT_POSITION = new Position(m.translation);
   }
 
   @Override
@@ -96,7 +96,8 @@ public class SCamera extends SMovableTurnable implements MutableRider {
   }
 
   @Override
-  SymmetricPerspectiveCameraImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SymmetricPerspectiveCameraImp getImplementation() {
     return this.implementation;
   }
 

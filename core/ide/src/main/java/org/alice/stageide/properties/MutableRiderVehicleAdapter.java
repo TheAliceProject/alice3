@@ -56,7 +56,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SThing;
 
@@ -158,7 +157,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
     super.startPropertyListening();
     if (this.instance != null) {
       this.initializeListenersIfNecessary();
-      EntityImp imp = EmployeesOnly.getImplementation((SThing) this.instance);
+      EntityImp imp = ((SThing) this.instance).getImplementation();
       imp.getSgComposite().addHierarchyListener(this.hierarchyListener);
     }
   }
@@ -167,7 +166,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
   protected void stopPropertyListening() {
     super.stopPropertyListening();
     if (this.instance != null) {
-      EntityImp imp = EmployeesOnly.getImplementation((SThing) this.instance);
+      EntityImp imp = ((SThing) this.instance).getImplementation();
       imp.getSgComposite().removeHierarchyListener(this.hierarchyListener);
     }
   }

@@ -49,7 +49,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.STurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.AsSeenBy;
@@ -69,7 +68,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
   protected void preserveUndoInfo(Object instance, boolean isDo) {
     if (instance instanceof STurnable) {
       STurnable turnable = (STurnable) instance;
-      this.transformable = EmployeesOnly.getImplementation(turnable);
+      this.transformable = turnable.getImplementation();
       this.m = this.transformable.getLocalTransformation();
     } else {
       Logger.severe(instance);

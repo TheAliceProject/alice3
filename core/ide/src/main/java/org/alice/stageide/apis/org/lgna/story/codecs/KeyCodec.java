@@ -46,7 +46,6 @@ package org.alice.stageide.apis.org.lgna.story.codecs;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.lgna.croquet.ItemCodec;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Key;
 
 /**
@@ -65,7 +64,7 @@ public enum KeyCodec implements ItemCodec<Key> {
     boolean isNotNull = binaryDecoder.decodeBoolean();
     if (isNotNull) {
       int keyCode = binaryDecoder.decodeInt();
-      return EmployeesOnly.getKeyFromKeyCode(keyCode);
+      return Key.getInstanceFromKeyCode(keyCode);
     } else {
       return null;
     }
@@ -75,7 +74,7 @@ public enum KeyCodec implements ItemCodec<Key> {
   public void encodeValue(BinaryEncoder binaryEncoder, Key value) {
     if (value != null) {
       binaryEncoder.encode(true);
-      binaryEncoder.encode(EmployeesOnly.getKeyCodeFromKey(value));
+      binaryEncoder.encode(value.getKeyCode());
     } else {
       binaryEncoder.encode(false);
     }

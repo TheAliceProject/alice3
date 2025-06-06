@@ -51,7 +51,6 @@ import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 
 import java.util.UUID;
@@ -95,7 +94,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   }
 
   public AxisAlignedBox getBoundingBox() {
-    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+    return sModel.getImplementation().getAxisAlignedMinimumBoundingBox();
   }
 
   public IconFactory getIconFactory() {

@@ -59,7 +59,8 @@ import org.lgna.story.implementation.EntityImp;
  */
 public abstract class STurnable extends SThing {
   @Override
-  /* package-private */ abstract AbstractTransformableImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract AbstractTransformableImp getImplementation();
 
   public Boolean isFacing(SThing other) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(other, 0);
@@ -111,7 +112,7 @@ public abstract class STurnable extends SThing {
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public Orientation getOrientationRelativeToVehicle() {
-    return Orientation.createInstance(this.getImplementation().getLocalOrientation());
+    return new Orientation(this.getImplementation().getLocalOrientation());
   }
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)

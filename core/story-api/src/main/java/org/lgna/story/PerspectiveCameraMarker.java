@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 
 /**
@@ -51,7 +53,8 @@ public class PerspectiveCameraMarker extends CameraMarker {
   private final PerspectiveCameraMarkerImp implementation = new PerspectiveCameraMarkerImp(this);
 
   @Override
-    /* package-private */PerspectiveCameraMarkerImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public PerspectiveCameraMarkerImp getImplementation() {
     return this.implementation;
   }
 

@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.alice.ide.IDE;
 import org.alice.ide.IdeApp;
 import org.alice.ide.IdeConfiguration;
@@ -102,9 +102,7 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
-import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.STurnable;
 import org.lgna.story.SVRHand;
@@ -145,10 +143,10 @@ public abstract class StageIDE extends IDE {
         int newState = e.getNewState();
         //edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
         if ((oldState & Frame.ICONIFIED) == Frame.ICONIFIED) {
-          RenderUtils.getDefaultRenderFactory().incrementAutomaticDisplayCount();
+          GlrRenderFactory.getInstance().incrementAutomaticDisplayCount();
         }
         if ((newState & Frame.ICONIFIED) == Frame.ICONIFIED) {
-          RenderUtils.getDefaultRenderFactory().decrementAutomaticDisplayCount();
+          GlrRenderFactory.getInstance().decrementAutomaticDisplayCount();
         }
       }
     });
@@ -200,7 +198,6 @@ public abstract class StageIDE extends IDE {
   @Override
   protected void registerAdaptersForSceneEditorVm(VirtualMachine vm) {
     vm.registerAbstractClassAdapter(SScene.class, SceneAdapter.class);
-    vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
   }
 
   @Override
@@ -234,7 +231,7 @@ public abstract class StageIDE extends IDE {
         try {
           JavaField javaField = (JavaField) field;
           org.lgna.story.Color color = (org.lgna.story.Color) ReflectionUtilities.get(javaField.getFieldReflectionProxy().getReification(), null);
-          Color awtColor = EmployeesOnly.getAwtColor(color);
+          Color awtColor = color.toAwtColor();
           return new ColorIconFactory(awtColor).getIconToFit(Theme.EXTRA_SMALL_SQUARE_ICON_SIZE);
         } catch (RuntimeException re) {
           //pass
@@ -284,7 +281,7 @@ public abstract class StageIDE extends IDE {
       if (COLOR_TYPE.isAssignableFrom(type)) {
         Label rv = new Label();
         org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression(instanceCreation, org.lgna.story.Color.class);
-        Color awtColor = EmployeesOnly.getAwtColor(color);
+        Color awtColor = color.toAwtColor();
         rv.setIcon(new ColorIcon(awtColor));
         return rv;
       }

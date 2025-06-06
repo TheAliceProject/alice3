@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.BoxImp;
 
 /**
@@ -51,7 +53,8 @@ public class SBox extends SShape {
   private final BoxImp implementation = new BoxImp(this);
 
   @Override
-    /* package-private */BoxImp getImplementation() {
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public BoxImp getImplementation() {
     return this.implementation;
   }
 }

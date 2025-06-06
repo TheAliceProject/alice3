@@ -46,13 +46,14 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.FullMatrix4x4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.Rectangle;
 import java.nio.DoubleBuffer;
@@ -62,213 +63,111 @@ import java.nio.DoubleBuffer;
  */
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<SymmetricPerspectiveCamera> {
   @Override
-  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
-    double vertical = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double near = -owner.nearClippingPlaneDistance.getValue();
-    double far = -owner.farClippingPlaneDistance.getValue();
+  public Ray getRayAtViewportPixel(int xPixel, int yPixel, Rectangle actualViewport) {
+    // Camera forward is negative z, so these values are negative, in the camera's frame of reference.
+    final double near = -owner.nearClippingPlaneDistance.getValue();
+    final double far = -owner.farClippingPlaneDistance.getValue();
 
-    //todo: investigate (especially x)
-    xPixel = actualViewport.width - xPixel;
-    yPixel = actualViewport.height - yPixel;
+    // actualViewport.x or y are set > 0 when letterboxing
 
-    double tanHalfVertical = Math.tan(vertical * 0.5);
-    double aspect = actualViewport.width / (double) actualViewport.height;
-    double halfWidth = actualViewport.width * 0.5;
-    double halfHeight = actualViewport.height * 0.5;
-    double dx = tanHalfVertical * ((xPixel / halfWidth) - 1.0) * aspect;
-    double dy = tanHalfVertical * (1.0 - (yPixel / halfHeight));
+    // Proportional offset from center of viewport.
+    // -1, -1 is the lower left corner
+    // 0,0 is the center
+    // 1, 1 is the upper right
+    final double xOffset = 1.0 - ((2.0 * (xPixel - actualViewport.x)) / actualViewport.width);
+    final double yOffset = 1.0 - ((2.0 * (yPixel - actualViewport.y)) / actualViewport.height);
 
-    //todo: optimize?
+    final double tanHalfVertical = Math.tan(getActualVerticalViewingAngle(actualViewport).getAsRadians() * 0.5);
+    final double dx = xOffset * tanHalfVertical * getAspectRatio(actualViewport);
+    final double dy = yOffset * tanHalfVertical;
+
     Point3 pNear = new Point3(dx * near, dy * near, near);
     Point3 pFar = new Point3(dx * far, dy * far, far);
-
-    rv.setOrigin(pNear);
-    Vector3 direction = Vector3.createSubtraction(pFar, pNear);
-    //todo: remove?
-    direction.normalize();
-    rv.setDirection(direction);
-
-    return rv;
+    return Ray.fromAtoB(pNear, pFar);
   }
 
   @Override
-  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+  public Matrix4x4 getActualProjectionMatrix(Rectangle actualViewport) {
     double zNear = owner.nearClippingPlaneDistance.getValue();
     double zFar = owner.farClippingPlaneDistance.getValue();
-    double fovx = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
-    double fovy = getActualVerticalViewingAngle(actualViewport).getAsRadians();
-    double aspect = fovx / fovy;
-    double f = 1 / Math.tan(fovy / 2);
-    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovx));
-    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovy));
+    double fovX = getActualHorizontalViewingAngle(actualViewport).getAsRadians();
+    double fovY = getActualVerticalViewingAngle(actualViewport).getAsRadians();
+    double aspect = fovX / fovY;
+    double f = 1 / Math.tan(fovY / 2);
+    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovX));
+    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovY));
 
-    rv.right.set(f / aspect, 0, 0, 0);
-    rv.up.set(0, f, 0, 0);
-    rv.backward.set(0, 0, (zFar + zNear) / (zNear - zFar), -1);
-    rv.translation.set(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0);
-
-    //    rv.setRow( 0, f / aspect, 0, 0, 0 );
-    //    rv.setRow( 1, 0, f, 0, 0 );
-    //    rv.setRow( 2, 0, 0, (zFar + zNear) / (zNear - zFar), (2 * zFar * zNear) / (zNear - zFar) );
-    //    rv.setRow( 3, 0, 0, -1, 0 );
-    return rv;
+    return new FullMatrix4x4(
+        new Vector4(f / aspect, 0, 0, 0),
+        new Vector4(0, f, 0, 0),
+        new Vector4(0, 0, (zFar + zNear) / (zNear - zFar), -1),
+        new Vector4(0, 0, (2 * zFar * zNear) / (zNear - zFar), 0));
   }
 
   @Override
-  protected Rectangle performLetterboxing(Rectangle rv) {
-    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
-      //pass
+  protected Rectangle performLetterboxing(Rectangle rect) {
+    Rectangle rv = new Rectangle(rect);
+    final double viewAspect = getAspectRatio(rv);
+    double surfaceAspect = rv.width / (double) rv.height;
+    if (viewAspect > surfaceAspect) {
+      int letterBoxedHeight = (int) ((rv.width / viewAspect) + 0.5);
+      rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
+    } else if (viewAspect < surfaceAspect) {
+      int letterBoxedWidth = (int) ((rv.height * viewAspect) + 0.5);
+      rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
     } else {
-      double aspect = this.horizontalInDegrees / this.verticalInDegrees;
-      double pixelAspect = rv.width / (double) rv.height;
-      if (aspect > pixelAspect) {
-        int letterBoxedHeight = (int) ((rv.width / aspect) + 0.5);
-        rv.setBounds(0, (rv.height - letterBoxedHeight) / 2, rv.width, letterBoxedHeight);
-      } else if (aspect < pixelAspect) {
-        int letterBoxedWidth = (int) ((rv.height * aspect) + 0.5);
-        rv.setBounds((rv.width - letterBoxedWidth) / 2, 0, letterBoxedWidth, rv.height);
-      } else {
-        //pass
-      }
+      // aspect is the same, we don't have to change it
     }
     return rv;
   }
 
-  private static final double DEFAULT_ACTUAL_VERTICAL_IN_DEGREES = new AngleInRadians(0.5).getAsDegrees();
-
-  public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
-    double horizontalInDegrees;
-    if (Double.isNaN(this.horizontalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
-      if (Double.isNaN(this.verticalInDegrees)) {
-        horizontalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES * aspect;
+  private double getAspectRatio(Rectangle rect) {
+    if (Double.isNaN(this.horizontalInDegrees) || Double.isNaN(this.verticalInDegrees)) {
+      if (this.isLetterboxed()) {
+        return SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO;
       } else {
-        horizontalInDegrees = this.verticalInDegrees * aspect;
+        return rect.width / (double) rect.height;
       }
     } else {
-      horizontalInDegrees = this.horizontalInDegrees;
+      return this.horizontalInDegrees / this.verticalInDegrees;
     }
-    return new AngleInDegrees(horizontalInDegrees);
+  }
+
+  public Angle getActualHorizontalViewingAngle(Rectangle actualViewport) {
+    double angle;
+    if (Double.isNaN(this.horizontalInDegrees)) {
+      double aspect = getAspectRatio(actualViewport);
+      if (Double.isNaN(this.verticalInDegrees)) {
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees() * aspect;
+      } else {
+        angle = this.verticalInDegrees * aspect;
+      }
+    } else {
+      angle = this.horizontalInDegrees;
+    }
+    return new AngleInDegrees(angle);
   }
 
   public Angle getActualVerticalViewingAngle(Rectangle actualViewport) {
-    double verticalInDegrees;
+    double angle;
     if (Double.isNaN(this.verticalInDegrees)) {
-      double aspect = actualViewport.width / (double) actualViewport.height;
+      double aspect = getAspectRatio(actualViewport);
       if (Double.isNaN(this.horizontalInDegrees)) {
-        verticalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES;
+        angle = SymmetricPerspectiveCamera.DEFAULT_VERTICAL_VIEW_ANGLE.getAsDegrees();
       } else {
-        verticalInDegrees = this.horizontalInDegrees / aspect;
+        angle = this.horizontalInDegrees / aspect;
       }
     } else {
-      verticalInDegrees = this.verticalInDegrees;
+      angle = this.verticalInDegrees;
     }
-    return new AngleInDegrees(verticalInDegrees);
+    return new AngleInDegrees(angle);
   }
-
-  //  @Override
-  //  protected void setupViewportAndProjection( PickContext pc, int x, int y, java.awt.Rectangle actualViewport, float zNear, float zFar ) {
-  //    int yFlipped = actualViewport.height - y;
-  //
-  ////    double vertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS );
-  ////
-  ////    double xInWindow = x;
-  ////    //todo: account for actualViewport.x
-  ////    xInWindow /= actualViewport.width;
-  ////    xInWindow *= 2;
-  ////    xInWindow -= 1;
-  ////
-  ////    double yInWindow = actualViewport.height - y;
-  ////    //todo: account for actualViewport.y
-  ////    yInWindow /= actualViewport.height;
-  ////    yInWindow *= 2;
-  ////    yInWindow -= 1;
-  ////
-  //////    xInWindow = 0.0;
-  //////    yInWindow = 0.0;
-  ////
-  ////    edu.cmu.cs.dennisc.math.Matrix4d actualProjection = new edu.cmu.cs.dennisc.math.Matrix4d();
-  ////    getActualProjectionMatrix( actualProjection, actualViewport );
-  ////
-  ////    edu.cmu.cs.dennisc.math.Vector4d xyzwNear = new edu.cmu.cs.dennisc.math.Vector4d();
-  ////    xyzwNear.x = xInWindow;
-  ////    xyzwNear.y = yInWindow;
-  ////    xyzwNear.z = 0.0;
-  ////    xyzwNear.w = 1.0;
-  ////
-  ////    actualProjection.invert();
-  ////    actualProjection.transform( xyzwNear );
-  ////
-  //////
-  //////    actualProjection.transform( xyzwNear );
-  //////    xyzwNear.scale( 1/xyzwNear.w );
-  ////
-  //////    edu.cmu.cs.dennisc.math.Vector4d xyzwFar = new edu.cmu.cs.dennisc.math.Vector4d();
-  //////    xyzwFar.x = xInWindow;
-  //////    xyzwFar.y = yInWindow;
-  //////    xyzwFar.z = zFar;
-  //////    xyzwFar.w = 1.0;
-  //////
-  //////    actualProjection.transform( xyzwFar );
-  ////
-  ////    double aspect = actualViewport.width / (double)actualViewport.height;
-  ////
-  ////    double tanHalfVertical = Math.tan( vertical * 0.5 );
-  ////    double halfHeightNear = tanHalfVertical * zNear;
-  ////    double halfHeightPixelNear = halfHeightNear / actualViewport.height;
-  ////
-  ////    //double halfWidthNear = halfHeightNear * aspect;
-  ////    double halfWidthPixelNear = halfHeightPixelNear * aspect;
-  ////
-  ////    double _x = xyzwNear.x / xyzwNear.w;
-  ////    double _y = xyzwNear.y / xyzwNear.w;
-  ////
-  ////    System.err.println( _x + ", " + _y );
-  ////    System.err.println( halfWidthPixelNear + ", " + halfHeightPixelNear );
-  ////    System.err.println( zNear + " " + ( xyzwNear.z / xyzwNear.w ) );
-  ////
-  ////
-  //
-  //    double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
-  //    double aspect = actualViewport.width / (double)actualViewport.height;
-  //
-  //    double halfVerticalTangent = Math.tan( halfVertical );
-  //    double halfHeightPlaneNear = zNear * halfVerticalTangent;
-  //    double halfHeightPixelNear = halfHeightPlaneNear / actualViewport.height;
-  //
-  //    double halfWidthPlaneNear = halfHeightPlaneNear * aspect;
-  //    double halfWidthPixelNear = halfHeightPixelNear * aspect;
-  //
-  //    double left = -halfWidthPlaneNear  + ( x        * halfWidthPixelNear );
-  //    double top  = -halfHeightPlaneNear + ( yFlipped * halfHeightPixelNear );
-  //
-  //    double right  = left + halfWidthPixelNear  + halfWidthPixelNear;
-  //    double bottom = top  + halfHeightPixelNear + halfHeightPixelNear;
-  //
-  //    pc.gl.glFrustum( left, right, top, bottom, zNear, zFar );
-  //    pc.gl.glViewport( x, yFlipped, 1, 1 );
-  //  }
 
   @Override
   protected void setupProjection(Context context, Rectangle actualViewport, float zNear, float zFar) {
-    //    double actualVerticalInDegrees = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.DEGREES );
-    //    context.glu.gluPerspective( actualVerticalInDegrees, actualViewport.width / (double)actualViewport.height, zNear, zFar );
-
-    //    double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
-    //    double aspect = actualViewport.width / (double)actualViewport.height;
-    //
-    //    double halfVerticalTangent = Math.tan( halfVertical );
-    //    double yNear = zNear * halfVerticalTangent;
-    //    double xNear = yNear * aspect;
-    //
-    //    context.gl.glFrustum( -xNear, +xNear, -yNear, +yNear, zNear, zFar );
-
-    Matrix4x4 projection = new Matrix4x4();
-    double[] projectionArray = new double[16];
-    DoubleBuffer projectionBuffer = DoubleBuffer.wrap(projectionArray);
-    getActualProjectionMatrix(projection, actualViewport);
-    projection.getAsColumnMajorArray16(projectionArray);
-    context.gl.glMultMatrixd(projectionBuffer);
+    Matrix4x4 projection = getActualProjectionMatrix(actualViewport);
+    double[] projectionArray = projection.asColumnMajorArray16();
+    context.gl.glMultMatrixd(DoubleBuffer.wrap(projectionArray));
   }
 
   @Override

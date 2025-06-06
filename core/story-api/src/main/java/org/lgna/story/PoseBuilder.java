@@ -54,12 +54,12 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public abstract class PoseBuilder<M extends SJointedModel, P extends Pose<M>> {
-  /*package-private*/void addJointIdQuaternionPair(JointIdTransformationPair jointIdTransformationPair) {
+  public void addJointIdQuaternionPair(JointIdTransformationPair jointIdTransformationPair) {
     this.pairs.add(jointIdTransformationPair);
   }
 
   protected void addJointIdQuaternionPair(JointId jointId, Orientation orientation) {
-    UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion();
+    UnitQuaternion quaternion = orientation.createUnitQuaternion();
     this.addJointIdQuaternionPair(new JointIdTransformationPair(jointId, quaternion));
   }
 

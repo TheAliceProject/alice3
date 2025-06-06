@@ -43,41 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.render.RenderTarget;
-
-import java.awt.Point;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCamera extends Leaf {
-  public Point transformToAWT(Point rv, Vector4 xyzw, RenderTarget renderTarget) {
-    return transformToAWT(rv, xyzw, renderTarget, this);
-  }
-
-  public Vector4 transformFromAWT(Vector4 rv, Point p, double z, RenderTarget renderTarget) {
-    return transformFromAWT(rv, p, z, renderTarget, this);
-  }
-
-  public Point transformToAWT_New(Vector4 xyzw, RenderTarget renderTarget) {
-    return transformToAWT_New(xyzw, renderTarget, this);
-  }
-
-  public Point transformToAWT_New(Point3 xyz, RenderTarget renderTarget) {
-    return transformToAWT_New(xyz, renderTarget, this);
-  }
-
-  public Vector4 transformFromAWT_NewVectorD4(Point p, double z, RenderTarget renderTarget) {
-    return transformFromAWT_NewVectorD4(p, z, renderTarget, this);
-  }
-
-  public Point3 transformFromAWT_NewPointD3(Point p, double z, RenderTarget renderTarget) {
-    return transformFromAWT_NewPointD3(p, z, renderTarget, this);
-  }
 
   public final InstanceProperty<Background> background = new InstanceProperty<Background>(this, null);
   //public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );

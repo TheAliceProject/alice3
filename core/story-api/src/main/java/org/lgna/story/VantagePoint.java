@@ -89,10 +89,10 @@ public final class VantagePoint {
   }
 
   public Orientation getOrientation() {
-    return Orientation.createInstance(this.internal.orientation);
+    return new Orientation(this.internal.orientation);
   }
 
   public Position getPosition() {
-    return Position.createInstance(this.internal.translation);
+    return new Position(this.internal.translation);
   }
 }

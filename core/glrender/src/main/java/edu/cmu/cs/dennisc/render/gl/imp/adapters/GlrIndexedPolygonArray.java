@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
 
 /**
  * @author Dennis Cosgrove
@@ -128,20 +128,16 @@ public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> exte
   }
 
   @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+  public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     if (subElement != -1) {
       int[] polygonData = owner.polygonData.getValueAsArray();
       int index = subElement * indicesPerPolygon;
       if ((0 <= index) && (index < polygonData.length)) {
         Vertex v = accessVertexAt(polygonData[index]);
-        GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z);
-      } else {
-        rv.setNaN();
+        return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z);
       }
-    } else {
-      rv.setNaN();
     }
-    return rv;
+    return Point3.NaN;
   }
 
   private final int mode;

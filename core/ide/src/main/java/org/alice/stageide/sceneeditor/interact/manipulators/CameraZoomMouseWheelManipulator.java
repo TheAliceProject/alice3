@@ -59,13 +59,13 @@ import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthograp
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.math.immutable.ClippedZPlane;
 import org.lgna.croquet.Application;
 import org.lgna.story.SCamera;
 
@@ -266,8 +266,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     } else if (newZoom < OrthographicCameraDragZoomManipulator.MIN_ZOOM) {
       newZoom = OrthographicCameraDragZoomManipulator.MIN_ZOOM;
     }
-    picturePlane.setHeight(newZoom);
-    orthoCam.picturePlane.setValue(picturePlane);
+    orthoCam.picturePlane.setValue(picturePlane.withHeight(newZoom));
   }
 
   protected void zoomCamera(int direction) {

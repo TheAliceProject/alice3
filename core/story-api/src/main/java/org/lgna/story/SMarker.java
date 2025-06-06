@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.MarkerImp;
 
 /**
@@ -51,7 +53,8 @@ import org.lgna.story.implementation.MarkerImp;
 public abstract class SMarker extends SMovableTurnable implements MutableRider {
 
   @Override
-  /* package-private */ abstract MarkerImp getImplementation();
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public abstract MarkerImp getImplementation();
 
   @Override
   public void setVehicle(SThing vehicle) {
