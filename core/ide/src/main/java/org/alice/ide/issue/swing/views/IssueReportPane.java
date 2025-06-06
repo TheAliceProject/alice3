@@ -45,8 +45,6 @@ package org.alice.ide.issue.swing.views;
 import edu.cmu.cs.dennisc.issue.AbstractReport;
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.issue.IssueType;
-import edu.cmu.cs.dennisc.issue.ReportGenerator;
-import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
 import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
@@ -74,26 +72,23 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueReportPane extends JPanel implements ReportGenerator {
-  protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
-
-  private static final List<String> systemPropertiesForEnnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
+public abstract class IssueReportPane extends JPanel {
+  private static final List<String> systemPropertiesForEnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
 
   public static List<String> getSystemPropertiesForEnvironmentField() {
-    return systemPropertiesForEnnvironmentField;
+    return systemPropertiesForEnvironmentField;
   }
 
-  public static final String getEnvironmentLongDescription() {
+  public static String getEnvironmentLongDescription() {
     StringBuilder sb = new StringBuilder();
     String intersticial = "";
-    for (String propertyName : systemPropertiesForEnnvironmentField) {
+    for (String propertyName : systemPropertiesForEnvironmentField) {
       sb.append(intersticial);
       sb.append(propertyName);
       sb.append(": ");
@@ -103,10 +98,10 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     return sb.toString();
   }
 
-  public static final String getEnvironmentShortDescription() {
+  public static String getEnvironmentShortDescription() {
     StringBuilder sb = new StringBuilder();
     String intersticial = "";
-    for (String propertyName : systemPropertiesForEnnvironmentField) {
+    for (String propertyName : systemPropertiesForEnvironmentField) {
       sb.append(intersticial);
       sb.append(System.getProperty(propertyName));
       intersticial = ";";
@@ -127,7 +122,7 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
 
   private final Action submitAction = new SubmitAction();
 
-  private JButton submitButton = new JButton(submitAction);
+  private final JButton submitButton = new JButton(submitAction);
 
   protected abstract int getPreferredDescriptionHeight();
 
@@ -161,13 +156,13 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     return rv;
   }
 
-  private JLabel labelSummary = createLabelForSingleLine("summary:");
-  private JSuggestiveTextField textSummary = new JSuggestiveTextField("", this.getSummarySuggestiveText());
+  private final JLabel labelSummary = createLabelForSingleLine("summary:");
+  private final JSuggestiveTextField textSummary = new JSuggestiveTextField("", this.getSummarySuggestiveText());
   protected Component[] rowSummary = SpringUtilities.createRow(labelSummary, textSummary);
 
-  private JLabel labelDescription = createLabelForMultiLine("description:");
-  private JSuggestiveTextArea textDescription = new JSuggestiveTextArea("", DESCRIPTION_SUGGESTIVE_TEXT);
-  private JScrollPane scrollDescription = new JScrollPane(this.textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+  private final JLabel labelDescription = createLabelForMultiLine("description:");
+  private final JSuggestiveTextArea textDescription = new JSuggestiveTextArea("", DESCRIPTION_SUGGESTIVE_TEXT);
+  private final JScrollPane scrollDescription = new JScrollPane(this.textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
     @Override
     public Dimension getPreferredSize() {
       return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight());
@@ -175,9 +170,9 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   };
   protected Component[] rowDescription = SpringUtilities.createRow(labelDescription, scrollDescription);
 
-  private JLabel labelSteps = createLabelForMultiLine("steps:");
-  private JSuggestiveTextArea textSteps = new JSuggestiveTextArea("", STEPS_SUGGESTIVE_TEXT);
-  private JScrollPane scrollSteps = new JScrollPane(this.textSteps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+  private final JLabel labelSteps = createLabelForMultiLine("steps:");
+  private final JSuggestiveTextArea textSteps = new JSuggestiveTextArea("", STEPS_SUGGESTIVE_TEXT);
+  private final JScrollPane scrollSteps = new JScrollPane(this.textSteps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
     @Override
     public Dimension getPreferredSize() {
       return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight());
@@ -259,37 +254,23 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   }
 
   private Issue.Builder createIssueBuilder() {
-    return new Issue.Builder().type(this.getIssueType()).summary(this.getSummaryText()).description(this.getDescriptionText()).environment(this.getEnvironmentText()).steps(this.getStepsText()).threadAndThrowable(this.getThread(), this.getThrowable()).version(ProjectVersion.getCurrentVersionText()).reportedBy(this.getSMTPReplyToPersonal()).emailAddress(this.getSMTPReplyTo());
+    return new Issue.Builder()
+        .type(this.getIssueType())
+        .summary(this.getSummaryText())
+        .description(this.getDescriptionText())
+        .environment(this.getEnvironmentText())
+        .steps(this.getStepsText())
+        .threadAndThrowable(this.getThread(), this.getThrowable())
+        .version(ProjectVersion.getCurrentVersionText())
+        .reportedBy(this.getSMTPReplyToPersonal())
+        .emailAddress(this.getSMTPReplyTo());
   }
 
-  private JIRAReport createJiraReport() {
-    Issue.Builder builder = this.createIssueBuilder();
-    JIRAReport rv = new JIRAReport(builder.build(), this.getJIRAProjectKey());
-    return rv;
+  public JIRAReport generateIssue() {
+    JIRAReport report = new JIRAReport(this.createIssueBuilder().build(), this.getJIRAProjectKey());
+    this.addAttachments(report);
+    return report;
   }
-
-  @Override
-  public JIRAReport generateIssueForRPC() {
-    JIRAReport rv = this.createJiraReport();
-    return rv;
-  }
-
-  @Override
-  public JIRAReport generateIssueForSOAP() {
-    JIRAReport rv = this.createJiraReport();
-    this.addAttachments(rv);
-    return rv;
-  }
-
-  //  public edu.cmu.cs.dennisc.mail.MailReport generateIssueForSMTP() {
-  //    edu.cmu.cs.dennisc.mail.MailReport rv = new edu.cmu.cs.dennisc.mail.MailReport();
-  //    rv.setSubject( this.getSMTPSubject() );
-  //    rv.setBody( this.getSMTPBody() );
-  //    rv.setReplyTo( this.getSMTPReplyTo() );
-  //    rv.setReplyToPersonal( this.getSMTPReplyToPersonal() );
-  //    this.addAttachments( rv );
-  //    return rv;
-  //  }
 
   public JButton getSubmitButton() {
     return this.submitButton;
@@ -298,7 +279,6 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
   private boolean isSubmitAttempted = false;
   private boolean isSubmitSuccessful = false;
   private boolean isSubmitDone = false;
-  private URL urlResult = null;
 
   public boolean isSubmitAttempted() {
     return this.isSubmitAttempted;
@@ -312,17 +292,11 @@ public abstract class IssueReportPane extends JPanel implements ReportGenerator 
     return this.isSubmitSuccessful;
   }
 
-  public URL getURLResult() {
-    return this.urlResult;
-  }
-
   protected void submit() {
     this.isSubmitSuccessful = false;
     this.isSubmitDone = false;
-    this.urlResult = null;
     this.isSubmitAttempted = true;
-    ProgressPane progressPane = SubmitReportUtilities.submitReport(this, this.getReportSubmissionConfiguration());
-    this.urlResult = progressPane.getURLResult();
+    ProgressPane progressPane = SubmitReportUtilities.submitReport(generateIssue(), SwingUtilities.getRoot(this));
     this.isSubmitSuccessful = progressPane.isSuccessful();
     this.isSubmitDone = progressPane.isDone();
     Component root = SwingUtilities.getRoot(this);

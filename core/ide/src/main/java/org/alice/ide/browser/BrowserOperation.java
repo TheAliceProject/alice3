@@ -50,36 +50,36 @@ import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
 import javax.swing.SwingUtilities;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BrowserOperation extends InconsequentialActionOperation {
-  public static final String ALICE_HOME_URL = "http://www.alice.org";
-  public static final String WIKI_URL = "https://github.com/TheAliceProject/alice3/wiki";
-  public static final String ALICE_USE_URL = WIKI_URL + "/Using-Alice-3";
-  public static final String TROUBLESHOOTING_URL = WIKI_URL + "/Troubleshooting-Known-Issues";
-  public static final String RECURSION_URL = "https://en.wikipedia.org/wiki/Recursion_%28computer_science%29";
+  public static final URI ALICE_HOME_URI = URI.create("http://www.alice.org");
+  private static final String WIKI_URL = "https://github.com/TheAliceProject/alice3/wiki";
+  public static final URI ALICE_USE_URI = URI.create(WIKI_URL + "/Using-Alice-3");
+  public static final URI TROUBLESHOOTING_URI = URI.create(WIKI_URL + "/Troubleshooting-Known-Issues");
+  public static final URI RECURSION_URI = URI.create("https://en.wikipedia.org/wiki/Recursion_%28computer_science%29");
+  public static final URI JIRA_URI = URI.create("https://alice-bugs.atlassian.net:8080/");
 
   public BrowserOperation(UUID id, String spec) {
-    super(id);
-    try {
-      this.url = new URL(spec);
-    } catch (MalformedURLException murle) {
-      throw new RuntimeException(spec, murle);
-    }
+    this(id, URI.create(spec));
   }
 
-  protected URL getUrl() {
-    return this.url;
+  public BrowserOperation(UUID id, URI spec) {
+    super(id);
+    this.uri = spec;
+  }
+
+  protected URI getUri() {
+    return this.uri;
   }
 
   @Override
   protected final void localize() {
-    String spec = this.url.toString();
+    String spec = this.uri.toString();
     this.setName(spec);
     super.localize();
     String name = this.getImp().getName();
@@ -90,24 +90,24 @@ public class BrowserOperation extends InconsequentialActionOperation {
 
   @Override
   protected void performInternal() {
-    URL url = this.getUrl();
-    if (url != null) {
+    URI uri = this.getUri();
+    if (uri != null) {
       try {
-        BrowserUtilities.browse(url);
+        BrowserUtilities.browse(uri);
       } catch (Exception e) {
-        ClipboardUtilities.setClipboardContents(url.toString());
+        ClipboardUtilities.setClipboardContents(uri.toString());
         // TODO I18n
-        Dialogs.showInfo("An error has occurred in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
+        Dialogs.showInfo("An error has occurred in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + uri + "\n\nso that you may paste it into your web browser.");
       }
     } else {
       // TODO I18n
       final AnomalousSituationComposite composite =
           AnomalousSituationComposite.createInstance(
               "Oh no!  We do not know which web page to send you to.",
-              "URL is null for " + this.getClass());
+              "URI is null for " + this.getClass());
       SwingUtilities.invokeLater(() -> composite.getLaunchOperation().fire());
     }
   }
 
-  private final URL url;
+  private final URI uri;
 }

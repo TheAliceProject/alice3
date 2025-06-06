@@ -151,7 +151,7 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
 
   public IsRecursionAllowedPreferenceView(IsRecursionAllowedPreferenceDialogComposite composite) {
     super(composite);
-    Operation browserOperation = new BrowserOperation(UUID.fromString("30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d"), BrowserOperation.RECURSION_URL);
+    Operation browserOperation = new BrowserOperation(UUID.fromString("30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d"), BrowserOperation.RECURSION_URI);
     Hyperlink hyperlink = browserOperation.createHyperlink();
     hyperlink.setBorder(BorderFactory.createEmptyBorder(SPACING, INDENT, SPACING, 0));
 

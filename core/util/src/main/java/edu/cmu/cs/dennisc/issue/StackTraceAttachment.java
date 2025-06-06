@@ -60,11 +60,6 @@ public class StackTraceAttachment implements Attachment {
   }
 
   @Override
-  public String getMIMEType() {
-    return "text/plain";
-  }
-
-  @Override
   public String getFileName() {
     return "stacktrace.txt";
   }

@@ -55,6 +55,6 @@ public class AliceIde extends StageIDE {
   }
 
   public AliceIde(CrashDetector crashDetector) {
-    super(new AliceIdeConfiguration(), crashDetector);
+    super(crashDetector);
   }
 }

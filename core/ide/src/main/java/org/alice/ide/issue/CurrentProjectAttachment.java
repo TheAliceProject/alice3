@@ -84,16 +84,6 @@ public class CurrentProjectAttachment implements Attachment {
   }
 
   @Override
-  public String getMIMEType() {
-    this.createBytesIfNecessary();
-    if (this.isCreateSuccessful) {
-      return "application/a3p";
-    } else {
-      return "text/plain";
-    }
-  }
-
-  @Override
   public String getFileName() {
     this.createBytesIfNecessary();
     if (this.isCreateSuccessful) {

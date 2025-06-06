@@ -95,9 +95,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private HistoryListener projectHistoryListener;
 
-  public ProjectApplication(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager) {
+  public ProjectApplication(ApiConfigurationManager apiConfigurationManager) {
     this.projectFileUtilities = new ProjectFileUtilities(this);
-    this.projectDocumentFrame = new ProjectDocumentFrame(ideConfiguration, apiConfigurationManager);
+    this.projectDocumentFrame = new ProjectDocumentFrame(apiConfigurationManager);
     this.projectHistoryListener = new HistoryListener() {
       @Override
       public void operationPushing(HistoryPushEvent e) {

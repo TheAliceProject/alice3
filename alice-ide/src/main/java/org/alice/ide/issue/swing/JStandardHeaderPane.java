@@ -56,12 +56,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JStandardHeaderPane extends JPanel {
-  private static final ImageIcon LOGO_ICON = new ImageIcon(JStandardHeaderPane.class.getResource("/org/alice/ide/issue/swing/views/images/meanQueen.png"));
+  private static final ImageIcon LOGO_ICON = new ImageIcon(Objects.requireNonNull(JStandardHeaderPane.class.getResource("/org/alice/ide/issue/swing/views/images/meanQueen.png")));
 
   public JStandardHeaderPane(ApplicationIssueConfiguration config) {
     StringBuilder sbHeader = new StringBuilder();

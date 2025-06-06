@@ -139,12 +139,10 @@ public abstract class IDE extends ProjectApplication {
 
   private File projectFileToLoadOnWindowOpened;
 
-  private final IdeConfiguration ideConfiguration;
   private final CrashDetector crashDetector;
 
-  public IDE(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, CrashDetector crashDetector) {
-    super(ideConfiguration, apiConfigurationManager);
-    this.ideConfiguration = ideConfiguration;
+  public IDE(ApiConfigurationManager apiConfigurationManager, CrashDetector crashDetector) {
+    super(apiConfigurationManager);
     this.crashDetector = crashDetector;
     //TODO I18n
     IDE.exceptionHandler.setTitle("Please Submit Bug Report: " + getApplicationName());
@@ -173,10 +171,6 @@ public abstract class IDE extends ProjectApplication {
       LocaleState.getInstance().addAndInvokeNewSchoolValueListener(localeListener);
     }
 
-  }
-
-  public IdeConfiguration getIdeConfiguration() {
-    return this.ideConfiguration;
   }
 
   public final ApiConfigurationManager getApiConfigurationManager() {

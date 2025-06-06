@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JExpandPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
 import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
+import org.alice.ide.issue.SubmitReportUtilities;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -204,7 +205,9 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
       rows.add(rowException);
       rows.add(rowEnvironment);
       rows.add(rowName);
-      rows.add(rowAddress);
+      if (SubmitReportUtilities.USE_REST_INTERFACE) {
+        rows.add(rowAddress);
+      }
       SpringUtilities.springItUpANotch(rv, rows, 8, 4);
       return rv;
     }

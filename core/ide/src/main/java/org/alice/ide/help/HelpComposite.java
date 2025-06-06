@@ -72,6 +72,6 @@ public final class HelpComposite extends LazyOperationUnadornedDialogCoreComposi
   }
 
   private final Operation browserOperation = new BrowserOperation(UUID.fromString("5a1b1db2-da93-4c85-bca5-e1796bd07d00"),
-                                                                  BrowserOperation.ALICE_USE_URL);
+                                                                  BrowserOperation.ALICE_USE_URI);
   private final PlainStringValue whereToFindHelpText = this.createStringValue("whereToFindHelpText");
 }

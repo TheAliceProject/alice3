@@ -54,11 +54,6 @@ public class SystemPropertiesAttachment implements Attachment {
   }
 
   @Override
-  public String getMIMEType() {
-    return "application/xml";
-  }
-
-  @Override
   public String getFileName() {
     return "systemProperties.xml";
   }

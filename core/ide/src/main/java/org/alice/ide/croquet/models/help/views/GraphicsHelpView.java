@@ -83,7 +83,7 @@ public class GraphicsHelpView extends MigPanel {
     }
     final Operation searchOp = new BrowserOperation(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea"), getRendererSearchUrl());
     this.addComponent(searchOp.createHyperlink(), "wrap, gapleft " + LEVEL_2);
-    final Operation driverHelp = new BrowserOperation(UUID.fromString("652d34f0-7f39-4b63-a15c-d95090d0b3e9"), BrowserOperation.TROUBLESHOOTING_URL);
+    final Operation driverHelp = new BrowserOperation(UUID.fromString("652d34f0-7f39-4b63-a15c-d95090d0b3e9"), BrowserOperation.TROUBLESHOOTING_URI);
     this.addComponent(driverHelp.createHyperlink(), "wrap, gapleft " + LEVEL_2);
     this.addComponent(new Label(getLocalizedStringByKey("aboutHeader")), "wrap, gaptop 16, gapleft " + LEVEL_1);
     this.addComponent(new Label(getGraphicsInformation()), "wrap, gapleft " + LEVEL_2);

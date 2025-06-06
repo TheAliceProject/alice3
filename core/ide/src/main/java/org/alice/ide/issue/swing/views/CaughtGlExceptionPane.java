@@ -46,7 +46,6 @@ import com.jogamp.opengl.GLException;
 import edu.cmu.cs.dennisc.issue.AbstractReport;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.ide.issue.GraphicsPropertiesAttachment;
-import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.issue.croquet.GlExceptionComposite;
 import org.lgna.project.ProjectVersion;
 
@@ -66,11 +65,6 @@ public class CaughtGlExceptionPane extends AbstractCaughtExceptionPane {
       this.add(new GlExceptionComposite(glException).getView().getAwtComponent(), BorderLayout.NORTH);
     }
     super.setThreadAndThrowable(thread, throwable);
-  }
-
-  @Override
-  protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-    return new ReportSubmissionConfiguration();
   }
 
   @Override
