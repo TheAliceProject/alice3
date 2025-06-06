@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 import org.alice.ide.croquet.models.help.views.AbstractIssueView;
 import org.alice.ide.issue.swing.views.ProgressPane;
@@ -120,6 +121,7 @@ public class SubmitReportUtilities {
       subject = URLEncoder.encode(subject, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
       body = URLEncoder.encode(body, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
       URI mailto = new URI(EMAIL_URI.formatted(subject, body));
+      Dialogs.showInfo("Add current project", "If your project is relevant please add it to the email.");
       desktop.mail(mailto);
       if (root != null) {
         root.setVisible(false);
