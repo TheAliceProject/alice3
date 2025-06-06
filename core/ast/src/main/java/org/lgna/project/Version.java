@@ -122,17 +122,6 @@ public final class Version implements Comparable<Version> {
     return this.subNumbers[2];
   }
 
-  public String getSimpleVersion() {
-    String ver = getAliceIdentifier() + "." + getMajor();
-    if (getMinor() != 0) {
-      ver = ver + "." + getMinor();
-    }
-    if (hasPrerelease()) {
-      ver = ver + '-' + prerelease;
-    }
-    return ver;
-  }
-
   public int getPatch() {
     return this.subNumbers[3];
   }
