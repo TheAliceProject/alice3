@@ -47,7 +47,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>parent</artifactId>
-    <version>9.0.1</version>
+    <version>9.0.2</version>
   </parent>
 
   <name>Install4J Installers</name>
@@ -87,7 +87,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-install-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.1.4</version>
         <configuration>
           <skip>true</skip>
         </configuration>

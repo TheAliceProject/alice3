@@ -43,42 +43,38 @@
 
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 
 public class QuaternionAndTranslation {
   public QuaternionAndTranslation() {
-    this.quaternion = UnitQuaternion.createIdentity();
-    this.translation = new Point3();
+    this.quaternion = UnitQuaternion.IDENTITY;
+    this.translation = Point3.ORIGIN;
   }
 
   public QuaternionAndTranslation(UnitQuaternion quaternion, Point3 translation) {
-    this.quaternion = new UnitQuaternion(quaternion);
-    this.translation = new Point3(translation);
+    this.quaternion = quaternion;
+    this.translation = translation;
   }
 
   public QuaternionAndTranslation(QuaternionAndTranslation other) {
-    this.quaternion = new UnitQuaternion(other.quaternion);
-    this.translation = new Point3(other.translation);
+    this.quaternion = other.quaternion;
+    this.translation = other.translation;
   }
 
   public QuaternionAndTranslation(AffineMatrix4x4 matrix) {
-    this.translation = new Point3(matrix.translation);
-    this.quaternion = matrix.orientation.createUnitQuaternion();
+    this.translation = matrix.translation();
+    this.quaternion = matrix.orientation().asUnitQuaternion();
   }
 
   public void setToInterpolation(QuaternionAndTranslation a, QuaternionAndTranslation b, double portion) {
-    this.quaternion.setToInterpolation(a.quaternion, b.quaternion, portion);
-    this.translation.setToInterpolation(a.translation, b.translation, portion);
+    this.quaternion = a.quaternion.interpolate(b.quaternion, portion);
+    this.translation = a.translation.interpolate(b.translation, portion);
   }
 
   public AffineMatrix4x4 getAffineMatrix() {
-    AffineMatrix4x4 toReturn = new AffineMatrix4x4();
-    toReturn.translation.set(this.translation);
-    toReturn.orientation.setValue(this.quaternion);
-    toReturn.orientation.normalizeColumns();
-    return toReturn;
+    return new AffineMatrix4x4(quaternion.asMatrix3x3().normalized(), translation);
   }
 
   public UnitQuaternion getQuaternion() {
@@ -89,6 +85,6 @@ public class QuaternionAndTranslation {
     return this.translation;
   }
 
-  private final UnitQuaternion quaternion;
-  private final Point3 translation;
+  private UnitQuaternion quaternion;
+  private Point3 translation;
 }

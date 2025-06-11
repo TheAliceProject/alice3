@@ -43,8 +43,8 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -66,30 +66,30 @@ public enum SpatialRelationImp {
   }
 
   public Point3 getPlaceLocation(double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox) {
-    double x = alongAxisOffset * this.placeAxis.x;
-    double y = alongAxisOffset * this.placeAxis.y;
-    double z = alongAxisOffset * this.placeAxis.z;
+    double x = alongAxisOffset * this.placeAxis.x();
+    double y = alongAxisOffset * this.placeAxis.y();
+    double z = alongAxisOffset * this.placeAxis.z();
 
-    if (this.placeAxis.x > 0) {
-      x += objectBoundingBox.getMaximum().x;
-      x -= subjectBoundingBox.getMinimum().x;
-    } else if (this.placeAxis.x < 0) {
-      x += objectBoundingBox.getMinimum().x;
-      x -= subjectBoundingBox.getMaximum().x;
+    if (this.placeAxis.x() > 0) {
+      x += objectBoundingBox.maximum().x();
+      x -= subjectBoundingBox.minimum().x();
+    } else if (this.placeAxis.x() < 0) {
+      x += objectBoundingBox.minimum().x();
+      x -= subjectBoundingBox.maximum().x();
     }
-    if (this.placeAxis.y > 0) {
-      y += objectBoundingBox.getMaximum().y;
-      y -= subjectBoundingBox.getMinimum().y;
-    } else if (this.placeAxis.y < 0) {
-      y += objectBoundingBox.getMinimum().y;
-      y -= subjectBoundingBox.getMaximum().y;
+    if (this.placeAxis.y() > 0) {
+      y += objectBoundingBox.maximum().y();
+      y -= subjectBoundingBox.minimum().y();
+    } else if (this.placeAxis.y() < 0) {
+      y += objectBoundingBox.minimum().y();
+      y -= subjectBoundingBox.maximum().y();
     }
-    if (this.placeAxis.z > 0) {
-      z += objectBoundingBox.getMaximum().z;
-      z -= subjectBoundingBox.getMinimum().z;
-    } else if (this.placeAxis.z < 0) {
-      z += objectBoundingBox.getMinimum().z;
-      z -= subjectBoundingBox.getMaximum().z;
+    if (this.placeAxis.z() > 0) {
+      z += objectBoundingBox.maximum().z();
+      z -= subjectBoundingBox.minimum().z();
+    } else if (this.placeAxis.z() < 0) {
+      z += objectBoundingBox.minimum().z();
+      z -= subjectBoundingBox.maximum().z();
     }
 
     return new Point3(x, y, z);

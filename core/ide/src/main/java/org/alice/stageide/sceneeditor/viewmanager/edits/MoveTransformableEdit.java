@@ -1,7 +1,7 @@
 package org.alice.stageide.sceneeditor.viewmanager.edits;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;

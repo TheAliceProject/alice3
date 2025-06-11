@@ -43,15 +43,13 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.ScaleUtilities;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Matrix3x3;
 import org.lgna.story.SAxes;
 
 /**
@@ -87,15 +85,14 @@ public class AxesImp extends VisualScaleModelImp {
   }
 
   @Override
-  protected void applyScale(Vector3 axis, boolean isScootDesired) {
+  protected void applyScale(Dimension3 axis, boolean isScootDesired) {
     if (isScootDesired) {
       AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
-      m.translation.multiply(axis);
+      m = new AffineMatrix4x4(m.orientation(), axis.applyScale(m.translation()));
       this.getSgComposite().localTransformation.setValue(m);
     }
     Matrix3x3 scale = sgAxes.getScale();
-    ScaleUtilities.applyScale(scale, axis);
-    setSgVisualsScale(scale);
+    setSgVisualsScale(scale.times(axis.asScaleMatrix()));
   }
 
   //  @Override

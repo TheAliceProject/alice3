@@ -42,41 +42,32 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GoodLookAtUtils {
   private static AffineMatrix4x4 createLookAtMatrix(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
-    Vector3 f = new Vector3(centerX - eyeX, centerY - eyeY, centerZ - eyeZ);
-    f.normalize();
+    Vector3 f = (new Vector3(centerX - eyeX, centerY - eyeY, centerZ - eyeZ)).normalized();
+    Vector3 up = (new Vector3(upX, upY, upZ)).normalized();
+    Vector3 s = f.crossProduct(up);
+    Vector3 u = s.crossProduct(f);
 
-    Vector3 up = new Vector3(upX, upY, upZ);
-    up.normalize();
-
-    Vector3 s = Vector3.createCrossProduct(f, up);
-
-    Vector3 u = Vector3.createCrossProduct(s, f);
-
-    AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-    m.orientation.right.set(s);
-    m.orientation.up.set(u);
-    m.orientation.right.set(-f.x, -f.y, -f.z);
-
-    m.applyTranslation(-eyeX, -eyeY, -eyeZ);
-
-    return m;
+    return new AffineMatrix4x4(
+        new OrthogonalMatrix3x3(s, u, f.negate()),
+        new Point3(-eyeX, -eyeY, -eyeZ));
   }
 
-  private static AffineMatrix4x4 createLookAtMatrix(Point3 eye, Point3 center, Vector3 up) {
-    return createLookAtMatrix(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+  private static AffineMatrix4x4 createLookAtMatrix(Vector3 eye, Vector3 center, Vector3 up) {
+    return createLookAtMatrix(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
   }
 
   public static double calculateGoodLookAtDistance(AxisAlignedBox axisAlignedBox, AffineMatrix4x4 visualAbsoluteTransform, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera) {
@@ -87,32 +78,28 @@ public class GoodLookAtUtils {
       Point3[] localPoints = axisAlignedBox.getPoints();
       Point3[] transformedPoints = new Point3[localPoints.length];
       for (int i = 0; i < localPoints.length; i++) {
-        transformedPoints[i] = visualAbsoluteTransform.createTransformed(localPoints[i]);
+        transformedPoints[i] = visualAbsoluteTransform.transform(localPoints[i]);
       }
 
-      Point3 averageAbsolutePoint = Point3.createZero();
+      Vector3 averageAbsolutePoint = Vector3.ZERO;
       for (Point3 absolutePoint : transformedPoints) {
-        averageAbsolutePoint.add(absolutePoint);
+        averageAbsolutePoint = averageAbsolutePoint.plus(absolutePoint.asVector());
       }
-      averageAbsolutePoint.divide(transformedPoints.length);
+      averageAbsolutePoint = averageAbsolutePoint.times(-1.0 / transformedPoints.length);
 
-      for (Point3 absolutePoint : transformedPoints) {
-        absolutePoint.subtract(averageAbsolutePoint);
+      for (int i = 0; i < localPoints.length; i++) {
+        transformedPoints[i] = transformedPoints[i].plus(averageAbsolutePoint);
       }
 
-      AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
       final boolean IS_STRAIGHT_ON_VIEWING_DESIRED = true;
-      if (IS_STRAIGHT_ON_VIEWING_DESIRED) {
-        //pass
-      } else {
-
+      if (!IS_STRAIGHT_ON_VIEWING_DESIRED) {
         //todo: investigate
         AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-        m = createLookAtMatrix(cameraAbsolute.translation, visualAbsoluteTransform.translation, cameraAbsolute.orientation.up);
+        AffineMatrix4x4 m = createLookAtMatrix(cameraAbsolute.translation().asVector(), visualAbsoluteTransform.translation().asVector(), cameraAbsolute.orientation().up());
 
         for (int i = 0; i < localPoints.length; i++) {
-          transformedPoints[i] = m.createTransformed(transformedPoints[i]);
+          transformedPoints[i] = m.transform(transformedPoints[i]);
         }
       }
 
@@ -123,10 +110,10 @@ public class GoodLookAtUtils {
       double cosineVertical = Math.cos(halfVerticalInRadians);
 
       for (Point3 p : transformedPoints) {
-        double opposite = p.y;
+        double opposite = p.y();
         double hypotenuse = opposite / sineVertical;
         double adjacent = hypotenuse * cosineVertical;
-        double value = adjacent - p.z;
+        double value = adjacent - p.z();
         maxValue = Math.max(maxValue, value);
       }
 
@@ -135,10 +122,10 @@ public class GoodLookAtUtils {
       double cosineHorizontal = Math.cos(halfHorizontalInRadians);
 
       for (Point3 p : transformedPoints) {
-        double opposite = p.x;
+        double opposite = p.x();
         double hypotenuse = opposite / sineHorizontal;
         double adjacent = hypotenuse * cosineHorizontal;
-        double value = adjacent - p.z;
+        double value = adjacent - p.z();
         maxValue = Math.max(maxValue, value);
       }
 

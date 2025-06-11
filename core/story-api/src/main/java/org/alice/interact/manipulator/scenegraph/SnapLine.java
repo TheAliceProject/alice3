@@ -44,7 +44,7 @@
 package org.alice.interact.manipulator.scenegraph;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**

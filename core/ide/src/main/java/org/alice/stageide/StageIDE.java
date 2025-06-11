@@ -55,7 +55,6 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.alice.ide.IDE;
 import org.alice.ide.IdeApp;
-import org.alice.ide.IdeConfiguration;
 import org.alice.ide.Theme;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.cascade.ExpressionCascadeManager;
@@ -134,8 +133,8 @@ public abstract class StageIDE extends IDE {
 
   private ExpressionCascadeManager cascadeManager = NebulousIde.nonfree.newExpressionCascadeManager();
 
-  public StageIDE(IdeConfiguration ideConfiguration, CrashDetector crashDetector) {
-    super(ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector);
+  public StageIDE(CrashDetector crashDetector) {
+    super(StoryApiConfigurationManager.getInstance(), crashDetector);
     this.getDocumentFrame().getFrame().addWindowStateListener(new WindowStateListener() {
       @Override
       public void windowStateChanged(WindowEvent e) {

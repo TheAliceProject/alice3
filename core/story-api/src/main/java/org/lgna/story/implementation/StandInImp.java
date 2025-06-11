@@ -43,7 +43,7 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Reusable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;

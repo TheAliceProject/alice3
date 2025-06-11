@@ -44,7 +44,6 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.QuadArray;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
@@ -53,6 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.Paint;
 import org.lgna.story.SBillboard;
 
@@ -109,11 +109,11 @@ public class BillboardImp extends VisualScaleModelImp {
   @Override
   public double getValueForResizer(Resizer resizer) {
     if (resizer == Resizer.XY_PLANE) {
-      return this.getScale().x;
+      return this.getScale().x();
     } else if (resizer == Resizer.X_AXIS) {
-      return this.getScale().x;
+      return this.getScale().x();
     } else if (resizer == Resizer.Y_AXIS) {
-      return this.getScale().y;
+      return this.getScale().y();
     } else {
       assert false : resizer;
       return Double.NaN;
@@ -123,14 +123,14 @@ public class BillboardImp extends VisualScaleModelImp {
   @Override
   public void setValueForResizer(Resizer resizer, double value) {
     if (value > 0.0) {
-      double zScale = this.getScale().z;
+      double zScale = this.getScale().z();
       if (resizer == Resizer.XY_PLANE) {
-        double scaleChange = value / this.getScale().x;
-        this.setScale(new Dimension3(value, this.getScale().y * scaleChange, zScale));
+        double scaleChange = value / this.getScale().x();
+        this.setScale(new Dimension3(value, this.getScale().y() * scaleChange, zScale));
       } else if (resizer == Resizer.X_AXIS) {
-        this.setScale(new Dimension3(value, this.getScale().y, zScale));
+        this.setScale(new Dimension3(value, this.getScale().y(), zScale));
       } else if (resizer == Resizer.Y_AXIS) {
-        this.setScale(new Dimension3(this.getScale().x, value, zScale));
+        this.setScale(new Dimension3(this.getScale().x(), value, zScale));
       } else {
         assert false : resizer;
       }

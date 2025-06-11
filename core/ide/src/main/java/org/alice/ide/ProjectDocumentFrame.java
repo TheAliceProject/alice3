@@ -102,7 +102,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
-  public ProjectDocumentFrame(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager) {
+  public ProjectDocumentFrame(ApiConfigurationManager apiConfigurationManager) {
     this.apiConfigurationManager = apiConfigurationManager;
 
     this.noProjectPerspective = new NoProjectPerspective(this);

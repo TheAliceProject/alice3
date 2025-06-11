@@ -144,11 +144,6 @@ public abstract class RefreshableListData<T> extends AbstractMutableListData<T> 
   }
 
   @Override
-  public void internalSetItemAt(int index, T item) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public final Iterator<T> iterator() {
     this.refreshIfNecessary();
     return this.values.iterator();

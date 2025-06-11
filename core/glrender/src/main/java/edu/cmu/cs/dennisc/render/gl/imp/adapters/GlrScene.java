@@ -170,7 +170,7 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   private double negativeDistanceFromCameraSquared(Component comp) {
-    return 0.0 - cameraPosition.distanceSquaredFrom(comp.getAbsoluteTransformation().translation);
+    return 0.0 - cameraPosition.distanceSquaredFrom(comp.getAbsoluteTransformation().translation());
   }
 
   @Override
@@ -194,7 +194,7 @@ public class GlrScene extends GlrComposite<Scene> {
     rc.gl.glMatrixMode(GL_MODELVIEW);
     synchronized (cameraAdapter) {
       rc.gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
-      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation.immutable();
+      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation();
     }
 
     if (backgroundAdapter == null) {

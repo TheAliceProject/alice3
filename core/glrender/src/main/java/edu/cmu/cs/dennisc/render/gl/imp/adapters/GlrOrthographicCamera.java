@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -91,11 +91,11 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double near = owner.nearClippingPlaneDistance.getValue();
     double far = owner.farClippingPlaneDistance.getValue();
 
-    return new AffineMatrix4x4(new Matrix3x3(
+    return new AffineMatrix4x4(new OrthogonalMatrix3x3(
         new Vector3(2 / (right - left), 0, 0),
         new Vector3(0, 2 / (top - bottom), 0),
         new Vector3(0, 0, -2 / (far - near))
-        ), new Vector3(-(right + left) / (right - left),
+        ), new Point3(-(right + left) / (right - left),
                       -(top + bottom) / (top - bottom),
                       -(far + near) / (far - near)));
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="10.0.4" transformSequenceNumber="10">
+<install4j version="10.0.6" transformSequenceNumber="10">
   <directoryPresets config="./installerFiles/alice3.desktop.partial" />
   <application name="Alice 3" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" autoSave="true" macVolumeId="bf5b38a83930832b" javaMinVersion="17" jdkMode="runtimeJre">
     <languages>
@@ -34,7 +34,11 @@
       <variable name="included_jre_version" value="17" />
     </variables>
     <codeSigning windowsEnabled="true" windowsPkcs12File="../../The Alice Project.p12" />
-    <jreBundles jdkProviderId="AdoptOpenJDK" release="17/jdk-17+35" />
+    <jreBundles jdkProviderId="Liberica" release="21/21.0.7+9">
+      <modules>
+        <defaultModules set="all" />
+      </modules>
+    </jreBundles>
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="*.sha1,*.lastUpdated,*.pom,*.repositories,*.DS_Store" defaultOverwriteMode="2">
     <mountPoints>
@@ -45,7 +49,7 @@
       <mountPoint id="23" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.0.1.jar" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.0.2.jar" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" subDirectory="externalDependencies" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" />
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" subDirectory="distribution" />

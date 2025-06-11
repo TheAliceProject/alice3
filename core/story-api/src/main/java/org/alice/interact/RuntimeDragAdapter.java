@@ -53,22 +53,17 @@ import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.condition.TargetModelCondition;
-import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.manipulator.CameraMoveDragManipulator;
-import org.alice.interact.manipulator.CameraOrbitDragManipulator;
-import org.alice.interact.manipulator.CameraPanDragManipulator;
-import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.lgna.story.SModel;
 import org.lgna.story.Visual;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author David Culyba
+ *
+ * created as an event listener for interacting with a live running world
  */
 public class RuntimeDragAdapter extends DragAdapter {
   private List<SModel> targetModels = new ArrayList<>();
@@ -114,12 +109,9 @@ public class RuntimeDragAdapter extends DragAdapter {
     this.addManipulatorConditionSet(mouseRotateObjectLeftRight);
 
     if (targetGround) {
-      addCameraManipulators();
+      addCameraMouseControl();
     }
 
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   private void addDragCondition(ManipulatorConditionSet mouseTranslateObject, MouseDragCondition moveableObject) {
@@ -132,34 +124,6 @@ public class RuntimeDragAdapter extends DragAdapter {
     }
   }
 
-  private void addCameraManipulators() {
-    MouseDragCondition leftAndNoModifiers = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    MouseDragCondition leftAndShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_SHIFT));
-    MouseDragCondition leftAndControl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_CONTROL));
-    MouseDragCondition middleMouseAndAnything = new MouseDragCondition(MouseEvent.BUTTON2, new PickCondition(PickHint.getAnythingHint()));
-    MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.getNonInteractiveHint()));
-
-    ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(new CameraOrbitDragManipulator());
-    cameraOrbit.addCondition(middleMouseAndAnything);
-    this.addManipulatorConditionSet(cameraOrbit);
-
-    ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet(new CameraTiltDragManipulator());
-    cameraTilt.addCondition(rightMouseAndNonInteractive);
-    cameraTilt.addCondition(leftAndControl);
-    this.addManipulatorConditionSet(cameraTilt);
-
-    ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet(new CameraMoveDragManipulator());
-    cameraMouseTranslate.addCondition(leftAndNoModifiers);
-    this.addManipulatorConditionSet(cameraMouseTranslate);
-
-    ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet(new CameraPanDragManipulator());
-    cameraMousePan.addCondition(leftAndShift);
-    this.addManipulatorConditionSet(cameraMousePan);
-  }
-
-  @Override
-  protected void updateHandleSelection(AbstractTransformableImp selected) {
-  }
 
   @Override
   protected void handleMouseEntered(MouseEvent e) {
@@ -171,10 +135,6 @@ public class RuntimeDragAdapter extends DragAdapter {
     //Overridden to prevent picking every frame since there is no need for rollover events
     this.currentInputState.setMouseLocation(e.getPoint());
     this.fireStateChange();
-  }
-
-  @Override
-  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
   }
 
 }

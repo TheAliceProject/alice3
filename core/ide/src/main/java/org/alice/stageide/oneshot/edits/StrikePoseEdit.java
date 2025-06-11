@@ -44,8 +44,8 @@ package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.common.ThreadUtilities;
 import org.lgna.croquet.history.UserActivity;
@@ -84,19 +84,19 @@ public class StrikePoseEdit extends MethodInvocationEdit {
       boolean affectsTranslation = false;
       for (JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs()) {
         if (idTransformPair.getJointId() == this.joint.getJointId()) {
-          poseTransform = new AffineMatrix4x4(idTransformPair.getTransformation());
+          poseTransform = idTransformPair.getTransformation();
           if (idTransformPair.affectsTranslation()) {
             //Apply the scale of the model to the translation
-            poseTransform.translation.multiply(scale);
+            poseTransform.scaleTranslation(scale.asScaleMatrix());
             affectsTranslation = true;
           }
           break;
         }
       }
       if (poseTransform != null) {
-        willNotRotateJoint = poseTransform.orientation.createUnitQuaternion().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation.createUnitQuaternion());
+        willNotRotateJoint = poseTransform.orientation().isAlignedWith(this.transformation.orientation());
         if (affectsTranslation) {
-          willNotTranslateJoint = poseTransform.translation.isWithinReasonableEpsilonOf(this.transformation.translation);
+          willNotTranslateJoint = poseTransform.translation().isWithinReasonableEpsilonOf(this.transformation.translation());
         }
       }
       return !willNotRotateJoint || !willNotTranslateJoint;

@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
+import org.alice.math.immutable.Dimension3;
 
 /**
  * @author Dennis Cosgrove
@@ -75,12 +75,7 @@ public final class Size {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Size) {
-      Size other = (Size) obj;
-      return this.internal.equals(other.internal);
-    } else {
-      return false;
-    }
+    return obj instanceof Size other && this.internal.equals(other.internal);
   }
 
   @Override
@@ -89,14 +84,14 @@ public final class Size {
   }
 
   public Double getLeftToRight() {
-    return this.internal.x;
+    return this.internal.x();
   }
 
   public Double getBottomToTop() {
-    return this.internal.y;
+    return this.internal.y();
   }
 
   public Double getFrontToBack() {
-    return this.internal.z;
+    return this.internal.z();
   }
 }

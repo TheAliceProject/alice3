@@ -43,8 +43,12 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
+import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -55,17 +59,13 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.alice.math.immutable.ClippedZPlane;
 import org.lgna.croquet.Application;
 import org.lgna.story.SCamera;
 
@@ -119,66 +119,48 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     if (y < TARGET_LOW_DOWN_AMOUNT) {
       y = TARGET_LOW_DOWN_AMOUNT;
     }
-    Vector3 newBackward = new Vector3(this.movementDirection.x, -y, this.movementDirection.z);
-    newBackward.multiply(-1);
-    newBackward.normalize();
-    return newBackward;
+    return new Vector3(-movementDirection.x(), y, -movementDirection.z()).normalized();
   }
 
   private OrthogonalMatrix3x3 getOrientationForBackward(Vector3 backward) {
-    Vector3 up = Vector3.createCrossProduct(backward, this.rightVector);
-    up.normalize();
+    Vector3 up = backward.crossProduct(rightVector).normalized();
     return new OrthogonalMatrix3x3(this.rightVector, up, backward);
   }
 
   private void createInterpolationTargets() {
-    AffineMatrix4x4 currentTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+    AffineMatrix4x4 currentTransform = manipulatedTransformable.getAbsoluteTransformation();
 
-    this.movementDirection = Vector3.createMultiplication(currentTransform.orientation.backward, -1);
-    if (Math.abs(this.movementDirection.x) < .000001) {
-      this.movementDirection.x = 0;
+    movementDirection = currentTransform.orientation().backward().negate();
+    if (Math.abs(movementDirection.x()) < .000001) {
+      movementDirection = movementDirection.withX(0);
     }
-    if (Math.abs(this.movementDirection.z) < .000001) {
-      this.movementDirection.z = 0;
+    if (Math.abs(movementDirection.z()) < .000001) {
+      movementDirection = movementDirection.withZ(0);
     }
-    this.movementDirection.y = 0;
-    this.movementDirection.normalize();
-    if (this.movementDirection.isNaN()) {
-      if (currentTransform.orientation.backward.y > 0) {
-        this.movementDirection = new Vector3(currentTransform.orientation.up);
+    movementDirection = movementDirection.withY(0).normalized();
+    if (movementDirection.isNaN()) {
+      if (currentTransform.orientation().backward().y() > 0) {
+        movementDirection = currentTransform.orientation().up();
       } else {
-        this.movementDirection = Vector3.createMultiplication(currentTransform.orientation.up, -1);
+        movementDirection = currentTransform.orientation().up().negate();
       }
-      this.movementDirection.y = 0;
-      this.movementDirection.normalize();
+      movementDirection = movementDirection.withY(0).normalized();
     }
-    Vector3 lowBackwardVector = Vector3.createMultiplication(this.movementDirection, -1);
-    lowBackwardVector.y = TARGET_LOW_DOWN_AMOUNT;
-    lowBackwardVector.normalize();
-    this.rightVector = Vector3.createCrossProduct(Vector3.accessPositiveYAxis(), lowBackwardVector);
-    rightVector.normalize();
-    Vector3 lowUpVector = Vector3.createCrossProduct(lowBackwardVector, rightVector);
-    lowUpVector.normalize();
-    Vector3 highBackwardVector = Vector3.createMultiplication(this.movementDirection, -1);
-    highBackwardVector.y = TARGET_HIGH_DOWN_AMOUNT;
-    highBackwardVector.normalize();
-    Vector3 highUpVector = Vector3.createCrossProduct(highBackwardVector, rightVector);
-    highUpVector.normalize();
-    if (currentTransform.translation.y > TARGET_LOW_HEIGHT) {
-      this.originalX = (currentTransform.translation.y - TARGET_LOW_HEIGHT) / COEFFICIENT;
-      this.inflectionPoint = Point3.createAddition(currentTransform.translation, Point3.createMultiplication(this.movementDirection, currentX));
-      this.inflectionPoint.y = TARGET_LOW_HEIGHT;
-      this.useUpCurve = false;
+    Vector3 lowBackwardVector = movementDirection.negate().withY(TARGET_LOW_DOWN_AMOUNT).normalized();
+    rightVector = Vector3.POSITIVE_Y_AXIS.crossProduct(lowBackwardVector).normalized();
+    if (currentTransform.translation().y() > TARGET_LOW_HEIGHT) {
+      originalX = (currentTransform.translation().y() - TARGET_LOW_HEIGHT) / COEFFICIENT;
+      inflectionPoint = currentTransform.translation().plus(movementDirection.times(currentX)).withY(TARGET_LOW_HEIGHT);
+      useUpCurve = false;
     } else {
-      this.originalX = 0;
-      this.inflectionPoint = this.originalTransformation.translation;
-      this.distanceUp = TARGET_LOW_HEIGHT - this.inflectionPoint.y;
-      this.distanceUpScale = this.distanceUp / 2.0;
-      this.lateralDistanceForUp = this.distanceUp;
-      this.useUpCurve = true;
+      originalX = 0;
+      inflectionPoint = originalTransformation.translation();
+      distanceUp = TARGET_LOW_HEIGHT - inflectionPoint.y();
+      distanceUpScale = distanceUp / 2.0;
+      lateralDistanceForUp = distanceUp;
+      useUpCurve = true;
     }
-    this.currentX = this.originalX;
-
+    currentX = originalX;
   }
 
   @Override
@@ -196,30 +178,28 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 
           double newx = x + this.lateralDistanceForUp; //bump the x value so we're evaluating the cosine curve correctly
           double cosineValue = (this.distanceUpScale) * Math.cos((newx * Math.PI) / this.lateralDistanceForUp);
-          double height = cosineValue + this.distanceUpScale + this.originalTransformation.translation.y;
-          //          PrintUtilities.println("New height for "+x+" -> f("+newx+") = "+cosineValue+" + "+this.distanceUpScale+" + "+this.originalTransformation.translation.y+" = "+height);
+          double height = cosineValue + this.distanceUpScale + this.originalTransformation.translation().y();
+          //          PrintUtilities.println("New height for "+x+" -> f("+newx+") = "+cosineValue+" + "+this.distanceUpScale+" + "+this.originalTransformation.translation(.y()+" = "+height);
           return height;
         }
       } else {
         return TARGET_LOW_HEIGHT;
       }
     } else {
-      return COEFFICIENT * x + this.inflectionPoint.y;
+      return COEFFICIENT * x + this.inflectionPoint.y();
     }
   }
 
   private static Vector3 interpolateNormalizedVector(Vector3 a, Vector3 b, double percent) {
-    double x = a.x + ((b.x - a.x) * percent);
-    double y = a.y + ((b.y - a.y) * percent);
-    double z = a.z + ((b.z - a.z) * percent);
-    Vector3 toReturn = new Vector3(x, y, z);
-    toReturn.normalize();
-    return toReturn;
+    double x = a.x() + ((b.x() - a.x()) * percent);
+    double y = a.y() + ((b.y() - a.y()) * percent);
+    double z = a.z() + ((b.z() - a.z()) * percent);
+    return new Vector3(x, y, z).normalized();
   }
 
   private OrthogonalMatrix3x3 getOrientationTargetForX(double x) {
     if (isVr) {
-      return this.originalTransformation.orientation;
+      return this.originalTransformation.orientation();
     }
     Vector3 targetBackward = this.getIdealBackwardForX(x);
     double lowerX = this.originalX - this.lowerInterpolationRange;
@@ -227,10 +207,10 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     if ((x > lowerX) && (x < upperX)) {
       if (x < this.originalX) {
         double percent = (x - lowerX) / (this.originalX - lowerX);
-        targetBackward = interpolateNormalizedVector(targetBackward, this.originalTransformation.orientation.backward, percent);
+        targetBackward = interpolateNormalizedVector(targetBackward, this.originalTransformation.orientation().backward(), percent);
       } else {
         double percent = (x - this.originalX) / (upperX - this.originalX);
-        targetBackward = interpolateNormalizedVector(this.originalTransformation.orientation.backward, targetBackward, percent);
+        targetBackward = interpolateNormalizedVector(this.originalTransformation.orientation().backward(), targetBackward, percent);
       }
     }
     OrthogonalMatrix3x3 targetOrientation = getOrientationForBackward(targetBackward);
@@ -238,9 +218,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private Point3 getNewPointForX(double x) {
-    Point3 newPoint = Point3.createAddition(this.inflectionPoint, Point3.createMultiplication(this.movementDirection, -x));
-    newPoint.y = isVr ? 0.0 : this.getHeightForX(x);
-    return newPoint;
+    Point3 newPoint = inflectionPoint.plus(movementDirection.times(-x));
+    return newPoint.withY(isVr ? 0.0 : this.getHeightForX(x));
   }
 
   @Override

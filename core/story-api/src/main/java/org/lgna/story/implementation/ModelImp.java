@@ -46,12 +46,8 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -69,6 +65,10 @@ import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Vector4;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.overlay.BubbleAnimation;
 import org.lgna.story.implementation.overlay.BubbleImp;
@@ -92,7 +92,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   @Override
   public double getValueForResizer(Resizer resizer) {
     assert resizer == Resizer.UNIFORM : resizer;
-    return this.getScale().x;
+    return this.getScale().x();
   }
 
   @Override
@@ -219,25 +219,14 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   private Dimension3 getSizeForScale(Dimension3 scale) {
     Dimension3 prevSize = this.getSize();
     Dimension3 prevScale = this.getScale();
-
-    return new Dimension3(scale.x * (prevSize.x / prevScale.x), scale.y * (prevSize.y / prevScale.y), scale.z * (prevSize.z / prevScale.z));
+    return scale.times(prevSize).dividedBy(prevScale);
   }
 
   protected Dimension3 getScaleForSize(Dimension3 size) {
     Dimension3 prevSize = this.getSize();
     Dimension3 prevScale = this.getScale();
 
-    Dimension3 scale = new Dimension3(size.x / (prevSize.x / prevScale.x), size.y / (prevSize.y / prevScale.y), size.z / (prevSize.z / prevScale.z));
-    if (Double.isNaN(scale.x)) {
-      scale.x = 1;
-    }
-    if (Double.isNaN(scale.y)) {
-      scale.y = 1;
-    }
-    if (Double.isNaN(scale.z)) {
-      scale.z = 1;
-    }
-    return scale;
+    return size.times(prevScale).dividedBy(prevSize).withSafeNumbers();
   }
 
   // The projected size in the displayed world. The inner representation's size multiplied by any scale factor
@@ -246,15 +235,15 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   public double getWidth() {
-    return this.getSize().x;
+    return this.getSize().x();
   }
 
   public double getHeight() {
-    return this.getSize().y;
+    return this.getSize().y();
   }
 
   public double getDepth() {
-    return this.getSize().z;
+    return this.getSize().z();
   }
 
   public void animateSetWidth(double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, Style style) {
@@ -328,7 +317,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       assert this.isXScaled ^ this.isYScaled ^ this.isZScaled;
     }
 
-    public Dimension3 getResizeAxis(Dimension3 rv, double amount, boolean isVolumePreserved) {
+    public Dimension3 getResizeAxis(double amount, boolean isVolumePreserved) {
       //todo: center around 0 as opposed to 1?
       assert amount > 0;
 
@@ -368,22 +357,17 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         }
       }
 
-      rv.set(x, y, z);
-      return rv;
-    }
-
-    public Dimension3 getResizeAxis(double amount, boolean isVolumePreserved) {
-      return getResizeAxis(Dimension3.createNaN(), amount, isVolumePreserved);
+      return new Dimension3(x, y, z);
     }
   }
 
   private void animateScale(Dimension3 scale, double duration, Style style) {
     Dimension3 prevScale = this.getScale();
-    this.animateSetScale(new Dimension3(prevScale.x * scale.x, prevScale.y * scale.y, prevScale.z * scale.z), duration, style);
+    this.animateSetScale(prevScale.times(scale), duration, style);
   }
 
   public void animateResize(double factor, double duration, Style style) {
-    this.animateScale(new Dimension3(factor, factor, factor), duration, style);
+    this.animateScale(Dimension3.uniformScale(factor), duration, style);
   }
 
   public void animateResizeWidth(double factor, boolean isVolumePreserved, double duration, Style style) {
@@ -433,23 +417,13 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   private Bubble.Originator m_originator = createOriginator();
 
   protected Vector4 getThoughtBubbleOffset() {
-    Vector4 offsetAsSeenBySubject = new Vector4();
     AxisAlignedBox bb = ModelImp.this.getAxisAlignedMinimumBoundingBox();
-    offsetAsSeenBySubject.x = (bb.getXMinimum() + bb.getXMaximum()) * 0.5;
-    offsetAsSeenBySubject.y = bb.getYMaximum();
-    offsetAsSeenBySubject.z = (bb.getZMinimum() + bb.getZMaximum()) * 0.5;
-    offsetAsSeenBySubject.w = 1.0;
-    return offsetAsSeenBySubject;
+    return new Vector4((bb.getXMinimum() + bb.getXMaximum()) * 0.5, bb.getYMaximum(), (bb.getZMinimum() + bb.getZMaximum()) * 0.5, 1.0);
   }
 
   protected Vector4 getSpeechBubbleOffset() {
-    Vector4 offsetAsSeenBySubject = new Vector4();
     AxisAlignedBox bb = ModelImp.this.getAxisAlignedMinimumBoundingBox();
-    offsetAsSeenBySubject.x = (bb.getXMinimum() + bb.getXMaximum()) * 0.5;
-    offsetAsSeenBySubject.y = (bb.getYMinimum() + bb.getYMaximum()) * 0.75;
-    offsetAsSeenBySubject.z = bb.getZMinimum();
-    offsetAsSeenBySubject.w = 1.0;
-    return offsetAsSeenBySubject;
+    return new Vector4((bb.getXMinimum() + bb.getXMaximum()) * 0.5, (bb.getYMinimum() + bb.getYMaximum()) * 0.75, bb.getZMinimum(), 1.0);
   }
 
   private Bubble.Originator createOriginator() {
@@ -466,7 +440,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         }
         Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo(offsetAsSeenBySubject, sgCamera);
         //      edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
-        Point p = renderTarget.transformFromCameraToAWT(offsetAsSeenByCamera.immutable(), sgCamera);
+        Point p = renderTarget.transformFromCameraToAWT(offsetAsSeenByCamera, sgCamera);
         //      float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
         //      float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Vector4;
 import org.lgna.story.SFlyer;
 import org.lgna.story.resources.FlyerResource;
 

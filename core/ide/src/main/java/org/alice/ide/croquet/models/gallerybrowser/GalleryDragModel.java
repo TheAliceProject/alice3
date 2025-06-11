@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;

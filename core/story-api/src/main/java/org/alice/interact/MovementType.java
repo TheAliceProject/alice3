@@ -42,12 +42,12 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
 public enum MovementType {
   STOOD_UP() {
     @Override
-    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+    public void applyTranslation(AbstractTransformable transformable, Tuple3 translateAmount) {
       StandIn standIn = new StandIn();
       standIn.setVehicle(transformable);
       try {
@@ -80,7 +80,7 @@ public enum MovementType {
 
   }, LOCAL() {
     @Override
-    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+    public void applyTranslation(AbstractTransformable transformable, Tuple3 translateAmount) {
       transformable.applyTranslation(translateAmount, transformable);
     }
 
@@ -91,7 +91,7 @@ public enum MovementType {
 
   }, ABSOLUTE() {
     @Override
-    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+    public void applyTranslation(AbstractTransformable transformable, Tuple3 translateAmount) {
       transformable.applyTranslation(translateAmount, AsSeenBy.SCENE);
     }
 
@@ -102,7 +102,7 @@ public enum MovementType {
 
   };
 
-  public abstract void applyTranslation(AbstractTransformable transformable, Point3 translateAmount);
+  public abstract void applyTranslation(AbstractTransformable transformable, Tuple3 translateAmount);
 
   public abstract void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation);
 

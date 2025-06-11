@@ -42,19 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.rigidbody;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.math.Vector3;
+
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TranslationAndOrientationFunction extends TranslationFunction<TranslationAndOrientationDerivative> {
-  private UnitQuaternion m_orientation = UnitQuaternion.createNaN();
-  private Vector3 m_angularMomentum = new Vector3();
+  private UnitQuaternion m_orientation = UnitQuaternion.NaN;
+  private Vector3 m_angularMomentum = Vector3.ZERO;
 
-  private UnitQuaternion m_spin = UnitQuaternion.createNaN();
-  private Vector3 m_angularVelocity = new Vector3();
+  private UnitQuaternion m_spin = UnitQuaternion.NaN;
+  private Vector3 m_angularVelocity = Vector3.ZERO;
 
   //todo: use Matrix
   private double m_inertiaTensor = 1 / 6.0;
@@ -74,84 +75,36 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
     return m_orientation;
   }
 
-  public UnitQuaternion getOrientation(UnitQuaternion rv) {
-    rv.setValue(m_orientation);
-    return rv;
-  }
-
   public UnitQuaternion getOrientation() {
-    return getOrientation(UnitQuaternion.createNaN());
+    return m_orientation;
   }
 
   public void setOrientation(UnitQuaternion orientation) {
-    m_orientation.setValue(orientation);
-  }
-
-  public void setOrientation(double x, double y, double z, double w) {
-    m_orientation.set(x, y, z, w);
-  }
-
-  public Vector3 accessAngularMomentum() {
-    return m_angularMomentum;
-  }
-
-  public Vector3 getAngularMomentum(Vector3 rv) {
-    rv.set(m_angularMomentum);
-    return rv;
+    m_orientation = orientation;
   }
 
   public Vector3 getAngularMomentum() {
-    return getAngularMomentum(new Vector3());
+    return m_angularMomentum;
   }
 
   public void setAngularMomentum(Vector3 angularMomentum) {
-    m_angularMomentum.set(angularMomentum);
-  }
-
-  public void setAngularMomentum(double x, double y, double z) {
-    m_angularMomentum.set(x, y, z);
-  }
-
-  public UnitQuaternion accessSpin() {
-    return m_spin;
-  }
-
-  public UnitQuaternion getSpin(UnitQuaternion rv) {
-    rv.setValue(m_spin);
-    return rv;
+    m_angularMomentum = angularMomentum;
   }
 
   public UnitQuaternion getSpin() {
-    return getSpin(UnitQuaternion.createNaN());
+    return m_spin;
   }
 
   public void setSpin(UnitQuaternion spin) {
-    m_spin.setValue(spin);
-  }
-
-  public void setSpin(double w, double x, double y, double z) {
-    m_spin.set(w, x, y, z);
-  }
-
-  public Vector3 accessAngularVelocity() {
-    return m_angularVelocity;
-  }
-
-  public Vector3 getAngularVelocity(Vector3 rv) {
-    rv.set(m_angularVelocity);
-    return rv;
+    m_spin = spin;
   }
 
   public Vector3 getAngularVelocity() {
-    return getAngularVelocity(new Vector3());
+    return m_angularVelocity;
   }
 
   public void setAngularVelocity(Vector3 angularVelocity) {
-    m_angularVelocity.set(angularVelocity);
-  }
-
-  public void setAngularVelocity(double x, double y, double z) {
-    m_angularVelocity.set(x, y, z);
+    m_angularVelocity = angularVelocity;
   }
 
   public double getInertiaTensor() {
@@ -163,18 +116,13 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
     m_inverseInertiaTensor = 1 / m_inertiaTensor;
   }
 
-  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv) {
-    rv.set(m_orientation, accessTranslation());
-    return rv;
-  }
-
   public AffineMatrix4x4 getTransformation() {
-    return getTransformation(AffineMatrix4x4.createNaN());
+    return new AffineMatrix4x4(m_orientation.asMatrix3x3(), getTranslation());
   }
 
   public void setTransformation(AffineMatrix4x4 transformation) {
-    accessTranslation().set(transformation.translation);
-    m_orientation.setValue(transformation.orientation);
+    setTranslation(transformation.translation());
+    setOrientation(transformation.orientation().asUnitQuaternion());
   }
 
   protected abstract Vector3 getTorque(Vector3 rv, double t);
@@ -186,7 +134,7 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 
   @Override
   protected TranslationAndOrientationDerivative evaluate(TranslationAndOrientationDerivative rv, double t) {
-    rv.spin.setValue(m_spin);
+    rv.spin = m_spin;
     getTorque(rv.torque, t);
     return super.evaluate(rv, t);
   }
@@ -194,9 +142,8 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
   @Override
   protected void update(double t, double dt, TranslationAndOrientationDerivative derivative) {
     super.update(t, dt, derivative);
-    m_orientation.add(UnitQuaternion.createMultiplication(derivative.spin, dt));
-    m_orientation.normalize();
-    m_angularMomentum.add(Vector3.createMultiplication(derivative.torque, dt));
+    m_orientation = m_orientation.plus(derivative.spin.times(dt)).normalized();
+    m_angularMomentum = m_angularMomentum.plus(derivative.torque.times(dt));
   }
 
   @Override
@@ -207,15 +154,15 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
   @Override
   public void update(TranslationAndOrientationDerivative a, TranslationAndOrientationDerivative b, TranslationAndOrientationDerivative c, TranslationAndOrientationDerivative d, double dt) {
     super.update(a, b, c, d, dt);
-    m_orientation.add(UnitQuaternion.createMultiplication(UnitQuaternion.createAddition(a.spin, UnitQuaternion.createAddition(UnitQuaternion.createMultiplication(UnitQuaternion.createAddition(b.spin, c.spin), 2.0), d.spin)), dt / 6));
-    m_orientation.normalize();
-    m_angularMomentum.add(Vector3.createMultiplication(Vector3.createAddition(a.torque, Vector3.createAddition(Vector3.createMultiplication(Vector3.createAddition(b.torque, c.torque), 2.0), d.torque)), dt / 6));
+    m_orientation = m_orientation.plus(a.spin.plus((b.spin.plus(c.spin)).times(2.0).plus(d.spin)).times(dt / 6)).normalized();
+    m_angularMomentum = m_angularMomentum.plus(a.torque.plus((b.torque.plus(c.torque).times(2.0).plus(d.torque))).times(dt / 6));
   }
 
   @Override
   public void update() {
     super.update();
-    m_angularVelocity.setToMultiplication(m_angularMomentum, m_inverseInertiaTensor);
-    m_spin.setToMultiplication(UnitQuaternion.createMultiplication(new UnitQuaternion(0, m_angularVelocity.x, m_angularVelocity.y, m_angularVelocity.z), m_orientation), 0.5);
+    m_angularVelocity = m_angularMomentum.times(m_inverseInertiaTensor);
+    m_spin = (new UnitQuaternion(0, m_angularVelocity.x(), m_angularVelocity.y(), m_angularVelocity.z()))
+        .times(m_orientation).times(0.5);
   }
 }

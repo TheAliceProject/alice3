@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import edu.cmu.cs.dennisc.math.Point3;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementKey;
 import org.alice.interact.handle.HandleSet;
+import org.alice.math.immutable.Point3;
 
 public abstract class KeyManipulator extends AbstractManipulator {
 
@@ -75,7 +75,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
   public boolean doStartManipulator(InputState startInput) {
     if (manipulatedTransformable != null) {
       startTime = System.currentTimeMillis() * .001d;
-      initialPoint.set(manipulatedTransformable.getAbsoluteTransformation().translation);
+      initialPoint = manipulatedTransformable.getAbsoluteTransformation().translation();
       return true;
     } else {
       return false;
@@ -114,7 +114,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
 
   protected abstract void manipulate(double amountToMove, MovementKey key);
 
-  Point3 initialPoint = new Point3();
+  Point3 initialPoint = Point3.ORIGIN;
   private double startTime = 0.0d;
   private MovementKey[] keys;
 }

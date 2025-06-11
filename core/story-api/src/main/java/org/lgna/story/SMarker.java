@@ -68,25 +68,4 @@ public abstract class SMarker extends SMovableTurnable implements MutableRider {
   public void setColorId(Color color) {
     this.getImplementation().paint.setValue(color);
   }
-
-  //  @MethodTemplate()
-  //  @GetterTemplate(isPersistent = true)
-  //  @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-  //  public Double getOpacity() {
-  //    return (double)this.getImplementation().opacity.getValue();
-  //  }
-  //  @MethodTemplate()
-  //  public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-  //    this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-  //  }
-  //
-  //  @MethodTemplate()
-  //  @GetterTemplate(isPersistent = true)
-  //  public Paint getPaint() {
-  //    return this.getImplementation().paint.getValue();
-  //  }
-  //  @MethodTemplate()
-  //  public void setPaint( Paint paint, SetPaint.Detail... details ) {
-  //    this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-  //  }
 }

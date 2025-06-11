@@ -58,34 +58,34 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
 import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
+import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
 
-import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 /**
  * @author Dennis Cosgrove
@@ -573,7 +573,7 @@ public class AliceResourceUtilities {
     boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
-    Matrix3x3 scaleCopy = new Matrix3x3(sgOriginal.scale.getValue());
+    Matrix3x3 scaleCopy = sgOriginal.scale.getValue();
     Appearance sgFrontAppearanceCopy;
     if (sgOriginal.frontFacingAppearance.getValue() != null) {
       sgFrontAppearanceCopy = (Appearance) sgOriginal.frontFacingAppearance.getValue().newCopy();
@@ -648,7 +648,7 @@ public class AliceResourceUtilities {
     SkeletonVisual sgOriginal = getVisual(resource);
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     Joint sgJoint = sgSkeletonRoot.getJoint(jointId.toString());
-    return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();
+    return sgJoint.getLocalTransformation().orientation().asUnitQuaternion();
   }
 
   public static String getName(Class<?> modelResource) {
@@ -756,15 +756,14 @@ public class AliceResourceUtilities {
   }
 
   public static AffineMatrix4x4 getDefaultInitialTransform(Class<?> modelResource) {
-    AffineMatrix4x4 rv = AffineMatrix4x4.createIdentity();
     AxisAlignedBox bbox = getBoundingBox(modelResource);
     if ((bbox != null) && !bbox.isNaN()) {
       boolean placeOnGround = getPlaceOnGround(modelResource);
       if (placeOnGround) {
-        rv.translation.y = -bbox.getYMinimum();
+        return AffineMatrix4x4.createTranslation(0, -bbox.getYMinimum(), 0);
       }
     }
-    return rv;
+    return AffineMatrix4x4.IDENTITY;
   }
 
   public static boolean getPlaceOnGround(Class<?> modelResource, String resourceName) {

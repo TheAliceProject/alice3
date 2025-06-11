@@ -49,12 +49,6 @@ import com.jogamp.opengl.glu.GLU;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
 import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
 import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
@@ -72,6 +66,11 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.GoodLookAtUtils;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.TrimmedIcon;
@@ -223,21 +222,18 @@ public class FieldIcon extends AsynchronousIcon {
               if (Double.isNaN(distance) == false) {
                 //                  double[] array = new double[ 16 ];
                 //                  java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
-                //                  m.getAsColumnMajorArray16( array );
+                //                  m.writeColumnMajorArray16( array );
                 //                  gl.glLoadMatrixd( buffer );
 
                 AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-                Vector3 v = Vector3.createSubtraction(cameraAbsolute.translation, p);
-                v.normalize();
-                v.multiply(distance);
-                v.add(p);
+                Point3 v = p.plus(cameraAbsolute.translation().minus(p).normalized().times(distance));
 
                 gl.glLoadIdentity();
-                glu.gluLookAt(v.x, v.y, v.z, p.x, p.y, p.z, cameraAbsolute.orientation.up.x, cameraAbsolute.orientation.up.y, cameraAbsolute.orientation.up.z);
+                glu.gluLookAt(v.x(), v.y(), v.z(), p.x(), p.y(), p.z(), cameraAbsolute.orientation().up().x(), cameraAbsolute.orientation().up().y(), cameraAbsolute.orientation().up().z());
               } else {
                 gl.glLoadIdentity();
-                glu.gluLookAt(p.x + 8, p.y + 8, p.z - 8, p.x, p.y, p.z, 0, 1, 0);
+                glu.gluLookAt(p.x() + 8, p.y() + 8, p.z() - 8, p.x(), p.y(), p.z(), 0, 1, 0);
               }
 
               GlrScene sceneAdapter = AdapterFactory.getAdapterFor(sgScene);

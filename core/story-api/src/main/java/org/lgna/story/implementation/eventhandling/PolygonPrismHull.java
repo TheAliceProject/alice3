@@ -43,21 +43,27 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-
-import edu.cmu.cs.dennisc.math.*;
+import edu.cmu.cs.dennisc.math.ConvexPolygon;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point2;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonPrismHull extends VerticalPrismCollisionHull {
+  // The points in the cross-section are offsets relative to the center so changing the position (without
+  // chnging the orientation) will not affect these values.
   private final ConvexPolygon crossSection = new ConvexPolygon();
 
   public PolygonPrismHull(Point3 centerBase, double height, AffineMatrix4x4 transformation, AxisAlignedBox aabbLocal) {
     super(centerBase, height);
     for (Point3 localPoint : aabbLocal.getPoints()) {
-      Point3 p = transformation.createTransformed(localPoint);
-      p.subtract(centerBase);
-      crossSection.includePoint(new Point2(p.x, p.z));
+      Point3 p = transformation.transform(localPoint);
+      Vector3 offset = p.minus(centerBase);
+      crossSection.includePoint(new Point2(offset.x(), offset.z()));
     }
   }
 
@@ -76,13 +82,12 @@ public class PolygonPrismHull extends VerticalPrismCollisionHull {
       return hullA;
     }
 
-    double bottomA = hullA.centerBase.y;
-    double bottomB = hullB.centerBase.y;
+    double bottomA = hullA.centerBase.y();
+    double bottomB = hullB.centerBase.y();
     double newBottom = Math.min(bottomA, bottomB);
     double newTop = Math.max(bottomA + hullA.height, bottomB + hullB.height);
 
-    Point3 newBase = new Point3(hullA.centerBase);
-    newBase.y = newBottom;
+    Point3 newBase = new Point3(hullA.centerBase.x(), newBottom, hullA.centerBase.z());
     double height = newTop - newBottom;
 
     List<Point2> crossSectionVertices = hullA.getCrossSectionVertices(null);
@@ -100,10 +105,10 @@ public class PolygonPrismHull extends VerticalPrismCollisionHull {
     if (newCenter == null) {
       return crossSection.getVertices();
     }
-    Point3 offset = Point3.createSubtraction(newCenter, centerBase);
+    Vector3 offset = newCenter.minus(centerBase);
     List<Point2> vertices = new ArrayList<>();
     for (Point2 vertex : crossSection.getVertices()) {
-      vertices.add(new Point2(vertex.x + offset.x, vertex.y + offset.z));
+      vertices.add(new Point2(vertex.x() + offset.x(), vertex.y() + offset.z()));
     }
     return vertices;
   }

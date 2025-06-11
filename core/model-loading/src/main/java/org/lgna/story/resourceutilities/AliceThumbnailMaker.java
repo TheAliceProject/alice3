@@ -45,9 +45,9 @@ package org.lgna.story.resourceutilities;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dave Culyba

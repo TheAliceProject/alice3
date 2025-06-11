@@ -1,6 +1,6 @@
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.typemanager.TypeManager;

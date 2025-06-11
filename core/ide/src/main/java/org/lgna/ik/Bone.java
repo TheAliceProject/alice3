@@ -43,7 +43,7 @@
 
 package org.lgna.ik;
 
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.JointImp;
 
 /**
@@ -55,7 +55,7 @@ public class Bone {
     if (b) {
       Vector3[] rv = new Vector3[N];
       for (int i = 0; i < N; i++) {
-        rv[i] = Vector3.createZero();
+        rv[i] = Vector3.ZERO;
       }
       return rv;
     } else {
@@ -75,18 +75,18 @@ public class Bone {
   private static class Axis {
     private final Vector3 axis;
     private double angularVelocity;
-    private final Vector3 linearContribution;
-    private final Vector3 angularContribution;
+    private Vector3 linearContribution;
+    private Vector3 angularContribution;
 
     public Axis(boolean isLinearEnabled, boolean isAngularEnabled) {
-      this.axis = Vector3.createZero();
+      this.axis = Vector3.ZERO;
       if (isLinearEnabled) {
-        this.linearContribution = Vector3.createZero();
+        this.linearContribution = Vector3.ZERO;
       } else {
         this.linearContribution = null;
       }
       if (isAngularEnabled) {
-        this.angularContribution = Vector3.createZero();
+        this.angularContribution = Vector3.ZERO;
         this.angularVelocity = 0.0;
       } else {
         this.angularContribution = null;
@@ -96,13 +96,13 @@ public class Bone {
 
     public void updateLinearContributions(Vector3 v) {
       if (this.linearContribution != null) {
-        Vector3.setReturnValueToCrossProduct(this.linearContribution, this.axis, v);
+        linearContribution = this.axis.crossProduct(v);
       }
     }
 
     public void updateAngularContributions() {
       if (this.angularContribution != null) {
-        this.angularContribution.set(this.axis);
+        angularContribution = this.axis;
       }
     }
   }

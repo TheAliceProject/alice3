@@ -94,8 +94,6 @@ public abstract class ListData<T> implements Iterable<T> {
     this.internalSetAllItems(Lists.newArrayList(items));
   }
 
-  public abstract void internalSetItemAt(int index, T item);
-
   @Override
   public abstract Iterator<T> iterator();
 

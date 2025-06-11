@@ -44,22 +44,19 @@
 package org.alice.interact.manipulator;
 
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import org.alice.interact.DragAdapter.CameraView;
-import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
-import org.alice.interact.VectorUtilities;
-import org.alice.interact.debug.DebugSphere;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Tuple3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.interact.DragAdapter.CameraView;
+import org.alice.interact.InputState;
+import org.alice.interact.debug.DebugSphere;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 public class CameraTiltDragManipulator extends CameraManipulator implements OnscreenPicturePlaneInformedManipulator {
 
@@ -91,7 +88,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     }
   }
 
-  private void setPickPoint(Tuple3 position) {
+  private void setPickPoint(Point3 position) {
     if (SHOW_PICK_POINT) {
       this.pickPointDebugSphere.setLocalTranslation(position);
     }
@@ -115,10 +112,10 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-    Ray oldPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(previousInput.getMouseLocation(), this.getCamera()).mutable();
-    Ray newPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
-    Point3 oldPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, oldPickRay);
-    Point3 newPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, newPickRay);
+    Ray oldPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(previousInput.getMouseLocation(), this.getCamera());
+    Ray newPickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
+    Point3 oldPickPoint = this.cameraFacingPickPlane.getIntersection(oldPickRay);
+    Point3 newPickPoint = this.cameraFacingPickPlane.getIntersection(newPickRay);
     if (newPickPoint == null || oldPickPoint == null) {
       return;
     }
@@ -127,21 +124,18 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     Point3 oldPointInCamera = this.camera.transformFrom(oldPickPoint, this.camera.getRoot());
     Point3 newPointInCamera = this.camera.transformFrom(newPickPoint, this.camera.getRoot());
 
-    Vector3 xDif = new Vector3(newPointInCamera.x, oldPointInCamera.y, oldPointInCamera.z);
-    xDif.normalize();
-    Vector3 yDif = new Vector3(oldPointInCamera.x, newPointInCamera.y, oldPointInCamera.z);
-    yDif.normalize();
+    Vector3 xDif = new Vector3(newPointInCamera.x(), oldPointInCamera.y(), oldPointInCamera.z()).normalized();
+    Vector3 yDif = new Vector3(oldPointInCamera.x(), newPointInCamera.y(), oldPointInCamera.z()).normalized();
 
-    Vector3 oldDirection = new Vector3(oldPointInCamera);
-    oldDirection.normalize();
+    Vector3 oldDirection = oldPointInCamera.asVector().normalized();
 
-    Angle xAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, xDif);
+    Angle xAngle = oldDirection.angleWith(xDif);
     if (currentInput.getMouseLocation().x < previousInput.getMouseLocation().x) {
-      xAngle.setAsRadians(xAngle.getAsRadians() * -1);
+      xAngle = xAngle.negated();
     }
-    Angle yAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, yDif);
+    Angle yAngle = oldDirection.angleWith(yDif);
     if (currentInput.getMouseLocation().y < previousInput.getMouseLocation().y) {
-      yAngle.setAsRadians(yAngle.getAsRadians() * -1);
+      yAngle = yAngle.negated();
     }
 
     StandIn standIn = new StandIn();
@@ -158,16 +152,13 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
     //Make sure the camera's x-axis is still horizontal
     AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
-    Vector3 rightAxis = cameraTransform.orientation.right;
-    rightAxis.y = 0;
-    rightAxis.normalize();
-    Vector3 upAxis = Vector3.createCrossProduct(cameraTransform.orientation.backward, rightAxis);
-    upAxis.normalize();
-    cameraTransform.orientation.right.set(rightAxis);
-    cameraTransform.orientation.up.set(upAxis);
-    this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
+    OrthogonalMatrix3x3 camOrientation = cameraTransform.orientation();
+    Vector3 rightAxis = camOrientation.getRight().withY(0).normalized();
+    Vector3 upAxis = camOrientation.getBackward().crossProduct(rightAxis).normalized();
+    camOrientation = new OrthogonalMatrix3x3(rightAxis, upAxis, camOrientation.backward());
+    this.manipulatedTransformable.setTransformation(new AffineMatrix4x4(camOrientation, cameraTransform.translation()), AsSeenBy.SCENE);
 
-    this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+    this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward());
     manipulatedTransformable.notifyTransformationListeners();
   }
 
@@ -185,17 +176,16 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
   public boolean doStartManipulator(InputState startInput) {
     if (super.doStartManipulator(startInput) && (this.camera instanceof SymmetricPerspectiveCamera)) {
       boolean success = false;
-      Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
-      cameraForward.multiply(-10.0d);
+      Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward().times(-10.0d);
 
       addPickPointSphereToScene();
 
-      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera()).mutable();
+      Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(startInput.getMouseLocation(), this.getCamera());
 
-      Point3 planePoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward);
-      this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+      Point3 planePoint = manipulatedTransformable.getAbsoluteTransformation().translation().plus(cameraForward);
+      this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation().backward());
 
-      Point3 pickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, pickRay);
+      Point3 pickPoint = this.cameraFacingPickPlane.getIntersection(pickRay);
       if (pickPoint != null) {
         this.setPlaneDiscPoint(pickPoint);
         success = true;

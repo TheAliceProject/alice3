@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author alice

@@ -43,13 +43,13 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
+import org.alice.math.immutable.Dimension3;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class Scale {
-  public static final Scale IDENTITY = new Scale(new Dimension3(1.0, 1.0, 1.0));
+  public static final Scale IDENTITY = new Scale(Dimension3.UNIT_SIZE);
   private final Dimension3 internal;
 
   private Scale(Dimension3 internal) {
@@ -76,12 +76,7 @@ public final class Scale {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Scale) {
-      Scale other = (Scale) obj;
-      return this.internal.equals(other.internal);
-    } else {
-      return false;
-    }
+    return obj instanceof Scale other && this.internal.equals(other.internal);
   }
 
   @Override
@@ -90,14 +85,14 @@ public final class Scale {
   }
 
   public Double getLeftToRight() {
-    return this.internal.x;
+    return this.internal.x();
   }
 
   public Double getBottomToTop() {
-    return this.internal.y;
+    return this.internal.y();
   }
 
   public Double getFrontToBack() {
-    return this.internal.z;
+    return this.internal.z();
   }
 }

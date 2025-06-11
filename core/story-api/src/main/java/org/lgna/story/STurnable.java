@@ -44,7 +44,7 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
@@ -120,12 +120,11 @@ public abstract class STurnable extends SThing {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(orientation, 0);
     EntityImp vehicle = this.getImplementation().getVehicle();
     if (vehicle != null) {
-      this.getImplementation().animateOrientationOnly(vehicle, orientation.getInternal(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+      this.getImplementation().animateOrientationOnly(vehicle, orientation.asMatrix3x3(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     } else {
       AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
       AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
-      m.orientation.setValue(orientation.getInternal());
-      sgTransformable.setLocalTransformation(m);
+      sgTransformable.setLocalTransformation(new AffineMatrix4x4(orientation.asMatrix3x3(), m.translation()));
       Logger.severe(this);
     }
   }

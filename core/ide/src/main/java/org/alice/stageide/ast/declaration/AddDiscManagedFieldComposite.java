@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.gallerybrowser.shapes.DiscDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.lgna.croquet.CustomItemState;
@@ -82,9 +82,8 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
   @Override
   protected AffineMatrix4x4 updateInitialTransformIfNecessary(AffineMatrix4x4 initialTransform) {
     if (initialTransform == null) {
-      initialTransform = new AffineMatrix4x4();
+      return AffineMatrix4x4.createTranslation(0, 0.01, 0);
     }
-    initialTransform.translation.y += 0.01;
-    return initialTransform;
+    return initialTransform.withTranslation(initialTransform.translation().withY(initialTransform.translation().y() + 0.01));
   }
 }

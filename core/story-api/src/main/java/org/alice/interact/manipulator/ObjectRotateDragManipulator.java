@@ -45,30 +45,26 @@ package org.alice.interact.manipulator;
 import java.awt.Point;
 
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.PlaneUtilities;
-import org.alice.interact.VectorUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
-
-import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AngleUtilities;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -167,28 +163,26 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     this.hidCursor = false;
     this.rotationHandle = handle;
     this.setManipulatedTransformable(this.rotationHandle.getManipulatedObject());
-    this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed(this.rotationHandle.getRotationAxis());
-    this.absoluteRotationAxis.normalize();
+    this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().transform(rotationHandle.getRotationAxis()).normalized();
     //PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
-    startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
+    this.initialClickPoint = startInput.getClickPickResult().getPositionInSource();
     this.initialClickPoint = startInput.getClickPickResult().getSource().transformTo(this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot());
     Vector3 rotationAxis = this.absoluteRotationAxis;
     this.rotationPlane = Plane.createInstance(this.initialClickPoint, rotationAxis);
 
     this.rotationHandle.initializeSnapReferenceFrame();
 
-    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis);
+    Ray originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), rotationAxis);
 
-    this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
+    this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     if (this.objectOriginInPlane == null) {
-      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, Vector3.createMultiplication(rotationAxis, -1.0d));
-      this.objectOriginInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, originRay);
+      originRay = new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation(), rotationAxis.negate());
+      this.objectOriginInPlane = this.rotationPlane.getIntersection(originRay);
     }
     if (this.objectOriginInPlane != null) {
-      Vector3 toMouse = Vector3.createSubtraction(this.initialClickPoint, this.objectOriginInPlane);
-      toMouse.normalize();
-      this.originalMouseDirection = new Vector3(toMouse);
-      this.originalMouseRightDirection = Vector3.createCrossProduct(this.originalMouseDirection, rotationAxis);
+      Vector3 toMouse = this.initialClickPoint.minus(this.objectOriginInPlane).normalized();
+      this.originalMouseDirection = toMouse;
+      this.originalMouseRightDirection = this.originalMouseDirection.crossProduct(rotationAxis);
 
       this.rotationHandle.setSphereVisibility(true);
       Vector3 sphereDirection = this.rotationHandle.transformFromAbsolute(toMouse);
@@ -199,8 +193,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
     //    DEBUG_setDebugSpherePosition(this.initialClickPoint);
 
-    this.cameraFacingPlane = Plane.createInstance(this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
-    this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
+    this.cameraFacingPlane = Plane.createInstance(this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation().backward());
+    this.originalLocalTransformation = manipulatedTransformable.getLocalTransformation();
     this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation();
     this.originalAngleBasedOnMouse = getRotationBasedOnMouse(startInput.getMouseLocation());
   }
@@ -218,84 +212,77 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
   }
 
-  protected Vector3 getVectorForAngle(Angle angle) {
-    AffineMatrix4x4 rotationTransform = this.rotationHandle.getAbsoluteTransformation();
-    rotationTransform.applyRotationAboutYAxis(angle);
-    return Vector3.createMultiplication(rotationTransform.orientation.backward, -1);
-  }
-
   protected Angle getRotationBasedOnMouse(Point mouseLocation) {
-    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera()).mutable();
-    if (pickRay != null) {
-      AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
-      double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
-      if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.cameraFacingPlane, pickRay);
-        Vector3 fromOriginalMouseToCurrentMouse = Vector3.createSubtraction(pointInPlane, this.initialClickPoint);
-        Vector3 rotationRightAxis = Vector3.createCrossProduct(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
-        double mouseDistance = Vector3.calculateDotProduct(fromOriginalMouseToCurrentMouse, rotationRightAxis);
-
-        return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
-      } else {
-        Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.rotationPlane, pickRay);
-        if (pointInPlane != null) {
-
-          //<DEBUG>
-          //          Point3 pickOrigin = new Point3(pickRay.accessOrigin());
-          //          pickOrigin.y = 0;
-          //          DEBUG_setDebugSpherePosition(pickOrigin);
-          //</DEBUG>
-
-          Vector3 toMouse = Vector3.createSubtraction(pointInPlane, this.objectOriginInPlane);
-          double toMouseDotOriginalRight = Vector3.calculateDotProduct(toMouse, this.originalMouseRightDirection);
-          //          double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalAbsoluteTransformation.orientation.right );
-          boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
-          toMouse.normalize();
-          Vector3 toMouseDirection = new Vector3(toMouse);
-          double cosOfAngleBetween = Vector3.calculateDotProduct(this.originalMouseDirection, toMouseDirection);
-          //          double cosOfAngleBetween = Vector3.calculateDotProduct(Vector3.createMultiplication(this.originalAbsoluteTransformation.orientation.backward, -1), toMouseDirection );
-          if (cosOfAngleBetween > 1.0d) {
-            cosOfAngleBetween = 1.0d;
-          } else if (cosOfAngleBetween < -1.0d) {
-            cosOfAngleBetween = -1.0d;
-          }
-          double angleInRadians = Math.acos(cosOfAngleBetween);
-          if (isToTheRight) {
-            angleInRadians = (Math.PI * 2.0d) - angleInRadians;
-          }
-          return new AngleInRadians(angleInRadians);
-        }
-      }
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(mouseLocation, this.getCamera());
+    if (pickRay == null) {
+      return null;
     }
-    return null;
+    Angle angleBetweenVector = this.absoluteRotationAxis.angleWith(this.getCamera().getAbsoluteTransformation().orientation().backward());
+    double distanceToRightAngle = Math.abs((Math.PI * .5d) - angleBetweenVector.getAsRadians());
+    if (distanceToRightAngle < BAD_ANGLE_THRESHOLD) {
+      Point3 pointInPlane = this.cameraFacingPlane.getIntersection(pickRay);
+      if (pointInPlane == null) {
+        return null;
+      }
+      Vector3 fromOriginalMouseToCurrentMouse = pointInPlane.minus(this.initialClickPoint);
+      Vector3 rotationRightAxis = this.absoluteRotationAxis.crossProduct(this.getCamera().getAbsoluteTransformation().orientation().backward());
+      double mouseDistance = fromOriginalMouseToCurrentMouse.dotProduct(rotationRightAxis);
+
+      return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
+    }
+    Point3 pointInPlane = this.rotationPlane.getIntersection(pickRay);
+    if (pointInPlane == null) {
+      return null;
+    }
+
+    //<DEBUG>
+    //          Point3 pickOrigin = new Point3(pickRay.accessOrigin());
+    //          pickOrigin.y = 0;
+    //          DEBUG_setDebugSpherePosition(pickOrigin);
+    //</DEBUG>
+
+    Vector3 toMouse = pointInPlane.minus(this.objectOriginInPlane);
+    double toMouseDotOriginalRight = toMouse.dotProduct(this.originalMouseRightDirection);
+    //          double toMouseDotOriginalRight =  toMouse.dotProduct(this.originalAbsoluteTransformation.orientation().getRight() );
+    boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
+    Vector3 toMouseDirection = toMouse.normalized();
+    double cosOfAngleBetween = this.originalMouseDirection.dotProduct(toMouseDirection);
+    //          double cosOfAngleBetween = this.originalAbsoluteTransformation.orientation().getBackward().times(-1).dotProduct(toMouseDirection );
+    if (cosOfAngleBetween > 1.0d) {
+      cosOfAngleBetween = 1.0d;
+    } else if (cosOfAngleBetween < -1.0d) {
+      cosOfAngleBetween = -1.0d;
+    }
+    double angleInRadians = Math.acos(cosOfAngleBetween);
+    if (isToTheRight) {
+      angleInRadians = (Math.PI * 2.0d) - angleInRadians;
+    }
+    return new AngleInRadians(angleInRadians);
   }
 
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-    if (!currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
-      if (!this.hidCursor) {
-        this.hideCursor();
-      }
-      Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
-      if ((currentAngle != null) && (this.originalAngleBasedOnMouse != null)) {
-        Angle angleDif = AngleUtilities.createSubtraction(currentAngle, this.originalAngleBasedOnMouse);
-        //The angleDif is the amount the object as rotated relative to the start of the manipulation
-        //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
-        Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
-        boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
-        if (didSnap) {
-          angleDif = snappedAngle;
-        }
+    if (currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
+      return;
+    }
+    if (!this.hidCursor) {
+      this.hideCursor();
+    }
+    Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
+    if ((currentAngle != null) && (this.originalAngleBasedOnMouse != null)) {
+      Angle angleDif = currentAngle.minus(this.originalAngleBasedOnMouse);
+      //The angleDif is the amount the object is rotated relative to the start of the manipulation
+      //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+      Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
 
-        this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
-        this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), angleDif, this.rotationHandle.getReferenceFrame());
-        manipulatedTransformable.notifyTransformationListeners();
+      this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
+      this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), snappedAngle, this.rotationHandle.getReferenceFrame());
+      manipulatedTransformable.notifyTransformationListeners();
 
-        if (didSnap) {
-          SnapUtilities.showSnapRotation(this.rotationHandle);
-        } else {
-          SnapUtilities.hideRotationSnapVisualization();
-        }
+      if (snappedAngle.isCloseTo(angleDif)) {
+        SnapUtilities.hideRotationSnapVisualization();
+      } else {
+        SnapUtilities.showSnapRotation(this.rotationHandle);
       }
     }
   }
@@ -318,7 +305,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     if (this.hidCursor) {
       try {
         Point3 pointInCamera = this.rotationHandle.getSphereLocation(this.getCamera());
-        Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera.immutable(), this.getCamera());
+        Point awtPoint = this.onscreenRenderTarget.transformFromCameraToAWT(pointInCamera, this.getCamera());
         RobotUtilities.mouseMove(this.onscreenRenderTarget.getAwtComponent(), awtPoint);
       } finally {
         CursorUtilities.popAndSet(this.onscreenRenderTarget.getAwtComponent());
@@ -346,7 +333,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
     return new HandleSet(this.rotationHandle.getRotationDirection().getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION);
   }
 
-  private Point3 initialClickPoint = new Point3();
+  private Point3 initialClickPoint = Point3.ORIGIN;
   private Point3 objectOriginInPlane;
   private Plane rotationPlane;
   private Vector3 originalMouseDirection;

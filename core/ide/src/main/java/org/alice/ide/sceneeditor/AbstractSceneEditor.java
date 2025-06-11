@@ -62,7 +62,7 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;

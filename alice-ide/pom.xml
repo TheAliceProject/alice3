@@ -47,7 +47,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>parent</artifactId>
-    <version>9.0.1</version>
+    <version>9.0.2</version>
   </parent>
 
   <name>Alice IDE</name>
@@ -89,7 +89,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
+        <version>3.8.1</version>
         <executions>
           <execution>
             <id>copy-dependencies</id>

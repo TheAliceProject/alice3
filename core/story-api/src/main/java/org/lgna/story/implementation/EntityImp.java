@@ -51,9 +51,9 @@ import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Vector4;
 import edu.cmu.cs.dennisc.media.Player;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.media.MediaFactory;
@@ -320,8 +320,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
   public StandInImp createOffsetStandIn(double x, double y, double z) {
     StandInImp rv = this.createStandIn();
-    AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-    m.translation.set(x, y, z);
+    AffineMatrix4x4 m = AffineMatrix4x4.createTranslation(x, y, z);
     rv.setLocalTransformation(m);
     return rv;
   }
@@ -331,7 +330,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     // get the position relative to the camera, first.
     Vector4 pos = this.getSgComposite().transformTo(xyzw, camera);
     // 3d -> 2d conversion
-    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos.immutable(), camera);
+    return this.getOnscreenRenderTarget().transformFromCameraToAWT(pos, camera);
 
   }
 
@@ -774,7 +773,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
           JointImp jointImp = (JointImp) imp;
           return jointImp.getScaledOriginalTransformation();
         } else {
-          return AffineMatrix4x4.createIdentity();
+          return AffineMatrix4x4.IDENTITY;
         }
       }
     });

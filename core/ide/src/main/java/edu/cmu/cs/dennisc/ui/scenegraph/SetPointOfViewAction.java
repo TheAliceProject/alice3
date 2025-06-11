@@ -44,10 +44,10 @@ package edu.cmu.cs.dennisc.ui.scenegraph;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Action;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove

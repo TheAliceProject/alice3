@@ -161,7 +161,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
     Point3 position = new Point3(px, py, pz);
     Vector3 direction = new Vector3(nx, ny, nz);
     position = m.transform(position);
-    direction = m.transformByOrientationOnly(direction);
+    direction = m.transform(direction);
     Plane plane = Plane.createInstance(position, direction);
     if (plane.isNaN()) {
       return Point3.NaN;

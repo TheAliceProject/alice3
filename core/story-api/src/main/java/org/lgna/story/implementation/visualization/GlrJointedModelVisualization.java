@@ -44,9 +44,9 @@
 package org.lgna.story.implementation.visualization;
 
 import com.jogamp.opengl.GL2;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
@@ -96,7 +96,7 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
     public void pushJoint(JointImp joint) {
 
       AffineMatrix4x4 m = joint.getTransformation(this.asSeenBy);
-      m.getAsColumnMajorArray16(array);
+      m.writeColumnMajorArray16(array);
       this.context.gl.glPushMatrix();
       this.context.gl.glMultMatrixd(buffer);
       this.preJoint(joint);
@@ -126,44 +126,44 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
         //              boundingBox = null;
         if (boundingBox != null) {
           context.gl.glColor3f(1.0f, 1.0f, 1.0f);
-          Point3 min = boundingBox.getMinimum();
-          Point3 max = boundingBox.getMaximum();
+          Point3 min = boundingBox.minimum();
+          Point3 max = boundingBox.maximum();
 
           //Bottom
           context.gl.glBegin(GL_LINE_LOOP);
-          context.gl.glVertex3d(min.x, min.y, min.z);
-          context.gl.glVertex3d(min.x, min.y, max.z);
-          context.gl.glVertex3d(max.x, min.y, max.z);
-          context.gl.glVertex3d(max.x, min.y, min.z);
+          context.gl.glVertex3d(min.x(), min.y(), min.z());
+          context.gl.glVertex3d(min.x(), min.y(), max.z());
+          context.gl.glVertex3d(max.x(), min.y(), max.z());
+          context.gl.glVertex3d(max.x(), min.y(), min.z());
           context.gl.glEnd();
 
           //Top
           context.gl.glBegin(GL_LINE_LOOP);
-          context.gl.glVertex3d(min.x, max.y, min.z);
-          context.gl.glVertex3d(min.x, max.y, max.z);
-          context.gl.glVertex3d(max.x, max.y, max.z);
-          context.gl.glVertex3d(max.x, max.y, min.z);
+          context.gl.glVertex3d(min.x(), max.y(), min.z());
+          context.gl.glVertex3d(min.x(), max.y(), max.z());
+          context.gl.glVertex3d(max.x(), max.y(), max.z());
+          context.gl.glVertex3d(max.x(), max.y(), min.z());
           context.gl.glEnd();
 
           //Sides
           context.gl.glBegin(GL_LINES);
-          context.gl.glVertex3d(min.x, min.y, min.z);
-          context.gl.glVertex3d(min.x, max.y, min.z);
+          context.gl.glVertex3d(min.x(), min.y(), min.z());
+          context.gl.glVertex3d(min.x(), max.y(), min.z());
           context.gl.glEnd();
 
           context.gl.glBegin(GL_LINES);
-          context.gl.glVertex3d(max.x, min.y, min.z);
-          context.gl.glVertex3d(max.x, max.y, min.z);
+          context.gl.glVertex3d(max.x(), min.y(), min.z());
+          context.gl.glVertex3d(max.x(), max.y(), min.z());
           context.gl.glEnd();
 
           context.gl.glBegin(GL_LINES);
-          context.gl.glVertex3d(min.x, min.y, max.z);
-          context.gl.glVertex3d(min.x, max.y, max.z);
+          context.gl.glVertex3d(min.x(), min.y(), max.z());
+          context.gl.glVertex3d(min.x(), max.y(), max.z());
           context.gl.glEnd();
 
           context.gl.glBegin(GL_LINES);
-          context.gl.glVertex3d(max.x, min.y, max.z);
-          context.gl.glVertex3d(max.x, max.y, max.z);
+          context.gl.glVertex3d(max.x(), min.y(), max.z());
+          context.gl.glVertex3d(max.x(), max.y(), max.z());
           context.gl.glEnd();
         }
       }
@@ -175,7 +175,7 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
       this.preBone(parent, child);
       context.gl.glBegin(GL_LINES);
       context.gl.glVertex3d(0.0, 0.0, 0.0);
-      context.gl.glVertex3d(xyz.x, xyz.y, xyz.z);
+      context.gl.glVertex3d(xyz.x(), xyz.y(), xyz.z());
       context.gl.glEnd();
     }
 
@@ -282,44 +282,44 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
         rc.gl.glDisable(GL_LIGHTING);
         rc.gl.glDisable(GL_TEXTURE_2D);
         rc.gl.glColor3f(1.0f, 1.0f, 1.0f);
-        Point3 min = boundingBox.getMinimum();
-        Point3 max = boundingBox.getMaximum();
+        Point3 min = boundingBox.minimum();
+        Point3 max = boundingBox.maximum();
 
         //Bottom
         rc.gl.glBegin(GL_LINE_LOOP);
-        rc.gl.glVertex3d(min.x, min.y, min.z);
-        rc.gl.glVertex3d(min.x, min.y, max.z);
-        rc.gl.glVertex3d(max.x, min.y, max.z);
-        rc.gl.glVertex3d(max.x, min.y, min.z);
+        rc.gl.glVertex3d(min.x(), min.y(), min.z());
+        rc.gl.glVertex3d(min.x(), min.y(), max.z());
+        rc.gl.glVertex3d(max.x(), min.y(), max.z());
+        rc.gl.glVertex3d(max.x(), min.y(), min.z());
         rc.gl.glEnd();
 
         //Top
         rc.gl.glBegin(GL_LINE_LOOP);
-        rc.gl.glVertex3d(min.x, max.y, min.z);
-        rc.gl.glVertex3d(min.x, max.y, max.z);
-        rc.gl.glVertex3d(max.x, max.y, max.z);
-        rc.gl.glVertex3d(max.x, max.y, min.z);
+        rc.gl.glVertex3d(min.x(), max.y(), min.z());
+        rc.gl.glVertex3d(min.x(), max.y(), max.z());
+        rc.gl.glVertex3d(max.x(), max.y(), max.z());
+        rc.gl.glVertex3d(max.x(), max.y(), min.z());
         rc.gl.glEnd();
 
         //Sides
         rc.gl.glBegin(GL_LINES);
-        rc.gl.glVertex3d(min.x, min.y, min.z);
-        rc.gl.glVertex3d(min.x, max.y, min.z);
+        rc.gl.glVertex3d(min.x(), min.y(), min.z());
+        rc.gl.glVertex3d(min.x(), max.y(), min.z());
         rc.gl.glEnd();
 
         rc.gl.glBegin(GL_LINES);
-        rc.gl.glVertex3d(max.x, min.y, min.z);
-        rc.gl.glVertex3d(max.x, max.y, min.z);
+        rc.gl.glVertex3d(max.x(), min.y(), min.z());
+        rc.gl.glVertex3d(max.x(), max.y(), min.z());
         rc.gl.glEnd();
 
         rc.gl.glBegin(GL_LINES);
-        rc.gl.glVertex3d(min.x, min.y, max.z);
-        rc.gl.glVertex3d(min.x, max.y, max.z);
+        rc.gl.glVertex3d(min.x(), min.y(), max.z());
+        rc.gl.glVertex3d(min.x(), max.y(), max.z());
         rc.gl.glEnd();
 
         rc.gl.glBegin(GL_LINES);
-        rc.gl.glVertex3d(max.x, min.y, max.z);
-        rc.gl.glVertex3d(max.x, max.y, max.z);
+        rc.gl.glVertex3d(max.x(), min.y(), max.z());
+        rc.gl.glVertex3d(max.x(), max.y(), max.z());
         rc.gl.glEnd();
       }
 

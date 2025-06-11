@@ -1,10 +1,6 @@
 package org.alice.math.immutable;
 
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,17 +13,10 @@ class Matrix4x4Test {
       0, 5, 8, 1
   );
   static final double M1_DET = -781.0;
-  static final edu.cmu.cs.dennisc.math.AffineMatrix4x4 ROTATE_LEFT_AROUND_Y =
-      new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
-          new OrthogonalMatrix3x3(
-              new edu.cmu.cs.dennisc.math.Vector3(0, 0, -1),
-              new edu.cmu.cs.dennisc.math.Vector3(0, 1, 0),
-              new edu.cmu.cs.dennisc.math.Vector3(1, 0, 0)),
-          Point3.ORIGIN);
 
-  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(Matrix3x3.IDENTITY, new Vector3(4, 6, 2));
+  static final AffineMatrix4x4 A1 = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, new Point3(4, 6, 2));
 
-  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(Matrix3x3.IDENTITY, Vector3.ZERO);
+  static final Matrix4x4 LOCAL_IDENTITY = new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, Point3.ORIGIN);
 
   @Test
   void createShouldMakeMatrix() {
@@ -101,26 +90,5 @@ class Matrix4x4Test {
     Matrix4x4 i2 = Matrix4x4.IDENTITY;
     Matrix4x4 product = i1.times(i2);
     assertTrue(product.isIdentity(), "Matrix should be identity");
-  }
-
-  @Test
-  void conversionToMutableShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.AbstractMatrix4x4 mutable = A1.mutable();
-    Matrix4x4 twiceConverted = mutable.immutable();
-    assertEquals(A1, twiceConverted, "Matrix should be the same");
-  }
-
-  @Test
-  void conversionToMutableShouldBeAffine() {
-    edu.cmu.cs.dennisc.math.AbstractMatrix4x4 mutable = A1.mutable();
-    assertInstanceOf(edu.cmu.cs.dennisc.math.AffineMatrix4x4.class, mutable, "Matrix should be Affine");
-  }
-
-  @Test
-  void conversionToMutableAndTwiceInvertedShouldBeIdempotent() {
-    edu.cmu.cs.dennisc.math.AffineMatrix4x4 mutable = A1.mutable();
-    mutable.invert().invert();
-    Matrix4x4 twiceConverted = mutable.immutable();
-    assertTrue(A1.isWithinReasonableEpsilonOf(twiceConverted), "Matrix should be the same");
   }
 }

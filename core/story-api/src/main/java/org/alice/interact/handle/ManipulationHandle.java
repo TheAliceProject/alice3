@@ -42,15 +42,12 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.manipulator.AbstractManipulator;
-
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-
-//import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author David Culyba

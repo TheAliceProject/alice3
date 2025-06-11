@@ -61,8 +61,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
 
 import java.awt.Rectangle;
 import java.awt.Point;
@@ -176,7 +176,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
             double x = pickParameters.getX();
             double y = pickParameters.getFlippedY(actualViewport);
 
-            Vector3 translation = new Vector3(
+            Point3 translation = new Point3(
                 actualViewport.width - (2 * (x - actualViewport.x)),
                 actualViewport.height - (2 * (y - actualViewport.y)),
                 0);
@@ -190,7 +190,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
             }
           } else {
             Ray ray = cameraAdapter.getRayAtViewportPixel(pickParameters.getX(), pickParameters.getFlippedY(actualViewport), actualViewport).normalized();
-            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation().immutable();
+            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
             for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
               selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
             }

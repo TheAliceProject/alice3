@@ -1,11 +1,10 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.EulerAngles;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 import org.lgna.project.ast.*;
@@ -31,7 +30,6 @@ public class ReplaceCameraWithVR extends AstMigration {
   private final String getHeadset = "getHeadset";
   private final String setPositionRelativeToVehicle = "setPositionRelativeToVehicle";
   private final String setOrientationRelativeToVehicle = "setOrientationRelativeToVehicle";
-  private final AngleInRadians zero = new AngleInRadians(0);
   private final double defaultHeight = 1.56;
 
   public ReplaceCameraWithVR() {
@@ -149,42 +147,28 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getLeveledOrientation(Orientation orientation) {
-    EulerAngles angles = orientation.createEulerAngles();
+    EulerAngles angles = orientation.asEulerAngles();
 
-    Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch));
-    Angle flatRoll = new AngleInRadians(nearestPi(angles.roll));
-    EulerAngles vrUserAngles = new EulerAngles(flatPitch, angles.yaw, flatRoll, angles.order);
-    return vrUserAngles.createUnitQuaternion();
-  }
-
-  private double nearestPi(Angle angle) {
-    double radians = angle.getAsRadians();
-
-    int halfTurns = (int) (radians / Math.PI);
-    // Set to absolute lower bound
-    halfTurns = (radians < 0) ? halfTurns - 1 : halfTurns;
-
-    // Pick closest half turn, below or above
-    if (radians > (0.5 + halfTurns) * Math.PI) {
-      halfTurns++;
-    }
-    return Math.PI * halfTurns;
+    Angle flatPitch = angles.pitch().toNearestPi();
+    Angle flatRoll = angles.roll().toNearestPi();
+    EulerAngles vrUserAngles = new EulerAngles(flatPitch, angles.yaw(), flatRoll, angles.order());
+    return vrUserAngles.asUnitQuaternion();
   }
 
   private static void replaceOrientationArgs(InstanceCreation creation, UnitQuaternion newOrientation) {
     SimpleArgumentListProperty args = creation.requiredArguments;
-    args.get(0).expression.setValue(new DoubleLiteral(newOrientation.x));
-    args.get(1).expression.setValue(new DoubleLiteral(newOrientation.y));
-    args.get(2).expression.setValue(new DoubleLiteral(newOrientation.z));
-    args.get(3).expression.setValue(new DoubleLiteral(newOrientation.w));
+    args.get(0).expression.setValue(new DoubleLiteral(newOrientation.x()));
+    args.get(1).expression.setValue(new DoubleLiteral(newOrientation.y()));
+    args.get(2).expression.setValue(new DoubleLiteral(newOrientation.z()));
+    args.get(3).expression.setValue(new DoubleLiteral(newOrientation.w()));
   }
 
   private UnitQuaternion getHeadsetOrientation(Orientation cameraOrientation) {
-    EulerAngles angles = cameraOrientation.createEulerAngles();
-    Angle flatPitchOffset = new AngleInRadians(angles.pitch.getAsRadians() - nearestPi(angles.pitch));
-    Angle flatRollOffset = new AngleInRadians(angles.roll.getAsRadians() - nearestPi(angles.roll));
-    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, zero, flatRollOffset, angles.order);
-    return headsetAngles.createUnitQuaternion();
+    EulerAngles angles = cameraOrientation.asEulerAngles();
+    Angle flatPitchOffset = angles.pitch().minus(angles.pitch().toNearestPi());
+    Angle flatRollOffset = angles.roll().minus(angles.roll().toNearestPi());
+    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, Angle.ZERO, flatRollOffset, angles.order());
+    return headsetAngles.asUnitQuaternion();
   }
 
   private ExpressionStatement setHeadsetOrientationStatement(Expression userExpression, UnitQuaternion headsetOrientation) {
@@ -193,7 +177,12 @@ public class ReplaceCameraWithVR extends AstMigration {
     AbstractMethod setOrientation = AstUtilities.lookupMethod(SVRHeadset.class, setOrientationRelativeToVehicle, Orientation.class, SetOrientationRelativeToVehicle.Detail[].class);
 
     JavaConstructor constructor = JavaConstructor.getInstance(Orientation.class, Number.class, Number.class, Number.class, Number.class);
-    InstanceCreation headOrientation = AstUtilities.createInstanceCreation(constructor, new DoubleLiteral(headsetOrientation.x), new DoubleLiteral(headsetOrientation.y), new DoubleLiteral(headsetOrientation.z), new DoubleLiteral(headsetOrientation.w));
+    InstanceCreation headOrientation =
+        AstUtilities.createInstanceCreation(constructor,
+            new DoubleLiteral(headsetOrientation.x()),
+            new DoubleLiteral(headsetOrientation.y()),
+            new DoubleLiteral(headsetOrientation.z()),
+            new DoubleLiteral(headsetOrientation.w()));
 
     return AstUtilities.createMethodInvocationStatement(getHeadsetExpression, setOrientation, headOrientation);
   }

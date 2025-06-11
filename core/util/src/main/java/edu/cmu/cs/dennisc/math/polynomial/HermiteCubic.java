@@ -43,14 +43,18 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
-import edu.cmu.cs.dennisc.math.Matrix4x4;
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Vector4;
 
 /**
  * @author Dennis Cosgrove
  */
 public class HermiteCubic extends BasisMatrixCubic {
-  private static final Matrix4x4 s_h = new Matrix4x4(2, -2, 1, 1, -3, 3, -2, -1, 0, 0, 1, 0, 1, 0, 0, 0);
+  private static final Matrix4x4 s_h = Matrix4x4.create(
+      2, -2, 1, 1,
+      -3, 3, -2, -1,
+      0, 0, 1, 0,
+      1, 0, 0, 0);
 
   public HermiteCubic(Vector4 g) {
     super(s_h, g);

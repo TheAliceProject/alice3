@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.render;
 
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -57,8 +57,8 @@ public class PickResult {
   private boolean m_isFrontFacing;
   private Geometry m_sgGeometry;
   private int m_subElement;
-  private Point3 m_xyzInSource = new Point3();
-  private Point3 m_xyzInVisual = new Point3();
+  private Point3 m_xyzInSource = Point3.ORIGIN;
+  private Point3 m_xyzInVisual = Point3.ORIGIN;
 
   public PickResult() {
     setNaN();
@@ -83,12 +83,8 @@ public class PickResult {
     m_isFrontFacing = isFrontFacing;
     m_sgGeometry = sgGeometry;
     m_subElement = subElement;
-    if (xyzInSource != null) {
-      m_xyzInSource.set(xyzInSource);
-    } else {
-      m_xyzInSource.setNaN();
-    }
-    m_xyzInVisual.setNaN();
+    m_xyzInSource = xyzInSource != null ? xyzInSource : Point3.NaN;
+    m_xyzInVisual = Point3.NaN;
   }
 
   public void setNaN() {
@@ -115,38 +111,16 @@ public class PickResult {
     return m_subElement;
   }
 
-  public Point3 accessPositionInSource() {
+  public Point3 getPositionInSource() {
     return m_xyzInSource;
   }
 
-  public Point3 getPositionInSource(Point3 rv) {
-    rv.set(accessPositionInSource());
-    return rv;
-  }
-
-  public Point3 getPositionInSource() {
-    return getPositionInSource(new Point3());
-  }
-
-  public Point3 accessPositionInVisual() {
-    if (m_xyzInSource.isNaN()) {
-      if (m_xyzInVisual.isNaN()) {
-        //pass
-      } else {
-        assert m_sgVisual != null;
-        m_xyzInVisual = m_sgVisual.transformFrom(m_xyzInVisual, m_sgSource);
-      }
+  public Point3 getPositionInVisual() {
+    if (m_xyzInSource.isNaN() && !m_xyzInVisual.isNaN()) {
+      assert m_sgVisual != null;
+      m_xyzInVisual = m_sgVisual.transformFrom(m_xyzInVisual, m_sgSource);
     }
     return m_xyzInVisual;
-  }
-
-  public Point3 getPositionInVisual(Point3 rv) {
-    rv.set(accessPositionInVisual());
-    return rv;
-  }
-
-  public Point3 getPositionInVisual() {
-    return getPositionInVisual(new Point3());
   }
 
   @Override

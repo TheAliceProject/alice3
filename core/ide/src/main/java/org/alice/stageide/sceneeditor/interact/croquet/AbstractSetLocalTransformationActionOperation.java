@@ -45,10 +45,10 @@ package org.alice.stageide.sceneeditor.interact.croquet;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
@@ -93,24 +93,24 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 
   private static void appendPosition(StringBuilder sb, AffineMatrix4x4 m) {
     sb.append("(");
-    sb.append(DoubleUtilities.format(m.translation.x, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(m.translation().x(), MILLI_FORMAT));
     sb.append(",");
-    sb.append(DoubleUtilities.format(m.translation.y, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(m.translation().y(), MILLI_FORMAT));
     sb.append(",");
-    sb.append(DoubleUtilities.format(m.translation.z, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(m.translation().z(), MILLI_FORMAT));
     sb.append(")");
   }
 
   private static void appendOrientation(StringBuilder sb, AffineMatrix4x4 m) {
-    UnitQuaternion q = m.orientation.createUnitQuaternion();
+    UnitQuaternion q = m.orientation().asUnitQuaternion();
     sb.append("(");
-    sb.append(DoubleUtilities.format(q.x, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(q.x(), MILLI_FORMAT));
     sb.append(",");
-    sb.append(DoubleUtilities.format(q.y, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(q.y(), MILLI_FORMAT));
     sb.append(",");
-    sb.append(DoubleUtilities.format(q.z, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(q.z(), MILLI_FORMAT));
     sb.append(",");
-    sb.append(DoubleUtilities.format(q.w, MILLI_FORMAT));
+    sb.append(DoubleUtilities.format(q.w(), MILLI_FORMAT));
     sb.append(")");
   }
 

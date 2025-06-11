@@ -43,27 +43,10 @@
 package org.alice.interact.handle;
 
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import org.alice.interact.DragAdapter;
-import org.alice.interact.InputState;
-import org.alice.interact.PickHint;
-import org.alice.interact.event.EventCriteriaManager;
-import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.event.ManipulationEventCriteria;
-import org.alice.interact.event.ManipulationListener;
-import org.alice.interact.manipulator.AbstractManipulator;
-import org.lgna.story.implementation.BoundingBoxUtilities;
-
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.animation.Color4fAnimation;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -78,6 +61,22 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
+import org.alice.interact.DragAdapter;
+import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
+import org.alice.interact.event.EventCriteriaManager;
+import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.event.ManipulationEventCriteria;
+import org.alice.interact.event.ManipulationListener;
+import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.lgna.story.implementation.BoundingBoxUtilities;
 
 /**
  * @author David Culyba
@@ -203,7 +202,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     this.state = new HandleState(handle.state);
     this.handleSet.clear();
     this.handleSet.addSet(handle.handleSet);
-    this.localTransformation.setValue(new AffineMatrix4x4(handle.localTransformation.getValue()));
+    this.localTransformation.setValue(handle.localTransformation.getValue());
     this.criteriaManager = handle.criteriaManager;
     this.handleManager = handle.handleManager;
     this.manipulation = handle.manipulation;
@@ -274,7 +273,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     if (ManipulationHandle3D.this.dragAdapter != null) {
       AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
       if (activeCamera instanceof SymmetricPerspectiveCamera) {
-        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation;
+        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation();
         ManipulationHandle3D.this.setCameraPosition(cameraLocation);
       }
     }
@@ -285,7 +284,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   protected final void setCurrentColorInternal() {
     HandleRenderState renderState = HandleRenderState.getStateForHandle(this);
     sgFrontFacingAppearance.diffuseColor.setValue(this.getDesiredColor(renderState));
-    sgFrontFacingAppearance.opacity.setValue(new Float(this.getDesiredOpacity(renderState)));
+    sgFrontFacingAppearance.opacity.setValue((float) this.getDesiredOpacity(renderState));
   }
 
   protected final void initializeAppearance() {
@@ -318,15 +317,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   }
 
   private void invertParentScale(Composite parent) {
-    OrthogonalMatrix3x3 local = localTransformation.getValue().orientation;
-    // Remove previous scale
-    local.normalizeColumns();
+    // Normalized to remove previous scale
+    OrthogonalMatrix3x3 local = localTransformation.getValue().orientation().normalized();
     if (parent != null) {
-      OrthogonalMatrix3x3 parentOrientation = parent.getAbsoluteTransformation().orientation;
-      local.right.multiply(1 / parentOrientation.right.calculateMagnitude());
-      local.up.multiply(1 / parentOrientation.up.calculateMagnitude());
-      local.backward.multiply(1 / parentOrientation.backward.calculateMagnitude());
+      OrthogonalMatrix3x3 parentOrientation = parent.getAbsoluteTransformation().orientation();
+      local = new OrthogonalMatrix3x3(
+          local.getRight().times(1 / parentOrientation.getRight().magnitude()),
+          local.getUp().times(1 / parentOrientation.getUp().magnitude()),
+          local.getBackward().times(1 / parentOrientation.getBackward().magnitude()));
     }
+    // Write changed orientation into local transformation
+    localTransformation.setValue(new AffineMatrix4x4(local, localTransformation.getValue().translation()));
   }
 
   @Override
@@ -474,8 +475,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   public float calculateCameraRelativeOpacity(Point3 cameraPosition) {
     if ((this.getParentTransformable() != null) && (cameraPosition != null)) {
-      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation;
-      double distance = Point3.calculateDistanceBetween(cameraPosition, handlePosition);
+      Point3 handlePosition = this.getParentTransformable().getAbsoluteTransformation().translation();
+      double distance = cameraPosition.distanceFrom(handlePosition);
       if (distance < .2) {
         return 0.0f;
       } else if (distance < .5) {
@@ -511,19 +512,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   }
 
   public AffineMatrix4x4 getTransformationForAxis(Vector3 axis) {
-    double upDot = Vector3.calculateDotProduct(axis, Vector3.accessPositiveYAxis());
-    AffineMatrix4x4 transform = new AffineMatrix4x4();
+    double upDot = axis.dotProduct(Vector3.POSITIVE_Y_AXIS);
+    OrthogonalMatrix3x3 orientation = OrthogonalMatrix3x3.IDENTITY;
     if (Math.abs(upDot) != 1.0d) {
-      Vector3 rightAxis = Vector3.createCrossProduct(axis, Vector3.accessPositiveYAxis());
-      rightAxis.normalize();
+      Vector3 rightAxis = axis.crossProduct(Vector3.POSITIVE_Y_AXIS).normalized();
       Vector3 upAxis = axis;
-      Vector3 backwardAxis = Vector3.createCrossProduct(rightAxis, upAxis);
-      backwardAxis.normalize();
-      transform.orientation.set(rightAxis, upAxis, backwardAxis);
+      Vector3 backwardAxis = rightAxis.crossProduct(upAxis).normalized();
+      orientation = new OrthogonalMatrix3x3(rightAxis, upAxis, backwardAxis);
     } else if (upDot == -1.0d) {
-      transform.applyRotationAboutXAxis(new AngleInRadians(Math.PI));
+      orientation = orientation.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, (new AngleInRadians(Math.PI)));
     }
-    return transform;
+    return AffineMatrix4x4.createOrientation(orientation);
   }
 
   @Override
@@ -574,12 +573,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     if ((bbox == null) || bbox.isNaN()) {
       return 1.0d;
     }
-    Point3 max = bbox.getMaximum();
-    max.y = 0d;
-    Point3 min = bbox.getMinimum();
-    min.y = 0d;
-    double volume = Point3.createSubtraction(max, min).calculateMagnitude();
-    double scale = volume / VOLUME_NORMALIZER;
+    Point3 max = bbox.maximum().withY(0);
+    Point3 min = bbox.minimum().withY(0);
+    double scale = max.distanceFrom(min) / VOLUME_NORMALIZER;
     if (Double.isNaN(scale)) {
       return 1;
     }

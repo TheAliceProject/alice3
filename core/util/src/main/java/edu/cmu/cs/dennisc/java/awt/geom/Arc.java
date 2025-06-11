@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
-import edu.cmu.cs.dennisc.math.Angle;
+import org.alice.math.immutable.Angle;
 
 import java.awt.geom.Arc2D;
 

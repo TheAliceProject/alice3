@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.story.STurnable;
 
 public class BoundingBoxUtilities {

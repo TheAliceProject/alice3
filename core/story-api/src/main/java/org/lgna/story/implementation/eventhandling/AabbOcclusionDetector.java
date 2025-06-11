@@ -44,7 +44,7 @@ package org.lgna.story.implementation.eventhandling;
 
 import java.awt.Rectangle;
 
-import edu.cmu.cs.dennisc.math.Vector4;
+import org.alice.math.immutable.Vector4;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.CameraImp;

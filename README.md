@@ -4,14 +4,14 @@
 
 ### Latest Released Build:
 
-[![](https://img.shields.io/badge/3.7-green.svg)](https://www.alice.org/get-alice/alice-3/)
+[![](https://img.shields.io/badge/3.9.0.2-green.svg)](https://www.alice.org/get-alice/alice-3/)
 
 ## Building Alice 3 from the source
 
 Download and install the following build tools
-* [Java 17](https://www.oracle.com/java/technologies/downloads/#JDK17)
+* [Java 21](https://www.oracle.com/java/technologies/downloads/#java21)
   * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-* [Apache Maven](https://maven.apache.org/install.html) 3.6.3 or later
+* [Apache Maven](https://maven.apache.org/install.html) 3.9.9 or later
 * git
 * [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
 * [Install4J 10](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
@@ -62,7 +62,7 @@ or JetBrains offers a product pack for students using an edu email address [here
 
 ### Build with IntelliJ
 
-**Alice 3 builds with Java 17** which should be installed and selected in place of IntelliJ's bundled JDK.
+**Alice 3 builds with Java 21** which should be installed and selected in place of IntelliJ's bundled JDK.
 
 IntelliJ IDEA has a bundled maven.
 * The location is set in:

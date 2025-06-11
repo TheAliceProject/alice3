@@ -164,6 +164,16 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
   }
 
   @Override
+  public void encodeRecord(Record record) {
+    try {
+      encode(record.getClass().getName());
+      m_oos.writeObject(record);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
+
+  @Override
   public final void flush() {
     try {
       m_oos.flush();

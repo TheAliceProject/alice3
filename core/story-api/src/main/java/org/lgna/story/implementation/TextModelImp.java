@@ -43,10 +43,10 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Text;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.STextModel;
 
 import java.awt.Font;
@@ -63,7 +63,7 @@ public class TextModelImp extends SimpleModelImp {
     final double scale = 1.0 / height;
     this.sgText.font.setValue(new Font(null, 0, height));
     this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgText});
-    this.getSgVisuals()[0].scale.setValue(ScaleUtilities.newScaleMatrix3d(scale, scale, scale));
+    this.getSgVisuals()[0].scale.setValue(new Vector3(scale, scale, scale).asScaleMatrix());
   }
 
   @Override

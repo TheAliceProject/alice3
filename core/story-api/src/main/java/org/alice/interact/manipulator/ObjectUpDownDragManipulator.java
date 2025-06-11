@@ -44,15 +44,14 @@ package org.alice.interact.manipulator;
 
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -74,27 +73,24 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 
   @Override
   protected Plane createBadAnglePlane(Point3 clickPoint) {
-    Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation.up;
-    Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
-    badPlaneNormal.subtract(cameraUp);
-    badPlaneNormal.normalize();
+    Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation().up();
+    Vector3 badPlaneNormal = Vector3.POSITIVE_Y_AXIS.minus(cameraUp).normalized();
     if (badPlaneNormal.isNaN()) {
-      badPlaneNormal = Vector3.createPositiveYAxis();
+      badPlaneNormal = Vector3.POSITIVE_Y_AXIS;
     }
     return Plane.createInstance(clickPoint, badPlaneNormal);
   }
 
   @Override
   protected Point3 getPositionForPlane(Plane movementPlane, Ray pickRay) {
-    if (pickRay != null) {
-      Point3 pointInPlane = PlaneUtilities.getPointInPlane(movementPlane, pickRay);
-      Point3 newPosition = Point3.createAddition(this.offsetToOrigin, pointInPlane);
-      newPosition.x = this.initialObjectPosition.x;
-      newPosition.z = this.initialObjectPosition.z;
-      return newPosition;
-    } else {
+    if (pickRay == null) {
       return null;
     }
+    Point3 pointInPlane = movementPlane.getIntersection(pickRay);
+    if (pointInPlane == null) {
+      return null;
+    }
+    return pointInPlane.plus(offsetToOrigin).withX(initialObjectPosition.x()).withZ(initialObjectPosition.z());
   }
 
   @Override

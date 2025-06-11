@@ -82,7 +82,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
     if ((0 <= geometryIndex) && (geometryIndex < this.glrGeometries.length)) {
-      Matrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation().immutable();
+      Matrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
       Matrix4x4 m = inverseAbsoluteTransformationOfSource.times(absoluteTransformation);
       return this.glrGeometries[geometryIndex].getIntersectionInSource(ray, m, subElement);
     }
@@ -145,7 +145,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   private void updateScale(Matrix3x3 m) {
     this.isScaleIdentity = m.isIdentity();
-    m.getAsColumnMajorArray16(this.scale);
+    m.writeColumnMajorArray16(this.scale);
   }
 
   @Override
@@ -383,7 +383,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
     } else if (property == owner.scale) {
       //todo: accessScale?
-      updateScale(owner.scale.getValue().immutable());
+      updateScale(owner.scale.getValue());
     } else if (property == owner.isShowing) {
       this.isShowing = owner.isShowing.getValue();
     } else if (property == owner.silouette) {

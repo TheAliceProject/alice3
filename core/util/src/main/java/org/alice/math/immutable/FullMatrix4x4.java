@@ -1,13 +1,18 @@
 package org.alice.math.immutable;
 
 
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 // The columns of a 4x4 matrix
 public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4 translation) implements Matrix4x4 {
   public static FullMatrix4x4 ZERO = new FullMatrix4x4(Vector4.ZERO, Vector4.ZERO, Vector4.ZERO, Vector4.ZERO);
 
   @Override
-  public Matrix4x4 times(double factor) {
-    return new FullMatrix4x4(right.times(factor), up.times(factor), backward.times(factor), translation.times(factor));
+  public Matrix4x4 times(double scale) {
+    if (scale == 1.0) {
+      return this;
+    }
+    return new FullMatrix4x4(right.times(scale), up.times(scale), backward.times(scale), translation.times(scale));
   }
 
   @Override
@@ -180,9 +185,11 @@ public record FullMatrix4x4(Vector4 right, Vector4 up, Vector4 backward, Vector4
     throw new RuntimeException("Unexpected scaling of non affine translation");
   }
 
-  // Temporary use during transition to immutable Records
-  @Deprecated(forRemoval = true)
-  public edu.cmu.cs.dennisc.math.Matrix4x4 mutable() {
-    return new edu.cmu.cs.dennisc.math.Matrix4x4(asColumnMajorArray16());
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    right.encode(binaryEncoder);
+    up.encode(binaryEncoder);
+    backward.encode(binaryEncoder);
+    translation.encode(binaryEncoder);
   }
 }

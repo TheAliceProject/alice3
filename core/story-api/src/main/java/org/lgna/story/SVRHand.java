@@ -63,7 +63,7 @@ public class SVRHand extends SThing {
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public void setPositionRelativeToVehicle(Position position, SetPositionRelativeToVehicle.Detail... details) {
     implementation.animatePositionOnly(implementation.getVehicle(),
-        position.getInternal(),
+        position.asPoint(),
         PathStyle.getValue(details).isSmooth(),
         Duration.getValue(details),
         AnimationStyle.getValue(details).getInternal());

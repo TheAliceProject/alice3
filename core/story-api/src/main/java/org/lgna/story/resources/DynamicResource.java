@@ -1,7 +1,7 @@
 package org.lgna.story.resources;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.tweedle.file.AliceTextureReference;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
@@ -159,9 +159,11 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
       manifestBBox = modelManifest.boundingBox;
     }
     if (manifestBBox != null) {
-      return new AxisAlignedBox(manifestBBox.min.get(0), manifestBBox.min.get(1), manifestBBox.min.get(2), manifestBBox.max.get(0), manifestBBox.max.get(1), manifestBBox.max.get(2));
+      return AxisAlignedBox.createAxisAlignedBox(
+          manifestBBox.min.get(0), manifestBBox.min.get(1), manifestBBox.min.get(2),
+          manifestBBox.max.get(0), manifestBBox.max.get(1), manifestBBox.max.get(2));
     }
-    return AxisAlignedBox.createNaN();
+    return AxisAlignedBox.NaN;
   }
 
   @Override

@@ -2,10 +2,11 @@ package org.alice.math.immutable;
 
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public interface Tuple3 {
+public interface Tuple3 extends Serializable {
   double x();
   double y();
   double z();
@@ -34,26 +35,6 @@ public interface Tuple3 {
 
   default boolean isWithinReasonableEpsilonOfZero() {
     return isWithinEpsilonOfZero(EpsilonUtilities.REASONABLE_EPSILON);
-  }
-
-  default double distanceSquaredFrom(Tuple3 b) {
-    double xDelta = b.x() - x();
-    double yDelta = b.y() - y();
-    double zDelta = b.z() - z();
-    return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
-  }
-
-  default double distanceFrom(Tuple3 b) {
-    return Math.sqrt(distanceSquaredFrom(b));
-  }
-
-  // Temporary use during transition
-  @Deprecated
-  default double distanceSquaredFrom(edu.cmu.cs.dennisc.math.Point3 b) {
-    double xDelta = b.x - x();
-    double yDelta = b.y - y();
-    double zDelta = b.z - z();
-    return (xDelta * xDelta) + (yDelta * yDelta) + (zDelta * zDelta);
   }
 
   default List<Float> asFloatList() {

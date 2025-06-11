@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
-import edu.cmu.cs.dennisc.math.Angle;
+import org.alice.math.immutable.Angle;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 

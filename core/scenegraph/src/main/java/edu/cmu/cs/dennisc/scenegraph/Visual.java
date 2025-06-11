@@ -43,12 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.property.Matrix3x3Property;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix3x3;
 
 /**
  * @author Dennis Cosgrove
@@ -97,42 +96,16 @@ public class Visual extends Leaf {
     this.geometries.setValue(geometries);
   }
 
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    if (getGeometry() != null) {
-      //todo
-      getGeometry().getAxisAlignedMinimumBoundingBox(rv);
-      rv.scale(scale.getValue());
-    } else {
-      rv.setNaN();
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    if (getGeometry() == null) {
+      return null;
     }
-    if (rv.isNaN() || rv.getMaximum().isNaN() || rv.getMaximum().isNaN()) {
-      System.err.append("NaN");
-    }
-    return rv;
-  }
-
-  public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-    return getAxisAlignedMinimumBoundingBox(new AxisAlignedBox());
-  }
-
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    if (getGeometry() != null) {
-      //todo
-      getGeometry().getBoundingSphere(rv);
-      rv.scale(scale.getValue());
-    } else {
-      rv.setNaN();
-    }
-    return rv;
-  }
-
-  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-    return getBoundingSphere(new edu.cmu.cs.dennisc.math.Sphere());
+    return getGeometry().getAxisAlignedMinimumBoundingBox().scale(scale.getValue());
   }
 
   public final InstanceProperty<Appearance> frontFacingAppearance = new InstanceProperty<Appearance>(this, null);
   public final InstanceProperty<Appearance> backFacingAppearance = new InstanceProperty<Appearance>(this, null);
-  public final Matrix3x3Property scale = new Matrix3x3Property(this, Matrix3x3.createIdentity());
+  public final InstanceProperty<Matrix3x3> scale = new InstanceProperty<>(this, Matrix3x3.IDENTITY);
   public final BooleanProperty isShowing = new BooleanProperty(this, true);
   public final BooleanProperty isPickable = new BooleanProperty(this, true);
   public final InstanceProperty<Silhouette> silouette = new InstanceProperty<Silhouette>(this, null);

@@ -43,11 +43,11 @@
 
 package test.ik;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.State;
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
@@ -73,7 +73,7 @@ import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.Point3;
 import test.ik.croquet.AnchorJointIdState;
 import test.ik.croquet.BonesState;
 import test.ik.croquet.EndJointIdState;
@@ -255,8 +255,8 @@ class IkProgram extends SProgram {
         ikEnforcer.setChainBetween(anchorId, endId);
       }
       setDragAdornmentsVisible(true);
-      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation;
-      scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
+      Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation();
+      scene.anchor.setPositionRelativeToVehicle(new Position(ap));
     } else {
       setDragAdornmentsVisible(false);
     }
@@ -388,19 +388,19 @@ class IkProgram extends SProgram {
 
             AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
             if (isLinearEnabled) {
-              ikEnforcer.setEeDesiredPosition(eeId, targetTransformation.translation, maxLinearSpeedForEe);
+              ikEnforcer.setEeDesiredPosition(eeId, targetTransformation.translation(), maxLinearSpeedForEe);
             }
 
             if (isAngularEnabled) {
-              ikEnforcer.setEeDesiredOrientation(eeId, targetTransformation.orientation, maxAngularSpeedForEe);
+              ikEnforcer.setEeDesiredOrientation(eeId, targetTransformation.orientation(), maxAngularSpeedForEe);
             }
 
             ikEnforcer.advanceTime(deltaTime);
 
             Point3 ep = ikEnforcer.getEndEffectorPosition(eeId);
             Point3 ap = ikEnforcer.getAnchorPosition(anchorId);
-            scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
-            scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
+            scene.anchor.setPositionRelativeToVehicle(new Position(ap));
+            scene.ee.setPositionRelativeToVehicle(new Position(ep));
 
             //force bone reprint
             //this should be fine even if the chain is not valid anymore.
@@ -454,7 +454,7 @@ class IkProgram extends SProgram {
 
           AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(AsSeenBy.SCENE);
 
-          myPositionConstraint.setEeDesiredPosition(targetTransformation.translation);
+          myPositionConstraint.setEeDesiredPosition(targetTransformation.translation());
 
           //          //this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
           //          for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {

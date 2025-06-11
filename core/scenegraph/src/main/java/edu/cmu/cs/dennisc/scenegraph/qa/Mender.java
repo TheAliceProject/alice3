@@ -42,12 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.qa;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface Mender {
-  public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint);
+  AffineMatrix4x4 getMendTransformationFor(Joint sgJoint);
 }

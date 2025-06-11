@@ -43,14 +43,17 @@
 
 package edu.cmu.cs.dennisc.math.polynomial;
 
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Matrix3x3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BezierQuadratic extends BasisMatrixQuadratic {
-  private static final Matrix3x3 s_h = new Matrix3x3(1, -2, 1, -2, 2, 0, 1, 0, 0);
+  private static final Matrix3x3 s_h = Matrix3x3.create(
+      1, -2, 1,
+      -2, 2, 0,
+      1, 0, 0);
 
   public BezierQuadratic(Vector3 g) {
     super(s_h, g);

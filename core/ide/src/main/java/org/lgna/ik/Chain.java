@@ -44,8 +44,8 @@
 package org.lgna.ik;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
@@ -64,8 +64,8 @@ public class Chain {
 
   private final List<JointImp> jointImps;
   private final Bone[] bones;
-  private final Vector3 desiredEndEffectorLinearVelocity;
-  private final Vector3 desiredEndEffectorAngularVelocity;
+  private Vector3 desiredEndEffectorLinearVelocity;
+  private Vector3 desiredEndEffectorAngularVelocity;
 
   private Chain(List<JointImp> jointImps, boolean isLinearEnabled, boolean isAngularEnabled) {
     this.jointImps = jointImps;
@@ -74,16 +74,8 @@ public class Chain {
     for (int i = 0; i < (N - 1); i++) {
       this.bones[i] = new Bone(this, i, isLinearEnabled, isAngularEnabled);
     }
-    if (isLinearEnabled) {
-      this.desiredEndEffectorLinearVelocity = Vector3.createZero();
-    } else {
-      this.desiredEndEffectorLinearVelocity = null;
-    }
-    if (isAngularEnabled) {
-      this.desiredEndEffectorAngularVelocity = Vector3.createZero();
-    } else {
-      this.desiredEndEffectorAngularVelocity = null;
-    }
+    this.desiredEndEffectorLinearVelocity = isLinearEnabled ? Vector3.ZERO : null;
+    this.desiredEndEffectorAngularVelocity = isAngularEnabled ? Vector3.ZERO : null;
   }
 
   public Bone[] getBones() {
@@ -103,11 +95,11 @@ public class Chain {
   }
 
   public void setDesiredEndEffectorLinearVelocity(Vector3 desiredEndEffectorLinearVelocity) {
-    this.desiredEndEffectorLinearVelocity.set(desiredEndEffectorLinearVelocity);
+    this.desiredEndEffectorLinearVelocity = desiredEndEffectorLinearVelocity;
   }
 
   public void setDesiredEndEffectorAngularVelocity(Vector3 desiredEndEffectorAngularVelocity) {
-    this.desiredEndEffectorAngularVelocity.set(desiredEndEffectorAngularVelocity);
+    this.desiredEndEffectorAngularVelocity = desiredEndEffectorAngularVelocity;
   }
 
   private Point3 getAnchorPosition() {
@@ -122,7 +114,7 @@ public class Chain {
     Point3 endEffectorPos = this.getEndEffectorPosition();
     for (Bone bone : this.bones) {
       if (this.isLinearVelocityEnabled()) {
-        Vector3 v = Vector3.createSubtraction(endEffectorPos, this.getAnchorPosition());
+        Vector3 v = endEffectorPos.minus(this.getAnchorPosition());
         bone.updateLinearContributions(v);
       }
       if (this.isAngularVelocityEnabled()) {

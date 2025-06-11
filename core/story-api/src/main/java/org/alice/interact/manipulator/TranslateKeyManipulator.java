@@ -42,10 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import org.alice.interact.MovementKey;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -65,44 +66,29 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
     if (!super.shouldApplyEnding(currentTime, amountToMove)) {
       return false;
     }
-    Point3 positionDif = Point3.createSubtraction(manipulatedTransformable.getAbsoluteTransformation().translation, initialPoint);
-    double distanceAlreadyMoved = positionDif.calculateMagnitude();
+    Vector3 positionDif = manipulatedTransformable.getAbsoluteTransformation().translation().minus(initialPoint);
+    double distanceAlreadyMoved = positionDif.magnitude();
     return amountToMove > distanceAlreadyMoved;
   }
 
   @Override
   protected void manipulate(double amountToMove, MovementKey key) {
+    Point3 previousPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
     key.applyTranslation(manipulatedTransformable, amountToMove);
-    enforceBounds();
+    enforceBounds(previousPos);
   }
 
   public void setBounds(AxisAlignedBox bounds) {
     this.bounds = bounds;
   }
 
-  private void enforceBounds() {
+  private void enforceBounds(Point3 previousPos) {
+    // if any dimension is out of bounds, stick at the previous position
     if (this.bounds != null) {
       Point3 currentPos = this.manipulatedTransformable.getTranslation(AsSeenBy.SCENE);
-      if (currentPos.x > this.bounds.getXMaximum()) {
-        currentPos.x = this.bounds.getXMaximum();
+      if (!bounds.contains(currentPos)) {
+        this.manipulatedTransformable.setTranslationOnly(previousPos, AsSeenBy.SCENE);
       }
-      if (currentPos.x < this.bounds.getXMinimum()) {
-        currentPos.x = this.bounds.getXMinimum();
-      }
-      if (currentPos.y > this.bounds.getYMaximum()) {
-        currentPos.y = this.bounds.getYMaximum();
-      }
-      if (currentPos.y < this.bounds.getYMinimum()) {
-        currentPos.y = this.bounds.getYMinimum();
-      }
-      if (currentPos.z > this.bounds.getZMaximum()) {
-        currentPos.z = this.bounds.getZMaximum();
-      }
-      if (currentPos.z < this.bounds.getZMinimum()) {
-        currentPos.z = this.bounds.getZMinimum();
-      }
-
-      this.manipulatedTransformable.setTranslationOnly(currentPos, AsSeenBy.SCENE);
     }
   }
 

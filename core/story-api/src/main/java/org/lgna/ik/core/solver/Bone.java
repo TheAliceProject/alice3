@@ -44,10 +44,10 @@
 package org.lgna.ik.core.solver;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 
@@ -66,11 +66,11 @@ public class Bone {
 
   // Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain.
   public static class Axis {
-    private final Vector3 axis;
+    private Vector3 axis;
 
     //these are not local. angular is naturally radian.
-    private final Vector3 linearContribution = Vector3.createZero();
-    private final Vector3 angularContribution = Vector3.createZero();
+    private Vector3 linearContribution = Vector3.ZERO;
+    private Vector3 angularContribution = Vector3.ZERO;
     private final Bone bone;
     private final int originalIndexInJoint;
 
@@ -81,7 +81,7 @@ public class Bone {
     public Axis(Bone bone, int originalIndexInJoint) {
       this.bone = bone;
       this.originalIndexInJoint = originalIndexInJoint;
-      this.axis = Vector3.createZero();
+      this.axis = Vector3.ZERO;
     }
 
     public Vector3 getLinearContribution() {
@@ -93,11 +93,11 @@ public class Bone {
     }
 
     public void updateLinearContributions(Vector3 jointEeVector) {
-      Vector3.setReturnValueToCrossProduct(this.linearContribution, this.axis, jointEeVector);
+      this.linearContribution = this.axis.crossProduct(jointEeVector);
     }
 
     public void updateAngularContributions() {
-      this.angularContribution.set(this.axis);
+      this.angularContribution = this.axis;
     }
 
     public Vector3 getCurrentValue() {
@@ -105,11 +105,11 @@ public class Bone {
     }
 
     public void setCurrentValue(Vector3 axis) {
-      this.axis.set(axis);
+      this.axis = axis;
     }
 
     public void invertDirection() {
-      this.axis.multiply(-1);
+      this.axis = this.axis.negate();
     }
 
     public Bone getBone() {
@@ -155,14 +155,11 @@ public class Bone {
     //I was using axes to be global x, y, z. ooh, that's right.
     //maybe the axis class should be keeping the original, which is inverted of current?
     private Vector3 indexToLocalVector(int originalIndexInJoint) {
-      switch (originalIndexInJoint) {
-      case 0:
-        return Vector3.accessPositiveXAxis();
-      case 1:
-        return Vector3.accessPositiveYAxis();
-      case 2:
-        return Vector3.accessPositiveZAxis();
-      }
+      return switch (originalIndexInJoint) {
+        case 0 -> Vector3.POSITIVE_X_AXIS;
+        case 1 -> Vector3.POSITIVE_Y_AXIS;
+        case 2 -> Vector3.POSITIVE_Z_AXIS;
+        default ->
       //      if(bone.isABallJoint()) {
       //        //return global x, y, z
       //      } else {
@@ -177,7 +174,8 @@ public class Bone {
       //          return orientation.backward;
       //        }
       //      }
-      throw new RuntimeException("Axis index > 2?");
+            throw new RuntimeException("Axis index > 2?");
+      };
     }
 
   }
@@ -187,7 +185,7 @@ public class Bone {
   private final Axis[] axesByIndex = new Axis[3];
   private final List<Axis> axesList = new ArrayList<Axis>();
 
-  private final Point3 anchor = Point3.createZero();
+  private Point3 anchor = Point3.ORIGIN;
 
   public Bone(Chain chain, int index) {
     this.chain = chain;
@@ -302,7 +300,7 @@ public class Bone {
   }
 
   public Point3 getAnchorPosition() {
-    // this returns the curren anchor position that was just fed to this from the world
+    // this returns the current anchor position that was just fed to this from the world
     return anchor;
   }
 
@@ -312,7 +310,7 @@ public class Bone {
 
   public void updateStateFromJoint() {
     //get anchor
-    anchor.set(getA().getTransformation(AsSeenBy.SCENE).translation);
+    anchor = getA().getTransformation(AsSeenBy.SCENE).translation();
 
     //get axes
     //    if( !isABallJoint() ) {
@@ -320,19 +318,19 @@ public class Bone {
     AffineMatrix4x4 atrans = a.getTransformation(AsSeenBy.SCENE);
     //invert if reverse
     if (a.isFreeInX()) {
-      this.axesByIndex[0].setCurrentValue(atrans.orientation.right);
+      this.axesByIndex[0].setCurrentValue(atrans.orientation().getRight());
       if (!isStraight()) {
         this.axesByIndex[0].invertDirection();
       }
     }
     if (a.isFreeInY()) {
-      this.axesByIndex[1].setCurrentValue(atrans.orientation.up);
+      this.axesByIndex[1].setCurrentValue(atrans.orientation().getUp());
       if (!isStraight()) {
         this.axesByIndex[1].invertDirection();
       }
     }
     if (a.isFreeInZ()) {
-      this.axesByIndex[2].setCurrentValue(atrans.orientation.backward);
+      this.axesByIndex[2].setCurrentValue(atrans.orientation().getBackward());
       if (!isStraight()) {
         this.axesByIndex[2].invertDirection();
       }

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.lgna.story.Color;

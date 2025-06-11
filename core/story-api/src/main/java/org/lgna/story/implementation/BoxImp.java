@@ -44,11 +44,11 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SBox;
 
 /**
@@ -131,11 +131,11 @@ public class BoxImp extends ShapeImp {
 
   @Override
   public void setSize(Dimension3 size) {
-    double x = size.x * 0.5;
-    double z = size.z * 0.5;
+    double x = size.x() * 0.5;
+    double z = size.z() * 0.5;
     this.sgBox.xMinimum.setValue(-x);
     this.sgBox.xMaximum.setValue(+x);
-    this.sgBox.yMaximum.setValue(size.y);
+    this.sgBox.yMaximum.setValue(size.y());
     this.sgBox.zMinimum.setValue(-z);
     this.sgBox.zMaximum.setValue(+z);
   }
@@ -143,21 +143,21 @@ public class BoxImp extends ShapeImp {
   @Override
   public void animateResizeWidth(double factor, boolean isVolumePreserved, double duration, Style style) {
     Dimension3 newSize = getSize();
-    newSize.multiply(Dimension.LEFT_TO_RIGHT.getResizeAxis(factor, isVolumePreserved));
+    newSize.times(Dimension.LEFT_TO_RIGHT.getResizeAxis(factor, isVolumePreserved));
     animateSetSize(newSize, duration, style);
   }
 
   @Override
   public void animateResizeHeight(double factor, boolean isVolumePreserved, double duration, Style style) {
     Dimension3 newSize = getSize();
-    newSize.multiply(Dimension.TOP_TO_BOTTOM.getResizeAxis(factor, isVolumePreserved));
+    newSize = newSize.times(Dimension.TOP_TO_BOTTOM.getResizeAxis(factor, isVolumePreserved));
     animateSetSize(newSize, duration, style);
   }
 
   @Override
   public void animateResizeDepth(double factor, boolean isVolumePreserved, double duration, Style style) {
     Dimension3 newSize = getSize();
-    newSize.multiply(Dimension.FRONT_TO_BACK.getResizeAxis(factor, isVolumePreserved));
+    newSize = newSize.times(Dimension.FRONT_TO_BACK.getResizeAxis(factor, isVolumePreserved));
     animateSetSize(newSize, duration, style);
   }
 

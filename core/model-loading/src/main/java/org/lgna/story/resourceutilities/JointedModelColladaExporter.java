@@ -74,6 +74,7 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.tweedle.file.ImageReference;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.common.resources.ImageResource;
@@ -92,7 +93,6 @@ import org.lgna.story.resourceutilities.exporterutils.collada.Mesh;
 import org.lgna.story.resourceutilities.exporterutils.collada.Skin.VertexWeights;
 import org.lgna.story.resourceutilities.exporterutils.collada.Source.TechniqueCommon;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Dave Culyba
@@ -168,11 +168,11 @@ public class JointedModelColladaExporter implements JointedModelExporter {
 
     Matrix matrix = factory.createMatrix();
     matrix.setSid("matrix");
-    AffineMatrix4x4 newTransform = new AffineMatrix4x4(joint.localTransformation.getValue());
+    AffineMatrix4x4 newTransform = joint.localTransformation.getValue();
     if (SCALE_MODEL) {
-      newTransform.translation.multiply(MODEL_SCALE);
+      newTransform = newTransform.scaleTranslation(MODEL_SCALE);
     }
-    double[] matrixValues = newTransform.getAsRowMajorArray16();
+    double[] matrixValues = newTransform.asRowMajorArray16();
     //Flip the values from Alice space to Collada space
     if (FLIP_COORDINATE_SPACE) {
       matrixValues = ColladaTransformUtilities.createFlippedRowMajorTransform(matrixValues);
@@ -465,8 +465,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
 
   private double[] getBindShapeMatrix(WeightedMesh sgWeightedMesh) {
     //All Alice models have a bind shape of the identity
-    AffineMatrix4x4 bindShapeMatrix = AffineMatrix4x4.createIdentity();
-    return bindShapeMatrix.getAsRowMajorArray16();
+    return AffineMatrix4x4.IDENTITY.asRowMajorArray16();
   }
 
   private Source createJointSource(WeightInfo wi, String jointSourceName) {
@@ -493,9 +492,9 @@ public class JointedModelColladaExporter implements JointedModelExporter {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
       AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
       if (SCALE_MODEL) {
-        inverseBindMatrix.translation.multiply(MODEL_SCALE);
+        inverseBindMatrix = inverseBindMatrix.scaleTranslation(MODEL_SCALE);
       }
-      double[] matrix = inverseBindMatrix.getAsRowMajorArray16();
+      double[] matrix = inverseBindMatrix.asRowMajorArray16();
       if (FLIP_COORDINATE_SPACE) {
         //Invert matrix, flip its values from Alice space to Collada space and then invert it back
         matrix = ColladaTransformUtilities.createFlippedRowMajorTransform(matrix);

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
-    <version>9.0.1</version>
+    <version>9.0.2</version>
   </parent>
 
   <name>Tweedle Language</name>
@@ -63,7 +63,7 @@
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.7.1</version>
+        <version>4.9.3</version>
         <executions>
           <execution>
             <goals>
@@ -87,7 +87,7 @@
           <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-junit47</artifactId>
-            <version>2.21.0</version>
+            <version>3.5.3</version>
           </dependency>
         </dependencies>
         <configuration>

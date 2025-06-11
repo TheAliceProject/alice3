@@ -42,27 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface ReferenceFrame {
-  public boolean isSceneOf(Component other);
+  boolean isSceneOf(Component other);
 
-  public boolean isVehicleOf(Component other);
+  boolean isVehicleOf(Component other);
 
-  public boolean isLocalOf(Component other);
+  boolean isLocalOf(Component other);
 
-  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv);
+  AffineMatrix4x4 getInverseAbsoluteTransformation();
 
-  public AffineMatrix4x4 getInverseAbsoluteTransformation();
+  AffineMatrix4x4 getAbsoluteTransformation();
 
-  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv);
-
-  public AffineMatrix4x4 getAbsoluteTransformation();
-
-  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other);
-
-  public AffineMatrix4x4 getTransformation(ReferenceFrame other);
+  AffineMatrix4x4 getTransformation(ReferenceFrame other);
 }

@@ -2,13 +2,13 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.JointId;
 
@@ -29,10 +29,10 @@ public class AliceModelLoader {
 
   private static void printJoints(Joint j, String indent) {
     System.out.println(indent + "Joint " + j.jointID.getValue());
-    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation, j.localTransformation.getValue().orientation);
+    PrintUtilities.print(indent + "    local transform: ", j.localTransformation.getValue().translation(), j.localTransformation.getValue().orientation());
     System.out.println();
     AffineMatrix4x4 absoluteTransform = j.getAbsoluteTransformation();
-    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation, absoluteTransform.orientation);
+    PrintUtilities.print(indent + " absolute transform: ", absoluteTransform.translation(), absoluteTransform.orientation());
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
@@ -65,18 +65,18 @@ public class AliceModelLoader {
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
       AffineMatrix4x4 inverseTransform = iatwp.getInverseAbsoluteTransformation();
-      AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse(inverseTransform);
+      AffineMatrix4x4 originalTransform = inverseTransform.invert();
       System.out.println("  joint: " + pair.getKey());
       System.out.println("  inverse absolute transform:");
-      System.out.println("    t: " + inverseTransform.translation);
-      System.out.println("    x: " + inverseTransform.orientation.right);
-      System.out.println("    y: " + inverseTransform.orientation.up);
-      System.out.println("    z: " + inverseTransform.orientation.backward);
+      System.out.println("    t: " + inverseTransform.translation());
+      System.out.println("    x: " + inverseTransform.orientation().right());
+      System.out.println("    y: " + inverseTransform.orientation().up());
+      System.out.println("    z: " + inverseTransform.orientation().backward());
       System.out.println("  original absolute transform:");
-      System.out.println("    t: " + originalTransform.translation);
-      System.out.println("    x: " + originalTransform.orientation.right);
-      System.out.println("    y: " + originalTransform.orientation.up);
-      System.out.println("    z: " + originalTransform.orientation.backward);
+      System.out.println("    t: " + originalTransform.translation());
+      System.out.println("    x: " + originalTransform.orientation().right());
+      System.out.println("    y: " + originalTransform.orientation().up());
+      System.out.println("    z: " + originalTransform.orientation().backward());
       //      System.out.println( "  weights:" );
       //      System.out.print(   "   ");
       //
@@ -113,9 +113,7 @@ public class AliceModelLoader {
   public static void translateSkeletonVisual(SkeletonVisual sv, Vector3 translation) {
     if (sv.skeleton.getValue() != null) {
       AffineMatrix4x4 rootTransform = sv.skeleton.getValue().localTransformation.getValue();
-      rootTransform.translation.x += translation.x;
-      rootTransform.translation.y += translation.y;
-      rootTransform.translation.z += translation.z;
+      rootTransform = rootTransform.withTranslation(rootTransform.translation().plus(translation));
       sv.skeleton.getValue().localTransformation.setValue(rootTransform);
     }
     for (Geometry g : sv.geometries.getValue()) {
@@ -125,21 +123,15 @@ public class AliceModelLoader {
         double[] new_xyzs = new double[xyzs.capacity()];
         final int N = xyzs.limit();
         for (int i = 0; i < N; i += 3) {
-          new_xyzs[i + 0] = xyzs.get(i + 0) + translation.x;
-          new_xyzs[i + 1] = xyzs.get(i + 1) + translation.y;
-          new_xyzs[i + 2] = xyzs.get(i + 2) + translation.z;
+          new_xyzs[i + 0] = xyzs.get(i + 0) + translation.x();
+          new_xyzs[i + 1] = xyzs.get(i + 1) + translation.y();
+          new_xyzs[i + 2] = xyzs.get(i + 2) + translation.z();
         }
         mesh.vertexBuffer.setValue(Utilities.createDoubleBuffer(new_xyzs));
       }
     }
     AxisAlignedBox bbox = sv.baseBoundingBox.getValue();
-    bbox.setXMaximum(bbox.getXMaximum() + translation.x);
-    bbox.setXMinimum(bbox.getXMinimum() + translation.x);
-    bbox.setYMaximum(bbox.getYMaximum() + translation.y);
-    bbox.setYMinimum(bbox.getYMinimum() + translation.y);
-    bbox.setZMaximum(bbox.getZMaximum() + translation.z);
-    bbox.setZMinimum(bbox.getZMinimum() + translation.z);
-    sv.baseBoundingBox.setValue(bbox);
+    sv.baseBoundingBox.setValue(bbox.translate(translation));
   }
 
   public static List<Field> getJointIdFields(Class<?> resourceClass) {

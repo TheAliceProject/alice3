@@ -43,11 +43,12 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.ClippedZPlane;
 
 /**
  * @author Dennis Cosgrove
  */
 public class OrthographicCamera extends AbstractNearPlaneAndFarPlaneCamera {
-  public final ClippedZPlaneProperty picturePlane = new ClippedZPlaneProperty(this);
+  public final InstanceProperty<ClippedZPlane> picturePlane = new InstanceProperty<>(this, ClippedZPlane.DEFAULT);
 }

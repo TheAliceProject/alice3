@@ -44,16 +44,8 @@ package org.alice.interact.handle;
 
 import java.awt.Color;
 
-import org.alice.interact.MovementDirection;
-import org.alice.interact.PlaneUtilities;
-import org.alice.interact.VectorUtilities;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -61,6 +53,11 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.interact.MovementDirection;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba
@@ -117,7 +114,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
     this.activeColor = handle.activeColor;
     this.rolloverColor = handle.rolloverColor;
     this.mutedColor = handle.mutedColor;
-    this.handleOffset.set(handle.handleOffset);
+    this.handleOffset = handle.handleOffset;
   }
 
   private void init(MovementDirection rotationAxisDirection, HandlePosition handlePosition) {
@@ -130,9 +127,8 @@ public class RotationRingHandle extends ManipulationHandle3D {
     this.sgSphere.radius.setValue(MINOR_RADIUS * 2.0d);
     this.setSphereVisibility(false);
     this.rotationAxisDirection = rotationAxisDirection;
-    this.rotationAxis = this.rotationAxisDirection.getVector();
-    this.rotationAxis.normalize();
-    this.sphereDirection.set(0.0d, 0.0d, -1.0d);
+    this.rotationAxis = this.rotationAxisDirection.getVector().normalized();
+    this.sphereDirection = Vector3.NEGATIVE_Z_AXIS;
     this.handlePosition = handlePosition;
     this.localTransformation.setValue(this.getTransformationForAxis(this.rotationAxis));
     this.sgVisual.geometries.setValue(new Geometry[] {this.sgTorus});
@@ -164,34 +160,28 @@ public class RotationRingHandle extends ManipulationHandle3D {
     if (this.getParentTransformable() != null) {
       AxisAlignedBox bbox = this.getManipulatedObjectBox();
 
-      Vector3 maxVector = VectorUtilities.projectOntoVector(new Vector3(bbox.getMaximum()), this.rotationAxis);
-      Vector3 minVector = VectorUtilities.projectOntoVector(new Vector3(bbox.getMinimum()), this.rotationAxis);
-      this.handleOffset.set(0.0d, 0.0d, 0.0d);
+      Vector3 maxVector = bbox.maximum().asVector().projectedOnto(this.rotationAxis);
+      Vector3 minVector = bbox.minimum().asVector().projectedOnto(this.rotationAxis);
+      this.handleOffset = Vector3.ZERO;
       switch (this.handlePosition) {
       case TOP:
-        this.handleOffset.set(maxVector);
+        this.handleOffset = maxVector;
         double topHandleSize = this.sgTorus.minorRadius.getValue();
-        Vector3 topSizeOffset = new Vector3(this.rotationAxis);
-        topSizeOffset.normalize();
-        topSizeOffset.multiply(-topHandleSize);
-        this.handleOffset.add(topSizeOffset);
+        Vector3 topSizeOffset = this.rotationAxis.normalized().times(-topHandleSize);
+        this.handleOffset = handleOffset.plus(topSizeOffset);
         break;
       case MIDDLE:
-        this.handleOffset.set(maxVector);
-        this.handleOffset.add(minVector);
-        this.handleOffset.multiply(.5d);
+        this.handleOffset = maxVector.plus(minVector).times(.5d);
         break;
       case BOTTOM:
-        this.handleOffset.set(minVector);
+        this.handleOffset = minVector;
         double handleSize = this.sgTorus.minorRadius.getValue();
-        Vector3 sizeOffset = new Vector3(this.rotationAxis);
-        sizeOffset.normalize();
-        sizeOffset.multiply(handleSize);
-        this.handleOffset.add(sizeOffset);
+        Vector3 sizeOffset = this.rotationAxis.normalized().times(handleSize);
+        this.handleOffset = handleOffset.plus(sizeOffset);
         break;
       }
       if (this.handleOffset.isNaN()) {
-        this.handleOffset.set(0.0d, 0.0d, 0.0d);
+        this.handleOffset = Vector3.ZERO;
       }
       this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
       notifyTransformationListeners();
@@ -233,7 +223,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
   }
 
   protected void placeSphere() {
-    this.sphereTransformable.setTranslationOnly(Point3.createMultiplication(this.sphereDirection, this.sgTorus.majorRadius.getValue()), this);
+    this.sphereTransformable.setTranslationOnly(this.sphereDirection.times(this.sgTorus.majorRadius.getValue()), this);
     notifyTransformationListeners();
   }
 
@@ -366,11 +356,11 @@ public class RotationRingHandle extends ManipulationHandle3D {
   protected double getMajorAxisRadius() {
     if (this.getParentTransformable() != null) {
       AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-      Plane planeOfRotation = Plane.createInstance(Point3.createZero(), this.rotationAxis);
-      Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane(planeOfRotation, boundingBox.getMinimum());
-      Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane(planeOfRotation, boundingBox.getMaximum());
-      double minSize = minPlanePoint.calculateMagnitude();
-      double maxSize = maxPlanePoint.calculateMagnitude();
+      Plane planeOfRotation = Plane.createInstance(Point3.ORIGIN, this.rotationAxis);
+      Point3 minPlanePoint = planeOfRotation.projected(boundingBox.minimum());
+      Point3 maxPlanePoint = planeOfRotation.projected(boundingBox.maximum());
+      double minSize = minPlanePoint.asVector().magnitude();
+      double maxSize = maxPlanePoint.asVector().magnitude();
       double radius = Math.max(minSize, maxSize) + MIN_TORUS_RADIUS;
       if (Double.isNaN(radius) || (radius < MIN_RADIUS)) {
         radius = MIN_RADIUS;
@@ -439,8 +429,8 @@ public class RotationRingHandle extends ManipulationHandle3D {
   private final Visual sgSphereVisual = new Visual();
   protected Vector3 rotationAxis;
   protected MovementDirection rotationAxisDirection;
-  private Vector3 sphereDirection = new Vector3();
-  protected Vector3 handleOffset = new Vector3();
+  private Vector3 sphereDirection = Vector3.ZERO;
+  protected Vector3 handleOffset = Vector3.ZERO;
 
   private final Transformable snapReference = new Transformable();
 

@@ -75,6 +75,16 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.BipedPose;
 import org.lgna.story.BipedPoseBuilder;
 import org.lgna.story.FlyerPose;
@@ -101,18 +111,8 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 import org.lgna.story.resources.SlithererResource;
 import org.lgna.story.resources.SwimmerResource;
-import org.w3c.dom.Document;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.pattern.Tuple2;
-import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class ModelResourceExporter {
@@ -835,9 +835,9 @@ public class ModelResourceExporter {
       }
       doc.appendChild(modelRoot);
       if (this.boundingBoxes.get(this.className) == null) {
-        AxisAlignedBox superBox = new AxisAlignedBox();
+        AxisAlignedBox superBox = AxisAlignedBox.NaN;
         for (Entry<String, AxisAlignedBox> entry : this.boundingBoxes.entrySet()) {
-          superBox.union(entry.getValue());
+          superBox = superBox.union(entry.getValue());
         }
         this.boundingBoxes.put(this.className, superBox);
       }
@@ -1320,9 +1320,9 @@ public class ModelResourceExporter {
           int count = 0;
           for (Entry<String, AffineMatrix4x4> poseDataEntry : poseData.entrySet()) {
             count++;
-            UnitQuaternion quat = poseDataEntry.getValue().orientation.createUnitQuaternion();
-            Point3 pos = poseDataEntry.getValue().translation;
-            sb.append("\t\tnew JointIdTransformationPair( " + poseDataEntry.getKey() + ", new Orientation(" + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + "), new Position(" + pos.x + ", " + pos.y + ", " + pos.z + ") )");
+            UnitQuaternion quat = poseDataEntry.getValue().orientation().asUnitQuaternion();
+            Point3 pos = poseDataEntry.getValue().translation();
+            sb.append("\t\tnew JointIdTransformationPair( " + poseDataEntry.getKey() + ", new Orientation(" + quat.x() + ", " + quat.y() + ", " + quat.z() + ", " + quat.w() + "), new Position(" + pos.x() + ", " + pos.y() + ", " + pos.z() + ") )");
             if (count != poseData.size()) {
               sb.append(",");
             }
@@ -1548,7 +1548,7 @@ public class ModelResourceExporter {
     if (doc != null) {
       try {
         TransformerFactory transfac = TransformerFactory.newInstance();
-        transfac.setAttribute("indent-number", new Integer(4));
+        transfac.setAttribute("indent-number", 4);
         Transformer trans = transfac.newTransformer();
         //                  trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         trans.setOutputProperty(OutputKeys.INDENT, "yes");

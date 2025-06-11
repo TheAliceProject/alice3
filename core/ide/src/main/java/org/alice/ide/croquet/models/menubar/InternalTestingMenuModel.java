@@ -115,9 +115,32 @@ public class InternalTestingMenuModel extends PredeterminedMenuModel {
   }
 
   private InternalTestingMenuModel() {
-    super(UUID.fromString("6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8"), createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(), SEPARATOR, ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(), SEPARATOR, JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(), SEPARATOR, ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(), ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(), ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(), RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(), SEPARATOR,
-          BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(), SEPARATOR, new CycleFrameSizeOperation().getMenuItemPrepModel(), SEPARATOR, ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+    super(UUID.fromString("6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8"),
+          createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+          createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+          createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+          SEPARATOR,
+          ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
+          SEPARATOR,
+          JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+          SEPARATOR,
+          ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
+          ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
+          ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
+          RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
+          SEPARATOR,
+          BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
+          SEPARATOR,
+          new CycleFrameSizeOperation().getMenuItemPrepModel(),
+          SEPARATOR,
+          ActiveTransactionHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
           //org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-          IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(), IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(), IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(), ExportToPovRayOperation.getInstance().getMenuItemPrepModel(), new ShowMeOperation().getMenuItemPrepModel());
+          IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
+          IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
+          IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
+          IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
+          IsIncludingManagedUserMethods.getInstance().getMenuItemPrepModel(),
+          ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
+          new ShowMeOperation().getMenuItemPrepModel());
   }
 }

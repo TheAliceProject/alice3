@@ -44,17 +44,14 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import java.nio.DoubleBuffer;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable;
 
 public class GlrNebulousJoint extends GlrAbstractTransformable<NebulousJoint> {
-  private double[] m_localTransformation = new double[16];
-  private DoubleBuffer m_localTransformationBuffer = DoubleBuffer.wrap(m_localTransformation);
-  private AffineMatrix4x4 m_localTransformationMatrix = new AffineMatrix4x4();
+  private final double[] m_localTransformation = new double[16];
+  private final DoubleBuffer m_localTransformationBuffer = DoubleBuffer.wrap(m_localTransformation);
 
   private void updateLocalTransformation() {
-    owner.getLocalTransformation(m_localTransformationMatrix);
-    this.m_localTransformationMatrix.getAsColumnMajorArray16(m_localTransformation);
+    owner.getLocalTransformation().writeColumnMajorArray16(m_localTransformation);
   }
 
   @Override

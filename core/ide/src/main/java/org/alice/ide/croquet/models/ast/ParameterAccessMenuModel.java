@@ -68,4 +68,9 @@ public class ParameterAccessMenuModel extends PredeterminedMenuModel {
   private ParameterAccessMenuModel(UserParameter parameter) {
     super(UUID.fromString("7a9b90a1-a645-4e13-aeef-9ca631baad55"), RenameParameterComposite.getInstance(parameter).getLaunchOperation().getMenuItemPrepModel());
   }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
+  }
 }

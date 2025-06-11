@@ -95,7 +95,9 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
   public void cancel(UserActivity activity) {
     getElement().handleCancel(activity);
-    activity.cancel();
+    if (activity != null) {
+      activity.cancel();
+    }
   }
 
   public void complete(UserActivity activity) {
@@ -119,6 +121,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
       @Override
       public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        popupMenuCanceled(e);
         RtRoot.this.removeAll(menuItemContainer);
       }
 

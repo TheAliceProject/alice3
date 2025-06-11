@@ -48,8 +48,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -57,6 +55,8 @@ import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
   @Override
@@ -91,16 +91,16 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
   }
 
   public AxisAlignedBox getAbsoluteBoundingBox() {
-    AxisAlignedBox box = new AxisAlignedBox();
+    AxisAlignedBox box = AxisAlignedBox.NaN;
     for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
       AxisAlignedBox subBox = control.getAbsoluteBoundingBox();
-      box.union(subBox);
+      box = box.union(subBox);
     }
     return box;
   }
 
   void initializeJointBoundingBoxes() {
-    initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.createIdentity());
+    initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.IDENTITY);
   }
 
   private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform) {
@@ -109,12 +109,12 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
     }
     AffineMatrix4x4 absoluteLocalTransform = parentTransform;
     if (currentNode instanceof Transformable) {
-      absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable) currentNode).localTransformation.getValue());
+      absoluteLocalTransform = parentTransform.times(((Transformable) currentNode).localTransformation.getValue());
       if (currentNode instanceof Joint) {
-        AxisAlignedBox box = new AxisAlignedBox();
+        AxisAlignedBox box = AxisAlignedBox.NaN;
         for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
           AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint) currentNode);
-          box.union(subBox);
+          box = box.union(subBox);
         }
         ((Joint) currentNode).boundingBox.setValue(box);
         //Now that the bounding boxes are set we can set the radii (they use the bounding box for their calculations)

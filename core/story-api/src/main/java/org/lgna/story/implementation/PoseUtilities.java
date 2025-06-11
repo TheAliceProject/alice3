@@ -70,9 +70,9 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author Matt May
@@ -123,7 +123,7 @@ public class PoseUtilities {
   public static <M extends SJointedModel> void applyToJointedModel(Pose<M> pose, M model) {
     for (JointIdTransformationPair jtPair : pose.getJointIdTransformationPairs()) {
       if (jtPair.orientationOnly()) {
-        setOrientationOnly(model.getJoint(jtPair.getJointId()), jtPair.getTransformation().orientation);
+        setOrientationOnly(model.getJoint(jtPair.getJointId()), jtPair.getTransformation().orientation());
       } else {
         setTransformationOnJoint(model.getJoint(jtPair.getJointId()), jtPair.getTransformation());
       }
@@ -135,7 +135,7 @@ public class PoseUtilities {
   }
 
   public static void setOrientationOnly(SJoint sJoint, UnitQuaternion unitQuaternion) {
-    setOrientationOnly(sJoint, new OrthogonalMatrix3x3(unitQuaternion));
+    setOrientationOnly(sJoint, unitQuaternion.asMatrix3x3());
   }
 
   public static void setOrientationOnly(SJoint sJoint, OrthogonalMatrix3x3 orientation) {
@@ -173,7 +173,7 @@ public class PoseUtilities {
     List<JointIdTransformationPair> list = Lists.newArrayList();
     for (JointId id : arr) {
       JointImp implementation = model.getJoint(id).getImplementation();
-      list.add(new JointIdTransformationPair(id, implementation.getLocalOrientation().createUnitQuaternion()));
+      list.add(new JointIdTransformationPair(id, implementation.getLocalOrientation().asUnitQuaternion()));
     }
     for (JointIdTransformationPair key : list) {
       builder.addJointIdQuaternionPair(key);

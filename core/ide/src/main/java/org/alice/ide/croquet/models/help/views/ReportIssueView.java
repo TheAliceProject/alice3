@@ -48,10 +48,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
-import org.alice.ide.IDE;
-import org.alice.ide.IdeConfiguration;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
-import org.alice.ide.issue.swing.views.HeaderPane;
+import org.alice.ide.issue.SubmitReportUtilities;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FormPanel;
 import org.lgna.croquet.views.Hyperlink;
@@ -62,13 +60,12 @@ import org.lgna.croquet.views.TextArea;
 import org.lgna.croquet.views.VerticalAlignment;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.lgna.issue.IssueReportingHub;
 
 /**
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-  private static final Icon headerIcon = IconUtilities.createImageIcon(HeaderPane.class.getResource("images/logo.png"));
+  private static final Icon headerIcon = IconUtilities.createImageIcon(ReportIssueView.class.getResource("/org/alice/ide/issue/swing/views/images/logo.png"));
 
   public ReportIssueView(final ReportIssueComposite composite) {
     super(composite);
@@ -78,13 +75,17 @@ public class ReportIssueView extends AbstractIssueView {
     FormPanel centerComponent = new FormPanel() {
       @Override
       protected void appendRows(List<LabeledFormRow> rows) {
-        rows.add(new LabeledFormRow(composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        if (SubmitReportUtilities.USE_REST_INTERFACE) {
+          rows.add(new LabeledFormRow(composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        }
         rows.add(new LabeledFormRow(composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBoxWithItemCodecListCellRenderer(), VerticalAlignment.CENTER, false));
         rows.add(new LabeledFormRow(composite.getSummaryState().getSidekickLabel(), composite.getSummaryState().createTextField()));
         rows.add(new LabeledFormRow(composite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea(composite.getDescriptionState()), VerticalAlignment.TOP));
         rows.add(new LabeledFormRow(composite.getStepsState().getSidekickLabel(), createScrollPaneTextArea(composite.getStepsState()), VerticalAlignment.TOP));
         rows.add(new LabeledFormRow(composite.getEnvironmentState().getSidekickLabel(), environmentTextArea, VerticalAlignment.TOP));
-        rows.add(new LabeledFormRow(composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        if (SubmitReportUtilities.USE_REST_INTERFACE) {
+          rows.add(new LabeledFormRow(composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        }
       }
     };
 
@@ -102,14 +103,6 @@ public class ReportIssueView extends AbstractIssueView {
     BorderPanel header = new BorderPanel();
     header.addLineStartComponent(lineStartPanel);
 
-    IDE ide = IDE.getActiveInstance();
-    if (ide != null) {
-      IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
-      IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
-      if (issueReportingHub.isLoginSupported()) {
-        header.addLineEndComponent(composite.getLogInOutCardComposite().getView());
-      }
-    }
     header.setBackgroundColor(backgroundColor);
     header.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     centerComponent.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));

@@ -43,13 +43,13 @@
 
 package org.lgna.story.implementation.alice;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Dimension3;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
@@ -103,8 +103,7 @@ public class JointImplementation extends JointImp {
   @Override
   public AffineMatrix4x4 getScaledOriginalTransformation() {
     final AffineMatrix4x4 originalTransformation = getOriginalTransformation();
-    originalTransformation.translation.setToMultiplication(originalTransformation.translation, scale);
-    return originalTransformation;
+    return new AffineMatrix4x4(originalTransformation.orientation(), scale.applyScale(originalTransformation.translation()));
   }
 
   private AffineMatrix4x4 getOriginalTransformation() {
@@ -113,21 +112,20 @@ public class JointImplementation extends JointImp {
 
   @Override
   public void setScale(Dimension3 newScale) {
-    Dimension3 scaleChange = Dimension3.createDivision(newScale, scale);
+    Dimension3 scaleChange = newScale.dividedBy(scale);
     this.scale = newScale;
     AffineMatrix4x4 lt = getLocalTransformation();
-    lt.translation.setToMultiplication(lt.translation, scaleChange);
-    setLocalTransformation(lt);
+    setLocalTransformation(new AffineMatrix4x4(lt.orientation(), scaleChange.applyScale(lt.translation())));
   }
 
   @Override
   public boolean isReoriented() {
-    return !getLocalTransformation().orientation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation);
+    return !getLocalTransformation().orientation().isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation());
   }
 
   @Override
   public boolean isRelocated() {
-    return !getLocalTransformation().translation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation);
+    return !getLocalTransformation().translation().isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation());
   }
 
   @Override
@@ -140,6 +138,6 @@ public class JointImplementation extends JointImp {
 
   @Override
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    rv.addBoundingBox(sgJoint.getBoundingBox(null, false), trans);
+    rv.addBoundingBox(sgJoint.getBoundingBox(false), trans);
   }
 }

@@ -62,13 +62,13 @@ import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUtessellator;
 import com.jogamp.opengl.glu.GLUtessellatorCallbackAdapter;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.Point2f;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Text;
 import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point2f;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
@@ -187,7 +187,7 @@ public class GlrText extends GlrGeometry<Text> {
                 } else {
                   p = faceContour.get(i);
                 }
-                double[] xyz = {p.x, p.y, 0};
+                double[] xyz = {p.x(), p.y(), 0};
                 GLU.gluTessVertex(tesselator, xyz, 0, xyz);
               }
             } finally {
@@ -204,7 +204,7 @@ public class GlrText extends GlrGeometry<Text> {
   }
 
   private void glText(Context context) {
-    Vector3 alignmentOffset = owner.getAlignmentOffset().immutable();
+    Vector3 alignmentOffset = owner.getAlignmentOffset();
     double zFront = alignmentOffset.z();
     double zBack = zFront + owner.depth.getValue();
 
@@ -218,21 +218,21 @@ public class GlrText extends GlrGeometry<Text> {
           context.gl.glBegin(GL_QUAD_STRIP);
           Point2f prev = null;
           for (Point2f curr : outlineLine) {
-            if (prev != null && ((curr.x != prev.x) || (curr.y != prev.y))) {
+            if (prev != null && ((curr.x() != prev.x()) || (curr.y() != prev.y()))) {
               if (context.isLightingEnabled()) {
-                double xDelta = curr.x - prev.x;
-                double yDelta = curr.y - prev.y;
+                double xDelta = curr.x() - prev.x();
+                double yDelta = curr.y() - prev.y();
                 double lengthSquared = (xDelta * xDelta) + (yDelta * yDelta);
                 double length = Math.sqrt(lengthSquared);
                 context.gl.glNormal3d(yDelta / length, xDelta / length, 0);
               }
-              context.gl.glVertex3d(prev.x + alignmentOffset.x(), prev.y + alignmentOffset.y(), zFront);
-              context.gl.glVertex3d(prev.x + alignmentOffset.x(), prev.y + alignmentOffset.y(), zBack);
+              context.gl.glVertex3d(prev.x() + alignmentOffset.x(), prev.y() + alignmentOffset.y(), zFront);
+              context.gl.glVertex3d(prev.x() + alignmentOffset.x(), prev.y() + alignmentOffset.y(), zBack);
             }
             prev = curr;
           }
-          context.gl.glVertex3d(prev.x + alignmentOffset.x(), prev.y + alignmentOffset.y(), zFront);
-          context.gl.glVertex3d(prev.x + alignmentOffset.x(), prev.y + alignmentOffset.y(), zBack);
+          context.gl.glVertex3d(prev.x() + alignmentOffset.x(), prev.y() + alignmentOffset.y(), zFront);
+          context.gl.glVertex3d(prev.x() + alignmentOffset.x(), prev.y() + alignmentOffset.y(), zBack);
           context.gl.glEnd();
         }
       } finally {
@@ -280,7 +280,7 @@ public class GlrText extends GlrGeometry<Text> {
 
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
-    Vector3 alignmentOffset = owner.getAlignmentOffset().immutable();
+    Vector3 alignmentOffset = owner.getAlignmentOffset();
     double zFront = alignmentOffset.z();
     //todo: no reason to believe it hit the front
     return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, zFront, 0, 0, -1);

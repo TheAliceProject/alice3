@@ -44,10 +44,6 @@ package edu.cmu.cs.dennisc.raytrace;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
@@ -70,6 +66,10 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Tuple3;
 
 import java.io.PrintWriter;
 
@@ -86,7 +86,7 @@ public class POVRayUtilities {
   }
 
   private static String toString(AffineMatrix4x4 m) {
-    return "matrix < " + m.orientation.right.x + ", " + m.orientation.right.y + ", " + -m.orientation.right.z + ", " + m.orientation.up.x + ", " + m.orientation.up.y + ", " + -m.orientation.up.z + ", " + -m.orientation.backward.x + ", " + -m.orientation.backward.y + ", " + m.orientation.backward.z + ", " + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + " >";
+    return "matrix < " + m.orientation().right().x() + ", " + m.orientation().right().y() + ", " + -m.orientation().right().z() + ", " + m.orientation().up().x() + ", " + m.orientation().up().y() + ", " + -m.orientation().up().z() + ", " + -m.orientation().backward().x() + ", " + -m.orientation().backward().y() + ", " + m.orientation().backward().z() + ", " + m.translation().x() + ", " + m.translation().y() + ", " + -m.translation().z() + " >";
   }
 
   private static String toString(double x, double y, double z) {
@@ -94,7 +94,7 @@ public class POVRayUtilities {
   }
 
   private static String toString(Tuple3 t) {
-    return toString(t.x, t.y, t.z);
+    return toString(t.x(), t.y(), t.z());
   }
 
   private static void exportBackground(PrintWriter pw, Background sgBackground) {
@@ -107,7 +107,7 @@ public class POVRayUtilities {
     if (sgGeometry instanceof Sphere) {
       Sphere sgSphere = (Sphere) sgGeometry;
       pw.println("sphere {");
-      pw.println("<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">, " + sgSphere.radius.getValue());
+      pw.println("<" + m.translation().x() + ", " + m.translation().y() + ", " + -m.translation().z() + ">, " + sgSphere.radius.getValue());
     } else if (sgGeometry instanceof Torus) {
       Torus sgTorus = (Torus) sgGeometry;
       pw.println("torus {");
@@ -159,7 +159,7 @@ public class POVRayUtilities {
       Vertex[] sgVertices = sgTriangleFan.vertices.getValue();
       for (int i = 0; i < n; i++) {
         Vertex sgVertex = sgVertices[i];
-        Point3 p = new Point3(sgVertex.position);
+        Point3 p = sgVertex.position;
         m.transform(p);
         pw.print(toString(p));
         if (i < (n - 1)) {
@@ -223,7 +223,7 @@ public class POVRayUtilities {
     }
     AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
     pw.println("light_source { ");
-    pw.println("<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">");
+    pw.println("<" + m.translation().x() + ", " + m.translation().y() + ", " + -m.translation().z() + ">");
     pw.println(toString(sgLight.color.getValue()));
     if (sgLight instanceof PointLight) {
       //PointLight sgPointLight = (PointLight)sgLight;
@@ -231,9 +231,9 @@ public class POVRayUtilities {
       //DirectionalLight sgDirectionalLight = (DirectionalLight)sgLight;
       pw.println("parallel");
 
-      double x = m.translation.x - m.orientation.backward.x;
-      double y = m.translation.y - m.orientation.backward.y;
-      double z = m.translation.z - m.orientation.backward.z;
+      double x = m.translation().x() - m.orientation().backward().x();
+      double y = m.translation().y() - m.orientation().backward().y();
+      double z = m.translation().z() - m.orientation().backward().z();
 
       pw.print("point_at ");
       pw.println(toString(x, y, z));

@@ -42,15 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3f;
+
 /**
  * @author alice
  */
 public class HorizontalSurface extends TexturedVisual {
   public HorizontalSurface(boolean faceUp, float size, float height, float tiling) {
     this.faceUp = faceUp;
-    float k = this.getK();
+    Vector3f normal = new Vector3f(0, this.getK(), 0);
     for (Vertex vertex : sgVertices) {
-      vertex.normal.set(0, k, 0);
+      vertex.normal = normal;
     }
     this.setTiling(tiling, tiling);
     this.setSize(size, size, height);
@@ -93,25 +96,10 @@ public class HorizontalSurface extends TexturedVisual {
   public void setSize(float width, float depth, float height) {
     float x = width / 2;
     float z = depth / 2;
-    Vertex v0 = sgVertices[this.getIndex(0)];
-    v0.position.x = -x;
-    v0.position.y = height;
-    v0.position.z = +z;
-
-    Vertex v1 = sgVertices[this.getIndex(1)];
-    v1.position.x = -x;
-    v1.position.y = height;
-    v1.position.z = -z;
-
-    Vertex v2 = sgVertices[this.getIndex(2)];
-    v2.position.x = +x;
-    v2.position.y = height;
-    v2.position.z = -z;
-
-    Vertex v3 = sgVertices[this.getIndex(3)];
-    v3.position.x = +x;
-    v3.position.y = height;
-    v3.position.z = +z;
+    sgVertices[this.getIndex(0)].position = new Point3(-x, height, +z);
+    sgVertices[this.getIndex(1)].position = new Point3(-x, height, -z);
+    sgVertices[this.getIndex(2)].position = new Point3(+x, height, -z);
+    sgVertices[this.getIndex(3)].position = new Point3(+x, height, +z);
   }
 
   private int getIndex(int i) {

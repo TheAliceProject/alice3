@@ -38,7 +38,7 @@
           <Dimension value="[39, 20]"/>
         </Property>
         <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new Integer(2)" type="code"/>
+          <Connection code="2" type="code"/>
         </Property>
       </Properties>
       <Constraints>

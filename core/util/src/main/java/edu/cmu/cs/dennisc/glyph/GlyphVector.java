@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.glyph;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.Point2f;
+import org.alice.math.immutable.Point2f;
 
 import java.awt.BasicStroke;
 import java.awt.Font;

@@ -67,10 +67,16 @@ public class MethodTemplateMenuModel extends PredeterminedMenuModel {
     return rv;
   }
 
-  private UserMethod method;
-
   private MethodTemplateMenuModel(UserMethod method) {
-    super(UUID.fromString("96831579-1fb6-4c15-a509-ccdcc51458a8"), RenameMethodComposite.getInstance(method).getLaunchOperation().getMenuItemPrepModel(), IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(method).getMenuItemPrepModel(), MenuModel.SEPARATOR, DeleteMethodOperation.getInstance(method).getMenuItemPrepModel());
-    this.method = method;
+    super(UUID.fromString("96831579-1fb6-4c15-a509-ccdcc51458a8"),
+            RenameMethodComposite.getInstance(method).getLaunchOperation().getMenuItemPrepModel(),
+            IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(method).getMenuItemPrepModel(),
+            MenuModel.SEPARATOR,
+            DeleteMethodOperation.getInstance(method).getMenuItemPrepModel());
+  }
+
+  @Override
+  public boolean showScrollArrows() {
+    return true;
   }
 }

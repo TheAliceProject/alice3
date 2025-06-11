@@ -42,7 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -67,21 +67,18 @@ public enum AsSeenBy implements ReferenceFrame {
     }
 
     @Override
-    public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
-      rv.setIdentity();
-      return rv;
+    public AffineMatrix4x4 getAbsoluteTransformation() {
+      return AffineMatrix4x4.IDENTITY;
     }
 
     @Override
-    public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
-      rv.setIdentity();
-      return rv;
+    public AffineMatrix4x4 getInverseAbsoluteTransformation() {
+      return AffineMatrix4x4.IDENTITY;
     }
 
     @Override
-    public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other) {
-      other.getInverseAbsoluteTransformation(rv);
-      return rv;
+    public AffineMatrix4x4 getTransformation(ReferenceFrame other) {
+      return other.getInverseAbsoluteTransformation();
     }
   }, PARENT {
     @Override
@@ -101,21 +98,20 @@ public enum AsSeenBy implements ReferenceFrame {
     }
 
     @Override
-    public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+    public AffineMatrix4x4 getAbsoluteTransformation() {
       //todo
       throw new RuntimeException();
     }
 
     @Override
-    public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
+    public AffineMatrix4x4 getInverseAbsoluteTransformation() {
       //todo
       throw new RuntimeException();
     }
 
     @Override
-    public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other) {
-      other.getTransformation(rv, this);
-      return rv.invert();
+    public AffineMatrix4x4 getTransformation(ReferenceFrame other) {
+      return other.getTransformation(this).invert();
     }
   }, SELF {
     @Override
@@ -135,36 +131,20 @@ public enum AsSeenBy implements ReferenceFrame {
     }
 
     @Override
-    public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+    public AffineMatrix4x4 getAbsoluteTransformation() {
       //todo
       throw new RuntimeException();
     }
 
     @Override
-    public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv) {
+    public AffineMatrix4x4 getInverseAbsoluteTransformation() {
       //todo
       throw new RuntimeException();
     }
 
     @Override
-    public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other) {
-      other.getTransformation(rv, this);
-      return rv.invert();
+    public AffineMatrix4x4 getTransformation(ReferenceFrame other) {
+      return other.getTransformation(this).invert();
     }
-  };
-
-  @Override
-  public final AffineMatrix4x4 getAbsoluteTransformation() {
-    return getAbsoluteTransformation(new AffineMatrix4x4());
-  }
-
-  @Override
-  public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
-    return getInverseAbsoluteTransformation(new AffineMatrix4x4());
-  }
-
-  @Override
-  public final AffineMatrix4x4 getTransformation(ReferenceFrame other) {
-    return getTransformation(new AffineMatrix4x4(), other);
   }
 }

@@ -129,11 +129,6 @@ public class RecentProjectsListData extends AbstractMutableListData<ProjectSnaps
   }
 
   @Override
-  public void internalSetItemAt(int index, ProjectSnapshot item) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public int indexOf(ProjectSnapshot item) {
     return this.values.indexOf(item);
   }

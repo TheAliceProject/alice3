@@ -43,21 +43,21 @@
 
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
   AxisAlignedBox getAbsoluteBoundingBox() {
-    AxisAlignedBox box = new AxisAlignedBox();
+    AxisAlignedBox box = AxisAlignedBox.NaN;
     this.indexBuffer.rewind();
     while (this.indexBuffer.hasRemaining()) {
       int index = this.indexBuffer.get() * 3;
       Point3 vertex = new Point3(this.vertexBuffer.get(index), this.vertexBuffer.get(index + 1), this.vertexBuffer.get(index + 2));
-      box.union(vertex);
+      box = box.union(vertex);
     }
     return box;
   }
@@ -66,7 +66,7 @@ class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
 
   AxisAlignedBox getBoundingBoxForJoint(Joint joint) {
     InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
-    AxisAlignedBox box = new AxisAlignedBox();
+    AxisAlignedBox box = AxisAlignedBox.NaN;
     if (iatwp != null) {
       AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
       AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
@@ -76,11 +76,11 @@ class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
         float weight = weightIterator.next();
         if (weight > WEIGHT_THRESHOLD) {
           Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex + 1), this.vertexBuffer.get(vertexIndex + 2));
-          Point3 localVertex = inverseJoint.createTransformed(vertex);
-          box.union(localVertex);
+          Point3 localVertex = inverseJoint.transform(vertex);
+          box = box.union(localVertex);
         }
       }
-      box.scale(projectedJoint.orientation);
+      box = box.scale(projectedJoint.orientation());
     }
     return box;
   }

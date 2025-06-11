@@ -48,11 +48,13 @@ import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.*;
-import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.Point3;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
@@ -232,7 +234,7 @@ public abstract class Model extends Geometry {
 
   public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
     synchronized (renderLock) {
-      setLocalTransformationForPartNamed(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), localTrans.getAsColumnMajorArray12());
+      setLocalTransformationForPartNamed(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), localTrans.asColumnMajorArray12());
     }
   }
 
@@ -255,25 +257,26 @@ public abstract class Model extends Geometry {
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     throw new RuntimeException("todo");
   }
 
   public AxisAlignedBox getAxisAlignedBoundingBoxForJoint(JointId joint) {
     double[] bboxData = new double[6];
     getAxisAlignedBoundingBoxForJoint(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), bboxData);
-    AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
+    AxisAlignedBox bbox = AxisAlignedBox.createAxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
     bbox.scale(this.sgAssociatedVisual.scale.getValue());
     return bbox;
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+  protected AxisAlignedBox updateBoundingBox() {
     //the bounding boxes come in the form (double[6])
     double[] bboxData = new double[6];
     updateAxisAlignedBoundingBox(bboxData);
-    boundingBox.setMinimum(bboxData[0], bboxData[1], bboxData[2]);
-    boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
+    return new AxisAlignedBox(
+        new Point3(bboxData[0], bboxData[1], bboxData[2]),
+        new Point3(bboxData[3], bboxData[4], bboxData[5]));
   }
 
   private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex) {
@@ -499,20 +502,15 @@ public abstract class Model extends Geometry {
     skeletonVisual.setName(getName());
     skeletonVisual.frontFacingAppearance.setValue(new SimpleAppearance());
     skeletonVisual.skeleton.setValue(skeleton);
-    skeletonVisual.geometries.setValue(unWeightedMeshes.toArray(new Mesh[unWeightedMeshes.size()]));
-    skeletonVisual.weightedMeshes.setValue(weightedMeshes.toArray(new WeightedMesh[weightedMeshes.size()]));
-    skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[textures.size()]));
+    skeletonVisual.geometries.setValue(unWeightedMeshes.toArray(new Mesh[0]));
+    skeletonVisual.weightedMeshes.setValue(weightedMeshes.toArray(new WeightedMesh[0]));
+    skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[0]));
 
     return skeletonVisual;
   }
 
   @Override
-  protected void updateBoundingSphere(Sphere boundingSphere) {
-    boundingSphere.setNaN();
-  }
-
-  @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+  public AffineMatrix4x4 getPlane() {
     throw new RuntimeException("todo");
   }
 

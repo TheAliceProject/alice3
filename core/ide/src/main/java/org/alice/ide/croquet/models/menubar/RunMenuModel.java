@@ -60,7 +60,9 @@ public class RunMenuModel extends StaticMenuModel {
 
   @Override
   protected StandardMenuItemPrepModel[] createModels() {
-    return new StandardMenuItemPrepModel[] {RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel()};
+    return new StandardMenuItemPrepModel[] {
+      RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel()
+    };
   }
 
   private final ProjectDocumentFrame projectDocumentFrame;

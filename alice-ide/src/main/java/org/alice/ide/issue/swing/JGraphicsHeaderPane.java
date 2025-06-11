@@ -63,7 +63,7 @@ public class JGraphicsHeaderPane extends JPanel {
     ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
     ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
     String searchGraphicsDriverUrlSpec = GraphicsHelpView.getRendererSearchUrl();
-    String graphicsHelpUrlSpec = BrowserOperation.TROUBLESHOOTING_URL;
+    String graphicsHelpUrlSpec = BrowserOperation.TROUBLESHOOTING_URI.toString();
 
     // TODO I18n
     StringBuilder sb = new StringBuilder();

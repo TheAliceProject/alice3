@@ -43,7 +43,7 @@
 package org.alice.stageide.sceneeditor.interact.croquet;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.Group;
 import org.lgna.project.ast.UserField;
 

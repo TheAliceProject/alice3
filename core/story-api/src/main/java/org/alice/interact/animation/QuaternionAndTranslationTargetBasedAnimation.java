@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.animation;
 
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.UnitQuaternion;
 import org.alice.interact.QuaternionAndTranslation;
-
-import edu.cmu.cs.dennisc.math.Point3;
 
 /**
  * @author David Culyba
@@ -80,10 +78,8 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
     UnitQuaternion currentQ = this.currentValue.getQuaternion();
     UnitQuaternion targetQ = this.targetValue.getQuaternion();
 
-    UnitQuaternion targetQNegative = new UnitQuaternion(targetQ);
-    targetQNegative.multiply(-1.0);
-    boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
-    double translationDist = Point3.calculateDistanceBetween(this.currentValue.getTranslation(), this.targetValue.getTranslation());
+    boolean quaternionDone = currentQ.isAlignedWith(targetQ);
+    double translationDist = this.currentValue.getTranslation().distanceFrom(this.targetValue.getTranslation());
 
     boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
 

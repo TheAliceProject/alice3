@@ -47,10 +47,6 @@ import edu.cmu.cs.dennisc.clock.Clock;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
@@ -67,7 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
-import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.condition.*;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
 import org.alice.interact.event.ManipulationListener;
@@ -77,10 +73,11 @@ import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.ManipulationHandle;
-import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.manipulator.AnimatorDependentManipulator;
-import org.alice.interact.manipulator.CameraInformedManipulator;
-import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
+import org.alice.interact.manipulator.*;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import org.lgna.story.implementation.*;
@@ -99,19 +96,65 @@ import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
+ *
+ * inherited by
+ *
+ * RuntimeDragAdapter- don't make the kids learn how to deal with keys/mouse movements, offer them something that mostly works.
+ *
+ * CroquetSupporting/Global DragAdapter- an absolute unit of a class, hugely interwoven with the scene editor, because it handles
+ * dragging into and out of the scene editor AND all the manipulations inside.  fun!
+ *
+ * CreateAPersonDragAdapter- has special hard-coded zoom defaults and controls for sim creation.
+ * PoserAnimatorDragAdapter- you're not supposed to pick favorites of all your children. This one is absolutely not it.
+ * SingleViewerDragAdapter- used by the skeleton viewer (aka model imports)
  */
 public abstract class DragAdapter {
   public static final Element.Key<AxisAlignedBox> BOUNDING_BOX_KEY = Element.Key.createInstance("BOUNDING_BOX_KEY");
   private static final double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
   private static final double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
+
+  protected static final MovementKey[] DEFAULT_MOVEMENT_KEYS = {
+    // Forward
+    new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
+    new MovementKey(KeyEvent.VK_W, new MovementDescription(MovementDirection.FORWARD)),
+    // Backward
+    new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
+    new MovementKey(KeyEvent.VK_S, new MovementDescription(MovementDirection.BACKWARD)),
+    // Left
+    new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
+    new MovementKey(KeyEvent.VK_A, new MovementDescription(MovementDirection.LEFT)),
+    // Right
+    new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
+    new MovementKey(KeyEvent.VK_D,  new MovementDescription(MovementDirection.RIGHT)),
+    // Up
+    new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
+    // Down
+    new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
+  };
+
+  protected static final MovementKey[] DEFAULT_ZOOM_KEYS = {
+      //Zoom out
+      new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+      new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+      //Zoom in
+      new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+      new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+  };
+
+  protected static final MovementKey[] DEFAULT_ROTATE_KEYS = {
+      //Left
+      new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), 2.0d),
+      //Right
+      new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 2.0d),
+  };
+
   protected final Map<HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = Maps.newHashMap();
   private final HandleManager handleManager = new HandleManager();
   private final List<SelectionListener> selectionListeners = Lists.newCopyOnWriteArrayList();
   private final AbsoluteTransformationListener cameraTransformationListener = absoluteTransformationEvent -> {
-    if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
-      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
+    if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera camera) {
       if (getActiveCamera() == camera) {
-        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation());
       }
     }
   };
@@ -183,6 +226,7 @@ public abstract class DragAdapter {
 
   public void addManipulatorConditionSet(ManipulatorConditionSet manipulator) {
     this.manipulators.add(manipulator);
+    manipulator.getManipulator().setDragAdapter(this);
   }
 
   protected Iterable<ManipulatorConditionSet> getManipulatorConditionSets() {
@@ -263,7 +307,7 @@ public abstract class DragAdapter {
       }
     }
     if (camera instanceof SymmetricPerspectiveCamera) {
-      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+      this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation());
     } else {
       this.handleManager.updateCameraPosition(null);
     }
@@ -305,14 +349,38 @@ public abstract class DragAdapter {
   }
 
   private void setManipulatorStartState(AbstractManipulator manipulator) {
-    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator) {
-      OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator) manipulator;
+    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator lookingGlassManipulator) {
       this.setLookingGlassOnManipulator(lookingGlassManipulator);
     }
-    if (manipulator instanceof CameraInformedManipulator) {
-      CameraInformedManipulator cameraInformed = (CameraInformedManipulator) manipulator;
+    if (manipulator instanceof CameraInformedManipulator cameraInformed) {
       this.setCameraOnManipulator(cameraInformed);
     }
+  }
+
+  // not every drag adapter uses this, but this is an attempt to capture the common behavior so that it stays consistent
+  protected void addCameraMouseControl() {
+    MouseDragCondition leftAndNoModifiers = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    MouseDragCondition leftAndShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_SHIFT));
+    MouseDragCondition leftAndControl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_CONTROL));
+    MouseDragCondition middleMouseAndAnything = new MouseDragCondition(MouseEvent.BUTTON2, new PickCondition(PickHint.getAnythingHint()));
+    MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.getNonInteractiveHint()));
+
+    ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(new CameraOrbitDragManipulator());
+    cameraOrbit.addCondition(middleMouseAndAnything);
+    this.addManipulatorConditionSet(cameraOrbit);
+
+    ManipulatorConditionSet cameraTilt = new ManipulatorConditionSet(new CameraTiltDragManipulator());
+    cameraTilt.addCondition(rightMouseAndNonInteractive);
+    cameraTilt.addCondition(leftAndControl);
+    this.addManipulatorConditionSet(cameraTilt);
+
+    ManipulatorConditionSet cameraMouseTranslate = new ManipulatorConditionSet(new CameraMoveDragManipulator());
+    cameraMouseTranslate.addCondition(leftAndNoModifiers);
+    this.addManipulatorConditionSet(cameraMouseTranslate);
+
+    ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet(new CameraPanDragManipulator());
+    cameraMousePan.addCondition(leftAndShift);
+    this.addManipulatorConditionSet(cameraMousePan);
   }
 
   public void addSelectionListener(SelectionListener selectionListener) {
@@ -344,7 +412,8 @@ public abstract class DragAdapter {
     this.hasObjectToBeSelected = true;
   }
 
-  protected abstract void updateHandleSelection(AbstractTransformableImp selected);
+  protected void updateHandleSelection(AbstractTransformableImp selected) {
+  }
 
   public boolean hasSceneEditor() {
     return false;
@@ -375,7 +444,7 @@ public abstract class DragAdapter {
   private void addCameraView(CameraView viewType, CameraSet cameras) {
     if (cameras.mainCamera != null) {
       cameras.mainCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
-      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation);
+      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation());
     }
     this.cameraMap.put(viewType, cameras);
   }
@@ -570,8 +639,7 @@ public abstract class DragAdapter {
 
   private void setSelectedObjectSilhouetteIfAppropriate(boolean isHaloed) {
     if (this.sgSilhouette != null) {
-      if (this.selectedObject instanceof ModelImp) {
-        ModelImp modelImp = (ModelImp) this.selectedObject;
+      if (this.selectedObject instanceof ModelImp modelImp) {
         for (Visual sgVisual : modelImp.getSgVisuals()) {
           sgVisual.silouette.setValue(isHaloed ? this.sgSilhouette : null);
         }
@@ -662,7 +730,8 @@ public abstract class DragAdapter {
     return new AngleInRadians(Math.PI / 16.0);
   }
 
-  public abstract void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation);
+  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
+  }
 
   private void pickIntoSceneSuppressingErrors(Point mouseLocation, PickFrontMostObserver observer) {
     try {
@@ -901,7 +970,7 @@ public abstract class DragAdapter {
     }
   };
 
-  protected/*private*/ final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
+  private final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
   private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
   private OnscreenRenderTarget onscreenRenderTarget;
   private Component lookingGlassComponent = null;

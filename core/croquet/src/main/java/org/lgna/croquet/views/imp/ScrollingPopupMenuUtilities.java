@@ -44,10 +44,16 @@ package org.lgna.croquet.views.imp;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.Component;
-import java.awt.LayoutManager;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Stack;
 
 /**
  * @author Dennis Cosgrove
@@ -60,12 +66,8 @@ public class ScrollingPopupMenuUtilities {
   private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-      Component component = e.getComponent();
-      if (component instanceof JPopupMenu) {
-        JPopupMenu jPopupMenu = (JPopupMenu) component;
-        LayoutManager layoutManager = jPopupMenu.getLayout();
-        if (layoutManager instanceof ScrollingPopupMenuLayout) {
-          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+      if (e.getComponent() instanceof JPopupMenu jPopupMenu) {
+        if (jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
           scrollingPopupMenuLayout.adjustIndex(e.getWheelRotation());
         }
       }
@@ -73,10 +75,56 @@ public class ScrollingPopupMenuUtilities {
     }
   };
 
+  private static final MenuKeyListener menuKeyListener = new MenuKeyListener() {
+    @Override
+    public void menuKeyTyped(MenuKeyEvent e) {
+    }
+
+    @Override
+    public void menuKeyPressed(MenuKeyEvent e) {
+      MenuElement[] menus = e.getPath();
+      if (menus.length > 0 && menus[menus.length - 1] instanceof JPopupMenu jPopupMenu) {
+        if (isFrontMenu(jPopupMenu) && jPopupMenu.getLayout() instanceof ScrollingPopupMenuLayout scrollingPopupMenuLayout) {
+          if (e.getKeyCode() == KeyEvent.VK_UP) {
+            scrollingPopupMenuLayout.adjustIndex(-1);
+          }  else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            scrollingPopupMenuLayout.adjustIndex(1);
+          }
+        }
+      }
+    }
+
+    @Override
+    public void menuKeyReleased(MenuKeyEvent e) {
+    }
+  };
+
+  private static final PopupMenuListener frontMenuListener = new PopupMenuListener() {
+    @Override
+    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      if (e.getSource() instanceof JPopupMenu menu) {
+        openMenus.push(menu);
+      }
+    }
+
+    @Override
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+      if (!openMenus.empty()) {
+        openMenus.pop();
+      }
+    }
+
+    @Override
+    public void popupMenuCanceled(PopupMenuEvent e) {
+    }
+  };
+
   public static void initializeScrollingCapability(JPopupMenu jPopupMenu) {
     ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout(jPopupMenu);
     jPopupMenu.setLayout(layout);
     jPopupMenu.addMouseWheelListener(mouseWheelListener);
+    jPopupMenu.addMenuKeyListener(menuKeyListener);
+    jPopupMenu.addPopupMenuListener(frontMenuListener);
     jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
     jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.DOWN), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
   }
@@ -87,11 +135,17 @@ public class ScrollingPopupMenuUtilities {
 
   public static void removeAllNonScrollComponents(JPopupMenu jPopupMenu) {
     for (Component component : jPopupMenu.getComponents()) {
-      if (component instanceof JScrollMenuItem) {
-        //pass
-      } else {
+      if (!(component instanceof JScrollMenuItem)) {
         jPopupMenu.remove(component);
       }
     }
   }
+
+  private static boolean isFrontMenu(JPopupMenu menu) {
+    return !openMenus.empty() && menu == openMenus.peek();
+  }
+
+  // Top of the stack is the most recently opened menu.
+  // Used to check if a menu is in front.
+  private static final Stack<JPopupMenu> openMenus = new Stack<>();
 }

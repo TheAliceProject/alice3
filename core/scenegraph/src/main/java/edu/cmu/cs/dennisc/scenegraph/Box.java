@@ -43,20 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Box extends Shape {
-  public Point3 getMinimum(Point3 rv) {
-    rv.set(xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue());
-    return rv;
-  }
-
   public Point3 getMinimum() {
-    return getMinimum(new Point3());
+    return new Point3(xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue());
   }
 
   public void setMinimum(double x, double y, double z) {
@@ -66,16 +61,11 @@ public class Box extends Shape {
   }
 
   public void setMinimum(Point3 minimum) {
-    setMinimum(minimum.x, minimum.y, minimum.z);
-  }
-
-  public Point3 getMaximum(Point3 rv) {
-    rv.set(xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue());
-    return rv;
+    setMinimum(minimum.x(), minimum.y(), minimum.z());
   }
 
   public Point3 getMaximum() {
-    return getMaximum(new Point3());
+    return new Point3(xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue());
   }
 
   public void setMaximum(double x, double y, double z) {
@@ -85,7 +75,7 @@ public class Box extends Shape {
   }
 
   public void setMaximum(Point3 maximum) {
-    setMaximum(maximum.x, maximum.y, maximum.z);
+    setMaximum(maximum.x(), maximum.y(), maximum.z());
   }
 
   public void set(Point3 minimum, Point3 maximum) {
@@ -99,21 +89,8 @@ public class Box extends Shape {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    boundingBox.setMinimum(xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue());
-    boundingBox.setMaximum(xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue());
-  }
-
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    double xCenter = (xMinimum.getValue() + xMaximum.getValue()) * 0.5;
-    double yCenter = (yMinimum.getValue() + yMaximum.getValue()) * 0.5;
-    double zCenter = (zMinimum.getValue() + zMaximum.getValue()) * 0.5;
-    boundingSphere.center.set(xCenter, yCenter, zCenter);
-    double width = xMaximum.getValue() - xMinimum.getValue();
-    double height = yMaximum.getValue() - yMinimum.getValue();
-    double depth = zMaximum.getValue() - zMinimum.getValue();
-    boundingSphere.radius = Math.max(Math.max(width, height), depth) * 0.5;
+  protected AxisAlignedBox updateBoundingBox() {
+    return new AxisAlignedBox(getMinimum(), getMaximum());
   }
 
   public final BoundDoubleProperty xMinimum = new BoundDoubleProperty(this, -0.5);

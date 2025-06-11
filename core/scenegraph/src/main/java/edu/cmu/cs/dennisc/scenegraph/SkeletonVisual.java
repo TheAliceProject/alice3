@@ -43,10 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -104,9 +102,10 @@ public class SkeletonVisual extends Visual {
     }
   }
 
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv, boolean ignoreJointOrientations) {
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(boolean ignoreJointOrientations) {
+    AxisAlignedBox aabb = null;
     if (!ignoreJointOrientations && (this.tracker != null)) {
-      this.tracker.getAxisAlignedMinimumBoundingBox(rv);
+      aabb = tracker.getAxisAlignedMinimumBoundingBox();
     } else {
       //There's a problem here.
       //This code is used to return a bounding box for a Skeleton Visual in 2 cases:
@@ -124,48 +123,31 @@ public class SkeletonVisual extends Visual {
       if (this.hasDefaultPoseWeightedMeshes.getValue()) {
         if (this.defaultPoseWeightedMeshes.getValue() != null) {
           for (WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
+            aabb = wm.getAxisAlignedMinimumBoundingBox().union(aabb);
           }
         }
       } else {
         if (this.weightedMeshes.getValue() != null) {
           for (WeightedMesh wm : this.weightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
+            aabb = wm.getAxisAlignedMinimumBoundingBox().union(aabb);
           }
         }
       }
       if (this.geometries.getValue() != null) {
         for (Geometry g : this.geometries.getValue()) {
-          AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-          rv.union(b);
+          aabb = g.getAxisAlignedMinimumBoundingBox().union(aabb);
         }
       }
     }
-    if (!rv.isNaN()) {
-      rv.scale(this.scale.getValue());
+    if (aabb != null) {
+      return aabb.scale(this.scale.getValue());
     }
-    return rv;
+    return null;
   }
 
   @Override
-  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    return getAxisAlignedMinimumBoundingBox(rv, false);
-  }
-
-  @Override
-  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
-    AxisAlignedBox box = new AxisAlignedBox();
-    getAxisAlignedMinimumBoundingBox(box);
-    if (!box.isNaN()) {
-      double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
-      rv.center.set(box.getCenter());
-      rv.radius = diameter / 2;
-    } else {
-      rv.setNaN();
-    }
-    return rv;
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    return getAxisAlignedMinimumBoundingBox(false);
   }
 
   public boolean renderBackfaces() {
@@ -220,14 +202,14 @@ public class SkeletonVisual extends Visual {
     }
   }
 
-  public void scale(Vector3 scale) {
+  public void scale(double scale) {
     if (skeleton.getValue() != null) {
       skeleton.getValue().scale(scale);
     }
     scaleMeshes(scale);
   }
 
-  private void scaleMeshes(Vector3 scale) {
+  private void scaleMeshes(double scale) {
     for (Geometry g : geometries.getValue()) {
       //The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
       //If we start to support things like cylinders and boxes, then this would need to be updated
@@ -240,20 +222,8 @@ public class SkeletonVisual extends Visual {
     }
   }
 
-  private void scaleJoints(Joint j, Vector3 scale) {
-    AffineMatrix4x4 newTransform = new AffineMatrix4x4(j.localTransformation.getValue());
-    newTransform.translation.multiply(scale);
-    j.localTransformation.setValue(newTransform);
-    for (int i = 0; i < j.getComponentCount(); i++) {
-      Component comp = j.getComponentAt(i);
-      if (comp instanceof Joint) {
-        scaleJoints((Joint) comp, scale);
-      }
-    }
-  }
-
   public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
-  public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
+  public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>(this, null);
 
   private SkeletonVisualBoundingBoxTracker tracker = null;
 

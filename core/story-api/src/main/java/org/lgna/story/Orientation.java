@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.UnitQuaternion;
+import org.alice.math.immutable.EulerAngles;
 
 /**
  * @author Dennis Cosgrove
@@ -52,39 +52,33 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 public final class Orientation {
   private final OrthogonalMatrix3x3 internal;
 
-  // TODO Either use immutable matrices or make a copy - after checking  we do not depend on side effects
   public Orientation(OrthogonalMatrix3x3 internal) {
     this.internal = internal;
   }
 
   public Orientation() {
-    this(OrthogonalMatrix3x3.createIdentity());
+    this(OrthogonalMatrix3x3.IDENTITY);
   }
 
   public Orientation(Number x, Number y, Number z, Number w) {
-    this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
+    this((new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())).asMatrix3x3());
   }
 
-  OrthogonalMatrix3x3 getInternal() {
+  OrthogonalMatrix3x3 asMatrix3x3() {
     return this.internal;
   }
 
-  public UnitQuaternion createUnitQuaternion() {
-    return this.internal.createUnitQuaternion();
+  public UnitQuaternion asUnitQuaternion() {
+    return this.internal.asUnitQuaternion();
   }
 
-  public EulerAngles createEulerAngles() {
-    return this.internal.createEulerAngles();
+  public EulerAngles asEulerAngles() {
+    return this.internal.asEulerAngles();
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Orientation) {
-      Orientation other = (Orientation) obj;
-      return this.internal.equals(other.internal);
-    } else {
-      return false;
-    }
+    return obj instanceof Orientation other && this.internal.equals(other.internal);
   }
 
   @Override

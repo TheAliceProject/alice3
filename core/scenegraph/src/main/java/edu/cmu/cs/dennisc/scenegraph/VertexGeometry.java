@@ -43,14 +43,16 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.Vector3f;
 
 /**
  * @author Dennis Cosgrove
@@ -78,39 +80,27 @@ public abstract class VertexGeometry extends Geometry {
   }
 
   @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    BoundUtilities.getBoundingBox(boundingBox, vertices.getValue());
+  protected AxisAlignedBox updateBoundingBox() {
+    return BoundUtilities.getBoundingBox(vertices.getValue());
   }
 
   @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    BoundUtilities.getBoundingSphere(boundingSphere, vertices.getValue());
-  }
-
-  @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
-    Point3 point0;
-    Point3 point1;
-    Vector3f normal;
+  public AffineMatrix4x4 getPlane() {
     Vertex[] vertices = this.vertices.getValue();
     assert vertices.length >= 2;
-    point0 = vertices[0].position;
-    point1 = vertices[1].position;
-    normal = vertices[0].normal;
 
-    forward.set(normal.x, normal.y, normal.z);
-    forward.normalize();
-    forward.negate();
+    Point3 translation = vertices[0].position;
+    Point3 point1 = vertices[1].position;
+    Vector3f normal = vertices[0].normal;
 
-    upGuide.set(point0);
-    upGuide.subtract(point1);
-    upGuide.normalize();
+    Vector3 forward = (new Vector3(normal.x(), normal.y(), normal.z())).normalized().negate();
+    Vector3 upGuide = translation.minus(point1).normalized();
 
-    translation.set(point0);
+    return new AffineMatrix4x4(new ForwardAndUpGuide(forward, upGuide).asMatrix3x3(), translation);
   }
 
   @Override
-  public void transform(AbstractMatrix4x4 trans) {
+  public void transform(Matrix4x4 trans) {
     //todo: does not seem to work
     for (Vertex vertex : vertices.getValue()) {
       vertex.transform(trans);

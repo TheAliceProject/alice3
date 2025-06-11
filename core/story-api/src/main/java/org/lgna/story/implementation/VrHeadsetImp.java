@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lgna.story.SVRHeadset;
 
@@ -71,8 +70,6 @@ public class VrHeadsetImp extends CameraImp<SymmetricPerspectiveCamera> {
   }
 
   public void scaleBy(Double scaleChange) {
-    AffineMatrix4x4 lt = getLocalTransformation();
-    lt.translation.setToMultiplication(lt.translation, scaleChange);
-    setLocalTransformation(lt);
+    setLocalTransformation(getLocalTransformation().scaleTranslation(scaleChange));
   }
 }

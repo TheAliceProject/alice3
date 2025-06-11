@@ -97,6 +97,10 @@ class ScrollingPopupMenuLayout implements LayoutManager2 {
   }
 
   public void adjustIndex(int delta) {
+    if (mainItems.isEmpty()) {
+      return;
+    }
+
     index0 += delta;
     constrainIndex();
     if (mainItems.get(index0) instanceof JPopupMenu.Separator) {

@@ -45,6 +45,7 @@ package org.alice.ide;
 
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
@@ -94,9 +95,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private HistoryListener projectHistoryListener;
 
-  public ProjectApplication(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager) {
+  public ProjectApplication(ApiConfigurationManager apiConfigurationManager) {
     this.projectFileUtilities = new ProjectFileUtilities(this);
-    this.projectDocumentFrame = new ProjectDocumentFrame(ideConfiguration, apiConfigurationManager);
+    this.projectDocumentFrame = new ProjectDocumentFrame(apiConfigurationManager);
     this.projectHistoryListener = new HistoryListener() {
       @Override
       public void operationPushing(HistoryPushEvent e) {
@@ -393,6 +394,13 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       getProjectHistory().removeHistoryListener(projectHistoryListener);
     }
     setProject(project);
+    // Normally, the menu bar sub-menus are populated when the user is about to open one. However,
+    // the popupMenuWillBecomeVisible/popupMenuWillBecomeInvisible events don't fire on mac specifically
+    // for the top-level menu bar. As a workaround, all submenus are initialized at launch on Mac,
+    // and re-initialized every time a new project is opened, so the recent projects list remains correct
+    if (SystemUtilities.isMac()) {
+      getDocumentFrame().getFrame().rebuildMenuBar();
+    }
     getProjectHistory().addHistoryListener(projectHistoryListener);
     URI uri = uriProjectLoader.getUri();
     File file = UriUtilities.getFile(uri);

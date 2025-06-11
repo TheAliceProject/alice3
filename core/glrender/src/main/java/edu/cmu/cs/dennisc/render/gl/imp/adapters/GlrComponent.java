@@ -43,13 +43,13 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Visitable;
 import edu.cmu.cs.dennisc.pattern.Visitor;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 import java.nio.DoubleBuffer;
 
@@ -57,8 +57,6 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public abstract class GlrComponent<T extends Component> extends GlrElement<T> implements Visitable {
-  private static final AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
-
   /*package-private*/
   static void handleAbsoluteTransformationChanged(Component component) {
     GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor(component);
@@ -123,11 +121,9 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
   private void updateAbsoluteTransformationIfNecessary() {
     synchronized (this.absolute) {
       if (Double.isNaN(this.absolute[0])) {
-        synchronized (s_buffer) {
-          owner.getAbsoluteTransformation(s_buffer);
-          assert !s_buffer.isNaN();
-          s_buffer.getAsColumnMajorArray16(this.absolute);
-        }
+        AffineMatrix4x4 transform = owner.getAbsoluteTransformation();
+        assert !transform.isNaN();
+        transform.writeColumnMajorArray16(this.absolute);
       }
     }
   }
@@ -135,11 +131,9 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
   private void updateInverseAbsoluteTransformationIfNecessary() {
     synchronized (this.inverseAbsolute) {
       if (Double.isNaN(this.inverseAbsolute[0])) {
-        synchronized (s_buffer) {
-          owner.getInverseAbsoluteTransformation(s_buffer);
-          assert !s_buffer.isNaN();
-          s_buffer.getAsColumnMajorArray16(this.inverseAbsolute);
-        }
+        AffineMatrix4x4 transform = owner.getInverseAbsoluteTransformation();
+        assert !transform.isNaN();
+        transform.writeColumnMajorArray16(this.inverseAbsolute);
       }
     }
   }

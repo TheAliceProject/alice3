@@ -44,29 +44,25 @@ package edu.cmu.cs.dennisc.math.animation;
 
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AffineMatrix4x4Animation extends DurationBasedAnimation {
-  private UnitQuaternion m_q0;
-  private UnitQuaternion m_q1;
-  private UnitQuaternion m_qBuffer;
-  private AffineMatrix4x4 m_m0;
-  private AffineMatrix4x4 m_m1;
-  private AffineMatrix4x4 m_mBuffer;
+  private final UnitQuaternion m_q0;
+  private final UnitQuaternion m_q1;
+  private final AffineMatrix4x4 m_m0;
+  private final AffineMatrix4x4 m_m1;
 
   public AffineMatrix4x4Animation(Number duration, Style style, AffineMatrix4x4 m0, AffineMatrix4x4 m1) {
     super(duration, style);
-    m_q0 = m0.orientation.createUnitQuaternion();
-    m_q1 = m1.orientation.createUnitQuaternion();
-    m_qBuffer = UnitQuaternion.createNaN();
+    m_q0 = m0.orientation().asUnitQuaternion();
+    m_q1 = m1.orientation().asUnitQuaternion();
 
     m_m0 = m0;
     m_m1 = m1;
-    m_mBuffer = AffineMatrix4x4.createNaN();
   }
 
   protected abstract void updateValue(AffineMatrix4x4 value);
@@ -78,10 +74,9 @@ public abstract class AffineMatrix4x4Animation extends DurationBasedAnimation {
 
   @Override
   protected void setPortion(double portion) {
-    m_mBuffer.translation.setToInterpolation(m_m0.translation, m_m1.translation, portion);
-    m_qBuffer.setToInterpolation(m_q0, m_q1, portion);
-    m_mBuffer.orientation.setValue(m_qBuffer);
-    updateValue(m_mBuffer);
+    updateValue(new AffineMatrix4x4(
+        m_q0.interpolate(m_q1, portion).asMatrix3x3(),
+        m_m0.translation().interpolate(m_m1.translation(), portion)));
   }
 
   @Override

@@ -46,11 +46,11 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.Model;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.nebulous.Thing;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointArrayId;
@@ -111,8 +111,7 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   @Override
   public JointedModelImp.VisualData<R> createVisualData() {
     try {
-      if (this.resource instanceof PersonResource) {
-        PersonResource personResource = (PersonResource) this.resource;
+      if (this.resource instanceof PersonResource personResource) {
         return (JointedModelImp.VisualData<R>) NebulousPersonVisualData.createInstance(personResource);
       } else {
         return (JointedModelImp.VisualData<R>) new NebulousVisualData<Model>(new Thing(this.resource, this.resource));
@@ -124,13 +123,13 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
 
   @Override
   public UnitQuaternion getOriginalJointOrientation(JointId jointId) {
-    return this.getOriginalJointTransformation(jointId).orientation.createUnitQuaternion();
+    return this.getOriginalJointTransformation(jointId).orientation().asUnitQuaternion();
   }
 
   @Override
   public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
     Logger.severe("getOriginalJointTransformation not supported from nebulous factory");
-    return AffineMatrix4x4.createIdentity();
+    return AffineMatrix4x4.IDENTITY;
   }
 
   @Override

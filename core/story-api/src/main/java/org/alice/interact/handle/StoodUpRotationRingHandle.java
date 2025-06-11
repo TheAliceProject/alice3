@@ -45,11 +45,11 @@ package org.alice.interact.handle;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.interact.MovementDirection;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.debug.DebugInteractUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
 
 /**
  * @author David Culyba
@@ -66,7 +66,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   public StoodUpRotationRingHandle(StoodUpRotationRingHandle handle) {
     this(handle.rotationAxisDirection, handle.handlePosition);
     this.initFromHandle(handle);
-    this.handleOffset.set(handle.handleOffset);
+    this.handleOffset = handle.handleOffset;
   }
 
   public StoodUpRotationRingHandle(MovementDirection rotationAxisDirection) {
@@ -108,7 +108,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   public ReferenceFrame getReferenceFrame() {
     if (this.manipulatedObject != null) {
       this.standUpReference.setParent(this.manipulatedObject);
-      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.IDENTITY);
       this.standUpReference.setAxesOnlyToStandUp();
       return this.standUpReference;
     } else {

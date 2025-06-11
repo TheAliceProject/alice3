@@ -42,13 +42,13 @@
  */
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.rigidbody.TranslationDerivative;
 import edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
+import org.alice.math.immutable.AngleInRadians;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 import java.awt.event.KeyEvent;
 
@@ -72,7 +72,7 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
   private static final double FORCE_FOR_ACCELERATION = +4.0;
   private static final double FORCE_FOR_DECELERATION = -8.0;
 
-  private Vector3 m_velocityRequested = new Vector3();
+  private Vector3 m_velocityRequested = Vector3.ZERO;
 
   //private double m_distance = Double.NaN;
   private double m_distanceRequested = 16.0;
@@ -111,16 +111,16 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
   }
 
   public void requestVelocity(Vector3 velocityRequested) {
-    m_velocityRequested.set(velocityRequested);
+    m_velocityRequested = velocityRequested;
   }
 
   public void requestVelocity(double x, double y, double z) {
-    m_velocityRequested.set(x, y, z);
+    m_velocityRequested = new Vector3(x, y, z);
   }
 
   public void stopImmediately() {
-    requestVelocity(0, 0, 0);
-    setVelocity(0, 0, 0);
+    requestVelocity(Vector3.ZERO);
+    setVelocity(Vector3.ZERO);
   }
 
   public void requestDistance(double distance) {
@@ -135,9 +135,8 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
     requestDistance(m_distanceRequested + delta);
   }
 
-  public void requestTarget(double x, double y, double z) {
-    Point3 translation = accessTranslation();
-    translation.set(x, y, z);
+  public void requestTarget(Point3 target) {
+    setTranslation(target);
   }
 
   public void requestOrbit(double yawDelta, double pitchDelta) {
@@ -158,16 +157,11 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
   }
 
   public Point3 accessTargetRequested() {
-    return accessTranslation();
-  }
-
-  public Point3 getTargetRequested(Point3 rv) {
-    rv.set(accessTargetRequested());
-    return rv;
+    return getTranslation();
   }
 
   public Point3 getTargetRequested() {
-    return getTargetRequested(new Point3());
+    return getTranslation();
   }
 
   private static double getHeight(double distance) {
@@ -180,54 +174,24 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
   }
 
   @Override
-  protected Vector3 getForce(Vector3 rv, double t) {
+  protected Vector3 getForce(double t) {
     final double LENGTH_SQUARED_THRESHOLD = 0.25;
-    Vector3 velocity = accessVelocity();
-    if (m_velocityRequested.isZero() && (velocity.calculateMagnitudeSquared() < LENGTH_SQUARED_THRESHOLD)) {
-      setMomentum(0, 0, 0);
-      rv.set(0, 0, 0);
-    } else {
-      if (m_velocityRequested.x > 0) {
-        if (m_velocityRequested.x > velocity.x) {
-          rv.x = +FORCE_FOR_ACCELERATION;
-        } else {
-          rv.x = +FORCE_FOR_DECELERATION;
-        }
-      } else {
-        if (m_velocityRequested.x > velocity.x) {
-          rv.x = -FORCE_FOR_DECELERATION;
-        } else {
-          rv.x = -FORCE_FOR_ACCELERATION;
-        }
-      }
-      if (m_velocityRequested.y > 0) {
-        if (m_velocityRequested.y > velocity.y) {
-          rv.y = +FORCE_FOR_ACCELERATION;
-        } else {
-          rv.y = +FORCE_FOR_DECELERATION;
-        }
-      } else {
-        if (m_velocityRequested.y > velocity.y) {
-          rv.y = -FORCE_FOR_DECELERATION;
-        } else {
-          rv.y = -FORCE_FOR_ACCELERATION;
-        }
-      }
-      if (m_velocityRequested.z > 0) {
-        if (m_velocityRequested.z > velocity.z) {
-          rv.z = +FORCE_FOR_ACCELERATION;
-        } else {
-          rv.z = +FORCE_FOR_DECELERATION;
-        }
-      } else {
-        if (m_velocityRequested.z > velocity.z) {
-          rv.z = -FORCE_FOR_DECELERATION;
-        } else {
-          rv.z = -FORCE_FOR_ACCELERATION;
-        }
-      }
+    if (m_velocityRequested.isZero() && (getVelocity().magnitudeSquared() < LENGTH_SQUARED_THRESHOLD)) {
+      setMomentum(Vector3.ZERO);
+      return Vector3.ZERO;
     }
-    return rv;
+    return new Vector3(
+        requestDirection(m_velocityRequested.x(), getVelocity().x()),
+        requestDirection(m_velocityRequested.y(), getVelocity().y()),
+        requestDirection(m_velocityRequested.z(), getVelocity().z()));
+  }
+
+  private static double requestDirection(double requested, double current) {
+    if (requested > 0) {
+      return requested > current ? +FORCE_FOR_ACCELERATION : +FORCE_FOR_DECELERATION;
+    } else {
+      return requested > current ? -FORCE_FOR_DECELERATION : -FORCE_FOR_ACCELERATION;
+    }
   }
 
   @Override
@@ -246,64 +210,34 @@ public class CameraNavigationFunction extends TranslationFunction<CameraNavigati
 
     double delta = 2.0 * dt;
 
-    Point3 translation = accessTranslation();
-    translation.y = Math.max(translation.y, 0);
+    Point3 translation = getTranslation();
+    double y = Math.max(translation.y(), 0);
+    double z = translation.z();
     if (m_isForwardKeyPressed) {
-      translation.z -= delta;
+      z -= delta;
     }
     if (m_isBackwardKeyPressed) {
-      translation.z += delta;
+      z += delta;
     }
+    double x = translation.x();
     if (m_isLeftKeyPressed) {
-      translation.x -= delta;
+      x -= delta;
     }
     if (m_isRightKeyPressed) {
-      translation.x += delta;
+      x += delta;
     }
+    setTranslation(new Point3(x, y, z));
     //edu.cmu.cs.dennisc.print.PrintUtilities.println( "update:", a );
   }
 
-  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv) {
-    //    m_distance = m_distanceRequested;
-    //    double height = getHeight( m_distance );
-    //    m_pitch = Math.max( m_pitchRequested, getPitchMinimum( height, m_distance ) );
-    //    m_yaw = m_yawRequested;
-    //
-    //    rv.setIdentity();
-    //    LinearAlgebra.applyRotationAboutYAxis( rv, m_yaw, UnitOfAngle.RADIANS );
-    //    LinearAlgebra.applyTranslation( rv, 0, height, m_distance );
-    //    LinearAlgebra.applyTranslation( rv, accessTranslation() );
-    //    LinearAlgebra.applyRotationAboutXAxis( rv, -m_pitch, UnitOfAngle.RADIANS );
-    CameraNavigationFunction.getTransformation(rv, m_yawRequested, m_pitchRequested, m_distanceRequested, accessTranslation());
-    return rv;
-  }
-
   public AffineMatrix4x4 getTransformation() {
-    return getTransformation(AffineMatrix4x4.createNaN());
+    double height = getHeight(m_distanceRequested);
+    double pitch = Math.max(m_pitchRequested, getPitchMinimum(height, m_distanceRequested));
+
+    return AffineMatrix4x4.IDENTITY
+        .rotateAboutYAxis(new AngleInRadians(m_yawRequested))
+        .withTranslation(new Point3(0, height, m_distanceRequested))
+        .withTranslation(getTranslation())
+        .rotateAboutXAxis(new AngleInRadians(-pitch));
   }
-
-  public static AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation) {
-    double height = getHeight(distance);
-    pitch = Math.max(pitch, getPitchMinimum(height, distance));
-
-    rv.setIdentity();
-    rv.applyRotationAboutYAxis(new AngleInRadians(yaw));
-    rv.applyTranslation(0, height, distance);
-    rv.applyTranslation(xTranslation, yTranslation, zTranslation);
-    rv.applyRotationAboutXAxis(new AngleInRadians(-pitch));
-    return rv;
-  }
-
-  public static AffineMatrix4x4 getTransformation(double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation) {
-    return getTransformation(AffineMatrix4x4.createNaN(), yaw, pitch, distance, xTranslation, yTranslation, zTranslation);
-  }
-
-  public static AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, double yaw, double pitch, double distance, Point3 translation) {
-    return getTransformation(rv, yaw, pitch, distance, translation.x, translation.y, translation.z);
-  }
-
-  public static AffineMatrix4x4 getTransformation(double yaw, double pitch, double distance, Point3 translation) {
-    return getTransformation(AffineMatrix4x4.createNaN(), yaw, pitch, distance, translation);
-  }
-
 }

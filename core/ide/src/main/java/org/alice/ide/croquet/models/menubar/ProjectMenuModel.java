@@ -63,7 +63,6 @@ public class ProjectMenuModel extends StaticMenuModel {
     return new StandardMenuItemPrepModel[] {
         ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
         projectDocumentFrame.getResourcesDialogLaunchOperation().getMenuItemPrepModel(),
-        projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(),
         projectDocumentFrame.getStatisticsFrameIsShowingState().getMenuItemPrepModel()};
   }
 

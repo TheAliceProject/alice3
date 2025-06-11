@@ -2,6 +2,7 @@ package edu.cmu.cs.dennisc.math;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.alice.math.immutable.Point2;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ConvexPolygonTest {
     poly.includePoint(p2);
     poly.includePoint(p3);
     assertEquals(3, poly.getVertices().size());
-    poly.includePoint(Point2.createZero());
+    poly.includePoint(Point2.ORIGIN);
     assertEquals(3, poly.getVertices().size());
   }
 

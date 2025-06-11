@@ -46,7 +46,15 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.*;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AngleInDegrees;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ClippedZPlane;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -54,7 +62,6 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.ide.IDE;
-import org.alice.math.immutable.ClippedZPlane;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveTransformableEdit;
@@ -271,16 +278,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     protected abstract AbstractCamera getCamera();
 
-    private boolean transformsAreWithinReasonableEpsilonOfEachOther(AffineMatrix4x4 a, AffineMatrix4x4 b) {
-      return a.orientation.isWithinReasonableEpsilonOf(b.orientation)
-          && a.translation.isWithinReasonableEpsilonOf(b.translation);
-    }
-
     public void animateToTargetView(AbstractCamera previousCamera) {
       AbstractTransformable cameraParent = getCamera().getMovableParent();
       AffineMatrix4x4 lastCamTransform =
           previousCamera == null
-              ? AffineMatrix4x4.createIdentity()
+              ? AffineMatrix4x4.IDENTITY
               : previousCamera.getMovableParent().getAbsoluteTransformation();
       AffineMatrix4x4 targetTransform = getTargetTransform();
       cameraParent.setTransformation(lastCamTransform, AsSeenBy.SCENE);
@@ -291,7 +293,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         pointOfViewAnimation.complete(null);
         doEpilogue = true;
       }
-      if (transformsAreWithinReasonableEpsilonOfEachOther(lastCamTransform, targetTransform)) {
+      if (lastCamTransform.isWithinReasonableEpsilonOf(targetTransform)) {
         startTrackingCamera();
       } else {
         pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, lastCamTransform, targetTransform) {
@@ -341,49 +343,46 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       targetDiagonal = targetDiagonal > 0 ? targetDiagonal :  4;
 
       // Since targetTranslation is already centered in y, this is effectively height * 1.5.
-      final double adjustedY = targetTranslation.y + Math.max(targetHeight, targetDiagonal * .5);
-      final Point3 adjustedPos = new Point3(targetTranslation.x,  adjustedY, targetTranslation.z);
+      final double adjustedY = targetTranslation.y() + Math.max(targetHeight, targetDiagonal * .5);
+      final Point3 adjustedPos = new Point3(targetTranslation.x(),  adjustedY, targetTranslation.z());
 
       // if the camera is already above it, great, otherwise we get the best results by using the same adjusted y.
-      Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation;
-      adjustedCameraPos.y = Math.max(adjustedCameraPos.y, adjustedY);
+      Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation();
+      adjustedCameraPos.withY(Math.max(adjustedCameraPos.y(), adjustedY));
 
-      Vector3 direction = Vector3.createSubtraction(adjustedCameraPos, adjustedPos);
+      Vector3 direction = adjustedCameraPos.minus(adjustedPos);
       if (direction.isZero()) {
         direction = new Vector3(0, DEFAULT_LAYOUT_CAMERA_Y_OFFSET, DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
       }
-      direction.normalize();
+      direction = direction.normalized();
 
       final Ray ray = new Ray(adjustedPos, direction);
       Point3 layoutCamTranslation = ray.getPointAlong(targetDiagonal * 1.5);
 
       // orientation calculated from wherever our camera ended up to look at the center of the object.
-      Vector3 cameraDirection = Vector3.createSubtraction(layoutCamTranslation, targetTranslation);
-      cameraDirection.normalize();
-      final ForwardAndUpGuide forwardAndUpGuide = new ForwardAndUpGuide(Vector3.createNegation(cameraDirection), null);
-      OrthogonalMatrix3x3 layoutCamOrientation = forwardAndUpGuide.createOrthogonalMatrix3x3();
+      Vector3 cameraDirection = layoutCamTranslation.minus(targetTranslation).normalized();
+      final ForwardAndUpGuide forwardAndUpGuide = new ForwardAndUpGuide(cameraDirection.negate(), null);
+      OrthogonalMatrix3x3 layoutCamOrientation = forwardAndUpGuide.asMatrix3x3();
 
-      AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
-      layoutTransform.applyTranslation(layoutCamTranslation);
-      layoutTransform.applyOrientation(layoutCamOrientation);
-      adjustForVRIfNeeded(layoutTransform);
-      return layoutTransform;
+      AffineMatrix4x4 layoutTransform = AffineMatrix4x4.IDENTITY
+          .withTranslation(layoutCamTranslation)
+          .withOrientation(layoutCamOrientation);
+      return adjustForVRIfNeeded(layoutTransform);
     }
 
-    protected void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
+    protected AffineMatrix4x4 adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
       if (!sceneEditor.isVrActive()) {
-        return;
+        return layoutTransform;
       }
       AbstractCamera cam = getCamera();
-      AffineMatrix4x4 camTransform = cam.getTransformation(cam.getMovableParent());
-      camTransform.invert();
-      layoutTransform.multiply(camTransform);
+      AffineMatrix4x4 camTransform = cam.getTransformation(cam.getMovableParent()).invert();
+      return layoutTransform.times(camTransform);
     }
 
     // Starting and Layout markers directly track their cameras
     protected void startTrackingCamera() {
       markerImp.getSgComposite().setParent(getCamera().getMovableParent());
-      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
+      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.IDENTITY);
       sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
 
@@ -436,8 +435,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       SimpleAppearance sgAppearance = new SimpleAppearance();
       Color4f darkGrey = Color.DARK_GRAY.toColor4f();
       sgAppearance.diffuseColor.setValue(darkGrey);
-      if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
-        VrUserImp vrUser = (VrUserImp) startingCamera;
+      if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp vrUser) {
         visuals = PerspectiveCameraMarkerImp.createVRVisual(sgAppearance, startingCamera.getSgComposite());
         // Set visuals scale to match and listen for changes
         scaleVisuals(vrUser.scale.getValue());
@@ -448,28 +446,21 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     private void scaleVisuals(Double scale) {
-      Matrix3x3 scaleMatrix = scaleMatrix(scale);
+      OrthogonalMatrix3x3 scaleMatrix =
+          (new Vector3(scale, scale, scale)).asScaleMatrix();
       for (Visual visual : visuals) {
         visual.scale.setValue(scaleMatrix);
       }
     }
 
-    private Matrix3x3 scaleMatrix(Double scale) {
-      Matrix3x3 m = Matrix3x3.createZero();
-      m.right.x = scale;
-      m.up.y = scale;
-      m.backward.z = scale;
-      return m;
-    }
-
-    protected void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
+    protected AffineMatrix4x4 adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
       if (!sceneEditor.isVrActive()) {
-        return;
+        return layoutTransform;
       }
-      super.adjustForVRIfNeeded(layoutTransform);
+      AffineMatrix4x4 adjusted = super.adjustForVRIfNeeded(layoutTransform);
       // Level the VRUser, for their own health.
-      OrthogonalMatrix3x3 stoodup = OrthogonalMatrix3x3.createFromStandUp(layoutTransform.orientation);
-      layoutTransform.orientation.setValue(stoodup);
+      OrthogonalMatrix3x3 stoodup = adjusted.orientation().asStandUp();
+      return layoutTransform.withOrientation(stoodup);
     }
 
     @Override
@@ -525,14 +516,17 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
-      AffineMatrix4x4 layoutTransform = new AffineMatrix4x4(startingView);
-      layoutTransform.applyTranslationAlongYAxis(DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
-      layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
-      layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
-      adjustForVRIfNeeded(layoutTransform);
+      Point3 translation = startingView.translation();
+      AffineMatrix4x4 layoutTransform = startingView
+          .withTranslation(
+              new Point3(translation.x(),
+                  translation.y() + DEFAULT_LAYOUT_CAMERA_Y_OFFSET,
+                  translation.z() + DEFAULT_LAYOUT_CAMERA_Z_OFFSET))
+          .rotateAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
+      layoutTransform = adjustForVRIfNeeded(layoutTransform);
       getCamera().getMovableParent().setLocalTransformation(layoutTransform);
       markerImp.getSgComposite().setParent(getCamera().getMovableParent());
-      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
+      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.IDENTITY);
     }
 
     @Override
@@ -600,7 +594,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         Logger.severe(cameraParent);
       }
       markerImp.setShowing(false);
-      markerImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+      markerImp.setLocalTransformation(AffineMatrix4x4.IDENTITY);
       markerImp.getSgComposite().setParent(cameraParent);
       sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
@@ -634,13 +628,10 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected void initialize() {
-      AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
-      topTransform.translation.y = 10;
-      topTransform.translation.z = -10;
-      topTransform.orientation.up.set(0, 0, 1);
-      topTransform.orientation.right.set(-1, 0, 0);
-      topTransform.orientation.backward.set(0, 1, 0);
-      assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+      AffineMatrix4x4 topTransform = new AffineMatrix4x4(
+          new OrthogonalMatrix3x3(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS),
+          new Point3(0, 10, -10));
+      assert topTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(topTransform);
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(16));
     }
@@ -653,13 +644,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       Point3 targetTranslation = box.getCenter();
 
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
-      AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
-      topTransform.translation.x = targetTranslation.x;
-      topTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
-      topTransform.translation.z = targetTranslation.z;
-      topTransform.orientation.up.set(0, 0, 1);
-      topTransform.orientation.right.set(-1, 0, 0);
-      topTransform.orientation.backward.set(0, 1, 0);
+      AffineMatrix4x4 topTransform = new AffineMatrix4x4(
+          new OrthogonalMatrix3x3(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS),
+          new Point3(targetTranslation.x(),
+              targetTranslation.y() + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET),
+              targetTranslation.z()));
       markerImp.setLocalTransformation(topTransform);
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
       double height = clampPictureValue(Math.max(targetDepth, SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO * targetWidth));
@@ -674,11 +663,10 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected void initialize() {
-      AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-      sideTransform.translation.x = 10;
-      sideTransform.translation.y = 1;
-      sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
-      assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+      AffineMatrix4x4 sideTransform = new AffineMatrix4x4(
+          (new ForwardAndUpGuide(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
+          new Point3(10, 1, 0));
+      assert sideTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(sideTransform);
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
@@ -691,11 +679,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       Point3 targetTranslation = box.getCenter();
 
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
-      AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-      sideTransform.translation.x = targetTranslation.x + (targetWidth != 0 ? clampCameraValue(targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET);
-      sideTransform.translation.y = targetTranslation.y;
-      sideTransform.translation.z = targetTranslation.z;
-      sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
+      AffineMatrix4x4 sideTransform = new AffineMatrix4x4(
+          (new ForwardAndUpGuide(Vector3.NEGATIVE_X_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
+          new Point3(
+              targetTranslation.x() + (targetWidth != 0 ? clampCameraValue(targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET),
+              targetTranslation.y(),
+              targetTranslation.z()));
       markerImp.setLocalTransformation(sideTransform);
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'
@@ -711,11 +700,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected void initialize() {
-      AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
-      frontTransform.translation.z = -10;
-      frontTransform.translation.y = 1;
-      frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
-      assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+      AffineMatrix4x4 frontTransform = new AffineMatrix4x4(
+          (new ForwardAndUpGuide(Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
+          new Point3(0, 1, -10)
+      );
+      assert frontTransform.orientation().isNormalized();
       markerImp.setLocalTransformation(frontTransform);
       markerImp.setPicturePlane(ClippedZPlane.createWithHeight(4));
     }
@@ -728,11 +717,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       Point3 targetTranslation = box.getCenter();
 
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
-      AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
-      frontTransform.translation.x = targetTranslation.x;
-      frontTransform.translation.y = targetTranslation.y;
-      frontTransform.translation.z = targetTranslation.z - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET);
-      frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
+      AffineMatrix4x4 frontTransform = new AffineMatrix4x4(
+          (new ForwardAndUpGuide(Vector3.POSITIVE_Z_AXIS, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3(),
+          new Point3(targetTranslation.x(),
+              targetTranslation.y(),
+              targetTranslation.z() - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET)));
       markerImp.setLocalTransformation(frontTransform);
 
       // PicturePlane controls how much of the scene is in our view, aka 'zoom'

@@ -1,7 +1,5 @@
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-
 import java.util.Arrays;
 
 /**
@@ -17,21 +15,6 @@ import java.util.Arrays;
  *    up      = +y
  */
 public class ColladaTransformUtilities {
-
-  public static AffineMatrix4x4 createFlippedAffineTransform(AffineMatrix4x4 transform) {
-    AffineMatrix4x4 flippedTransform = new AffineMatrix4x4(transform);
-    flippedTransform.orientation.right.y *= -1;
-
-    flippedTransform.orientation.up.x *= -1;
-    flippedTransform.orientation.up.z *= -1;
-
-    flippedTransform.orientation.backward.y *= -1;
-
-    flippedTransform.translation.x *= -1;
-    flippedTransform.translation.z *= -1;
-
-    return flippedTransform;
-  }
 
   public static double[] createFlippedRowMajorTransform(double transform[]) {
     double[] flippedTransform = Arrays.copyOf(transform, transform.length);

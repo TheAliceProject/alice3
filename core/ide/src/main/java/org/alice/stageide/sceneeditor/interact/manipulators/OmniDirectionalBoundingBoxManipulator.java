@@ -47,7 +47,6 @@ import java.awt.Point;
 
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.interact.InputState;
-import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
@@ -56,19 +55,20 @@ import org.lgna.croquet.DragModel;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DragComponent;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
+
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragManipulator implements TargetManipulator {
 
@@ -80,9 +80,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
   public OmniDirectionalBoundingBoxManipulator() {
     this.sgBoundingBoxOffsetTransformable.setParent(this.sgBoundingBoxTransformable);
-    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(AffineMatrix4x4.createIdentity());
-    AffineMatrix4x4 decoratorTransform = AffineMatrix4x4.createIdentity();
-    decoratorTransform.translation.y = .01;
+    this.sgBoundingBoxOffsetTransformable.setLocalTransformation(AffineMatrix4x4.IDENTITY);
+    AffineMatrix4x4 decoratorTransform = AffineMatrix4x4.createTranslation(0, .01, 0);
     this.sgDecoratorOffsetTransformable.setLocalTransformation(decoratorTransform);
     this.sgDecoratorOffsetTransformable.setParent(this.sgBoundingBoxOffsetTransformable);
     this.sgBoundingBoxDecorator.setParent(this.sgDecoratorOffsetTransformable);
@@ -110,19 +109,19 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
   @Override
   protected Point3 getInitialClickPoint(InputState startInput) {
-    return this.manipulatedTransformable.getAbsoluteTransformation().translation;
+    return this.manipulatedTransformable.getAbsoluteTransformation().translation();
   }
 
   private int getHorizonPixelLocation() {
     assert this.camera instanceof OrthographicCamera;
     OrthographicCamera orthoCamera = (OrthographicCamera) this.camera;
     AffineMatrix4x4 cameraTransform = orthoCamera.getAbsoluteTransformation();
-    double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+    double dotProd = cameraTransform.orientation().up().dotProduct(Vector3.POSITIVE_Y_AXIS);
     if ((dotProd == 1) || (dotProd == -1)) {
-      Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
+      Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation();
       ClippedZPlane dummyPlane = orthoCamera.picturePlane.getValue().completeFrom(this.onscreenRenderTarget.getActualViewport(orthoCamera));
       double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
-      double horizonInCameraSpace = 0.0d - cameraPosition.y;
+      double horizonInCameraSpace = 0.0d - cameraPosition.y();
       double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
       int horizonLinePixelVal = (int) (yRatio * distanceFromMaxY);
       return horizonLinePixelVal;
@@ -141,14 +140,18 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
   }
 
   @Override
-  protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
-    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera()).mutable();
-    Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
-    if (isHorizonInView()) {
-      pickPoint.y = 0;
+  protected Vector3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
+    Ray pickRay = this.onscreenRenderTarget.getRayAtAwtPoint(currentInput.getMouseLocation(), this.getCamera());
+    Point3 pickPoint = this.orthographicPickPlane.getIntersection(pickRay);
+    if (pickPoint != null) {
+      if (isHorizonInView()) {
+        pickPoint = pickPoint.withY(0);
+      }
+    } else {
+      pickPoint = Point3.ORIGIN;
     }
-    Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
-    return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+    Point3 newPosition = pickPoint.plus(this.orthographicOffsetToOrigin);
+    return newPosition.minus(this.getManipulatedTransformable().getAbsoluteTransformation().translation());
   }
 
   @Override
@@ -156,16 +159,16 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
     if (this.manipulatedTransformable != null) {
       assert this.camera != null;
       this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
-      this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0, 0, 0), AsSeenBy.SCENE);
+      this.sgBoundingBoxTransformable.setTranslationOnly(Point3.ORIGIN, AsSeenBy.SCENE);
       this.sgBoundingBoxDecorator.isShowing.setValue(true);
       this.setManipulatedTransformable(this.sgBoundingBoxTransformable);
       this.hidCursor = false;
       this.initializeEventMessages();
       this.hasMoved = false;
-      this.orthographicOffsetToOrigin = new Point3(0, 0, 0);
-      this.offsetFromOrigin = new Point3(0, 0, 0);
+      this.orthographicOffsetToOrigin = Vector3.ZERO;
+      this.offsetFromOrigin = Vector3.ZERO;
       this.mousePlaneOffset = new Point(0, 0);
-      this.originalPosition = new Point3(0, 0, 0);
+      this.originalPosition = Point3.ORIGIN;
 
       DragStep dragStep = (DragStep) startInput.getDragAndDropContext();
       DragModel dragModel = dragStep.getModel();
@@ -179,22 +182,17 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
       //We don't need special planes for the orthographic camera
       if (!(this.getCamera() instanceof OrthographicCamera)) {
         setUpPlanes(new Point3(0, 0, 0), startInput.getMouseLocation());
-        Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
-        cameraBackward.y = 0.0;
-        cameraBackward.normalize();
+        Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation().backward().withY(0).normalized();
         if (cameraBackward.isNaN()) {
-          cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
-          cameraBackward.multiply(-1);
-          cameraBackward.y = 0.0;
-          cameraBackward.normalize();
+          cameraBackward = this.camera.getAbsoluteTransformation().orientation().up().negate().withY(0).normalized();
         }
-        OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+        OrthogonalMatrix3x3 facingCameraOrientation = (new ForwardAndUpGuide(cameraBackward, Vector3.POSITIVE_Y_AXIS)).asMatrix3x3();
         this.sgBoundingBoxTransformable.setAxesOnly(facingCameraOrientation, AsSeenBy.SCENE);
         this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
       }
-      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+      this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation();
       AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-      Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
+      Vector3 cameraFacingNormal = cameraTransform.orientation().backward().negate();
       this.orthographicPickPlane = Plane.createInstance(new Point3(0, 0, 0), cameraFacingNormal);
       addPlaneTransitionPointSphereToScene();
 
@@ -209,7 +207,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
         box = new AxisAlignedBox(new Point3(-.5, 0, -.5), new Point3(.5, 1, .5));
       }
 
-      AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
+      AffineMatrix4x4 offsetTransform = AffineMatrix4x4.IDENTITY;
       if (this.sgAxes != null) {
         this.sgAxes.setParent(null);
       }
@@ -218,7 +216,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
         this.sgAxes = new ModestAxes(1.0);
       } else {
         if (placeOnGround) {
-          offsetTransform.translation.y += -box.getMinimum().y;
+          offsetTransform = AffineMatrix4x4.createTranslation(0, -box.minimum().y(), 0);
         }
         this.sgBoundingBoxDecorator.setBox(box);
         this.sgAxes = new ModestAxes(box.getWidth() * .5);
