@@ -42,37 +42,17 @@
  *******************************************************************************/
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import org.lgna.project.ast.*;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
   // this big fancy function returns... some shade of purple or yellow. that's all.  occasionally we go wild and return an orange, but that's pretty rare.
-  @Override
-  public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height) {
-    Color color = this.getColorFor(cls);
-    if (Comment.class.isAssignableFrom(cls)) {
-      return color;
-    } else {
-      if (ClassUtilities.isAssignableToAtLeastOne(cls, DoTogether.class, EachInArrayTogether.class)) {
-        Color colorA = ColorUtilities.scaleHSB(color, 1.0, 0.9, 0.85);
-        Color colorB = ColorUtilities.scaleHSB(color, 1.0, 1.0, 1.15);
-        return new GradientPaint(x, y, colorA, x + 200, y, colorB);
-      } else {
-        return color;
-        //return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
-      }
-    }
-  }
-
   @Override
   public Color getColorFor(Class<? extends Node> cls) {
     if (Statement.class.isAssignableFrom(cls)) {

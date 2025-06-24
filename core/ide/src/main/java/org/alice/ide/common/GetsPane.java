@@ -49,34 +49,13 @@ import org.lgna.croquet.views.Label;
 import org.lgna.project.ast.ExpressionStatement;
 
 import javax.swing.Icon;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GetsPane extends Label {
-  private static Paint createGradientPaint(int width, boolean isReversalDesired) {
-    Color colorStart = ThemeUtilities.getActiveTheme().getColorFor(ExpressionStatement.class);
-    Color colorEnd = colorStart.darker();
-    Color color0;
-    Color color1;
-    if (isReversalDesired) {
-      color0 = colorEnd;
-      color1 = colorStart;
-    } else {
-      color0 = colorStart;
-      color1 = colorEnd;
-    }
-    return new GradientPaint(0.0f, 0.0f, color0, width, 0.0f, color1);
-  }
+  static final Color PAINT_COLOR = ThemeUtilities.getActiveTheme().getColorFor(ExpressionStatement.class);
 
   private GetsPane(boolean isTowardLeadingEdge, int length) {
     this.isTowardLeadingEdge = isTowardLeadingEdge;
@@ -140,7 +119,7 @@ public class GetsPane extends Label {
           Graphics2D g2 = (Graphics2D) g;
           GraphicsUtilities.setRenderingHint(g2, RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-          g2.setPaint(GetsPane.createGradientPaint(width, isReversalDesired));
+          g2.setPaint(GetsPane.PAINT_COLOR);
           g2.fillPolygon(xPoints, yPoints, xPoints.length);
           g2.setColor(Color.GRAY);
           g2.drawPolygon(xPoints, yPoints, xPoints.length);

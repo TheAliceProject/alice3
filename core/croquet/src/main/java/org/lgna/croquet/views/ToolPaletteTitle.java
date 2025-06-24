@@ -42,29 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
 import org.lgna.croquet.BooleanState;
 
-import javax.swing.ButtonModel;
-import javax.swing.JComponent;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -347,26 +332,8 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
           Rectangle r = SwingUtilities.getLocalBounds(c);
           Color background = c.getBackground();
-          RenderingStyle renderingStyle = b.getRenderingStyle();
-          if (renderingStyle.isShaded(buttonModel)) {
-            if (buttonModel.isPressed()) {
-              g2.setPaint(background.darker());
-              g2.fillRect(0, 0, b.getWidth(), b.getHeight());
-            } else {
-              double brightnessScale;
-              if (buttonModel.isRollover()) {
-                brightnessScale = 1.2;
-              } else {
-                brightnessScale = 1.1;
-              }
-              Color HIGHLIGHT_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, brightnessScale);
-              Color SHADOW_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, 0.8);
-              GraphicsUtilities.fillGradientRectangle(g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f);
-            }
-          } else {
-            g2.setPaint(background);
-            g2.fillRect(0, 0, b.getWidth(), b.getHeight());
-          }
+          g2.setColor(background);
+          g2.fillRect(0, 0, b.getWidth(), b.getHeight());
         }
         super.paint(g, c);
       } finally {

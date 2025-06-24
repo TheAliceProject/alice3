@@ -44,11 +44,9 @@ package org.alice.ide;
 
 import org.lgna.project.ast.Code;
 import org.lgna.project.ast.Node;
-import org.lgna.project.ast.Statement;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -64,13 +62,10 @@ public interface Theme {
   public static final Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
   public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
 
-  public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height);
-
   public Color getColorFor(Class<? extends Node> cls);
 
   public Color getColorFor(Node node);
 
   public Color getCodeColor(Code code);
-
 
 }

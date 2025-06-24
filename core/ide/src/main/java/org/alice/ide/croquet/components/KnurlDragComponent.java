@@ -78,14 +78,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     super(model, isAlphaDesiredWhenOverDropReceptor);
   }
 
-  protected Paint getForegroundPaint(int x, int y, int width, int height) {
-    return this.getForegroundColor();
-  }
-
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    return this.getBackgroundColor();
-  }
-
   protected final boolean isKnurlDesired() {
     return this.getModel() != null;
   }
@@ -166,7 +158,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
         Paint prevPaint;
         prevPaint = g2.getPaint();
         try {
-          g2.setPaint(KnurlDragComponent.this.getBackgroundPaint(x, y, width, height));
+          g2.setPaint(KnurlDragComponent.this.getBackgroundColor());
           KnurlDragComponent.this.paintPrologue(g2, x, y, width, height);
         } finally {
           g2.setPaint(prevPaint);
@@ -177,7 +169,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
         this.paintChildren(g);
 
         prevPaint = g2.getPaint();
-        g2.setPaint(KnurlDragComponent.this.getForegroundPaint(x, y, width, height));
+        g2.setPaint(KnurlDragComponent.this.getForegroundColor());
         try {
           KnurlDragComponent.this.paintEpilogue(g2, x, y, width, height);
         } finally {

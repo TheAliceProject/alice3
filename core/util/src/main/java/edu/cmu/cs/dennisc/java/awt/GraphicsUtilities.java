@@ -42,27 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -203,24 +188,8 @@ public class GraphicsUtilities {
     renderTriangle(g, heading, x, y, width, height, false);
   }
 
-  public static void drawTriangle(Graphics g, Heading heading, Dimension size) {
-    drawTriangle(g, heading, 0, 0, size.width, size.height);
-  }
-
-  public static void drawTriangle(Graphics g, Heading heading, Rectangle rect) {
-    drawTriangle(g, heading, rect.x, rect.y, rect.width, rect.height);
-  }
-
   public static void fillTriangle(Graphics g, Heading heading, int x, int y, int width, int height) {
     renderTriangle(g, heading, x, y, width, height, true);
-  }
-
-  public static void fillTriangle(Graphics g, Heading heading, Dimension size) {
-    fillTriangle(g, heading, 0, 0, size.width, size.height);
-  }
-
-  public static void fillTriangle(Graphics g, Heading heading, Rectangle rect) {
-    fillTriangle(g, heading, rect.x, rect.y, rect.width, rect.height);
   }
 
   private static GeneralPath createPath(float x, float y, float width, float height, boolean isTopLeft) {
@@ -245,32 +214,8 @@ public class GraphicsUtilities {
     if (prevClip != null) {
       rv.intersect(new Area(prevClip));
     }
-    rv.subtract(new Area(createPath((float) bounds.getX(), (float) bounds.getY(), (float) bounds.getWidth(), (float) bounds.getHeight(), isTopLeft == false)));
+    rv.subtract(new Area(createPath((float) bounds.getX(), (float) bounds.getY(), (float) bounds.getWidth(), (float) bounds.getHeight(), !isTopLeft)));
     return rv;
-  }
-
-  public static void draw3DRoundRectangle(Graphics g, RoundRectangle2D rr, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke) {
-    Graphics2D g2 = (Graphics2D) g;
-    Paint prevPaint = g2.getPaint();
-    Stroke prevStroke = g2.getStroke();
-    Shape prevClip = g2.getClip();
-    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-    g2.setStroke(stroke);
-    g2.setClip(createClip(prevClip, rr, true));
-    g2.setPaint(topLeftPaint);
-    g2.draw(rr);
-
-    g2.setClip(createClip(prevClip, rr, false));
-    g2.setPaint(bottomRightPaint);
-    g2.draw(rr);
-
-    g2.setClip(prevClip);
-    g2.setStroke(prevStroke);
-    g2.setPaint(prevPaint);
-
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 
   public static void draw3DishShape(Graphics g, Shape shape, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke) {
@@ -297,45 +242,4 @@ public class GraphicsUtilities {
     }
   }
 
-  public static void fillGradientRectangle(Graphics g, Rectangle rect, Color colorA, float yA, Color colorB, float yB, Color colorC, float yC, Color colorD, float yD) {
-    Graphics2D g2 = (Graphics2D) g;
-    Shape prevClip = g2.getClip();
-    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
-
-    try {
-      gc.pushClip();
-      gc.pushPaint();
-
-      int x = 0;
-      int y0 = rect.y;
-      int y1 = y0 + rect.height;
-      int yCenter = y1 / 2;
-
-      GradientPaint paintTop = new GradientPaint(x, y0 + (yA * rect.height), colorA, x, y0 + (yB * rect.height), colorB);
-
-      Area topArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, rect.y, rect.width, yCenter - rect.y));
-      g2.setClip(topArea);
-      g2.setPaint(paintTop);
-      g2.fill(rect);
-
-      GradientPaint paintBottom = new GradientPaint(x, y0 + (yC * rect.height), colorC, x, y0 + (yD * rect.height), colorD);
-      Area bottomArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, yCenter, rect.width, y1 - yCenter));
-      g2.setClip(bottomArea);
-      g2.setPaint(paintBottom);
-      g2.fill(rect);
-    } finally {
-      gc.popAll();
-    }
-
-  }
-
-  public static void fillGradientRectangle(Graphics g, Rectangle rect, Color colorTop, Color colorInner, Color colorBottom, float portion) {
-    fillGradientRectangle(g, rect, colorTop, 0.0f, colorInner, portion, colorInner, 1.0f - portion, colorBottom, 1.0f);
-  }
-
-  public static void paintIconCentered(Icon icon, Component c, Graphics g) {
-    int x = (c.getWidth() - icon.getIconWidth()) / 2;
-    int y = (c.getHeight() - icon.getIconHeight()) / 2;
-    icon.paintIcon(c, g, x, y);
-  }
 }

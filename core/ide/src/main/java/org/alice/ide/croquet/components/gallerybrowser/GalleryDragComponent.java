@@ -45,7 +45,6 @@ package org.alice.ide.croquet.components.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
@@ -64,17 +63,13 @@ import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.triggers.MouseEventTrigger;
-import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.VerticalAlignment;
-import org.lgna.croquet.views.VerticalTextPosition;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -86,10 +81,7 @@ import java.util.List;
  */
 public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   private final Color baseColor;
-  private final Color highlightColor;
-  private final Color shadowColor;
-  private final Color activeHighlightColor;
-  private final Color activeShadowColor;
+  private final Color activeColor;
 
   private final SingleSelectTreeState<ResourceNode> controller;
 
@@ -131,22 +123,13 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 
     if (model.isUserDefinedModel()) {
       this.baseColor = ColorUtilities.scaleHSB(UIManager.getColor("Alice.Constructor.Color"), 1.0, 2.0, 1.0);
-      this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-      this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-      this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-      this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
+      this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     } else if (model.isInstanceCreator()) {
       this.baseColor = UIManager.getColor("Alice.Constructor.Color");
-      this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-      this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-      this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-      this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
+      this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     } else {
       this.baseColor = ColorUtilities.createGray(191);
-      this.highlightColor = ColorUtilities.createGray(221);
-      this.shadowColor = ColorUtilities.createGray(171);
-      this.activeHighlightColor = ColorUtilities.createGray(255);
-      this.activeShadowColor = ColorUtilities.createGray(181);
+      this.activeColor = ColorUtilities.createGray(255);
     }
     if (!model.isBreadcrumbButtonIconDesired()) {
       ResourceKey resourceKey = model.getResourceKey();
@@ -163,10 +146,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     controller = null;
 
     this.baseColor = UIManager.getColor("Alice.Constructor.Color");
-    this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-    this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-    this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-    this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
+    this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
 
     Label label = new Label(PlusIconFactory.getInstance().getIconToFit(Theme.SMALL_SQUARE_ICON_SIZE));
     label.setToolTipText(model.getTypeSummaryToolTipText());
@@ -186,10 +166,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     controller = null;
 
     this.baseColor = UIManager.getColor("Alice.Constructor.Color");
-    this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-    this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-    this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-    this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
+    this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
 
     setupDisplay(model);
   }
@@ -365,24 +342,12 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     int yA = y + (height / 3);
     int yB = y1 - (height / 3);
 
-    Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
-    Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
-
-    GradientPaint paintTop = new GradientPaint(x, y, highlightColor, x, yA, shadowColor);
-    GradientPaint paintBottom = new GradientPaint(x, yB, shadowColor, x, y1, highlightColor);
-
+    Color c = this.isActive() ? this.activeColor : this.baseColor;
     Paint prevPaint = g2.getPaint();
     Shape prevClip = g2.getClip();
 
     try {
-      Area topArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, y, width, yCenter - y));
-      g2.setClip(topArea);
-      g2.setPaint(paintTop);
-      g2.fill(shape);
-
-      Area bottomArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, yCenter, width, y1 - yCenter));
-      g2.setClip(bottomArea);
-      g2.setPaint(paintBottom);
+      g2.setPaint(c);
       g2.fill(shape);
     } finally {
       g2.setClip(prevClip);

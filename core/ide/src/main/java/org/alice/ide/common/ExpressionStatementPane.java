@@ -59,7 +59,6 @@ import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -73,13 +72,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
   }
 
   @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
+  public Color getBackgroundColor() {
     final ExpressionStatement expressionStatement = (ExpressionStatement) getStatement();
     Expression expression = expressionStatement.expression.getValue();
     if (expression instanceof MethodInvocation && !expression.isValid()) {
       return Color.RED;
     }
-    return super.getBackgroundPaint(x, y, width, height);
+    return super.getBackgroundColor();
   }
 
   @Override

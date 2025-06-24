@@ -42,28 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import org.alice.ide.ast.EmptyExpression;
 import org.lgna.croquet.views.Label;
 import org.lgna.project.ast.AbstractType;
 
+import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
-  private static final Color BACKGROUND_COLOR = new Color(180, 180, 220);
-  private static final Color TOP_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f);
-  private static final Color BOTTOM_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f);
+  private static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Expression.Background.Color");
+
   private final EmptyExpression emptyExpression;
 
   public EmptyExpressionPane(EmptyExpression emptyExpression) {
     super(null);
     this.emptyExpression = emptyExpression;
     Label label = new Label(" ??? ");
+    label.setForegroundColor(UIManager.getColor("Alice.Block.Foreground.Color.contrast"));
     this.addComponent(label);
   }
 
@@ -73,8 +71,8 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
   }
 
   @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    return new GradientPaint(0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR);
+  public Color getBackgroundColor() {
+    return BACKGROUND_COLOR;
   }
 
   @Override

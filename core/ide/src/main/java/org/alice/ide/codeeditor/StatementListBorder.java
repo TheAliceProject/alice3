@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade;
 import org.lgna.project.ast.StatementListProperty;
 
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -54,7 +55,6 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.FontMetrics;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -64,6 +64,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
+ * placeholder "drop statement here" that appears in new code blocks
  * @author Dennis Cosgrove
  */
 public class StatementListBorder implements Border {
@@ -71,10 +72,6 @@ public class StatementListBorder implements Border {
   private static final String[] TEXTS = {null, null};
   private static final int LONGER_INDEX = 1;
   private static final Stroke SOLID_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-  private static final Color HIGHLIGHT_COLOR = new Color(255, 255, 220);
-  private static final Color SHADOW_COLOR = new Color(63, 63, 63);
-  private static final Color TOP_COLOR = new Color(0, 0, 0, 63);
-  private static final Color BOTTOM_COLOR = new Color(191, 191, 191, 63);
 
   private static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {9.0f, 3.0f}, 0);
 
@@ -213,10 +210,8 @@ public class StatementListBorder implements Border {
           } else {
 
             RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-            g2.setPaint(new GradientPaint(0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR));
+            g2.setPaint(UIManager.getColor("Alice.Procedure.Color"));
             g2.fill(rr);
-
-            GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
           }
           g.setColor(Color.BLACK);
           Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
@@ -231,7 +226,7 @@ public class StatementListBorder implements Border {
           g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
         } else {
           RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-          g2.setPaint(BOTTOM_COLOR);
+          g2.setPaint(UIManager.getColor("Alice.Procedure.Color"));
           g2.fill(rr);
         }
         g.translate(-dx, -dy);

@@ -185,7 +185,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
     } else {
       BevelState bevelState = BevelState.FLUSH;
       BeveledShape beveledShape = createBoundsShape(x, y, width, height);
-      g2.setPaint(this.getBackgroundPaint(x, y, width, height));
+      g2.setPaint(this.getBackgroundColor());
       beveledShape.paint(g2, bevelState, 3.0f, 1.0f, 1.0f);
     }
   }

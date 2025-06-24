@@ -45,14 +45,9 @@ package org.alice.ide.x.components;
 import org.alice.ide.ThemeUtilities;
 import org.alice.ide.common.ExpressionLikeSubstance;
 import org.alice.ide.x.AstI18nFactory;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.InfixExpression;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LogicalComplement;
+import org.lgna.project.ast.*;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
@@ -73,12 +68,12 @@ public class AbstractExpressionView<E extends Expression> extends ExpressionLike
   }
 
   @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    Paint validPaint = super.getBackgroundPaint(x, y, width, height);
+  public Color getBackgroundColor() {
+    Color validColor = super.getBackgroundColor();
     if ((this.expression != null) && this.expression.isValid()) {
-      return validPaint;
+      return validColor;
     } else {
-      return this.factory.getInvalidExpressionPaint(validPaint, x, y, width, height);
+      return this.factory.getInvalidExpressionColor(validColor);
     }
   }
 

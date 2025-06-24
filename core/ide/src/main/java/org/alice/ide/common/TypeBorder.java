@@ -42,21 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import org.alice.ide.ThemeUtilities;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.TypeExpression;
 
+import javax.swing.UIManager;
 import javax.swing.border.Border;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Paint;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -65,18 +58,14 @@ import java.awt.geom.GeneralPath;
 public class TypeBorder implements Border {
   private static final int X_INSET = 8;
   private static final int Y_INSET = 2;
-  private static Insets insets = new Insets(Y_INSET, X_INSET, Y_INSET, X_INSET);
-  private static Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor(TypeExpression.class);
-  private static Color FILL_BRIGHTER_COLOR = ColorUtilities.scaleHSB(FILL_COLOR, 1.0, 0.5, 1.4);
-  private static Color FILL_DARKER_COLOR = ColorUtilities.scaleHSB(FILL_COLOR, 1.0, 1.0, 0.8);
+  private static final Insets insets = new Insets(Y_INSET, X_INSET, Y_INSET, X_INSET);
+  private static final Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor(TypeExpression.class);
+  private static final java.awt.Color NULL_COLOR = java.awt.Color.RED;
 
-  //private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
-  //private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
-
-  private static Color OUTLINE_COLOR = Color.GRAY;
-  private static TypeBorder singletonForUser = new TypeBorder(true);
-  private static TypeBorder singletonForJava = new TypeBorder(false);
-  private static TypeBorder singletonForNull = new TypeBorder(null);
+  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.Block.Foreground.Color");
+  private static final TypeBorder singletonForUser = new TypeBorder(true);
+  private static final TypeBorder singletonForJava = new TypeBorder(false);
+  private static final TypeBorder singletonForNull = new TypeBorder(null);
 
   public static TypeBorder getSingletonFor(AbstractType<?, ?, ?> type) {
     if (type != null) {
@@ -94,14 +83,6 @@ public class TypeBorder implements Border {
     return singletonForUser;
   }
 
-  public static TypeBorder getSingletonForJavaType() {
-    return singletonForJava;
-  }
-
-  public static TypeBorder getSingletonForNull() {
-    return singletonForNull;
-  }
-
   private Boolean isDeclaredByUser;
 
   private TypeBorder(Boolean isDeclaredByUser) {
@@ -113,29 +94,20 @@ public class TypeBorder implements Border {
   private Paint paintPrevious = null;
 
   private Paint getFillPaint(Component c, int x, int y, int width, int height) {
-    if (c.isEnabled()) {
-      if ((y == this.yPrevious) && (height == this.heightPrevious)) {
-        //pass
-      } else {
-        this.yPrevious = y;
-        this.heightPrevious = height;
-        if (isDeclaredByUser != null) {
-          if (isDeclaredByUser) {
-            this.paintPrevious = new GradientPaint(0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR);
-          } else {
-            this.paintPrevious = new GradientPaint(0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR);
-          }
-        } else {
-          //this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
-          //this.paintPrevious = java.awt.Color.GRAY;
-          //this.paintPrevious = java.awt.Color.RED.darker();
-          this.paintPrevious = Color.RED;
-        }
-      }
-      return this.paintPrevious;
-    } else {
-      return Color.RED;
+    if (!c.isEnabled()) {
+      return NULL_COLOR;
     }
+
+    if ((y != this.yPrevious) || (height != this.heightPrevious)) {
+      this.yPrevious = y;
+      this.heightPrevious = height;
+      if (isDeclaredByUser != null) {
+        this.paintPrevious = FILL_COLOR;
+      } else {
+        this.paintPrevious = NULL_COLOR;
+      }
+    }
+      return this.paintPrevious;
   }
 
   @Override
