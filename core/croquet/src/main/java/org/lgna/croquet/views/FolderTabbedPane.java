@@ -75,9 +75,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -123,10 +121,8 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
       if (button.getComponentCount() > 0) {
         for (Component component : button.getComponents()) {
-          //if( component.isVisible() ) {
           size.width += 4;
           size.width += component.getPreferredSize().width;
-          //}
         }
       }
 
@@ -155,12 +151,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
   }
 
   private static class JFolderTabTitle extends JToggleButton {
-    private ItemListener itemListener = new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        JFolderTabTitle.this.revalidate();
-      }
-    };
+    private final ItemListener itemListener = e -> JFolderTabTitle.this.revalidate();
 
     public JFolderTabTitle() {
       this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 8));
@@ -211,12 +202,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
       super(booleanState);
 
       if (item.isPotentiallyCloseable()) {
-        ActionListener closeButtonActionListener = new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement(item);
-          }
-        };
+        ActionListener closeButtonActionListener = e -> FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement(item);
         this.closeButton = new JCloseButton(true);
         this.closeButton.addActionListener(closeButtonActionListener);
       } else {
@@ -247,26 +233,15 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
     @Override
     protected javax.swing.AbstractButton createAwtComponent() {
-      JFolderTabTitle rv = new JFolderTabTitle();
-      //    {
-      //      @Override
-      //      public void setComponentOrientation(java.awt.ComponentOrientation componentOrientation) {
-      //        super.setComponentOrientation(componentOrientation);
-      //        edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring based on ", componentOrientation );
-      //      }
-      //    };
-      return rv;
+      return new JFolderTabTitle();
     }
   }
 
   private static Color SELECTED_BORDER_COLOR = ColorUtilities.createGray(221);
-  //private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
   private static Color UNSELECTED_BORDER_COLOR = Color.DARK_GRAY;
 
   protected static class TitlesPanel extends LineAxisPanel {
     private static final int NORTH_AREA_PAD = 1;
-    // private static java.awt.Stroke SELECTED_STROKE = new
-    // java.awt.BasicStroke( 3.0f );
     private static Stroke SELECTED_STROKE = new BasicStroke(1.0f);
     private static Stroke UNSELECTED_STROKE = new BasicStroke(2.0f);
 
@@ -381,8 +356,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         final int N = components.length;
         for (int i = 0; i < N; i++) {
           Component component = components[N - 1 - i];
-          if (component instanceof javax.swing.AbstractButton) {
-            javax.swing.AbstractButton button = (javax.swing.AbstractButton) component;
+          if (component instanceof javax.swing.AbstractButton button) {
             if (button.isSelected()) {
               selectedButton = button;
             } else {

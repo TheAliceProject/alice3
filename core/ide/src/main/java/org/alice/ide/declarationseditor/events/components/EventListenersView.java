@@ -74,19 +74,6 @@ public class EventListenersView extends AbstractCodeDeclarationView {
     LineAxisPanel bottom = new LineAxisPanel(button);
     this.stickyBottomPanel = new StickyBottomPanel();
     this.stickyBottomPanel.setBottomView(bottom);
-    //    this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
-    //      public void stateChanged( javax.swing.event.ChangeEvent e ) {
-    //        Object src = e.getSource();
-    //        if( src instanceof java.awt.Component ) {
-    //          java.awt.Component awtComponent = (java.awt.Component)src;
-    //          if( awtComponent.isValid() ) {
-    //            //pass
-    //          } else {
-    //            stickyBottomPanel.revalidateAndRepaint();
-    //          }
-    //        }
-    //      }
-    //    } );
 
     this.stickyBottomPanel.setBackgroundColor(this.getBackgroundColor());
     this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
@@ -137,7 +124,6 @@ public class EventListenersView extends AbstractCodeDeclarationView {
   protected void handleUndisplayable() {
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
-    //
 
     CodeComposite codeComposite = (CodeComposite) this.getComposite();
     UserCode userCode = (UserCode) codeComposite.getDeclaration();

@@ -52,24 +52,6 @@ import javax.swing.UIManager;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarView extends MigPanel {
-  //  protected static class ViewConstraitsPair {
-  //  private final JComponent<?> view;
-  //  private final String constraints;
-  //
-  //  public ViewConstraitsPair( JComponent<?> view, String constraints ) {
-  //    this.view = view;
-  //    this.constraints = constraints;
-  //  }
-  //
-  //  public JComponent<?> getView() {
-  //    return this.view;
-  //  }
-  //
-  //  public String getConstraints() {
-  //    return this.constraints;
-  //  }
-  //  }
-
   public ToolBarView(ToolBarComposite composite) {
     super(composite, "insets 0 0 2 0, gap 0", "", "");
     String constraints = "";
