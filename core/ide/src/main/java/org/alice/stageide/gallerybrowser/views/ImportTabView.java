@@ -121,10 +121,6 @@ public class ImportTabView extends GalleryTabView {
     ScrollPane scrollPane = createGalleryScrollPane(this.dragComponentsView);
     panel.addComponent(scrollPane, "span 4, wrap");
     this.addCenterComponent(panel);
-    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-    this.dragComponentsView.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-    this.notDirectoryLabel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-    this.noFilesLabel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
   }
 
   private void handleDirectoryChanged() {

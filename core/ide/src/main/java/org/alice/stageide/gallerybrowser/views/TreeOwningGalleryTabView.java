@@ -95,11 +95,6 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
     BorderPanel panel = new BorderPanel.Builder().vgap(PAD).pageStart(new TreePathViewController(state, null)).center(scrollPane).build();
 
     this.addCenterComponent(panel);
-
-    //todo
-    view.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-    panel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
   }
 
   @Override

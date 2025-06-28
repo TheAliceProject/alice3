@@ -56,7 +56,6 @@ import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.CheckBox;
-import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.Hyperlink;
 import org.lgna.croquet.views.ImmutableTextArea;
 import org.lgna.croquet.views.Label;
@@ -169,6 +168,5 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
     this.addCenterComponent(pageAxisPanel);
 
     this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
   }
 }

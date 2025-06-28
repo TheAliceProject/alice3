@@ -88,7 +88,6 @@ import java.util.UUID;
  */
 public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbedPane<E> {
   private static final int TRAILING_TAB_PAD = 32;
-  public static final Color DEFAULT_BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color").darker();
 
   private static class FolderTabTitleUI extends BasicToggleButtonUI {
     @Override
@@ -537,10 +536,6 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
   public FolderTabbedPane(TabState<E, ?> model) {
     super(model);
     CardOwnerComposite cardOwner = this.getCardOwner();
-    cardOwner.getView().setBackgroundColor(null);
-    this.innerHeaderPanel.setBackgroundColor(null);
-    this.titlesPanel.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-    this.titlesScrollPane.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     this.titlesScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
     this.titlesScrollPane.setVerticalScrollbarPolicy(ScrollPane.VerticalScrollbarPolicy.NEVER);
 
@@ -584,7 +579,6 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         }
       }
     });
-    this.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     PopupOperation popupOperation = new PopupOperation();
     this.setInnerHeaderTrailingComponent(new PopupButton(popupOperation));
 

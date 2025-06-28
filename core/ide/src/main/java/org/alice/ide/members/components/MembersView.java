@@ -55,14 +55,9 @@ import org.alice.ide.members.MembersComposite;
 import org.alice.ide.recyclebin.RecycleBin;
 import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
 import org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon;
-import org.lgna.croquet.AbstractDropReceptor;
-import org.lgna.croquet.DragModel;
-import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.*;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.AbstractType;
@@ -70,12 +65,7 @@ import org.lgna.project.ast.Statement;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -242,13 +232,6 @@ public class MembersView extends BorderPanel {
   public MembersView(MembersComposite composite) {
     super(composite);
     InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
-    //    org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-    //    instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
-    //    instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-    //    instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
-    //
-    //    this.addPageStartComponent( instancePanel );
-    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
     this.addPageStartComponent(instanceFactoryPopupButton);
     this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
   }
