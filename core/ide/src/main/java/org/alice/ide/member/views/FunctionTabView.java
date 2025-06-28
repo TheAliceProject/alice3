@@ -47,6 +47,7 @@ import org.alice.ide.member.FunctionTabComposite;
 import javax.swing.UIManager;
 
 /**
+ * this is the tab that appears on the left with functions we can drag in
  * @author Dennis Cosgrove
  */
 public class FunctionTabView extends MemberTabView {

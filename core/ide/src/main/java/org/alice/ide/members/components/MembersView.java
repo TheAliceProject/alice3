@@ -51,6 +51,7 @@ import org.alice.ide.ast.delete.DeleteStatementOperation;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
+import org.alice.ide.member.MemberOrControlFlowTabComposite;
 import org.alice.ide.members.MembersComposite;
 import org.alice.ide.recyclebin.RecycleBin;
 import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
@@ -58,6 +59,7 @@ import org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon;
 import org.lgna.croquet.*;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.AbstractType;
@@ -65,6 +67,7 @@ import org.lgna.project.ast.Statement;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -233,7 +236,9 @@ public class MembersView extends BorderPanel {
     super(composite);
     InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
     this.addPageStartComponent(instanceFactoryPopupButton);
-    this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
+    FolderTabbedPane<MemberOrControlFlowTabComposite<?>> tabs = composite.getTabState().createFolderTabbedPane();
+    tabs.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    this.addCenterComponent(tabs);
   }
 
   @Override
