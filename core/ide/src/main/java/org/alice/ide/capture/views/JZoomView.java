@@ -44,17 +44,8 @@ package org.alice.ide.capture.views;
 
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JRootPane;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
@@ -66,7 +57,7 @@ public class JZoomView extends JComponent {
   private MouseEvent e;
 
   public JZoomView() {
-    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
+    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, UIManager.getColor("Separator.foreground")));
   }
 
   @Override

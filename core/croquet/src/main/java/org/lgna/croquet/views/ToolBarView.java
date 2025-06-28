@@ -43,17 +43,10 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Composite;
-import org.lgna.croquet.Element;
-import org.lgna.croquet.GapToolBarSeparator;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.PlainStringValue;
-import org.lgna.croquet.PushToolBarSeparator;
-import org.lgna.croquet.SingleSelectListState;
-import org.lgna.croquet.ToolBarComposite;
+import org.lgna.croquet.*;
 
 import javax.swing.BorderFactory;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -84,9 +77,8 @@ public abstract class ToolBarView extends MigPanel {
       constraints = this.addViewForElement(element, constraints);
     }
 
-    this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
-    //this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-  }
+    this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,  UIManager.getColor("Separator.foreground")));
+ }
 
   protected String addViewForElement(Element element, String constraints) {
     String nextConstraints;

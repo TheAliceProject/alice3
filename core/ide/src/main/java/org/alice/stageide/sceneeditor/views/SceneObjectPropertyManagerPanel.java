@@ -43,14 +43,6 @@
 
 package org.alice.stageide.sceneeditor.views;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.IDE;
@@ -67,44 +59,27 @@ import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
-import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
-import org.alice.stageide.properties.GroundOpacityAdapter;
-import org.alice.stageide.properties.ModelOpacityAdapter;
-import org.alice.stageide.properties.ModelSizeAdapter;
-import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
-import org.alice.stageide.properties.MutableRiderVehicleAdapter;
-import org.alice.stageide.properties.PaintPropertyAdapter;
-import org.alice.stageide.properties.ResourcePropertyAdapter;
-import org.alice.stageide.properties.TextFontPropertyAdapter;
-import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.properties.*;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.State;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.GridBagPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.MutableRider;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThing;
+import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 import org.lgna.story.resources.JointedModelResource;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private InstanceFactory selectedInstance;
@@ -393,7 +368,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
           if (selectedField != null) {
             SwingComponentView<?> initializerComponent = new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false);
-            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
 
             this.addComponent(initializerComponent, new GridBagConstraints(0, //gridX
                                                                            mainPropertyCount++, //gridY

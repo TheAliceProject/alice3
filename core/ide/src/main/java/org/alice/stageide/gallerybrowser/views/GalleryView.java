@@ -48,6 +48,7 @@ import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FolderTabbedPane;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -59,6 +60,6 @@ public final class GalleryView extends BorderPanel {
   public GalleryView(GalleryComposite composite) {
     super(composite);
     this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
-    this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.WHITE));
+    this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("Separator.foreground")));
   }
 }

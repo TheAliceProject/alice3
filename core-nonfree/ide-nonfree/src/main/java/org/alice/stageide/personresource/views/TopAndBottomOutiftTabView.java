@@ -52,6 +52,7 @@ import org.lgna.story.resources.sims2.BottomPiece;
 import org.lgna.story.resources.sims2.TopPiece;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -67,7 +68,7 @@ public class TopAndBottomOutiftTabView extends OutfitTabView {
     ScrollPane topScrollPane = new ScrollPane(topList);
     topScrollPane.setBothScrollBarIncrements(66, 66);
     topScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
-    topScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+    topScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
 
     List<BottomPiece> bottomList = new HorizontalWrapList<BottomPiece>(composite.getBottomPieceState(), -1, BottomPieceListCellRenderer.getInstance());
     bottomList.setBackgroundColor(backgroundColor);
