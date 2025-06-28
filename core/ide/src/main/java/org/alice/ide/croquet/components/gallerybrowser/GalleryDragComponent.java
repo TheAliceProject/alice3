@@ -81,6 +81,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
 /**
+ * Popup that appears when adding a model via a drag in from the gallery
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {

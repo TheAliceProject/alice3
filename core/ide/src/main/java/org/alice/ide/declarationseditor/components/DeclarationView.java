@@ -64,7 +64,6 @@ public abstract class DeclarationView extends BorderPanel {
   public DeclarationView(DeclarationComposite composite) {
     super(composite);
     this.javaCodeView = new JavaCodeView(composite.getDeclaration());
-    this.sideBySideScrollPane.setBackgroundColor(this.getBackgroundColor());
     this.sideBySideScrollPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
   }
 

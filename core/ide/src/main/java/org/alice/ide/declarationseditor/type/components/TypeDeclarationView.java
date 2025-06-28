@@ -70,14 +70,18 @@ import javax.swing.*;
 import java.util.List;
 
 /**
+ * This is the Scene tab at the top of alice
  * @author Dennis Cosgrove
  */
 public class TypeDeclarationView extends DeclarationView {
   public TypeDeclarationView(TypeComposite composite) {
     super(composite);
+
     NamedUserType type = (NamedUserType) composite.getDeclaration();
     Theme theme = ThemeUtilities.getActiveTheme();
-    this.setBackgroundColor(UIManager.getColor("Alice.Type.Color.muted"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Type.Color"));
+
+    typePanel.setBackgroundColor(this.getBackgroundColor());
 
     ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
     constructorsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Constructor.Color"));
@@ -94,7 +98,7 @@ public class TypeDeclarationView extends DeclarationView {
     for (ToolPaletteView toolPalette : new ToolPaletteView[] {constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette}) {
       toolPalette.getTitle().changeFont(TextPosture.OBLIQUE);
       toolPalette.getTitle().scaleFont(1.4f);
-      toolPalette.getTitle().setRoundedOnTop(true);
+      toolPalette.getTitle().setRoundedOnTop(false);
       toolPalette.getCenterView().setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
     }
 
@@ -108,14 +112,7 @@ public class TypeDeclarationView extends DeclarationView {
     membersPanel.addComponent(functionsToolPalette);
     membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
     membersPanel.addComponent(fieldsToolPalette);
-    membersPanel.setBorder(BorderFactory.createEmptyBorder(12, 24, 0, 0));
-    membersPanel.setBackgroundColor(this.getBackgroundColor());
-
-    outerMainPanel.setBackgroundColor(this.getBackgroundColor());
-    typePanel.setBackgroundColor(this.getBackgroundColor());
-
-    scrollPane.setBorder(null);
-    scrollPane.setBackgroundColor(this.getBackgroundColor());
+    membersPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
 
     TypeHeader typeHeader = new TypeHeader(type);
 

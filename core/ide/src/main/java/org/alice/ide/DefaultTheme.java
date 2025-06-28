@@ -120,8 +120,7 @@ public class DefaultTheme implements Theme {
   @Override
   public Color getColorFor(Node node) {
     if (node != null) {
-      if (node instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) node;
+      if (node instanceof AbstractMethod method) {
         if (method.isProcedure()) {
           return UIManager.getColor("Alice.Procedure.Color");
         } else {
@@ -144,12 +143,11 @@ public class DefaultTheme implements Theme {
     }
   }
 
-  // cute little bit of color on the very outermost edge of the coding area that shows what we're writing. subtle and
-  // adorbs, completely overshadowed by the giant do in order that is always there.
+  // cute little bit of color on tab/the very outermost edge of the coding area that shows what we're writing
+
   @Override
   public Color getCodeColor(Code code) {
-    if (code instanceof UserMethod) {
-      UserMethod userMethod = (UserMethod) code;
+    if (code instanceof UserMethod userMethod) {
       if (userMethod.isProcedure()) {
         return UIManager.getColor("Alice.Procedure.Color");
       } else {
