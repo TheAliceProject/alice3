@@ -59,6 +59,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * this is the method name at the top of the coding window
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
@@ -133,7 +134,6 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
           return getPreferredSize();
         }
       };
-      rv.setBackground(null);
       rv.setOpaque(false);
       rv.setLayout(new BorderLayout());
       rv.add(centerComponent.getAwtComponent(), BorderLayout.CENTER);

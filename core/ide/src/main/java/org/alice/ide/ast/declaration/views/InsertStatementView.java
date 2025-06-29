@@ -49,6 +49,7 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Statement;
 
 /**
+ * popup window when creating a new variable/constant
  * @author Dennis Cosgrove
  */
 public class InsertStatementView extends DeclarationLikeSubstanceView {

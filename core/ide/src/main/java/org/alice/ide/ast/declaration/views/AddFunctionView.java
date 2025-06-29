@@ -47,6 +47,7 @@ import org.alice.ide.ast.declaration.AddFunctionComposite;
 import javax.swing.UIManager;
 
 /**
+ * Popup window for creating a new function
  * @author Dennis Cosgrove
  */
 public class AddFunctionView extends AddMethodView {

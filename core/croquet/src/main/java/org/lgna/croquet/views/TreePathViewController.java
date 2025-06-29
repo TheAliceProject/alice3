@@ -56,6 +56,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 /**
+ * this is the thing at the top of the gallery that lets us navigate up and down through classes of models
  * @author Dennis Cosgrove
  */
 public class TreePathViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
@@ -166,7 +167,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 
     public InternalPanel(Color breadCrumbColor) {
       this.breadCrumbColor = breadCrumbColor;
-      this.setBackgroundColor(null);
     }
 
     @Override
@@ -206,7 +206,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 
   public TreePathViewController(SingleSelectTreeState<T> model, Color breadCrumbColor) {
     super(model, new InternalPanel<T>(breadCrumbColor));
-    this.setBackgroundColor(null);
     this.setSwingTreeSelectionModel(model.getSwingModel().getTreeSelectionModel());
   }
 

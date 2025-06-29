@@ -47,6 +47,7 @@ import org.alice.ide.ast.declaration.AddProcedureComposite;
 import javax.swing.UIManager;
 
 /**
+ * Popup window for creating a new procedure
  * @author Dennis Cosgrove
  */
 public class AddProcedureView extends AddMethodView {

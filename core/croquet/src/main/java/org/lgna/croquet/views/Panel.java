@@ -59,7 +59,6 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
   protected class DefaultJPanel extends JPanel {
     public DefaultJPanel() {
       this.setOpaque(false);
-      this.setBackground(null);
       this.setAlignmentX(Component.LEFT_ALIGNMENT);
       this.setAlignmentY(Component.CENTER_ALIGNMENT);
     }

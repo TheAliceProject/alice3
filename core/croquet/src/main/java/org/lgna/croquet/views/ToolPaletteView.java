@@ -130,6 +130,7 @@ class ToolPaletteLayout implements LayoutManager {
 }
 
 /**
+ * This is so many things- the list of procedures and functions, everything listed on the Scene tab.
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {
@@ -180,7 +181,9 @@ public final class ToolPaletteView extends Panel {
 
   @Override
   public void setBackgroundColor(Color color) {
-    super.setBackgroundColor(null);
+    super.setBackgroundColor(null); // transparent
+
+    // just pass this color on to the children
     for (AwtComponentView<?> component : this.getComponents()) {
       component.setBackgroundColor(color);
     }

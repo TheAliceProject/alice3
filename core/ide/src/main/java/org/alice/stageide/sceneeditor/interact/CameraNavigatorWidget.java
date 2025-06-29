@@ -56,17 +56,14 @@ import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCamer
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraStrafe;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraTurnUpDown;
 import org.alice.stageide.sceneeditor.interact.handles.ManipulationHandle2DCameraZoom;
-import org.alice.stageide.sceneeditor.interact.manipulators.Camera2DDragDriveManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.Camera2DDragStrafeManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.Camera2DDragUpDownRotateManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragStrafeManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
+import org.alice.stageide.sceneeditor.interact.manipulators.*;
 import org.lgna.croquet.views.LineAxisPanel;
 
 import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
 
 /**
+ * these are the purple arrows at the bottom of the scenegraph
  * @author David Culyba
  */
 public class CameraNavigatorWidget extends LineAxisPanel {
@@ -77,9 +74,6 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 
   public CameraNavigatorWidget(DragAdapter dragAdapter, CameraView attachedView) {
     super();
-
-    //this.setLayout( new FlowLayout() );
-    this.setBackgroundColor(null); //transparent
 
     //CAMERA DRIVER
     //Create the new handle

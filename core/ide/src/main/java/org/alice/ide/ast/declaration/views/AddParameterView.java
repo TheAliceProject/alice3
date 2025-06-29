@@ -63,6 +63,8 @@ import javax.swing.UIManager;
 import java.util.List;
 
 /**
+ * Popup window for creating a new Parameter
+ * TODO: figure out the difference between managed/unmanaged fields/parameters
  * @author Dennis Cosgrove
  */
 public class AddParameterView extends DeclarationView<UserParameter> {
