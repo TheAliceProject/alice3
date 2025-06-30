@@ -49,7 +49,6 @@ import org.lgna.croquet.StringState;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.JTextComponent;
-import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -80,7 +79,6 @@ public abstract class TextComponent<J extends JTextComponent> extends ViewContro
     jTextComponent.setBorder(this.border);
     jTextComponent.setEnabled(model.isEnabled());
     this.setMargin(new Insets(4, 4, 2, 2));
-    this.setBackgroundColor(new Color(255, 255, 221));
   }
 
   public boolean isEditable() {

@@ -53,8 +53,6 @@ import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethodContainedByUserField;
 import org.lgna.project.ast.Declaration;
 
-import java.awt.Color;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -66,7 +64,6 @@ public class DeclarationNameLabel extends Label {
   public DeclarationNameLabel(AbstractDeclaration declaration) {
     this.declaration = declaration;
     this.updateText();
-    this.setForegroundColor(Color.BLACK);
   }
 
   public DeclarationNameLabel(AbstractDeclaration declaration, float fontScaleFactor) {

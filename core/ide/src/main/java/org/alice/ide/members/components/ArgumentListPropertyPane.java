@@ -59,6 +59,7 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
 import java.awt.Color;
 
 /**
+ * these are the boxes and labels  that go around values that can be set.
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
