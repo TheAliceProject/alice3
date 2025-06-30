@@ -58,7 +58,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
 
   @Override
   public String getUndoRedoDescription() {
-    return "Object Move";
+    return "TranslateKey - Object Move";
   }
 
   @Override

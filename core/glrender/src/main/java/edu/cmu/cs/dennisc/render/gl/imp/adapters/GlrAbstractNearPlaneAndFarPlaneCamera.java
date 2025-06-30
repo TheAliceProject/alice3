@@ -56,7 +56,7 @@ public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends AbstractNe
   protected abstract void setupProjection(Context context, Rectangle actualViewport, float near, float far);
 
   @Override
-  protected void setupProjection(Context context, Rectangle actualViewport) {
+  public void setupProjection(Context context, Rectangle actualViewport) {
     setupProjection(context, actualViewport, this.near, this.far);
   }
 

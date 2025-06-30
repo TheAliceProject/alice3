@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
 import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
-import org.alice.ide.member.views.UserMethodsSubView;
+import org.alice.ide.member.views.MethodsSubView;
 import org.lgna.croquet.Operation;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.ManagementLevel;
@@ -66,19 +66,6 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
   private final NamedUserType type;
   private final Operation addMethodOperation;
 
-  private final ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<UserMethod>() {
-    @Override
-    protected void changed(ListPropertyEvent<UserMethod> e) {
-      getView().refreshLater();
-    }
-  };
-  private final ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<UserField>() {
-    @Override
-    protected void changed(ListPropertyEvent<UserField> e) {
-      getView().refreshLater();
-    }
-  };
-
   public UserMethodsSubComposite(UUID migrationId, NamedUserType type, Operation addMethodOperation) {
     super(migrationId, true);
     this.type = type;
@@ -86,8 +73,20 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
     this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse(new TypeIcon(this.type));
 
     //todo: move to handlePreActivation/handlePostDeactivation
-    type.methods.addListPropertyListener(this.methodPropertyListener);
-    type.fields.addListPropertyListener(this.fieldPropertyListener);
+    ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<>() {
+      @Override
+      protected void changed(ListPropertyEvent<UserMethod> e) {
+        getView().refreshLater();
+      }
+    };
+    type.methods.addListPropertyListener(methodPropertyListener);
+    ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<>() {
+      @Override
+      protected void changed(ListPropertyEvent<UserField> e) {
+        getView().refreshLater();
+      }
+    };
+    type.fields.addListPropertyListener(fieldPropertyListener);
   }
 
   public final Operation getAddMethodOperation() {
@@ -121,8 +120,9 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
   }
 
   @Override
-  protected UserMethodsSubView createView() {
-    return new UserMethodsSubView(this);
+  protected MethodsSubView<UserMethodsSubComposite> createView() {
+    UserMethodsSubComposite composite = this;
+    return new MethodsSubView<>(composite);
   }
 
   public boolean isRelevant() {
@@ -132,16 +132,4 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
       return this.getMethods().size() > 0;
     }
   }
-
-  //  @Override
-  //  public void handlePreActivation() {
-  //    super.handlePreActivation();
-  //    type.methods.addListPropertyListener( this.methodPropertyListener );
-  //  }
-  //
-  //  @Override
-  //  public void handlePostDeactivation() {
-  //    type.methods.removeListPropertyListener( this.methodPropertyListener );
-  //    super.handlePostDeactivation();
-  //  }
 }

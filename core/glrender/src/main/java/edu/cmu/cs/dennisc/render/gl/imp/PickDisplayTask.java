@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.math.immutable.AffineMatrix4x4;
@@ -64,6 +65,8 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove
@@ -84,38 +87,53 @@ import java.util.Comparator;
 
   @Override
   public final IsFrameBufferIntact handleDisplay(RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl) {
-    this.pickContext.gl = gl;
+    pickContext.gl = gl;
 
     //todo:
     ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary(gl);
 
     RenderTarget rt = rtImp.getRenderTarget();
-    AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(this.mousePosition);
-    PickParameters pickParameters = new PickParameters(rt, sgCamera, this.mousePosition, this.pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
+    AbstractCamera sgCamera = rtImp.getCameraAtAwtPoint(mousePosition);
+    PickParameters pickParameters = new PickParameters(rt, sgCamera, mousePosition, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, null);
 
     GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
 
-    this.selectionAsIntBuffer.rewind();
-    this.pickContext.gl.glSelectBuffer(SELECTION_CAPACITY, this.selectionAsIntBuffer);
+    selectionAsIntBuffer.rewind();
+    pickContext.gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
 
-    this.pickContext.gl.glRenderMode(GL2.GL_SELECT);
-    this.pickContext.gl.glInitNames();
+    pickContext.gl.glRenderMode(GL2.GL_SELECT);
+    pickContext.gl.glInitNames();
 
     Rectangle actualViewport = rt.getActualViewportAsAwtRectangle(sgCamera);
-    this.pickContext.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
-    cameraAdapter.performPick(this.pickContext, pickParameters, actualViewport);
-    this.pickContext.gl.glFlush();
+    pickContext.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
 
-    this.selectionAsIntBuffer.rewind();
-    int length = this.pickContext.gl.glRenderMode(GL2.GL_RENDER);
-    //todo: invesigate negative length
+    GlrScene sceneAdapter = cameraAdapter.getGlrScene();
+    if (sceneAdapter != null) {
+       pickContext.gl.glMatrixMode(GL_PROJECTION);
+      pickContext.gl.glLoadIdentity();
+
+      // actualViewport.x & y are set > 0 when letterboxing
+      double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
+      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
+      pickContext.gl.glTranslated(tx, ty, 0.0);
+      pickContext.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
+
+      cameraAdapter.setupProjection(pickContext, actualViewport);
+      pickContext.pickScene(cameraAdapter, sceneAdapter, pickParameters);
+    }
+
+    pickContext.gl.glFlush();
+
+    selectionAsIntBuffer.rewind();
+    int length = pickContext.gl.glRenderMode(GL2.GL_RENDER);
+    //todo: investigate negative length
     //assert length >= 0;
 
     if (length > 0) {
       SelectionBufferInfo[] selectionBufferInfos = new SelectionBufferInfo[length];
       int offset = 0;
       for (int i = 0; i < length; i++) {
-        selectionBufferInfos[i] = new SelectionBufferInfo(this.pickContext, this.selectionAsIntBuffer, offset);
+        selectionBufferInfos[i] = new SelectionBufferInfo(pickContext, selectionAsIntBuffer, offset);
         offset += 7;
       }
 
@@ -148,20 +166,12 @@ import java.util.Comparator;
       if (length > 1) {
         Comparator<SelectionBufferInfo> comparator;
         if (isPickFunctioningCorrectly) {
-          comparator = new Comparator<SelectionBufferInfo>() {
-            @Override
-            public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-              return Float.compare(sbi1.getZFront(), sbi2.getZFront());
-            }
-          };
+          comparator = (sbi1, sbi2) -> Float.compare(sbi1.getZFront(), sbi2.getZFront());
         } else {
-          comparator = new Comparator<SelectionBufferInfo>() {
-            @Override
-            public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-              double z1 = -sbi1.getPointInSource().z();
-              double z2 = -sbi2.getPointInSource().z();
-              return Double.compare(z1, z2);
-            }
+          comparator = (sbi1, sbi2) -> {
+            double z1 = -sbi1.getPointInSource().z();
+            double z2 = -sbi2.getPointInSource().z();
+            return Double.compare(z1, z2);
           };
         }
         Arrays.sort(selectionBufferInfos, comparator);

@@ -49,8 +49,6 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.Graphics2D;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
-import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.math.immutable.Matrix4x4;
@@ -89,7 +87,7 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
     this.isLetterboxed = isLetterboxed;
   }
 
-  protected abstract void setupProjection(Context context, Rectangle actualViewport);
+  public abstract void setupProjection(Context context, Rectangle actualViewport);
 
   public void performClearAndRenderOffscreen(RenderContext rc, int surfaceWidth, int surfaceHeight) {
     GlrScene sceneAdapter = getGlrScene();
@@ -109,26 +107,6 @@ public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLea
       for (GlrLayer layerAdapter : this.glrLayers) {
         layerAdapter.render(g2, renderTarget, actualViewport, this.owner);
       }
-    }
-  }
-
-  public void performPick(PickContext pc, PickParameters pickParameters, Rectangle actualViewport) {
-    GlrScene sceneAdapter = getGlrScene();
-    if (sceneAdapter != null) {
-
-      pc.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
-
-      pc.gl.glMatrixMode(GL_PROJECTION);
-      pc.gl.glLoadIdentity();
-
-      // actualViewport.x & y are set > 0 when letterboxing
-      double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
-      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
-      pc.gl.glTranslated(tx, ty, 0.0);
-      pc.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
-      setupProjection(pc, actualViewport);
-
-      pc.pickScene(this, sceneAdapter, pickParameters);
     }
   }
 

@@ -106,7 +106,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
   @Override
   public String getUndoRedoDescription() {
-    return "Object Move";
+    return "Obj Translate - Object Move";
   }
 
   @Override
