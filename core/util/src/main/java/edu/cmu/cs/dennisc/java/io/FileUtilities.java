@@ -167,23 +167,13 @@ public class FileUtilities {
   }
 
   public static File[] listDirectories(File root) {
-    return listFiles(root, new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isDirectory();
-      }
-    });
+    return listFiles(root, File::isDirectory);
   }
 
   public static File[] listFiles(File root, String extension) {
     assert extension.charAt(0) != '.';
     final String ext = extension;
-    return listFiles(root, new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isFile() && ext.equalsIgnoreCase(getExtension(file));
-      }
-    });
+    return listFiles(root, file -> file.isFile() && ext.equalsIgnoreCase(getExtension(file)));
   }
 
   public static File[] listFiles(String rootPath, String extension) {
@@ -200,12 +190,7 @@ public class FileUtilities {
       if (depth != -1) {
         depth--;
       }
-      File[] dirs = dir.listFiles(new FileFilter() {
-        @Override
-        public boolean accept(File file) {
-          return file.isDirectory();
-        }
-      });
+      File[] dirs = dir.listFiles(File::isDirectory);
       if (dirs != null) {
         for (File childDir : dirs) {
           appendDescendants(descendants, childDir, fileFilter, depth);
@@ -228,51 +213,26 @@ public class FileUtilities {
     assert root.exists() : root;
     assert extension != null;
     assert extension.charAt(0) != '.';
-    return listDescendants(root, new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        if (file.isFile()) {
-          if (extension != null) {
-            return extension.equalsIgnoreCase(getExtension(file));
-          } else {
-            return true;
-          }
-        } else {
-          return false;
-        }
-      }
-    });
+    return listDescendants(root,
+        file -> file.isFile() && extension.equalsIgnoreCase(getExtension(file)));
   }
 
   public static FilenameFilter createFilenameFilter(final String extension) {
-    return new FilenameFilter() {
-      @Override
-      public boolean accept(File dir, String name) {
-        return name.toUpperCase().endsWith(extension.toUpperCase());
-      }
-    };
+    return (dir, name) -> name.toUpperCase().endsWith(extension.toUpperCase());
   }
 
   public static FileFilter createFileWithExtensionFilter(final String extension) {
-    return new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        if (file.isFile()) {
-          return file.getName().toUpperCase().endsWith(extension.toUpperCase());
-        } else {
-          return false;
-        }
+    return file -> {
+      if (file.isFile()) {
+        return file.getName().toUpperCase().endsWith(extension.toUpperCase());
+      } else {
+        return false;
       }
     };
   }
 
   public static FileFilter createDirectoryFilter() {
-    return new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isDirectory();
-      }
-    };
+    return File::isDirectory;
   }
 
   public static void copyFile(File in, File out) throws IOException {
