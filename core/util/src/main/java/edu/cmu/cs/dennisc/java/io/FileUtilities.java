@@ -43,10 +43,7 @@
 package edu.cmu.cs.dennisc.java.io;
 
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Strings;
-import edu.cmu.cs.dennisc.pattern.Criterion;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -55,13 +52,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -70,60 +62,12 @@ import java.util.List;
 public class FileUtilities {
   private static File s_defaultDirectory = null;
 
-  public static Comparator<File> createComparator() {
-    return new Comparator<File>() {
-      private int compareFileNames(File fileA, File fileB) {
-        return fileA.getName().compareToIgnoreCase(fileB.getName());
-      }
-
-      @Override
-      public int compare(File fileA, File fileB) {
-        if (fileA != null) {
-          if (fileB != null) {
-            if (fileA.isDirectory()) {
-              if (fileB.isDirectory()) {
-                return this.compareFileNames(fileA, fileB);
-              } else {
-                return -1;
-              }
-            } else {
-              if (fileB.isDirectory()) {
-                return -1;
-              } else {
-                return this.compareFileNames(fileA, fileB);
-              }
-            }
-          } else {
-            return 1;
-          }
-        } else {
-          if (fileB != null) {
-            return -1;
-          } else {
-            return 0;
-          }
-        }
-      }
-    };
-  }
-
   public static File getDefaultDirectory() {
     if (s_defaultDirectory == null) {
       FileSystemView fileSystemView = FileSystemView.getFileSystemView();
       s_defaultDirectory = fileSystemView.getDefaultDirectory();
     }
     return s_defaultDirectory;
-  }
-
-  public static File getUserDirectory() {
-    File defaultDirectory = getDefaultDirectory();
-    File rv;
-    if (SystemUtilities.isWindows()) {
-      rv = defaultDirectory.getParentFile();
-    } else {
-      rv = defaultDirectory;
-    }
-    return rv;
   }
 
   public static boolean isValidFile(File file) {
@@ -153,36 +97,6 @@ public class FileUtilities {
     } else {
       return null;
     }
-  }
-
-  public static String fixFilenameIfNecessary(String filename) {
-    StringBuilder sb = new StringBuilder(filename.length());
-    for (int i = 0; i < filename.length(); i++) {
-      char c = filename.charAt(i);
-      switch (c) {
-      case '|':
-        sb.append('_');
-        break;
-      default:
-        sb.append(c);
-      }
-    }
-    return sb.toString();
-  }
-
-  public static boolean isExtensionAmoung(String filename, String... extensionCandidates) {
-    String extension = getExtension(filename);
-    for (String extensionCandidate : extensionCandidates) {
-      assert extensionCandidate.charAt(0) != '.';
-      if (Strings.equalsIgnoreCase(extension, extensionCandidate)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static boolean isExtensionAmoung(File file, String... extensionCandidates) {
-    return isExtensionAmoung(file.getName(), extensionCandidates);
   }
 
   public static String getExtension(String filename) {
@@ -240,61 +154,8 @@ public class FileUtilities {
     return file.exists();
   }
 
-  public static boolean existsAndHasLengthGreaterThanZero(File file) {
-    return file.exists() && (file.length() > 0);
-  }
-
-  public static boolean existsAndHasLengthGreaterThanZero(String path) {
-    return existsAndHasLengthGreaterThanZero(new File(path));
-  }
-
   public static boolean createParentDirectoriesIfNecessary(File file) {
     return file.getParentFile().mkdirs();
-  }
-
-  public static boolean createParentDirectoriesIfNecessary(String path) {
-    return createParentDirectoriesIfNecessary(new File(path));
-  }
-
-  public static File getRelativeFile(File srcFile, int upCount, String... childPaths) {
-    File rv = srcFile;
-    for (int i = 0; i < upCount; i++) {
-      rv = rv.getParentFile();
-    }
-    for (String childPath : childPaths) {
-      rv = new File(rv, childPath);
-    }
-    return rv;
-  }
-
-  public static File getRelativeFile(File src, String... childPaths) {
-    return getRelativeFile(src, 0, childPaths);
-  }
-
-  public static File getRelativeFile(String srcPath, int upCount, String... childPaths) {
-    return getRelativeFile(new File(srcPath), upCount, childPaths);
-  }
-
-  public static File getRelativeFile(String srcPath, String... childPaths) {
-    return getRelativeFile(srcPath, 0, childPaths);
-  }
-
-  public static File getAnalogousFile(File src, File srcRoot, File dstRoot) {
-    String srcPath = src.getAbsolutePath();
-    String srcRootPath = srcRoot.getAbsolutePath();
-
-    assert srcPath.startsWith(srcRootPath);
-    String srcSubPath = srcPath.substring(srcRootPath.length());
-
-    return new File(dstRoot, srcSubPath);
-  }
-
-  public static File getAnalogousFile(File src, File srcRoot, File dstRoot, String srcExtension, String dstExtension) {
-    File f = getAnalogousFile(src, srcRoot, dstRoot);
-    File directory = f.getParentFile();
-    String name = f.getName();
-    assert name.endsWith(srcExtension);
-    return new File(directory, name.substring(0, name.length() - srcExtension.length()) + dstExtension);
   }
 
   public static File[] listFiles(File root, FileFilter fileFilter) {
@@ -312,10 +173,6 @@ public class FileUtilities {
         return file.isDirectory();
       }
     });
-  }
-
-  public static File[] listDirectories(String rootPath) {
-    return listDirectories(new File(rootPath));
   }
 
   public static File[] listFiles(File root, String extension) {
@@ -367,14 +224,6 @@ public class FileUtilities {
     return listDescendants(root, fileFilter, -1);
   }
 
-  public static File[] listDescendants(String rootPath, FileFilter fileFilter) {
-    return listDescendants(new File(rootPath), fileFilter);
-  }
-
-  public static File[] listDescendants(String rootPath, FileFilter fileFilter, int depth) {
-    return listDescendants(new File(rootPath), fileFilter, depth);
-  }
-
   public static File[] listDescendants(File root, final String extension) {
     assert root.exists() : root;
     assert extension != null;
@@ -393,27 +242,6 @@ public class FileUtilities {
         }
       }
     });
-  }
-
-  public static File[] listDescendants(String rootPath, String extension) {
-    return listDescendants(new File(rootPath), extension);
-  }
-
-  public static boolean isDescendantOf(File file, File possibleAncestor) {
-    while (true) {
-      File parent = file.getParentFile();
-      if (parent == null) {
-        return false;
-      } else if (parent.equals(possibleAncestor)) {
-        return true;
-      } else {
-        file = parent;
-      }
-    }
-  }
-
-  public static boolean isAncestorOf(File file, File possibleDescendant) {
-    return isDescendantOf(possibleDescendant, file);
   }
 
   public static FilenameFilter createFilenameFilter(final String extension) {
@@ -454,100 +282,5 @@ public class FileUtilities {
     inChannel.transferTo(0, inChannel.size(), outChannel);
     inChannel.close();
     outChannel.close();
-  }
-
-  public static void copyFile(String inPath, String outPath) throws IOException {
-    copyFile(new File(inPath), new File(outPath));
-  }
-
-  private static void _copyDirectory(File in, File out, Criterion<File> criterion) throws IOException {
-    if ((criterion == null) || criterion.accept(in)) {
-      if (in.isDirectory()) {
-        for (String filename : in.list()) {
-          _copyDirectory(new File(in, filename), new File(out, filename), criterion);
-        }
-      } else {
-        copyFile(in, out);
-      }
-    }
-  }
-
-  public static void copyDirectory(File in, File out, Criterion<File> criterion) throws IOException {
-    createParentDirectoriesIfNecessary(out);
-    _copyDirectory(in, out, criterion);
-  }
-
-  public static void copyDirectory(File in, File out) throws IOException {
-    copyDirectory(in, out, null);
-  }
-
-  public static void copyDirectory(String inPath, String outPath) throws IOException {
-    copyDirectory(new File(inPath), new File(outPath));
-  }
-
-  public static void delete(File file) {
-    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "deleting", file );
-    if (file.exists()) {
-      if (file.isDirectory()) {
-        for (File f : file.listFiles()) {
-          delete(f);
-        }
-      }
-      boolean isSuccessful = file.delete();
-      assert isSuccessful : file;
-      //      if( isSuccessful ) {
-      //        //pass
-      //      } else {
-      //        throw new RuntimeException( file.getAbsolutePath() );
-      //      }
-      assert file.exists() == false : file;
-      //      if( file.exists() ) {
-      //        throw new RuntimeException( file.getAbsolutePath() );
-      //      }
-    }
-  }
-
-  public static void delete(String path) {
-    delete(new File(path));
-  }
-
-  public static File toFile(URL url) {
-    if (url != null) {
-      try {
-        return toFile(url.toURI());
-      } catch (URISyntaxException urise) {
-        throw new RuntimeException(urise);
-      }
-    } else {
-      return null;
-    }
-  }
-
-  public static File toFile(URI uri) {
-    if (uri != null) {
-      return new File(uri);
-    } else {
-      return null;
-    }
-  }
-
-  public static URI toUri(File file) {
-    if (file != null) {
-      return file.toURI();
-    } else {
-      return null;
-    }
-  }
-
-  public static URL toUrl(File file) {
-    if (file != null) {
-      try {
-        return file.toURL();
-      } catch (MalformedURLException murle) {
-        throw new RuntimeException(murle);
-      }
-    } else {
-      return null;
-    }
   }
 }
