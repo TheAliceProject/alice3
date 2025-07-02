@@ -119,26 +119,22 @@ public class FileUtilities {
   }
 
   public static String getBaseName(String filename) {
-    String basename = null;
-    if (filename != null) {
-      int index = filename.lastIndexOf('.');
-      if (index != -1) {
-        basename = filename.substring(0, index);
-      } else {
-        basename = filename;
-      }
-
-      index = basename.lastIndexOf('/');
-      if (index != -1) {
-        basename = basename.substring(index + 1);
-      }
-      index = basename.lastIndexOf('\\');
-      if (index != -1) {
-        basename = basename.substring(index + 1);
-      }
-
+    if (filename == null) {
+      return null;
     }
-    return basename;
+    String trimmed = trimExtension(filename);
+    trimmed = trimBefore(trimmed, '/');
+    return trimBefore(trimmed, '\\');
+  }
+
+  private static String trimExtension(String filename) {
+    int index = filename.lastIndexOf('.');
+    return index != -1 ? filename.substring(0, index) : filename;
+  }
+
+  private static String trimBefore(String filename, char character) {
+    int index = filename.lastIndexOf(character);
+    return index != -1 ? filename.substring(index + 1) : filename;
   }
 
   public static String getBaseName(File file) {
@@ -150,8 +146,7 @@ public class FileUtilities {
   }
 
   public static boolean exists(String path) {
-    File file = new File(path);
-    return file.exists();
+    return new File(path).exists();
   }
 
   public static boolean createParentDirectoriesIfNecessary(File file) {
