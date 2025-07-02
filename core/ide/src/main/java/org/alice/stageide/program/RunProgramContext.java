@@ -47,7 +47,6 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.ProgramImp;
 
 import java.awt.Container;
-import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
@@ -64,12 +63,6 @@ public class RunProgramContext extends ProgramContext {
   public void initializeInContainer(ProgramImp.AwtContainerInitializer awtContainerInitializer) {
     this.disableRendering();
     this.getProgramImp().initializeInAwtContainer(awtContainerInitializer);
-  }
-
-  public void initializeInContainer(Container awtContainer, int width, int height) {
-    this.disableRendering();
-    this.getProgramImp().initializeInAwtContainer(awtContainer);
-    this.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(width, height));
   }
 
   public Container getContainer() {
