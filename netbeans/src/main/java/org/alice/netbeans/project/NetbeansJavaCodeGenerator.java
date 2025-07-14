@@ -44,8 +44,13 @@
 package org.alice.netbeans.project;
 
 import org.alice.netbeans.options.Alice3OptionsPanelController;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AccessLevel;
 import org.lgna.project.ast.JavaCodeGenerator;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -54,6 +59,13 @@ class NetbeansJavaCodeGenerator extends JavaCodeGenerator {
 
   private static final String INDENT = "    "; //todo: query indent from netbeans format
   private static final String IMPORT_TEXT = "imports";
+  private static final Map<String, AccessLevel> methodsToChangeAccessLevel = new HashMap<>();
+
+  static {
+    // SScene.handleActiveChanged method has been generated as protected in Alice projects, but is public in the java
+    // class. The generated code may change, but this will remain necessary to handle older projects.
+    methodsToChangeAccessLevel.put("handleActiveChanged", AccessLevel.PUBLIC);
+  }
 
   NetbeansJavaCodeGenerator(JavaCodeGenerator.Builder javaCodeGeneratorBuilder) {
     super(javaCodeGeneratorBuilder);
@@ -97,5 +109,10 @@ class NetbeansJavaCodeGenerator extends JavaCodeGenerator {
     } else {
       super.appendSectionPostfix(declaringType, sectionName, shouldCollapse);
     }
+  }
+
+  @Override
+  protected AccessLevel getAccessLevel(AbstractMethod method) {
+    return methodsToChangeAccessLevel.getOrDefault(method.getName(), super.getAccessLevel(method));
   }
 }
