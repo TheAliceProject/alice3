@@ -300,7 +300,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
     if (overridenMethod != null) {
       appendString("@Override ");
     }
-    appendString(method.getAccessLevel().getJavaText());
+    appendString(getAccessLevel(method).getJavaText());
     if (method.isStatic()) {
       appendString("static ");
     }
@@ -308,6 +308,10 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
     appendSpace();
     appendString(method.getName());
     appendParameters(method);
+  }
+
+  protected AccessLevel getAccessLevel(AbstractMethod method) {
+    return method.getAccessLevel();
   }
 
   @Override
