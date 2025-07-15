@@ -145,10 +145,6 @@ public class FileUtilities {
     }
   }
 
-  public static boolean exists(String path) {
-    return new File(path).exists();
-  }
-
   public static boolean createParentDirectoriesIfNecessary(File file) {
     return file.getParentFile().mkdirs();
   }
