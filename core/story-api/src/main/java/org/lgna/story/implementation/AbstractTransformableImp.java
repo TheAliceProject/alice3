@@ -282,12 +282,8 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     protected abstract UnitQuaternion getQ1();
 
     public void setPortion(double portion) {
-      Point3 t0 = this.getT0();
-      Point3 t1 = this.getT1();
-      Point3 t = t0.interpolate(t1, portion);
-      UnitQuaternion q0 = this.getQ0();
-      UnitQuaternion q1 = this.getQ1();
-      UnitQuaternion q = q0.interpolate(q1, portion);
+      Point3 t = getT0().interpolate(getT1(), portion);
+      UnitQuaternion q = getQ0().interpolate(getQ1(), portion);
       this.setM(new AffineMatrix4x4(q.asMatrix3x3(), t));
     }
 
@@ -622,12 +618,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     } else {
       final OrthogonalMatrix3x3 targetOrientation = this.getTransformation(target).orientation().normalized();
       UnitQuaternion q0 = targetOrientation.asUnitQuaternion();
-      UnitQuaternion q1;
-      if (offset != null) {
-        q1 = offset.asUnitQuaternion();
-      } else {
-        q1 = UnitQuaternion.IDENTITY;
-      }
+      UnitQuaternion q1 = offset == null ? UnitQuaternion.IDENTITY : offset.asUnitQuaternion();
       perform(new UnitQuaternionAnimation(duration, style, q0, q1) {
         @Override
         protected void updateValue(UnitQuaternion q) {

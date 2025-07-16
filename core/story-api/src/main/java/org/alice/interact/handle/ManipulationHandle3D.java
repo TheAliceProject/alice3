@@ -72,7 +72,6 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
@@ -289,24 +288,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected final void initializeAppearance() {
     this.setCurrentColorInternal();
-  }
-
-  protected void setTransformableScale(AbstractTransformable t, Matrix3x3 scaleMatrix) {
-    Visual objectVisual = getSGVisualForTransformable(t);
-    objectVisual.scale.setValue(scaleMatrix);
-  }
-
-  protected Visual getSGVisualForTransformable(AbstractTransformable object) {
-    if (object == null) {
-      return null;
-    }
-    for (int i = 0; i < object.getComponentCount(); i++) {
-      Component c = object.getComponentAt(i);
-      if (c instanceof Visual) {
-        return (Visual) c;
-      }
-    }
-    return null;
   }
 
   @Override

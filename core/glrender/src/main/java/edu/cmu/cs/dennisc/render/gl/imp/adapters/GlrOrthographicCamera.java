@@ -78,7 +78,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double y = bottom + ((top - bottom) * yPortion);
     double z = near;
 
-    return new Ray(new Point3(x, y, z), new Vector3(0, 0, -1));
+    return new Ray(new Point3(x, y, z), Vector3.NEGATIVE_Z_AXIS);
   }
 
   @Override
