@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -33,6 +34,8 @@ import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
 class ProjectFileUtilities {
+  public static final String PROJECT_FILE_EXTENSION = ".a3p";
+
   private static final String BACKUP_AUTO = "auto";
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -159,12 +162,23 @@ class ProjectFileUtilities {
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }
 
-  private Path backupDirectory(File saved) {
+  public boolean isNewProject() {
+    URI uri = projectApp.getUri();
+
+    return uri != null && uri.getScheme().equalsIgnoreCase("gen");
+  }
+
+  public Path backupDirectory(File saved) {
     String fileName = saved.getName();
     String directoryName;
     directoryName = (PROJECT_EXTENSION.equals(getExtension(fileName)) ? getBaseName(fileName) : fileName) + "." + BACKUP_EXTENSION;
 
     Path backupDir = saved.toPath().resolveSibling(directoryName);
+
+    return createAndGetBackupDirectory(backupDir);
+  }
+
+  private Path createAndGetBackupDirectory(Path backupDir) {
     if (Files.notExists(backupDir)) {
       try {
         Files.createDirectory(backupDir);

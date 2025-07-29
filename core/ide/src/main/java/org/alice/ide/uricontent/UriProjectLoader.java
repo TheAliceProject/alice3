@@ -84,4 +84,8 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
   public boolean shouldBeSaved() {
     return false;
   }
+
+  public boolean shouldMakeVrReady() {
+    return makeVrReady;
+  }
 }
