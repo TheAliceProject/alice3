@@ -321,13 +321,9 @@ public class TabbedPaneUI extends BasicTabbedPaneUI {
       int tabRolloverIndex = this.getRolloverTab();
       Component component = this.tabPane.getComponentAt(tabIndex);
       Color color = component.getBackground();
-      if (isSelected) {
-        //pass
-      } else {
+      if (!isSelected) {
         color = color.darker();
-        if (tabIndex == tabRolloverIndex) {
-          //pass
-        } else {
+        if (tabIndex != tabRolloverIndex) {
           color = color.darker();
         }
       }

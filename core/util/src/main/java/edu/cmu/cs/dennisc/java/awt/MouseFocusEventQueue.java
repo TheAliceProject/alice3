@@ -95,9 +95,7 @@ public class MouseFocusEventQueue extends EventQueue {
       if (e instanceof MouseEvent) {
         MouseEvent me = (MouseEvent) e;
         Component curr = me.getComponent();
-        if (curr == this.componentWithMouseFocus) {
-          //pass
-        } else {
+        if (curr != this.componentWithMouseFocus) {
           e = MouseEventUtilities.convertMouseEvent(curr, me, this.componentWithMouseFocus);
         }
       }

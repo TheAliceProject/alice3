@@ -68,9 +68,7 @@ public class MemberInfo<D extends Member> extends DeclarationInfo<D> {
 
     @Override
     public void visit(Crawlable crawlable) {
-      if (crawlable == MemberInfo.this.getDeclaration()) {
-        //pass
-      } else {
+      if (crawlable != MemberInfo.this.getDeclaration()) {
         if (crawlable instanceof NamedUserType) {
           NamedUserType type = (NamedUserType) crawlable;
           TypeInfo typeInfo = getProjectInfo().getInfoForType(type);

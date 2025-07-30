@@ -152,34 +152,26 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
       public void setAll(Double value, Double minimum, Double maximum, Double stepSize, Double extent, boolean isAdjusting) {
         if (minimum != null) {
           Number prevMinimum = (Number) this.spinnerModel.getMinimum();
-          if (minimum.doubleValue() == prevMinimum.doubleValue()) {
-            //pass
-          } else {
+          if (minimum != prevMinimum.doubleValue()) {
             this.spinnerModel.setMinimum(minimum);
           }
         }
         if (maximum != null) {
           Number prevMaximum = (Number) this.spinnerModel.getMaximum();
-          if (maximum.doubleValue() == prevMaximum.doubleValue()) {
-            //pass
-          } else {
+          if (maximum != prevMaximum.doubleValue()) {
             this.spinnerModel.setMaximum(maximum);
           }
         }
         if (stepSize != null) {
           Number prevStepSize = this.spinnerModel.getStepSize();
-          if (stepSize.doubleValue() == prevStepSize.doubleValue()) {
-            //pass
-          } else {
+          if (stepSize != prevStepSize.doubleValue()) {
             this.spinnerModel.setStepSize(stepSize);
           }
         }
         if (value != null) {
           Number prevValue = (Number) this.spinnerModel.getValue();
-          if (value.doubleValue() == prevValue.doubleValue()) {
-            //pass
-          } else {
-            this.spinnerModel.setValue(stepSize);
+          if (value != prevValue.doubleValue()) {
+            this.spinnerModel.setValue(value);
           }
         }
       }

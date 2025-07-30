@@ -83,9 +83,7 @@ public class StatusLabel extends SwingComponentView<JLabel> {
     JLabel rv = new JLabel(TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
       @Override
       protected void paintComponent(Graphics g) {
-        if (this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
-          //pass
-        } else {
+        if (this.getText() != TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
           super.paintComponent(g);
         }
       }

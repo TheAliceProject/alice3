@@ -127,9 +127,7 @@ public class LabeledFormRow implements FormRow {
     sbTrailing.append("wrap");
 
     StringBuilder sbLeading = new StringBuilder();
-    if (this.labelVerticalAlignment == VerticalAlignment.CENTER) {
-      //pass
-    } else {
+    if (this.labelVerticalAlignment != VerticalAlignment.CENTER) {
       sbLeading.append("aligny ");
       sbLeading.append(this.labelVerticalAlignment.toString().toLowerCase(Locale.ENGLISH));
     }

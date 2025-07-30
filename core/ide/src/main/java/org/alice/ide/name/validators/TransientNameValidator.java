@@ -69,26 +69,15 @@ public abstract class TransientNameValidator extends NodeNameValidator {
     if (this.code != null) {
       Node node = this.getNode();
       for (UserParameter parameter : this.code.getRequiredParamtersProperty()) {
-        if (parameter == node) {
-          //pass
-        } else {
-          if (name.equals(parameter.name.getValue())) {
+        if (parameter != node && name.equals(parameter.name.getValue())) {
             return false;
-          }
         }
       }
-      //      if( this.block != null ) {
-      //
-      //      }
       IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance(UserLocal.class);
       ((AbstractCode) this.code).crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
       for (UserLocal local : crawler.getList()) {
-        if (local == node) {
-          //pass
-        } else {
-          if (name.equals(local.name.getValue())) {
-            return false;
-          }
+        if (local != node && name.equals(local.name.getValue())) {
+          return false;
         }
       }
     }

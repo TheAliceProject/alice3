@@ -68,9 +68,7 @@ public abstract class IngredientListData<T> extends RefreshableListData<T> {
   }
 
   public void setLifeStage(LifeStage lifeStage) {
-    if (this.lifeStage == lifeStage) {
-      //pass
-    } else {
+    if (this.lifeStage != lifeStage) {
       this.lifeStage = lifeStage;
       this.refresh();
     }
@@ -81,9 +79,7 @@ public abstract class IngredientListData<T> extends RefreshableListData<T> {
   }
 
   public void setGender(Gender gender) {
-    if (this.gender == gender) {
-      //pass
-    } else {
+    if (this.gender != gender) {
       this.gender = gender;
       this.refresh();
     }

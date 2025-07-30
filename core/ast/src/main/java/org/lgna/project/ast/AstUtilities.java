@@ -665,9 +665,7 @@ public class AstUtilities {
     for (int i = 0; i < N; i++) {
       SimpleArgument argumentI = methodInvocation.requiredArguments.get(i);
       AbstractParameter parameterI = requiredParameters.get(i);
-      if (argumentI.parameter.getValue() == parameterI) {
-        //pass
-      } else {
+      if (argumentI.parameter.getValue() != parameterI) {
         methodInvocation.requiredArguments.set(i, new SimpleArgument(parameterI, argumentI.expression.getValue()));
       }
     }

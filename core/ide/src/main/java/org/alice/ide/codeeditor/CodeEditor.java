@@ -180,9 +180,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     int rv = yPotentialMinimumBound;
     final int N = statementListPropertyPaneInfos.length;
     for (int i = 0; i < N; i++) {
-      if (i == index) {
-        //pass
-      } else {
+      if (i != index) {
         Rectangle boundsI = statementListPropertyPaneInfos[i].getBounds();
         int yI = boundsI.y + boundsI.height;
         if (yI < y) {
@@ -197,9 +195,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     int rv = yMaximum;
     final int N = statementListPropertyPaneInfos.length;
     for (int i = 0; i < N; i++) {
-      if (i == index) {
-        //pass
-      } else {
+      if (i != index) {
         Rectangle boundsI = statementListPropertyPaneInfos[i].getBounds();
         int yI = boundsI.y;
         if (yI > yPlusHeight) {

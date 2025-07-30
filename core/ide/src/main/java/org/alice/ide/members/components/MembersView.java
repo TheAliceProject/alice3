@@ -259,9 +259,7 @@ public class MembersView extends BorderPanel {
       @Override
       public void paint(Graphics g) {
         super.paint(g);
-        if (recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE) {
-          //pass
-        } else {
+        if (recycleBinDropReceptor.dragReceptorState != DragReceptorState.IDLE) {
           Graphics2D g2 = (Graphics2D) g;
           int width = this.getWidth();
           int height = this.getHeight();

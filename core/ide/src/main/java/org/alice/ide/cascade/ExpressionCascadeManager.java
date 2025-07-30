@@ -499,9 +499,7 @@ public abstract class ExpressionCascadeManager {
         List<AbstractType<?, ?, ?>> otherTypes = Lists.newLinkedList();
         this.appendOtherTypes(otherTypes);
         for (AbstractType<?, ?, ?> otherType : otherTypes) {
-          if (type == otherType) {
-            //pass
-          } else {
+          if (type != otherType) {
             items.add(TypeExpressionCascadeMenu.getInstance(otherType));
           }
         }

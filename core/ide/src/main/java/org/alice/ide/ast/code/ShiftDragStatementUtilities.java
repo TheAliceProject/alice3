@@ -102,7 +102,6 @@ public class ShiftDragStatementUtilities {
 
   public static boolean isCandidateForEnvelop(DragModel dragModel) {
     if (dragModel instanceof PotentiallyEnvelopingStatementTemplateDragModel) {
-      //org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel potentiallyEnvelopingStatementTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.PotentiallyEnvelopingStatementTemplateDragModel)dragModel;
       return true;
     } else if (dragModel instanceof StatementDragModel) {
       final boolean IS_READY_FOR_PRIME_TIME = false;
@@ -114,26 +113,17 @@ public class ShiftDragStatementUtilities {
           return statementWithBody.body.getValue().statements.size() == 0;
         } else if (statement instanceof ConditionalStatement) {
           ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
-          if (conditionalStatement.elseBody.getValue().statements.size() == 0) {
+          if (conditionalStatement.elseBody.getValue().statements.isEmpty()) {
             for (BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs) {
-              if (booleanExpressionBodyPair.body.getValue().statements.size() == 0) {
-                //pass
-              } else {
+              if (!booleanExpressionBodyPair.body.getValue().statements.isEmpty()) {
                 return false;
               }
             }
             return true;
-          } else {
-            return false;
           }
-        } else {
-          return false;
         }
-      } else {
-        return false;
       }
-    } else {
-      return false;
     }
+    return false;
   }
 }

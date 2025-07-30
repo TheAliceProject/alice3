@@ -143,9 +143,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
         this.boundedRangeModel.setRangeProperties(value, extent, minimum, maximum, isAdjusting);
         if (stepSize != null) {
           Number prevStepSize = this.spinnerModel.getStepSize();
-          if (stepSize.doubleValue() == prevStepSize.doubleValue()) {
-            //pass
-          } else {
+          if (stepSize != prevStepSize.intValue()) {
             this.spinnerModel.setStepSize(stepSize);
           }
         }

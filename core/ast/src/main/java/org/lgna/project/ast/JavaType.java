@@ -331,9 +331,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
       Class<?>[] dstParameterClses = trimLast(srcParameterClses);
       try {
         rv = src.getDeclaringClass().getMethod(name, dstParameterClses);
-        if (rv.getReturnType() == srcReturnCls) {
-          //pass
-        } else {
+        if (rv.getReturnType() != srcReturnCls) {
           rv = null;
         }
       } catch (NoSuchMethodException nsme) {
