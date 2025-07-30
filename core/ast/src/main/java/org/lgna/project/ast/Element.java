@@ -234,15 +234,11 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
               if (thisValue instanceof Element) {
-                if (((Element) thisValue).isEquivalentTo(otherValue)) {
-                  //pass
-                } else {
+                if (!((Element) thisValue).isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {
-                if (Objects.equals(thisValue, otherValue)) {
-                  //pass
-                } else {
+                if (!Objects.equals(thisValue, otherValue)) {
                   return false;
                 }
               }

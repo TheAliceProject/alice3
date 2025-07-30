@@ -139,9 +139,7 @@ public class DeclarationCompositeHistory {
     ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
     while (iterator.hasNext()) {
       DeclarationComposite<?, ?> composite = iterator.next();
-      if (composite.isValid()) {
-        //pass
-      } else {
+      if (!composite.isValid()) {
         iterator.remove();
         isIndexUpdateRequired = true;
       }

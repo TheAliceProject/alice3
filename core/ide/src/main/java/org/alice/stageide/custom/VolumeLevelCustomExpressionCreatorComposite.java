@@ -116,9 +116,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends ExpressionWithR
     } else {
       actualVolume = Double.NaN;
     }
-    if (Double.isNaN(actualVolume)) {
-      //pass
-    } else {
+    if (!Double.isNaN(actualVolume)) {
       int value = VolumeLevelUtilities.toInt(actualVolume);
       this.valueState.setValueTransactionlessly(value);
     }

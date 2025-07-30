@@ -47,9 +47,7 @@ package edu.cmu.cs.dennisc.pattern;
  */
 public abstract class Lazy<T> {
   public synchronized T get() {
-    if (this.isCreated) {
-      //pass
-    } else {
+    if (!this.isCreated) {
       this.value = this.create();
       this.isCreated = true;
     }

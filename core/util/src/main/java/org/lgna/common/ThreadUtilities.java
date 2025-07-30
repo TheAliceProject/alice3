@@ -93,9 +93,7 @@ public class ThreadUtilities {
         throw new RuntimeException(bbe);
       }
       synchronized (runtimeExceptions) {
-        if (runtimeExceptions.isEmpty()) {
-          //pass
-        } else {
+        if (!runtimeExceptions.isEmpty()) {
           //todo:
           throw runtimeExceptions.get(0);
         }

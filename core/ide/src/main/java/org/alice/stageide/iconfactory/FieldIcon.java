@@ -134,9 +134,7 @@ public class FieldIcon extends AsynchronousIcon {
         GraphicsUtilities.drawCenteredScaledToFitImage(iconImage, newIconImage);
         this.imageIcon = new ImageIcon(newIconImage);
       } else {
-        if (this.isStarted) {
-          //pass
-        } else {
+        if (!this.isStarted) {
           this.isStarted = true;
 
           Rectangle viewport = new Rectangle(0, 0, this.getIconWidth(), this.getIconHeight());

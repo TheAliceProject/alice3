@@ -207,9 +207,7 @@ import java.util.Map;
 
   @Override
   public void dispose() {
-    if (this.isInTheMidstOfFinalization) {
-      //pass
-    } else {
+    if (!this.isInTheMidstOfFinalization) {
       this.renderContext.gl.glFlush();
       if (isValid()) {
         this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
@@ -458,17 +456,13 @@ import java.util.Map;
   @Override
   public boolean drawImage(Image image, int x, int y, ImageObserver observer) {
     boolean isRemembered = isRemembered(image);
-    if (isRemembered) {
-      //pass
-    } else {
+    if (!isRemembered) {
       remember(image);
     }
     try {
       this.paint(this.imageToImageGeneratorMap.get(image), x, y, 1.0f);
     } finally {
-      if (isRemembered) {
-        //pass
-      } else {
+      if (!isRemembered) {
         forget(image);
       }
     }
@@ -1084,9 +1078,7 @@ import java.util.Map;
     assert referencedObject != null;
     assert referencedObject.isReferenced();
     referencedObject.removeReference();
-    if (referencedObject.isReferenced()) {
-      //pass
-    } else {
+    if (!referencedObject.isReferenced()) {
       this.activeFontToTextRendererMap.remove(font);
       this.forgottenFontToTextRendererMap.put(font, referencedObject);
     }
@@ -1174,9 +1166,7 @@ import java.util.Map;
     assert referencedObject != null;
     assert referencedObject.isReferenced();
     referencedObject.removeReference();
-    if (referencedObject.isReferenced()) {
-      //pass
-    } else {
+    if (!referencedObject.isReferenced()) {
       this.activeImageGeneratorToPixelsMap.remove(imageGenerator);
       this.forgottenImageGeneratorToPixelsMap.put(imageGenerator, referencedObject);
     }

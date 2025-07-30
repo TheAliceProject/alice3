@@ -75,9 +75,7 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
     } else {
       isHandled = false;
     }
-    if (isHandled) {
-      //pass
-    } else {
+    if (!isHandled) {
       this.handleThrowable(thread, throwable);
     }
   }

@@ -73,9 +73,7 @@ import java.awt.event.MouseEvent;
     public void stateChanged(ChangeEvent e) {
       ButtonModel buttonModel = getModel();
       if (buttonModel.isArmed()) {
-        if (timer.isRunning()) {
-          //pass
-        } else {
+        if (!timer.isRunning()) {
           timer.start();
         }
       } else {

@@ -113,9 +113,7 @@ public final class JCloseButton extends JButton {
       Paint prevPaint = g2.getPaint();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       if (model.isRollover() || model.isArmed()) {
-        if (model.isPressed()) {
-          //pass
-        } else {
+        if (!model.isPressed()) {
           g2.setPaint(HIGHLIGHT_COLOR);
         }
       } else {

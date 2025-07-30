@@ -129,17 +129,13 @@ public class MarkersView extends BorderPanel {
             Graphics2D g2 = (Graphics2D) g;
             boolean isAlphaDesired = isFieldSelected();
             Composite prevComposite = g2.getComposite();
-            if (isAlphaDesired) {
-              //pass
-            } else {
+            if (!isAlphaDesired) {
               g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
             }
             try {
               super.paint(g);
             } finally {
-              if (isAlphaDesired) {
-                //pass
-              } else {
+              if (!isAlphaDesired) {
                 g2.setComposite(prevComposite);
               }
             }

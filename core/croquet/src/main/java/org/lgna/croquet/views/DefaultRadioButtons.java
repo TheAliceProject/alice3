@@ -114,9 +114,7 @@ public class DefaultRadioButtons<E> extends ItemSelectablePanel<E> {
 
   @Override
   protected void addEpilogue() {
-    if (this.isVertical) {
-      //pass
-    } else {
+    if (!this.isVertical) {
       GBC_HORIZONTAL.gridwidth = GridBagConstraints.REMAINDER;
       GBC_HORIZONTAL.weightx = 1.0f;
       this.internalAddComponent(BoxUtilities.createHorizontalGlue(), this.getGridBagConstraints());

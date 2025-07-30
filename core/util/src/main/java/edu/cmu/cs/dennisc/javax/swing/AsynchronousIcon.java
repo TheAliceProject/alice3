@@ -101,9 +101,7 @@ public abstract class AsynchronousIcon implements Icon {
     } else {
       Component componentToRepaint = getComponentToRepaint(c);
       if (this.componentsToRepaint != null) {
-        if (this.componentsToRepaint.contains(componentToRepaint)) {
-          //pass
-        } else {
+        if (!this.componentsToRepaint.contains(componentToRepaint)) {
           this.componentsToRepaint.add(componentToRepaint);
         }
       } else {

@@ -134,9 +134,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   protected Status getStatusPreRejectorCheck() {
     Status rv = super.getStatusPreRejectorCheck();
     if (rv == IS_GOOD_TO_GO_STATUS) {
-      if (this.isRequirementToUpdateInvocationsUnderstoodState.getValue()) {
-        //pass
-      } else {
+      if (!this.isRequirementToUpdateInvocationsUnderstoodState.getValue()) {
         return this.hasNotAgreedToUpdateInvocationsStatus;
       }
     }

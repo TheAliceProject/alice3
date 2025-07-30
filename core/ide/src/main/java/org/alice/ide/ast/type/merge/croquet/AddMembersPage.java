@@ -233,9 +233,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 
   private void addRenameIfNecessary(List<RenameMemberData> renames, MemberNameState<? extends Member> nameState, Member member) {
     String nextName = nameState.getValue();
-    if (nextName.contentEquals(member.getName())) {
-      //pass
-    } else {
+    if (!nextName.contentEquals(member.getName())) {
       renames.add(new RenameMemberData(member, nextName));
     }
   }
@@ -275,9 +273,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
           membersToRemove.add(differentImplementation.getProjectHub().getMember());
         }
       } else {
-        if (differentImplementation.getProjectHub().getIsDesiredState().getValue()) {
-          //pass
-        } else {
+        if (!differentImplementation.getProjectHub().getIsDesiredState().getValue()) {
           //should not happen
         }
       }

@@ -67,9 +67,7 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
   }
 
   private List<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> getSortedChildren() {
-    if (this.isSorted) {
-      //pass
-    } else {
+    if (!this.isSorted) {
       Collections.sort(this.children);
       this.isSorted = true;
     }

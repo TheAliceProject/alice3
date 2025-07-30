@@ -66,9 +66,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
         @Override
         protected void fireStateChanged() {
           super.fireStateChanged();
-          if (isInTheMidstOfStateChanged) {
-            //pass
-          } else {
+          if (!isInTheMidstOfStateChanged) {
             isInTheMidstOfStateChanged = true;
             try {
               boolean isAdjusting = false;
@@ -88,9 +86,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
         @Override
         protected void fireStateChanged() {
           super.fireStateChanged();
-          if (isInTheMidstOfStateChanged) {
-            //pass
-          } else {
+          if (!isInTheMidstOfStateChanged) {
             isInTheMidstOfStateChanged = true;
             try {
               spinnerModel.setMinimum(this.getMinimum());

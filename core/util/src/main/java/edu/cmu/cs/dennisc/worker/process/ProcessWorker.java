@@ -70,9 +70,7 @@ public abstract class ProcessWorker extends WorkerWithProgress<Integer, String> 
     this.publish(FIRST_CHUNK);
     int i = 0;
     for (ProcessBuilder processBuilder : this.processBuilders) {
-      if (processBuilder.redirectErrorStream()) {
-        //pass
-      } else {
+      if (!processBuilder.redirectErrorStream()) {
         Logger.outln("NOTE: redirecting error stream", processBuilder);
         processBuilder.redirectErrorStream(true);
       }

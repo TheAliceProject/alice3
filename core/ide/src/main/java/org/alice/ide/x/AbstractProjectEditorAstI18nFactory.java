@@ -111,9 +111,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 
   @Override
   public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
-    if (this.isDraggable(statement)) {
-      //pass
-    } else {
+    if (!this.isDraggable(statement)) {
       dragModel = null;
     }
     return super.createStatementPane(dragModel, statement, statementListProperty);

@@ -368,16 +368,12 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
       java.util.List<T> removed = Lists.newLinkedList();
 
       for (T item : previous) {
-        if (next.contains(item)) {
-          //pass
-        } else {
+        if (!next.contains(item)) {
           removed.add(item);
         }
       }
       for (T item : next) {
-        if (previous.contains(item)) {
-          //pass
-        } else {
+        if (!previous.contains(item)) {
           added.add(item);
         }
       }
@@ -476,9 +472,7 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
   private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
     @Override
     public void valueChanged(ListSelectionEvent e) {
-      if (isInTheMidstOfSettingSwingValue) {
-        //pass
-      } else {
+      if (!isInTheMidstOfSettingSwingValue) {
         int index = swingModel.getSelectionIndex();
         T nextValue;
         if (index != -1) {

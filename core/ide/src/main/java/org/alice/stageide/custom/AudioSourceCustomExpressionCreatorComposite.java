@@ -123,9 +123,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
   private boolean isIgnoringValueChanges;
 
   private void updateStartValueIfNecessary() {
-    if (this.isIgnoringValueChanges) {
-      //pass
-    } else {
+    if (!this.isIgnoringValueChanges) {
       int start = this.startMarkerState.getValue();
       int stop = this.stopMarkerState.getValue();
       if (start > stop) {
@@ -141,9 +139,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
   }
 
   private void updateStopValueIfNecessary() {
-    if (this.isIgnoringValueChanges) {
-      //pass
-    } else {
+    if (!this.isIgnoringValueChanges) {
       int start = this.startMarkerState.getValue();
       int stop = this.stopMarkerState.getValue();
       if (start > stop) {

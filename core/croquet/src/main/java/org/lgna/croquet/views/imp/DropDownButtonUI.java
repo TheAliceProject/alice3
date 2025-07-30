@@ -155,9 +155,7 @@ public class DropDownButtonUI extends BasicButtonUI {
   private void handleMouseDragged(MouseEvent e) {
     ButtonModel buttonModel = this.button.getModel();
     if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON) {
-      if (e.getComponent().contains(e.getPoint())) {
-        //pass
-      } else {
+      if (!e.getComponent().contains(e.getPoint())) {
         buttonModel.setPressed(false);
         buttonModel.setRollover(false);
         this.ancestor = findDraggableJDragView(this.button);

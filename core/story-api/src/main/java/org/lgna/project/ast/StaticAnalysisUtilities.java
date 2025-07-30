@@ -83,9 +83,7 @@ public class StaticAnalysisUtilities {
       char c = name.charAt(i);
       if (Character.isLetterOrDigit(c)) {
         if (Character.isDigit(c)) {
-          if (isAlphaEncountered) {
-            //pass
-          } else {
+          if (!isAlphaEncountered) {
             rv += "_";
             rv += c;
             isAlphaEncountered = true;

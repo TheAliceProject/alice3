@@ -129,9 +129,7 @@ public class AssignmentExpressionPane extends LineAxisPanel {
       parent.addComponent(new Label(" ]"));
     }
 
-    if (isSetter) {
-      //pass
-    } else {
+    if (!isSetter) {
       if (FormatterState.isJava()) {
         parent.addComponent(new Label(" = "));
       } else {

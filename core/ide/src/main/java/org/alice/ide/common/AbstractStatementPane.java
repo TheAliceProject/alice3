@@ -114,9 +114,7 @@ public abstract class AbstractStatementPane extends StatementLikeSubstance {
   @Override
   protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
     super.paintEpilogue(g2, x, y, width, height);
-    if (this.statement.isEnabled.getValue()) {
-      //pass
-    } else {
+    if (!this.statement.isEnabled.getValue()) {
       g2.setPaint(PaintUtilities.getDisabledTexturePaint());
       this.fillBounds(g2);
     }

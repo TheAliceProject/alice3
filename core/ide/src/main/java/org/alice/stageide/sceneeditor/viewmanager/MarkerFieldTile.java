@@ -82,9 +82,7 @@ public class MarkerFieldTile extends LineAxisPanel {
     Color foregroundColor;
     if (marker != null) {
       foregroundColor = ColorUtilities.toAwtColor(marker.getMarkerColor());
-      if (isSelected) {
-        //pass
-      } else {
+      if (!isSelected) {
         foregroundColor = ColorUtilities.scaleHSB(foregroundColor, 1.0, 0.5, 0.5);
       }
     } else {

@@ -222,9 +222,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       sb.append(index + 1);
       sb.append(".    ");
       sb.append(value.getName());
-      if (isSelected) {
-        //pass
-      } else {
+      if (!isSelected) {
         //todo:
         final String PADDING_TO_ACCOUNT_FOR_SELECTED_TEXT_WEIGHT = "       ";
         sb.append(PADDING_TO_ACCOUNT_FOR_SELECTED_TEXT_WEIGHT);
@@ -366,9 +364,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       List<Composite<?>> cards = this.cardComposite.getCards();
       for (int i = this.index + 1; i < cards.size(); i++) {
         WizardPageComposite page = (WizardPageComposite) cards.get(i);
-        if (page.isClearToCommit()) {
-          //pass
-        } else {
+        if (!page.isClearToCommit()) {
           isCommitEnabled = false;
           break;
         }

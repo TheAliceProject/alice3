@@ -97,9 +97,7 @@ public class MouseClickEventImp {
   }
 
   protected synchronized void pickIfNecessary() {
-    if (this.isPickPerformed) {
-      //pass
-    } else {
+    if (!this.isPickPerformed) {
       if (this.scene != null) {
         OnscreenRenderTarget rt = this.getOnscreenRenderTarget();
         if (rt != null) {

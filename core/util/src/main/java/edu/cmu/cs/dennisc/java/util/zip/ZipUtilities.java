@@ -193,9 +193,7 @@ public class ZipUtilities {
       pathPrefix += "/";
     }
     for (File file : files) {
-      if (file.isDirectory()) {
-        //pass
-      } else {
+      if (!file.isDirectory()) {
         String path = file.getAbsolutePath();
         assert path.startsWith(rootPath);
         String subPath = path.substring(rootPath.length() + 1, path.length() - file.getName().length());
@@ -224,9 +222,7 @@ public class ZipUtilities {
     File[] files = isRecursive ? FileUtilities.listDescendants(srcDirectory, filter) : FileUtilities.listFiles(srcDirectory, filter);
 
     for (File file : files) {
-      if (file.isDirectory()) {
-        //pass
-      } else {
+      if (!file.isDirectory()) {
         String path = file.getAbsolutePath();
         assert path.startsWith(rootPath);
         String subPath = path.substring(rootPath.length() + 1);

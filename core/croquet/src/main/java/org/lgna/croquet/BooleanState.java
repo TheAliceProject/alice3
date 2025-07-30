@@ -118,9 +118,7 @@ public abstract class BooleanState extends State<Boolean> {
   }
 
   protected void handleItemStateChanged(ItemEvent e) {
-    if (this.isItemStateChangedToBeIgnored) {
-      //pass
-    } else {
+    if (!this.isItemStateChangedToBeIgnored) {
       boolean nextValue = e.getStateChange() == ItemEvent.SELECTED;
       this.changeValueFromSwing(nextValue, ItemEventTrigger.createUserActivity(e));
     }

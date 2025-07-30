@@ -89,9 +89,7 @@ public abstract class ItemSelectablePanel<E> extends ViewController<JPanel, Sing
 
   @Override
   protected void handleDisplayable() {
-    if (this.isInitialized) {
-      //pass
-    } else {
+    if (!this.isInitialized) {
       this.getModel().getData().addListener(this.listDataListener);
       this.handleListDataChanged();
       this.isInitialized = true;

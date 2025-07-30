@@ -166,9 +166,7 @@ public abstract class AbstractElement implements Element {
 
   private void handleNullLocalizedText(Class<? extends Element> clsUsedForLocalization, String actualSubKey) {
     if (ignoredLocalizationSubkeys != null) {
-      if (ignoredLocalizationSubkeys.contains(actualSubKey)) {
-        //pass
-      } else {
+      if (!ignoredLocalizationSubkeys.contains(actualSubKey)) {
         StringBuilder sb = new StringBuilder();
         sb.append("localization missing hachCode=0x");
         sb.append(Integer.toHexString(this.hashCode()));

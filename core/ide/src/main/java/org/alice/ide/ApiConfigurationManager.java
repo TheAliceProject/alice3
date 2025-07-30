@@ -125,9 +125,7 @@ public abstract class ApiConfigurationManager {
     DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
     if (rv != null) {
       for (DefaultNode<NamedUserType> child : rv.getChildren()) {
-        if (this.isNamedUserTypesAcceptableForSelection(child.getValue())) {
-          //pass
-        } else {
+        if (!this.isNamedUserTypesAcceptableForSelection(child.getValue())) {
           rv.removeChild(child);
         }
       }
@@ -141,9 +139,7 @@ public abstract class ApiConfigurationManager {
     DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
     if (rv != null) {
       for (DefaultNode<NamedUserType> child : rv.getChildren()) {
-        if (this.isNamedUserTypesAcceptableForGallery(child.getValue())) {
-          //pass
-        } else {
+        if (!this.isNamedUserTypesAcceptableForGallery(child.getValue())) {
           rv.removeChild(child);
         }
       }

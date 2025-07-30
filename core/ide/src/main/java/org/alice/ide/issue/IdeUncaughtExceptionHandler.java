@@ -105,9 +105,7 @@ public abstract class IdeUncaughtExceptionHandler extends AbstractUncaughtExcept
 
       dialog.setVisible(true);
 
-      if (jSubmitPane.isSubmitAttempted()) {
-        //pass
-      } else {
+      if (!jSubmitPane.isSubmitAttempted()) {
         if (this.count > 1) {
           Object[] options = {CONTINUE_TEXT, SILENTLY_FAIL_TEXT};
           String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + config.getApplicationName() + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";

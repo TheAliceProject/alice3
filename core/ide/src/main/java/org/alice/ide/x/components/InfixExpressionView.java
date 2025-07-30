@@ -75,9 +75,7 @@ public class InfixExpressionView extends AbstractExpressionView<InfixExpression>
           char c1 = text.charAt(1);
           char c2 = text.charAt(2);
           if ((c0 == ' ') && (c2 == ' ')) {
-            if (Character.isLetterOrDigit(c1)) {
-              //pass
-            } else {
+            if (!Character.isLetterOrDigit(c1)) {
               isScaleDesired = true;
             }
           }

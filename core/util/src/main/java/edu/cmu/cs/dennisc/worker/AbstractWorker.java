@@ -61,9 +61,7 @@ public abstract class AbstractWorker<T, V> {
     @Override
     protected final void done() {
       super.done();
-      if (this.isCancelled()) {
-        //pass
-      } else {
+      if (!this.isCancelled()) {
         T value;
         try {
           value = this.get();

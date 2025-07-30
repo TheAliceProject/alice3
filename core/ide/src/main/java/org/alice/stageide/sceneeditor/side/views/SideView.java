@@ -87,9 +87,7 @@ public class SideView extends BorderPanel {
     final Theme theme = ThemeUtilities.getActiveTheme();
     final Color color = theme.getPrimaryBackgroundColor();
 
-    if (IsToolBarShowing.getValue()) {
-      //pass
-    } else {
+    if (!IsToolBarShowing.getValue()) {
       ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
       FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 

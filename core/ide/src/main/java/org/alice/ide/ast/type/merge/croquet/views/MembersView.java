@@ -281,9 +281,7 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   @Override
   public void addComponent(AwtComponentView<?> component, String constraint) {
     super.addComponent(component, constraint);
-    if (constraint.contains("spany")) {
-      //pass
-    } else {
+    if (!constraint.contains("spany")) {
       this.addToRow(component);
     }
     if (constraint.contains("wrap")) {

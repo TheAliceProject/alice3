@@ -116,9 +116,7 @@ public abstract class DebugFrame<T> extends FrameComposite<DebugFrameView<T>> {
 
   private static <T> void updateValuesToMute(Set<T> set, ZTreeNode<T> zTreeNode) {
     set.add(zTreeNode.getValue());
-    if (zTreeNode.isLeaf()) {
-      //pass
-    } else {
+    if (!zTreeNode.isLeaf()) {
       Enumeration<ZTreeNode<T>> e = zTreeNode.children();
       while (e.hasMoreElements()) {
         updateValuesToMute(set, e.nextElement());

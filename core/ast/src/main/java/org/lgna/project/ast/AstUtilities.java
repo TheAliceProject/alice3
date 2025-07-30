@@ -194,9 +194,7 @@ public class AstUtilities {
     while (true) {
       if (javaType != null) {
         updatePersistentPropertyGetters(rv, javaType);
-        if (javaType.isFollowToSuperClassDesired()) {
-          //pass
-        } else {
+        if (!javaType.isFollowToSuperClassDesired()) {
           break;
         }
         javaType = javaType.getSuperType();
@@ -639,9 +637,7 @@ public class AstUtilities {
       AbstractMethod m = methodInvocation.method.getValue();
       if (m instanceof UserMethod) {
         UserMethod userMethod = (UserMethod) m;
-        if (set.contains(userMethod)) {
-          //pass
-        } else {
+        if (!set.contains(userMethod)) {
           set.add(userMethod);
           addInvokedMethods(set, userMethod);
         }

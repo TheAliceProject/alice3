@@ -66,9 +66,7 @@ public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
       }
       sb.append(" ");
     }
-    if (isDocumentUpToDateWithUri) {
-      //pass
-    } else {
+    if (!isDocumentUpToDateWithUri) {
       sb.append("*");
     }
 

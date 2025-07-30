@@ -128,9 +128,7 @@ public class ProgramControlPanel extends JPanel {
 
       @Override
       public void mouseReleased(MouseEvent e) {
-        if (InputEventUtilities.isQuoteControlUnquoteDown(e)) {
-          //pass
-        } else {
+        if (!InputEventUtilities.isQuoteControlUnquoteDown(e)) {
           ProgramControlPanel.this.boundedRangeModel.setValue(1);
         }
       }

@@ -69,9 +69,7 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<Java
   @Override
   protected void internalRefresh() {
     super.internalRefresh();
-    if (AstUtilities.isKeyedArgumentListPropertyComplete(this.getArgumentListProperty())) {
-      //pass
-    } else {
+    if (!AstUtilities.isKeyedArgumentListPropertyComplete(this.getArgumentListProperty())) {
       AstI18nFactory factory = this.getFactory();
       if (factory instanceof MutableAstI18nFactory) {
         MutableAstI18nFactory mutableAstI18nFactory = (MutableAstI18nFactory) factory;

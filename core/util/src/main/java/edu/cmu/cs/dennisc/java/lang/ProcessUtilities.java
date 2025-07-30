@@ -56,9 +56,7 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class ProcessUtilities {
   public static int startAndDrainStandardOutAndStandardError(ProcessBuilder processBuilder, StringBuilder sb) throws ProcessStartException, IOException {
-    if (processBuilder.redirectErrorStream()) {
-      //pass
-    } else {
+    if (!processBuilder.redirectErrorStream()) {
       Logger.outln("NOTE: redirecting error stream", processBuilder);
       processBuilder.redirectErrorStream(true);
     }

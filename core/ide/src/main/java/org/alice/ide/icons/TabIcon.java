@@ -102,9 +102,7 @@ public class TabIcon extends ShapeIcon {
     }
     g2.setPaint(isArmed ? this.armedFillPaint : this.fillPaint);
     g2.fill(shape);
-    if (isArmed) {
-      //pass
-    } else {
+    if (!isArmed) {
       Stroke prevStroke = g2.getStroke();
       g2.setStroke(STROKE);
       g2.setPaint(Color.DARK_GRAY);

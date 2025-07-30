@@ -93,9 +93,7 @@ public class JList<E> extends javax.swing.JList {
     addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) {
-          //pass
-        } else {
+        if (!e.getValueIsAdjusting()) {
           int modifiers = 0; //todo
           fireActionListeners(System.currentTimeMillis(), modifiers, false);
         }

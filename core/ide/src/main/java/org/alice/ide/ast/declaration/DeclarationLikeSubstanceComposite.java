@@ -213,9 +213,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
       blankChildren.add(CascadeLineSeparator.getInstance());
       blankChildren.add(OtherTypeDialog.getInstance().getValueCreator(SThing.class).getFillIn());
       OtherTypesMenuModel otherTypesMenuModel = OtherTypesMenuModel.getInstance();
-      if (otherTypesMenuModel.isEmpty()) {
-        //pass
-      } else {
+      if (!otherTypesMenuModel.isEmpty()) {
         blankChildren.add(CascadeLineSeparator.getInstance());
         blankChildren.add(otherTypesMenuModel);
       }

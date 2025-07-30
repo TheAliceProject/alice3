@@ -150,9 +150,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
         for (int i = 0; i < parameterTypes.length; i++) {
           AbstractType<?, ?, ?> parameterType = parameterTypes[i];
           assert parameterType != null;
-          if (parameterType.equals(parameters.get(i).getValueType())) {
-            //pass
-          } else {
+          if (!parameterType.equals(parameters.get(i).getValueType())) {
             rv = null;
             break;
           }
@@ -194,9 +192,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
           rv = method;
           for (int i = 0; i < requiredParameters.size(); i++) {
             AbstractType<?, ?, ?> parameterType = parameterTypes[i];
-            if (parameterType.equals(requiredParameters.get(i).getValueType())) {
-              //pass
-            } else {
+            if (!parameterType.equals(requiredParameters.get(i).getValueType())) {
               rv = null;
               break;
             }

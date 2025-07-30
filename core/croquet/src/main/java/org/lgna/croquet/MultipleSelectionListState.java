@@ -182,9 +182,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   }
 
   public void removeNewSchoolValueListener(ValueListener<List<T>> valueListener) {
-    if (this.newSchoolValueListeners.contains(valueListener)) {
-      //pass
-    } else {
+    if (!this.newSchoolValueListeners.contains(valueListener)) {
       Logger.severe("listener not contained", this, valueListener);
     }
     this.newSchoolValueListeners.remove(valueListener);

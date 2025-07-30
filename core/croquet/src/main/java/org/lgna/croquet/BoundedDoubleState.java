@@ -81,9 +81,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
         @Override
         protected void fireStateChanged() {
           super.fireStateChanged();
-          if (isInTheMidstOfStateChanged) {
-            //pass
-          } else {
+          if (!isInTheMidstOfStateChanged) {
             isInTheMidstOfStateChanged = true;
             try {
               boolean isAdjusting = false;
@@ -110,9 +108,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
         @Override
         protected void fireStateChanged() {
           super.fireStateChanged();
-          if (isInTheMidstOfStateChanged) {
-            //pass
-          } else {
+          if (!isInTheMidstOfStateChanged) {
             isInTheMidstOfStateChanged = true;
             try {
               int v = this.getValue();

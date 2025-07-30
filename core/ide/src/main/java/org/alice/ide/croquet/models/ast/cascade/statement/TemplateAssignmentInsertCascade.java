@@ -92,9 +92,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
       for (AbstractField field : selectedType.getDeclaredFields()) {
         if (field instanceof UserField) {
           UserField userField = (UserField) field;
-          if (userField.isFinal()) {
-            //pass
-          } else {
+          if (!userField.isFinal()) {
             nonFinalUserFields.add(userField);
           }
         }
@@ -112,9 +110,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
 
     List<UserLocal> nonFinalLocals = Lists.newLinkedList();
     for (UserLocal local : IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals(this.blockStatementIndexPair)) {
-      if (local.isFinal.getValue()) {
-        //pass
-      } else {
+      if (!local.isFinal.getValue()) {
         nonFinalLocals.add(local);
       }
     }

@@ -155,9 +155,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         String text = button.getText();
         Insets insets = button.getInsets();
         int x = insets.left;
-        if (button.getComponentOrientation().isLeftToRight()) {
-          //pass
-        } else {
+        if (!button.getComponentOrientation().isLeftToRight()) {
           for (Component component : button.getComponents()) {
             x += component.getPreferredSize().width;
             x += 4;
@@ -649,9 +647,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
   private void setInnerHeaderTrailingComponent(SwingComponentView<?> component) {
     if (component != null) {
-      if (component.isOpaque()) {
-        //pass
-      } else {
+      if (!component.isOpaque()) {
         component.setBackgroundColor(this.getBackgroundColor());
       }
       component.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -667,9 +663,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
   public void setHeaderTrailingComponent(SwingComponentView<?> component) {
     if (component != null) {
-      if (component.isOpaque()) {
-        //pass
-      } else {
+      if (!component.isOpaque()) {
         component.setBackgroundColor(this.getBackgroundColor());
       }
       component.setAlignmentY(Component.BOTTOM_ALIGNMENT);
