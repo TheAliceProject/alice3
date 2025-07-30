@@ -139,24 +139,16 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
       if (component != null) {
         final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
         ComponentOrientation componentOrientation = component.getComponentOrientation();
-        if (componentOrientation.isLeftToRight()) {
-          //pass
-        } else {
-          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-            setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
-          }
+        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+          setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
         }
 
         ComponentUtilities.invalidateTree(component);
         ComponentUtilities.doLayoutTree(component);
         ComponentUtilities.setSizeToPreferredSizeTree(component);
 
-        if (componentOrientation.isLeftToRight()) {
-          //pass
-        } else {
-          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-            setBoxLayoutComponentOrientationTree(component, componentOrientation);
-          }
+        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+          setBoxLayoutComponentOrientationTree(component, componentOrientation);
         }
 
         Dimension size = component.getPreferredSize();

@@ -91,14 +91,8 @@ public class DropDownButtonUI extends BasicButtonUI {
 
   private void handleMouseEntered(MouseEvent e) {
     ButtonModel buttonModel = this.button.getModel();
-    if (SwingUtilities.isLeftMouseButton(e)) {
-      //pass
-    } else {
-      if (this.button.isEnabled()) {
-        if (this.dispatchState == null) {
-          buttonModel.setRollover(true);
-        }
-      }
+    if (!SwingUtilities.isLeftMouseButton(e) && this.button.isEnabled() && this.dispatchState == null) {
+      buttonModel.setRollover(true);
     }
   }
 

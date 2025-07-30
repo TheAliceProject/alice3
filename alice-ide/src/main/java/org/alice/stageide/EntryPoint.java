@@ -130,15 +130,11 @@ public class EntryPoint extends Application {
       String localeString = null;
       int index = 0;
       if (args.length > 0) {
-        if ("null".equalsIgnoreCase(args[0])) {
-          //pass
-        } else {
-          if ("-l".equalsIgnoreCase(args[0])) {
-            index = 1;
-            if (args.length > 1) {
-              localeString = args[1];
-              index = 2;
-            }
+        if (!"null".equalsIgnoreCase(args[0]) && "-l".equalsIgnoreCase(args[0])) {
+          index = 1;
+          if (args.length > 1) {
+            localeString = args[1];
+            index = 2;
           }
         }
         if (args.length > index) {

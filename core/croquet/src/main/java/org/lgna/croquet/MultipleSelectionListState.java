@@ -111,14 +111,8 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
     @Override
     public void valueChanged(ListSelectionEvent e) {
-      if (isInTheMidstOfSettingSwingValue) {
-        //pass
-      } else {
-        if (e.getValueIsAdjusting()) {
-          //pass
-        } else {
-          fireChanged(getValue());
-        }
+      if (!isInTheMidstOfSettingSwingValue && !e.getValueIsAdjusting()) {
+        fireChanged(getValue());
       }
     }
   };

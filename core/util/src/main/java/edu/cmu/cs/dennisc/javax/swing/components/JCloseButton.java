@@ -170,11 +170,8 @@ public final class JCloseButton extends JButton {
   public boolean contains(int x, int y) {
     if (this.isVisibleOnlyWhenParentIsSelected) {
       Container parent = this.getParent();
-      if (parent instanceof AbstractButton) {
-        AbstractButton button = (AbstractButton) parent;
-        if (button.isSelected()) {
-          //pass
-        } else {
+      if (parent instanceof AbstractButton button) {
+        if (!button.isSelected()) {
           return false;
         }
       }
@@ -186,11 +183,8 @@ public final class JCloseButton extends JButton {
   public boolean isVisible() {
     if (this.isVisibleOnlyWhenParentIsSelected) {
       Container parent = this.getParent();
-      if (parent instanceof AbstractButton) {
-        AbstractButton button = (AbstractButton) parent;
-        if (button.isSelected()) {
-          //pass
-        } else {
+      if (parent instanceof AbstractButton button) {
+        if (!button.isSelected()) {
           return false;
         }
       }

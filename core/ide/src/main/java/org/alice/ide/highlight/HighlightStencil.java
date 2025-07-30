@@ -194,16 +194,10 @@ public class HighlightStencil extends LayerStencil {
     if (note.isActive()) {
       for (Feature feature : note.getFeatures()) {
         TrackableShape trackableShape = feature.getTrackableShape();
-        if (trackableShape != null) {
-          if (trackableShape.isInView()) {
-            //pass
-          } else {
-            if (scrollRenderer != null) {
-              Shape repaintShape = scrollRenderer.renderScrollIndicators(g2, HighlightStencil.this, trackableShape);
-              if (repaintShape != null) {
-                //todo: repaint?
-              }
-            }
+        if (trackableShape != null && !trackableShape.isInView() && scrollRenderer != null) {
+          Shape repaintShape = scrollRenderer.renderScrollIndicators(g2, HighlightStencil.this, trackableShape);
+          if (repaintShape != null) {
+            //todo: repaint?
           }
         }
       }

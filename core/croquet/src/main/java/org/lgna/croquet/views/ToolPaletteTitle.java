@@ -275,18 +275,12 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
     protected void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g;
       super.paintComponent(g);
-      if (this.isSuppressed) {
-        //pass
-      } else {
-        if (this.isInert) {
-          //pass
-        } else {
-          int x = this.isRoundedOnTop ? 8 : 4;
-          int height = this.getHeight();
-          int iconHeight = ARROW_ICON.getIconHeight();
-          int y = (height - iconHeight) / 2;
-          ARROW_ICON.paintIcon(this, g2, x, y);
-        }
+      if (!this.isSuppressed && !this.isInert) {
+        int x = this.isRoundedOnTop ? 8 : 4;
+        int height = this.getHeight();
+        int iconHeight = ARROW_ICON.getIconHeight();
+        int y = (height - iconHeight) / 2;
+        ARROW_ICON.paintIcon(this, g2, x, y);
       }
     }
 
@@ -345,39 +339,33 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
       Shape prevClip = g2.getClip();
       try {
         JToolPaletteTitle b = (JToolPaletteTitle) c;
-        if (b.isSuppressed()) {
-          //pass
-        } else {
-          if (b.isInert()) {
-            //pass
-          } else {
-            ButtonModel buttonModel = b.getModel();
-            if (b.isRoundedOnTop()) {
-              g2.setClip(AreaUtilities.createIntersection(prevClip, createRoundedOnTopShape(b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth())));
-            }
+        if (!b.isSuppressed() && !b.isInert()) {
+          ButtonModel buttonModel = b.getModel();
+          if (b.isRoundedOnTop()) {
+            g2.setClip(AreaUtilities.createIntersection(prevClip, createRoundedOnTopShape(b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth())));
+          }
 
-            Rectangle r = SwingUtilities.getLocalBounds(c);
-            Color background = c.getBackground();
-            RenderingStyle renderingStyle = b.getRenderingStyle();
-            if (renderingStyle.isShaded(buttonModel)) {
-              if (buttonModel.isPressed()) {
-                g2.setPaint(background.darker());
-                g2.fillRect(0, 0, b.getWidth(), b.getHeight());
-              } else {
-                double brightnessScale;
-                if (buttonModel.isRollover()) {
-                  brightnessScale = 1.2;
-                } else {
-                  brightnessScale = 1.1;
-                }
-                Color HIGHLIGHT_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, brightnessScale);
-                Color SHADOW_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, 0.8);
-                GraphicsUtilities.fillGradientRectangle(g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f);
-              }
-            } else {
-              g2.setPaint(background);
+          Rectangle r = SwingUtilities.getLocalBounds(c);
+          Color background = c.getBackground();
+          RenderingStyle renderingStyle = b.getRenderingStyle();
+          if (renderingStyle.isShaded(buttonModel)) {
+            if (buttonModel.isPressed()) {
+              g2.setPaint(background.darker());
               g2.fillRect(0, 0, b.getWidth(), b.getHeight());
+            } else {
+              double brightnessScale;
+              if (buttonModel.isRollover()) {
+                brightnessScale = 1.2;
+              } else {
+                brightnessScale = 1.1;
+              }
+              Color HIGHLIGHT_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, brightnessScale);
+              Color SHADOW_COLOR = ColorUtilities.scaleHSB(background, 1.0, 1.0, 0.8);
+              GraphicsUtilities.fillGradientRectangle(g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f);
             }
+          } else {
+            g2.setPaint(background);
+            g2.fillRect(0, 0, b.getWidth(), b.getHeight());
           }
         }
         super.paint(g, c);

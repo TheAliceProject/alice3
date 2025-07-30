@@ -170,19 +170,13 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
       this.properties = new LinkedList<InstanceProperty<?>>();
       for (Field field : cls.getFields()) {
         int modifiers = field.getModifiers();
-        if (Modifier.isPublic(modifiers)) {
-          if (Modifier.isStatic(modifiers)) {
-            //pass
-          } else {
-            if (InstanceProperty.class.isAssignableFrom(field.getType())) {
-              InstanceProperty instanceProperty = (InstanceProperty) ReflectionUtilities.get(field, this);
-              assert instanceProperty.getOwner() == this;
-              this.properties.add(instanceProperty);
-            }
+        if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && InstanceProperty.class.isAssignableFrom(field.getType())) {
+            InstanceProperty instanceProperty = (InstanceProperty) ReflectionUtilities.get(field, this);
+            assert instanceProperty.getOwner() == this;
+            this.properties.add(instanceProperty);
           }
         }
       }
-    }
     return this.properties;
   }
 
@@ -191,14 +185,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     for (Field field : getClass().getFields()) {
       if (InstanceProperty.class.isAssignableFrom(field.getType())) {
         int modifiers = field.getModifiers();
-        if (Modifier.isPublic(modifiers)) {
-          if (Modifier.isStatic(modifiers)) {
-            //pass
-          } else {
-            if (ReflectionUtilities.get(field, this) == instanceProperty) {
-              return field.getName();
-            }
-          }
+        if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && ReflectionUtilities.get(field, this) == instanceProperty) {
+          return field.getName();
         }
       }
     }

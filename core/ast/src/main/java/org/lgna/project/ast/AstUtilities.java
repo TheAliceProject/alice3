@@ -150,21 +150,16 @@ public class AstUtilities {
   }
 
   public static boolean isKeyedArgumentListPropertyComplete(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
+    boolean isFound = false;
     for (JavaMethod method : getKeyMethods(argumentListProperty)) {
-      boolean isFound = false;
       for (JavaKeyedArgument argument : argumentListProperty) {
         if (argument.getKeyMethod() == method) {
           isFound = true;
           break;
         }
       }
-      if (isFound) {
-        //pass
-      } else {
-        return false;
-      }
     }
-    return true;
+    return isFound;
   }
 
   private static List<JavaMethod> updatePersistentPropertyGetters(List<JavaMethod> rv, JavaType javaType) {
