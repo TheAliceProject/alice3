@@ -89,7 +89,9 @@ import java.util.UUID;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension;
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles;
+import static org.alice.ide.ProjectFileUtilities.BACKUP_AUTO;
 import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
+import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
 /**
  * @author Dennis Cosgrove
@@ -366,7 +368,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     loadProject(activity, uriProjectLoader, false, new HashSet<>());
   }
 
-  public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader, boolean isLoadingBackups,
+  private final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader, boolean isLoadingBackups,
                                 Set<String> unloadableFiles) {
     showWaitCursor();
     this.uriProjectLoader = uriProjectLoader;
@@ -380,146 +382,150 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
                              Set<String> unloadableFiles) {
     File saved = UriUtilities.getFile(getUri());
 
-    String parentDirName = "";
     boolean isBackup = false;
 
     if (!projectFileUtilities.isNewProject()) {
-      parentDirName = saved.getParentFile().getName();
-      isBackup = BACKUP_EXTENSION.equals(getExtension(parentDirName));
+      File parentDir = saved.getParentFile();
+
+      if (parentDir != null) {
+        isBackup = BACKUP_EXTENSION.equals(getExtension(parentDir.getName()));
+      }
     }
 
-    File backupDir = null;
-
-    if (isBackup) {
-      backupDir = saved.getParentFile();
-    } else if (saved != null) {
-      backupDir = projectFileUtilities.backupDirectory(saved).toFile();
-    }
-
-    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
+    //File backupDir = projectFileUtilities.backupDirectory(saved, isBackup).toFile();
+    //boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
 
     if (project == null) {
-      uriProjectLoader = null;
-      activity.cancel();
-
-      unloadableFiles.add(saved.getName());
-
-      if (isBackup && isLoadingBackups) {
-        File mainProject = getMainProjectFile(saved);
-
-        LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(mainProject);
-
-        File backup = getNextBackup(projectModifiedTime, backupDir, unloadableFiles);
-
-        if (backup != null) {
-          // restart load with backup
-          if (Dialogs.confirmWithWarning("Load backup?",
-                  "WARNING: this project could not be loaded.\nWould you like to try an earlier backup?")) {
-            loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
-          }
-        } else {
-          if (Dialogs.confirmWithWarning("Load backup?",
-                  "WARNING: all backups more recent than the project were corrupted.\nWould you like to reload the original project file?")) {
-            loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, unloadableFiles);
-          }
-        }
-      }
+      handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, unloadableFiles);
     } else {
-      // project was loaded successfully
-
-      if (isBackup && !isLoadingBackups) {
-        // User manually opened a backup, don't do anything special
-      } else if (unloadableFiles.isEmpty() && !projectFileUtilities.isNewProject()) {
-        // if unloadableFiles is empty, then the user manually opened a project,
-        // and we should check for newer backups
-
-        // if it isn't empty, then we already attempted to load all newer backups,
-        // but weren't successful, so just continue loading the main project
-
-        LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(saved);
-
-        File backup = getNextBackup(projectModifiedTime, backupDir, unloadableFiles);
-
-        if (backup != null) {
-          // restart load with backup
-          if (Dialogs.confirmWithWarning("Load backup?",
-                  "WARNING: this project is out-of-date.\nWould you like to load a backup with more recent changes?")) {
-            uriProjectLoader = null;
-            activity.cancel();
-            hideWaitCursor();
-
-            loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
-
-            return;
-          }
-        }
-      }
-
-      try {
-        updateInterface(project);
-
-        if (isLoadingBackups) {
-          // a backup was successfully loaded, prompt the user for what to do next
-          if (createProjectFromBackup(saved, getMainProjectFile(saved))) {
-            uriProjectLoader = null;
-            activity.cancel();
-          }
-        }
-      } catch (RuntimeException re) {
-        var message = new StringBuilder("Errors reported in " + getUri());
-        Throwable cause = re;
-        do {
-          var causeMessage = cause.getLocalizedMessage();
-          if (causeMessage != null) {
-            message.append("\n\n  ").append(causeMessage);
-          }
-          cause = cause.getCause();
-        } while (cause != null);
-        // TODO clear project remnants from system
-        uriProjectLoader = null;
-        activity.cancel(new CancelException(re));
-        Dialogs.showError("Unable to Load Project", message.toString());
-        setPerspective(getDocumentFrame().getNoProjectPerspective());
-        UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
-        getDocumentFrame().getNewProjectOperation().fire(newActivity);
-      }
+      handleProjectLoadSuccess(project, saved, activity, isBackup, isLoadingBackups, unloadableFiles);
     }
     hideWaitCursor();
   }
 
+  private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
+                                      boolean isLoadingBackups, Set<String> unloadableFiles) {
+    File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
+    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
+
+    uriProjectLoader = null;
+    activity.cancel();
+
+    unloadableFiles.add(projectFile.getName());
+
+    if (isBackup && isLoadingBackups) {
+      File mainProject = getMainProjectFile(projectFile);
+
+      LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(mainProject);
+
+      File backup = getNextBackup(projectModifiedTime, backupDir, unloadableFiles);
+
+      if (backup != null) {
+        // restart load with backup
+        if (Dialogs.confirmWithWarning("Load backup?",
+                "WARNING: this project could not be loaded.\nWould you like to try an earlier backup?")) {
+          loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
+        }
+      } else {
+        if (Dialogs.confirmWithWarning("Load backup?",
+                "WARNING: all backups more recent than the project were corrupted.\nWould you like to reload the original project file?")) {
+          loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, unloadableFiles);
+        }
+      }
+    }
+  }
+
+  private void handleProjectLoadSuccess(Project project, File projectFile, UserActivity activity, boolean isBackup,
+                                        boolean isLoadingBackups, Set<String> unloadableFiles) {
+    File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
+    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
+
+    if (isBackup && !isLoadingBackups) {
+      // User manually opened a backup, don't do anything special
+    } else if (unloadableFiles.isEmpty() && !projectFileUtilities.isNewProject()) {
+      // if unloadableFiles is empty, then the user manually opened a project,
+      // and we should check for newer backups
+
+      // if it isn't empty, then we already attempted to load all newer backups,
+      // but weren't successful, so just continue loading the main project
+
+      LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
+
+      File backup = getNextBackup(projectModifiedTime, backupDir, unloadableFiles);
+
+      if (backup != null && Dialogs.confirmWithWarning("Load backup?",
+              "WARNING: this project is out-of-date.\nWould you like to load a backup with more recent changes?")) {
+        uriProjectLoader = null;
+        activity.cancel();
+
+        // restart load with backup
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
+
+        return;
+      }
+    }
+
+    try {
+      updateInterface(project);
+
+      // If a backup was successfully loaded, prompt the user for what to do next
+      if (isLoadingBackups && createProjectFromBackup(projectFile, getMainProjectFile(projectFile))) {
+        uriProjectLoader = null;
+        activity.cancel();
+      }
+    } catch (RuntimeException re) {
+      var message = new StringBuilder("Errors reported in " + getUri());
+      Throwable cause = re;
+      do {
+        var causeMessage = cause.getLocalizedMessage();
+        if (causeMessage != null) {
+          message.append("\n\n  ").append(causeMessage);
+        }
+        cause = cause.getCause();
+      } while (cause != null);
+      // TODO clear project remnants from system
+      uriProjectLoader = null;
+      activity.cancel(new CancelException(re));
+      Dialogs.showError("Unable to Load Project", message.toString());
+      setPerspective(getDocumentFrame().getNoProjectPerspective());
+      UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
+      getDocumentFrame().getNewProjectOperation().fire(newActivity);
+    }
+  }
+
   private boolean createProjectFromBackup(File backup, File original) {
     YesNoCancelResult result = Dialogs.confirmOrCancel("Replace Project With Backup?",
-            "A backup has been opened successfully: " + backup.getName() + ".\n" +
-                    "Would like to replace the original project, or create a new project from the backup?\n" + "" +
-                    "Cancel to do neither and just continue opening the backup.");
+            "A backup has been opened successfully: " + backup.getName()
+                    + ".\n" + "Would like to replace the original project, or create a new project from the backup?\n"
+                    + "Cancel to do neither and just continue opening the backup.");
 
-    if (result == YesNoCancelResult.YES || result == YesNoCancelResult.NO) {
-      if (result == YesNoCancelResult.YES) {
+    return switch (result) {
+      case YesNoCancelResult.YES -> {
         // replace the existing project
-
         try {
           saveProjectTo(original);
         } catch (IOException ioe) {
           Dialogs.showError("Unable to save file", ioe.getMessage());
         }
-      } else if (result == YesNoCancelResult.NO) {
-        // create a new project
 
-        SaveAsProjectOperation.getInstance().fire(newProjectActivity());
+        yield true;
       }
+      case YesNoCancelResult.NO -> {
+        // create a new project
+        SaveAsProjectOperation.getInstance().fire(newProjectActivity());
 
-      return true;
-    } else { // if (result == YesNoCancelResult.CANCEL) {
-      // just continue editing this project
-
-      return false;
-    }
+        yield true;
+      }
+      case YesNoCancelResult.CANCEL ->
+        // just continue editing this project
+        false;
+    };
   }
 
   private File getMainProjectFile(File backup) {
     File backupDir = backup.getParentFile();
 
-    String originalFileName = FileUtilities.getBaseName(backupDir) + ProjectFileUtilities.PROJECT_FILE_EXTENSION;
+    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
 
     return backup.toPath().getParent().resolveSibling(originalFileName).toFile();
   }
@@ -529,13 +535,13 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       return null;
     }
 
-    File[] backups = getSortedBackups("auto", backupDir);
+    File[] backups = getSortedBackups(BACKUP_AUTO, backupDir);
 
     for (File backup : backups) {
       if (!unloadableFiles.contains(backup.getName())) {
         // return the latest backup, as long as it is newer than the main project
 
-        if (modifiedTime == null) {
+        if (modifiedTime == null || modifiedTime == LocalDateTime.MIN) {
           return backup;
         }
 
@@ -543,8 +549,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
         if (backupModifiedTime.isAfter(modifiedTime)) {
           return backup;
-        } else {
+        } else if (backupModifiedTime != LocalDateTime.MIN) {
           // don't bother checking any backups older than the original project
+          // LocalDateTime.MIN indicates an error in getting the time, so skip that backup since it may be corrupted
           return null;
         }
       }

@@ -243,9 +243,9 @@ public class FileUtilities {
     try {
       FileTime fileTime = Files.getLastModifiedTime(f.toPath());
       return LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
-    } catch(IOException ioe) {
+    } catch (IOException ioe) {
       ioe.printStackTrace();
-      return null;
+      return LocalDateTime.MIN;
     }
   }
 }
