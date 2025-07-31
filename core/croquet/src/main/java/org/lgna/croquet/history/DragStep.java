@@ -223,9 +223,7 @@ public class DragStep extends PrepStep<DragModel> {
     }
     if (this.currentDropReceptor != null) {
       DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated(this);
-      if (Objects.equals(this.currentPotentialDropSite, nextPotentialDropSite)) {
-        //pass
-      } else {
+      if (!Objects.equals(this.currentPotentialDropSite, nextPotentialDropSite)) {
         if (this.currentPotentialDropSite != null) {
           //this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
         }

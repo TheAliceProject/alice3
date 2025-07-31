@@ -223,15 +223,11 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
               if (thisValue instanceof AbstractInstancePropertyOwner) {
-                if (((AbstractInstancePropertyOwner) thisValue).isEquivalentTo(otherValue)) {
-                  //pass
-                } else {
+                if (!((AbstractInstancePropertyOwner) thisValue).isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {
-                if (Objects.equals(thisValue, otherValue)) {
-                  //pass
-                } else {
+                if (!Objects.equals(thisValue, otherValue)) {
                   return false;
                 }
               }

@@ -280,9 +280,7 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
   private void setSelectedNode(T e) {
     TreePath currTreePath = this.swingModel.treeSelectionModel.getSelectionPath();
     TreePath nextTreePath = this.getTreeModel().getTreePath(e);
-    if (Objects.equals(currTreePath, nextTreePath)) {
-      //pass
-    } else {
+    if (!Objects.equals(currTreePath, nextTreePath)) {
       this.swingModel.treeSelectionModel.setSelectionPath(nextTreePath);
     }
   }

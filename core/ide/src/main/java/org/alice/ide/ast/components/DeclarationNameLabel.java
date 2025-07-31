@@ -141,9 +141,7 @@ public class DeclarationNameLabel extends Label {
     } else {
       text = this.getTextForBlankName();
     }
-    if (Objects.equals(this.getText(), text)) {
-      //pass
-    } else {
+    if (!Objects.equals(this.getText(), text)) {
       this.setText(text);
       this.repaint();
     }

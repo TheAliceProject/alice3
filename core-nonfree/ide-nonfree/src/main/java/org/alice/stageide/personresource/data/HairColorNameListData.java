@@ -65,9 +65,7 @@ public class HairColorNameListData extends RefreshableListData<HairColorName> {
   }
 
   public void setHairHatStyle(HairHatStyle hairHatStyle) {
-    if (Objects.equals(this.hairHatStyle, hairHatStyle)) {
-      //pass
-    } else {
+    if (!Objects.equals(this.hairHatStyle, hairHatStyle)) {
       this.hairHatStyle = hairHatStyle;
       this.refresh();
     }
