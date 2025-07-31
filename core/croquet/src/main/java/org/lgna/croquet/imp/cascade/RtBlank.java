@@ -128,9 +128,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
       } else if (child instanceof RtRoot) {
         //??
         return null;
-      } else if (child instanceof RtSeparator) {
-        //pass
-      } else {
+      } else if (!(child instanceof RtSeparator)) {
         Logger.severe("unhandled child", child);
         return null;
       }
@@ -180,9 +178,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
 
       boolean isDevoidOfNonSeparators = true;
       for (RtItem rtItem : baseRtItems) {
-        if (rtItem instanceof RtSeparator) {
-          //pass
-        } else {
+        if (!(rtItem instanceof RtSeparator)) {
           isDevoidOfNonSeparators = false;
         }
       }

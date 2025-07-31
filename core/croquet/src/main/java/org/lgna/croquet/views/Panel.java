@@ -104,9 +104,7 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
     JPanel rv = this.createJPanel();
     LayoutManager prevLayoutManager = rv.getLayout();
     LayoutManager nextLayoutManager = this.createLayoutManager(rv);
-    if (prevLayoutManager instanceof FlowLayout) {
-      //pass
-    } else {
+    if (!(prevLayoutManager instanceof FlowLayout)) {
       StringBuilder sb = new StringBuilder();
       sb.append("\n********************************************************");
       sb.append("\n********************************************************");

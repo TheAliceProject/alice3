@@ -496,11 +496,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
     if (instance != null) {
       Expression expression = this.selectedInstance.createExpression();
-      if (expression instanceof LocalAccess) {
-        //pass
-      } else if (expression instanceof ParameterAccess) {
-        //pass
-      } else {
+      if (!(expression instanceof LocalAccess) && !(expression instanceof ParameterAccess)) {
         Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(this.selectedInstance.createExpression());
         if (instanceInJava instanceof SThing) {
           this.selectedEntity = (SThing) instanceInJava;
