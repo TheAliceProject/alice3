@@ -498,9 +498,7 @@ public class RenderTargetImp {
       initialize(drawable);
       Logger.outln("note: initialize necessary from display");
     }
-    if ((this.drawableWidth > 0) && (this.drawableHeight > 0)) {
-      //pass
-    } else {
+    if (this.drawableWidth <= 0 || this.drawableHeight <= 0) {
       int nextWidth = GlDrawableUtils.getGlDrawableWidth(drawable);
       int nextHeight = GlDrawableUtils.getGlDrawableHeight(drawable);
       int nextScreenWidth = GlDrawableUtils.getGLJPanelWidth(drawable);

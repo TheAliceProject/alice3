@@ -538,9 +538,7 @@ public class AstUtilities {
     for (int i = 0; i < dstRequiredParameters.length; i++) {
       AbstractParameter srcRequiredParameter = srcRequiredParameters.get(i);
       String name = srcRequiredParameter.getName();
-      if ((name != null) && (name.length() > 0)) {
-        //pass
-      } else {
+      if (name == null || name.isEmpty()) {
         name = "p" + i;
       }
       dstRequiredParameters[i] = new UserParameter(name, srcRequiredParameter.getValueType());
