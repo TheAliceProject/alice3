@@ -81,9 +81,7 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
   }
 
   public Field getPublicStaticFinalFld() {
-    if (this.fld != null) {
-      //pass
-    } else if (this.containingClass != null) {
+    if (this.fld == null && this.containingClass != null) {
       for (Field fld : this.containingClass.getFields()) {
         int modifiers = fld.getModifiers();
         if (Modifier.isPublic(modifiers)) {

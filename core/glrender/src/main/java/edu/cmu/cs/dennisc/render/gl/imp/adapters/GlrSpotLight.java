@@ -75,9 +75,7 @@ public class GlrSpotLight extends GlrPointLight<SpotLight> {
     if (property == owner.innerBeamAngle) {
     } else if (property == owner.outerBeamAngle) {
       this.outerBeamInDegrees = (float) owner.outerBeamAngle.getValue().getAsDegrees();
-    } else if (property == owner.falloff) {
-      //pass
-    } else {
+    } else if (property != owner.falloff) {
       super.propertyChanged(property);
     }
   }
