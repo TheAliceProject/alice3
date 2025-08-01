@@ -370,9 +370,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader, boolean isLoadingBackups,
                                 Set<String> unloadableFiles) {
-    showWaitCursor();
     this.uriProjectLoader = uriProjectLoader;
     if (uriProjectLoader != null) {
+      showWaitCursor();
       uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj, isLoadingBackups,
               unloadableFiles));
     }
@@ -380,27 +380,29 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private void projectLoaded(UserActivity activity, Project project, boolean isLoadingBackups,
                              Set<String> unloadableFiles) {
-    File saved = UriUtilities.getFile(getUri());
+    try {
+      File saved = UriUtilities.getFile(getUri());
 
-    boolean isBackup = false;
+      boolean isBackup = false;
 
-    if (!projectFileUtilities.isNewProject()) {
-      File parentDir = saved.getParentFile();
+      if (!projectFileUtilities.isNewProject()) {
+        File parentDir = saved.getParentFile();
 
-      if (parentDir != null) {
-        isBackup = BACKUP_EXTENSION.equals(getExtension(parentDir.getName()));
+        if (parentDir != null) {
+          isBackup = BACKUP_EXTENSION.equals(getExtension(parentDir.getName()));
+        }
       }
-    }
 
-    //File backupDir = projectFileUtilities.backupDirectory(saved, isBackup).toFile();
-    //boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
-
-    if (project == null) {
-      handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, unloadableFiles);
-    } else {
-      handleProjectLoadSuccess(project, saved, activity, isBackup, isLoadingBackups, unloadableFiles);
+      if (project == null) {
+        handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, unloadableFiles);
+      } else {
+        handleProjectLoadSuccess(project, saved, activity, isBackup, isLoadingBackups, unloadableFiles);
+      }
+    } catch (RuntimeException re) {
+      handleProjectLoadException(re, activity);
+    } finally {
+      hideWaitCursor();
     }
-    hideWaitCursor();
   }
 
   private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
@@ -474,23 +476,27 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         activity.cancel();
       }
     } catch (RuntimeException re) {
-      var message = new StringBuilder("Errors reported in " + getUri());
-      Throwable cause = re;
-      do {
-        var causeMessage = cause.getLocalizedMessage();
-        if (causeMessage != null) {
-          message.append("\n\n  ").append(causeMessage);
-        }
-        cause = cause.getCause();
-      } while (cause != null);
-      // TODO clear project remnants from system
-      uriProjectLoader = null;
-      activity.cancel(new CancelException(re));
-      Dialogs.showError("Unable to Load Project", message.toString());
-      setPerspective(getDocumentFrame().getNoProjectPerspective());
-      UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
-      getDocumentFrame().getNewProjectOperation().fire(newActivity);
+      handleProjectLoadException(re, activity);
     }
+  }
+
+  private void handleProjectLoadException(RuntimeException re, UserActivity activity) {
+    var message = new StringBuilder("Errors reported in " + getUri());
+    Throwable cause = re;
+    do {
+      var causeMessage = cause.getLocalizedMessage();
+      if (causeMessage != null) {
+        message.append("\n\n  ").append(causeMessage);
+      }
+      cause = cause.getCause();
+    } while (cause != null);
+    // TODO clear project remnants from system
+    uriProjectLoader = null;
+    activity.cancel(new CancelException(re));
+    Dialogs.showError("Unable to Load Project", message.toString());
+    setPerspective(getDocumentFrame().getNoProjectPerspective());
+    UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
+    getDocumentFrame().getNewProjectOperation().fire(newActivity);
   }
 
   private boolean createProjectFromBackup(File backup, File original) {
