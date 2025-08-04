@@ -373,35 +373,36 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     this.uriProjectLoader = uriProjectLoader;
     if (uriProjectLoader != null) {
       showWaitCursor();
-      uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj, isLoadingBackups,
-              unloadableFiles));
+      uriProjectLoader.deliverContentOnEventDispatchThread(proj -> {
+        try {
+          projectLoaded(activity, proj, isLoadingBackups, unloadableFiles);
+        } catch (RuntimeException re) {
+          handleProjectLoadException(re, activity);
+        } finally {
+          hideWaitCursor();
+        }
+      });
     }
   }
 
   private void projectLoaded(UserActivity activity, Project project, boolean isLoadingBackups,
                              Set<String> unloadableFiles) {
-    try {
-      File saved = UriUtilities.getFile(getUri());
+    File saved = UriUtilities.getFile(getUri());
 
-      boolean isBackup = false;
+    boolean isBackup = false;
 
-      if (!projectFileUtilities.isNewProject()) {
-        File parentDir = saved.getParentFile();
+    if (!projectFileUtilities.isNewProject()) {
+      File parentDir = saved.getParentFile();
 
-        if (parentDir != null) {
-          isBackup = BACKUP_EXTENSION.equals(getExtension(parentDir.getName()));
-        }
+      if (parentDir != null) {
+        isBackup = BACKUP_EXTENSION.equals(getExtension(parentDir.getName()));
       }
+    }
 
-      if (project == null) {
-        handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, unloadableFiles);
-      } else {
-        handleProjectLoadSuccess(project, saved, activity, isBackup, isLoadingBackups, unloadableFiles);
-      }
-    } catch (RuntimeException re) {
-      handleProjectLoadException(re, activity);
-    } finally {
-      hideWaitCursor();
+    if (project == null) {
+      handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, unloadableFiles);
+    } else {
+      handleProjectLoadSuccess(project, saved, activity, isBackup, isLoadingBackups, unloadableFiles);
     }
   }
 
