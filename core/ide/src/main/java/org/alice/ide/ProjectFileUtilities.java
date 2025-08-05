@@ -6,6 +6,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.stageide.openprojectpane.models.TemplateUriState;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -33,7 +35,8 @@ import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
 class ProjectFileUtilities {
-  private static final String BACKUP_AUTO = "auto";
+  public static final String BACKUP_AUTO = "auto";
+
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
@@ -118,7 +121,7 @@ class ProjectFileUtilities {
     if (saved == null) {
       return;
     }
-    Path backupDir = backupDirectory(saved);
+    Path backupDir = backupDirectory(saved, false);
     if (backupDir == null) {
       return;
     }
@@ -148,7 +151,7 @@ class ProjectFileUtilities {
     if (saved == null) {
       return;
     }
-    Path backupDir = backupDirectory(saved);
+    Path backupDir = backupDirectory(saved, false);
     if (backupDir == null) {
       return;
     }
@@ -159,12 +162,27 @@ class ProjectFileUtilities {
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }
 
-  private Path backupDirectory(File saved) {
+  public boolean isNewProject() {
+    URI uri = projectApp.getUri();
+
+    return uri != null && uri.getScheme().equalsIgnoreCase(TemplateUriState.SCHEME);
+  }
+
+  public Path backupDirectory(File saved, boolean isBackup) {
+    if (isBackup) {
+      return saved.getParentFile().toPath();
+    }
+
     String fileName = saved.getName();
     String directoryName;
     directoryName = (PROJECT_EXTENSION.equals(getExtension(fileName)) ? getBaseName(fileName) : fileName) + "." + BACKUP_EXTENSION;
 
     Path backupDir = saved.toPath().resolveSibling(directoryName);
+
+    return createAndGetBackupDirectory(backupDir);
+  }
+
+  private Path createAndGetBackupDirectory(Path backupDir) {
     if (Files.notExists(backupDir)) {
       try {
         Files.createDirectory(backupDir);

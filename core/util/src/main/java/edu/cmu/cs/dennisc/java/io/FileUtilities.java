@@ -53,6 +53,10 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
@@ -233,5 +237,15 @@ public class FileUtilities {
     inChannel.transferTo(0, inChannel.size(), outChannel);
     inChannel.close();
     outChannel.close();
+  }
+
+  public static LocalDateTime getModifiedDateTime(File f) {
+    try {
+      FileTime fileTime = Files.getLastModifiedTime(f.toPath());
+      return LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return LocalDateTime.MIN;
+    }
   }
 }
