@@ -62,9 +62,7 @@ public class ConsoleFormatter extends Formatter {
       index++;
     }
     while (index < stack.length) {
-      if (CLASS_NAME.equals(stack[index].getClassName())) {
-        //pass
-      } else {
+      if (!CLASS_NAME.equals(stack[index].getClassName())) {
         return index;
       }
       index++;

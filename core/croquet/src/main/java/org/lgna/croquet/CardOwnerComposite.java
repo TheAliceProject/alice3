@@ -74,9 +74,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<CardPanel> {
 
   public void addCard(Composite<?> card) {
     assert card != null : this;
-    if (this.cards.contains(card)) {
-      //pass
-    } else {
+    if (!this.cards.contains(card)) {
       this.cards.add(card);
       CardPanel view = this.peekView();
       if (view != null) {
@@ -141,9 +139,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<CardPanel> {
     }
 
     if (this.showingCard != null) {
-      if (this.cards.contains(this.showingCard)) {
-        //pass
-      } else {
+      if (!this.cards.contains(this.showingCard)) {
         Logger.severe("note: problems may result from showing a card that has not been added:", this.showingCard);
       }
     }

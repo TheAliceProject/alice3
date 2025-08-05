@@ -144,17 +144,13 @@ public class TypeDeclarationView extends DeclarationView {
   protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
     super.setJavaCodeOnTheSide(value, isFirstTime);
     if (value) {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.outerMainPanel.removeComponent(this.scrollPane);
       }
       this.scrollPane.setViewportView(null);
       this.outerMainPanel.addCenterComponent(this.typePanel);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.outerMainPanel.removeComponent(this.typePanel);
       }
       this.scrollPane.setViewportView(this.typePanel);

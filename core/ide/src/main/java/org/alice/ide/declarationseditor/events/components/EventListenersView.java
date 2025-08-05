@@ -153,9 +153,7 @@ public class EventListenersView extends AbstractCodeDeclarationView {
       this.scrollPane.setViewportView(null);
       this.stickyBottomPanel.setTopView(codePanel);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.stickyBottomPanel.removeComponent(codePanel);
       }
       this.scrollPane.setViewportView(codePanel);

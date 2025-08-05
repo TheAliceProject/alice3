@@ -104,9 +104,7 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
     JPanel rv = this.createJPanel();
     LayoutManager prevLayoutManager = rv.getLayout();
     LayoutManager nextLayoutManager = this.createLayoutManager(rv);
-    if (prevLayoutManager instanceof FlowLayout) {
-      //pass
-    } else {
+    if (!(prevLayoutManager instanceof FlowLayout)) {
       StringBuilder sb = new StringBuilder();
       sb.append("\n********************************************************");
       sb.append("\n********************************************************");
@@ -160,9 +158,7 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
 
   protected void refreshIfNecessary() {
     if (this.isRefreshNecessary) {
-      if (this.isInTheMidstOfRefreshing) {
-        //pass
-      } else {
+      if (!this.isInTheMidstOfRefreshing) {
         this.isInTheMidstOfRefreshing = true;
         try {
           //this.forgetAndRemoveAllComponents();

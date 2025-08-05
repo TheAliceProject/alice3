@@ -171,9 +171,7 @@ public class MergeUtilities {
     Map<AbstractMethod, AbstractMethod> map = Maps.newHashMap();
     for (MethodInvocation methodInvocation : crawler.getList()) {
       AbstractMethod method = methodInvocation.method.getValue();
-      if (isAcceptableType(method.getDeclaringType(), types)) {
-        //pass
-      } else {
+      if (!isAcceptableType(method.getDeclaringType(), types)) {
         AbstractMethod replacement;
         if (map.containsKey(method)) {
           replacement = map.get(method);
@@ -203,9 +201,7 @@ public class MergeUtilities {
     Map<AbstractField, AbstractField> map = Maps.newHashMap();
     for (FieldAccess fieldAccess : crawler.getList()) {
       AbstractField field = fieldAccess.field.getValue();
-      if (isAcceptableType(field.getDeclaringType(), types)) {
-        //pass
-      } else {
+      if (!isAcceptableType(field.getDeclaringType(), types)) {
         AbstractField replacement;
         if (map.containsKey(field)) {
           replacement = map.get(field);

@@ -62,9 +62,7 @@ class SuggestiveTextUtilities {
   public static void drawBlankTextIfNecessary(JTextComponent textComponent, Graphics g, String textForBlankCondition) {
     if (textComponent.isEditable() && textComponent.isEnabled()) {
       String text = textComponent.getText();
-      if ((text.length() > 0) || (textForBlankCondition == null) || (textForBlankCondition.length() == 0)) {
-        //pass
-      } else {
+      if (text.isEmpty() && textForBlankCondition != null && !textForBlankCondition.isEmpty()) {
         Font font = FontUtilities.deriveFont(textComponent.getFont(), TextWeight.LIGHT, TextPosture.OBLIQUE);
         g.setFont(font);
         g.setColor(ColorUtilities.createGray(191));

@@ -141,9 +141,7 @@ public class StoryApiSpecificAstUtilities {
                       AbstractMethod m = mi.method.getValue();
                       if (m instanceof UserMethod) {
                         UserMethod um = (UserMethod) m;
-                        if (methods.contains(um)) {
-                          //pass
-                        } else {
+                        if (!methods.contains(um)) {
                           methods.add(um);
                         }
                       }

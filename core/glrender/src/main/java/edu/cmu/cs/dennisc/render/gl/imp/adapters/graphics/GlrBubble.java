@@ -108,9 +108,7 @@ public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T
 
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
-    if (property == owner.portion) {
-      //pass
-    } else {
+    if (property != owner.portion) {
       super.propertyChanged(property);
     }
   }

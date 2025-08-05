@@ -124,9 +124,7 @@ public class POVRayUtilities {
       pw.println(sgCylinder.getActualTopRadius());
 
       if (sgCylinder.hasTopCap.getValue()) {
-        if (sgCylinder.hasBottomCap.getValue()) {
-          //pass
-        } else {
+        if (!sgCylinder.hasBottomCap.getValue()) {
           Logger.todo("UNHANDLED CYLINDER CAP STATE: " + sgCylinder);
         }
       } else {

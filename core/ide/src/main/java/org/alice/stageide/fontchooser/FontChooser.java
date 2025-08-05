@@ -79,9 +79,7 @@ public class FontChooser extends JPanel {
       m_list.addListSelectionListener(new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-          if (e.getValueIsAdjusting()) {
-            //pass
-          } else {
+          if (!e.getValueIsAdjusting()) {
             FontChooser.this.updateSample();
           }
         }

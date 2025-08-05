@@ -113,9 +113,7 @@ public final class JCloseButton extends JButton {
       Paint prevPaint = g2.getPaint();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       if (model.isRollover() || model.isArmed()) {
-        if (model.isPressed()) {
-          //pass
-        } else {
+        if (!model.isPressed()) {
           g2.setPaint(HIGHLIGHT_COLOR);
         }
       } else {
@@ -172,11 +170,8 @@ public final class JCloseButton extends JButton {
   public boolean contains(int x, int y) {
     if (this.isVisibleOnlyWhenParentIsSelected) {
       Container parent = this.getParent();
-      if (parent instanceof AbstractButton) {
-        AbstractButton button = (AbstractButton) parent;
-        if (button.isSelected()) {
-          //pass
-        } else {
+      if (parent instanceof AbstractButton button) {
+        if (!button.isSelected()) {
           return false;
         }
       }
@@ -188,11 +183,8 @@ public final class JCloseButton extends JButton {
   public boolean isVisible() {
     if (this.isVisibleOnlyWhenParentIsSelected) {
       Container parent = this.getParent();
-      if (parent instanceof AbstractButton) {
-        AbstractButton button = (AbstractButton) parent;
-        if (button.isSelected()) {
-          //pass
-        } else {
+      if (parent instanceof AbstractButton button) {
+        if (!button.isSelected()) {
           return false;
         }
       }

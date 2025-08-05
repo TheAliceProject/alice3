@@ -78,9 +78,7 @@ public class InputStreamUtilities {
       int n = is.available();
       if (buffer != null) {
         // handle the previous iteration
-        if (baos != null) {
-          //pass
-        } else {
+        if (baos == null) {
           // it is the second iteration
           if (n > 0) {
             // more than one buffer so we use a ByteArrayOutputStream

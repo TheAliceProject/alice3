@@ -100,9 +100,7 @@ public class Indices implements BinaryEncodableAndDecodable {
 
   public int getTextureCoordinateIndex(int triangleIndex, int vertexIndex) {
     int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3)];
-    if (this.isInNeedOfIndexAdjustment) {
-      //pass
-    } else {
+    if (!this.isInNeedOfIndexAdjustment) {
       nRV /= 2;
     }
     return nRV;
@@ -110,9 +108,7 @@ public class Indices implements BinaryEncodableAndDecodable {
 
   public int getNormalIndex(int triangleIndex, int vertexIndex) {
     int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3) + 1];
-    if (this.isInNeedOfIndexAdjustment) {
-      //pass
-    } else {
+    if (!this.isInNeedOfIndexAdjustment) {
       nRV /= 3;
     }
     return nRV;
@@ -120,9 +116,7 @@ public class Indices implements BinaryEncodableAndDecodable {
 
   public int getVertexIndex(int triangleIndex, int vertexIndex) {
     int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3) + 2];
-    if (this.isInNeedOfIndexAdjustment) {
-      //pass
-    } else {
+    if (!this.isInNeedOfIndexAdjustment) {
       nRV /= 3;
     }
     return nRV;

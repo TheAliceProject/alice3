@@ -62,9 +62,7 @@ import java.util.UUID;
 public class FileMenuModel extends PredeterminedMenuModel {
   private static StandardMenuItemPrepModel[] createMenuItemPrepModels(ProjectDocumentFrame projectDocumentFrame) {
     List<StandardMenuItemPrepModel> list = Lists.newLinkedList(projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(), projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, RecentProjectsMenuModel.getInstance());
-    if (SystemUtilities.isMac()) {
-      //pass
-    } else {
+    if (!SystemUtilities.isMac()) {
       list.add(MenuModel.SEPARATOR);
       list.add(ExitOperation.getInstance().getMenuItemPrepModel());
     }

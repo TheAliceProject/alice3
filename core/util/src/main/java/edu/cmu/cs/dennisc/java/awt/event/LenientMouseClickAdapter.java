@@ -98,9 +98,7 @@ public abstract class LenientMouseClickAdapter implements MouseInputListener /* 
   @Override
   public final void mousePressed(MouseEvent e) {
     this.updateStillUnclick(e);
-    if (this.isStillUnclick) {
-      //pass
-    } else {
+    if (!this.isStillUnclick) {
       this.count = 0;
     }
     this.isStillClick = true;

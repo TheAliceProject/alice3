@@ -91,14 +91,8 @@ public class DropDownButtonUI extends BasicButtonUI {
 
   private void handleMouseEntered(MouseEvent e) {
     ButtonModel buttonModel = this.button.getModel();
-    if (SwingUtilities.isLeftMouseButton(e)) {
-      //pass
-    } else {
-      if (this.button.isEnabled()) {
-        if (this.dispatchState == null) {
-          buttonModel.setRollover(true);
-        }
-      }
+    if (!SwingUtilities.isLeftMouseButton(e) && this.button.isEnabled() && this.dispatchState == null) {
+      buttonModel.setRollover(true);
     }
   }
 
@@ -155,9 +149,7 @@ public class DropDownButtonUI extends BasicButtonUI {
   private void handleMouseDragged(MouseEvent e) {
     ButtonModel buttonModel = this.button.getModel();
     if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON) {
-      if (e.getComponent().contains(e.getPoint())) {
-        //pass
-      } else {
+      if (!e.getComponent().contains(e.getPoint())) {
         buttonModel.setPressed(false);
         buttonModel.setRollover(false);
         this.ancestor = findDraggableJDragView(this.button);

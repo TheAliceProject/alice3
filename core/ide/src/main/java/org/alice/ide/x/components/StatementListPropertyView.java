@@ -265,9 +265,7 @@ public class StatementListPropertyView extends AbstractListPropertyPane<Statemen
   public static boolean EPIC_HACK_ignoreDrawingDesired = false;
 
   public void setIsCurrentUnder(boolean isCurrentUnder) {
-    if (isCurrentUnder) {
-      //pass
-    } else {
+    if (!isCurrentUnder) {
       this.setCurrentPotentialDropIndexAndDragStep(-1, null);
     }
     this.statementListBorder.setDrawingDesired(isCurrentUnder == false);

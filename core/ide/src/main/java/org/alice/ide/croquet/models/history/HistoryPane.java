@@ -154,9 +154,7 @@ public class HistoryPane extends JBorderPane {
   private ListSelectionListener listSelectionListener = new ListSelectionListener() {
     @Override
     public void valueChanged(ListSelectionEvent e) {
-      if (e.getValueIsAdjusting()) {
-        //pass
-      } else {
+      if (!e.getValueIsAdjusting()) {
         projectHistory.setInsertionIndex(list.getSelectedIndex());
         HistoryPane.this.list.repaint();
       }

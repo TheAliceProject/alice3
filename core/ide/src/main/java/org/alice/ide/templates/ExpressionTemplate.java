@@ -63,9 +63,7 @@ public abstract class ExpressionTemplate extends ExpressionCreatorPane {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.isInitialized) {
-      //pass
-    } else {
+    if (!this.isInitialized) {
       this.refresh();
       this.isInitialized = true;
     }

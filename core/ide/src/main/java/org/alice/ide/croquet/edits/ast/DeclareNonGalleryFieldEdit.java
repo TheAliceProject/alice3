@@ -83,9 +83,7 @@ public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
     }
     int insertionIndex = this.index;
     final int N = this.getDeclaringType().fields.size();
-    if ((insertionIndex >= 0) && (insertionIndex <= N)) {
-      //pass
-    } else {
+    if (insertionIndex < 0 || insertionIndex > N) {
       insertionIndex = N;
     }
     this.getDeclaringType().fields.add(insertionIndex, this.getField());

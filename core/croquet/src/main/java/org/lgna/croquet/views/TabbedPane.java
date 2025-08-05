@@ -59,9 +59,7 @@ public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectab
   private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
     @Override
     public void valueChanged(ListSelectionEvent e) {
-      if (e.getValueIsAdjusting()) {
-        //pass
-      } else {
+      if (!e.getValueIsAdjusting()) {
         SingleSelectListState<E, ?> model = getModel();
         int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
         int indexFromCroquet = model.getSelectedIndex();

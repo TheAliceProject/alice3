@@ -223,9 +223,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
             //pass
             Logger.outln("equal", worker.getRootDirectory(), file);
           } else {
-            if (worker.isDone()) {
-              //pass
-            } else {
+            if (!worker.isDone()) {
               Logger.outln("cancel");
               worker.cancel(true);
             }

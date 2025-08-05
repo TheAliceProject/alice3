@@ -138,15 +138,9 @@ public class CardPanel extends Panel {
   }
 
   public void showComposite(Composite<?> composite) {
-    if (composite != null) {
-      //pass
-    } else {
-      if (this.nullLabel != null) {
-        //pass
-      } else {
+    if (composite == null && this.nullLabel == null) {
         this.nullLabel = new Label();
         this.internalAddComponent(this.nullLabel, NULL_KEY);
-      }
     }
     this.cardLayout.show(this.getAwtComponent(), getKey(composite));
   }

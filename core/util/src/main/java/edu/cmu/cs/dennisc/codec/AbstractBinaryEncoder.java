@@ -212,9 +212,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
     if (value != null) {
       this.encode(value.getClass().getName());
       this.encode(value.hashCode());
-      if (map.containsKey(value)) {
-        //pass
-      } else {
+      if (!map.containsKey(value)) {
         map.put(value, value.hashCode());
         value.encode(this, map);
       }

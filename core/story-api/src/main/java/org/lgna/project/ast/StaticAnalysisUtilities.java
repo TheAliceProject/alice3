@@ -83,9 +83,7 @@ public class StaticAnalysisUtilities {
       char c = name.charAt(i);
       if (Character.isLetterOrDigit(c)) {
         if (Character.isDigit(c)) {
-          if (isAlphaEncountered) {
-            //pass
-          } else {
+          if (!isAlphaEncountered) {
             rv += "_";
             rv += c;
             isAlphaEncountered = true;
@@ -132,12 +130,8 @@ public class StaticAnalysisUtilities {
     if (declaringType != null) {
       for (UserField field : declaringType.fields) {
         assert field != null;
-        if (field == self) {
-          //pass
-        } else {
-          if (name.equals(field.name.getValue())) {
-            return false;
-          }
+        if (field != self && name.equals(field.name.getValue())) {
+          return false;
         }
       }
     } else {
@@ -157,12 +151,8 @@ public class StaticAnalysisUtilities {
   private static boolean isAvailableMethodName(String name, UserType<?> declaringType, UserMethod self) {
     if (declaringType != null) {
       for (UserMethod method : declaringType.methods) {
-        if (method == self) {
-          //pass
-        } else {
-          if (name.equals(method.name.getValue())) {
-            return false;
-          }
+        if (method != self && name.equals(method.name.getValue())) {
+          return false;
         }
       }
     } else {

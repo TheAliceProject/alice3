@@ -95,9 +95,7 @@ public class CodePerspectiveComposite extends LazyImmutableSplitComposite<CodeCo
   private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
     @Override
     public void propertyChange(PropertyChangeEvent e) {
-      if (ignoreDividerChangeCount > 0) {
-        //pass
-      } else {
+      if (ignoreDividerChangeCount <= 0) {
         CodeContextSplitComposite otherComposite = getLeadingComposite();
         SplitPane otherSplitPane = otherComposite.getView();
         int prevValue = otherSplitPane.getDividerLocation();

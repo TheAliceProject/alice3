@@ -60,9 +60,7 @@ public abstract class JRowsSpringPane extends JPane {
 
   @Override
   public void addNotify() {
-    if (getLayout() instanceof SpringLayout) {
-      //pass
-    } else {
+    if (!(getLayout() instanceof SpringLayout)) {
       List<Component[]> componentRows = this.createComponentRows();
       SpringUtilities.springItUpANotch(this, componentRows, this.xPad, this.yPad);
     }

@@ -57,9 +57,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
   }
 
   public MethodInvocation(Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments) {
-    if (expression instanceof NullLiteral) {
-      //pass
-    } else {
+    if (!(expression instanceof NullLiteral)) {
       AbstractType<?, ?, ?> expressionType = expression.getType();
       if (expressionType != null) {
         AbstractType<?, ?, ?> declaringType = method.getDeclaringType();

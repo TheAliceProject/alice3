@@ -104,9 +104,7 @@ public class StatementContextMenu extends MenuModel {
   }
 
   private List<StandardMenuItemPrepModel> updatePopupOperations(List<StandardMenuItemPrepModel> rv, final Statement statement) {
-    if (statement instanceof Comment) {
-      //pass
-    } else {
+    if (!(statement instanceof Comment)) {
       rv.add(new FastForwardToStatementOperation(statement).getMenuItemPrepModel());
       rv.add(MenuModel.SEPARATOR);
       rv.add(IsStatementEnabledState.getInstance(statement).getMenuItemPrepModel());

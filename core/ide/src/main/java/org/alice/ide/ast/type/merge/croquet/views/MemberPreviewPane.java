@@ -122,9 +122,7 @@ public abstract class MemberPreviewPane<M extends Member> extends MigPanel {
           }
         } else {
           super.paint(g);
-          if (memberHub.getIsDesiredState().getValue()) {
-            //pass
-          } else {
+          if (!memberHub.getIsDesiredState().getValue()) {
             g2.setPaint(OMIT_OR_REPLACE_PAINT);
             g2.fillRect(0, 0, this.getWidth(), this.getHeight());
           }

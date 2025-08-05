@@ -98,9 +98,7 @@ public class JSubdudeTextField extends JSuggestiveTextField {
   }
 
   private void installListeners() {
-    if (Arrays.contains(this.getMouseListeners(), this.mouseListener)) {
-      //pass
-    } else {
+    if (!Arrays.contains(this.getMouseListeners(), this.mouseListener)) {
       this.addMouseListener(this.mouseListener);
       this.addFocusListener(this.focusListener);
       this.getDocument().addDocumentListener(this.documentListener);

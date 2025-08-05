@@ -118,9 +118,7 @@ public class ControlFlowComposite extends SimpleComposite<ControlFlowPanel> {
     Collections.addAll(this.models, DoInOrderTemplateDragModel.getInstance(), null, CountLoopTemplateDragModel.getInstance(), WhileLoopTemplateDragModel.getInstance(), ForEachInArrayLoopTemplateDragModel.getInstance(), null, ConditionalStatementTemplateDragModel.getInstance(), null, DoTogetherTemplateDragModel.getInstance(), EachInArrayTogetherTemplateDragModel.getInstance(), null, DeclareLocalDragModel.getInstance(), AssignmentTemplateDragModel.getInstance(), null, CommentTemplateDragModel.getInstance());
     if (code instanceof UserMethod) {
       UserMethod method = (UserMethod) code;
-      if (method.getReturnType() == JavaType.VOID_TYPE) {
-        //pass
-      } else {
+      if (method.getReturnType() != JavaType.VOID_TYPE) {
         this.models.add(null);
         this.models.add(ReturnStatementTemplateDragModel.getInstance(method));
       }

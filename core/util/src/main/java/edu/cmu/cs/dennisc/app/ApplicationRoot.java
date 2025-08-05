@@ -62,9 +62,7 @@ public class ApplicationRoot {
       //todo: fallback to System.getProperty( "user.dir" ) ???
       if (rootDirectoryPath != null) {
         rootDirectory = new File(rootDirectoryPath);
-        if (rootDirectory.exists()) {
-          //pass
-        } else {
+        if (!rootDirectory.exists()) {
           StringBuilder sb = new StringBuilder();
           sb.append("system property: ");
           sb.append(DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY);

@@ -158,9 +158,7 @@ public class AstUtilities {
           break;
         }
       }
-      if (isFound) {
-        //pass
-      } else {
+      if (!isFound) {
         return false;
       }
     }
@@ -194,9 +192,7 @@ public class AstUtilities {
     while (true) {
       if (javaType != null) {
         updatePersistentPropertyGetters(rv, javaType);
-        if (javaType.isFollowToSuperClassDesired()) {
-          //pass
-        } else {
+        if (!javaType.isFollowToSuperClassDesired()) {
           break;
         }
         javaType = javaType.getSuperType();
@@ -545,9 +541,7 @@ public class AstUtilities {
     for (int i = 0; i < dstRequiredParameters.length; i++) {
       AbstractParameter srcRequiredParameter = srcRequiredParameters.get(i);
       String name = srcRequiredParameter.getName();
-      if ((name != null) && (name.length() > 0)) {
-        //pass
-      } else {
+      if (name == null || name.isEmpty()) {
         name = "p" + i;
       }
       dstRequiredParameters[i] = new UserParameter(name, srcRequiredParameter.getValueType());
@@ -639,9 +633,7 @@ public class AstUtilities {
       AbstractMethod m = methodInvocation.method.getValue();
       if (m instanceof UserMethod) {
         UserMethod userMethod = (UserMethod) m;
-        if (set.contains(userMethod)) {
-          //pass
-        } else {
+        if (!set.contains(userMethod)) {
           set.add(userMethod);
           addInvokedMethods(set, userMethod);
         }
@@ -665,9 +657,7 @@ public class AstUtilities {
     for (int i = 0; i < N; i++) {
       SimpleArgument argumentI = methodInvocation.requiredArguments.get(i);
       AbstractParameter parameterI = requiredParameters.get(i);
-      if (argumentI.parameter.getValue() == parameterI) {
-        //pass
-      } else {
+      if (argumentI.parameter.getValue() != parameterI) {
         methodInvocation.requiredArguments.set(i, new SimpleArgument(parameterI, argumentI.expression.getValue()));
       }
     }

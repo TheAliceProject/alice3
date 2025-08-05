@@ -57,9 +57,7 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
   }
 
   private List<GalleryResourceTreeNode> getSortedChildren() {
-    if (this.isSorted) {
-      //pass
-    } else {
+    if (!this.isSorted) {
       Collections.sort(this.children);
       this.isSorted = true;
     }

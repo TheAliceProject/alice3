@@ -78,9 +78,7 @@ public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<
       InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>) o;
       if (this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length) {
         for (int i = 0; i < this.parameterClassReflectionProxies.length; i++) {
-          if (Objects.equals(this.parameterClassReflectionProxies[i], other.parameterClassReflectionProxies[i])) {
-            //pass
-          } else {
+          if (!Objects.equals(this.parameterClassReflectionProxies[i], other.parameterClassReflectionProxies[i])) {
             return false;
           }
         }

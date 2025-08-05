@@ -499,9 +499,7 @@ public abstract class ExpressionCascadeManager {
         List<AbstractType<?, ?, ?>> otherTypes = Lists.newLinkedList();
         this.appendOtherTypes(otherTypes);
         for (AbstractType<?, ?, ?> otherType : otherTypes) {
-          if (type == otherType) {
-            //pass
-          } else {
+          if (type != otherType) {
             items.add(TypeExpressionCascadeMenu.getInstance(otherType));
           }
         }
@@ -521,12 +519,8 @@ public abstract class ExpressionCascadeManager {
     if (isTop) {
       if (prevExpression != null) {
         items.add(CascadeLineSeparator.getInstance());
-        if (prevExpression instanceof NullLiteral) {
-          //pass
-        } else {
-          if (prevExpression.getType().isAssignableTo(String.class)) {
-            items.add(StringConcatinationRightOperandOnlyFillIn.getInstance());
-          }
+        if (!(prevExpression instanceof NullLiteral) && prevExpression.getType().isAssignableTo(String.class)) {
+          items.add(StringConcatinationRightOperandOnlyFillIn.getInstance());
         }
         items.add(StringConcatinationLeftAndRightOperandsFillIn.getInstance());
       }

@@ -136,9 +136,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
           }
         }
       }
-      if (activity.isCanceled()) {
-        //pass
-      } else {
+      if (!activity.isCanceled()) {
         activity.commitAndInvokeDo(new DeleteParameterEdit(activity, this.getCode(), this.getParameter()));
       }
     } else {

@@ -94,9 +94,7 @@ public class RepaintManagerUtilities {
   }
 
   public static void pushStencil(JComponent jStencil) {
-    if (stencils.size() > 0) {
-      //pass
-    } else {
+    if (stencils.size() <= 0) {
       originalRepaintManager = RepaintManager.currentManager(jStencil);
       RepaintManager.setCurrentManager(new StencilRepaintManager());
     }
@@ -105,9 +103,7 @@ public class RepaintManagerUtilities {
 
   public static JComponent popStencil() {
     JComponent rv = stencils.pop();
-    if (stencils.size() > 0) {
-      //pass
-    } else {
+    if (stencils.size() <= 0) {
       RepaintManager.setCurrentManager(originalRepaintManager);
     }
     return rv;

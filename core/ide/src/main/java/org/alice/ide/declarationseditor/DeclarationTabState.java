@@ -93,9 +93,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   protected void setCurrentTruthAndBeautyValue(DeclarationComposite<?, ?> declarationComposite) {
     if (declarationComposite != null) {
       ListData<DeclarationComposite<?, ?>> data = this.getData();
-      if (data.contains(declarationComposite)) {
-        //pass
-      } else {
+      if (!data.contains(declarationComposite)) {
         class TypeListPair {
           private final NamedUserType type;
           private final List<DeclarationComposite<?, ?>> list = Lists.newLinkedList();
@@ -115,9 +113,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           public void update(List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired) {
             if (isTypeRequired) {
               TypeComposite typeComposite = TypeComposite.getInstance(this.type);
-              if (this.list.contains(typeComposite)) {
-                //pass
-              } else {
+              if (!this.list.contains(typeComposite)) {
                 updatee.add(typeComposite);
               }
             }
@@ -143,9 +139,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
                 }
               });
               typeListPair.addDeclarationComposite(item);
-              if (typeListPairs.contains(typeListPair)) {
-                //pass
-              } else {
+              if (!typeListPairs.contains(typeListPair)) {
                 typeListPairs.add(typeListPair);
               }
             } else {

@@ -223,9 +223,7 @@ public class ImageEditorPane extends MigPanel {
   }
 
   private void updatePathLabel(String nextPath) {
-    if (FileUtilities.isValidPath(nextPath)) {
-      //pass
-    } else {
+    if (!FileUtilities.isValidPath(nextPath)) {
       Logger.outln("INVALID PATH:", nextPath);
     }
 

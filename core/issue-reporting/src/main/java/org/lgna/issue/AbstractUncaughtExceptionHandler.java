@@ -59,9 +59,7 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
   @Override
   public final void uncaughtException(Thread thread, Throwable throwable) {
     throwable.printStackTrace();
-    if (isInTheMidstOfHandlingAThrowable) {
-      //pass
-    } else {
+    if (!isInTheMidstOfHandlingAThrowable) {
       this.isInTheMidstOfHandlingAThrowable = true;
       try {
         Throwable cause = throwable.getCause();
@@ -78,9 +76,7 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
           LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException) originalThrowableOrTarget;
           isHandled = this.handleUncaughtLgnaRuntimeException(thread, throwable, lgnaRuntimeException);
         }
-        if (isHandled) {
-          //pass
-        } else {
+        if (!isHandled) {
           this.handleUncaughtException(thread, throwable, originalThrowableOrTarget);
         }
       } catch (Throwable t) {

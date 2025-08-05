@@ -118,9 +118,7 @@ public abstract class BooleanState extends State<Boolean> {
   }
 
   protected void handleItemStateChanged(ItemEvent e) {
-    if (this.isItemStateChangedToBeIgnored) {
-      //pass
-    } else {
+    if (!this.isItemStateChangedToBeIgnored) {
       boolean nextValue = e.getStateChange() == ItemEvent.SELECTED;
       this.changeValueFromSwing(nextValue, ItemEventTrigger.createUserActivity(e));
     }
@@ -154,9 +152,7 @@ public abstract class BooleanState extends State<Boolean> {
   @Override
   protected void setSwingValue(Boolean nextValue) {
     ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
-    if (buttonModel.isSelected() == nextValue) {
-      //pass
-    } else {
+    if (buttonModel.isSelected() != nextValue) {
       this.isItemStateChangedToBeIgnored = true;
       try {
         buttonModel.setSelected(nextValue);

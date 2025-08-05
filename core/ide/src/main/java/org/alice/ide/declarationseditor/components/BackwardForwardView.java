@@ -92,9 +92,7 @@ public class BackwardForwardView extends MigPanel {
       }
     }
 
-    if (IsToolBarShowing.getValue()) {
-      //pass
-    } else {
+    if (!IsToolBarShowing.getValue()) {
       this.addComponent(Clipboard.SINGLETON.getDragComponent(), "gap 8");
     }
 

@@ -200,9 +200,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   private void appendStartIfNecessary(StringBuilder sb) {
-    if (sb.length() > 0) {
-      //pass
-    } else {
+    if (sb.isEmpty()) {
       sb.append("<html>");
       File file = new File(this.uri);
       if (file.exists()) {
@@ -257,9 +255,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
         }
         sb.append("</ul>");
       }
-      if (sb.length() > 0) {
-        //pass
-      } else {
+      if (sb.isEmpty()) {
         sb.append("<html>nothing of note");
       }
       sb.append("</html>");

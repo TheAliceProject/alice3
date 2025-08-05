@@ -200,9 +200,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
             this.internalAddComponent(BoxUtilities.createHorizontalSliver(4));
           }
           T treeNode = (T) treePath.getPathComponent(i);
-          if (treeModel.isLeaf(treeNode)) {
-            //pass
-          } else {
+          if (!treeModel.isLeaf(treeNode)) {
             SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel(owner.getModel(), treeNode, this.breadCrumbColor);
             this.internalAddComponent(selectDirectoryPanel);
           }

@@ -111,9 +111,7 @@ public enum NebulousStorytellingResources {
         for (File file : path.listFiles()) {
           if (!simsPathsLoaded.contains(file)) {
             try {
-              if (file.getName().endsWith("txt")) {
-                //pass
-              } else {
+              if (!file.getName().endsWith("txt")) {
                 Manager.addBundle(file);
                 simsPathsLoaded.add(file);
                 count++;

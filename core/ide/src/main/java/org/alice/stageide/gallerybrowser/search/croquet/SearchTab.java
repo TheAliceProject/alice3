@@ -92,9 +92,7 @@ public class SearchTab extends GalleryTab {
 
   private void cancelWorkerIfNecessary() {
     if (this.worker != null) {
-      if (this.worker.isDone()) {
-        //pass
-      } else {
+      if (!this.worker.isDone()) {
         this.worker.cancel(false);
       }
       this.worker = null;

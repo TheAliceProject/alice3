@@ -180,9 +180,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     int rv = yPotentialMinimumBound;
     final int N = statementListPropertyPaneInfos.length;
     for (int i = 0; i < N; i++) {
-      if (i == index) {
-        //pass
-      } else {
+      if (i != index) {
         Rectangle boundsI = statementListPropertyPaneInfos[i].getBounds();
         int yI = boundsI.y + boundsI.height;
         if (yI < y) {
@@ -197,9 +195,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     int rv = yMaximum;
     final int N = statementListPropertyPaneInfos.length;
     for (int i = 0; i < N; i++) {
-      if (i == index) {
-        //pass
-      } else {
+      if (i != index) {
         Rectangle boundsI = statementListPropertyPaneInfos[i].getBounds();
         int yI = boundsI.y;
         if (yI > yPlusHeight) {
@@ -265,9 +261,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
 
     @Override
     public boolean isInView() {
-      if (isWarningAlreadyPrinted) {
-        //pass
-      } else {
+      if (!isWarningAlreadyPrinted) {
         Logger.info("getTrackableShapeAtIndexOf");
         isWarningAlreadyPrinted = true;
       }
@@ -354,17 +348,13 @@ public class CodeEditor extends CodePanelWithDropReceptor {
   @Override
   public void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
     if (value) {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(this.scrollPane);
       }
       this.scrollPane.setViewportView(null);
       this.addCenterComponent(this.bodyPane);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(this.bodyPane);
       }
       this.scrollPane.setViewportView(this.bodyPane);

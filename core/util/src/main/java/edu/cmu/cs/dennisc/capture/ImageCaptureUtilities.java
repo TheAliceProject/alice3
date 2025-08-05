@@ -159,9 +159,7 @@ public class ImageCaptureUtilities {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       AffineTransform prevTrans = g2.getTransform();
-      if (Double.isNaN(scale)) {
-        //pass
-      } else {
+      if (!Double.isNaN(scale)) {
         g2.scale(scale, scale);
       }
       if (bounds != null) {
@@ -195,9 +193,7 @@ public class ImageCaptureUtilities {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     AffineTransform prevTrans = g2.getTransform();
-    if (Double.isNaN(scale)) {
-      //pass
-    } else {
+    if (!Double.isNaN(scale)) {
       g2.scale(scale, scale);
     }
 

@@ -70,9 +70,7 @@ public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
   public void submit(JSubmitPane jSubmitPane) {
     ApplicationIssueConfiguration config = jSubmitPane.getConfig();
     int option = JOptionPane.showConfirmDialog(jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
-    if (option == JOptionPane.CANCEL_OPTION) {
-      //pass
-    } else {
+    if (option != JOptionPane.CANCEL_OPTION) {
       jSubmitPane.setSubmitAttempted(true);
       new AliceIssueSubmissionProgressWorker(jSubmitPane, option == JOptionPane.YES_OPTION).execute();
     }

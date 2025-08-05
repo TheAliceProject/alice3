@@ -112,9 +112,7 @@ public final class StateEdit<T> extends AbstractEdit<State<T>> {
 
   @Override
   protected final void doOrRedoInternal(boolean isDo) {
-    if (isDo) {
-      //pass
-    } else {
+    if (!isDo) {
       this.getModel().changeValueFromEdit(this.getNextValue());
     }
   }

@@ -172,9 +172,7 @@ public class TypeHierarchyView extends BorderPanel {
     public void valueChanged(TreeSelectionEvent e) {
       TreePath treePath = jTree.getSelectionPath();
       if (treePath != null) {
-        if (isIgnoringChangesToTree) {
-          //pass
-        } else {
+        if (!isIgnoringChangesToTree) {
           Object last = treePath.getLastPathComponent();
           if (last instanceof Node) {
             Node<NamedUserType> node = (Node<NamedUserType>) last;

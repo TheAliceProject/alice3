@@ -117,9 +117,7 @@ public abstract class IDE extends ProjectApplication {
   static {
     IDE.exceptionHandler = new DefaultExceptionHandler();
 
-    if (SystemUtilities.isPropertyTrue("org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired")) {
-      //pass
-    } else {
+    if (!SystemUtilities.isPropertyTrue("org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired")) {
       Thread.setDefaultUncaughtExceptionHandler(IDE.exceptionHandler);
     }
   }

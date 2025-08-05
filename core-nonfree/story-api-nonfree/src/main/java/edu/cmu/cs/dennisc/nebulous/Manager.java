@@ -126,16 +126,12 @@ public class Manager {
   }
 
   public static void initializeIfNecessary() throws LicenseRejectedException {
-    if (isInitialized()) {
-      //pass
-    } else {
+    if (!isInitialized()) {
       if (s_isLicensePromptDesired) {
         EULAUtilities.promptUserToAcceptEULAIfNecessary(License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement: The Sims (TM) 2 Art Assets", License.TEXT, "The Sims (TM) 2 Art Assets");
         Preferences userPreferences = Preferences.userNodeForPackage(License.class);
         boolean isLicenseAccepted = userPreferences.getBoolean(IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false);
-        if (isLicenseAccepted) {
-          //pass
-        } else {
+        if (!isLicenseAccepted) {
           s_isLicensePromptDesired = false;
         }
         if (isLicenseAccepted) {

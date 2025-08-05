@@ -110,9 +110,7 @@ public class GlrCustomTexture extends GlrTexture<CustomTexture> {
       Image image = this.textureRenderer.getImage();
       if (image instanceof BufferedImage) {
         BufferedImage bufferedImage = (BufferedImage) image;
-        if (owner.isPotentiallyAlphaBlended()) {
-          //pass
-        } else {
+        if (!owner.isPotentiallyAlphaBlended()) {
           try {
             return newTextureData(gl, bufferedImage, true);
           } catch (AssertionError ae) {

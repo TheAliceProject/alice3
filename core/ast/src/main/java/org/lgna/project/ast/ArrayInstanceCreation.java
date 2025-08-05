@@ -70,32 +70,17 @@ public final class ArrayInstanceCreation extends Expression implements Precedent
   @Override
   public boolean isValid() {
     AbstractType<?, ?, ?> type = this.getType();
-    if (type != null) {
-      if (type.isArray()) {
-        //todo: check lengths
-        for (Expression expression : this.expressions) {
-          if (expression != null) {
-            if (type.getComponentType().isAssignableFrom(expression.getType())) {
-              if (expression.isValid()) {
-                //pass
-              } else {
-                return false;
-              }
-            } else {
-              return false;
-            }
-          } else {
-            //todo?
-            return false;
-          }
+    if (type != null && type.isArray()) {
+      //todo: check lengths
+      for (Expression expression : this.expressions) {
+        if (expression == null || !type.getComponentType().isAssignableFrom(expression.getType()) || !expression.isValid()) {
+          return false;
         }
-        return true;
-      } else {
-        return false;
       }
-    } else {
-      return false;
+      return true;
     }
+
+    return false;
   }
 
   @Override

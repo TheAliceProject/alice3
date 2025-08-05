@@ -88,9 +88,7 @@ public class FontMouseWheelAdapter implements MouseWheelListener {
   public void mouseWheelMoved(final MouseWheelEvent e) {
     if (InputEventUtilities.isQuoteControlUnquoteDown(e)) {
       this.adjustableFontSizeOceanTheme.adjustSizeDelta(e.getWheelRotation() * scaleFactor);
-      if (this.isLookAndFeelUpdated) {
-        //pass
-      } else {
+      if (!this.isLookAndFeelUpdated) {
         this.updateLookAndFeel();
       }
       SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(e.getComponent()));

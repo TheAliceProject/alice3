@@ -130,9 +130,7 @@ public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<Insta
 
   private void refreshIfNecessary() {
     if (this.isRefreshNecessary) {
-      if (this.isInTheMidstOfRefreshing) {
-        //pass
-      } else {
+      if (!this.isInTheMidstOfRefreshing) {
         this.isInTheMidstOfRefreshing = true;
         try {
           //this.forgetAndRemoveAllComponents();

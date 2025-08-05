@@ -174,9 +174,7 @@ public class IngredientsView extends MigPanel {
             break;
           }
         }
-        if (isColorMelaninShade) {
-          //pass
-        } else {
+        if (!isColorMelaninShade) {
           otherColorCallable.setValue(nextValue);
         }
         otherColorState.setEnabled(otherColorCallable.getValue() != null);

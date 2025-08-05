@@ -121,9 +121,7 @@ public class ParametersPane extends AbstractListPropertyPane<NodeListProperty<Us
   protected void addPostfixComponents() {
     super.addPostfixComponents();
     AstI18nFactory factory = this.getFactory();
-    if (factory.isSignatureLocked(this.getCode())) {
-      //pass
-    } else {
+    if (!factory.isSignatureLocked(this.getCode())) {
       this.addComponent(AddParameterComposite.getInstance(this.getCode()).getLaunchOperation().createButton());
     }
     if (FormatterState.isJava()) {

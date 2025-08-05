@@ -89,9 +89,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
       // previous conditional
       ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) prevExpression;
       for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
-        if (operator == conditionalInfixExpression.operator.getValue()) {
-          //pass
-        } else {
+        if (operator != conditionalInfixExpression.operator.getValue()) {
           items.add(ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance(operator));
         }
       }

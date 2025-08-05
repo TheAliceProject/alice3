@@ -546,9 +546,7 @@ public abstract class Feature {
 
     }
 
-    if (Double.isNaN(theta)) {
-      //pass
-    } else {
+    if (!Double.isNaN(theta)) {
       AffineTransform m = g2.getTransform();
       try {
         g2.translate(xTo, yTo);

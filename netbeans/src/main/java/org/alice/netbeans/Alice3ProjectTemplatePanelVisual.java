@@ -99,9 +99,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel {
         }
         String createdFolderPath = this.getCreatedFolderPath(projectFolder, candidateProjectName);
         File file = new File(createdFolderPath);
-        if (file.exists()) {
-          //pass
-        } else {
+        if (!file.exists()) {
           return candidateProjectName;
         }
       }

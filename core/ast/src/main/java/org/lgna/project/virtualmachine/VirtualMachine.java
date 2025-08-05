@@ -182,9 +182,7 @@ public abstract class VirtualMachine {
   private final Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = Maps.newHashMap();
 
   public void registerAbstractClassAdapter(Class<?> abstractCls, Class<?> adapterCls) {
-    if (ReflectionUtilities.isAbstract(abstractCls)) {
-      //pass
-    } else {
+    if (!ReflectionUtilities.isAbstract(abstractCls)) {
       Logger.severe(abstractCls);
     }
     this.mapAbstractClsToAdapterCls.put(abstractCls, adapterCls);
@@ -457,9 +455,7 @@ public abstract class VirtualMachine {
         if (parameterType.isPrimitive()) {
           //todo
         } else {
-          if (parameterType.isAssignableFrom(argument.getClass())) {
-            //pass
-          } else {
+          if (!parameterType.isAssignableFrom(argument.getClass())) {
             throw new RuntimeException("parameterType[" + i + "] " + parameterType.getName() + " is not assignable from argument[" + i + "]: " + argument + ". " + text, iae);
           }
         }

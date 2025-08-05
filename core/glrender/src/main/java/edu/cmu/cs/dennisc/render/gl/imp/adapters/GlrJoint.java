@@ -52,33 +52,19 @@ public class GlrJoint extends GlrTransformable<Joint> {
 
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
-    if (property == owner.jointID) {
-      //pass
-    } else if (property == owner.isFreeInX) {
-      //pass
-    } else if (property == owner.isFreeInY) {
-      //pass
-    } else if (property == owner.isFreeInZ) {
-      //pass
-    } else if (property == owner.boundingBox) {
-      //pass
-    } else if (property == owner.oStiffness) {
-      //pass
-    } else if (property == owner.oBoneOrientation) {
-      //pass
-    } else if (property == owner.oPreferedAngles) {
-      //pass
-    } else if (property == owner.oLocalRotationAxis) {
-      //pass
-    } else if (property == owner.oMinimumDampRange) {
-      //pass
-    } else if (property == owner.oMaximumDampRange) {
-      //pass
-    } else if (property == owner.oMinimumDampStrength) {
-      //pass
-    } else if (property == owner.oMaximumDampStrength) {
-      //pass
-    } else {
+    if (property != owner.jointID
+        && property != owner.isFreeInX
+        && property != owner.isFreeInY
+        && property != owner.isFreeInZ
+        && property != owner.boundingBox
+        && property != owner.oStiffness
+        && property != owner.oBoneOrientation
+        && property != owner.oPreferedAngles
+        && property != owner.oLocalRotationAxis
+        && property != owner.oMinimumDampRange
+        && property != owner.oMaximumDampRange
+        && property != owner.oMinimumDampStrength
+        && property != owner.oMaximumDampStrength) {
       super.propertyChanged(property);
     }
   }

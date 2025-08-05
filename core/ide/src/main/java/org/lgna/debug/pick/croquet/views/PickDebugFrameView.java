@@ -95,9 +95,7 @@ public class PickDebugFrameView extends BorderPanel {
           for (PickResult pickResult : line) {
             Visual sgVisual = pickResult.getVisual();
             if (sgVisual != null) {
-              if (this.mapSgVisualToColorIcon.containsKey(sgVisual)) {
-                //pass
-              } else {
+              if (!this.mapSgVisualToColorIcon.containsKey(sgVisual)) {
                 this.listModel.addElement(sgVisual);
                 this.mapSgVisualToColorIcon.put(sgVisual, new ColorIcon(colors[colorIndex]));
                 colorIndex += 1;

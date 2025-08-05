@@ -86,9 +86,7 @@ public class ClassPathUtilities {
         List<String> rv = Lists.newLinkedList();
         ZipInputStream zis = new ZipInputStream(new FileInputStream(root.getAbsoluteFile()));
         for (ZipEntry entry = zis.getNextEntry(); entry != null; entry = zis.getNextEntry()) {
-          if (entry.isDirectory()) {
-            //pass
-          } else {
+          if (!entry.isDirectory()) {
             String path = entry.getName();
             if (filter.accept(path)) {
               rv.add(path);

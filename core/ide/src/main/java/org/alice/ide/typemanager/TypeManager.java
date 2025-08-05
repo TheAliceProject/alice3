@@ -268,9 +268,7 @@ public class TypeManager {
 
   private static List<AbstractType<?, ?, ?>> updateArgumentTypes(List<AbstractType<?, ?, ?>> rv, AbstractType<?, ?, ?> rootArgumentType, AbstractType<?, ?, ?> argumentType) {
     rv.add(argumentType);
-    if (argumentType == rootArgumentType) {
-      //pass
-    } else {
+    if (argumentType != rootArgumentType) {
       AbstractType<?, ?, ?>[] interfaces = argumentType.getInterfaces();
       AbstractType<?, ?, ?> nextType;
       if (interfaces.length == 1) {

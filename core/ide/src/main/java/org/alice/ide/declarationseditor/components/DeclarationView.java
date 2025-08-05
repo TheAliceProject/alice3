@@ -73,18 +73,14 @@ public abstract class DeclarationView extends BorderPanel {
   protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
     AwtComponentView<?> mainComponent = this.getMainComponent();
     if (value) {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(mainComponent);
       }
       this.sideBySideScrollPane.setLeadingView(mainComponent);
       this.sideBySideScrollPane.setTrailingView(this.javaCodeView);
       this.addCenterComponent(sideBySideScrollPane);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(this.sideBySideScrollPane);
       }
       this.sideBySideScrollPane.setLeadingView(null);

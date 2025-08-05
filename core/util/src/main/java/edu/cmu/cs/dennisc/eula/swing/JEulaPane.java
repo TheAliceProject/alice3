@@ -111,14 +111,10 @@ public class JEulaPane extends JPanel {
 
     String okButtonText = UIManager.getString("OptionPane.okButtonText");
     String cancelButtonText = UIManager.getString("OptionPane.cancelButtonText");
-    if ((okButtonText != null) && (okButtonText.length() > 0)) {
-      //pass
-    } else {
+    if (okButtonText == null || okButtonText.isEmpty()) {
       okButtonText = "OK";
     }
-    if ((cancelButtonText != null) && (cancelButtonText.length() > 0)) {
-      //pass
-    } else {
+    if (cancelButtonText == null || cancelButtonText.isEmpty()) {
       cancelButtonText = "Cancel";
     }
 
