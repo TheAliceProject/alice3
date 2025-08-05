@@ -440,9 +440,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private void handleProjectLoadSuccess(Project project, File projectFile, UserActivity activity, boolean isBackup,
                                         boolean isLoadingBackups, Set<String> unloadableFiles) {
-    File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
-    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
-
     if (isBackup && !isLoadingBackups) {
       // User manually opened a backup, don't do anything special
     } else if (unloadableFiles.isEmpty() && !projectFileUtilities.isNewProject()) {
@@ -451,6 +448,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
       // if it isn't empty, then we already attempted to load all newer backups,
       // but weren't successful, so just continue loading the main project
+
+      File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
+      boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
 
       LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
 
