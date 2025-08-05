@@ -52,6 +52,8 @@ import edu.cmu.cs.dennisc.javax.swing.WindowStack;
 import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
 
@@ -62,9 +64,6 @@ import javax.swing.UIManager;
 import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 /**
  * @author Dennis Cosgrove
@@ -130,7 +129,7 @@ public class EntryPoint extends Application {
       String localeString = null;
       int index = 0;
       if (args.length > 0) {
-        if (!"null".equalsIgnoreCase(args[0]) && "-l".equalsIgnoreCase(args[0])) {
+        if ("-l".equalsIgnoreCase(args[0])) {
           index = 1;
           if (args.length > 1) {
             localeString = args[1];
