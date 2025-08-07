@@ -59,7 +59,6 @@ import org.lgna.project.code.ProcessableNode;
 import org.w3c.dom.Document;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -118,51 +117,6 @@ public class AstUtilities {
     } else {
       throw new RuntimeException();
     }
-  }
-
-  private static boolean isValidMethod(java.lang.reflect.Method mthd, AbstractType<?, ?, ?> valueType) {
-    int modifiers = mthd.getModifiers();
-    if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
-      return valueType.isAssignableFrom(mthd.getReturnType());
-    } else {
-      return false;
-    }
-  }
-
-  public static Iterable<JavaMethod> getKeyMethods(AbstractParameter parameter) {
-    List<JavaMethod> rv = Lists.newLinkedList();
-    AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
-    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
-    if (keywordFactoryType != null) {
-      Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
-      for (java.lang.reflect.Method mthd : cls.getMethods()) {
-        if (isValidMethod(mthd, valueType)) {
-          JavaMethod keyMethod = JavaMethod.getInstance(mthd);
-          rv.add(keyMethod);
-        }
-      }
-    }
-    return rv;
-  }
-
-  public static Iterable<JavaMethod> getKeyMethods(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
-    return getKeyMethods(argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter());
-  }
-
-  public static boolean isKeyedArgumentListPropertyComplete(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
-    for (JavaMethod method : getKeyMethods(argumentListProperty)) {
-      boolean isFound = false;
-      for (JavaKeyedArgument argument : argumentListProperty) {
-        if (argument.getKeyMethod() == method) {
-          isFound = true;
-          break;
-        }
-      }
-      if (!isFound) {
-        return false;
-      }
-    }
-    return true;
   }
 
   private static List<JavaMethod> updatePersistentPropertyGetters(List<JavaMethod> rv, JavaType javaType) {

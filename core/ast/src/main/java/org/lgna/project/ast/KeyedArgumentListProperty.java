@@ -43,11 +43,46 @@
 
 package org.lgna.project.ast;
 
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 /**
  * @author Dennis Cosgrove
  */
 public class KeyedArgumentListProperty extends ArgumentListProperty<JavaKeyedArgument> {
   public KeyedArgumentListProperty(ArgumentOwner owner) {
     super(owner);
+  }
+
+  @Override
+  public boolean areAllOptionalArgumentsFilled() {
+    return getOptionalParameters().stream().noneMatch(this::isOptionalArgumentAbsent);
+  }
+
+  private List<JavaMethod> getOptionalParameters() {
+    AbstractParameter parameter = getOwner().getParameterOwnerProperty().getValue().getKeyedParameter();
+    AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
+    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
+    if (keywordFactoryType == null) {
+      return Collections.emptyList();
+    }
+    Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
+    return Arrays.stream(cls.getMethods())
+        .filter(method -> isValidMethod(method, valueType))
+        .map(JavaMethod::getInstance)
+        .toList();
+  }
+
+  private boolean isValidMethod(java.lang.reflect.Method method, AbstractType<?, ?, ?> valueType) {
+    int modifiers = method.getModifiers();
+    return Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && valueType.isAssignableFrom(method.getReturnType());
+  }
+
+  private boolean isOptionalArgumentAbsent(JavaMethod optional) {
+    return StreamSupport.stream(this.spliterator(), false)
+        .noneMatch(arg -> arg.getKeyMethod() == optional);
   }
 }
