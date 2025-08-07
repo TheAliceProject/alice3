@@ -59,26 +59,33 @@ public class KeyedArgumentListProperty extends ArgumentListProperty<JavaKeyedArg
 
   @Override
   public boolean areAllOptionalArgumentsFilled() {
+    // This checks if there are any unused optional arguments that can be added to a method call.
+    // These are the Detail interfaces defined in per method classes (e.g. org.lgna.story.Say) and implemented by
+    // classes representing each such argument (e.g. setting the font on the say method)
     return getOptionalParameters().stream().noneMatch(this::isOptionalArgumentAbsent);
   }
 
   private List<JavaMethod> getOptionalParameters() {
-    AbstractParameter parameter = getOwner().getParameterOwnerProperty().getValue().getKeyedParameter();
-    AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
-    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
-    if (keywordFactoryType == null) {
+    // This KeyedArgumentListProperty holds the arguments used to call the owning method (e.g. say(), or move()).
+    AbstractCode codeToCall = getOwner().getParameterOwnerProperty().getValue();
+    // The Detail interface defined inside the method class
+    AbstractType<?, ?, ?> detailType = codeToCall.getKeyedParameter().getValueType().getComponentType();
+    // A class representing the method (e.g. Say, or Move)
+    AbstractType<?, ?, ?> methodType = detailType.getKeywordFactoryType();
+    if (methodType == null) {
       return Collections.emptyList();
     }
-    Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
+    Class<?> cls = ((JavaType) methodType).getClassReflectionProxy().getReification();
     return Arrays.stream(cls.getMethods())
-        .filter(method -> isValidMethod(method, valueType))
+        .filter(method -> isDetailMethod(method, detailType))
         .map(JavaMethod::getInstance)
         .toList();
   }
 
-  private boolean isValidMethod(java.lang.reflect.Method method, AbstractType<?, ?, ?> valueType) {
+  // Check for public static methods that return values that implement the Detail marking interface
+  private boolean isDetailMethod(java.lang.reflect.Method method, AbstractType<?, ?, ?> detailType) {
     int modifiers = method.getModifiers();
-    return Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && valueType.isAssignableFrom(method.getReturnType());
+    return Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && detailType.isAssignableFrom(method.getReturnType());
   }
 
   private boolean isOptionalArgumentAbsent(JavaMethod optional) {
