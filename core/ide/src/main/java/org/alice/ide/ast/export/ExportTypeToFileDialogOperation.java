@@ -43,13 +43,15 @@
 package org.alice.ide.ast.export;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.export.type.TypeSummary;
 import org.alice.ide.ast.export.type.TypeSummaryDataSource;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.FileDialogOperation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.io.IoUtilities;
 
@@ -61,7 +63,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class ExportTypeToFileDialogOperation extends FileDialogOperation {
+public class ExportTypeToFileDialogOperation extends Operation {
   private final NamedUserType type;
 
   public ExportTypeToFileDialogOperation(NamedUserType type) {
@@ -82,13 +84,31 @@ public class ExportTypeToFileDialogOperation extends FileDialogOperation {
     return this.type.name.getValue() + "." + this.getExtension();
   }
 
-  @Override
   protected File showFileDialog(Component awtComponent) {
     return FileDialogUtilities.showSaveFileDialog(awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true);
   }
 
-  @Override
   protected void handleFile(File file) throws CancelException, IOException {
     IoUtilities.writeType(file, type, new TypeSummaryDataSource(new TypeSummary(this.type)));
+  }
+
+  @Override
+  protected void performInActivity(UserActivity userActivity) {
+    userActivity.setCompletionModel(this);
+    Component awtComponent = null; //todo
+    File file = this.showFileDialog(awtComponent);
+    if (file != null) {
+      try {
+        this.handleFile(file);
+        userActivity.finish();
+      } catch (IOException ioe) {
+        Dialogs.showError(getImp().getName(), ioe.getMessage());
+        userActivity.cancel(new CancelException(ioe));
+      } catch (CancelException ce) {
+        userActivity.cancel(ce);
+      }
+    } else {
+      userActivity.cancel();
+    }
   }
 }
