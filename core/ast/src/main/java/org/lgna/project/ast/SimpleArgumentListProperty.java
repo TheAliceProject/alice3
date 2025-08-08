@@ -50,4 +50,10 @@ public class SimpleArgumentListProperty extends ArgumentListProperty<SimpleArgum
   public SimpleArgumentListProperty(ArgumentOwner owner) {
     super(owner);
   }
+
+  // In the simple list, none of the parameters are optional
+  @Override
+  public boolean areAllOptionalArgumentsFilled() {
+    return true;
+  }
 }

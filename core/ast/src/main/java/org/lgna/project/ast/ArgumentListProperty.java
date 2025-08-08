@@ -55,4 +55,6 @@ public abstract class ArgumentListProperty<N extends AbstractArgument> extends N
   public ArgumentOwner getOwner() {
     return (ArgumentOwner) super.getOwner();
   }
+
+  abstract public boolean areAllOptionalArgumentsFilled();
 }
