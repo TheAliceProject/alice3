@@ -84,10 +84,6 @@ public class ExportTypeToFileDialogOperation extends Operation {
     return this.type.name.getValue() + "." + this.getExtension();
   }
 
-  protected File showFileDialog(Component awtComponent) {
-    return FileDialogUtilities.showSaveFileDialog(awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true);
-  }
-
   protected void handleFile(File file) throws CancelException, IOException {
     IoUtilities.writeType(file, type, new TypeSummaryDataSource(new TypeSummary(this.type)));
   }
@@ -96,7 +92,7 @@ public class ExportTypeToFileDialogOperation extends Operation {
   protected void performInActivity(UserActivity userActivity) {
     userActivity.setCompletionModel(this);
     Component awtComponent = null; //todo
-    File file = this.showFileDialog(awtComponent);
+    File file = FileDialogUtilities.showSaveFileDialog(awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension());
     if (file != null) {
       try {
         this.handleFile(file);

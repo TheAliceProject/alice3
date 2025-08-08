@@ -202,7 +202,7 @@ public class FileDialogUtilities {
 
   private static final String NULL_KEY = "null";
 
-  public static File showSaveFileDialog(Component component, File directory, String filename, String extension, boolean isSharingDesired) {
+  public static File showSaveFileDialog(Component component, File directory, String filename, String extension) {
     String directoryPath = directory != null ? directory.getAbsolutePath() : null;
     FileDialog fileDialog;
     Component root = SwingUtilities.getRoot(component);
@@ -214,27 +214,17 @@ public class FileDialogUtilities {
     }
     MapToMap<Component, String, FileDialog> mapPathToFileDialog;
     mapPathToFileDialog = FileDialogUtilities.mapPathToSaveFileDialog;
-    if (isSharingDesired) {
-      fileDialog = mapPathToFileDialog.get(component, secondaryKey);
-    } else {
-      fileDialog = null;
-    }
+    fileDialog = mapPathToFileDialog.get(component, secondaryKey);
+
     if (fileDialog == null) {
       fileDialog = createFileDialog(root, "Save...", java.awt.FileDialog.SAVE);
-      if (isSharingDesired) {
         mapPathToFileDialog.put(component, secondaryKey, fileDialog);
-      }
     }
     if (filename != null) {
       fileDialog.setFile(filename);
     }
 
-    String path;
-    if (isSharingDesired) {
-      path = FileDialogUtilities.mapSecondaryKeyToPath.get(secondaryKey);
-    } else {
-      path = null;
-    }
+    String path = FileDialogUtilities.mapSecondaryKeyToPath.get(secondaryKey);
     if (path == null) {
       path = directoryPath;
     }
@@ -246,9 +236,7 @@ public class FileDialogUtilities {
     String fileName = fileDialog.getFile();
     if (fileName != null) {
       String requestedDirectoryPath = fileDialog.getDirectory();
-      if (isSharingDesired) {
-        FileDialogUtilities.mapSecondaryKeyToPath.put(secondaryKey, requestedDirectoryPath);
-      }
+      FileDialogUtilities.mapSecondaryKeyToPath.put(secondaryKey, requestedDirectoryPath);
       File directory1 = new File(requestedDirectoryPath);
       if (!fileName.endsWith("." + extension)) {
         fileName += "." + extension;
