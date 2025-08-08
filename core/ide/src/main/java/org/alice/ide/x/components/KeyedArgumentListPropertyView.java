@@ -49,7 +49,6 @@ import org.alice.ide.x.MutableAstI18nFactory;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.DropDown;
 import org.lgna.project.ast.ArgumentListProperty;
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.JavaKeyedArgument;
 
 /**
