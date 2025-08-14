@@ -131,7 +131,7 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 
   @Override
   public Double getValueCopyIfMutable() {
-    return new Double(this.getValue());
+    return getValue();
   }
 
 }

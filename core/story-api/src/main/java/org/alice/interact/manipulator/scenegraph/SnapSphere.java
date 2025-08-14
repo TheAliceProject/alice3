@@ -68,7 +68,7 @@ public class SnapSphere extends Transformable {
     this.sgSphere.radius.setValue(radius);
     this.sgFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
     this.sgFrontFacingAppearance.diffuseColor.setValue(Color4f.GREEN);
-    this.sgFrontFacingAppearance.opacity.setValue(new Float(1f));
+    this.sgFrontFacingAppearance.opacity.setValue(1f);
     this.sgSphereVisual.frontFacingAppearance.setValue(sgFrontFacingAppearance);
     this.sgSphereVisual.geometries.setValue(new Geometry[] {this.sgSphere, this.sgLineArray});
     this.sgSphereVisual.setParent(this);

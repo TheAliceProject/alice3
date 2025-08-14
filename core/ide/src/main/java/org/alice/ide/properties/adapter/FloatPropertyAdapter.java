@@ -57,7 +57,7 @@ public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 
   @Override
   public Float getValueCopyIfMutable() {
-    return new Float(this.getValue());
+    return getValue();
   }
 
   @Override
