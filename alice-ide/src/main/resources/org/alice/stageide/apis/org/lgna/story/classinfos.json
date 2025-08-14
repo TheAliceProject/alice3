@@ -5006,15 +5006,6 @@
         "parameterNames": [
           "args"
         ]
-      },
-      {
-        "name": "initializeInApplet",
-        "parameterClassNames": [
-          "javax.swing.JApplet"
-        ],
-        "parameterNames": [
-          "applet"
-        ]
       }
     ]
   },
