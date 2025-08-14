@@ -484,6 +484,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadException(RuntimeException re, UserActivity activity) {
     var message = new StringBuilder("Errors reported in " + getUri());
     Throwable cause = re;
+    re.printStackTrace();
     do {
       var causeMessage = cause.getLocalizedMessage();
       if (causeMessage != null) {
