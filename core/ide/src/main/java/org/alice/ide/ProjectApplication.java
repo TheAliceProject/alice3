@@ -461,7 +461,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         activity.cancel();
 
         // restart load with backup
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true,unloadableFiles);
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, unloadableFiles);
 
         return;
       }
