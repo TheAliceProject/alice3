@@ -81,6 +81,11 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
     return !getSaveFile().exists();
   }
 
+  @Override
+  public boolean isNewProject() {
+    return false;
+  }
+
   public static void main(String[] args) throws Exception {
     File file = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
     FileProjectLoader uriProjectPair = new FileProjectLoader(file);

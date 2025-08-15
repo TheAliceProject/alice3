@@ -67,6 +67,11 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
   }
 
   @Override
+  public boolean isNewProject() {
+    return true;
+  }
+
+  @Override
   protected Project load() {
     NamedUserType programType;
     if (template.isRoom()) {

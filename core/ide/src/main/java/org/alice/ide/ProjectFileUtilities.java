@@ -162,13 +162,6 @@ class ProjectFileUtilities {
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }
 
-  public boolean isNewProject() {
-    URI uri = projectApp.getUri();
-
-    return uri != null && (TemplateUriState.SCHEME.equalsIgnoreCase(uri.getScheme())
-                        || TemplateUriState.STARTER_SCHEME.equalsIgnoreCase(uri.getScheme()));
-  }
-
   public Path backupDirectory(File saved, boolean isBackup) {
     if (isBackup) {
       return saved.getParentFile().toPath();

@@ -58,5 +58,10 @@ public class StarterProjectFileLoader extends AbstractFileProjectLoader {
     return this.uri;
   }
 
+  @Override
+  public boolean isNewProject() {
+    return true;
+  }
+
   private final URI uri;
 }

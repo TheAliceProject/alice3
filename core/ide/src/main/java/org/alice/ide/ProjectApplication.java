@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation;
@@ -391,7 +392,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     boolean isBackup = false;
 
-    if (!projectFileUtilities.isNewProject()) {
+    if (!uriProjectLoader.isNewProject()) {
       File parentDir = saved.getParentFile();
 
       if (parentDir != null) {
@@ -409,7 +410,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
                                       boolean isLoadingBackups, Set<String> unloadableFiles) {
     File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
-    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
 
     uriProjectLoader = null;
     activity.cancel();
@@ -427,12 +427,12 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         // restart load with backup
         if (Dialogs.confirmWithWarning("Load backup?",
                 "WARNING: this project could not be loaded.\nWould you like to try an earlier backup?")) {
-          loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
+          loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, unloadableFiles);
         }
       } else {
         if (Dialogs.confirmWithWarning("Load backup?",
                 "WARNING: all backups more recent than the project were corrupted.\nWould you like to reload the original project file?")) {
-          loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, unloadableFiles);
+          loadProject(newProjectActivity(), new FileProjectLoader(mainProject, uriProjectLoader.shouldMakeVrReady()), false, unloadableFiles);
         }
       }
     }
@@ -442,7 +442,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
                                         boolean isLoadingBackups, Set<String> unloadableFiles) {
     if (isBackup && !isLoadingBackups) {
       // User manually opened a backup, don't do anything special
-    } else if (unloadableFiles.isEmpty() && !projectFileUtilities.isNewProject()) {
+    } else if (unloadableFiles.isEmpty() && !uriProjectLoader.isNewProject()) {
       // if unloadableFiles is empty, then the user manually opened a project,
       // and we should check for newer backups
 
@@ -450,7 +450,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       // but weren't successful, so just continue loading the main project
 
       File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
-      boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
 
       LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
 
@@ -462,7 +461,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         activity.cancel();
 
         // restart load with backup
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true,unloadableFiles);
 
         return;
       }
@@ -484,7 +483,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadException(RuntimeException re, UserActivity activity) {
     var message = new StringBuilder("Errors reported in " + getUri());
     Throwable cause = re;
-    re.printStackTrace();
+    Logger.throwable(re, getUri());
     do {
       var causeMessage = cause.getLocalizedMessage();
       if (causeMessage != null) {
@@ -600,7 +599,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         RecentProjectsListData.getInstance().handleOpen(file);
       }
     } catch (Throwable throwable) {
-      throwable.printStackTrace();
+      Logger.throwable(throwable, file);
     }
 
     updateHistoryIndexFileSync();

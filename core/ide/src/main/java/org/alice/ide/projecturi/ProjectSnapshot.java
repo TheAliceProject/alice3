@@ -74,7 +74,7 @@ public class ProjectSnapshot {
   }
 
   public boolean hasValidUri() {
-    return uri != null && TemplateUriState.SCHEME.equals(uri.getScheme());
+    return uri != null && TemplateUriState.BLANK_SCHEME.equals(uri.getScheme());
   }
 
   public TemplateUriState.Template getUriFragment() {

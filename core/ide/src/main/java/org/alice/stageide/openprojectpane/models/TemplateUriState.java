@@ -69,7 +69,7 @@ import javax.swing.*;
  * @author Dennis Cosgrove
  */
 public class TemplateUriState extends ImmutableDataSingleSelectListState<ProjectSnapshot> {
-  public static final String SCHEME = "gen";
+  public static final String BLANK_SCHEME = "gen";
   public static final String STARTER_SCHEME = "starterfile";
 
   public static enum Template {
@@ -200,7 +200,7 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<Project
         String schemeSpecificPart = null; //org.lgna.story.Ground.SurfaceAppearance.class.getName();
         String path = "/" + SGround.SurfaceAppearance.class.getName();
         String fragment = this.name();
-        URI uri = new URI(SCHEME, schemeSpecificPart, path, fragment);
+        URI uri = new URI(BLANK_SCHEME, schemeSpecificPart, path, fragment);
         String text = TemplateUriState.getLocalizedName(fragment);
         ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + fragment + ".png"));
         Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;
