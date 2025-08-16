@@ -410,6 +410,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
                                       boolean isLoadingBackups, Set<String> unloadableFiles) {
     File backupDir = projectFileUtilities.backupDirectory(projectFile, isBackup).toFile();
+    boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
 
     uriProjectLoader = null;
     activity.cancel();
@@ -427,12 +428,12 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         // restart load with backup
         if (Dialogs.confirmWithWarning("Load backup?",
                 "WARNING: this project could not be loaded.\nWould you like to try an earlier backup?")) {
-          loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, unloadableFiles);
+          loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
         }
       } else {
         if (Dialogs.confirmWithWarning("Load backup?",
                 "WARNING: all backups more recent than the project were corrupted.\nWould you like to reload the original project file?")) {
-          loadProject(newProjectActivity(), new FileProjectLoader(mainProject, uriProjectLoader.shouldMakeVrReady()), false, unloadableFiles);
+          loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, unloadableFiles);
         }
       }
     }
@@ -457,11 +458,13 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
       if (backup != null && Dialogs.confirmWithWarning("Load backup?",
               "WARNING: this project is out-of-date.\nWould you like to load a backup with more recent changes?")) {
+        boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
+
         uriProjectLoader = null;
         activity.cancel();
 
         // restart load with backup
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, unloadableFiles);
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, unloadableFiles);
 
         return;
       }
