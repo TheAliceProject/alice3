@@ -66,7 +66,7 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
       if ("file".equalsIgnoreCase(scheme)) {
         File file = UriUtilities.getFile(uri);
         return new FileProjectLoader(file, makeVrReady);
-      } else if ("starterfile".equalsIgnoreCase(scheme)) {
+      } else if (TemplateUriState.STARTER_SCHEME.equalsIgnoreCase(scheme)) {
         return new StarterProjectFileLoader(uri, makeVrReady);
       } else if (proj.hasValidUri()) {
         TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance(proj);
@@ -88,4 +88,6 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
   public boolean shouldMakeVrReady() {
     return makeVrReady;
   }
+
+  public abstract boolean isNewProject();
 }

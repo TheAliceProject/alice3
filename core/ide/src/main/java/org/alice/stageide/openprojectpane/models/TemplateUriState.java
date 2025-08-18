@@ -69,7 +69,8 @@ import javax.swing.*;
  * @author Dennis Cosgrove
  */
 public class TemplateUriState extends ImmutableDataSingleSelectListState<ProjectSnapshot> {
-  public static final String SCHEME = "gen";
+  public static final String BLANK_SCHEME = "gen";
+  public static final String STARTER_SCHEME = "starterfile";
 
   public static enum Template {
     GRASS(SGround.SurfaceAppearance.GRASS, new Color(150 / 255.0, 226 / 255.0, 252 / 255.0)), SEA_FLOOR(SGround.SurfaceAppearance.OCEAN_FLOOR, new Color(0.0, .431, .859), 0.3, Color.WHITE, new Color(0, .549, .565)), MOON(SGround.SurfaceAppearance.MOON, new Color(.11, .133, .178), 0, Color.WHITE, new Color(.0, .118, .396)), MARS(SGround.SurfaceAppearance.MARS, new Color(.847, .69, .588), 0.25, Color.WHITE, new Color(.541, .2, .0)),
@@ -199,7 +200,7 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<Project
         String schemeSpecificPart = null; //org.lgna.story.Ground.SurfaceAppearance.class.getName();
         String path = "/" + SGround.SurfaceAppearance.class.getName();
         String fragment = this.name();
-        URI uri = new URI(SCHEME, schemeSpecificPart, path, fragment);
+        URI uri = new URI(BLANK_SCHEME, schemeSpecificPart, path, fragment);
         String text = TemplateUriState.getLocalizedName(fragment);
         ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + fragment + ".png"));
         Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;

@@ -6,7 +6,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
-import org.alice.stageide.openprojectpane.models.TemplateUriState;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -17,7 +16,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -160,12 +158,6 @@ class ProjectFileUtilities {
     saveCopyOfProjectTo(backupFile);
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
-  }
-
-  public boolean isNewProject() {
-    URI uri = projectApp.getUri();
-
-    return uri != null && uri.getScheme().equalsIgnoreCase(TemplateUriState.SCHEME);
   }
 
   public Path backupDirectory(File saved, boolean isBackup) {
