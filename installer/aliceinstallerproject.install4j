@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="10.0.6" transformSequenceNumber="10">
   <directoryPresets config="./installerFiles/alice3.desktop.partial" />
-  <application name="Alice 3" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" autoSave="true" macVolumeId="bf5b38a83930832b" javaMinVersion="17" jdkMode="runtimeJre">
+  <application name="Alice 3" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" autoSave="true" macVolumeId="bf5b38a83930832b" javaMinVersion="21" jdkMode="runtimeJre">
     <languages>
       <additionalLanguages>
         <language id="zh_CN" />
