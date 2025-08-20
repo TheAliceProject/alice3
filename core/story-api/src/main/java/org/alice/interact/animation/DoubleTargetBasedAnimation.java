@@ -61,10 +61,10 @@ public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserve
   public DoubleTargetBasedAnimation(Double currentValue, Double targetValue, double speed) {
     super(currentValue, targetValue, speed);
     if (this.currentValue.isNaN()) {
-      this.currentValue = new Double(0.0d);
+      this.currentValue = 0.0d;
     }
     if (this.targetValue.isNaN()) {
-      this.targetValue = new Double(0.0d);
+      this.targetValue = 0.0d;
     }
   }
 
@@ -80,13 +80,12 @@ public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserve
 
   @Override
   protected Double interpolate(Double v0, Double v1, double deltaSinceLastUpdate) {
-    double newValue = v0 + ((v1 - v0) * this.speed * deltaSinceLastUpdate);
-    return new Double(newValue);
+    return v0 + ((v1 - v0) * this.speed * deltaSinceLastUpdate);
   }
 
   @Override
   protected Double newE(Double other) {
-    return new Double(other);
+    return other;
   }
 
 }

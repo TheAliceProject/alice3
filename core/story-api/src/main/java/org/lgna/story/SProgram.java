@@ -46,7 +46,6 @@ package org.lgna.story;
 import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.story.implementation.ProgramImp;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -89,9 +88,5 @@ import javax.swing.WindowConstants;
     frame.setSize(640, 480);
     frame.setDefaultCloseOperation(DEFAULT_CLOSE_OPERATION);
     this.implementation.initializeInFrame(frame);
-  }
-
-  public void initializeInApplet(JApplet applet) {
-    this.implementation.initializeInApplet(applet);
   }
 }

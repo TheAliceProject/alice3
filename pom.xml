@@ -79,8 +79,8 @@
     <gluegen.version>2.5.0</gluegen.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
-    <alice.build.version>3.9.0.2</alice.build.version>
-    <alice.build.prerelease>-rc.1</alice.build.prerelease>
+    <alice.build.version>3.9.0.3</alice.build.version>
+    <alice.build.prerelease>-alpha</alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
@@ -346,7 +346,7 @@
       <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-runtime</artifactId>
-        <version>4.7.1</version>
+        <version>4.9.3</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
       <dependency>

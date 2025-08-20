@@ -191,32 +191,18 @@ import java.util.Map;
     this.renderContext.gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
 
-  private boolean isInTheMidstOfFinalization = false;
-
-  @Override
-  public void finalize() {
-    this.isInTheMidstOfFinalization = true;
-    try {
-      super.finalize();
-    } finally {
-      this.isInTheMidstOfFinalization = false;
-    }
-  }
-
   // java.awt.Graphics
 
   @Override
   public void dispose() {
-    if (!this.isInTheMidstOfFinalization) {
-      this.renderContext.gl.glFlush();
-      if (isValid()) {
-        this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
-        this.renderContext.gl.glPopMatrix();
-        this.renderContext.gl.glMatrixMode(GL_PROJECTION);
-        this.renderContext.gl.glPopMatrix();
-        this.width = -1;
-        this.height = -1;
-      }
+    this.renderContext.gl.glFlush();
+    if (isValid()) {
+      this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
+      this.renderContext.gl.glPopMatrix();
+      this.renderContext.gl.glMatrixMode(GL_PROJECTION);
+      this.renderContext.gl.glPopMatrix();
+      this.width = -1;
+      this.height = -1;
     }
   }
 

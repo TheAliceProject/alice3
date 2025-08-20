@@ -82,7 +82,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   //  {
   //    SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
   //    sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
-  //    sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
+  //    sgFrontFacingAppearance.opacity.setValue(1.0);
   //
   //    this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
   //    this.sgSphereVisual.setParent( this.sphereTransformable );

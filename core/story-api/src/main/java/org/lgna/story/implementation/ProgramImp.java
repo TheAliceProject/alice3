@@ -60,7 +60,6 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
-import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -385,11 +384,6 @@ public abstract class ProgramImp {
     } catch (BrokenBarrierException bbe) {
       throw new RuntimeException(bbe);
     }
-    this.startAnimator();
-  }
-
-  public void initializeInApplet(JApplet applet) {
-    this.addComponents(new DefaultAwtContainerInitializer(applet.getContentPane()));
     this.startAnimator();
   }
 

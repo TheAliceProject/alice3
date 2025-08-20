@@ -87,7 +87,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
     @Override
     public void currentTimeChanged(double currentTime, Pose pose) {
-      //      TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
+      //      TimeLineModifierComposite.this.currentTime.setValueTransactionlessly(currentTime);
     }
 
     @Override
