@@ -100,5 +100,4 @@ public interface Theme {
 
   public Color getPrimaryBackgroundColor();
 
-  public Color getSecondaryBackgroundColor();
 }

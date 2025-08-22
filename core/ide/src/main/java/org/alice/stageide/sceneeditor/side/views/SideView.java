@@ -91,7 +91,7 @@ public class SideView extends BorderPanel {
       ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
       FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 
-      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, theme.getSecondaryBackgroundColor()));
+      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, Color.LIGHT_GRAY));
       this.addPageStartComponent(undoRedoPanel);
     }
 

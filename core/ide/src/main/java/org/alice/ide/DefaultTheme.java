@@ -90,7 +90,6 @@ public class DefaultTheme implements Theme {
   private static final Color DEFAULT_SELECTED_COLOR = new Color(255, 255, 179);
   private static final Color DEFAULT_UNSELECTED_COLOR = new Color(141, 137, 166);
   private static final Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new Color(173, 167, 208);
-  private static final Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new Color(201, 201, 218);
 
   @Override
   public Color getTypeColor() {
@@ -265,10 +264,5 @@ public class DefaultTheme implements Theme {
   @Override
   public Color getPrimaryBackgroundColor() {
     return DEFAULT_PRIMARY_BACKGROUND_COLOR;
-  }
-
-  @Override
-  public Color getSecondaryBackgroundColor() {
-    return DEFAULT_SECONDARY_BACKGROUND_COLOR;
   }
 }
