@@ -50,22 +50,12 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.Theme;
 import org.alice.ide.ast.type.merge.croquet.ActionStatus;
 import org.alice.ide.ast.type.merge.croquet.MemberHub;
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 import org.lgna.croquet.icon.AbstractIcon;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
@@ -81,7 +71,7 @@ public class ActionStatusIcon extends AbstractIcon {
   private static final Paint ADD_REPLACE_DRAW_PAINT = Color.DARK_GRAY;
   private static final Shape ADD_SHAPE;
 
-  private static final Paint ERROR_PAINT = MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR;
+  private static final Paint ERROR_PAINT = UIManager.getColor("Alice.Alert.Color");
   private static final Font ERROR_FONT = FontUtilities.deriveFont(new Font("Serif", 0, SIZE.height - 2), TextWeight.EXTRABOLD);
 
   private static final Shape CHECK_SHAPE;
