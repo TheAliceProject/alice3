@@ -76,7 +76,6 @@ import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.PaintPropertyAdapter;
 import org.alice.stageide.properties.ResourcePropertyAdapter;
-import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
@@ -348,21 +347,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
           selectedField = fieldAccessFactory.getField();
         }
 
-        //propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
-
-        //        org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-        //        boolean isPerson = false;
-        //        if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-        //          JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-        //          if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-        //          {
-        //            isPerson = true;
-        //          }
-        //        }
-        //        if( ( fieldInitializerState != null ) && !isPerson ) {
-        //          propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-        //        }
-
         for (JavaMethod getter : getterMethods) {
           AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp, selectedField);
           if (adapter != null) {
@@ -389,15 +373,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
             assert propertyController != null;
             LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getLocalizedRepr() + " = "), propertyController);
             assert matchingLabelController != null;
-            if (propertyAdapter instanceof SelectedInstanceAdapter) {
-              //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-              fieldNamePair = matchingLabelController;
-              //TODO: Localize this
-              fieldNamePair.label.setText(this.findLocalizedText("selected", "Selected:"));
-            } else {
-              this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
-              extraPropertyCount++;
-            }
+            this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+            extraPropertyCount++;
             this.activeControllers.add(matchingLabelController);
           }
 

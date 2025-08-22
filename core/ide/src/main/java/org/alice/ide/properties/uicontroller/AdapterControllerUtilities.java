@@ -47,10 +47,8 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
-import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
-import org.alice.stageide.properties.uicontroller.SelectedInstancePropertyController;
 
 import org.alice.math.immutable.Point3;
 
@@ -58,9 +56,6 @@ public class AdapterControllerUtilities {
   //TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
   public static PropertyAdapterController getValuePanelForPropertyAdapter(AbstractPropertyAdapter<?, ?> propertyAdapter) {
     Class<?> propertyType = propertyAdapter != null ? propertyAdapter.getPropertyType() : null;
-    if (propertyAdapter instanceof SelectedInstanceAdapter) {
-      return new SelectedInstancePropertyController((SelectedInstanceAdapter) propertyAdapter);
-    }
     if (propertyType == null) {
       return new BlankPropertyController(propertyAdapter);
     }

@@ -69,6 +69,7 @@ import org.lgna.croquet.views.VerticalTextPosition;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -100,7 +101,7 @@ public class SideView extends BorderPanel {
         PushButton b = itemSelectedState.createPushButton();
         b.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
         b.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
-        b.setSelectedColor(theme.getSelectedColor());
+        b.setSelectedColor(UIManager.getColor("ComboBox.selectionBackground"));
         b.setBackgroundColor(color);
         return b;
       }
