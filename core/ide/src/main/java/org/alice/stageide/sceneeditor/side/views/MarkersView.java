@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.declarationseditor.type.FieldMenuModel;
 import org.alice.stageide.sceneeditor.side.MarkersToolPalette;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
@@ -62,9 +61,7 @@ import org.lgna.croquet.views.ItemSelectablePanel;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.project.ast.UserField;
 
-import javax.swing.AbstractButton;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -80,9 +77,9 @@ import java.util.Map;
  */
 public class MarkersView extends BorderPanel {
 
-  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
-  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
-  public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
+  private static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
+  private static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
+  private static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
   private static class MarkerView extends BooleanStateButton<AbstractButton> {
     public MarkerView(BooleanState model) {
@@ -239,7 +236,7 @@ public class MarkersView extends BorderPanel {
     this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
     this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
+    this.setBackgroundColor(BACKGROUND_COLOR);
   }
 
   private void unselectMarker() {

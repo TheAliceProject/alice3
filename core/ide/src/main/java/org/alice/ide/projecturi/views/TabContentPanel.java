@@ -49,13 +49,14 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TabContentPanel extends BorderPanel {
-  public static final Color DEFAULT_BACKGROUND_COLOR = new Color(191, 191, 255);
+  protected static final Color DEFAULT_BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
 
   public TabContentPanel(AbstractTabComposite<?> composite) {
     super(composite);

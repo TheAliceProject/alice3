@@ -45,8 +45,6 @@ package org.alice.stageide.sceneeditor.side.views;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.interact.handle.HandleStyle;
@@ -84,8 +82,7 @@ public class SideView extends BorderPanel {
   public SideView(SideComposite composite) {
     super(composite);
 
-    final Theme theme = ThemeUtilities.getActiveTheme();
-    final Color color = theme.getPrimaryBackgroundColor();
+    final Color color = UIManager.getColor("Alice.Background.Color");
 
     if (!IsToolBarShowing.getValue()) {
       ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();

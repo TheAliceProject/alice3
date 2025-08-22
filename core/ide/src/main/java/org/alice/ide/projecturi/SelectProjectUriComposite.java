@@ -43,7 +43,6 @@
 
 package org.alice.ide.projecturi;
 
-import org.alice.ide.projecturi.views.TabContentPanel;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
@@ -52,6 +51,7 @@ import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.Panel;
 
+import javax.swing.UIManager;
 import java.util.UUID;
 
 /**
@@ -96,7 +96,7 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
   protected Panel createView() {
     BorderPanel view = new BorderPanel(this);
     view.addCenterComponent(getTabState().createFolderTabbedPane());
-    view.setBackgroundColor(TabContentPanel.DEFAULT_BACKGROUND_COLOR);
+    view.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
     return view;
   }
 

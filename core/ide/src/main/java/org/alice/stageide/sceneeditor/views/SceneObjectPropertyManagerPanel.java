@@ -54,7 +54,6 @@ import java.util.ResourceBundle;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.common.FieldDeclarationPane;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState;
@@ -106,8 +105,7 @@ import org.lgna.story.SThing;
 import org.lgna.story.implementation.*;
 import org.lgna.story.resources.JointedModelResource;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.*;
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private InstanceFactory selectedInstance;
@@ -146,7 +144,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   public SceneObjectPropertyManagerPanel() {
     super();
     this.morePropertiesPanel = new GridBagPanel();
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
   }
 

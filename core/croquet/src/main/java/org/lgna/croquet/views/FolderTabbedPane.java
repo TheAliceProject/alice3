@@ -55,19 +55,7 @@ import org.lgna.croquet.TabState;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 import java.awt.BasicStroke;
@@ -102,7 +90,7 @@ import java.util.UUID;
  */
 public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbedPane<E> {
   private static final int TRAILING_TAB_PAD = 32;
-  public static final Color DEFAULT_BACKGROUND_COLOR = new Color(173, 167, 208).darker();
+  public static final Color DEFAULT_BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color").darker();
 
   private static class FolderTabTitleUI extends BasicToggleButtonUI {
     @Override

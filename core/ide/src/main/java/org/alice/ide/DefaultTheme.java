@@ -55,9 +55,6 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-  private static final Color DEFAULT_SELECTED_COLOR = new Color(255, 255, 179);
-  private static final Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new Color(173, 167, 208);
-
   // this big fancy function returns... some shade of purple or yellow. that's all.  occasionally we go wild and return an orange, but that's pretty rare.
   @Override
   public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height) {
@@ -164,15 +161,5 @@ public class DefaultTheme implements Theme {
     } else {
       return Color.GRAY;
     }
-  }
-
-  @Override
-  public Color getSelectedColor() {
-    return DEFAULT_SELECTED_COLOR;
-  }
-
-  @Override
-  public Color getPrimaryBackgroundColor() {
-    return DEFAULT_PRIMARY_BACKGROUND_COLOR;
   }
 }

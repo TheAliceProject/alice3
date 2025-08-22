@@ -72,8 +72,5 @@ public interface Theme {
 
   public Color getCodeColor(Code code);
 
-  public Color getSelectedColor();
-
-  public Color getPrimaryBackgroundColor();
 
 }

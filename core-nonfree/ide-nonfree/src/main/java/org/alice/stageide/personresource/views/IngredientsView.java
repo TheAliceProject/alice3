@@ -61,6 +61,7 @@ import org.lgna.croquet.views.ToggleButton;
 import org.lgna.story.resources.sims2.LifeStage;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -72,7 +73,7 @@ import java.util.concurrent.Callable;
  */
 public class IngredientsView extends MigPanel {
   public static final Insets COLOR_BUTTON_MARGIN = new Insets(1, -7, 1, -7); //todo
-  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
+  public static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
   public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
   public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
