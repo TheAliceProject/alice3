@@ -48,21 +48,12 @@ import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleSelectTreeState;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
@@ -146,11 +137,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
   private static class SelectDirectoryPanel<T> extends Panel {
     private SelectDirectoryPanel(SingleSelectTreeState<T> treeSelectionState, T treeNode, Color breadCrumbColor) {
       PopupButton selectChildButton = treeSelectionState.getCascadeFor(treeNode).getRoot().getPopupPrepModel().createPopupButton();
-      if (UIManager.getLookAndFeel().getName().contains("Nimbus")) {
-        selectChildButton.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
-      } else {
-        selectChildButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-      }
+
       Operation operation = treeSelectionState.getItemSelectionOperation(treeNode);
       operation.initializeIfNecessary();
       Button button = operation.createButton();

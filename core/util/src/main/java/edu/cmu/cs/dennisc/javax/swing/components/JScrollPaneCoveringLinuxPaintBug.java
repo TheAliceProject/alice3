@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.javax.swing.components;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI;
 
 import javax.swing.BorderFactory;
@@ -124,7 +123,6 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
   }
 
   public static void main(String[] args) {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
     UIManager.put("ScrollBar.width", 11);
     JPanel view = new JPanel();
     view.setPreferredSize(new Dimension(1000, 400));

@@ -116,7 +116,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
         }
         UIDefaults uiDefaults = new UIDefaults();
         uiDefaults.put(this.uiDefaultsName + ".contentMargins", margin);
-        this.getAwtComponent().putClientProperty("Nimbus.Overrides", uiDefaults);
       } else {
         Enumeration<Object> enm = UIManager.getDefaults().keys();
         while (enm.hasMoreElements()) {

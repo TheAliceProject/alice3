@@ -44,7 +44,7 @@ package org.alice.ide.custom;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.custom.components.ArrayCustomExpressionCreatorView;
@@ -163,8 +163,6 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
-    //new org.alice.stageide.StageIDE();
     try {
       ArrayCustomExpressionCreatorComposite.getInstance(JavaType.getInstance(String[].class)).getValueCreator().fire(NullTrigger.createUserActivity());
     } catch (CancelException ce) {

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+
 import org.alice.stageide.personresource.views.FaceTabView;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
@@ -85,8 +85,6 @@ public final class FaceTabComposite extends SimpleTabComposite<FaceTabView> {
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
-
     SimpleApplication app = new SimpleApplication();
     DocumentFrame documentFrame = app.getDocumentFrame();
     Frame frame = documentFrame.getFrame();
