@@ -77,25 +77,24 @@ public class DefaultTheme implements Theme {
   public Color getColorFor(Class<? extends Node> cls) {
     if (Statement.class.isAssignableFrom(cls)) {
       if (Comment.class.isAssignableFrom(cls)) {
-        return ColorUtilities.createGray(245);
+        return UIManager.getColor("Alice.Comment.Color");
       } else {
         //        if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
         //          return new java.awt.Color( 255, 230, 180 );
         ////        } else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
         ////          return new java.awt.Color( 255, 230, 180 );
         //        } else {
-        return new Color(0xd3d7f0);
+        return UIManager.getColor("Alice.Procedure.Block.Color");
         //return new java.awt.Color( 255, 255, 210 );
         //        }
       }
     } else if (Expression.class.isAssignableFrom(cls)) {
       if (ClassUtilities.isAssignableToAtLeastOne(cls, MethodInvocation.class)) {
-        return new Color(0xd3e7c7);
+        return UIManager.getColor("Alice.Function.Block.Color");
       } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class)) {
-        return new Color(0xDEEBD3);
+        return UIManager.getColor("Alice.Function.Block.Color").brighter();
       } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InstanceCreation.class, ArrayInstanceCreation.class)) {
-        //return new java.awt.Color( 0xbdcfb3 );
-        return UIManager.getColor("Alice.Constructor.Color");
+        return UIManager.getColor("Alice.Constructor.Block.Color");
       } else if (ResourceExpression.class.isAssignableFrom(cls)) {
         return UIManager.getColor("Alice.Resource.Color");
       } else {
