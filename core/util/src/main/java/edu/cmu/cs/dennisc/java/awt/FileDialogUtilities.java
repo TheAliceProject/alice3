@@ -218,7 +218,7 @@ public class FileDialogUtilities {
 
     if (fileDialog == null) {
       fileDialog = createFileDialog(root, "Save...", java.awt.FileDialog.SAVE);
-        mapPathToFileDialog.put(component, secondaryKey, fileDialog);
+      mapPathToFileDialog.put(component, secondaryKey, fileDialog);
     }
     if (filename != null) {
       fileDialog.setFile(filename);
