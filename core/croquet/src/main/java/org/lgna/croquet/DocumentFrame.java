@@ -92,8 +92,8 @@ public abstract class DocumentFrame {
   }
 
   @Deprecated
-  public File showSaveFileDialog(File directory, String filename, String extension, boolean isSharingDesired) {
-    return FileDialogUtilities.showSaveFileDialog(this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired);
+  public File showSaveFileDialog(File directory, String filename, String extension) {
+    return FileDialogUtilities.showSaveFileDialog(this.frame.getAwtComponent(), directory, filename, extension);
   }
 
   public File showOpenFileDialog(String dialogTitle, File initialDirectory, String extension) {

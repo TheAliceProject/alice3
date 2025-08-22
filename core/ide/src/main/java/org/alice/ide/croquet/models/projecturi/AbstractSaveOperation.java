@@ -79,7 +79,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
     do {
       File fileNext;
       if (isExceptionRaised || this.isPromptNecessary(filePrevious)) {
-        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), FileUtilities.getBaseName(filePrevious), this.getExtension(), true);
+        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), FileUtilities.getBaseName(filePrevious), this.getExtension());
       } else {
         fileNext = filePrevious;
       }
