@@ -97,7 +97,7 @@ public class DefaultTheme implements Theme {
         //return new java.awt.Color( 0xbdcfb3 );
         return UIManager.getColor("Alice.Constructor.Color");
       } else if (ResourceExpression.class.isAssignableFrom(cls)) {
-        return new Color(0xffffff);
+        return UIManager.getColor("Alice.Resource.Color");
       } else {
         if (NullLiteral.class.isAssignableFrom(cls)) {
           return Color.RED;
