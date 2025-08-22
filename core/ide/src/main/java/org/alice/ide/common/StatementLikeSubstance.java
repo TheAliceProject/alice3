@@ -130,22 +130,4 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
     this.fillBounds(g2, x, y, width, height);
   }
 
-  //  @Override
-  //  protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-  //    return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
-  //  }
-
-  ////  //todo: remove
-  //  @Override
-  //  protected void paintBorder( java.awt.Graphics g ) {
-  //    super.paintBorder( g );
-  //    if( this.isKnurlDesired() ) {
-  //      this.getBorder().paintBorder( this, g, 0, 0, getWidth(), getHeight() );
-  //    }
-  ////    super.paintBorder( g );
-  ////    if( this.isKnurlDesired() ) {
-  ////      java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-  ////      edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, 3, 2, 8, getHeight()-2 );
-  ////    }
-  //  }
 }
