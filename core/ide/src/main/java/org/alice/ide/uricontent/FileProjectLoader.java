@@ -44,6 +44,7 @@ package org.alice.ide.uricontent;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 
 import java.io.File;
 import java.net.URI;
@@ -63,6 +64,10 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
   @Override
   public URI getUri() {
     return getSaveFile().toURI();
+  }
+
+  @Override
+  protected void handleLoadException(File file, Exception e) {
   }
 
   private File getSaveFile() {

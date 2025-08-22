@@ -6,6 +6,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.stageide.StageIDE;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.*;
 import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
+import static org.lgna.project.io.IoUtilities.DEFAULT_BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
 class ProjectFileUtilities {
@@ -55,6 +57,34 @@ class ProjectFileUtilities {
     backupSavedProject();
   }
 
+  final boolean isProject(File f) {
+    return PROJECT_EXTENSION.equals(getExtension(f.getName()));
+  }
+
+  final boolean isBackup(File f) {
+    String parentDirExtension = getParentDirExtension(f);
+
+    return BACKUP_EXTENSION.equals(parentDirExtension) || DEFAULT_BACKUP_EXTENSION.equals(parentDirExtension);
+  }
+
+  final boolean isDefaultBackup(File f) {
+    String parentDirExtension = getParentDirExtension(f);
+
+    return DEFAULT_BACKUP_EXTENSION.equals(parentDirExtension);
+  }
+
+  final void renameDefaultBackupDirectory(File file) {
+    File defaultBackupDir = defaultBackupDirectory().toFile();
+    File namedBackupDir = backupDirectory(file, false).toFile();
+
+    try {
+      defaultBackupDir.renameTo(namedBackupDir);
+    } catch(SecurityException e) {
+      Logger.throwable(e, "Unable to rename backup directory for new project to " + namedBackupDir);
+      e.printStackTrace();
+    }
+  }
+
   final void startAutoSaving() {
     if (saveFuture != null) {
       saveFuture.cancel(false);
@@ -62,9 +92,18 @@ class ProjectFileUtilities {
     saveFuture = savingService.scheduleAtFixedRate(autosaveActiveProject(), SECONDS_BETWEEN_BACKUPS, SECONDS_BETWEEN_BACKUPS, TimeUnit.SECONDS);
   }
 
-  private void saveCopyOfProjectTo(File file) throws IOException {
-    Project project = projectApp.getUpToDateProject();
-    IoUtilities.writeProject(file, project, thumbnailAndManifestDataSources(project));
+  private String getParentDirExtension(File f) {
+    if (projectApp.uriProjectLoader.isNewProject()) {
+      return "";
+    }
+
+    File parentDir = f.getParentFile();
+
+    if (parentDir == null) {
+      return "";
+    }
+
+    return getExtension(parentDir.getName());
   }
 
   private DataSource[] thumbnailAndManifestDataSources(Project project) {
@@ -134,6 +173,11 @@ class ProjectFileUtilities {
     return new Runnable() {
       @Override
       public void run() {
+        if (projectApp.isProjectUpToDateWithFile()) {
+          // skip saving if there were no changes since last save
+          return;
+        }
+
         try {
           ProjectFileUtilities.this.backupActiveProject();
         } catch (IOException e) {
@@ -146,18 +190,21 @@ class ProjectFileUtilities {
 
   private void backupActiveProject() throws IOException {
     File saved = UriUtilities.getFile(projectApp.getUri());
-    if (saved == null) {
-      return;
-    }
-    Path backupDir = backupDirectory(saved, false);
+    Path backupDir = appropriateBackupDirectory(saved, false);
+
     if (backupDir == null) {
       return;
     }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
-    saveCopyOfProjectTo(backupFile);
+    projectApp.updateIndexAndSaveProjectTo(backupFile);
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
+  }
+
+  public void saveCopyOfProjectTo(File file) throws IOException {
+    Project project = projectApp.getUpToDateProject();
+    IoUtilities.writeProject(file, project, thumbnailAndManifestDataSources(project));
   }
 
   public Path backupDirectory(File saved, boolean isBackup) {
@@ -172,6 +219,22 @@ class ProjectFileUtilities {
     Path backupDir = saved.toPath().resolveSibling(directoryName);
 
     return createAndGetBackupDirectory(backupDir);
+  }
+
+  public Path defaultBackupDirectory() {
+    Path projectsDir = StageIDE.getActiveInstance().getProjectsDirectory().toPath();
+
+    return createAndGetBackupDirectory(projectsDir.resolve("." + DEFAULT_BACKUP_EXTENSION));
+  }
+
+  public Path appropriateBackupDirectory(File saved, boolean isBackup) {
+    if (projectApp.uriProjectLoader.isNewProject()) {
+      return defaultBackupDirectory();
+    } else if (saved != null) {
+      return backupDirectory(saved, isBackup);
+    } else {
+      return null;
+    }
   }
 
   private Path createAndGetBackupDirectory(Path backupDir) {

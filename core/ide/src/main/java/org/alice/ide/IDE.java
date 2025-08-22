@@ -438,6 +438,11 @@ public abstract class IDE extends ProjectApplication {
       this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened, false));
       projectFileToLoadOnWindowOpened = null;
     }
+
+    if (loadNewProjectBackup()) {
+      return;
+    }
+
     if (getUri() == null) {
       setPerspective(getDocumentFrame().getNoProjectPerspective());
       WindowEventTrigger.setOnUserActivity(activity, e);
