@@ -534,7 +534,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
             "A backup has been opened successfully: " + backup.getName()
                     + ".\n" + "Would like to replace the original project, or create a new project from the backup?\n"
                     + "Cancel to do neither and just continue opening the backup.",
-                    new String[] { "Replace Original Project", "Create New Project", "Continue" });
+                    new String[] {
+                            "Replace Original Project", "Create New Project", "Continue"
+                    });
 
     return switch (result) {
       case YES -> {

@@ -79,7 +79,7 @@ class ProjectFileUtilities {
 
     try {
       defaultBackupDir.renameTo(namedBackupDir);
-    } catch(SecurityException e) {
+    } catch (SecurityException e) {
       Logger.throwable(e, "Unable to rename backup directory for new project to " + namedBackupDir);
       e.printStackTrace();
     }
