@@ -43,7 +43,6 @@
 package org.alice.ide.declarationseditor.events.components;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.common.AddEventListenerStatementPanel;
 import org.alice.ide.x.ProjectEditorAstI18nFactory;
@@ -59,9 +58,11 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserMethod;
 
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
+ * This is the InitializeEventsListeners tab at the top level of alice.
  * @author Matt May
  */
 public class EventsContentPanel extends CodePanelWithDropReceptor {
@@ -113,7 +114,7 @@ public class EventsContentPanel extends CodePanelWithDropReceptor {
     this.code = code;
     this.rootPane = new RootStatementListPropertyPane(code);
     this.addCenterComponent(this.rootPane);
-    Color color = ThemeUtilities.getActiveTheme().getProcedureColor();
+    Color color = UIManager.getColor("Alice.Event.Color");
     this.rootPane.setBackgroundColor(color);
     this.setBackgroundColor(color);
   }

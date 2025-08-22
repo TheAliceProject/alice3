@@ -43,7 +43,6 @@
 package org.alice.ide.ast.declaration.views;
 
 import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddFieldComposite;
 import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
 import org.alice.ide.common.FieldDeclarationPane;
@@ -58,6 +57,8 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserField;
 
+import javax.swing.UIManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,7 +71,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
 
   public FieldView(AddFieldComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
   }
 
   @Override

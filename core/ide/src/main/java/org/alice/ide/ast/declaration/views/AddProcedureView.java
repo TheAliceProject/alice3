@@ -42,8 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddProcedureComposite;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -51,6 +52,6 @@ import org.alice.ide.ast.declaration.AddProcedureComposite;
 public class AddProcedureView extends AddMethodView {
   public AddProcedureView(AddProcedureComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getProcedureColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
   }
 }

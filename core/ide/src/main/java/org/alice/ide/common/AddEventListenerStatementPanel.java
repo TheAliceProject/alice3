@@ -43,13 +43,13 @@
 package org.alice.ide.common;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.croquet.models.ast.StatementContextMenu;
 import org.lgna.croquet.views.PaintUtilities;
 import org.lgna.project.ast.ExpressionStatement;
 
 import javax.swing.BoxLayout;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
@@ -69,7 +69,7 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 
   @Override
   protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    Color color = ThemeUtilities.getActiveTheme().getEventColor();
+    Color color = UIManager.getColor("Alice.Event.Color");
     Color colorA = ColorUtilities.scaleHSB(color, 1.0, 1.0, 1.15);
     Color colorB = ColorUtilities.scaleHSB(color, 1.0, 0.9, 0.85);
     return new GradientPaint(x, y, colorA, x, y + 150, colorB);

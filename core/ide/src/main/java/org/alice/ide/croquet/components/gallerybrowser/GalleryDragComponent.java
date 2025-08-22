@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
-import org.alice.ide.DefaultTheme;
 import org.alice.ide.Theme;
 import org.alice.ide.croquet.components.KnurlDragComponent;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
@@ -130,13 +129,13 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     this.controller = controller;
 
     if (model.isUserDefinedModel()) {
-      this.baseColor = ColorUtilities.scaleHSB(DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR, 1.0, 2.0, 1.0);
+      this.baseColor = ColorUtilities.scaleHSB(UIManager.getColor("Alice.Constructor.Color"), 1.0, 2.0, 1.0);
       this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
       this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
       this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
       this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
     } else if (model.isInstanceCreator()) {
-      this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+      this.baseColor = UIManager.getColor("Alice.Constructor.Color");
       this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
       this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
       this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
@@ -162,7 +161,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     super(model, false);
     controller = null;
 
-    this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+    this.baseColor = UIManager.getColor("Alice.Constructor.Color");
     this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
     this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
     this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
@@ -185,7 +184,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     super(model, false);
     controller = null;
 
-    this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+    this.baseColor = UIManager.getColor("Alice.Constructor.Color");
     this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
     this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
     this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);

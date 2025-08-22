@@ -45,7 +45,6 @@ package org.alice.ide.controlflow.components;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel;
 import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
 import org.alice.ide.templates.StatementTemplate;
@@ -56,6 +55,7 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Comment;
 import org.lgna.project.ast.Statement;
 
+import javax.swing.UIManager;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
@@ -134,7 +134,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
     if (this.label == null) {
       this.label = new Label(this.getLabelText());
       if (Comment.class.isAssignableFrom(this.getStatementCls())) {
-        this.label.setForegroundColor(ThemeUtilities.getActiveTheme().getCommentForegroundColor());
+        this.label.setForegroundColor(UIManager.getColor("Alice.Comment.Color.foreground"));
       }
       //this.label.setFontToScaledFont( 1.2f );
       this.addComponent(this.label);

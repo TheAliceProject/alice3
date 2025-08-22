@@ -43,7 +43,6 @@
 package org.alice.ide.ast.declaration.views;
 
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddParameterComposite;
 import org.alice.ide.codeeditor.TypedParameterPane;
 import org.alice.ide.x.PreviewAstI18nFactory;
@@ -85,7 +84,7 @@ public class AddParameterView extends DeclarationView<UserParameter> {
     this.warningPanel = new BorderPanel.Builder().hgap(32).lineStart(warningLabel).center(pane).build();
 
     this.warningPanel.setBorder(BorderFactory.createEmptyBorder(32, 8, 32, 8));
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getParameterColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Parameter.Color"));
   }
 
   @Override

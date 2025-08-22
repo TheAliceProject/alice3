@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
 import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.declarationseditor.TypeComposite;
@@ -64,9 +63,7 @@ import org.lgna.croquet.views.SwingAdapter;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.NamedUserType;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -187,7 +184,7 @@ public class TypeHierarchyView extends BorderPanel {
 
   public TypeHierarchyView(TypeHierarchyComposite composite) {
     super(composite, 0, 4);
-    Color color = ThemeUtilities.getActiveTheme().getMutedTypeColor();
+    Color color = UIManager.getColor("Alice.Type.Color.muted");
     this.jTree = new JTree(this.treeModel);
     this.jTree.setRootVisible(false);
     this.jTree.setCellRenderer(new NamedUserTypeTreeCellRenderer());

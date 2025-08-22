@@ -44,7 +44,6 @@ package org.alice.stageide.type.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import org.alice.ide.ThemeUtilities;
 import org.alice.stageide.type.croquet.OtherTypeDialog;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer;
@@ -62,6 +61,7 @@ import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrol
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -116,7 +116,7 @@ public class OtherTypeDialogPane extends MigPanel {
     descriptionScrollPane.setBackgroundColor(Color.WHITE);
     this.addComponent(descriptionScrollPane, "grow");
 
-    Color color = ThemeUtilities.getActiveTheme().getTypeColor();
+    Color color = UIManager.getColor("Alice.Type.Color");
     color = ColorUtilities.scaleHSB(color, 1.0, 0.9, 1.1);
     this.setBackgroundColor(color);
     tabbedPane.setBackgroundColor(color);

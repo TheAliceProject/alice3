@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite;
 import org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
@@ -50,13 +49,15 @@ import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.List;
 import org.lgna.croquet.views.ScrollPane;
 
+import javax.swing.UIManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EnumConstantResourceKeySelectionView extends BorderPanel {
   public EnumConstantResourceKeySelectionView(EnumConstantResourceKeySelectionComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
     List<EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
     list.setCellRenderer(new EnumConstantResourceKeyListCellRenderer());
     list.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);

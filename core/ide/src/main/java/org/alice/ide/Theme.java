@@ -64,39 +64,15 @@ public interface Theme {
   public static final Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
   public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
 
-  public Color getTypeColor();
-
-  public Color getMutedTypeColor();
-
-  public Color getProcedureColor();
-
-  public Color getFunctionColor();
-
-  public Color getConstructorColor();
-
-  public Color getFieldColor();
-
-  public Color getLocalColor();
-
-  public Color getParameterColor();
-
-  public Color getEventColor();
-
-  public Color getEventBodyColor();
-
   public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height);
-
+ 
   public Color getColorFor(Class<? extends Node> cls);
 
   public Color getColorFor(Node node);
 
-  public Color getCommentForegroundColor();
-
   public Color getCodeColor(Code code);
 
   public Color getSelectedColor();
-
-  public Color getUnselectedColor();
 
   public Color getPrimaryBackgroundColor();
 

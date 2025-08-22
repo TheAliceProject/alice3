@@ -42,8 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddFunctionComposite;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -51,6 +52,6 @@ import org.alice.ide.ast.declaration.AddFunctionComposite;
 public class AddFunctionView extends AddMethodView {
   public AddFunctionView(AddFunctionComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
   }
 }

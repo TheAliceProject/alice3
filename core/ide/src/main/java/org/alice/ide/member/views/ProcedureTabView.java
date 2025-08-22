@@ -42,8 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.member.ProcedureTabComposite;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -51,6 +52,6 @@ import org.alice.ide.member.ProcedureTabComposite;
 public class ProcedureTabView extends MemberTabView {
   public ProcedureTabView(ProcedureTabComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getProcedureColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
   }
 }
