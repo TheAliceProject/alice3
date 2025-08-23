@@ -6,6 +6,8 @@
 <suppressions>
   <suppress checks="FileLengthCheck"
             files="ProjectMigrationManager.java"/>
+  <suppress checks="OrderedProperties"
+              files=".*FlatLaf.properties" />
   <suppress files="core[/\\]story-api[/\\]src[/\\]main[/\\]java[/\\]Jama[/\\]*" checks=".*"/>
   <suppress files="core[/\\]glrender[/\\]src[/\\]main[/\\]java[/\\]edu[/\\]cmu[/\\]cs[/\\]dennisc[/\\]render[/\\]joglrenderer[/\\]NonCachingTextRenderer.java" checks=".*"/>
   <suppress files="external[/\\]" checks=".*"/>

@@ -65,7 +65,7 @@ public interface Theme {
   public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
 
   public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height);
- 
+
   public Color getColorFor(Class<? extends Node> cls);
 
   public Color getColorFor(Node node);
