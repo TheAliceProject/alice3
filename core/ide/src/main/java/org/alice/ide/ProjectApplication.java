@@ -442,14 +442,14 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     uriProjectLoader = null;
     activity.cancel();
 
-    // A corrupted backup was manually loaded. Don't do anything special
+    // A corrupted backup was manually loaded
     if (isBackup && !isLoadingBackups) {
+      Dialogs.showError("Unable to Load Backup", "This backup was corrupted and none could be loaded");
+
       return;
     }
 
     if (backup != null) {
-      System.out.println("Load of " + (isBackup ? "backup" : "main project") + " failed. Loading older backup");
-
       String message = isBackup ? "an earlier backup" : "a backup"; // BOTH CONFIRMED
 
       if (Dialogs.confirmWithWarning("Load Backup",
@@ -498,7 +498,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     updateInterface(project);
 
-    if (!isLoadingBackups && projectFileUtilities.isDefaultBackup(projectFile)) {
+    if (!isLoadingBackups || projectFileUtilities.isDefaultBackup(projectFile)) {
       return;
     }
 
