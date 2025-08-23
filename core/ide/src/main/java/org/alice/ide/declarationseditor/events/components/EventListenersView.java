@@ -74,8 +74,6 @@ public class EventListenersView extends AbstractCodeDeclarationView {
     LineAxisPanel bottom = new LineAxisPanel(button);
     this.stickyBottomPanel = new StickyBottomPanel();
     this.stickyBottomPanel.setBottomView(bottom);
-
-    this.stickyBottomPanel.setBackgroundColor(this.getBackgroundColor());
     this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
     this.setBorder(BorderFactory.createEmptyBorder(14, 8, 4, 8));
     this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());

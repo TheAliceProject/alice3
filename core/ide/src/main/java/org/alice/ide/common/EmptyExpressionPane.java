@@ -53,15 +53,13 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
-  private static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Expression.Background.Color");
-
   private final EmptyExpression emptyExpression;
 
   public EmptyExpressionPane(EmptyExpression emptyExpression) {
     super(null);
     this.emptyExpression = emptyExpression;
     Label label = new Label(" ??? ");
-    label.setForegroundColor(UIManager.getColor("Alice.Block.Foreground.Color.contrast"));
+    label.setForegroundColor(UIManager.getColor("Alice.Block.Contrast.Foreground.Color"));
     this.addComponent(label);
   }
 
@@ -72,7 +70,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 
   @Override
   public Color getBackgroundColor() {
-    return BACKGROUND_COLOR;
+    return UIManager.getColor("Alice.Block.Contrast.Background.Color");
   }
 
   @Override

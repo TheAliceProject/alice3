@@ -58,14 +58,8 @@ import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
@@ -200,10 +194,14 @@ public class TypeEditor extends BorderPanel {
     } else {
       this.tabbedPane = composite.getTabState().createFolderTabbedPane();
     }
+    this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
-    this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
 
+    this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+    this.startButton.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
     this.startButton.setClobberIcon(new DeclarationMenuIcon());
+
     this.addCenterComponent(tabbedPane);
     SwingComponentView<?> component;
     if (IsEmphasizingClassesState.getInstance().getValue()) {

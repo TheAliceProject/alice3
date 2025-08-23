@@ -50,8 +50,8 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * These are icons that
- * @author Dennis Cosgrove
+ * These are icons that show up on the scene tab and in the dropdown menu that shows up to the left of the scene tab
+ * * @author Dennis Cosgrove
  */
 public class TabIcon extends ShapeIcon {
   private static final Stroke STROKE = new BasicStroke(0.0f);

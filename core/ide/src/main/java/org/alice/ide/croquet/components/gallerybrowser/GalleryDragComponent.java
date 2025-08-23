@@ -122,14 +122,14 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     this.controller = controller;
 
     if (model.isUserDefinedModel()) {
-      this.baseColor = ColorUtilities.scaleHSB(UIManager.getColor("Alice.Constructor.Color"), 1.0, 2.0, 1.0);
+      this.baseColor = ColorUtilities.scaleHSB(UIManager.getColor("Label.background"), 1.0, 2.0, 1.0);
       this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     } else if (model.isInstanceCreator()) {
-      this.baseColor = UIManager.getColor("Alice.Constructor.Color");
+      this.baseColor = UIManager.getColor("Label.background");
       this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     } else {
-      this.baseColor = ColorUtilities.createGray(191);
-      this.activeColor = ColorUtilities.createGray(255);
+      this.baseColor = UIManager.getColor("Alice.Gallery.Folder.Color");
+      this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     }
     if (!model.isBreadcrumbButtonIconDesired()) {
       ResourceKey resourceKey = model.getResourceKey();
@@ -145,7 +145,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     super(model, false);
     controller = null;
 
-    this.baseColor = UIManager.getColor("Alice.Constructor.Color");
+    this.baseColor = UIManager.getColor("Label.background");
     this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
 
     Label label = new Label(PlusIconFactory.getInstance().getIconToFit(Theme.SMALL_SQUARE_ICON_SIZE));
@@ -165,7 +165,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     super(model, false);
     controller = null;
 
-    this.baseColor = UIManager.getColor("Alice.Constructor.Color");
+    this.baseColor = UIManager.getColor("Label.background");
     this.activeColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
 
     setupDisplay(model);
