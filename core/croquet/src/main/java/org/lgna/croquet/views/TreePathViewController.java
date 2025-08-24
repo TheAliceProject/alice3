@@ -61,9 +61,6 @@ import java.awt.*;
  */
 public class TreePathViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
   private static class BreadcrumbLayout implements LayoutManager {
-    private static final int AMOUNT_TO_SCOOT = 4;
-    private static final String SYNTH_UI_CLASS_NAME = "javax.swing.plaf.synth.SynthToggleButtonUI";
-
     private Component centerComponent;
     private javax.swing.AbstractButton lineEndComponent;
 
@@ -106,9 +103,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
         Dimension size = this.lineEndComponent.getPreferredSize();
         rv.width += size.width;
         rv.height = Math.max(rv.height, size.height);
-        if (SYNTH_UI_CLASS_NAME.equals(this.lineEndComponent.getUI().getClass().getName())) {
-          rv.width -= AMOUNT_TO_SCOOT;
-        }
       }
       return rv;
     }
@@ -125,15 +119,9 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
       if (this.lineEndComponent != null) {
         int width = this.lineEndComponent.getPreferredSize().width;
         this.lineEndComponent.setBounds(x, 0, width, parentSize.height);
-        if (SYNTH_UI_CLASS_NAME.equals(this.lineEndComponent.getUI().getClass().getName())) {
-          Point p = this.lineEndComponent.getLocation();
-          this.lineEndComponent.setLocation(p.x - AMOUNT_TO_SCOOT, p.y);
-        }
       }
     }
   }
-
-  private static Insets MARGIN = new Insets(2, 2, 2, 0);
 
   private static class SelectDirectoryPanel<T> extends Panel {
     private SelectDirectoryPanel(SingleSelectTreeState<T> treeSelectionState, T treeNode, Color breadCrumbColor) {
