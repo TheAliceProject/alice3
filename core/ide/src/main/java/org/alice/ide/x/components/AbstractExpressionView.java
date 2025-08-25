@@ -118,7 +118,7 @@ public class AbstractExpressionView<E extends Expression> extends ExpressionLike
     if ((this.expression instanceof InfixExpression) || (this.expression instanceof LogicalComplement)) {
       return 0;
     } else {
-      return super.getInsetTop();
+      return super.getInsetBottom();
     }
   }
 }

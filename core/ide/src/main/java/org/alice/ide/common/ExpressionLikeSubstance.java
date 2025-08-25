@@ -47,15 +47,12 @@ import edu.cmu.cs.dennisc.java.awt.BeveledShape;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState;
 import org.lgna.croquet.DragModel;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.ArrayLength;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.Node;
+import org.lgna.project.ast.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.Shape;
@@ -77,6 +74,11 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   public ExpressionLikeSubstance(DragModel model) {
     this(model, false);
+  }
+
+  @Override
+  protected Color getOutlineColor() {
+    return UIManager.getColor("Alice.Block.Foreground.Color");
   }
 
   @Override

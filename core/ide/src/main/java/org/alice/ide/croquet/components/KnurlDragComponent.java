@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.components;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.KnurlUtilities;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.AwtComponentView;
@@ -54,18 +53,8 @@ import org.lgna.croquet.views.imp.JDragView;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.Stroke;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -169,7 +158,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
         this.paintChildren(g);
 
         prevPaint = g2.getPaint();
-        g2.setPaint(KnurlDragComponent.this.getForegroundColor());
         try {
           KnurlDragComponent.this.paintEpilogue(g2, x, y, width, height);
         } finally {
@@ -211,25 +199,24 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     return location;
   }
 
-  private static final Stroke ACTIVE_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  private static final Stroke ACTIVE_STROKE = new BasicStroke(2.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
   private static final Stroke PASSIVE_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-  private static final Color HIGHLIGHT_COLOR = new Color(255, 255, 255);
-  private static final Color SHADOW_COLOR = new Color(0, 0, 0);
 
-  protected Paint getPassiveOutlinePaint() {
-    return Color.GRAY;
+  protected Color getOutlineColor() {
+    return ColorUtilities.scaleHSB(getBackgroundColor(), 1, 4.8, .74);
   }
 
   protected void paintOutline(Graphics2D g2, Shape shape) {
     if (shape != null) {
       Stroke prevStroke = g2.getStroke();
       if (this.isActive()) {
-        GraphicsUtilities.draw3DishShape(g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE);
+        g2.setStroke(ACTIVE_STROKE);
+        g2.setPaint(getOutlineColor());
       } else {
-        g2.setPaint(this.getPassiveOutlinePaint());
+        g2.setPaint(getOutlineColor());
         g2.setStroke(PASSIVE_STROKE);
-        g2.draw(shape);
       }
+      g2.draw(shape);
       g2.setStroke(prevStroke);
     }
   }
@@ -241,13 +228,8 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     Shape shape = this.createShape(x, y, width, height);
     this.paintOutline(g2, shape);
     if (isKnurlDesired()) {
-      int grayscale;
-      if (this.isActive()) {
-        grayscale = 0;
-      } else {
-        grayscale = 127;
-      }
-      g2.setColor(ColorUtilities.createGray(grayscale));
+      Color c = this.isActive() ? getOutlineColor() : UIManager.getColor("Alice.Block.Knurl.Color");
+      g2.setColor(c);
       KnurlUtilities.paintKnurl5(g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5);
     }
   }

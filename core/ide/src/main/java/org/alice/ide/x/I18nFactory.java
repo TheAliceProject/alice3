@@ -48,24 +48,16 @@ import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
-import org.alice.ide.i18n.Chunk;
-import org.alice.ide.i18n.GetsChunk;
-import org.alice.ide.i18n.Line;
-import org.alice.ide.i18n.MethodInvocationChunk;
-import org.alice.ide.i18n.Page;
-import org.alice.ide.i18n.PropertyChunk;
-import org.alice.ide.i18n.TextChunk;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
+import org.alice.ide.i18n.*;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -95,7 +87,7 @@ public abstract class I18nFactory {
     } else {
       Logger.severe(propertyName, owner);
       Label rv = new Label("TODO: " + propertyName);
-      rv.setBackgroundColor(Color.RED);
+      rv.setBackgroundColor(UIManager.getColor("Alice.Alert.Color"));
       return rv;
     }
   }
@@ -126,6 +118,7 @@ public abstract class I18nFactory {
     assert chunks.length > 0 : owner;
     if ((indentCount > 0) || (chunks.length > 1)) {
       LineAxisPanel rv = new LineAxisPanel();
+      rv.setBorder(Theme.BLOCK_BORDER);
       if (indentCount > 0) {
         rv.addComponent(BoxUtilities.createHorizontalSliver(indentCount * this.getPixelsPerIndent()));
       }
@@ -137,8 +130,8 @@ public abstract class I18nFactory {
       }
       return rv;
     } else {
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping line" );
       SwingComponentView<?> rv = createComponent(chunks[0], owner);
+      rv.setBorder(Theme.BLOCK_BORDER);
       assert rv != null : chunks[0].toString();
       return rv;
     }

@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.property.ListProperty;
 import org.alice.ide.IDE;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.IdeExpression;
 import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
@@ -70,6 +71,7 @@ import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.*;
 
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -117,10 +119,10 @@ public abstract class AstI18nFactory extends I18nFactory {
       DeclarationNameLabel label = new DeclarationNameLabel(declaration);
       if (declaration instanceof AbstractMethod) {
         AbstractMethod method = (AbstractMethod) declaration;
-        if (method.getReturnType() == JavaType.VOID_TYPE) {
-          label.scaleFont(this.getDeclarationNameFontScale());
-          label.changeFont(TextWeight.BOLD);
-        }
+        label.setBorder(Theme.BLOCK_BORDER);
+        label.scaleFont(this.getDeclarationNameFontScale());
+        label.changeFont(TextWeight.BOLD);
+        label.setForegroundColor(UIManager.getColor("Alice.Block.Foreground.Color"));
       }
       rv = label;
     } else if ((owner instanceof SimpleArgument) && methodName.equals("getParameterNameText")) {

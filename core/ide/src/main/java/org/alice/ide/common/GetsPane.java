@@ -43,19 +43,18 @@
 package org.alice.ide.common;
 
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.lgna.croquet.views.Label;
-import org.lgna.project.ast.ExpressionStatement;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GetsPane extends Label {
-  static final Color PAINT_COLOR = ThemeUtilities.getActiveTheme().getColorFor(ExpressionStatement.class);
+  static final Color PAINT_COLOR = UIManager.getColor("Alice.Block.Contrast.Background.Color");
 
   private GetsPane(boolean isTowardLeadingEdge, int length) {
     this.isTowardLeadingEdge = isTowardLeadingEdge;
@@ -121,7 +120,6 @@ public class GetsPane extends Label {
 
           g2.setPaint(GetsPane.PAINT_COLOR);
           g2.fillPolygon(xPoints, yPoints, xPoints.length);
-          g2.setColor(Color.GRAY);
           g2.drawPolygon(xPoints, yPoints, xPoints.length);
         }
       }

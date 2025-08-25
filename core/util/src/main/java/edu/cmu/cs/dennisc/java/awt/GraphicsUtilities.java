@@ -45,8 +45,6 @@ package edu.cmu.cs.dennisc.java.awt;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -191,55 +189,4 @@ public class GraphicsUtilities {
   public static void fillTriangle(Graphics g, Heading heading, int x, int y, int width, int height) {
     renderTriangle(g, heading, x, y, width, height, true);
   }
-
-  private static GeneralPath createPath(float x, float y, float width, float height, boolean isTopLeft) {
-    GeneralPath rv = new GeneralPath();
-    float halfSize = Math.min(width / 2, height / 2);
-    if (isTopLeft) {
-      rv.moveTo(x, y);
-    } else {
-      rv.moveTo(x + width, y + height);
-    }
-    rv.lineTo(x + width, y);
-    rv.lineTo((x + width) - halfSize, y + halfSize);
-    rv.lineTo(x + halfSize, (y + height) - halfSize);
-    rv.lineTo(x, y + height);
-    rv.closePath();
-    return rv;
-  }
-
-  private static Shape createClip(Shape prevClip, Shape shape, boolean isTopLeft) {
-    Rectangle2D bounds = shape.getBounds2D();
-    Area rv = new Area(shape);
-    if (prevClip != null) {
-      rv.intersect(new Area(prevClip));
-    }
-    rv.subtract(new Area(createPath((float) bounds.getX(), (float) bounds.getY(), (float) bounds.getWidth(), (float) bounds.getHeight(), !isTopLeft)));
-    return rv;
-  }
-
-  public static void draw3DishShape(Graphics g, Shape shape, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke) {
-    Graphics2D g2 = (Graphics2D) g;
-    Shape prevClip = g2.getClip();
-
-    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
-    try {
-      gc.pushPaint();
-      gc.pushStroke();
-      gc.pushClip();
-      gc.pushAndSetAntialiasing(true);
-
-      g2.setStroke(stroke);
-      g2.setClip(createClip(prevClip, shape, true));
-      g2.setPaint(topLeftPaint);
-      g2.draw(shape);
-
-      g2.setClip(createClip(prevClip, shape, false));
-      g2.setPaint(bottomRightPaint);
-      g2.draw(shape);
-    } finally {
-      gc.popAll();
-    }
-  }
-
 }

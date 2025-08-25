@@ -54,7 +54,6 @@ import org.lgna.project.ast.StatementListProperty;
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -79,9 +78,9 @@ public abstract class AbstractStatementPane extends StatementLikeSubstance {
   }
 
   @Override
-  protected Paint getPassiveOutlinePaint() {
+  protected Color getOutlineColor() {
     if (this.getModel() != null) {
-      return super.getPassiveOutlinePaint();
+      return super.getOutlineColor();
     } else {
       return PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE;
     }

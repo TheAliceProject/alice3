@@ -45,6 +45,8 @@ package org.alice.ide;
 import org.lgna.project.ast.Code;
 import org.lgna.project.ast.Node;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -61,6 +63,10 @@ public interface Theme {
   public static final Dimension SMALL_SQUARE_ICON_SIZE = new Dimension(22, 22);
   public static final Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
   public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
+
+  public static final int BLOCK_MARGINS_WIDTH = 2;
+  public static final int BLOCK_MARGINS_HEIGHT = 1;
+  public static final Border BLOCK_BORDER = BorderFactory.createEmptyBorder(BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH, BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH);
 
   public Color getColorFor(Class<? extends Node> cls);
 

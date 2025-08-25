@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.EmptyExpression;
 import org.lgna.croquet.views.Label;
 import org.lgna.project.ast.AbstractType;
@@ -50,6 +52,8 @@ import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
+ * these are the placeholder parameters that we see in the procedures/functions that are not yet created
+ * but available to be dragged from the tabs on the left
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
@@ -58,7 +62,8 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
   public EmptyExpressionPane(EmptyExpression emptyExpression) {
     super(null);
     this.emptyExpression = emptyExpression;
-    Label label = new Label(" ??? ");
+    Label label = new Label(" ??? ", TextWeight.BOLD);
+    label.setBorder(Theme.BLOCK_BORDER);
     label.setForegroundColor(UIManager.getColor("Alice.Block.Contrast.Foreground.Color"));
     this.addComponent(label);
   }

@@ -43,6 +43,7 @@
 
 package org.alice.ide.x.components;
 
+import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.x.AstI18nFactory;
@@ -51,12 +52,15 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ThisExpression;
 
 /**
+ * this is a special case for the this tile
  * @author Dennis Cosgrove
  */
 public class ThisExpressionLikeView extends AbstractExpressionView<Expression> {
   private ThisExpressionLikeView(AstI18nFactory factory, Expression expression) {
     super(factory, expression);
-    this.addComponent(new Label(FormatterState.getInstance().getValue().getTextForThis()));
+    Label l = new Label(FormatterState.getInstance().getValue().getTextForThis());
+    l.setBorder(ThemeUtilities.getActiveTheme().BLOCK_BORDER);
+    this.addComponent(l);
   }
 
   public ThisExpressionLikeView(AstI18nFactory factory, ThisExpression thisExpression) {

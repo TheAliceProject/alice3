@@ -117,7 +117,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 
   @Override
   protected RoundRectangle2D.Float createShape(int x, int y, int width, int height) {
-    return new RoundRectangle2D.Float(x, y, width - 1, height - 1, 8, 8);
+    return new RoundRectangle2D.Float(x + 1, y + 1, width - 2, height - 2, 8, 8);
   }
 
   @Override
