@@ -58,8 +58,12 @@ import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
 
 import javax.swing.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -82,6 +86,12 @@ public class EntryPoint extends Application {
     crashDetector.open();
     String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
     System.out.println("version: " + text);
+
+    File font_file = new File(EntryPoint.class.getResource("/org/alice/stageide/fonts/NotoSans.ttf").getPath());
+    try {
+      GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, font_file));
+    } catch (FontFormatException | IOException e) {
+    }
 
     // This resources file is where all the theme colors are defined
     FlatLaf.registerCustomDefaultsSource("org.alice.stageide.themes");
