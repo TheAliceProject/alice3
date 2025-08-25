@@ -83,6 +83,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.Set;
@@ -385,8 +386,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   protected boolean loadNewProjectBackup() {
-    File[] backups = getSortedBackups(BACKUP_AUTO, projectFileUtilities.defaultBackupDirectory().toFile());
-
     File backupDir = projectFileUtilities.defaultBackupDirectory().toFile();
     File backup = getNextBackup(null, backupDir, false, new HashSet<>());
 
@@ -435,7 +434,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       isMainProjectCorrupted = true;
     }
 
-    File mainProject = getMainProjectFile(projectFile); // TODO: Parhaps do this only if this is a backup
+    File mainProject = getMainProjectFile(projectFile);
     LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(mainProject);
     File backup = getNextBackup(projectModifiedTime, backupDir, isMainProjectCorrupted, unloadableFiles);
 
@@ -588,13 +587,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
         // otherwise, return the latest backup, as long as it is newer than the main project
 
-        LocalDateTime backupModifiedTime = FileUtilities.getModifiedDateTime(backup);
+        LocalDateTime backupCreatedTime = FileUtilities.getCreatedDateTime(backup);
 
-        if (backupModifiedTime.isAfter(modifiedTime)) {
+        if (backupCreatedTime.isAfter(modifiedTime)) {
           return backup;
-        } else if (backupModifiedTime != LocalDateTime.MIN) {
-          // don't bother checking any backups older than the original project
-          // LocalDateTime.MIN indicates an error in getting the time, so skip that backup since it may be corrupted
+        } else { // don't bother checking any backups older than the original project
           return null;
         }
       }
@@ -606,7 +603,14 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   protected File[] getSortedBackups(final String type, File backupDir) {
     File[] backups = listFiles(backupDir, file -> file.isFile() && file.getName().startsWith(type));
 
-    Arrays.sort(backups);
+    Arrays.sort(backups, new Comparator<File>() {
+      @Override
+      public int compare(final File f1, final File f2) {
+        LocalDateTime f1Creation = FileUtilities.getCreatedDateTime(f1);
+        LocalDateTime f2Creation = FileUtilities.getCreatedDateTime(f2);
+        return f1Creation.compareTo(f2Creation);
+      }
+    });
 
     // reverse the array to read the latest entries first
     Collections.reverse(Arrays.asList(backups));
