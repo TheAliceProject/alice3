@@ -74,7 +74,6 @@ import java.util.concurrent.Callable;
 public class IngredientsView extends MigPanel {
   public static final Insets COLOR_BUTTON_MARGIN = new Insets(1, -7, 1, -7); //todo
   public static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
-  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
   public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
   private final Label isLifeStageLockedLabel = new Label();

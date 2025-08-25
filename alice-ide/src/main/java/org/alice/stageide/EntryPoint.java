@@ -96,18 +96,11 @@ public class EntryPoint extends Application {
 
     // Initialize Swing here to do it on the correct thread, outside of JavaFX
     SwingUtilities.invokeLater(() -> {
-      final Object macMenuBarUI;
-      if (SystemUtilities.isMac()) {
-        if (SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
-          macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
-        } else {
-          macMenuBarUI = null;
+      if (SystemUtilities.isMac()) { //&& SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
+        final Object macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
+        if (macMenuBarUI != null) {
+          UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
         }
-      } else {
-        macMenuBarUI = null;
-      }
-      if (macMenuBarUI != null) {
-        UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
       }
 
       UIManagerUtilities.scaleFontIAppropriate();

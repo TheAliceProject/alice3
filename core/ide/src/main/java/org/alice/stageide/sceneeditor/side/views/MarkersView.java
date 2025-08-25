@@ -78,7 +78,8 @@ import java.util.Map;
 public class MarkersView extends BorderPanel {
 
   private static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
-  private static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
+  private static final Color SELECTED_COLOR = UIManager.getColor("List.selectionBackground");
+  private static final Color SELECTED_FOREGROUND = UIManager.getColor("List.selectionForeground");
   private static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
   private static class MarkerView extends BooleanStateButton<AbstractButton> {
@@ -88,7 +89,7 @@ public class MarkersView extends BorderPanel {
 
     @Override
     protected AbstractButton createAwtComponent() {
-      JToggleButton rv = new JToggleButton() {
+      return new JToggleButton() {
         @Override
         public Color getBackground() {
           if (this.isSelected()) {
@@ -97,11 +98,14 @@ public class MarkersView extends BorderPanel {
             return UNSELECTED_COLOR;
           }
         }
+        public Color getForeground() {
+          if (this.isSelected()) {
+            return SELECTED_FOREGROUND;
+          } else {
+            return super.getForeground();
+          }
+        }
       };
-
-      //rv.setLayout( new java.awt.BorderLayout() );
-      //rv.add( new javax.swing.JLabel( "hello" ), java.awt.BorderLayout.LINE_END );
-      return rv;
     }
   }
 

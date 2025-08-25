@@ -61,7 +61,6 @@ import javax.swing.UIManager;
 
 /**
  * adds a scene property (variable/constant)
- * TODO: figure out the difference between managed/unmanaged fields/parameters
  * @author Dennis Cosgrove
  */
 public abstract class FieldView extends DeclarationView<UserField> {
