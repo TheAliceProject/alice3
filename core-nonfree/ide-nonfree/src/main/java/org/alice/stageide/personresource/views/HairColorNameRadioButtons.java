@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import net.miginfocom.swing.MigLayout;
 import org.alice.stageide.personresource.data.HairColorName;
 import org.lgna.croquet.BooleanState;
@@ -69,7 +70,7 @@ public class HairColorNameRadioButtons extends ItemSelectablePanel<HairColorName
     itemSelectedState.setIconForBothTrueAndFalse(icon);
     itemSelectedState.setTextForBothTrueAndFalse(icon != null ? null : item.name());
     ToggleButton rv = itemSelectedState.createToggleButton();
-    rv.tightenUpMargin(IngredientsView.COLOR_BUTTON_MARGIN);
+    rv.setMinimumPreferredWidth(ColorIcon.DEFAULT_SIZE);
     rv.setToolTipText(item.name());
     return rv;
   }
