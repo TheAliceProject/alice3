@@ -58,6 +58,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
+ * TODO- items with knurls should be draggable.
  * @author Dennis Cosgrove
  */
 public abstract class MutableList<E> extends SwingComponentView<JPanel> {
@@ -110,6 +111,8 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   }
 
   private static Color BASE_COLOR = UIManager.getColor("List.background");
+  private static Color KNURL_COLOR = UIManager.getColor("Alice.Block.Knurl.Color");
+  private static Color OUTLINE_COLOR = UIManager.getColor("Alice.Background.Color.different");
   private static Color SELECTED_BASE_COLOR = UIManager.getColor("List.selectionBackground");
 
   protected abstract class JItemAtIndexButton extends JToggleButton {
@@ -134,14 +137,10 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
       Paint paint;
       int width = this.getWidth() - 1;
       int height = this.getHeight() - 1;
-      if (model.isSelected()) {
-          paint = SELECTED_BASE_COLOR;
+      if (model.isSelected() || model.isRollover()) {
+        paint = SELECTED_BASE_COLOR;
       } else {
-        if (model.isRollover()) {
-          paint = SELECTED_BASE_COLOR;
-        } else {
-          paint = BASE_COLOR;
-        }
+        paint = BASE_COLOR;
       }
       Graphics2D g2 = (Graphics2D) g;
       if (paint != null) {
@@ -150,14 +149,10 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
 
         g2.setPaint(paint);
         g2.fillRoundRect(0, 0, width, height, 8, 8);
-        g2.setPaint(Color.DARK_GRAY);
+        g2.setPaint(OUTLINE_COLOR);
         g2.drawRoundRect(0, 0, width, height, 8, 8);
-        if (model.isRollover()) {
-          paint = Color.LIGHT_GRAY;
-        } else {
-          paint = Color.GRAY;
-        }
-        g2.setPaint(paint);
+
+        g2.setPaint(KNURL_COLOR);
         KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
