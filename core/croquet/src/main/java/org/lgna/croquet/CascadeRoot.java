@@ -142,7 +142,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
           public void menuKeyPressed(MenuKeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
               synchronized (popupMenu.getAwtComponent().getParent().getTreeLock()) {
-                popupMenu.setVisible(false);
+                popupMenu.getActivity().cancel();
               }
             }
           }
