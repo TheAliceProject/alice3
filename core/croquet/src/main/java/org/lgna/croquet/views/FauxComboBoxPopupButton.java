@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.croquet.PopupPrepModel;
 
 import javax.swing.Icon;
@@ -50,6 +50,7 @@ import javax.swing.SwingConstants;
 import java.awt.*;
 
 /**
+ * * this faux dropdown button is on the large object selecting dropdown in both the code and scene views.
  * @author Dennis Cosgrove
  */
 public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepModel> {
@@ -59,17 +60,25 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepMod
 
   protected class JFauxComboBoxPopupButton extends JPopupButton {
     private static final int OUTER_PAD = 6;
+    Icon icon;
+    int iconSize = 11;
 
     protected JFauxComboBoxPopupButton() {
       this.setHorizontalTextPosition(SwingConstants.LEADING);
+      icon = new ArrowIcon(iconSize, false);
     }
 
-    private int getArrowSize() {
-      return this.getHeight() / 4;
+    private int getIconSize() {
+      int prevSize = iconSize;
+      this.iconSize = this.getHeight() / 4;
+      if (prevSize != iconSize) {
+        icon = new ArrowIcon(iconSize, false);
+      }
+      return iconSize;
     }
 
     private int getComboPad() {
-      return this.getArrowSize() / 2;
+      return this.getHeight() / 8 + OUTER_PAD;
     }
 
     @Override
@@ -77,7 +86,7 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepMod
       Insets rv = super.getMargin();
       if (rv != null) {
         ComponentOrientation componentOrientation = this.getComponentOrientation();
-        int increment = this.getArrowSize() + this.getComboPad() + OUTER_PAD + TRAILING_PAD;
+        int increment = this.getIconSize() + this.getComboPad()  + TRAILING_PAD;
         if (componentOrientation.isLeftToRight()) {
           rv.right += increment;
         } else {
@@ -90,26 +99,18 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepMod
     @Override
     protected void paintBorder(Graphics g) {
       super.paintBorder(g);
-      final int SIZE = this.getArrowSize();
-      final Icon ARROW_ICON = new DropDownArrowIcon(SIZE, Color.WHITE);
-
-      Insets insets = this.getInsets();
-      Graphics2D g2 = (Graphics2D) g;
-      int width = this.getWidth();
-      int height = this.getHeight();
+      final int y = (this.getHeight() - this.getIconSize()) / 2;
 
       ComponentOrientation componentOrientation = this.getComponentOrientation();
-      int x;
-      int xArrow;
-      if (componentOrientation.isLeftToRight()) {
-        x = (width - insets.right) - TRAILING_PAD;
-        x += OUTER_PAD;
-        xArrow = x + this.getComboPad();
 
+      int x;
+      if (componentOrientation.isLeftToRight()) {
+        Insets insets = this.getInsets();
+        x = this.getWidth() - insets.right - TRAILING_PAD + this.getComboPad();
       } else {
-        xArrow = OUTER_PAD + TRAILING_PAD + this.getComboPad();
+        x = TRAILING_PAD + this.getComboPad();
       }
-      ARROW_ICON.paintIcon(this, g2, xArrow, (height - SIZE) / 2);
+      icon.paintIcon(this, g, x, y);
     }
   }
 

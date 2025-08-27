@@ -44,7 +44,7 @@
 package org.alice.ide.declarationseditor.components;
 
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.common.TypeBorder;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
@@ -63,15 +63,19 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-class DeclarationMenuIcon extends DropDownArrowIcon {
+/**
+ * This is the hexagonal menu button that shows up to the left of the scene tab
+ */
+
+class DeclarationMenuIcon extends ArrowIcon {
   private final TypeBorder border = TypeBorder.getSingletonForUserType();
   private final Font typeFont;
 
   private final int PAD = 4;
 
   public DeclarationMenuIcon() {
-    super(10, Color.DARK_GRAY);
-    this.typeFont = new Font(null, 0, 12);
+    super(10);
+    this.typeFont = new Font(null, Font.PLAIN, 12);
   }
 
   private static Rectangle2D getTextBounds(String text, Font font) {
@@ -153,7 +157,6 @@ class DeclarationMenuIcon extends DropDownArrowIcon {
  */
 public class TypeEditor extends BorderPanel {
   private final FolderTabbedPane<DeclarationComposite<?, ?>> tabbedPane;
-  private final AbstractPopupButton<?> startButton;
 
   public TypeEditor(DeclarationsEditorComposite composite) {
     super(composite);
@@ -198,14 +201,14 @@ public class TypeEditor extends BorderPanel {
     this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
 
-    this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
-    this.startButton.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
-    this.startButton.setClobberIcon(new DeclarationMenuIcon());
+    AbstractPopupButton<?> startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+    startButton.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
+    startButton.setClobberIcon(new DeclarationMenuIcon());
 
     this.addCenterComponent(tabbedPane);
     SwingComponentView<?> component;
     if (IsEmphasizingClassesState.getInstance().getValue()) {
-      component = this.startButton;
+      component = startButton;
     } else {
       component = null;
     }

@@ -43,7 +43,7 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
-import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.croquet.BooleanState;
 
 import javax.swing.*;
@@ -56,7 +56,7 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
-  public static enum RenderingStyle {
+  public enum RenderingStyle {
     LIGHT_UP_ICON_ONLY {
       @Override
       public boolean isShaded(ButtonModel buttonModel) {
@@ -77,55 +77,14 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
     public abstract boolean isShaded(ButtonModel buttonModel);
   }
 
-  private static class ArrowIcon extends AbstractArrowIcon {
-    public ArrowIcon(int size) {
-      super(size);
-    }
 
-    @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      javax.swing.AbstractButton button = (javax.swing.AbstractButton) c;
-      ButtonModel buttonModel = button.getModel();
-      Heading heading;
-      if (buttonModel.isSelected() || buttonModel.isPressed()) {
-        heading = Heading.SOUTH;
-      } else {
-        heading = Heading.EAST;
-      }
-      GeneralPath path = this.createPath(x, y, heading);
-      Graphics2D g2 = (Graphics2D) g;
-      Paint fillPaint;
-      Paint drawPaint = Color.BLACK;
-      if (buttonModel.isPressed()) {
-        fillPaint = Color.WHITE;
-      } else {
-        if (buttonModel.isRollover()) {
-          fillPaint = Color.YELLOW;
-        } else {
-          fillPaint = Color.DARK_GRAY;
-          drawPaint = null;
-        }
-      }
-      Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-      g2.setPaint(fillPaint);
-      g2.fill(path);
-      if (drawPaint != null) {
-        g2.setPaint(drawPaint);
-        g2.draw(path);
-      }
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
-    }
-  }
-
-  private static final ArrowIcon ARROW_ICON = new ArrowIcon(12);
+  private static final ArrowIcon ARROW_ICON = new ArrowIcon(12, true);
 
   private static Insets SUPPRESSED_INSETS = new Insets(0, 0, 0, 0);
   private static Insets INERT_INSETS = new Insets(2, 2, 2, 2);
   private static Insets ACTIVE_INSETS = new Insets(2, 10 + ARROW_ICON.getIconWidth(), 2, 2);
 
-  private static enum ToolPaletteTitleBorder implements Border {
+  private enum ToolPaletteTitleBorder implements Border {
     SINGLETON;
 
     @Override
@@ -167,33 +126,6 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
         return super.contains(x, y);
       }
     }
-
-    //  @Override
-    //  public java.awt.Dimension getMinimumSize() {
-    //    if( this.isSuppressed ) {
-    //      return new java.awt.Dimension( 0, 0 );
-    //    } else {
-    //      return super.getMinimumSize();
-    //    }
-    //  }
-    //
-    //  @Override
-    //  public java.awt.Dimension getPreferredSize() {
-    //    if( this.isSuppressed ) {
-    //      return new java.awt.Dimension( 0, 0 );
-    //    } else {
-    //      return super.getPreferredSize();
-    //    }
-    //  }
-    //
-    //  @Override
-    //  public java.awt.Dimension getMaximumSize() {
-    //    if( this.isSuppressed ) {
-    //      return new java.awt.Dimension( 0, 0 );
-    //    } else {
-    //      return super.getMaximumSize();
-    //    }
-    //  }
 
     public boolean isRoundedOnTop() {
       return this.isRoundedOnTop;
@@ -253,7 +185,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
     @Override
     public boolean isOpaque() {
-      return this.isRoundedOnTop == false;
+      return !this.isRoundedOnTop;
     }
 
     @Override
@@ -325,7 +257,6 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
       try {
         JToolPaletteTitle b = (JToolPaletteTitle) c;
         if (!b.isSuppressed() && !b.isInert()) {
-          ButtonModel buttonModel = b.getModel();
           if (b.isRoundedOnTop()) {
             g2.setClip(AreaUtilities.createIntersection(prevClip, createRoundedOnTopShape(b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth())));
           }
