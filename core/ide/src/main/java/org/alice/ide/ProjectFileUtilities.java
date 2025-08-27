@@ -54,7 +54,10 @@ class ProjectFileUtilities {
 
   final void saveProjectTo(File file) throws IOException {
     saveCopyOfProjectTo(file);
-    backupSavedProject();
+
+    if (!isBackup(file)) {
+      backupSavedProject();
+    }
   }
 
   final boolean isProject(File f) {
@@ -86,6 +89,10 @@ class ProjectFileUtilities {
   }
 
   final void startAutoSaving() {
+    if (isBackup(UriUtilities.getFile(projectApp.getUri()))) {
+      return;
+    }
+
     if (saveFuture != null) {
       saveFuture.cancel(false);
     }
@@ -190,7 +197,7 @@ class ProjectFileUtilities {
 
   private void backupActiveProject() throws IOException {
     File saved = UriUtilities.getFile(projectApp.getUri());
-    Path backupDir = appropriateBackupDirectory(saved, false);
+    Path backupDir = appropriateBackupDirectory(saved, isBackup(saved));
 
     if (backupDir == null) {
       return;

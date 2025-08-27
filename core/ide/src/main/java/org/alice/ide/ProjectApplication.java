@@ -652,7 +652,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   public final void saveProjectTo(File file) throws IOException {
     File originalFile = UriUtilities.getFile(getUri());
 
-    if (projectFileUtilities.isDefaultBackup(originalFile)) {
+    boolean savingNewProject = uriProjectLoader.isNewProject() ||
+            (projectFileUtilities.isDefaultBackup(originalFile) && !projectFileUtilities.isDefaultBackup(file));
+
+    if (savingNewProject) {
       projectFileUtilities.renameDefaultBackupDirectory(file);
     }
 
@@ -661,6 +664,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     //    long startTime = System.currentTimeMillis();
 
     projectFileUtilities.saveProjectTo(file);
+
+    if (savingNewProject) {
+      updateInterface(getUpToDateProject());
+    }
 
     //    long endTime = System.currentTimeMillis();
     //    double saveTime = ( endTime - startTime ) * .001;
