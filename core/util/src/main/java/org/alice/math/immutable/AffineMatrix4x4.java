@@ -320,8 +320,8 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Point3 translatio
     if (scaledOrientation.isNormalized() && scaledOrientation instanceof OrthogonalMatrix3x3) {
       return new AffineMatrix4x4((OrthogonalMatrix3x3) scaledOrientation, inverseScale.transform(translation));
     }
-
-    throw new UnsupportedOperationException("Cannot normalize orientation");
+    Logger.warning("Unable to normalize orientation. Using identity matrix to replace:\n" + orientation);
+    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, inverseScale.transform(translation));
   }
 
   @Override
