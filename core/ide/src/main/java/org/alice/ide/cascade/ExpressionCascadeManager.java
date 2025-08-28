@@ -163,10 +163,6 @@ public abstract class ExpressionCascadeManager {
   }
 
   public ExpressionCascadeContext popAndCheckContext(ExpressionCascadeContext expectedContext) {
-    if (this.contextStack.size() == 0) {
-      return NULL_CONTEXT;
-    }
-
     ExpressionCascadeContext poppedContext = this.popContext();
     if (poppedContext != expectedContext) {
       Logger.severe(poppedContext, expectedContext);
