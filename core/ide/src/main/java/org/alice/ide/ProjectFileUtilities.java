@@ -30,12 +30,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.*;
-import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
-import static org.lgna.project.io.IoUtilities.DEFAULT_BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
-class ProjectFileUtilities {
+public class ProjectFileUtilities {
   public static final String BACKUP_AUTO = "auto";
+  public static final String BACKUP_EXTENSION = "bak";
+  public static final String DEFAULT_BACKUP_DIR = "defaultbak";
 
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -55,25 +55,13 @@ class ProjectFileUtilities {
   final void saveProjectTo(File file) throws IOException {
     saveCopyOfProjectTo(file);
 
-    if (!isBackup(file)) {
+    if (!projectApp.uriProjectLoader.isBackup(file)) {
       backupSavedProject();
     }
   }
 
   final boolean isProject(File f) {
     return PROJECT_EXTENSION.equals(getExtension(f.getName()));
-  }
-
-  final boolean isBackup(File f) {
-    String parentDirExtension = getParentDirExtension(f);
-
-    return BACKUP_EXTENSION.equals(parentDirExtension) || DEFAULT_BACKUP_EXTENSION.equals(parentDirExtension);
-  }
-
-  final boolean isDefaultBackup(File f) {
-    String parentDirExtension = getParentDirExtension(f);
-
-    return DEFAULT_BACKUP_EXTENSION.equals(parentDirExtension);
   }
 
   final void renameDefaultBackupDirectory(File file) {
@@ -89,7 +77,7 @@ class ProjectFileUtilities {
   }
 
   final void startAutoSaving() {
-    if (isBackup(UriUtilities.getFile(projectApp.getUri()))) {
+    if (projectApp.uriProjectLoader.isBackup(UriUtilities.getFile(projectApp.getUri()))) {
       return;
     }
 
@@ -97,20 +85,6 @@ class ProjectFileUtilities {
       saveFuture.cancel(false);
     }
     saveFuture = savingService.scheduleAtFixedRate(autosaveActiveProject(), SECONDS_BETWEEN_BACKUPS, SECONDS_BETWEEN_BACKUPS, TimeUnit.SECONDS);
-  }
-
-  private String getParentDirExtension(File f) {
-    if (projectApp.uriProjectLoader.isNewProject()) {
-      return "";
-    }
-
-    File parentDir = f.getParentFile();
-
-    if (parentDir == null) {
-      return "";
-    }
-
-    return getExtension(parentDir.getName());
   }
 
   private DataSource[] thumbnailAndManifestDataSources(Project project) {
@@ -197,7 +171,7 @@ class ProjectFileUtilities {
 
   private void backupActiveProject() throws IOException {
     File saved = UriUtilities.getFile(projectApp.getUri());
-    Path backupDir = appropriateBackupDirectory(saved, isBackup(saved));
+    Path backupDir = appropriateBackupDirectory(saved, projectApp.uriProjectLoader.isBackup(saved));
 
     if (backupDir == null) {
       return;
@@ -231,7 +205,7 @@ class ProjectFileUtilities {
   public Path defaultBackupDirectory() {
     Path projectsDir = StageIDE.getActiveInstance().getProjectsDirectory().toPath();
 
-    return createAndGetBackupDirectory(projectsDir.resolve("." + DEFAULT_BACKUP_EXTENSION));
+    return createAndGetBackupDirectory(projectsDir.resolve("." + DEFAULT_BACKUP_DIR));
   }
 
   public Path appropriateBackupDirectory(File saved, boolean isBackup) {

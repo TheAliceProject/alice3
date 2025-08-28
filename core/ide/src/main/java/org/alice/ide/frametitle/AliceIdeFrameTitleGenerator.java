@@ -44,6 +44,7 @@ package org.alice.ide.frametitle;
 
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import org.alice.ide.IDE;
+import org.alice.ide.uricontent.UriProjectLoader;
 
 import java.io.File;
 import java.net.URI;
@@ -53,18 +54,30 @@ import java.net.URI;
  */
 public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
   @Override
-  public String generateTitle(URI uri, boolean isDocumentUpToDateWithUri) {
+  public String generateTitle(UriProjectLoader projectLoader, boolean isDocumentUpToDateWithUri) {
     StringBuilder sb = new StringBuilder();
     sb.append(IDE.getApplicationName());
     sb.append(" ");
     sb.append(IDE.getVersionAdornment());
     sb.append(" ");
-    if (uri != null) {
-      File file = UriUtilities.getFile(uri);
+
+    URI uri = null;
+    URI mainProjectUri = null;
+
+    if (projectLoader != null) {
+      uri = projectLoader.getUri();
+      mainProjectUri = projectLoader.getMainProjectUri();
+    }
+
+    if (mainProjectUri != null) {
+      File file = UriUtilities.getFile(mainProjectUri);
       if (file != null) {
         sb.append(file);
       }
       sb.append(" ");
+      if (projectLoader.isBackup(UriUtilities.getFile(uri))) {
+        sb.append("(backup) ");
+      }
     }
     if (!isDocumentUpToDateWithUri) {
       sb.append("*");

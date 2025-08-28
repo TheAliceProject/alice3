@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
@@ -50,11 +51,17 @@ import org.lgna.project.Project;
 import java.io.File;
 import java.net.URI;
 
+import static edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension;
+import static org.alice.ide.ProjectFileUtilities.BACKUP_EXTENSION;
+import static org.alice.ide.ProjectFileUtilities.DEFAULT_BACKUP_DIR;
+import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UriProjectLoader extends UriContentLoader<Project> {
   protected final boolean makeVrReady;
+
   public UriProjectLoader(boolean makeVrReady) {
     this.makeVrReady = makeVrReady;
   }
@@ -79,6 +86,8 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
     }
   }
 
+  public abstract boolean isNewProject();
+
   // If true the project expects to be saved but has not yet.
   // Defaults to false.
   public boolean shouldBeSaved() {
@@ -89,5 +98,59 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
     return makeVrReady;
   }
 
-  public abstract boolean isNewProject();
+  public URI getMainProjectUri() {
+    URI uri = getUri();
+    File projectFile = UriUtilities.getFile(getUri());
+
+    if (projectFile != null) {
+      uri = getMainProjectFile(projectFile).toURI();
+    }
+
+    return uri;
+  }
+
+  public boolean isBackup(File f) {
+    if (f == null) {
+      return false;
+    }
+
+    String parentDirExtension = getParentDirExtension(f);
+
+    return BACKUP_EXTENSION.equals(parentDirExtension) || DEFAULT_BACKUP_DIR.equals(parentDirExtension);
+  }
+
+  public boolean isDefaultBackup(File f) {
+    if (f == null) {
+      return false;
+    }
+
+    String parentDirExtension = getParentDirExtension(f);
+
+    return DEFAULT_BACKUP_DIR.equals(parentDirExtension);
+  }
+
+  protected File getMainProjectFile(File f) {
+    if (!isBackup(f)) {
+      return f;
+    }
+
+    File backupDir = f.getParentFile();
+    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
+
+    return f.toPath().getParent().resolveSibling(originalFileName).toFile();
+  }
+
+  protected String getParentDirExtension(File f) {
+    if (isNewProject()) {
+      return "";
+    }
+
+    File parentDir = f.getParentFile();
+
+    if (parentDir == null) {
+      return "";
+    }
+
+    return getExtension(parentDir.getName());
+  }
 }

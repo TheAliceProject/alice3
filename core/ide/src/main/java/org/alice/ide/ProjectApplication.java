@@ -56,6 +56,7 @@ import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
+import org.alice.ide.uricontent.StarterProjectFileLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
@@ -80,6 +81,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -272,7 +274,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     if (frameTitleGenerator == null) {
       this.frameTitleGenerator = this.createFrameTitleGenerator();
     }
-    this.getDocumentFrame().getFrame().setTitle(this.frameTitleGenerator.generateTitle(this.getUri(), this.isProjectUpToDateWithFile()));
+    this.getDocumentFrame().getFrame().setTitle(this.frameTitleGenerator.generateTitle(uriProjectLoader, isProjectUpToDateWithFile()));
   }
 
   private ProjectDocument getDocument() {
@@ -411,7 +413,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       return;
     }
 
-    boolean isBackup = projectFileUtilities.isBackup(saved);
+    boolean isBackup = uriProjectLoader.isBackup(saved);
 
     if (project == null) {
       handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, isMainProjectCorrupted, unloadableFiles);
@@ -495,9 +497,19 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       }
     }
 
+    boolean defaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
+
+    if (defaultBackup) {
+      try {
+        uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
+      } catch (URISyntaxException e) {
+        e.printStackTrace();
+      }
+    }
+
     updateInterface(project);
 
-    if (!isLoadingBackups || projectFileUtilities.isDefaultBackup(projectFile)) {
+    if (!isLoadingBackups || defaultBackup) {
       return;
     }
 
@@ -561,7 +573,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   private File getMainProjectFile(File f) {
-    if (!projectFileUtilities.isBackup(f)) {
+    if (!uriProjectLoader.isBackup(f)) {
       return f;
     }
 
@@ -632,7 +644,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       getDocumentFrame().getFrame().rebuildMenuBar();
     }
     getProjectHistory().addHistoryListener(projectHistoryListener);
-    URI uri = uriProjectLoader.getUri();
+    URI uri = getUri();
     File file = UriUtilities.getFile(uri);
     try {
       if ((file != null) && file.canWrite()) {
@@ -653,7 +665,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     File originalFile = UriUtilities.getFile(getUri());
 
     boolean savingNewProject = uriProjectLoader.isNewProject() ||
-            (projectFileUtilities.isDefaultBackup(originalFile) && !projectFileUtilities.isDefaultBackup(file));
+            (uriProjectLoader.isDefaultBackup(originalFile) && !uriProjectLoader.isDefaultBackup(file));
 
     if (savingNewProject) {
       projectFileUtilities.renameDefaultBackupDirectory(file);
