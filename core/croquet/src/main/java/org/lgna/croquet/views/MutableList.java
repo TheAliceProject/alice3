@@ -113,7 +113,7 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   private static Color BASE_COLOR = UIManager.getColor("List.background");
   private static Color KNURL_COLOR = UIManager.getColor("Alice.Block.Knurl.Color");
   private static Color OUTLINE_COLOR = UIManager.getColor("Alice.Background.Color.different");
-  private static Color SELECTED_BASE_COLOR = UIManager.getColor("List.selectionBackground");
+  private static Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
 
   protected abstract class JItemAtIndexButton extends JToggleButton {
     public JItemAtIndexButton() {
@@ -134,32 +134,30 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
     protected void paintComponent(Graphics g) {
       //super.paintComponent( g );
       ButtonModel model = this.getModel();
-      Paint paint;
       int width = this.getWidth() - 1;
       int height = this.getHeight() - 1;
-      if (model.isSelected() || model.isRollover()) {
-        paint = SELECTED_BASE_COLOR;
-      } else {
-        paint = BASE_COLOR;
-      }
       Graphics2D g2 = (Graphics2D) g;
-      if (paint != null) {
-        Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      Stroke prevStroke = g2.getStroke();
 
-        g2.setPaint(paint);
-        g2.fillRoundRect(0, 0, width, height, 8, 8);
-        g2.setPaint(OUTLINE_COLOR);
-        g2.drawRoundRect(0, 0, width, height, 8, 8);
+      Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setPaint(KNURL_COLOR);
-        KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
+      g2.setPaint(BASE_COLOR);
+      g2.fillRoundRect(0, 0, width, height, 8, 8);
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
+      if (model.isSelected() || model.isRollover()) {
+        g2.setStroke(new BasicStroke(2.0f));
+        g2.setPaint(SELECTED_OUTLINE_COLOR);
       } else {
-        //          g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
-        //          g.clearRect( 0, 0, width, height );
+        g2.setPaint(OUTLINE_COLOR);
       }
+      g2.drawRoundRect(0, 0, width, height, 8, 8);
+
+      g2.setStroke(prevStroke);
+      g2.setPaint(KNURL_COLOR);
+      KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
+
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
     }
   }
 

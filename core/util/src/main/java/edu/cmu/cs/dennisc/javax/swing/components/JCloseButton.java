@@ -43,21 +43,9 @@
 
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
@@ -67,10 +55,6 @@ import java.awt.geom.RoundRectangle2D;
  */
 public final class JCloseButton extends JButton {
   private static class CloseButtonUI extends BasicButtonUI {
-    private static final Color BASE_COLOR = new Color(127, 63, 63);
-    private static final Color HIGHLIGHT_COLOR = ColorUtilities.shiftHSB(BASE_COLOR, 0, 0, +0.25f);
-    private static final Color PRESS_COLOR = ColorUtilities.shiftHSB(BASE_COLOR, 0, 0, -0.125f);
-
     private static final int SIZE = 14;
 
     @Override
@@ -110,18 +94,6 @@ public final class JCloseButton extends JButton {
       m.translate(x0 + (closeWidth / 2), y0 + (closeHeight / 2));
       area0.transform(m);
 
-      Paint prevPaint = g2.getPaint();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      if (model.isRollover() || model.isArmed()) {
-        if (!model.isPressed()) {
-          g2.setPaint(HIGHLIGHT_COLOR);
-        }
-      } else {
-        g2.setPaint(Color.WHITE);
-      }
-
-      g2.fill(area0);
-
       boolean isParentSelected;
       Container parent = button.getParent();
       if (parent instanceof AbstractButton) {
@@ -131,12 +103,15 @@ public final class JCloseButton extends JButton {
         isParentSelected = false;
       }
 
-      if (isParentSelected) {
-        g2.setPaint(Color.BLACK);
+      Paint prevPaint = g2.getPaint();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      if (model.isRollover() || model.isArmed()) {
+        g2.setPaint(UIManager.getColor("Button.hoverBorderColor"));
+        g2.fill(area0);
       } else {
-        g2.setPaint(Color.GRAY);
+        g2.setPaint(UIManager.getColor("Button.foreground"));
+        g2.draw(area0);
       }
-      g2.draw(area0);
       g2.setPaint(prevPaint);
     }
 
@@ -148,8 +123,7 @@ public final class JCloseButton extends JButton {
 
   private boolean isVisibleOnlyWhenParentIsSelected;
 
-  public JCloseButton(boolean isVisibleOnlyWhenParentIsSelected) {
-    this.isVisibleOnlyWhenParentIsSelected = isVisibleOnlyWhenParentIsSelected;
+  public JCloseButton() {
     this.setOpaque(false);
     this.setAlignmentY(Component.CENTER_ALIGNMENT);
     this.setBorder(null);
@@ -168,12 +142,10 @@ public final class JCloseButton extends JButton {
 
   @Override
   public boolean contains(int x, int y) {
-    if (this.isVisibleOnlyWhenParentIsSelected) {
-      Container parent = this.getParent();
-      if (parent instanceof AbstractButton button) {
-        if (!button.isSelected()) {
-          return false;
-        }
+    Container parent = this.getParent();
+    if (parent instanceof AbstractButton button) {
+      if (!button.isSelected()) {
+        return false;
       }
     }
     return super.contains(x, y);
@@ -181,12 +153,10 @@ public final class JCloseButton extends JButton {
 
   @Override
   public boolean isVisible() {
-    if (this.isVisibleOnlyWhenParentIsSelected) {
-      Container parent = this.getParent();
-      if (parent instanceof AbstractButton button) {
-        if (!button.isSelected()) {
-          return false;
-        }
+    Container parent = this.getParent();
+    if (parent instanceof AbstractButton button) {
+      if (!button.isSelected()) {
+        return false;
       }
     }
     return super.isVisible();

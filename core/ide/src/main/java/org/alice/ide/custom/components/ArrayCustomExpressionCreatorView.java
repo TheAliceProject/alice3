@@ -254,7 +254,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
         this.add(this.prefixLabel);
         this.add(this.expressionDropDown.getAwtComponent());
         if (deleteAction != null) {
-          JButton closeButton = new JCloseButton(true);
+          JButton closeButton = new JCloseButton();
           closeButton.setAction(deleteAction);
           this.add(closeButton, "aligny top");
         }

@@ -202,7 +202,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
       if (item.isPotentiallyCloseable()) {
         ActionListener closeButtonActionListener = e -> FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement(item);
-        this.closeButton = new JCloseButton(true);
+        this.closeButton = new JCloseButton();
         this.closeButton.addActionListener(closeButtonActionListener);
       } else {
         this.closeButton = null;
