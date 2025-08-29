@@ -72,7 +72,6 @@ public class ProjectFileUtilities {
       defaultBackupDir.renameTo(namedBackupDir);
     } catch (SecurityException e) {
       Logger.throwable(e, "Unable to rename backup directory for new project to " + namedBackupDir);
-      e.printStackTrace();
     }
   }
 
@@ -154,7 +153,7 @@ public class ProjectFileUtilities {
     return new Runnable() {
       @Override
       public void run() {
-        if (projectApp.isProjectUpToDateWithFile()) {
+        if (projectApp.isProjectUpToDateWithBackups()) {
           // skip saving if there were no changes since last save
           return;
         }
@@ -163,7 +162,6 @@ public class ProjectFileUtilities {
           ProjectFileUtilities.this.backupActiveProject();
         } catch (IOException e) {
           Logger.throwable(e, "Unable to autosave project.");
-          e.printStackTrace();
         }
       }
     };
@@ -178,7 +176,7 @@ public class ProjectFileUtilities {
     }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
-    projectApp.updateIndexAndSaveProjectTo(backupFile);
+    projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }

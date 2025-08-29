@@ -224,6 +224,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   private int projectHistoryIndexFile = 0;
   private int projectHistoryIndexSceneSetUp = 0;
+  private int projectHistoryIndexBackups = 0;
 
   public boolean isProjectUpToDateWithFile() {
     UndoHistory history = this.getProjectHistory();
@@ -246,6 +247,15 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     }
   }
 
+  protected boolean isProjectUpToDateWithBackups() {
+    UndoHistory history = this.getProjectHistory();
+    if (history == null) {
+      return true;
+    } else {
+      return this.projectHistoryIndexBackups == history.getInsertionIndex();
+    }
+  }
+
   private void updateHistoryIndexFileSync() {
     UndoHistory history = this.getProjectHistory();
     if (history != null) {
@@ -264,6 +274,13 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     } else {
       this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
     }
+  }
+
+  private void updateHistoryIndexBackupSync() {
+    UndoHistory history = this.getProjectHistory();
+    this.projectHistoryIndexBackups = history != null
+            ? history.getInsertionIndex()
+            : PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
   }
 
   private IdeFrameTitleGenerator frameTitleGenerator;
@@ -689,10 +706,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     this.updateHistoryIndexFileSync();
   }
 
-  public final void updateIndexAndSaveProjectTo(File file) throws IOException {
+  public final void updateBackupIndexAndSaveProjectTo(File file) throws IOException {
     projectFileUtilities.saveCopyOfProjectTo(file);
 
-    updateHistoryIndexFileSync();
+    updateHistoryIndexBackupSync();
   }
 
   public final void exportProjectTo(File file) throws IOException {
