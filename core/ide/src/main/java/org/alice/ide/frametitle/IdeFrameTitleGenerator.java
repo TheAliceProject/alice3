@@ -44,8 +44,6 @@ package org.alice.ide.frametitle;
 
 import org.alice.ide.uricontent.UriProjectLoader;
 
-import java.net.URI;
-
 /**
  * @author Dennis Cosgrove
  */

@@ -681,8 +681,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   public final void saveProjectTo(File file) throws IOException {
     File originalFile = UriUtilities.getFile(getUri());
 
-    boolean savingNewProject = uriProjectLoader.isNewProject() ||
-            (uriProjectLoader.isDefaultBackup(originalFile) && !uriProjectLoader.isDefaultBackup(file));
+    boolean savingNewProject = uriProjectLoader.isNewProject()
+            || (uriProjectLoader.isDefaultBackup(originalFile) && !uriProjectLoader.isDefaultBackup(file));
 
     if (savingNewProject) {
       projectFileUtilities.renameDefaultBackupDirectory(file);
