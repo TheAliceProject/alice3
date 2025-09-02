@@ -69,8 +69,12 @@ public class Dialogs {
     return YesNoCancelResult.getInstance(JOptionPane.showConfirmDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION));
   }
 
-  public static YesNoCancelResult showCustomOption(String title, String message, String[] options) {
-    // TODO ensure this is run on DispatchThread
+  public static YesNoCancelResult showCustomConfirm(String title, String message, String[] options) {
+    return YesNoCancelResult.getInstance(JOptionPane.showOptionDialog(WindowStack.peek(), message, title,
+            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null));
+  }
+
+  public static YesNoCancelResult showCustomConfirmOrCancel(String title, String message, String[] options) {
     return YesNoCancelResult.getInstance(JOptionPane.showOptionDialog(WindowStack.peek(), message, title,
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null));
   }

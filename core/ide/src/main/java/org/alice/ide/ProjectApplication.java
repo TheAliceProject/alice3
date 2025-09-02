@@ -58,6 +58,7 @@ import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.StarterProjectFileLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
+import org.apache.commons.io.FileUtils;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
@@ -409,14 +410,34 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     File backup = getNextBackup(null, backupDir, false, new HashSet<>());
 
     if (backup != null) {
-      boolean loadBackup = Dialogs.confirmWithWarning("Load Backup of New Project",
-              "WARNING: Backups of an unsaved new project were detected. Would you like to load the latest one?");
+      YesNoCancelResult result = Dialogs.showCustomConfirm("Load Backup of New Project",
+              "WARNING: Backups of an unsaved new project were detected.\n"
+              + "Would you like to load the latest one, or discard all backups?",
+              new String[] {
+                      "Load Backup", "Discard Backups"
+              });
 
-      if (loadBackup) {
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, false), true, true, new HashSet<>());
-      }
+      return switch (result) {
+        case YES -> {
+          // load a backup
+          loadProject(newProjectActivity(), new FileProjectLoader(backup, false), true, true, new HashSet<>());
 
-      return loadBackup;
+          yield true;
+        }
+        case NO -> {
+          // discard the backups
+          try {
+            FileUtils.deleteDirectory(backupDir);
+          } catch (IOException e) {
+            Logger.throwable(e, "Unable to delete default backup directory.");
+          }
+
+          yield false;
+        }
+        case CANCEL ->
+          // unreachable path
+          false;
+      };
     }
 
     return false;
@@ -558,9 +579,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   private boolean createProjectFromBackup(File backup, File original) {
-    YesNoCancelResult result = Dialogs.showCustomOption("Replace Project With Backup?",
-            "A backup has been opened successfully: " + backup.getName()
-                    + ".\n" + "Would like to replace the original project, or create a new project from the backup?\n"
+    YesNoCancelResult result = Dialogs.showCustomConfirmOrCancel("Replace Project With Backup?",
+            "A backup has been opened successfully: " + backup.getName() + ".\n"
+                    + "Would like to replace the original project, or create a new project from the backup?\n"
                     + "Cancel to do neither and just continue opening the backup.",
                     new String[] {
                             "Replace Original Project", "Create New Project", "Continue"
