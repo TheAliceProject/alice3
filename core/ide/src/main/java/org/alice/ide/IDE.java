@@ -485,6 +485,7 @@ public abstract class IDE extends ProjectApplication {
 
   public final VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
     VirtualMachine vm = this.createVirtualMachineForSceneEditor();
+    vm.setForSceneEditor();
     this.registerAdaptersForSceneEditorVm(vm);
     return vm;
   }
