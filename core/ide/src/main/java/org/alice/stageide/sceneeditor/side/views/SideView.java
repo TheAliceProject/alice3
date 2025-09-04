@@ -52,57 +52,40 @@ import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ToolPaletteCoreComposite;
-import org.lgna.croquet.views.BooleanStateButton;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.DefaultRadioButtons;
-import org.lgna.croquet.views.FlowPanel;
-import org.lgna.croquet.views.HorizontalTextPosition;
-import org.lgna.croquet.views.ItemSelectablePanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.PushButton;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.ToolPaletteTitle;
-import org.lgna.croquet.views.ToolPaletteView;
-import org.lgna.croquet.views.VerticalTextPosition;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 import javax.swing.UIManager;
-import java.awt.Color;
+import javax.swing.border.Border;
 
 /**
+ * this is the side panel of the scene editor view
  * @author Dennis Cosgrove
  */
 public class SideView extends BorderPanel {
-  private static Border createSeparatorBorder(int top, int bottom, Color color) {
-    return BorderFactory.createMatteBorder(top, 0, bottom, 0, color);
+  private static Border createSeparatorBorder(int top, int bottom) {
+    return BorderFactory.createMatteBorder(top, 0, bottom, 0, UIManager.getColor("Separator.foreground"));
   }
 
   public SideView(SideComposite composite) {
     super(composite);
-
-    final Color color = UIManager.getColor("Alice.Background.Color");
-
     if (!IsToolBarShowing.getValue()) {
       ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
       FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 
-      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, Color.LIGHT_GRAY));
+      undoRedoPanel.setBorder(createSeparatorBorder(0, 1));
       this.addPageStartComponent(undoRedoPanel);
     }
 
     MigPanel migPanel = new MigPanel(null, "fill, insets 0, aligny top", "", "");
 
-    ItemSelectablePanel<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>(composite.getHandleStyleState(), false) {
+    ItemSelectablePanel<HandleStyle> radioButtons = new DefaultRadioButtons<>(composite.getHandleStyleState(), false) {
       @Override
       protected BooleanStateButton<?> createButtonForItemSelectedState(HandleStyle item, BooleanState itemSelectedState) {
         PushButton b = itemSelectedState.createPushButton();
         b.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
         b.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
         b.setSelectedColor(UIManager.getColor("ComboBox.selectionBackground"));
-        b.setBackgroundColor(color);
         return b;
       }
     };
@@ -115,7 +98,6 @@ public class SideView extends BorderPanel {
     migPanel.addComponent(new FlowPanel(composite.getIsSnapEnabledState().createCheckBox(), title), "wrap, gapleft 4");
     migPanel.addComponent(toolPaletteView, "wrap");
 
-    //this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
     migPanel.addComponent(new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState()), "wrap");
 
     //todo
@@ -125,22 +107,17 @@ public class SideView extends BorderPanel {
 
     ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {composite.getObjectPropertiesTab(), composite.getObjectMarkersTab(), composite.getCameraMarkersTab()};
 
-    title.setBackgroundColor(color);
     for (ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites) {
       ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
-      toolPaletteTitle.setBackgroundColor(color);
       toolPaletteTitle.scaleFont(1.4f);
       toolPaletteTitle.changeFont(TextWeight.BOLD);
+      toolPaletteTitle.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
       migPanel.addComponent(toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx");
     }
     migPanel.addComponent(new Label(), "wrap, grow, push");
 
     ScrollPane scrollPane = new ScrollPane(migPanel);
     this.addCenterComponent(scrollPane);
-
-    migPanel.setBackgroundColor(color);
-    scrollPane.setBackgroundColor(color);
-    this.setBackgroundColor(color);
 
     this.setMaximumPreferredWidth(400);
   }

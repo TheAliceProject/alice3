@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
@@ -52,22 +51,14 @@ import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BooleanStateButton;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.FlowPanel;
-import org.lgna.croquet.views.HorizontalAlignment;
-import org.lgna.croquet.views.ItemSelectablePanel;
-import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.UserField;
 
-import javax.swing.*;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
+import javax.swing.AbstractButton;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
@@ -76,11 +67,6 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class MarkersView extends BorderPanel {
-
-  private static final Color BACKGROUND_COLOR = UIManager.getColor("Alice.Background.Color");
-  private static final Color SELECTED_COLOR = UIManager.getColor("List.selectionBackground");
-  private static final Color SELECTED_FOREGROUND = UIManager.getColor("List.selectionForeground");
-  private static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
   private static class MarkerView extends BooleanStateButton<AbstractButton> {
     public MarkerView(BooleanState model) {
@@ -93,14 +79,14 @@ public class MarkersView extends BorderPanel {
         @Override
         public Color getBackground() {
           if (this.isSelected()) {
-            return SELECTED_COLOR;
+            return UIManager.getColor("List.selectionBackground");
           } else {
-            return UNSELECTED_COLOR;
+            return UIManager.getColor("List.background");
           }
         }
         public Color getForeground() {
           if (this.isSelected()) {
-            return SELECTED_FOREGROUND;
+            return UIManager.getColor("List.selectionForeground");
           } else {
             return super.getForeground();
           }
@@ -240,7 +226,6 @@ public class MarkersView extends BorderPanel {
     this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
     this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
-    this.setBackgroundColor(BACKGROUND_COLOR);
   }
 
   private void unselectMarker() {

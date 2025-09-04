@@ -59,7 +59,6 @@ public class ListContentPanel extends TabContentPanel {
   public ListContentPanel(ListUriTab tab) {
     super(tab);
     this.list = tab.getListSelectionState().createList();
-    this.list.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     this.list.setCellRenderer(this.createListCellRenderer());
     this.list.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);
     this.list.setVisibleRowCount(-1);
