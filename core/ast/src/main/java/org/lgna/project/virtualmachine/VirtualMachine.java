@@ -138,20 +138,24 @@ public abstract class VirtualMachine {
     return getConstructor(entryPointType, arguments).evaluate(this, null, arguments);
   }
 
-  public Object createAndSetFieldInstance(UserInstance userInstance, UserField field) {
-    Expression expression = field.initializer.getValue();
-    assert expression != null;
-    Object rv = this.evaluate(expression);
-    userInstance.setFieldValue(field, rv);
-    return rv;
+  public void createAndSetFieldInstance(UserInstance userInstance, UserField field) {
+    try {
+      Object value = evaluate(field.initializer.getValue());
+      userInstance.setFieldValue(field, value);
+    } catch (RuntimeException e) {
+      if (isForRunning) {
+        throw e;
+      }
+      Logger.warning("Error when setting up scene " + e.getMessage());
+    }
   }
 
-  public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(UserInstance instance, UserField field) {
+  public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(UserInstance instance, UserField field) {
     //pushCurrentThread( null );
     //try {
     this.pushBogusFrame(instance);
     try {
-      return this.createAndSetFieldInstance(instance, field);
+      createAndSetFieldInstance(instance, field);
     } finally {
       this.popFrame();
     }
@@ -1233,6 +1237,15 @@ public abstract class VirtualMachine {
     }
   }
 
+  public void setForSceneEditor() {
+    isForRunning = false;
+  }
+
   private final List<VirtualMachineListener> virtualMachineListeners = Lists.newLinkedList();
   private boolean isStopped = false;
+
+  // Marks this VM for use in running worlds. When true it allows errors to be thrown that interrupt execution.
+  // A value of false indicates this VM is used during scene loading or scene setup where thrown exceptions can
+  // cause these processes to break and should be simply logged and the setup code continued.
+  private boolean isForRunning = true;
 }
