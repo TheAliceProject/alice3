@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
-import org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
@@ -388,7 +387,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     loadProject(activity, uriProjectLoader, false, false, new HashSet<>());
   }
 
-  private final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader, boolean isLoadingBackups,
+  private void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader, boolean isLoadingBackups,
                                  boolean isMainProjectCorrupted, Set<String> unloadableFiles) {
     this.uriProjectLoader = uriProjectLoader;
     if (uriProjectLoader != null) {
@@ -411,7 +410,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     if (backup != null) {
       YesNoCancelResult result = Dialogs.showCustomConfirm("Load Backup of New Project",
-              "WARNING: Backups of an unsaved new project were detected.\n"
+              "WARNING: backups of an unsaved new project were detected.\n"
               + "Would you like to load the latest one, or discard all backups?",
               new String[] {
                       "Load Backup", "Discard Backups"
@@ -522,14 +521,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       File backup = getNextBackup(projectModifiedTime, backupDir, false, unloadableFiles);
 
       if (backup != null && Dialogs.confirmWithWarning("Load backup?",
-              "WARNING: this project is out-of-date.\nWould you like to load a backup with more recent changes?")) {
-        boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
-
-        uriProjectLoader = null;
-        activity.cancel();
-
+              "WARNING: There is a backup with more recent changes.\nWould you like to load it instead?")) {
         // restart load with backup
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, isMainProjectCorrupted, unloadableFiles);
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, isMainProjectCorrupted, unloadableFiles);
 
         return;
       }
@@ -541,7 +535,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       try {
         uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
       } catch (URISyntaxException e) {
-        e.printStackTrace();
+        Logger.throwable(e, uriProjectLoader);
       }
     }
 
@@ -552,10 +546,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     }
 
     // If a backup of a saved project was successfully loaded, prompt the user for what to do next
-    if (createProjectFromBackup(projectFile, getMainProjectFile(projectFile))) {
-      uriProjectLoader = null;
-      activity.cancel();
-    }
+    createProjectFromBackup(projectFile, getMainProjectFile(projectFile));
   }
 
   private void handleProjectLoadException(RuntimeException re, UserActivity activity) {
@@ -578,35 +569,39 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     getDocumentFrame().getNewProjectOperation().fire(newActivity);
   }
 
-  private boolean createProjectFromBackup(File backup, File original) {
+  private void createProjectFromBackup(File backup, File original) {
     YesNoCancelResult result = Dialogs.showCustomConfirmOrCancel("Replace Project With Backup?",
             "A backup has been opened successfully: " + backup.getName() + ".\n"
-                    + "Would like to replace the original project, or create a new project from the backup?\n"
+                    + "Would you like to replace the original project, or create a new project from the backup?\n"
                     + "Cancel to do neither and just continue opening the backup.",
                     new String[] {
-                            "Replace Original Project", "Create New Project", "Continue"
+                            "Replace Original Project", "Save Copy Under New Name", "Cancel"
                     });
 
-    return switch (result) {
+    switch (result) {
       case YES -> {
-        // replace the existing project
+        // replace the main project file
+
         try {
           saveProjectTo(original);
         } catch (IOException ioe) {
           Dialogs.showError("Unable to save file", ioe.getMessage());
         }
-
-        yield true;
       }
       case NO -> {
-        // create a new project
-        SaveAsProjectOperation.getInstance().fire(newProjectActivity());
+        // when the user saves it, create a new project from this one
 
-        yield true;
+        try {
+          uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
+        } catch (URISyntaxException e) {
+          Logger.throwable(e, uriProjectLoader);
+        }
       }
-      case CANCEL ->
-        // just continue editing this project
-        false;
+      case CANCEL -> {
+        // load the main project file
+
+        loadProject(newProjectActivity(), new FileProjectLoader(original, uriProjectLoader.shouldMakeVrReady()));
+      }
     };
   }
 
