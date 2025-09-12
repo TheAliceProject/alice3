@@ -50,6 +50,7 @@ import org.alice.ide.x.ProjectEditorAstI18nFactory;
 import org.lgna.croquet.views.AwtComponentView;
 
 /**
+ * these are the method and procedure tabs of the editor
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {

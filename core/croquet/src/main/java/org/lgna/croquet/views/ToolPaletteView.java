@@ -130,7 +130,7 @@ class ToolPaletteLayout implements LayoutManager {
 }
 
 /**
- * This is so many things- the list of procedures and functions, everything listed on the Scene tab.
+ * This is so many things- the list of procedures and functions, everything listed on the right of the Scene editor tab.
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {

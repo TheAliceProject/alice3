@@ -51,6 +51,7 @@ import javax.swing.UIManager;
 import java.awt.*;
 
 /**
+ * this is part of the dialog for adding procedures/functions/properties from a class file
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {

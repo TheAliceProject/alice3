@@ -81,6 +81,10 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * These are specifically the object Properties on the SideView, between the one shots and the object/camera markers
+ */
+
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private InstanceFactory selectedInstance;
   private SThing selectedEntity;
@@ -118,7 +122,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   public SceneObjectPropertyManagerPanel() {
     super();
     this.morePropertiesPanel = new GridBagPanel();
-    this.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
   }
 
