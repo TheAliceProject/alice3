@@ -146,6 +146,12 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
     this.morePropertiesPanel.setBackgroundColor(color);
   }
 
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.morePropertiesPanel.setForegroundColor(color);
+  }
+
   public void setSceneInstance(UserInstance sceneInstance) {
     this.sceneInstance = sceneInstance;
   }

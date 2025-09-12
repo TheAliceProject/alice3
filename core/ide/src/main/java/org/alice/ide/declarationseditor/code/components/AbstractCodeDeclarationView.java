@@ -104,6 +104,12 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
   }
 
   @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.codePanelWithDropReceptor.setForegroundColor(color);
+  }
+
+  @Override
   public void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
     if (dragModel instanceof CodeDragModel) {
       CodeDragModel codeDragModel = (CodeDragModel) dragModel;

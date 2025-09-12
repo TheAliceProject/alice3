@@ -681,4 +681,11 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
     this.titlesPanel.setBackgroundColor(color);
     this.titlesScrollPane.setBackgroundColor(color);
   }
+
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.titlesPanel.setForegroundColor(color);
+    this.titlesScrollPane.setForegroundColor(color);
+  }
 }
