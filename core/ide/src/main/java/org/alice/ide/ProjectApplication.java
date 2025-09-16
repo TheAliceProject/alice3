@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
+import org.alice.ide.croquet.models.projecturi.BackupProjectOperation;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
@@ -102,12 +103,14 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   public static final Group HISTORY_GROUP = Group.getInstance(UUID.fromString("303e94ca-64ef-4e3a-b95c-038468c68438"), "HISTORY_GROUP");
   public static final Group URI_GROUP = Group.getInstance(UUID.fromString("79bf8341-61a4-4395-9469-0448e66d9ac6"), "URI_GROUP");
 
-  private UserActivity projectActivity;
 
   public static ProjectApplication getActiveInstance() {
     return ClassUtilities.getInstance(PerspectiveApplication.getActiveInstance(), ProjectApplication.class);
   }
 
+  private final BackupProjectOperation backupProjectOperation = new BackupProjectOperation();
+
+  private UserActivity projectActivity;
   private HistoryListener projectHistoryListener;
 
   public ProjectApplication(ApiConfigurationManager apiConfigurationManager) {
@@ -176,10 +179,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   public static String getApplicationName() {
     return "Alice";
-  }
-
-  public static String getVersionText() {
-    return ProjectVersion.getCurrentVersionText();
   }
 
   public static String getVersionAdornment() {
@@ -409,12 +408,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     File backup = getNextBackup(null, backupDir, false, new HashSet<>());
 
     if (backup != null) {
-      YesNoCancelResult result = Dialogs.showCustomConfirm("Load Backup of New Project",
-              "WARNING: backups of an unsaved new project were detected.\n"
-              + "Would you like to load the latest one, or discard all backups?",
-              new String[] {
-                      "Load Backup", "Discard Backups"
-              });
+      YesNoCancelResult result = backupProjectOperation.showUnsavedBackupProjectOpenedDialog();
 
       return switch (result) {
         case YES -> {
@@ -482,24 +476,20 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     // A corrupted backup was manually loaded
     if (isBackup && !isLoadingBackups) {
-      Dialogs.showError("Unable to Load Backup", "This backup was corrupted and none could be loaded");
+      backupProjectOperation.showBackupLoadErrorDialog();
 
       return;
     }
 
     if (backup != null) {
-      String message = isBackup ? "an earlier backup" : "a backup"; // BOTH CONFIRMED
-
-      if (Dialogs.confirmWithWarning("Load Backup",
-              "WARNING: " + projectFile.getName() + " could not be loaded.\nWould you like to try loading " + message + "?")) {
+      if (backupProjectOperation.showProjectLoadErrorAndLoadBackupDialog(projectFile.getName(), isBackup)) {
         loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, isMainProjectCorrupted, unloadableFiles);
       }
     } else {
       if (isMainProjectCorrupted) {
-        Dialogs.showError("Unable to Load Backup", "The original project (" + mainProject.getName() + ") and all backups were corrupted, and none could be loaded");
+        backupProjectOperation.showProjectAndAllBackupsLoadErrorDialog(mainProject.getName());
       } else {
-        if (Dialogs.confirmWithWarning("Reload Original",
-                "WARNING: all backups more recent than the project were corrupted.\nWould you like to reload the original project file (" + projectFile.getName() + ")?")) {
+        if (backupProjectOperation.showProjectLoadRecentBackupsErrorAndLoadMainDialog(projectFile.getName())) {
           loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, isMainProjectCorrupted, unloadableFiles);
         }
       }
@@ -520,8 +510,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
       File backup = getNextBackup(projectModifiedTime, backupDir, false, unloadableFiles);
 
-      if (backup != null && Dialogs.confirmWithWarning("Load backup?",
-              "WARNING: There is a backup with more recent changes.\nWould you like to load it instead?")) {
+      if (backup != null && backupProjectOperation.showMoreRecentBackupsDialog()) {
         // restart load with backup
         loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, isMainProjectCorrupted, unloadableFiles);
 
@@ -570,13 +559,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   private void createProjectFromBackup(File backup, File original) {
-    YesNoCancelResult result = Dialogs.showCustomConfirmOrCancel("Replace Project With Backup?",
-            "A backup has been opened successfully: " + backup.getName() + ".\n"
-                    + "Would you like to replace the original project, or create a new project from the backup?\n"
-                    + "Cancel to do neither and just continue opening the backup.",
-                    new String[] {
-                            "Replace Original Project", "Save Copy Under New Name", "Cancel"
-                    });
+    YesNoCancelResult result = backupProjectOperation.showBackupProjectOpenedDialog(backup.getName());
 
     switch (result) {
       case YES -> {
@@ -621,7 +604,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       return null;
     }
 
-    File[] backups = getSortedBackups(BACKUP_AUTO, backupDir);
+    String typeFilter = isMainProjectCorrupted ? "" : BACKUP_AUTO;
+    File[] backups = getSortedBackups(typeFilter, backupDir);
 
     for (File backup : backups) {
       if (!unloadableFiles.contains(backup.getName())) {

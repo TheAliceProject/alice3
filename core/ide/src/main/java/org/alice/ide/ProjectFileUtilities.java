@@ -14,7 +14,6 @@ import org.lgna.project.io.ProjectIo;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -234,12 +233,8 @@ public class ProjectFileUtilities {
   }
 
   private void removeExtraBackups(final String type, Path backupDir) {
-    File[] backups = listFiles(backupDir.toFile(), new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isFile() && file.getName().startsWith(type);
-      }
-    });
+    File[] backups = listFiles(backupDir.toFile(), file -> file.isFile() && file.getName().startsWith(type));
+
     if (backups.length > BACKUP_MAX) {
       Arrays.sort(backups);
       for (int i = 0; i < backups.length - BACKUP_MAX; i++) {
