@@ -52,13 +52,11 @@ import org.alice.ide.croquet.components.ExpressionDropDown;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
-import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.x.components.AbstractExpressionView;
 import org.lgna.cheshire.simple.ScrollRenderer;
 import org.lgna.cheshire.simple.SimpleScrollRenderer;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.resolvers.RuntimeResolver;
 import org.lgna.croquet.views.*;
 import org.lgna.project.ast.Expression;
@@ -84,24 +82,16 @@ public class IdeHighlightStencil extends LayerStencil {
   private static final Painter GLOW_PAINTER = new GlowPainter(new Color(255, 255, 0, 23));
   private static final Painter OUTLINE_PAINTER = new BasicPainter(new BasicStroke(2.0f), Color.RED);
   private static final KeyStroke HIDE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-  private final AWTEventListener awtEventListener = new AWTEventListener() {
-    @Override
-    public void eventDispatched(AWTEvent event) {
-      MouseEvent e = (MouseEvent) event;
-      if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-        IdeHighlightStencil.this.hide();
-      }
+  private final AWTEventListener awtEventListener = event -> {
+    MouseEvent e = (MouseEvent) event;
+    if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      IdeHighlightStencil.this.hide();
     }
   };
   private final Paint stencilPaint = this.createStencilPaint();
   private final ScrollRenderer scrollRenderer = new SimpleScrollRenderer();
   private final Note note = new Note();
-  private ActionListener hideAction = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      hide();
-    }
-  };
+  private final ActionListener hideAction = e -> hide();
 
   public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
     super(window, layerId);
@@ -111,28 +101,24 @@ public class IdeHighlightStencil extends LayerStencil {
 
   public void showHighlightOverField(final UserField field, String noteText) {
     if (field != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-            if (view instanceof TypeDeclarationView) {
-              List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
-              for (JPanel jPanel : jPanels) {
-                AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-                if (component instanceof FieldDeclarationPane) {
-                  FieldDeclarationPane fieldDeclarationPane = (FieldDeclarationPane) component;
-                  UserField candidate = fieldDeclarationPane.getField();
-                  if (candidate == field) {
-                    return fieldDeclarationPane;
-                  }
+      this.show(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
+          if (view instanceof TypeDeclarationView) {
+            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+            for (JPanel jPanel : jPanels) {
+              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+              if (component instanceof FieldDeclarationPane fieldDeclarationPane) {
+                UserField candidate = fieldDeclarationPane.getField();
+                if (candidate == field) {
+                  return fieldDeclarationPane;
                 }
               }
             }
           }
-          return null;
         }
+        return null;
       }, null, noteText);
     } else {
       Logger.severe("field is null", noteText);
@@ -141,40 +127,35 @@ public class IdeHighlightStencil extends LayerStencil {
 
   public void showHighlightOverExpression(final Expression expression, String noteText) {
     if (expression != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
+      this.show(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
 
-            List<AbstractButton> jButtons = ComponentUtilities.findAllMatches(view.getAwtComponent(), AbstractButton.class);
-            for (AbstractButton jButton : jButtons) {
-              Expression candidate = null;
-              AwtComponentView<?> component = AwtComponentView.lookup(jButton);
-              if (component instanceof ExpressionPropertyDropDownPane) {
-                ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (ExpressionPropertyDropDownPane) component;
-                candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
-              } else if (component instanceof ExpressionDropDown) {
-                ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>) component;
-                CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
-                if (completionModel instanceof CustomItemState) {
-                  CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
-                  candidate = state.getValue();
-                }
-              } else if (component instanceof AbstractExpressionView) {
-                AbstractExpressionView expressionView = (AbstractExpressionView) component;
-                candidate = expressionView.getExpression();
+          List<AbstractButton> jButtons = ComponentUtilities.findAllMatches(view.getAwtComponent(), AbstractButton.class);
+          for (AbstractButton jButton : jButtons) {
+            Expression candidate = null;
+            AwtComponentView<?> component = AwtComponentView.lookup(jButton);
+            if (component instanceof ExpressionPropertyDropDownPane expressionPropertyDropDownPane) {
+              candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
+            } else if (component instanceof ExpressionDropDown) {
+              ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>) component;
+              CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
+              if (completionModel instanceof CustomItemState) {
+                CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
+                candidate = state.getValue();
               }
-              if (candidate == expression) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-              }
+            } else if (component instanceof AbstractExpressionView expressionView) {
+              candidate = expressionView.getExpression();
+            }
+            if (candidate == expression) {
+              return component;
+              //              } else {
+              //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
             }
           }
-          return null;
         }
+        return null;
       }, null, noteText);
     } else {
       Logger.severe(noteText);
@@ -183,113 +164,29 @@ public class IdeHighlightStencil extends LayerStencil {
 
   public void showHighlightOverStatement(final Statement statement, String message) {
     if (statement != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
-            for (JPanel jPanel : jPanels) {
-              Statement candidate = null;
-              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-              if (component instanceof AbstractStatementPane) {
-                AbstractStatementPane statementPane = (AbstractStatementPane) component;
-                candidate = statementPane.getStatement();
-              }
-              if (candidate == statement) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-              }
+      this.show(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
+          List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+          for (JPanel jPanel : jPanels) {
+            Statement candidate = null;
+            AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+            if (component instanceof AbstractStatementPane statementPane) {
+              candidate = statementPane.getStatement();
+            }
+            if (candidate == statement) {
+              return component;
+              //              } else {
+              //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
             }
           }
-          return null;
         }
+        return null;
       }, null, message);
     } else {
       Logger.severe();
     }
-  }
-
-  public void showHighlightOverCroquetViewController(final Model model, String noteText) {
-    if (model != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-          if (component == null) {
-            Logger.errln("cannot resolve first component for", model);
-          }
-          return component;
-        }
-      }, null, noteText);
-    } else {
-      Logger.severe(noteText);
-    }
-  }
-
-  private TrackableShape getRenderWindow() {
-    ProjectPerspective perspective = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().getValue();
-    if (perspective != null) {
-      return perspective.getRenderWindow();
-    } else {
-      return null;
-    }
-  }
-
-  public void showHighlightOverStatementAndRenderWindow(final Statement statement) {
-    if (statement != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
-            for (JPanel jPanel : jPanels) {
-              Statement candidate = null;
-              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-              if (component instanceof AbstractStatementPane) {
-                AbstractStatementPane statementPane = (AbstractStatementPane) component;
-                candidate = statementPane.getStatement();
-              }
-              if (candidate == statement) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-              }
-            }
-          }
-          return null;
-        }
-      }, new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          return getRenderWindow();
-        }
-      }, "");
-    } else {
-      Logger.severe();
-    }
-  }
-
-  public void showHighlightOverCroquetViewControllerAndRenderWindow(final Model model) {
-    this.show(new RuntimeResolver<TrackableShape>() {
-      @Override
-      public TrackableShape getResolved() {
-        AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-        if (component == null) {
-          Logger.errln("cannot resolve first component for", model);
-        }
-        return component;
-      }
-    }, new RuntimeResolver<TrackableShape>() {
-      @Override
-      public TrackableShape getResolved() {
-        return getRenderWindow();
-      }
-    }, "");
   }
 
   protected Paint createStencilPaint() {
@@ -319,11 +216,7 @@ public class IdeHighlightStencil extends LayerStencil {
           shape = area;
         }
       }
-      if (shape.contains(x, y)) {
-        return superContains;
-      } else {
-        return false;
-      }
+      return shape.contains(x, y);
     } else {
       return false;
     }
@@ -417,7 +310,7 @@ public class IdeHighlightStencil extends LayerStencil {
     Hole hole = new Hole(trackableShapeResolverA, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
       @Override
       protected boolean isPathRenderingDesired() {
-        return (noteText != null) && (noteText.length() > 0);
+        return (noteText != null) && (!noteText.isEmpty());
       }
     };
     this.note.addFeature(hole);
@@ -427,7 +320,7 @@ public class IdeHighlightStencil extends LayerStencil {
       Hole holeB = new Hole(trackableShapeResolverB, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
         @Override
         protected boolean isPathRenderingDesired() {
-          return noteText.length() > 0;
+          return !noteText.isEmpty();
         }
       };
       this.note.addFeature(holeB);
