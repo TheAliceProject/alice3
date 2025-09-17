@@ -54,28 +54,59 @@ import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.x.components.AbstractExpressionView;
+import org.lgna.cheshire.simple.ScrollRenderer;
+import org.lgna.cheshire.simple.SimpleScrollRenderer;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.resolvers.RuntimeResolver;
-import org.lgna.croquet.views.AbstractWindow;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.ComponentManager;
-import org.lgna.croquet.views.TrackableShape;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
+import org.lgna.stencil.*;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IdeHighlightStencil extends HighlightStencil {
+public class IdeHighlightStencil extends LayerStencil {
+  private static final Color STENCIL_BASE_COLOR = new Color(181, 140, 140, 150);
+  private static final Color STENCIL_LINE_COLOR = new Color(92, 48, 24, 63);
+  private static final Painter GLOW_PAINTER = new GlowPainter(new Color(255, 255, 0, 23));
+  private static final Painter OUTLINE_PAINTER = new BasicPainter(new BasicStroke(2.0f), Color.RED);
+  private static final KeyStroke HIDE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+  private final AWTEventListener awtEventListener = new AWTEventListener() {
+    @Override
+    public void eventDispatched(AWTEvent event) {
+      MouseEvent e = (MouseEvent) event;
+      if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+        IdeHighlightStencil.this.hide();
+      }
+    }
+  };
+  private final Paint stencilPaint = this.createStencilPaint();
+  private final ScrollRenderer scrollRenderer = new SimpleScrollRenderer();
+  private final Note note = new Note();
+  private ActionListener hideAction = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      hide();
+    }
+  };
+
   public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
     super(window, layerId);
+    this.note.setActive(true);
+    this.internalAddComponent(this.note);
   }
 
   public void showHighlightOverField(final UserField field, String noteText) {
@@ -259,5 +290,149 @@ public class IdeHighlightStencil extends HighlightStencil {
         return getRenderWindow();
       }
     }, "");
+  }
+
+  protected Paint createStencilPaint() {
+    int width = 8;
+    int height = 8;
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = (Graphics2D) image.getGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+    g2.setColor(STENCIL_BASE_COLOR);
+    g2.fillRect(0, 0, width, height);
+    g2.setColor(STENCIL_LINE_COLOR);
+    g2.drawLine(0, height, width, 0);
+    g2.fillRect(0, 0, 1, 1);
+    g2.dispose();
+    return new TexturePaint(image, new Rectangle(0, 0, width, height));
+  }
+
+  @Override
+  protected boolean contains(int x, int y, boolean superContains) {
+    if (superContains) {
+      Shape shape = this.getLocalBounds();
+      Area area = new Area(shape);
+      for (Feature feature : note.getFeatures()) {
+        Area featureAreaToSubtract = feature.getAreaToSubstractForContains(IdeHighlightStencil.this);
+        if (featureAreaToSubtract != null) {
+          area.subtract(featureAreaToSubtract);
+          shape = area;
+        }
+      }
+      if (shape.contains(x, y)) {
+        return superContains;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new FlowLayout() {
+      @Override
+      public void layoutContainer(Container target) {
+        super.layoutContainer(target);
+        note.setLocation(note.calculateLocation(IdeHighlightStencil.this));
+      }
+    };
+  }
+
+  @Override
+  protected void paintComponentPrologue(Graphics2D g2) {
+    Shape prevClip = g2.getClip();
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
+
+    Shape shape = prevClip;
+    Area area = new Area(shape);
+    for (Feature feature : note.getFeatures()) {
+      Area featureAreaToSubtract = feature.getAreaToSubstractForPaint(IdeHighlightStencil.this);
+      if (featureAreaToSubtract != null) {
+        area.subtract(featureAreaToSubtract);
+        shape = area;
+      }
+    }
+    g2.setPaint(stencilPaint);
+    g2.fill(shape);
+
+    g2.setStroke(prevStroke);
+    g2.setPaint(prevPaint);
+  }
+
+  @Override
+  protected void paintComponentEpilogue(Graphics2D g2) {
+    if (note.isActive()) {
+      for (Feature feature : note.getFeatures()) {
+        feature.paint(g2, IdeHighlightStencil.this, note);
+      }
+    }
+  }
+
+  @Override
+  protected void paintEpilogue(Graphics2D g2) {
+    if (note.isActive()) {
+      for (Feature feature : note.getFeatures()) {
+        TrackableShape trackableShape = feature.getTrackableShape();
+        if (trackableShape != null && !trackableShape.isInView() && scrollRenderer != null) {
+          Shape repaintShape = scrollRenderer.renderScrollIndicators(g2, IdeHighlightStencil.this, trackableShape);
+          if (repaintShape != null) {
+            //todo: repaint?
+          }
+        }
+      }
+    }
+  }
+
+  private void show() {
+    this.registerKeyboardAction(this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    this.setStencilShowing(true);
+    Toolkit.getDefaultToolkit().addAWTEventListener(this.awtEventListener, AWTEvent.MOUSE_EVENT_MASK);
+
+  }
+
+  private void hide() {
+    Toolkit.getDefaultToolkit().removeAWTEventListener(this.awtEventListener);
+    this.setStencilShowing(false);
+    this.unregisterKeyboardAction(HIDE_KEY_STROKE);
+  }
+
+  public void hideIfNecessary() {
+    if (this.isStencilShowing()) {
+      this.hide();
+    }
+  }
+
+  protected void show(RuntimeResolver<TrackableShape> trackableShapeResolverA, RuntimeResolver<TrackableShape> trackableShapeResolverB, final String noteText) {
+    this.note.removeAllFeatures();
+
+    Painter painter;
+    if (trackableShapeResolverB != null) {
+      painter = OUTLINE_PAINTER;
+    } else {
+      painter = GLOW_PAINTER;
+    }
+    Hole hole = new Hole(trackableShapeResolverA, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
+      @Override
+      protected boolean isPathRenderingDesired() {
+        return (noteText != null) && (noteText.length() > 0);
+      }
+    };
+    this.note.addFeature(hole);
+    this.note.setText(noteText);
+
+    if (trackableShapeResolverB != null) {
+      Hole holeB = new Hole(trackableShapeResolverB, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
+        @Override
+        protected boolean isPathRenderingDesired() {
+          return noteText.length() > 0;
+        }
+      };
+      this.note.addFeature(holeB);
+    }
+    this.note.reset();
+    this.show();
   }
 }
