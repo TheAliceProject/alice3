@@ -55,12 +55,7 @@ import java.awt.geom.Area;
  * @author Dennis Cosgrove
  */
 public class GlowPainter implements Painter {
-  //  private static final int PAD = 4;
-  //  private static final int BOUNDS_PAD = PAD + 64;
-  //  private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
-  //  private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
   private static final int HOLE_BEVEL_THICKNESS = 2;
-  //private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
   private static final Stroke[] HIGHLIGHT_STROKES;
 
   static {
@@ -97,13 +92,7 @@ public class GlowPainter implements Painter {
         g2.setClip(prevClip);
       }
 
-      if (shape instanceof Rectangle) {
-        Rectangle rect = (Rectangle) shape;
-
-        // g2.setPaint( java.awt.Color.GRAY );
-        // g2.draw3DRect(componentBounds.x, componentBounds.y,
-        // componentBounds.width, componentBounds.height, false);
-
+      if (shape instanceof Rectangle rect) {
         int x0 = rect.x;
         int y0 = rect.y;
         int x1 = (rect.x + rect.width) - HOLE_BEVEL_THICKNESS;
@@ -123,8 +112,7 @@ public class GlowPainter implements Painter {
 
   @Override
   public Rectangle getBounds(Shape shape) {
-    Rectangle bounds = shape.getBounds();
     //todo
-    return bounds;
+    return shape.getBounds();
   }
 }

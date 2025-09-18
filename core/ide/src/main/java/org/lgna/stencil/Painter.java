@@ -50,7 +50,7 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public interface Painter {
-  public void paint(Graphics2D g2, Shape shape);
+  void paint(Graphics2D g2, Shape shape);
 
-  public Rectangle getBounds(Shape shape);
+  Rectangle getBounds(Shape shape);
 }

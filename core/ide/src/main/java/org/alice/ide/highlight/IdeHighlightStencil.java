@@ -53,22 +53,28 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
 import org.alice.ide.x.components.AbstractExpressionView;
-import org.lgna.cheshire.simple.ScrollRenderer;
-import org.lgna.cheshire.simple.SimpleScrollRenderer;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.resolvers.RuntimeResolver;
-import org.lgna.croquet.views.*;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.LayerStencil;
+import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
-import org.lgna.stencil.*;
+import org.lgna.stencil.GlowPainter;
+import org.lgna.stencil.Note;
+import org.lgna.stencil.Painter;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -79,8 +85,7 @@ import java.util.List;
 public class IdeHighlightStencil extends LayerStencil {
   private static final Color STENCIL_BASE_COLOR = new Color(181, 140, 140, 150);
   private static final Color STENCIL_LINE_COLOR = new Color(92, 48, 24, 63);
-  private static final Painter GLOW_PAINTER = new GlowPainter(new Color(255, 255, 0, 23));
-  private static final Painter OUTLINE_PAINTER = new BasicPainter(new BasicStroke(2.0f), Color.RED);
+  private static final Painter GLOW_PAINTER = new GlowPainter(new Color(4, 142, 255, 23));
   private static final KeyStroke HIDE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
   private final AWTEventListener awtEventListener = event -> {
     MouseEvent e = (MouseEvent) event;
@@ -88,20 +93,18 @@ public class IdeHighlightStencil extends LayerStencil {
       IdeHighlightStencil.this.hide();
     }
   };
-  private final Paint stencilPaint = this.createStencilPaint();
-  private final ScrollRenderer scrollRenderer = new SimpleScrollRenderer();
+  private final Paint stencilPaint = createStencilPaint();
   private final Note note = new Note();
   private final ActionListener hideAction = e -> hide();
 
   public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
     super(window, layerId);
-    this.note.setActive(true);
-    this.internalAddComponent(this.note);
+    internalAddComponent(note);
   }
 
-  public void showHighlightOverField(final UserField field, String noteText) {
+  public void showHighlightOverField(final UserField field) {
     if (field != null) {
-      this.show(() -> {
+      show(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -119,15 +122,15 @@ public class IdeHighlightStencil extends LayerStencil {
           }
         }
         return null;
-      }, null, noteText);
+      });
     } else {
-      Logger.severe("field is null", noteText);
+      Logger.severe("field is null");
     }
   }
 
-  public void showHighlightOverExpression(final Expression expression, String noteText) {
+  public void showHighlightOverExpression(final Expression expression) {
     if (expression != null) {
-      this.show(() -> {
+      show(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -145,26 +148,24 @@ public class IdeHighlightStencil extends LayerStencil {
                 CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
                 candidate = state.getValue();
               }
-            } else if (component instanceof AbstractExpressionView expressionView) {
+            } else if (component instanceof AbstractExpressionView<?> expressionView) {
               candidate = expressionView.getExpression();
             }
             if (candidate == expression) {
               return component;
-              //              } else {
-              //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
             }
           }
         }
         return null;
-      }, null, noteText);
+      });
     } else {
-      Logger.severe(noteText);
+      Logger.severe("expression is null");
     }
   }
 
-  public void showHighlightOverStatement(final Statement statement, String message) {
+  public void showHighlightOverStatement(final Statement statement) {
     if (statement != null) {
-      this.show(() -> {
+      show(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -177,15 +178,13 @@ public class IdeHighlightStencil extends LayerStencil {
             }
             if (candidate == statement) {
               return component;
-              //              } else {
-              //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
             }
           }
         }
         return null;
-      }, null, message);
+      });
     } else {
-      Logger.severe();
+      Logger.severe("statement is null");
     }
   }
 
@@ -208,14 +207,7 @@ public class IdeHighlightStencil extends LayerStencil {
   protected boolean contains(int x, int y, boolean superContains) {
     if (superContains) {
       Shape shape = this.getLocalBounds();
-      Area area = new Area(shape);
-      for (Feature feature : note.getFeatures()) {
-        Area featureAreaToSubtract = feature.getAreaToSubstractForContains(IdeHighlightStencil.this);
-        if (featureAreaToSubtract != null) {
-          area.subtract(featureAreaToSubtract);
-          shape = area;
-        }
-      }
+      shape = note.getAreaForContains(new Area(shape), IdeHighlightStencil.this);
       return shape.contains(x, y);
     } else {
       return false;
@@ -225,11 +217,6 @@ public class IdeHighlightStencil extends LayerStencil {
   @Override
   protected LayoutManager createLayoutManager(JPanel jPanel) {
     return new FlowLayout() {
-      @Override
-      public void layoutContainer(Container target) {
-        super.layoutContainer(target);
-        note.setLocation(note.calculateLocation(IdeHighlightStencil.this));
-      }
     };
   }
 
@@ -240,14 +227,7 @@ public class IdeHighlightStencil extends LayerStencil {
     Stroke prevStroke = g2.getStroke();
 
     Shape shape = prevClip;
-    Area area = new Area(shape);
-    for (Feature feature : note.getFeatures()) {
-      Area featureAreaToSubtract = feature.getAreaToSubstractForPaint(IdeHighlightStencil.this);
-      if (featureAreaToSubtract != null) {
-        area.subtract(featureAreaToSubtract);
-        shape = area;
-      }
-    }
+    shape = note.getAreaForPaint(new Area(shape), this);
     g2.setPaint(stencilPaint);
     g2.fill(shape);
 
@@ -257,75 +237,35 @@ public class IdeHighlightStencil extends LayerStencil {
 
   @Override
   protected void paintComponentEpilogue(Graphics2D g2) {
-    if (note.isActive()) {
-      for (Feature feature : note.getFeatures()) {
-        feature.paint(g2, IdeHighlightStencil.this, note);
-      }
-    }
+    note.paintFeatures(g2, IdeHighlightStencil.this);
   }
 
   @Override
   protected void paintEpilogue(Graphics2D g2) {
-    if (note.isActive()) {
-      for (Feature feature : note.getFeatures()) {
-        TrackableShape trackableShape = feature.getTrackableShape();
-        if (trackableShape != null && !trackableShape.isInView() && scrollRenderer != null) {
-          Shape repaintShape = scrollRenderer.renderScrollIndicators(g2, IdeHighlightStencil.this, trackableShape);
-          if (repaintShape != null) {
-            //todo: repaint?
-          }
-        }
-      }
-    }
   }
 
   private void show() {
-    this.registerKeyboardAction(this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
-    this.setStencilShowing(true);
+    registerKeyboardAction(this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    setStencilShowing(true);
     Toolkit.getDefaultToolkit().addAWTEventListener(this.awtEventListener, AWTEvent.MOUSE_EVENT_MASK);
 
   }
 
   private void hide() {
     Toolkit.getDefaultToolkit().removeAWTEventListener(this.awtEventListener);
-    this.setStencilShowing(false);
-    this.unregisterKeyboardAction(HIDE_KEY_STROKE);
+    setStencilShowing(false);
+    unregisterKeyboardAction(HIDE_KEY_STROKE);
   }
 
   public void hideIfNecessary() {
-    if (this.isStencilShowing()) {
-      this.hide();
+    if (isStencilShowing()) {
+      hide();
     }
   }
 
-  protected void show(RuntimeResolver<TrackableShape> trackableShapeResolverA, RuntimeResolver<TrackableShape> trackableShapeResolverB, final String noteText) {
-    this.note.removeAllFeatures();
-
-    Painter painter;
-    if (trackableShapeResolverB != null) {
-      painter = OUTLINE_PAINTER;
-    } else {
-      painter = GLOW_PAINTER;
-    }
-    Hole hole = new Hole(trackableShapeResolverA, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
-      @Override
-      protected boolean isPathRenderingDesired() {
-        return (noteText != null) && (!noteText.isEmpty());
-      }
-    };
-    this.note.addFeature(hole);
-    this.note.setText(noteText);
-
-    if (trackableShapeResolverB != null) {
-      Hole holeB = new Hole(trackableShapeResolverB, Feature.ConnectionPreference.NORTH_SOUTH, painter) {
-        @Override
-        protected boolean isPathRenderingDesired() {
-          return !noteText.isEmpty();
-        }
-      };
-      this.note.addFeature(holeB);
-    }
-    this.note.reset();
-    this.show();
+  protected void show(RuntimeResolver<TrackableShape> trackableShapeResolver) {
+    note.removeAllFeatures();
+    note.addFeature(trackableShapeResolver, GLOW_PAINTER);
+    show();
   }
 }

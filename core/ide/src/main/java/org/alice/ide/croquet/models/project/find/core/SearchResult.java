@@ -42,28 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core;
 
-import java.util.List;
-
-import javax.swing.Icon;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
 import org.alice.ide.declarationseditor.DeclarationTabState;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import javax.swing.Icon;
+import java.util.List;
 
 /**
  * @author Matt May
@@ -130,18 +116,18 @@ public class SearchResult {
     assert reference != null;
     if (declaration instanceof AbstractField) {
       assert reference instanceof FieldAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
     } else if (declaration instanceof AbstractMethod) {
       assert reference instanceof MethodInvocation;
       Statement statement = reference.getFirstAncestorAssignableTo(Statement.class);
       assert statement != null;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement(statement, "");
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement(statement);
     } else if (declaration instanceof UserParameter) {
       assert reference instanceof ParameterAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
     } else if (declaration instanceof UserLocal) {
       assert reference instanceof LocalAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
     } else {
       assert false : declaration.getClass();
     }
