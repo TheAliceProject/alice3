@@ -458,6 +458,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
                                       Set<String> unloadableFiles) {
     File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile, isBackup).toFile();
     boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
+    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
 
     unloadableFiles.add(projectFile.getName());
 
@@ -487,7 +488,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       }
     } else {
       if (isMainProjectCorrupted) {
-        backupProjectOperation.showProjectAndAllBackupsLoadErrorDialog(mainProject.getName());
+        if (isDefaultBackup) {
+          backupProjectOperation.showUnsavedBackupsLoadErrorDialog();
+        } else {
+          backupProjectOperation.showProjectAndAllBackupsLoadErrorDialog(mainProject.getName());
+        }
       } else {
         if (backupProjectOperation.showProjectLoadRecentBackupsErrorAndLoadMainDialog(projectFile.getName())) {
           loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, isMainProjectCorrupted, unloadableFiles);
@@ -518,9 +523,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       }
     }
 
-    boolean defaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
+    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
 
-    if (defaultBackup) {
+    if (isDefaultBackup) {
       try {
         uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
       } catch (URISyntaxException e) {
@@ -530,7 +535,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     updateInterface(project);
 
-    if (!isLoadingBackups || defaultBackup) {
+    if (!isLoadingBackups || isDefaultBackup) {
       return;
     }
 

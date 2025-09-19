@@ -75,6 +75,13 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         Dialogs.showError(title, message);
     }
 
+    public void showUnsavedBackupsLoadErrorDialog() {
+        String title = findLocalizedText("UnsavedBackupsLoadErrorDialog.title");
+        String message = findLocalizedText("UnsavedBackupsLoadErrorDialog.message");
+
+        Dialogs.showError(title, message);
+    }
+
     public boolean showMoreRecentBackupsDialog() {
         String title = findLocalizedText("MoreRecentBackupsDialog.title");
         String message = findLocalizedText("MoreRecentBackupsDialog.message");
