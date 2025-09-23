@@ -42,12 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.frametitle;
 
-import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import org.alice.ide.IDE;
 import org.alice.ide.uricontent.UriProjectLoader;
 
 import java.io.File;
-import java.net.URI;
 
 /**
  * @author Dennis Cosgrove
@@ -61,21 +59,13 @@ public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
     sb.append(IDE.getVersionAdornment());
     sb.append(" ");
 
-    URI uri = null;
-    URI mainProjectUri = null;
-
     if (projectLoader != null) {
-      uri = projectLoader.getUri();
-      mainProjectUri = projectLoader.getMainProjectUri();
-    }
-
-    if (mainProjectUri != null) {
-      File file = UriUtilities.getFile(mainProjectUri);
+      File file = projectLoader.getMainProjectFile();
       if (file != null) {
         sb.append(file);
       }
       sb.append(" ");
-      if (projectLoader.isBackup(UriUtilities.getFile(uri))) {
+      if (projectLoader.isBackup()) {
         sb.append("(backup) ");
       }
     }

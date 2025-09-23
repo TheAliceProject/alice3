@@ -98,59 +98,39 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
     return makeVrReady;
   }
 
-  public URI getMainProjectUri() {
-    URI uri = getUri();
-    File projectFile = UriUtilities.getFile(getUri());
-
-    if (projectFile != null) {
-      uri = getMainProjectFile(projectFile).toURI();
+  public File getMainProjectFile() {
+    if (isNewProject()) {
+      return null;
     }
 
-    return uri;
+    File projectFile = new File(getUri());
+
+    if (!isBackup()) {
+      return projectFile;
+    }
+
+    File backupDir = projectFile.getParentFile();
+    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
+
+    return projectFile.toPath().getParent().resolveSibling(originalFileName).toFile();
   }
 
-  public boolean isBackup(File f) {
-    if (f == null) {
-      return false;
-    }
-
-    String parentDirExtension = getParentDirExtension(f);
-
+  public boolean isBackup() {
+    String parentDirExtension = getParentDirExtension();
     return BACKUP_EXTENSION.equals(parentDirExtension) || DEFAULT_BACKUP_DIR.equals(parentDirExtension);
   }
 
-  public boolean isDefaultBackup(File f) {
-    if (f == null) {
-      return false;
-    }
-
-    String parentDirExtension = getParentDirExtension(f);
-
-    return DEFAULT_BACKUP_DIR.equals(parentDirExtension);
+  public boolean isDefaultBackup() {
+    return DEFAULT_BACKUP_DIR.equals(getParentDirExtension());
   }
 
-  protected File getMainProjectFile(File f) {
-    if (!isBackup(f)) {
-      return f;
-    }
-
-    File backupDir = f.getParentFile();
-    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
-
-    return f.toPath().getParent().resolveSibling(originalFileName).toFile();
-  }
-
-  protected String getParentDirExtension(File f) {
+  protected String getParentDirExtension() {
     if (isNewProject()) {
       return "";
     }
 
-    File parentDir = f.getParentFile();
+    File parentDir = new File(getUri()).getParentFile();
 
-    if (parentDir == null) {
-      return "";
-    }
-
-    return getExtension(parentDir.getName());
+    return parentDir == null ? "" : getExtension(parentDir.getName());
   }
 }

@@ -39,7 +39,7 @@ public class ProjectFileUtilities {
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
-  private static final int SECONDS_BETWEEN_BACKUPS = 300;
+  private static final int SECONDS_BETWEEN_BACKUPS = 10;
 
   private final ProjectApplication projectApp;
 
@@ -51,10 +51,10 @@ public class ProjectFileUtilities {
     savingService = Executors.newSingleThreadScheduledExecutor();
   }
 
-  final void saveProjectTo(File file) throws IOException {
+  final void saveProjectTo(File file, boolean isBackup) throws IOException {
     saveCopyOfProjectTo(file);
 
-    if (!projectApp.uriProjectLoader.isBackup(file)) {
+    if (!isBackup) {
       backupSavedProject();
     }
   }
@@ -75,10 +75,6 @@ public class ProjectFileUtilities {
   }
 
   final void startAutoSaving() {
-    if (projectApp.uriProjectLoader.isBackup(UriUtilities.getFile(projectApp.getUri()))) {
-      return;
-    }
-
     if (saveFuture != null) {
       saveFuture.cancel(false);
     }
@@ -168,7 +164,7 @@ public class ProjectFileUtilities {
 
   private void backupActiveProject() throws IOException {
     File saved = UriUtilities.getFile(projectApp.getUri());
-    Path backupDir = appropriateBackupDirectory(saved, projectApp.uriProjectLoader.isBackup(saved));
+    Path backupDir = appropriateBackupDirectory(saved);
 
     if (backupDir == null) {
       return;
@@ -205,11 +201,11 @@ public class ProjectFileUtilities {
     return createAndGetBackupDirectory(projectsDir.resolve("." + DEFAULT_BACKUP_DIR));
   }
 
-  public Path appropriateBackupDirectory(File saved, boolean isBackup) {
-    if (projectApp.uriProjectLoader.isNewProject()) {
+  public Path appropriateBackupDirectory(File saved) {
+    if (projectApp.isNewProject()) {
       return defaultBackupDirectory();
     } else if (saved != null) {
-      return backupDirectory(saved, isBackup);
+      return backupDirectory(saved, projectApp.isBackup());
     } else {
       return null;
     }

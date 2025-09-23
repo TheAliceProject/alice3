@@ -94,7 +94,6 @@ import java.util.UUID;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles;
 import static org.alice.ide.ProjectFileUtilities.BACKUP_AUTO;
-import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
 /**
  * @author Dennis Cosgrove
@@ -198,10 +197,18 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     Dialogs.showUnableToOpenFileDialog(file, String.format("%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)", getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
   }
 
-  public UriProjectLoader uriProjectLoader;
+  private UriProjectLoader uriProjectLoader;
 
   public final URI getUri() {
     return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
+  }
+
+  public final boolean isNewProject() {
+    return this.uriProjectLoader != null && this.uriProjectLoader.isNewProject();
+  }
+
+  public final boolean isBackup() {
+    return this.uriProjectLoader != null && this.uriProjectLoader.isBackup();
   }
 
   @Deprecated
@@ -225,61 +232,41 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private int projectHistoryIndexSceneSetUp = 0;
   private int projectHistoryIndexBackups = 0;
 
-  public boolean isProjectUpToDateWithFile() {
+  private boolean isProjectUpToDateWith(int index) {
     UndoHistory history = this.getProjectHistory();
-    if (uriProjectLoader != null && uriProjectLoader.shouldBeSaved()) {
-      return false;
-    }
-    if (history == null) {
-      return true;
-    } else {
-      return this.projectHistoryIndexFile == history.getInsertionIndex();
-    }
+    return history == null || index == history.getInsertionIndex();
+  }
+
+  public boolean isProjectUpToDateWithFile() {
+    return (uriProjectLoader == null || !uriProjectLoader.shouldBeSaved())
+            && isProjectUpToDateWith(projectHistoryIndexFile);
   }
 
   protected boolean isProjectUpToDateWithSceneSetUp() {
-    UndoHistory history = this.getProjectHistory();
-    if (history == null) {
-      return true;
-    } else {
-      return this.projectHistoryIndexSceneSetUp == history.getInsertionIndex();
-    }
+    return isProjectUpToDateWith(projectHistoryIndexSceneSetUp);
   }
 
   protected boolean isProjectUpToDateWithBackups() {
+    return isProjectUpToDateWith(projectHistoryIndexBackups);
+  }
+
+  private int getHistoryIndex() {
     UndoHistory history = this.getProjectHistory();
-    if (history == null) {
-      return true;
-    } else {
-      return this.projectHistoryIndexBackups == history.getInsertionIndex();
-    }
+    return history != null ? history.getInsertionIndex() : PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
   }
 
   private void updateHistoryIndexFileSync() {
-    UndoHistory history = this.getProjectHistory();
-    if (history != null) {
-      this.projectHistoryIndexFile = history.getInsertionIndex();
-    } else {
-      this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
-    }
+    this.projectHistoryIndexFile = getHistoryIndex();
     this.updateHistoryIndexSceneSetUpSync();
     this.updateTitle();
   }
 
   protected void updateHistoryIndexSceneSetUpSync() {
-    UndoHistory history = this.getProjectHistory();
-    if (history != null) {
-      this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
-    } else {
-      this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
-    }
+    this.projectHistoryIndexSceneSetUp = getHistoryIndex();
   }
 
   private void updateHistoryIndexBackupSync() {
-    UndoHistory history = this.getProjectHistory();
-    this.projectHistoryIndexBackups = history != null
-            ? history.getInsertionIndex()
-            : PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+    this.projectHistoryIndexBackups = getHistoryIndex();
   }
 
   private IdeFrameTitleGenerator frameTitleGenerator;
@@ -444,7 +431,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       return;
     }
 
-    boolean isBackup = uriProjectLoader.isBackup(saved);
+    boolean isBackup = uriProjectLoader.isBackup();
 
     if (project == null) {
       handleProjectLoadError(saved, activity, isBackup, isLoadingBackups, isMainProjectCorrupted, unloadableFiles);
@@ -456,9 +443,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
                                       boolean isLoadingBackups, boolean isMainProjectCorrupted,
                                       Set<String> unloadableFiles) {
-    File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile, isBackup).toFile();
+    File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile).toFile();
     boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
-    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
+    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
 
     unloadableFiles.add(projectFile.getName());
 
@@ -468,7 +455,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       isMainProjectCorrupted = true;
     }
 
-    File mainProject = getMainProjectFile(projectFile);
+    File mainProject = uriProjectLoader.getMainProjectFile();
     LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(mainProject);
     File backup = getNextBackup(projectModifiedTime, backupDir, isMainProjectCorrupted, unloadableFiles);
 
@@ -509,7 +496,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     } else if (unloadableFiles.isEmpty() && !uriProjectLoader.isNewProject()) {
       // check for backups newer than the project
 
-      File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile, isBackup).toFile();
+      File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile).toFile();
 
       LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
 
@@ -523,7 +510,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       }
     }
 
-    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup(projectFile);
+    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
 
     if (isDefaultBackup) {
       try {
@@ -535,12 +522,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     updateInterface(project);
 
-    if (!isLoadingBackups || isDefaultBackup) {
-      return;
-    }
-
     // If a backup of a saved project was successfully loaded, prompt the user for what to do next
-    createProjectFromBackup(projectFile, getMainProjectFile(projectFile));
+    if (isLoadingBackups && !isDefaultBackup) {
+      createProjectFromBackup(projectFile, uriProjectLoader.getMainProjectFile());
+    }
   }
 
   private void handleProjectLoadException(RuntimeException re, UserActivity activity) {
@@ -591,17 +576,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         loadProject(newProjectActivity(), new FileProjectLoader(original, uriProjectLoader.shouldMakeVrReady()));
       }
     };
-  }
-
-  private File getMainProjectFile(File f) {
-    if (!uriProjectLoader.isBackup(f)) {
-      return f;
-    }
-
-    File backupDir = f.getParentFile();
-    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
-
-    return f.toPath().getParent().resolveSibling(originalFileName).toFile();
   }
 
   private File getNextBackup(LocalDateTime modifiedTime, File backupDir, boolean isMainProjectCorrupted, Set<String> unloadableFiles) {
@@ -678,26 +652,28 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     updateHistoryIndexFileSync();
     updateUndoRedoEnabled();
-    projectFileUtilities.startAutoSaving();
+
+    if (!uriProjectLoader.isBackup()) {
+      projectFileUtilities.startAutoSaving();
+    }
   }
 
   protected abstract BufferedImage createThumbnail() throws Throwable;
 
   public final void saveProjectTo(File file) throws IOException {
-    File originalFile = UriUtilities.getFile(getUri());
-
+    FileProjectLoader nextLoader = new FileProjectLoader(file);
     boolean savingNewProject = uriProjectLoader.isNewProject()
-            || (uriProjectLoader.isDefaultBackup(originalFile) && !uriProjectLoader.isDefaultBackup(file));
+            || (uriProjectLoader.isDefaultBackup() && !nextLoader.isDefaultBackup());
 
     if (savingNewProject) {
       projectFileUtilities.renameDefaultBackupDirectory(file);
     }
 
-    uriProjectLoader = new FileProjectLoader(file);
+    uriProjectLoader = nextLoader;
 
     //    long startTime = System.currentTimeMillis();
 
-    projectFileUtilities.saveProjectTo(file);
+    projectFileUtilities.saveProjectTo(file, uriProjectLoader.isBackup());
 
     if (savingNewProject) {
       updateInterface(getUpToDateProject());
