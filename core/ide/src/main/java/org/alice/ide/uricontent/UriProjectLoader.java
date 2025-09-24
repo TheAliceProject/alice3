@@ -99,7 +99,7 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
   }
 
   public File getMainProjectFile() {
-    if (isNewProject()) {
+    if (isNewProject() || isDefaultBackup()) {
       return null;
     }
 

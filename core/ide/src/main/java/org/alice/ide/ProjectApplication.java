@@ -472,6 +472,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     if (backup != null) {
       if (backupProjectOperation.showProjectLoadErrorAndLoadBackupDialog(projectFile.getName(), isBackup)) {
         loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, isMainProjectCorrupted, unloadableFiles);
+      } else {
+        showNewProjectOperation();
       }
     } else {
       if (isMainProjectCorrupted) {
@@ -480,6 +482,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         } else {
           backupProjectOperation.showProjectAndAllBackupsLoadErrorDialog(mainProject.getName());
         }
+        showNewProjectOperation();
       } else {
         if (backupProjectOperation.showProjectLoadRecentBackupsErrorAndLoadMainDialog(projectFile.getName())) {
           loadProject(newProjectActivity(), new FileProjectLoader(mainProject, makeVrReady), false, isMainProjectCorrupted, unloadableFiles);
@@ -512,14 +515,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
 
-    if (isDefaultBackup) {
-      try {
-        uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
-      } catch (URISyntaxException e) {
-        Logger.throwable(e, uriProjectLoader);
-      }
-    }
-
     updateInterface(project);
 
     // If a backup of a saved project was successfully loaded, prompt the user for what to do next
@@ -543,6 +538,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     uriProjectLoader = null;
     activity.cancel(new CancelException(re));
     Dialogs.showError("Unable to Load Project", message.toString());
+    showNewProjectOperation();
+  }
+
+  private void showNewProjectOperation() {
     setPerspective(getDocumentFrame().getNoProjectPerspective());
     UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
     getDocumentFrame().getNewProjectOperation().fire(newActivity);
@@ -562,13 +561,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         }
       }
       case NO -> {
-        // when the user saves it, create a new project from this one
-
-        try {
-          uriProjectLoader = new StarterProjectFileLoader(new URI("starterfile:/"), uriProjectLoader.shouldMakeVrReady());
-        } catch (URISyntaxException e) {
-          Logger.throwable(e, uriProjectLoader);
-        }
+        // Do nothing for now
+        // When the user saves, a new project will be created from this one
       }
       case CANCEL -> {
         // load the main project file

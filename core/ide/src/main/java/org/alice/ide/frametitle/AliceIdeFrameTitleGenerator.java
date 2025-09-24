@@ -59,17 +59,15 @@ public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
     sb.append(IDE.getVersionAdornment());
     sb.append(" ");
 
+    boolean isBackup = false;
     if (projectLoader != null) {
+      isBackup = projectLoader.isBackup();
       File file = projectLoader.getMainProjectFile();
       if (file != null) {
         sb.append(file);
       }
-      sb.append(" ");
-      if (projectLoader.isBackup()) {
-        sb.append("(backup) ");
-      }
     }
-    if (!isDocumentUpToDateWithUri) {
+    if (isBackup || !isDocumentUpToDateWithUri) {
       sb.append("*");
     }
 
