@@ -53,6 +53,7 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
 import org.alice.ide.x.components.AbstractExpressionView;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.resolvers.RuntimeResolver;
@@ -63,18 +64,12 @@ import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
-import org.lgna.stencil.GlowPainter;
-import org.lgna.stencil.Note;
-import org.lgna.stencil.Painter;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -86,6 +81,13 @@ public class IdeHighlightStencil extends LayerStencil {
   private static final Color STENCIL_BASE_COLOR = new Color(181, 140, 140, 150);
   private static final Color STENCIL_LINE_COLOR = new Color(92, 48, 24, 63);
   private static final Painter GLOW_PAINTER = new GlowPainter(new Color(4, 142, 255, 23));
+
+  private static final int PAD = 4;
+  private static final Insets PAINT_INSETS = new Insets(PAD, PAD, PAD, PAD);
+
+  private RuntimeResolver<? extends TrackableShape> trackableShapeResolver;
+  private TrackableShape trackableShape;
+
   private static final KeyStroke HIDE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
   private final AWTEventListener awtEventListener = event -> {
     MouseEvent e = (MouseEvent) event;
@@ -94,17 +96,15 @@ public class IdeHighlightStencil extends LayerStencil {
     }
   };
   private final Paint stencilPaint = createStencilPaint();
-  private final Note note = new Note();
   private final ActionListener hideAction = e -> hide();
 
   public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
     super(window, layerId);
-    internalAddComponent(note);
   }
 
   public void showHighlightOverField(final UserField field) {
     if (field != null) {
-      show(() -> {
+      setResolver(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -130,7 +130,7 @@ public class IdeHighlightStencil extends LayerStencil {
 
   public void showHighlightOverExpression(final Expression expression) {
     if (expression != null) {
-      show(() -> {
+      setResolver(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -165,7 +165,7 @@ public class IdeHighlightStencil extends LayerStencil {
 
   public void showHighlightOverStatement(final Statement statement) {
     if (statement != null) {
-      show(() -> {
+      setResolver(() -> {
         DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
         if (declarationComposite != null) {
           DeclarationView view = declarationComposite.getView();
@@ -203,11 +203,39 @@ public class IdeHighlightStencil extends LayerStencil {
     return new TexturePaint(image, new Rectangle(0, 0, width, height));
   }
 
+  private Shape getVisibleShape(AwtComponentView<?> asSeenBy, Insets insets) {
+    if (trackableShape != null && trackableShape.isInView()) {
+      return trackableShape.getVisibleShape(asSeenBy, insets);
+    } else {
+      return null;
+    }
+  }
+
+  private Area getAreaForContains(Area area, AwtComponentView<?> asSeenBy) {
+    if (trackableShapeResolver != null) {
+      Shape featureAreaToSubtract = this.getVisibleShape(asSeenBy, null);
+      if (featureAreaToSubtract != null) {
+        area.subtract(new Area(featureAreaToSubtract));
+      }
+    }
+    return area;
+  }
+
+  private Area getAreaForPaint(Area area, AwtComponentView<?> asSeenBy) {
+    if (trackableShapeResolver != null) {
+      Shape featureAreaToSubtract = this.getVisibleShape(asSeenBy, PAINT_INSETS);
+      if (featureAreaToSubtract != null) {
+        area.subtract(new Area(featureAreaToSubtract));
+      }
+    }
+    return area;
+  }
+
   @Override
   protected boolean contains(int x, int y, boolean superContains) {
     if (superContains) {
       Shape shape = this.getLocalBounds();
-      shape = note.getAreaForContains(new Area(shape), IdeHighlightStencil.this);
+      shape = getAreaForContains(new Area(shape), IdeHighlightStencil.this);
       return shape.contains(x, y);
     } else {
       return false;
@@ -227,7 +255,7 @@ public class IdeHighlightStencil extends LayerStencil {
     Stroke prevStroke = g2.getStroke();
 
     Shape shape = prevClip;
-    shape = note.getAreaForPaint(new Area(shape), this);
+    shape = getAreaForPaint(new Area(shape), this);
     g2.setPaint(stencilPaint);
     g2.fill(shape);
 
@@ -237,7 +265,14 @@ public class IdeHighlightStencil extends LayerStencil {
 
   @Override
   protected void paintComponentEpilogue(Graphics2D g2) {
-    note.paintFeatures(g2, IdeHighlightStencil.this);
+    Shape shape = getVisibleShape(IdeHighlightStencil.this, null);
+    if (shape != null) {
+      Paint prevPaint = g2.getPaint();
+      Stroke prevStroke = g2.getStroke();
+      GLOW_PAINTER.paint(g2, shape);
+      g2.setStroke(prevStroke);
+      g2.setPaint(prevPaint);
+    }
   }
 
   @Override
@@ -263,9 +298,60 @@ public class IdeHighlightStencil extends LayerStencil {
     }
   }
 
-  protected void show(RuntimeResolver<TrackableShape> trackableShapeResolver) {
-    note.removeAllFeatures();
-    note.addFeature(trackableShapeResolver, GLOW_PAINTER);
+  private void setResolver(RuntimeResolver<TrackableShape> resolver) {
+    trackableShapeResolver = resolver;
+    trackableShape = null;
+    TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
+    if (nextTrackableShape != this.trackableShape) {
+      Logger.info("trackableShape change");
+      if (this.trackableShape != null) {
+        this.trackableShape.removeHierarchyBoundsListener(this.hierarchyBoundsListener);
+        this.trackableShape.removeComponentListener(this.componentListener);
+      }
+      this.trackableShape = nextTrackableShape;
+      if (this.trackableShape != null) {
+        this.trackableShape.addComponentListener(this.componentListener);
+        this.trackableShape.addHierarchyBoundsListener(this.hierarchyBoundsListener);
+      }
+    }
     show();
   }
+
+  // this is highlighting things way outside the scope of our little view, we have to repaint a lot
+
+  private static void repaintAll() {
+    Application.getActiveInstance().getDocumentFrame().getFrame().getContentPane().repaint();
+  }
+
+  private final HierarchyBoundsListener hierarchyBoundsListener = new HierarchyBoundsListener() {
+    @Override
+    public void ancestorMoved(HierarchyEvent e) {
+      repaintAll();
+    }
+
+    @Override
+    public void ancestorResized(HierarchyEvent e) {
+      repaintAll();
+    }
+  };
+  private final ComponentListener componentListener = new ComponentListener() {
+    @Override
+    public void componentShown(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+      repaintAll();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+      repaintAll();
+    }
+  };
+
 }

@@ -40,71 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.stencil;
+package org.alice.ide.highlight;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.resolvers.RuntimeResolver;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TrackableShape;
-
-import javax.swing.JPanel;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Area;
-import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Note extends SwingComponentView<JPanel> {
-  private final List<Feature> features = Lists.newCopyOnWriteArrayList();
+public class GlowPainter implements Painter {
+  private static final int HOLE_BEVEL_THICKNESS = 2;
+  private static final Stroke[] HIGHLIGHT_STROKES;
 
-  public void addFeature(RuntimeResolver<? extends TrackableShape> trackableShapeResolver, Painter painter) {
-    this.features.add(new Feature(trackableShapeResolver, painter));
-    update();
-  }
-
-  public void removeAllFeatures() {
-    this.features.clear();
-  }
-
-  public void paintFeatures(Graphics2D g2, AwtComponentView<?> view) {
-    for (Feature feature : features) {
-      feature.paint(g2, view);
+  static {
+    final int N = 8;
+    HIGHLIGHT_STROKES = new Stroke[N];
+    for (int i = 0; i < N; i++) {
+      HIGHLIGHT_STROKES[i] = new BasicStroke((i + 1) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     }
   }
 
-  public Area getAreaForContains(Area area, AwtComponentView<?> view) {
-    for (Feature feature : features) {
-      Shape featureAreaToSubtract = feature.getShapeToSubtractForContains(view);
-        if (featureAreaToSubtract != null) {
-        area.subtract(new Area(featureAreaToSubtract));
-      }
-    }
-    return area;
-  }
+  private final Paint paint;
 
-  public Area getAreaForPaint(Area area, AwtComponentView<?> view) {
-    for (Feature feature : features) {
-      Shape featureAreaToSubtract = feature.getShapeToSubtractForPaint(view);
-      if (featureAreaToSubtract != null) {
-        area.subtract(new Area(featureAreaToSubtract));
-      }
-    }
-    return area;
+  public GlowPainter(Paint paint) {
+    this.paint = paint;
   }
 
   @Override
-  protected JPanel createAwtComponent() {
-    JPanel rv = new JPanel();
-    rv.setOpaque(false);
-    return rv;
+  public void paint(Graphics2D g2, Shape shape) {
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
+    try {
+      Shape prevClip = g2.getClip();
+      Area area = new Area(prevClip);
+      area.subtract(new Area(shape));
+      try {
+        g2.setClip(area);
+        g2.setPaint(paint);
+        for (Stroke stroke : HIGHLIGHT_STROKES) {
+          g2.setStroke(stroke);
+          g2.draw(shape);
+        }
+
+      } finally {
+        g2.setClip(prevClip);
+      }
+
+      if (shape instanceof Rectangle rect) {
+        int x0 = rect.x;
+        int y0 = rect.y;
+        int x1 = (rect.x + rect.width) - HOLE_BEVEL_THICKNESS;
+        int y1 = (rect.y + rect.height) - HOLE_BEVEL_THICKNESS;
+        g2.setPaint(Color.DARK_GRAY);
+        g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
+        g2.setPaint(Color.WHITE);
+        g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
+      }
+    } finally {
+      g2.setStroke(prevStroke);
+      g2.setPaint(prevPaint);
+    }
   }
 
-  public void update() {
-    for (Feature feature : this.features) {
-      feature.updateShape();
-    }
+  @Override
+  public Rectangle getBounds(Shape shape) {
+    //todo
+    return shape.getBounds();
   }
 }
