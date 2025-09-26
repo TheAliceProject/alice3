@@ -57,7 +57,6 @@ import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -174,29 +173,7 @@ public class TypeEditor extends BorderPanel {
     //    }
     headerTrailingComponent.setBorder(BorderFactory.createEmptyBorder(2, 2, 0, 2));
 
-    final boolean IS_CUSTOM_DRAWING_DESIRED = false;
-    if (IS_CUSTOM_DRAWING_DESIRED) {
-      this.tabbedPane = new FolderTabbedPane<DeclarationComposite<?, ?>>(composite.getTabState()) {
-        @Override
-        protected TitlesPanel createTitlesPanel() {
-          return new TitlesPanel() {
-            @Override
-            protected JPanel createJPanel() {
-              return new JTitlesPanel() {
-                @Override
-                public void paint(Graphics g) {
-                  super.paint(g);
-                  g.setColor(Color.RED);
-                  g.drawString("possibilities abound", 100, 10);
-                }
-              };
-            }
-          };
-        }
-      };
-    } else {
-      this.tabbedPane = composite.getTabState().createFolderTabbedPane();
-    }
+    this.tabbedPane = composite.getTabState().createFolderTabbedPane();
     this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
     this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
