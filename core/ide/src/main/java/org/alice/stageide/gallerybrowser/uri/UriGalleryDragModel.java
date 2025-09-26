@@ -94,17 +94,10 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class UriGalleryDragModel extends ResourceGalleryDragModel {
-  //public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
-
   private static InitializingIfAbsentMap<URI, UriGalleryDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static UriGalleryDragModel getInstance(URI uri) {
-    return map.getInitializingIfAbsent(uri, new InitializingIfAbsentMap.Initializer<URI, UriGalleryDragModel>() {
-      @Override
-      public UriGalleryDragModel initialize(URI uri) {
-        return new UriGalleryDragModel(uri);
-      }
-    });
+    return map.getInitializingIfAbsent(uri, UriGalleryDragModel::new);
   }
 
   private final URI uri;
@@ -185,8 +178,8 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
         TypeSummary typeSummary = this.getTypeSummary();
         if (typeSummary != null) {
           List<String> hierarchyClsNames = typeSummary.getHierarchyClassNames();
-          if (hierarchyClsNames.size() > 0) {
-            String clsName = hierarchyClsNames.get(hierarchyClsNames.size() - 1);
+          if (!hierarchyClsNames.isEmpty()) {
+            String clsName = hierarchyClsNames.getLast();
             this.thingCls = Class.forName(clsName);
           }
         } else {
@@ -218,7 +211,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
     if (typeSummary != null) {
       StringBuilder sb = new StringBuilder();
       List<String> procedureNames = typeSummary.getProcedureNames();
-      if (procedureNames.size() > 0) {
+      if (!procedureNames.isEmpty()) {
         this.appendStartIfNecessary(sb);
         sb.append("<em>procedures:</em><ul>");
         for (String procedureName : procedureNames) {
@@ -230,7 +223,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
       }
 
       List<FunctionInfo> functionInfos = typeSummary.getFunctionInfos();
-      if (functionInfos.size() > 0) {
+      if (!functionInfos.isEmpty()) {
         this.appendStartIfNecessary(sb);
         sb.append("<em>functions:</em><ul>");
         for (FunctionInfo functionInfo : functionInfos) {
@@ -243,7 +236,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
         sb.append("</ul>");
       }
       List<FieldInfo> fieldInfos = typeSummary.getFieldInfos();
-      if (fieldInfos.size() > 0) {
+      if (!fieldInfos.isEmpty()) {
         this.appendStartIfNecessary(sb);
         sb.append("<em>properties:</em><ul>");
         for (FieldInfo fieldInfo : fieldInfos) {
@@ -299,35 +292,26 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   @Override
-  public final String getText() {
+  public String getText() {
     return this.text;
   }
 
   @Override
   public AxisAlignedBox getBoundingBox() {
     InstanceCreatorKey resourceKey = getResourceKey();
-    if (resourceKey != null) {
-      return resourceKey.getBoundingBox();
-    } else {
-      return null;
-    }
+    return resourceKey != null ? resourceKey.getBoundingBox() : null;
   }
 
   @Override
   public boolean placeOnGround() {
     InstanceCreatorKey resourceKey = this.getResourceKey();
-    if (resourceKey != null) {
-      return resourceKey.getPlaceOnGround();
-    } else {
-      return false;
-    }
+    return resourceKey != null && resourceKey.getPlaceOnGround();
   }
 
   @Override
   public List<ResourceNode> getNodeChildren() {
     ResourceKey resourceKey = this.getResourceKey();
-    if (resourceKey instanceof ClassResourceKey) {
-      ClassResourceKey classResourceKey = (ClassResourceKey) resourceKey;
+    if (resourceKey instanceof ClassResourceKey classResourceKey) {
       Class<? extends ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
       Class<?> thingCls = this.getThingCls();
       if (modelResourceClass != null) {
@@ -360,8 +344,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
     ResourceKey resourceKey = this.getResourceKey();
     if (resourceKey instanceof EnumConstantResourceKey) {
       return this.getLeftButtonClickOperation(null);
-    } else if (resourceKey instanceof ClassResourceKey) {
-      ClassResourceKey classResourceKey = (ClassResourceKey) resourceKey;
+    } else if (resourceKey instanceof ClassResourceKey classResourceKey) {
       if (classResourceKey.isLeaf()) {
         //should not happen
         return null;
@@ -395,16 +378,10 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
           base = EmptyIconFactory.getInstance();
         }
       }
-      //this.iconFactory = new org.alice.stageide.icons.UriGalleryIconFactory( this.uri, base, getDefaultLargeIconSize(), this.getIconSize() );
       this.iconFactory = base;
     }
     return this.iconFactory;
   }
-
-  //  @Override
-  //  public java.awt.Dimension getIconSize() {
-  //    return URI_LARGE_ICON_SIZE;
-  //  }
 
   @Override
   protected void appendRepr(StringBuilder sb) {
