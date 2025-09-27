@@ -44,7 +44,6 @@ package org.alice.ide.members.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder;
 import org.alice.ide.ast.EmptyExpression;
 import org.alice.ide.common.AbstractArgumentListPropertyPane;
 import org.alice.ide.common.EmptyExpressionPane;
@@ -56,6 +55,8 @@ import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 
+import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -71,7 +72,7 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
   protected AwtComponentView<?> createComponent(SimpleArgument argument) {
     LineAxisPanel rv = new LineAxisPanel();
     rv.setBackgroundColor(new Color(255, 255, 255, 127));
-    rv.setBorder(new OutlinedBorder(1, 4, 1, 4, Color.LIGHT_GRAY));
+    rv.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Block.Foreground.Color"), 1));
 
     String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
     //edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );

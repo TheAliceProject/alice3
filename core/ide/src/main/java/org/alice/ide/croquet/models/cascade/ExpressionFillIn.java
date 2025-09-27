@@ -46,7 +46,6 @@ package org.alice.ide.croquet.models.cascade;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.javax.swing.LabelUtilities;
-import edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.CascadeBlank;
@@ -54,6 +53,7 @@ import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -98,7 +98,7 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       }
       rv.add(expressionPane);
       if (trailingLabel != null) {
-        trailingLabel.setBorder(new EmptyBorder(0, 16, 0, 0));
+        trailingLabel.setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 0));
         rv.add(trailingLabel);
       }
       return rv;
