@@ -253,6 +253,10 @@ public class FileUtilities {
   }
 
   public static LocalDateTime getModifiedDateTime(File f) {
+    if (f == null) {
+      return LocalDateTime.MIN;
+    }
+
     try {
       FileTime fileTime = Files.getLastModifiedTime(f.toPath());
       return LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
