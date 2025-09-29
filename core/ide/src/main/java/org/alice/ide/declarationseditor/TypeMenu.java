@@ -47,15 +47,10 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import org.alice.ide.IDE;
-import org.alice.ide.ast.declaration.AddFunctionComposite;
-import org.alice.ide.ast.declaration.AddProcedureComposite;
-import org.alice.ide.ast.declaration.AddUnmanagedFieldComposite;
-import org.alice.ide.ast.declaration.ManagedEditFieldComposite;
-import org.alice.ide.ast.declaration.UnmanagedEditFieldComposite;
+import org.alice.ide.ast.declaration.*;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
 import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
-import org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StandardMenuItemPrepModel;
@@ -63,11 +58,7 @@ import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.ViewController;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
@@ -201,12 +192,8 @@ public class TypeMenu extends MenuModel {
         models.add(ManagedFieldsSeparator.getInstance());
         models.addAll(managedFieldModels);
       }
-      final boolean IS_SHOW_ME_HOW_PREFERRED = false;
-      if (IS_SHOW_ME_HOW_PREFERRED) {
-        models.add(ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel());
-      } else {
-        models.add(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel());
-      }
+      // quite possibly our least used way to add an object into the scene!
+      models.add(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel());
     }
 
     models.add(SEPARATOR);

@@ -52,15 +52,14 @@ import org.alice.ide.croquet.components.ExpressionDropDown;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.type.components.TypeDeclarationView;
-import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.x.components.AbstractExpressionView;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.resolvers.RuntimeResolver;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.LayerStencil;
 import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
@@ -68,196 +67,291 @@ import org.lgna.project.ast.UserField;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IdeHighlightStencil extends HighlightStencil {
+public class IdeHighlightStencil extends LayerStencil {
+  private static final Color STENCIL_BASE_COLOR = new Color(181, 140, 140, 150);
+  private static final Color STENCIL_LINE_COLOR = new Color(92, 48, 24, 63);
+  private static final Painter GLOW_PAINTER = new GlowPainter(new Color(4, 142, 255, 23));
+
+  private static final int PAD = 4;
+  private static final Insets PAINT_INSETS = new Insets(PAD, PAD, PAD, PAD);
+
+  private RuntimeResolver<? extends TrackableShape> trackableShapeResolver;
+  private TrackableShape trackableShape;
+
+  private static final KeyStroke HIDE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+  private final AWTEventListener awtEventListener = event -> {
+    MouseEvent e = (MouseEvent) event;
+    if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      IdeHighlightStencil.this.hide();
+    }
+  };
+  private final Paint stencilPaint = createStencilPaint();
+  private final ActionListener hideAction = e -> hide();
+
   public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
     super(window, layerId);
   }
 
-  public void showHighlightOverField(final UserField field, String noteText) {
+  public void showHighlightOverField(final UserField field) {
     if (field != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-            if (view instanceof TypeDeclarationView) {
-              List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
-              for (JPanel jPanel : jPanels) {
-                AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-                if (component instanceof FieldDeclarationPane) {
-                  FieldDeclarationPane fieldDeclarationPane = (FieldDeclarationPane) component;
-                  UserField candidate = fieldDeclarationPane.getField();
-                  if (candidate == field) {
-                    return fieldDeclarationPane;
-                  }
-                }
-              }
-            }
-          }
-          return null;
-        }
-      }, null, noteText);
-    } else {
-      Logger.severe("field is null", noteText);
-    }
-  }
-
-  public void showHighlightOverExpression(final Expression expression, String noteText) {
-    if (expression != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-
-            List<AbstractButton> jButtons = ComponentUtilities.findAllMatches(view.getAwtComponent(), AbstractButton.class);
-            for (AbstractButton jButton : jButtons) {
-              Expression candidate = null;
-              AwtComponentView<?> component = AwtComponentView.lookup(jButton);
-              if (component instanceof ExpressionPropertyDropDownPane) {
-                ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (ExpressionPropertyDropDownPane) component;
-                candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
-              } else if (component instanceof ExpressionDropDown) {
-                ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>) component;
-                CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
-                if (completionModel instanceof CustomItemState) {
-                  CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
-                  candidate = state.getValue();
-                }
-              } else if (component instanceof AbstractExpressionView) {
-                AbstractExpressionView expressionView = (AbstractExpressionView) component;
-                candidate = expressionView.getExpression();
-              }
-              if (candidate == expression) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-              }
-            }
-          }
-          return null;
-        }
-      }, null, noteText);
-    } else {
-      Logger.severe(noteText);
-    }
-  }
-
-  public void showHighlightOverStatement(final Statement statement, String message) {
-    if (statement != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
+      setResolver(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
+          if (view instanceof TypeDeclarationView) {
             List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
             for (JPanel jPanel : jPanels) {
-              Statement candidate = null;
               AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-              if (component instanceof AbstractStatementPane) {
-                AbstractStatementPane statementPane = (AbstractStatementPane) component;
-                candidate = statementPane.getStatement();
-              }
-              if (candidate == statement) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+              if (component instanceof FieldDeclarationPane fieldDeclarationPane) {
+                UserField candidate = fieldDeclarationPane.getField();
+                if (candidate == field) {
+                  return fieldDeclarationPane;
+                }
               }
             }
           }
-          return null;
         }
-      }, null, message);
+        return null;
+      });
     } else {
-      Logger.severe();
+      Logger.severe("field is null");
     }
   }
 
-  public void showHighlightOverCroquetViewController(final Model model, String noteText) {
-    if (model != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-          if (component == null) {
-            Logger.errln("cannot resolve first component for", model);
+  public void showHighlightOverExpression(final Expression expression) {
+    if (expression != null) {
+      setResolver(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
+
+          List<AbstractButton> jButtons = ComponentUtilities.findAllMatches(view.getAwtComponent(), AbstractButton.class);
+          for (AbstractButton jButton : jButtons) {
+            Expression candidate = null;
+            AwtComponentView<?> component = AwtComponentView.lookup(jButton);
+            if (component instanceof ExpressionPropertyDropDownPane expressionPropertyDropDownPane) {
+              candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
+            } else if (component instanceof ExpressionDropDown) {
+              ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>) component;
+              CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
+              if (completionModel instanceof CustomItemState) {
+                CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
+                candidate = state.getValue();
+              }
+            } else if (component instanceof AbstractExpressionView<?> expressionView) {
+              candidate = expressionView.getExpression();
+            }
+            if (candidate == expression) {
+              return component;
+            }
           }
-          return component;
         }
-      }, null, noteText);
+        return null;
+      });
     } else {
-      Logger.severe(noteText);
+      Logger.severe("expression is null");
     }
   }
 
-  private TrackableShape getRenderWindow() {
-    ProjectPerspective perspective = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().getValue();
-    if (perspective != null) {
-      return perspective.getRenderWindow();
+  public void showHighlightOverStatement(final Statement statement) {
+    if (statement != null) {
+      setResolver(() -> {
+        DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+        if (declarationComposite != null) {
+          DeclarationView view = declarationComposite.getView();
+          List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+          for (JPanel jPanel : jPanels) {
+            Statement candidate = null;
+            AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+            if (component instanceof AbstractStatementPane statementPane) {
+              candidate = statementPane.getStatement();
+            }
+            if (candidate == statement) {
+              return component;
+            }
+          }
+        }
+        return null;
+      });
+    } else {
+      Logger.severe("statement is null");
+    }
+  }
+
+  protected Paint createStencilPaint() {
+    int width = 8;
+    int height = 8;
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = (Graphics2D) image.getGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+    g2.setColor(STENCIL_BASE_COLOR);
+    g2.fillRect(0, 0, width, height);
+    g2.setColor(STENCIL_LINE_COLOR);
+    g2.drawLine(0, height, width, 0);
+    g2.fillRect(0, 0, 1, 1);
+    g2.dispose();
+    return new TexturePaint(image, new Rectangle(0, 0, width, height));
+  }
+
+  private Shape getVisibleShape(AwtComponentView<?> asSeenBy, Insets insets) {
+    if (trackableShape != null && trackableShape.isInView()) {
+      return trackableShape.getVisibleShape(asSeenBy, insets);
     } else {
       return null;
     }
   }
 
-  public void showHighlightOverStatementAndRenderWindow(final Statement statement) {
-    if (statement != null) {
-      this.show(new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-          if (declarationComposite != null) {
-            DeclarationView view = declarationComposite.getView();
-            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
-            for (JPanel jPanel : jPanels) {
-              Statement candidate = null;
-              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
-              if (component instanceof AbstractStatementPane) {
-                AbstractStatementPane statementPane = (AbstractStatementPane) component;
-                candidate = statementPane.getStatement();
-              }
-              if (candidate == statement) {
-                return component;
-                //              } else {
-                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-              }
-            }
-          }
-          return null;
-        }
-      }, new RuntimeResolver<TrackableShape>() {
-        @Override
-        public TrackableShape getResolved() {
-          return getRenderWindow();
-        }
-      }, "");
+  private Area getAreaForContains(Area area, AwtComponentView<?> asSeenBy) {
+    if (trackableShapeResolver != null) {
+      Shape featureAreaToSubtract = this.getVisibleShape(asSeenBy, null);
+      if (featureAreaToSubtract != null) {
+        area.subtract(new Area(featureAreaToSubtract));
+      }
+    }
+    return area;
+  }
+
+  private Area getAreaForPaint(Area area, AwtComponentView<?> asSeenBy) {
+    if (trackableShapeResolver != null) {
+      Shape featureAreaToSubtract = this.getVisibleShape(asSeenBy, PAINT_INSETS);
+      if (featureAreaToSubtract != null) {
+        area.subtract(new Area(featureAreaToSubtract));
+      }
+    }
+    return area;
+  }
+
+  @Override
+  protected boolean contains(int x, int y, boolean superContains) {
+    if (superContains) {
+      Shape shape = this.getLocalBounds();
+      shape = getAreaForContains(new Area(shape), IdeHighlightStencil.this);
+      return shape.contains(x, y);
     } else {
-      Logger.severe();
+      return false;
     }
   }
 
-  public void showHighlightOverCroquetViewControllerAndRenderWindow(final Model model) {
-    this.show(new RuntimeResolver<TrackableShape>() {
-      @Override
-      public TrackableShape getResolved() {
-        AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
-        if (component == null) {
-          Logger.errln("cannot resolve first component for", model);
-        }
-        return component;
-      }
-    }, new RuntimeResolver<TrackableShape>() {
-      @Override
-      public TrackableShape getResolved() {
-        return getRenderWindow();
-      }
-    }, "");
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new FlowLayout() {
+    };
   }
+
+  @Override
+  protected void paintComponentPrologue(Graphics2D g2) {
+    Shape prevClip = g2.getClip();
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
+
+    Shape shape = prevClip;
+    shape = getAreaForPaint(new Area(shape), this);
+    g2.setPaint(stencilPaint);
+    g2.fill(shape);
+
+    g2.setStroke(prevStroke);
+    g2.setPaint(prevPaint);
+  }
+
+  @Override
+  protected void paintComponentEpilogue(Graphics2D g2) {
+    Shape shape = getVisibleShape(IdeHighlightStencil.this, null);
+    if (shape != null) {
+      Paint prevPaint = g2.getPaint();
+      Stroke prevStroke = g2.getStroke();
+      GLOW_PAINTER.paint(g2, shape);
+      g2.setStroke(prevStroke);
+      g2.setPaint(prevPaint);
+    }
+  }
+
+  @Override
+  protected void paintEpilogue(Graphics2D g2) {
+  }
+
+  private void show() {
+    registerKeyboardAction(this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+    setStencilShowing(true);
+    Toolkit.getDefaultToolkit().addAWTEventListener(this.awtEventListener, AWTEvent.MOUSE_EVENT_MASK);
+
+  }
+
+  private void hide() {
+    Toolkit.getDefaultToolkit().removeAWTEventListener(this.awtEventListener);
+    setStencilShowing(false);
+    unregisterKeyboardAction(HIDE_KEY_STROKE);
+  }
+
+  public void hideIfNecessary() {
+    if (isStencilShowing()) {
+      hide();
+    }
+  }
+
+  private void setResolver(RuntimeResolver<TrackableShape> resolver) {
+    trackableShapeResolver = resolver;
+    trackableShape = null;
+    TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
+    if (nextTrackableShape != this.trackableShape) {
+      Logger.info("trackableShape change");
+      if (this.trackableShape != null) {
+        this.trackableShape.removeHierarchyBoundsListener(this.hierarchyBoundsListener);
+        this.trackableShape.removeComponentListener(this.componentListener);
+      }
+      this.trackableShape = nextTrackableShape;
+      if (this.trackableShape != null) {
+        this.trackableShape.addComponentListener(this.componentListener);
+        this.trackableShape.addHierarchyBoundsListener(this.hierarchyBoundsListener);
+      }
+    }
+    show();
+  }
+
+  // this is highlighting things way outside the scope of our little view, we have to repaint a lot
+
+  private static void repaintAll() {
+    Application.getActiveInstance().getDocumentFrame().getFrame().getContentPane().repaint();
+  }
+
+  private final HierarchyBoundsListener hierarchyBoundsListener = new HierarchyBoundsListener() {
+    @Override
+    public void ancestorMoved(HierarchyEvent e) {
+      repaintAll();
+    }
+
+    @Override
+    public void ancestorResized(HierarchyEvent e) {
+      repaintAll();
+    }
+  };
+  private final ComponentListener componentListener = new ComponentListener() {
+    @Override
+    public void componentShown(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+      repaintAll();
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+      repaintAll();
+    }
+  };
+
 }

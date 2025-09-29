@@ -40,21 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.highlight;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Area;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowMeIconFactory extends ShapeIconFactory {
-  private static class SingletonHolder {
-    private static ShowMeIconFactory instance = new ShowMeIconFactory();
+public class GlowPainter implements Painter {
+  private static final int HOLE_BEVEL_THICKNESS = 2;
+  private static final Stroke[] HIGHLIGHT_STROKES;
+
+  static {
+    final int N = 8;
+    HIGHLIGHT_STROKES = new Stroke[N];
+    for (int i = 0; i < N; i++) {
+      HIGHLIGHT_STROKES[i] = new BasicStroke((i + 1) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    }
   }
 
-  public static ShowMeIconFactory getInstance() {
-    return SingletonHolder.instance;
+  private final Paint paint;
+
+  public GlowPainter(Paint paint) {
+    this.paint = paint;
   }
 
-  private ShowMeIconFactory() {
-    super(ShowMeIcon::new);
+  @Override
+  public void paint(Graphics2D g2, Shape shape) {
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
+    try {
+      Shape prevClip = g2.getClip();
+      Area area = new Area(prevClip);
+      area.subtract(new Area(shape));
+      try {
+        g2.setClip(area);
+        g2.setPaint(paint);
+        for (Stroke stroke : HIGHLIGHT_STROKES) {
+          g2.setStroke(stroke);
+          g2.draw(shape);
+        }
+
+      } finally {
+        g2.setClip(prevClip);
+      }
+
+      if (shape instanceof Rectangle rect) {
+        int x0 = rect.x;
+        int y0 = rect.y;
+        int x1 = (rect.x + rect.width) - HOLE_BEVEL_THICKNESS;
+        int y1 = (rect.y + rect.height) - HOLE_BEVEL_THICKNESS;
+        g2.setPaint(Color.DARK_GRAY);
+        g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
+        g2.setPaint(Color.WHITE);
+        g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
+      }
+    } finally {
+      g2.setStroke(prevStroke);
+      g2.setPaint(prevPaint);
+    }
+  }
+
+  @Override
+  public Rectangle getBounds(Shape shape) {
+    //todo
+    return shape.getBounds();
   }
 }

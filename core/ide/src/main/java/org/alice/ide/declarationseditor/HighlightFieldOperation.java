@@ -86,7 +86,7 @@ public class HighlightFieldOperation extends Operation {
     userActivity.setCompletionModel(this);
     DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
     tabState.setValueTransactionlessly(TypeComposite.getInstance(this.field.getDeclaringType()));
-    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField(this.field, null);
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField(this.field);
     userActivity.finish();
   }
 }

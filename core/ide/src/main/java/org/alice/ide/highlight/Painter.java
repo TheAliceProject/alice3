@@ -40,45 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.showme;
+package org.alice.ide.highlight;
 
-import org.lgna.croquet.Application;
-import org.lgna.croquet.IteratingOperation;
-import org.lgna.croquet.StencilModel;
-import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.history.UserActivity;
-
-import java.util.List;
-import java.util.UUID;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilsIteratingOperation extends IteratingOperation {
-  private final StencilModel[] stencilModels;
+public interface Painter {
+  void paint(Graphics2D g2, Shape shape);
 
-  StencilsIteratingOperation(UUID id, StencilModel... stencilModels) {
-    super(Application.INFORMATION_GROUP, id);
-    this.stencilModels = stencilModels;
-  }
-
-  @Override
-  protected boolean hasNext(List<UserActivity> finishedSteps) {
-    return finishedSteps.size() < stencilModels.length;
-  }
-
-  @Override
-  protected Triggerable getNext(List<UserActivity> finishedSteps) {
-    int i = finishedSteps.size();
-    if (i < this.stencilModels.length) {
-      return this.stencilModels[i];
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  protected final void performInActivity(final UserActivity userActivity) {
-    new Thread(() -> iterateOverSubModels(userActivity)).start();
-  }
+  Rectangle getBounds(Shape shape);
 }
