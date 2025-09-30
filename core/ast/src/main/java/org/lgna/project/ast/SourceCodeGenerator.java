@@ -427,7 +427,11 @@ public abstract class SourceCodeGenerator implements AstProcessor {
 
   @Override
   public void processExpression(Expression expression) {
-    expression.process(this);
+    if (expression == null) {
+      processNull();
+    } else {
+      expression.process(this);
+    }
   }
 
   @Override
