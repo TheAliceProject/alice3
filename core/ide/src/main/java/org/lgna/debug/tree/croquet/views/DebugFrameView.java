@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.components.JScrollPane;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.views.BorderPanel;
@@ -51,6 +50,7 @@ import org.lgna.croquet.views.Panel;
 import org.lgna.debug.tree.croquet.DebugFrame;
 import org.lgna.debug.tree.croquet.views.renderers.ZTreeNodeRenderer;
 
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import java.awt.BorderLayout;

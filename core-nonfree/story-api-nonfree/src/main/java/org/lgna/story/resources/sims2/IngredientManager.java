@@ -44,7 +44,7 @@ package org.lgna.story.resources.sims2;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.random.RandomUtilities;
+import org.lgna.common.RandomUtilities;
 
 import java.util.Map;
 

@@ -43,7 +43,7 @@
 package org.lgna.story.resources.sims2;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
-import edu.cmu.cs.dennisc.random.RandomUtilities;
+import org.lgna.common.RandomUtilities;
 import org.lgna.story.Color;
 
 import java.util.Locale;

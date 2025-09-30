@@ -74,66 +74,8 @@ public abstract class AbstractSplitPane<SC extends AbstractSplitComposite<?>> ex
     this.getAwtComponent().addPropertyChangeListener("dividerLocation", changeListener);
   }
 
-  public void removeDividerLocationChangeListener(PropertyChangeListener changeListener) {
-    this.getAwtComponent().removePropertyChangeListener("dividerLocation", changeListener);
-  }
-
-  //  this.getAwtComponent().setOrientation( orientation );
-  //  if( splitComposite != null ) {
-  //  org.lgna.croquet.Composite< ? > leadingComposite = splitComposite.getLeadingComposite();
-  //  org.lgna.croquet.Composite< ? > trailingComposite = splitComposite.getTrailingComposite();
-  //  this.setLeadingComponent( leadingComposite != null ? leadingComposite.getView() : null );
-  //  this.setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
-  //  }
-  //  public Component<?> getLeadingComponent() {
-  //  return Component.lookup( this.getAwtComponent().getLeftComponent() );
-  //  }
-  //  public Component<?> getTailingComponent() {
-  //  return Component.lookup( this.getAwtComponent().getRightComponent() );
-  //  }
-  //  protected abstract void internalSetLeadingComponent( JComponent<?> component );
-  //  protected abstract void internalSetTrailingComponent( JComponent<?> component );
-  //  public void setLeadingComponent( JComponent<?> component ) {
-  //  javax.swing.JComponent jComponent;
-  //  if( component != null ) {
-  //    jComponent = component.getAwtComponent();
-  //    jComponent.setMinimumSize( MINIMUM_SIZE );
-  //  } else {
-  //    jComponent = null;
-  //  }
-  //  if( this.getAwtComponent().getLeftComponent() != jComponent ) {
-  //    this.internalSetLeadingComponent( component );
-  //    this.revalidateAndRepaint();
-  //  }
-  //  }
-  //  public void setTrailingComponent( JComponent<?> component ) {
-  //  javax.swing.JComponent jComponent;
-  //  if( component != null ) {
-  //    jComponent = component.getAwtComponent();
-  //    jComponent.setMinimumSize( MINIMUM_SIZE );
-  //  } else {
-  //    jComponent = null;
-  //  }
-  //  if( this.getAwtComponent().getRightComponent() != jComponent ) {
-  //    this.internalSetTrailingComponent( component );
-  //    this.revalidateAndRepaint();
-  //  }
-  //  }
-
-  public double getResizeWeight() {
-    return this.getAwtComponent().getResizeWeight();
-  }
-
   public void setResizeWeight(double resizeWeight) {
     this.getAwtComponent().setResizeWeight(resizeWeight);
-  }
-
-  public int getDividerSize() {
-    return this.getAwtComponent().getDividerSize();
-  }
-
-  public void setDividerSize(int dividerSize) {
-    this.getAwtComponent().setDividerSize(dividerSize);
   }
 
   public int getDividerLocation() {
@@ -144,7 +86,4 @@ public abstract class AbstractSplitPane<SC extends AbstractSplitComposite<?>> ex
     this.getAwtComponent().setDividerLocation(dividerLocation);
   }
 
-  public void setDividerProportionalLocation(double proportionalLocation) {
-    this.getAwtComponent().setDividerLocation(proportionalLocation);
-  }
 }
