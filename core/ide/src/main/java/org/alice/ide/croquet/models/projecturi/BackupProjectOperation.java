@@ -13,7 +13,7 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         super(UUID.fromString("89b65a9c-f36a-44ba-8aed-c2922d40f298"), false);
     }
 
-    public YesNoCancelResult showBackupProjectOpenedDialog(String backupName) {
+    public YesNoCancelResult showBackupProjectOpenedDialog(String backupName, boolean isMainProjectCorrupted) {
         String title = findLocalizedText("BackupOpenedDialog.title");
         String message = findLocalizedText("BackupOpenedDialog.message")
                 .replaceAll("</backupName/>", backupName);
@@ -23,9 +23,13 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         String option3 = findLocalizedText("BackupOpenedDialog.option3");
 
         return Dialogs.showCustomConfirmOrCancel(title, message,
-                new String[] {
+                isMainProjectCorrupted
+                ? new String[] {
+                        option1, option2
+                    }
+                : new String[] {
                         option1, option2, option3
-                });
+                    });
     }
 
     public YesNoCancelResult showUnsavedBackupProjectOpenedDialog() {

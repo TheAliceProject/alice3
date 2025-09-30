@@ -148,11 +148,6 @@ public class ProjectFileUtilities {
     return new Runnable() {
       @Override
       public void run() {
-        if (projectApp.isProjectUpToDateWithBackups()) {
-          // skip saving if there were no changes since last save
-          return;
-        }
-
         try {
           ProjectFileUtilities.this.backupActiveProject();
         } catch (IOException e) {
@@ -162,7 +157,12 @@ public class ProjectFileUtilities {
     };
   }
 
-  private void backupActiveProject() throws IOException {
+  public void backupActiveProject() throws IOException {
+    if (projectApp.isProjectUpToDateWithBackups()) {
+      // skip saving if there were no changes since last save
+      return;
+    }
+
     File saved = UriUtilities.getFile(projectApp.getUri());
     Path backupDir = appropriateBackupDirectory(saved);
 

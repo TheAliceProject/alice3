@@ -56,7 +56,6 @@ import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
-import org.alice.ide.uricontent.StarterProjectFileLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.apache.commons.io.FileUtils;
 import org.lgna.croquet.Application;
@@ -82,7 +81,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -519,7 +517,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
     // If a backup of a saved project was successfully loaded, prompt the user for what to do next
     if (isLoadingBackups && !isDefaultBackup) {
-      createProjectFromBackup(projectFile, uriProjectLoader.getMainProjectFile());
+      createProjectFromBackup(projectFile, uriProjectLoader.getMainProjectFile(), isMainProjectCorrupted);
     }
   }
 
@@ -547,8 +545,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     getDocumentFrame().getNewProjectOperation().fire(newActivity);
   }
 
-  private void createProjectFromBackup(File backup, File original) {
-    YesNoCancelResult result = backupProjectOperation.showBackupProjectOpenedDialog(backup.getName());
+  private void createProjectFromBackup(File backup, File original, boolean isMainProjectCorrupted) {
+    YesNoCancelResult result = backupProjectOperation.showBackupProjectOpenedDialog(backup.getName(), isMainProjectCorrupted);
 
     switch (result) {
       case YES -> {
@@ -679,6 +677,14 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     RecentProjectsListData.getInstance().handleSave(file);
 
     this.updateHistoryIndexFileSync();
+  }
+
+  public void backupActiveProject() {
+    try {
+      projectFileUtilities.backupActiveProject();
+    } catch (IOException e) {
+      Logger.throwable(e, "Unable to backup project.");
+    }
   }
 
   public final void updateBackupIndexAndSaveProjectTo(File file) throws IOException {
