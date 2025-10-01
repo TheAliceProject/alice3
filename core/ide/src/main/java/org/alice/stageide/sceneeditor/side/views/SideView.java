@@ -78,6 +78,7 @@ public class SideView extends BorderPanel {
     }
 
     MigPanel migPanel = new MigPanel(null, "fill, insets 0, aligny top", "", "");
+    migPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
     ItemSelectablePanel<HandleStyle> radioButtons = new DefaultRadioButtons<>(composite.getHandleStyleState(), false) {
       @Override
@@ -93,7 +94,7 @@ public class SideView extends BorderPanel {
 
     ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
     ToolPaletteTitle title = toolPaletteView.getTitle();
-    title.setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
+    title.setSeparatorShowing(true);
 
     migPanel.addComponent(new FlowPanel(composite.getIsSnapEnabledState().createCheckBox(), title), "wrap, gapleft 4");
     migPanel.addComponent(toolPaletteView, "wrap");
@@ -111,6 +112,7 @@ public class SideView extends BorderPanel {
       ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
       toolPaletteTitle.scaleFont(1.4f);
       toolPaletteTitle.changeFont(TextWeight.BOLD);
+      toolPaletteTitle.setSeparatorShowing(true);
       toolPaletteTitle.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
       migPanel.addComponent(toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx");
     }

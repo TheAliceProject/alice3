@@ -175,7 +175,7 @@ public class TypeEditor extends BorderPanel {
 
     this.tabbedPane = composite.getTabState().createFolderTabbedPane();
     this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
-    this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+    this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
 
     AbstractPopupButton<?> startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();

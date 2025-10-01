@@ -43,30 +43,29 @@
 
 package org.alice.ide.declarationseditor.type.components;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.java.awt.FontUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.pattern.HowMuch;
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.IDE;
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.views.TypeHeader;
 import org.alice.ide.croquet.models.IdeDragModel;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
 import org.alice.ide.declarationseditor.TypeComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.ToolPaletteView;
 import org.lgna.project.ast.NamedUserType;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -77,11 +76,10 @@ public class TypeDeclarationView extends DeclarationView {
   public TypeDeclarationView(TypeComposite composite) {
     super(composite);
 
-    NamedUserType type = (NamedUserType) composite.getDeclaration();
-    Theme theme = ThemeUtilities.getActiveTheme();
-    this.setBackgroundColor(UIManager.getColor("Alice.Type.Color"));
-
-    typePanel.setBackgroundColor(this.getBackgroundColor());
+    NamedUserType type = composite.getDeclaration();
+    Color typeColor = UIManager.getColor("Alice.Type.Color");
+    this.setBackgroundColor(typeColor);
+    typePanel.setBackgroundColor(typeColor);
 
     ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
     constructorsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Constructor.Color"));
@@ -95,24 +93,19 @@ public class TypeDeclarationView extends DeclarationView {
     ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
     fieldsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
 
-    for (ToolPaletteView toolPalette : new ToolPaletteView[] {constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette}) {
-      toolPalette.getTitle().changeFont(TextPosture.OBLIQUE);
-      toolPalette.getTitle().scaleFont(1.4f);
-      toolPalette.getTitle().setRoundedOnTop(false);
-      toolPalette.getCenterView().setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
-    }
 
     PageAxisPanel membersPanel = new PageAxisPanel();
-    if (IsIncludingConstructors.getInstance().getValue()) {
-      membersPanel.addComponent(constructorsToolPalette);
-      membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
-    }
-    membersPanel.addComponent(proceduresToolPalette);
-    membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
-    membersPanel.addComponent(functionsToolPalette);
-    membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
-    membersPanel.addComponent(fieldsToolPalette);
     membersPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
+
+    // Add the constructor box separately, in case we're excluding it
+    if (IsIncludingConstructors.getInstance().getValue()) {
+      formatAndAddToolPalette(constructorsToolPalette, membersPanel);
+    }
+
+    // then add the rest
+    for (ToolPaletteView toolPalette : new ToolPaletteView[] {proceduresToolPalette, functionsToolPalette, fieldsToolPalette}) {
+      formatAndAddToolPalette(toolPalette, membersPanel);
+    }
 
     TypeHeader typeHeader = new TypeHeader(type);
 
@@ -130,6 +123,54 @@ public class TypeDeclarationView extends DeclarationView {
     for (JComponent component : ComponentUtilities.findAllMatches(typeHeader.getAwtComponent(), HowMuch.DESCENDANTS_ONLY, JComponent.class)) {
       FontUtilities.setFontToScaledFont(component, 1.2f);
     }
+  }
+
+  private static void formatAndAddToolPalette(ToolPaletteView toolPalette, PageAxisPanel membersPanel) {
+    toolPalette.getTitle().changeFont(TextPosture.OBLIQUE);
+    toolPalette.getTitle().scaleFont(1.4f);
+     toolPalette.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    // make what looks like a 1px line border, but round the corners nicely
+    JPanel toolPaletteContainer = new JPanel(new GridLayout(1, 1));
+    toolPaletteContainer.setBackground(toolPalette.getCenterView().getBackgroundColor());
+    toolPaletteContainer.setBorder(new Border() {
+      final int cornerRadius = 16;
+
+      @Override
+      public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Dimension arcs = new Dimension(cornerRadius, cornerRadius);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // we paint the area outside the rounded corner. because our unruly child paints outside the box
+        g2.setColor(UIManager.getColor("Alice.Type.Color"));
+        g2.fillRect(0, 0, width, height);
+
+        Color backgroundColor = c.getBackground();
+        // paint the empty margin
+        g2.setColor(backgroundColor);
+        g2.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
+
+        // paint the very outside
+        Color outlineColor = ColorUtilities.scaleHSB(backgroundColor, 1, 4.8, .74);
+        g2.setColor(outlineColor);
+        g2.drawRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
+      }
+
+      @Override
+      public Insets getBorderInsets(Component c) {
+        return new Insets(cornerRadius / 2, cornerRadius / 2, cornerRadius / 2, cornerRadius / 2);
+      }
+
+      @Override
+      public boolean isBorderOpaque() {
+        return true;
+      }
+    });
+
+    toolPaletteContainer.add(toolPalette.getAwtComponent());
+    membersPanel.addComponent(AwtComponentView.lookup(toolPaletteContainer));
+    membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
   }
 
   @Override

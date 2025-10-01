@@ -42,47 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.croquet.BooleanState;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
-  public enum RenderingStyle {
-    LIGHT_UP_ICON_ONLY {
-      @Override
-      public boolean isShaded(ButtonModel buttonModel) {
-        return false;
-      }
-    }, SHADE_WHEN_ACTIVE {
-      @Override
-      public boolean isShaded(ButtonModel buttonModel) {
-        return buttonModel.isRollover();
-      }
-    }, SHADE_AGGRESSIVELY {
-      @Override
-      public boolean isShaded(ButtonModel buttonModel) {
-        return true;
-      }
-    };
-
-    public abstract boolean isShaded(ButtonModel buttonModel);
-  }
-
 
   private static final ArrowIcon ARROW_ICON = new ArrowIcon(12, true);
 
-  private static Insets SUPPRESSED_INSETS = new Insets(0, 0, 0, 0);
-  private static Insets INERT_INSETS = new Insets(2, 2, 2, 2);
-  private static Insets ACTIVE_INSETS = new Insets(2, 10 + ARROW_ICON.getIconWidth(), 2, 2);
+  private static final Insets SUPPRESSED_INSETS = new Insets(0, 0, 0, 0);
+  private static final Insets INERT_INSETS = new Insets(2, 2, 2, 2);
+  private static final Insets ACTIVE_INSETS = new Insets(2, 10 + ARROW_ICON.getIconWidth(), 2, 2);
 
   private enum ToolPaletteTitleBorder implements Border {
     SINGLETON;
@@ -103,59 +83,40 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
     @Override
     public boolean isBorderOpaque() {
-      return false;
+      return true;
     }
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+      JToolPaletteTitle b = (JToolPaletteTitle) c;
+      if (!b.isSuppressed() && b.isSeparatorShowing()) {
+        g.setColor(ColorUtilities.scaleHSB(c.getBackground(), 1.0, 4.8, .74));
+        g.fillRect(0, 0, width, 1);
+      }
     }
   }
 
   private static class JToolPaletteTitle extends JToggleButton {
-    private boolean isRoundedOnTop = false;
-    private boolean isPartOfAccordion = false;
-    private RenderingStyle renderingStyle = RenderingStyle.SHADE_AGGRESSIVELY;
+    private boolean separatorShowing = false;
     private boolean isInert = false;
     private boolean isSuppressed = false;
 
     @Override
     public boolean contains(int x, int y) {
-      if (this.isInert || (this.isPartOfAccordion && this.isSelected())) {
+      if (this.isInert) {
         return false;
       } else {
         return super.contains(x, y);
       }
     }
 
-    public boolean isRoundedOnTop() {
-      return this.isRoundedOnTop;
+    public boolean isSeparatorShowing() {
+      return this.separatorShowing;
     }
 
-    public void setRoundedOnTop(boolean isRoundedOnTop) {
-      if (this.isRoundedOnTop != isRoundedOnTop) {
-        this.isRoundedOnTop = isRoundedOnTop;
-        this.repaint();
-      }
-    }
-
-    public boolean isPartOfAccordion() {
-      return this.isPartOfAccordion;
-    }
-
-    public void setPartOfAccordion(boolean isPartOfAccordion) {
-      if (this.isPartOfAccordion != isPartOfAccordion) {
-        this.isPartOfAccordion = isPartOfAccordion;
-        this.repaint();
-      }
-    }
-
-    public RenderingStyle getRenderingStyle() {
-      return this.renderingStyle;
-    }
-
-    public void setRenderingStyle(RenderingStyle renderingStyle) {
-      if (this.renderingStyle != renderingStyle) {
-        this.renderingStyle = renderingStyle;
+    public void setSeparatorShowing(boolean show) {
+      if (this.separatorShowing != show) {
+        this.separatorShowing = show;
         this.repaint();
       }
     }
@@ -185,7 +146,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
     @Override
     public boolean isOpaque() {
-      return !this.isRoundedOnTop;
+      return true;
     }
 
     @Override
@@ -193,7 +154,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
       Graphics2D g2 = (Graphics2D) g;
       super.paintComponent(g);
       if (!this.isSuppressed && !this.isInert) {
-        int x = this.isRoundedOnTop ? 8 : 4;
+        int x = 4;
         int height = this.getHeight();
         int iconHeight = ARROW_ICON.getIconHeight();
         int y = (height - iconHeight) / 2;
@@ -205,18 +166,6 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
     public void updateUI() {
       this.setUI(new ToolPaletteTitleButtonUI());
     }
-  }
-
-  private static Shape createRoundedOnTopShape(int width, int height, int round) {
-    GeneralPath path = new GeneralPath();
-    path.moveTo(0, height);
-    path.lineTo(0, round);
-    path.quadTo(0, 0, round, 0);
-    path.lineTo(width - round, 0);
-    path.quadTo(width, 0, width, round);
-    path.lineTo(width, height);
-    path.closePath();
-    return path;
   }
 
   private static class ToolPaletteTitleButtonUI extends BasicButtonUI {
@@ -257,11 +206,6 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
       try {
         JToolPaletteTitle b = (JToolPaletteTitle) c;
         if (!b.isSuppressed() && !b.isInert()) {
-          if (b.isRoundedOnTop()) {
-            g2.setClip(AreaUtilities.createIntersection(prevClip, createRoundedOnTopShape(b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth())));
-          }
-
-          Rectangle r = SwingUtilities.getLocalBounds(c);
           Color background = c.getBackground();
           g2.setColor(background);
           g2.fillRect(0, 0, b.getWidth(), b.getHeight());
@@ -277,40 +221,12 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
     super(booleanState);
   }
 
-  public boolean isRoundedOnTop() {
-    return this.getJPaletteTitle().isRoundedOnTop();
-  }
-
-  public void setRoundedOnTop(boolean isRoundedOnTop) {
-    this.getJPaletteTitle().setRoundedOnTop(isRoundedOnTop);
-  }
-
-  public boolean isPartOfAccordion() {
-    return this.getJPaletteTitle().isPartOfAccordion();
-  }
-
-  public void setPartOfAccordion(boolean isPartOfAccordion) {
-    this.getJPaletteTitle().setPartOfAccordion(isPartOfAccordion);
-  }
-
-  public RenderingStyle getRenderingStyle() {
-    return this.getJPaletteTitle().getRenderingStyle();
-  }
-
-  public void setRenderingStyle(RenderingStyle renderingStyle) {
-    this.getJPaletteTitle().setRenderingStyle(renderingStyle);
-  }
-
-  public boolean isInert() {
-    return this.getJPaletteTitle().isInert();
+  public void setSeparatorShowing(boolean show) {
+    this.getJPaletteTitle().setSeparatorShowing(show);
   }
 
   public void setInert(boolean isInert) {
     this.getJPaletteTitle().setInert(isInert);
-  }
-
-  public boolean isSuppressed() {
-    return this.getJPaletteTitle().isSuppressed();
   }
 
   public void setSuppressed(boolean isSuppressed) {

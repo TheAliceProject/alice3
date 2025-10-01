@@ -128,8 +128,6 @@ public abstract class MemberTabView extends MigPanel {
           view.getTitle().changeFont(TextPosture.OBLIQUE);
           if (MemberTabComposite.ARE_TOOL_PALETTES_INERT) {
             view.getTitle().setInert(true);
-          } else {
-            view.getTitle().setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
           }
           view.setBackgroundColor(this.getBackgroundColor());
           if (subComposite instanceof UserMethodsSubComposite) {

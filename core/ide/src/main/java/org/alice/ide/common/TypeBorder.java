@@ -62,7 +62,6 @@ public class TypeBorder implements Border {
   private static final Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor(TypeExpression.class);
   private static final java.awt.Color NULL_COLOR = java.awt.Color.RED;
 
-  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.Block.Foreground.Color");
   private static final TypeBorder singletonForUser = new TypeBorder(true);
   private static final TypeBorder singletonForJava = new TypeBorder(false);
   private static final TypeBorder singletonForNull = new TypeBorder(null);
@@ -147,7 +146,7 @@ public class TypeBorder implements Border {
     Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(getFillPaint(c, x, y, width, height));
     g2.fill(shape);
-    g2.setPaint(OUTLINE_COLOR);
+    g2.setPaint(UIManager.getColor("Alice.Foreground.Color.different"));
     g2.draw(shape);
   }
 }
