@@ -40,7 +40,7 @@ public class ProjectFileUtilities {
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
-  private static final int SECONDS_BETWEEN_BACKUPS = 10;
+  private static final int SECONDS_BETWEEN_BACKUPS = 60;
 
   private final ProjectApplication projectApp;
 
