@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -63,14 +64,21 @@ public class ProjectFileUtilities {
     return PROJECT_EXTENSION.equals(getExtension(f.getName()));
   }
 
-  final void renameDefaultBackupDirectory(File file) {
+  final void copyDefaultBackupDirectory(File file) {
     File defaultBackupDir = defaultBackupDirectory().toFile();
     File namedBackupDir = backupDirectory(file, false).toFile();
 
     try {
-      defaultBackupDir.renameTo(namedBackupDir);
-    } catch (SecurityException e) {
-      Logger.throwable(e, "Unable to rename backup directory for new project to " + namedBackupDir);
+      namedBackupDir.createNewFile();
+
+      File[] files = defaultBackupDir.listFiles((f, name) -> name.startsWith("auto") && name.endsWith(".a3p"));
+
+      for (File f : Objects.requireNonNull(files)) {
+        Path dest = namedBackupDir.toPath().resolve(f.getName());
+        Files.move(f.toPath(), dest);
+      }
+    } catch (SecurityException | IOException e) {
+      Logger.throwable(e, "Unable to copy backup directory for new project to " + namedBackupDir);
     }
   }
 

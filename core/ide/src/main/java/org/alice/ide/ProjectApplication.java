@@ -645,9 +645,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     updateHistoryIndexFileSync();
     updateUndoRedoEnabled();
 
-    if (!uriProjectLoader.isBackup()) {
-      projectFileUtilities.startAutoSaving();
-    }
+    projectFileUtilities.startAutoSaving();
   }
 
   protected abstract BufferedImage createThumbnail() throws Throwable;
@@ -658,7 +656,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
             || (uriProjectLoader.isDefaultBackup() && !nextLoader.isDefaultBackup());
 
     if (savingNewProject) {
-      projectFileUtilities.renameDefaultBackupDirectory(file);
+      projectFileUtilities.copyDefaultBackupDirectory(file);
     }
 
     uriProjectLoader = nextLoader;
