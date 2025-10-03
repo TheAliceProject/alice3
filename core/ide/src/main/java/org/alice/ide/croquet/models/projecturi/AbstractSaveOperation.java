@@ -78,7 +78,16 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
     boolean isExceptionRaised = false;
     do {
       File fileNext;
-      if (application.isBackup() || isExceptionRaised || this.isPromptNecessary(filePrevious)) {
+      if (application.isBackup()) {
+        File mainFile = application.getMainProjectFile();
+        String newProjectName = "";
+
+        if (mainFile != null) {
+          newProjectName = FileUtilities.getBaseName(mainFile) + " Copy";
+        }
+
+        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), newProjectName, this.getExtension());
+      } else if (isExceptionRaised || this.isPromptNecessary(filePrevious)) {
           fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), FileUtilities.getBaseName(filePrevious), this.getExtension());
       } else {
         fileNext = filePrevious;

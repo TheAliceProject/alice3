@@ -209,6 +209,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     return this.uriProjectLoader != null && this.uriProjectLoader.isBackup();
   }
 
+  public final File getMainProjectFile() {
+    return this.uriProjectLoader != null ? this.uriProjectLoader.getMainProjectFile() : null;
+  }
+
   @Deprecated
   private final UndoHistory getProjectHistory() {
     return this.getProjectHistory(PROJECT_GROUP);
