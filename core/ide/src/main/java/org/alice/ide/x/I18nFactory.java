@@ -43,7 +43,6 @@
 
 package org.alice.ide.x;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -149,12 +148,12 @@ public abstract class I18nFactory {
           return new DefaultJPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+              // this is how we draw the arrows on our loop blocks
               Color prev = g.getColor();
               if (isLoop) {
                 int n = this.getComponentCount();
                 Component cFirst = this.getComponent(0);
                 Component cLast = this.getComponent(n - 1);
-                g.setColor(ColorUtilities.createGray(160));
                 int xB = I18nFactory.this.getPixelsPerIndent();
                 int xA = xB / 2;
                 int yTop = cFirst.getY() + cFirst.getHeight();

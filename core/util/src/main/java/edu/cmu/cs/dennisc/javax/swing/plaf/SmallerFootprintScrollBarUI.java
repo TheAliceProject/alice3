@@ -42,12 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
+import javax.swing.UIManager;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.Color;
@@ -73,15 +73,14 @@ public class SmallerFootprintScrollBarUI extends BasicScrollBarUI {
   @Override
   protected void installDefaults() {
     super.installDefaults();
-    this.thumbRolloverColor = ColorUtilities.createGray(100);
-    this.thumbPressedColor = new Color(100, 140, 255);
+    this.thumbRolloverColor = UIManager.getColor("ScrollBar.hoverThumbColor");
+    this.thumbPressedColor = UIManager.getColor("ScrollBar.pressedThumbColor");
   }
 
   @Override
   protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
     //super.paintThumb( g, c, thumbBounds );
-    if (c instanceof JScrollBar) {
-      JScrollBar jScrollBar = (JScrollBar) c;
+    if (c instanceof JScrollBar jScrollBar) {
       int span = jScrollBar.getOrientation() == JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
       int arc = span - INSET - INSET;
       Shape shape = new RoundRectangle2D.Float(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc);

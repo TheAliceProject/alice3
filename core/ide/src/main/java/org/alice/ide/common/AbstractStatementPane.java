@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.x.AstI18nFactory;
 import org.alice.ide.x.MutableAstI18nFactory;
@@ -52,6 +51,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.BoxLayout;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -59,7 +59,7 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends StatementLikeSubstance {
-  private static final Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = ColorUtilities.createGray(160);
+  private static final Color PASSIVE_OUTLINE_PAINT_FOR_NON_DRAGGABLE = UIManager.getColor("Label.foreground");
 
   public AbstractStatementPane(DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner) {
     super(model, StatementLikeSubstance.getClassFor(statement), BoxLayout.LINE_AXIS);

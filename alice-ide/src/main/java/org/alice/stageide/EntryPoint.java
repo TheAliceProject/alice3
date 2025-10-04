@@ -44,7 +44,6 @@ package org.alice.stageide;
 
 import com.formdev.flatlaf.FlatLaf;
 import edu.cmu.cs.dennisc.crash.CrashDetector;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -58,10 +57,7 @@ import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
 
 import javax.swing.*;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -118,10 +114,6 @@ public class EntryPoint extends Application {
       UIManager.put("ScrollBar.width", 13);
       UIManager.put("ScrollBar.incrementButtonGap", 0);
       UIManager.put("ScrollBar.decrementButtonGap", 0);
-      UIManager.put("ScrollBar.thumb", ColorUtilities.createGray(140));
-
-      //java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
-      //javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
       ConsistentMouseDragEventQueue.pushIfAppropriate();
 
