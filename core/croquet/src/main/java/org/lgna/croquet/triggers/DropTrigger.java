@@ -64,9 +64,6 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 
   private DropTrigger(UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite) {
     super(userActivity, viewController, e);
-    if (dropSite == null) {
-      Logger.severe("drop site is null for", this);
-    }
     this.dropSite = dropSite;
   }
 
