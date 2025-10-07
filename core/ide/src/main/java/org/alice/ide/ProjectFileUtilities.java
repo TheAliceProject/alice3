@@ -6,6 +6,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.stageide.StageIDE;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -13,7 +14,6 @@ import org.lgna.project.io.ProjectIo;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -23,22 +23,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.*;
-import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 
-class ProjectFileUtilities {
+public class ProjectFileUtilities {
   public static final String BACKUP_AUTO = "auto";
+  public static final String BACKUP_EXTENSION = "bak";
+  public static final String DEFAULT_BACKUP_DIR = "defaultbak";
 
   private static final String BACKUP_SAVE = "save";
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
-  private static final int SECONDS_BETWEEN_BACKUPS = 300;
+  private static final int SECONDS_BETWEEN_BACKUPS = 60;
 
   private final ProjectApplication projectApp;
 
@@ -50,9 +52,34 @@ class ProjectFileUtilities {
     savingService = Executors.newSingleThreadScheduledExecutor();
   }
 
-  final void saveProjectTo(File file) throws IOException {
+  final void saveProjectTo(File file, boolean isBackup) throws IOException {
     saveCopyOfProjectTo(file);
-    backupSavedProject();
+
+    if (!isBackup) {
+      backupSavedProject();
+    }
+  }
+
+  final boolean isProject(File f) {
+    return PROJECT_EXTENSION.equals(getExtension(f.getName()));
+  }
+
+  final void copyDefaultBackupDirectory(File file) {
+    File defaultBackupDir = defaultBackupDirectory().toFile();
+    File namedBackupDir = backupDirectory(file, false).toFile();
+
+    try {
+      namedBackupDir.createNewFile();
+
+      File[] files = defaultBackupDir.listFiles((f, name) -> name.startsWith("auto") && name.endsWith(".a3p"));
+
+      for (File f : Objects.requireNonNull(files)) {
+        Path dest = namedBackupDir.toPath().resolve(f.getName());
+        Files.move(f.toPath(), dest);
+      }
+    } catch (SecurityException | IOException e) {
+      Logger.throwable(e, "Unable to copy backup directory for new project to " + namedBackupDir);
+    }
   }
 
   final void startAutoSaving() {
@@ -60,11 +87,6 @@ class ProjectFileUtilities {
       saveFuture.cancel(false);
     }
     saveFuture = savingService.scheduleAtFixedRate(autosaveActiveProject(), SECONDS_BETWEEN_BACKUPS, SECONDS_BETWEEN_BACKUPS, TimeUnit.SECONDS);
-  }
-
-  private void saveCopyOfProjectTo(File file) throws IOException {
-    Project project = projectApp.getUpToDateProject();
-    IoUtilities.writeProject(file, project, thumbnailAndManifestDataSources(project));
   }
 
   private DataSource[] thumbnailAndManifestDataSources(Project project) {
@@ -138,26 +160,33 @@ class ProjectFileUtilities {
           ProjectFileUtilities.this.backupActiveProject();
         } catch (IOException e) {
           Logger.throwable(e, "Unable to autosave project.");
-          e.printStackTrace();
         }
       }
     };
   }
 
-  private void backupActiveProject() throws IOException {
-    File saved = UriUtilities.getFile(projectApp.getUri());
-    if (saved == null) {
+  public void backupActiveProject() throws IOException {
+    if (projectApp.isProjectUpToDateWithBackups()) {
+      // skip saving if there were no changes since last save
       return;
     }
-    Path backupDir = backupDirectory(saved, false);
+
+    File saved = UriUtilities.getFile(projectApp.getUri());
+    Path backupDir = appropriateBackupDirectory(saved);
+
     if (backupDir == null) {
       return;
     }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
-    saveCopyOfProjectTo(backupFile);
+    projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
+  }
+
+  public void saveCopyOfProjectTo(File file) throws IOException {
+    Project project = projectApp.getUpToDateProject();
+    IoUtilities.writeProject(file, project, thumbnailAndManifestDataSources(project));
   }
 
   public Path backupDirectory(File saved, boolean isBackup) {
@@ -172,6 +201,22 @@ class ProjectFileUtilities {
     Path backupDir = saved.toPath().resolveSibling(directoryName);
 
     return createAndGetBackupDirectory(backupDir);
+  }
+
+  public Path defaultBackupDirectory() {
+    Path projectsDir = StageIDE.getActiveInstance().getProjectsDirectory().toPath();
+
+    return createAndGetBackupDirectory(projectsDir.resolve("." + DEFAULT_BACKUP_DIR));
+  }
+
+  public Path appropriateBackupDirectory(File saved) {
+    if (projectApp.isNewProject()) {
+      return defaultBackupDirectory();
+    } else if (saved != null) {
+      return backupDirectory(saved, projectApp.isBackup());
+    } else {
+      return null;
+    }
   }
 
   private Path createAndGetBackupDirectory(Path backupDir) {
@@ -192,12 +237,8 @@ class ProjectFileUtilities {
   }
 
   private void removeExtraBackups(final String type, Path backupDir) {
-    File[] backups = listFiles(backupDir.toFile(), new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.isFile() && file.getName().startsWith(type);
-      }
-    });
+    File[] backups = listFiles(backupDir.toFile(), file -> file.isFile() && file.getName().startsWith(type));
+
     if (backups.length > BACKUP_MAX) {
       Arrays.sort(backups);
       for (int i = 0; i < backups.length - BACKUP_MAX; i++) {

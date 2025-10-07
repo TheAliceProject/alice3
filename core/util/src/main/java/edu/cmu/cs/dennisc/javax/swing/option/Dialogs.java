@@ -69,6 +69,16 @@ public class Dialogs {
     return YesNoCancelResult.getInstance(JOptionPane.showConfirmDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION));
   }
 
+  public static YesNoCancelResult showCustomConfirm(String title, String message, String[] options) {
+    return YesNoCancelResult.getInstance(JOptionPane.showOptionDialog(WindowStack.peek(), message, title,
+            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null));
+  }
+
+  public static YesNoCancelResult showCustomConfirmOrCancel(String title, String message, String[] options) {
+    return YesNoCancelResult.getInstance(JOptionPane.showOptionDialog(WindowStack.peek(), message, title,
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null));
+  }
+
   public static void showUnableToOpenFileDialog(File file, String message) {
     //TODO I18n
     Dialogs.showError("Cannot read file", String.format("Unable to open file %s.\n\n%s", FileUtilities.getCanonicalPathIfPossible(file), message));

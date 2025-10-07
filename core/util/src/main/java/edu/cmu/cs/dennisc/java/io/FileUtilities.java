@@ -44,6 +44,7 @@ package edu.cmu.cs.dennisc.java.io;
 
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -54,6 +55,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -239,12 +241,27 @@ public class FileUtilities {
     outChannel.close();
   }
 
+  public static LocalDateTime getCreatedDateTime(File f) {
+    try {
+      BasicFileAttributes attr = Files.readAttributes(f.toPath(), BasicFileAttributes.class);
+      FileTime fileTime = attr.creationTime();
+      return LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
+    } catch (IOException ioe) {
+      Logger.throwable(ioe, f);
+      return LocalDateTime.MIN;
+    }
+  }
+
   public static LocalDateTime getModifiedDateTime(File f) {
+    if (f == null) {
+      return LocalDateTime.MIN;
+    }
+
     try {
       FileTime fileTime = Files.getLastModifiedTime(f.toPath());
       return LocalDateTime.ofInstant(fileTime.toInstant(), ZoneId.systemDefault());
     } catch (IOException ioe) {
-      ioe.printStackTrace();
+      Logger.throwable(ioe, f);
       return LocalDateTime.MIN;
     }
   }

@@ -69,13 +69,15 @@ public abstract class PotentialClearanceIteratingOperation extends Operation {
     List<Triggerable> steps = Lists.newLinkedList();
     ProjectApplication application = ProjectApplication.getActiveInstance();
     boolean isPostClearanceModelDesired = this.postClearanceModel != null;
-    if (!application.isProjectUpToDateWithFile()) {
+    if (application.isBackup() || !application.isProjectUpToDateWithFile()) {
       YesNoCancelResult result = Dialogs.confirmOrCancel(findLocalizedText("title"), findLocalizedText("message"));
       if (result == YesNoCancelResult.CANCEL) {
         throw new CancelException();
       }
       if (result == YesNoCancelResult.YES) {
         steps.add(SaveProjectOperation.getInstance());
+      } else {
+        application.backupActiveProject();
       }
     }
     if (isPostClearanceModelDesired) {

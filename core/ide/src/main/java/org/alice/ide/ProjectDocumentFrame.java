@@ -261,7 +261,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   }
 
   public BooleanState getStatisticsFrameIsShowingState() {
-    return this.stasticsFrameIsShowingState;
+    return this.statisticsFrameIsShowingState;
   }
 
   private static final Integer HIGHLIGHT_STENCIL_LAYER = JLayeredPane.POPUP_LAYER - 2;
@@ -358,7 +358,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     }
   }, Application.DOCUMENT_UI_GROUP).getLaunchOperation();
 
-  private final BooleanState stasticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<StatisticsFrameComposite>() {
+  private final BooleanState statisticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<StatisticsFrameComposite>() {
     @Override
     protected StatisticsFrameComposite create() {
       return new StatisticsFrameComposite(ProjectDocumentFrame.this);
