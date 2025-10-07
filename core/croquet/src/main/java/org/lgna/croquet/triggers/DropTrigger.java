@@ -44,7 +44,6 @@
 package org.lgna.croquet.triggers;
 
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
