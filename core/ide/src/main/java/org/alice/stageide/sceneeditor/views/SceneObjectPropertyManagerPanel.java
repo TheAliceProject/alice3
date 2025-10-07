@@ -43,18 +43,9 @@
 
 package org.alice.stageide.sceneeditor.views;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.common.FieldDeclarationPane;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState;
@@ -68,46 +59,27 @@ import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
-import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
-import org.alice.stageide.properties.GroundOpacityAdapter;
-import org.alice.stageide.properties.ModelOpacityAdapter;
-import org.alice.stageide.properties.ModelSizeAdapter;
-import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
-import org.alice.stageide.properties.MutableRiderVehicleAdapter;
-import org.alice.stageide.properties.PaintPropertyAdapter;
-import org.alice.stageide.properties.ResourcePropertyAdapter;
-import org.alice.stageide.properties.SelectedInstanceAdapter;
-import org.alice.stageide.properties.TextFontPropertyAdapter;
-import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.properties.*;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.State;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.GridBagPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.MutableRider;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThing;
+import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 import org.lgna.story.resources.JointedModelResource;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private InstanceFactory selectedInstance;
@@ -146,7 +118,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   public SceneObjectPropertyManagerPanel() {
     super();
     this.morePropertiesPanel = new GridBagPanel();
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
   }
 
@@ -350,21 +322,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
           selectedField = fieldAccessFactory.getField();
         }
 
-        //propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
-
-        //        org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-        //        boolean isPerson = false;
-        //        if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-        //          JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-        //          if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-        //          {
-        //            isPerson = true;
-        //          }
-        //        }
-        //        if( ( fieldInitializerState != null ) && !isPerson ) {
-        //          propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-        //        }
-
         for (JavaMethod getter : getterMethods) {
           AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp, selectedField);
           if (adapter != null) {
@@ -391,15 +348,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
             assert propertyController != null;
             LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getLocalizedRepr() + " = "), propertyController);
             assert matchingLabelController != null;
-            if (propertyAdapter instanceof SelectedInstanceAdapter) {
-              //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-              fieldNamePair = matchingLabelController;
-              //TODO: Localize this
-              fieldNamePair.label.setText(this.findLocalizedText("selected", "Selected:"));
-            } else {
-              this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
-              extraPropertyCount++;
-            }
+            this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+            extraPropertyCount++;
             this.activeControllers.add(matchingLabelController);
           }
 
@@ -418,7 +368,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
           if (selectedField != null) {
             SwingComponentView<?> initializerComponent = new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false);
-            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
 
             this.addComponent(initializerComponent, new GridBagConstraints(0, //gridX
                                                                            mainPropertyCount++, //gridY

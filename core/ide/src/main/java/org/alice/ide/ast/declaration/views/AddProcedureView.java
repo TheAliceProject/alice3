@@ -42,15 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddProcedureComposite;
 
+import javax.swing.UIManager;
+
 /**
+ * Popup window for creating a new procedure
  * @author Dennis Cosgrove
  */
 public class AddProcedureView extends AddMethodView {
   public AddProcedureView(AddProcedureComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getProcedureColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
   }
 }

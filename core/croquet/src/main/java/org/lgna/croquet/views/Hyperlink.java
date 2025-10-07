@@ -99,7 +99,6 @@ public class Hyperlink extends OperationButton<JButton, Operation> {
       }
     };
     rv.setForeground(new Color(0, 0, 191));
-    rv.setBackground(Color.LIGHT_GRAY);
     rv.setRolloverEnabled(true);
     rv.setHorizontalAlignment(SwingConstants.LEADING);
     rv.setBorder(BorderFactory.createEmptyBorder());

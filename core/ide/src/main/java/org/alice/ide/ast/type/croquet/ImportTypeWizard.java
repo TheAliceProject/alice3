@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.croquet;
 
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+
 import org.alice.ide.ProjectStack;
 import org.alice.ide.ast.type.merge.core.MergeUtilities;
 import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
@@ -102,7 +102,6 @@ public class ImportTypeWizard extends SimpleOperationWizardDialogCoreComposite {
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
     new SimpleApplication();
 
     File projectFile = new File(args[0]);

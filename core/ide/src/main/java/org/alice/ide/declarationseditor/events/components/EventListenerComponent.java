@@ -43,11 +43,11 @@
 package org.alice.ide.declarationseditor.events.components;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.common.BodyPane;
 import org.alice.ide.common.ThisPane;
@@ -93,7 +93,7 @@ public class EventListenerComponent extends BorderPanel {
           BodyPane bodyPane = new BodyPane(putCodeHere);
 
           BorderPanel codeContainer = new BorderPanel.Builder().pageStart(singleAbstractMethodHeader).center(bodyPane).build();
-          codeContainer.setBackgroundColor(ThemeUtilities.getActiveTheme().getEventBodyColor());
+          codeContainer.setBackgroundColor(UIManager.getColor("Alice.Event.Color").darker());
           codeContainer.setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 4));
           this.addCenterComponent(codeContainer);
           bottom = 8;

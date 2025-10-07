@@ -48,9 +48,12 @@ import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
 
 import javax.swing.BorderFactory;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
+ * this is the popup window that appears when you hover over the tooltip that shows up on the diff that appears when you load in a class from a file.
+ * (and the green grass grows all around)
+ *
  * @author Dennis Cosgrove
  */
 public class MemberPopupCoreView extends BorderPanel {
@@ -62,8 +65,8 @@ public class MemberPopupCoreView extends BorderPanel {
     this.addPageStartComponent(label);
     this.addCenterComponent(component);
 
-    label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
-    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
+    label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
+    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, UIManager.getColor("Separator.foreground")));
     this.setMinimumPreferredWidth(200);
   }
 }

@@ -158,8 +158,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
       List<StatementListPropertyView> statementListPropertyPanes = HierarchyUtilities.findAllMatches(CodePanelWithDropReceptor.this, StatementListPropertyView.class);
 
       boolean isAddEvent;
-      if (dragModel instanceof AbstractStatementDragModel) {
-        AbstractStatementDragModel statementDragModel = (AbstractStatementDragModel) dragModel;
+      if (dragModel instanceof AbstractStatementDragModel statementDragModel) {
         isAddEvent = statementDragModel.isAddEventListenerLikeSubstance();
       } else {
         isAddEvent = false;
@@ -223,8 +222,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
           boolean isDropProxyAlreadyUpdated = false;
           if (!InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
             AwtComponentView<?> subject = source.getSubject();
-            if (subject instanceof AbstractStatementPane) {
-              AbstractStatementPane abstractStatementPane = (AbstractStatementPane) subject;
+            if (subject instanceof AbstractStatementPane abstractStatementPane) {
               if (!(source instanceof StatementTemplate)) {
                 Statement statement = abstractStatementPane.getStatement();
                 StatementListProperty prevOwner = abstractStatementPane.getOwner();

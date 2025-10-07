@@ -58,6 +58,7 @@ import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -82,7 +83,7 @@ class CommentLine extends JSuggestiveTextArea {
     this.comment = comment;
     this.getDocument().addDocumentListener(new UnifiedDocumentListener(this::handleUpdate));
     this.setBackground(ThemeUtilities.getActiveTheme().getColorFor(Comment.class));
-    this.setForeground(ThemeUtilities.getActiveTheme().getCommentForegroundColor());
+    this.setForeground(UIManager.getColor("Alice.Comment.Color.foreground"));
     //this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
     this.handleUpdate();
     if (factory.isCommentMutable(comment)) {

@@ -45,8 +45,6 @@ package org.alice.stageide.sceneeditor.side.views;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.interact.handle.HandleStyle;
@@ -71,6 +69,7 @@ import org.lgna.croquet.views.VerticalTextPosition;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -84,14 +83,13 @@ public class SideView extends BorderPanel {
   public SideView(SideComposite composite) {
     super(composite);
 
-    final Theme theme = ThemeUtilities.getActiveTheme();
-    final Color color = theme.getPrimaryBackgroundColor();
+    final Color color = UIManager.getColor("Alice.Background.Color");
 
     if (!IsToolBarShowing.getValue()) {
       ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
       FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 
-      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, theme.getSecondaryBackgroundColor()));
+      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, Color.LIGHT_GRAY));
       this.addPageStartComponent(undoRedoPanel);
     }
 
@@ -103,7 +101,7 @@ public class SideView extends BorderPanel {
         PushButton b = itemSelectedState.createPushButton();
         b.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
         b.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
-        b.setSelectedColor(theme.getSelectedColor());
+        b.setSelectedColor(UIManager.getColor("ComboBox.selectionBackground"));
         b.setBackgroundColor(color);
         return b;
       }

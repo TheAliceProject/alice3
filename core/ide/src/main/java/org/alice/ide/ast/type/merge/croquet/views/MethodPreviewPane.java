@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.MemberHub;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.project.ast.UserMethod;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +57,6 @@ public class MethodPreviewPane extends MemberPreviewPane<UserMethod> {
     UserMethod method = methodHub.getMember();
     this.addComponent(new MethodHubHeaderView(methodHub), "wrap");
     this.addComponent(PreviewAstI18nFactory.getInstance().createComponent(method.getBodyProperty().getValue()), "wrap");
-    Theme theme = ThemeUtilities.getActiveTheme();
-    this.setBackgroundColor(method.isProcedure() ? theme.getProcedureColor() : theme.getFunctionColor());
+    this.setBackgroundColor(method.isProcedure() ? UIManager.getColor("Alice.Procedure.Color") : UIManager.getColor("Alice.Function.Color"));
   }
 }

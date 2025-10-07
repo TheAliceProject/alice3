@@ -52,13 +52,12 @@ import org.lgna.croquet.views.TextField;
 import org.lgna.project.ast.Member;
 
 import javax.swing.Icon;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
  */
 public class MemberViewUtilities {
-  public static Color ACTION_MUST_BE_TAKEN_COLOR = new Color(170, 0, 0);
 
   //  public static org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
   //    @Override
@@ -107,7 +106,7 @@ public class MemberViewUtilities {
 
   public static AbstractLabel createActionMustBeTakeMemberLabel(Member member) {
     AbstractLabel rv = createMemberLabel(member, "", "", null);
-    rv.setForegroundColor(ACTION_MUST_BE_TAKEN_COLOR);
+    rv.setForegroundColor(UIManager.getColor("Alice.Alert.Color"));
     return rv;
   }
 

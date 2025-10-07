@@ -42,11 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
-
-import org.alice.stageide.sceneeditor.CameraOption;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.stageide.sceneeditor.CameraOption;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -54,6 +52,7 @@ import javax.swing.JList;
 import javax.swing.border.Border;
 
 /**
+ * this is the dropdown at the top of the scene editor that lets you change the active camera view
  * @author dculyba
  *
  */
@@ -72,12 +71,9 @@ public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
     }
     if (isSelected) {
       rv.setOpaque(true);
-      rv.setBackground(new Color(57, 105, 138));
-      rv.setForeground(Color.WHITE);
       rv.setIcon(MarkerUtilities.getHighlightedIconForCamera(cameraOption));
     } else {
       rv.setOpaque(false);
-      rv.setForeground(Color.BLACK);
       rv.setIcon(MarkerUtilities.getIconForCamera(cameraOption));
     }
     return rv;

@@ -196,7 +196,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     rv.setLayout(layoutManager);
 
     rv.setOpaque(false);
-    rv.setBackground(null);
 
     rv.setAlignmentX(Component.LEFT_ALIGNMENT);
     rv.setAlignmentY(Component.CENTER_ALIGNMENT);

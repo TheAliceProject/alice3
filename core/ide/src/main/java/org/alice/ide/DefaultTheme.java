@@ -44,29 +44,9 @@ package org.alice.ide;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayInstanceCreation;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.Comment;
-import org.lgna.project.ast.DoTogether;
-import org.lgna.project.ast.EachInArrayTogether;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.InfixExpression;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.LogicalComplement;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.ResourceExpression;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.StringConcatenation;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Paint;
@@ -75,73 +55,7 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-  private static final Color DEFAULT_NOUN_COLOR = new Color(0xFDF6C0);
-  public static final Color DEFAULT_TYPE_COLOR = DEFAULT_NOUN_COLOR;
-  public static final Color DEFAULT_CONSTRUCTOR_COLOR = new Color(0xE6D4A3);
-  public static final Color DEFAULT_FIELD_COLOR = new Color(0xD6AC8B);
-
-  public static final Color DEFAULT_PROCEDURE_COLOR = new Color(0xB2B7D9);
-  public static final Color DEFAULT_FUNCTION_COLOR = new Color(0xADCF95);
-  //  private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
-  //  private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
-  private static final Color DEFAULT_EVENT_COLOR = new Color(0xd3d7f0);
-  private static final Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
-
-  private static final Color DEFAULT_SELECTED_COLOR = new Color(255, 255, 179);
-  private static final Color DEFAULT_UNSELECTED_COLOR = new Color(141, 137, 166);
-  private static final Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new Color(173, 167, 208);
-  private static final Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new Color(201, 201, 218);
-
-  @Override
-  public Color getTypeColor() {
-    return DEFAULT_TYPE_COLOR;
-  }
-
-  @Override
-  public Color getMutedTypeColor() {
-    return ColorUtilities.scaleHSB(this.getTypeColor(), 1.0, 0.9, 0.9);
-  }
-
-  @Override
-  public Color getProcedureColor() {
-    return DEFAULT_PROCEDURE_COLOR;
-  }
-
-  @Override
-  public Color getFunctionColor() {
-    return DEFAULT_FUNCTION_COLOR;
-  }
-
-  @Override
-  public Color getConstructorColor() {
-    return DEFAULT_CONSTRUCTOR_COLOR;
-  }
-
-  @Override
-  public Color getFieldColor() {
-    return DEFAULT_FIELD_COLOR;
-  }
-
-  @Override
-  public Color getLocalColor() {
-    return getFieldColor();
-  }
-
-  @Override
-  public Color getParameterColor() {
-    return getFieldColor();
-  }
-
-  @Override
-  public Color getEventColor() {
-    return DEFAULT_EVENT_COLOR;
-  }
-
-  @Override
-  public Color getEventBodyColor() {
-    return DEFAULT_EVENT_BODY_COLOR;
-  }
-
+  // this big fancy function returns... some shade of purple or yellow. that's all.  occasionally we go wild and return an orange, but that's pretty rare.
   @Override
   public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height) {
     Color color = this.getColorFor(cls);
@@ -163,42 +77,41 @@ public class DefaultTheme implements Theme {
   public Color getColorFor(Class<? extends Node> cls) {
     if (Statement.class.isAssignableFrom(cls)) {
       if (Comment.class.isAssignableFrom(cls)) {
-        return ColorUtilities.createGray(245);
+        return UIManager.getColor("Alice.Comment.Color");
       } else {
         //        if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
         //          return new java.awt.Color( 255, 230, 180 );
         ////        } else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
         ////          return new java.awt.Color( 255, 230, 180 );
         //        } else {
-        return new Color(0xd3d7f0);
+        return UIManager.getColor("Alice.Procedure.Block.Color");
         //return new java.awt.Color( 255, 255, 210 );
         //        }
       }
     } else if (Expression.class.isAssignableFrom(cls)) {
       if (ClassUtilities.isAssignableToAtLeastOne(cls, MethodInvocation.class)) {
-        return new Color(0xd3e7c7);
+        return UIManager.getColor("Alice.Function.Block.Color");
       } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class)) {
-        return new Color(0xDEEBD3);
+        return UIManager.getColor("Alice.Function.Block.Color").brighter();
       } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InstanceCreation.class, ArrayInstanceCreation.class)) {
-        //return new java.awt.Color( 0xbdcfb3 );
-        return DEFAULT_CONSTRUCTOR_COLOR;
+        return UIManager.getColor("Alice.Constructor.Block.Color");
       } else if (ResourceExpression.class.isAssignableFrom(cls)) {
-        return new Color(0xffffff);
+        return UIManager.getColor("Alice.Resource.Color");
       } else {
         if (NullLiteral.class.isAssignableFrom(cls)) {
           return Color.RED;
         } else {
-          return DEFAULT_NOUN_COLOR;
+          return UIManager.getColor("Alice.Noun.Color");
         }
       }
     } else if (AbstractField.class.isAssignableFrom(cls)) {
-      return this.getFieldColor();
+      return UIManager.getColor("Alice.Field.Color");
     } else if (AbstractParameter.class.isAssignableFrom(cls)) {
-      return this.getParameterColor();
+      return UIManager.getColor("Alice.Field.Color");
     } else if (AbstractType.class.isAssignableFrom(cls)) {
-      return this.getTypeColor();
+      return UIManager.getColor("Alice.Type.Color");
     } else if (UserLocal.class.isAssignableFrom(cls)) {
-      return this.getLocalColor();
+      return UIManager.getColor("Alice.Field.Color");
     } else {
       return Color.BLUE;
     }
@@ -210,9 +123,9 @@ public class DefaultTheme implements Theme {
       if (node instanceof AbstractMethod) {
         AbstractMethod method = (AbstractMethod) node;
         if (method.isProcedure()) {
-          return this.getProcedureColor();
+          return UIManager.getColor("Alice.Procedure.Color");
         } else {
-          return this.getFunctionColor();
+          return UIManager.getColor("Alice.Function.Color");
         }
       } else {
         Class<? extends Node> cls = node.getClass();
@@ -231,44 +144,21 @@ public class DefaultTheme implements Theme {
     }
   }
 
-  @Override
-  public Color getCommentForegroundColor() {
-    return new Color(0, 100, 0);
-  }
-
+  // cute little bit of color on the very outermost edge of the coding area that shows what we're writing. subtle and
+  // adorbs, completely overshadowed by the giant do in order that is always there.
   @Override
   public Color getCodeColor(Code code) {
     if (code instanceof UserMethod) {
       UserMethod userMethod = (UserMethod) code;
       if (userMethod.isProcedure()) {
-        return getProcedureColor();
+        return UIManager.getColor("Alice.Procedure.Color");
       } else {
-        return getFunctionColor();
+        return UIManager.getColor("Alice.Function.Color");
       }
     } else if (code instanceof NamedUserConstructor) {
-      return getConstructorColor();
+      return UIManager.getColor("Alice.Constructor.Color");
     } else {
       return Color.GRAY;
     }
-  }
-
-  @Override
-  public Color getSelectedColor() {
-    return DEFAULT_SELECTED_COLOR;
-  }
-
-  @Override
-  public Color getUnselectedColor() {
-    return DEFAULT_UNSELECTED_COLOR;
-  }
-
-  @Override
-  public Color getPrimaryBackgroundColor() {
-    return DEFAULT_PRIMARY_BACKGROUND_COLOR;
-  }
-
-  @Override
-  public Color getSecondaryBackgroundColor() {
-    return DEFAULT_SECONDARY_BACKGROUND_COLOR;
   }
 }

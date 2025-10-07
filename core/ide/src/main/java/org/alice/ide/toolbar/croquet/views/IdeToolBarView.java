@@ -48,6 +48,7 @@ import org.lgna.croquet.Element;
 import org.lgna.croquet.views.ToolBarView;
 
 /**
+ * this is an optional toolbar that appears to be permanently turned off by org.alice.ide.preferences.IsToolBarShowing
  * @author Dennis Cosgrove
  */
 public class IdeToolBarView extends ToolBarView {

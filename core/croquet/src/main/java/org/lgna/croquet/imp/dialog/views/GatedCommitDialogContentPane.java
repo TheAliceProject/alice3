@@ -54,6 +54,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 
 /**
+ * this shows up when we add a model into the scene
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogContentPane extends DialogContentPane {
@@ -79,8 +80,6 @@ public abstract class GatedCommitDialogContentPane extends DialogContentPane {
     }
     pageEndPanel.addComponent(Separator.createInstanceSeparatingTopFromBottom(), gbc);
     pageEndPanel.addComponent(controlLine, gbc);
-    controlLine.setBackgroundColor(null);
-
     this.addPageEndComponent(pageEndPanel);
 
     this.statusLabel.setForegroundColor(ERROR_COLOR);

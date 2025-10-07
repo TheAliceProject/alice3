@@ -44,7 +44,6 @@
 package org.alice.stageide.personresource;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.IDE;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.ast.ExpressionCreator;
@@ -52,12 +51,7 @@ import org.alice.ide.cascade.ExpressionCascadeManager;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation;
 import org.alice.stageide.sceneeditor.SimsSetUpMethodGenerator;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.OwnedByCompositeValueCreator;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.ValueConverter;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.*;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Dialog;
@@ -303,9 +297,6 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        UIManagerUtilities.setLookAndFeel("Nimbus");
-
-        //new org.alice.stageide.StageIDE();
         new SimpleApplication();
 
         try {

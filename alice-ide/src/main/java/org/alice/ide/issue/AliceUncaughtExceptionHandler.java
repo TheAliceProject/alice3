@@ -43,7 +43,6 @@
 package org.alice.ide.issue;
 
 import com.jogamp.opengl.GLException;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.story.AliceIde;
 import org.lgna.common.LgnaIllegalArgumentException;
 
@@ -56,7 +55,6 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
     Thread.setDefaultUncaughtExceptionHandler(new AliceUncaughtExceptionHandler());
     final boolean IS_TESTING_LGNA = false;
     if (IS_TESTING_LGNA) {

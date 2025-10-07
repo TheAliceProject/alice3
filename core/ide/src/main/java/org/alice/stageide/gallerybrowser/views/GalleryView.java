@@ -45,20 +45,18 @@ package org.alice.stageide.gallerybrowser.views;
 
 import org.alice.stageide.gallerybrowser.GalleryComposite;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.FolderTabbedPane;
 
 import javax.swing.BorderFactory;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class GalleryView extends BorderPanel {
-  public static final Color BACKGROUND_COLOR = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR.brighter();
 
   public GalleryView(GalleryComposite composite) {
     super(composite);
     this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
-    this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.WHITE));
+    this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("Separator.foreground")));
   }
 }

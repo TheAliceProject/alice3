@@ -47,17 +47,12 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UrlAsynchronousIcon;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.alice.stageide.personresource.PersonResourceComposite;
-import org.alice.stageide.personresource.views.IngredientsView;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.LifeStage;
 import org.lgna.story.resources.sims2.SkinTone;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -218,7 +213,8 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
         rv.setIcon(icon);
         rv.setText("");
         if (isSelected) {
-          rv.setBackground(IngredientsView.SELECTED_COLOR);
+          rv.setForeground(UIManager.getColor("List.selectionForeground"));
+          rv.setBackground(UIManager.getColor("List.selectionBackground"));
         }
       } else {
         rv.setText("image not found");

@@ -46,7 +46,6 @@ package org.alice.ide.declarationseditor;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.DefaultTheme;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec;
 import org.alice.ide.icons.TabIcon;
@@ -65,6 +64,7 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -169,19 +169,19 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   }
 
   private static final Dimension ICON_SIZE = new Dimension(16, 16);
-  private static final Icon TYPE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR);
-  private static final Icon FIELD_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR) {
+  private static final Icon TYPE_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Type.Color"));
+  private static final Icon FIELD_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Type.Color")) {
     @Override
     protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
       super.paintIcon(c, g2, width, height, fillPaint, drawPaint);
-      g2.setPaint(DefaultTheme.DEFAULT_FIELD_COLOR);
+      g2.setPaint(UIManager.getColor("Alice.Field.Color"));
       g2.fill(new Rectangle2D.Float(0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height));
     }
   };
 
-  private static final Icon PROCEDURE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_PROCEDURE_COLOR);
-  private static final Icon FUNCTION_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_FUNCTION_COLOR);
-  private static final Icon CONSTRUCTOR_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR);
+  private static final Icon PROCEDURE_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Procedure.Color"));
+  private static final Icon FUNCTION_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Function.Color"));
+  private static final Icon CONSTRUCTOR_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Constructor.Color"));
 
   public static Icon getProcedureIcon() {
     return PROCEDURE_ICON;

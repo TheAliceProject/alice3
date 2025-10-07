@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.eula.swing;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -192,7 +191,6 @@ public class JEulaPane extends JPanel {
         //        java.util.Locale.setDefault( locale );
         //        //javax.swing.JComponent.setDefaultLocale( locale );
         //        //javax.swing.JOptionPane.showConfirmDialog( null, "hello", "title", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-        UIManagerUtilities.setLookAndFeel("Nimbus");
         JEulaPane eulaPane = new JEulaPane("eulaText");
         JDialog dialog = new JDialogBuilder().isModal(true).title("title").build();
         dialog.getContentPane().add(eulaPane, BorderLayout.CENTER);

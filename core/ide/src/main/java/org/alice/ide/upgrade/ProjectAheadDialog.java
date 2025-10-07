@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.upgrade;
 
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.upgrade.views.ProjectAheadView;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
@@ -90,7 +89,6 @@ public class ProjectAheadDialog extends SimpleOperationInputDialogCoreComposite<
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
     new SimpleApplication();
     new ProjectAheadDialog(new Version("3.1.112358.0.0")).getLaunchOperation().fire();
     System.exit(0);

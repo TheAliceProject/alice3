@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide;
 
+import com.formdev.flatlaf.FlatLaf;
 import edu.cmu.cs.dennisc.crash.CrashDetector;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
@@ -49,7 +50,6 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
-import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
 import javafx.application.Application;
@@ -57,10 +57,7 @@ import javafx.stage.Stage;
 import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
@@ -69,7 +66,6 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class EntryPoint extends Application {
-  private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
   private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
   private static HeapWatchDog heapMonitor;
@@ -87,20 +83,21 @@ public class EntryPoint extends Application {
     String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
     System.out.println("version: " + text);
 
+    // This resources file is where all the theme colors are defined
+    FlatLaf.registerCustomDefaultsSource("org.alice.stageide.themes");
+
+    // TODO- create a setting somewhere? auto-determine from OS?
+    Boolean useDarkMode = false;
+    try {
+        javax.swing.UIManager.setLookAndFeel((useDarkMode ? new com.formdev.flatlaf.FlatDarkLaf() : new com.formdev.flatlaf.FlatLightLaf()));
+        com.formdev.flatlaf.FlatLaf.updateUI();
+      } catch (UnsupportedLookAndFeelException updateFlatLafThemeException) {
+    }
+
     // Initialize Swing here to do it on the correct thread, outside of JavaFX
     SwingUtilities.invokeLater(() -> {
-      if (PlafUtilities.isInstalledLookAndFeelNamed(NIMBUS_LOOK_AND_FEEL_NAME)) {
-        final Object macMenuBarUI;
-        if (SystemUtilities.isMac()) {
-          if (SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
-            macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
-          } else {
-            macMenuBarUI = null;
-          }
-        } else {
-          macMenuBarUI = null;
-        }
-        UIManagerUtilities.setLookAndFeel(NIMBUS_LOOK_AND_FEEL_NAME);
+      if (SystemUtilities.isMac()) { //&& SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
+        final Object macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
         if (macMenuBarUI != null) {
           UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
         }

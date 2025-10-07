@@ -68,6 +68,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 /**
+ * This is the red queen dialog. Currently does whatever she wants and ignores our light/dark theme
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends AbstractCaughtExceptionPane {

@@ -42,8 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.member.FunctionTabComposite;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -51,6 +52,6 @@ import org.alice.ide.member.FunctionTabComposite;
 public class FunctionTabView extends MemberTabView {
   public FunctionTabView(FunctionTabComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
   }
 }

@@ -47,13 +47,8 @@ import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.Composite;
 
 import javax.swing.JPanel;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
+import javax.swing.UIManager;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
@@ -93,7 +88,7 @@ public class CardPanel extends Panel {
   public CardPanel(CardOwnerComposite composite, int hgap, int vgap) {
     super(composite);
     this.cardLayout = new CustomPreferredSizeCardLayout(hgap, vgap);
-    Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
+    Color color = UIManager.getColor("Alice.Background.Color.different");
     if (composite != null) {
       java.util.List<Composite<?>> cards = composite.getCards();
       for (Composite<?> card : cards) {

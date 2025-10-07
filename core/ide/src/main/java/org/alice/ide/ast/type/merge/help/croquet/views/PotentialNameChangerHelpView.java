@@ -54,7 +54,7 @@ import org.lgna.croquet.views.MigPanel;
 import org.lgna.croquet.views.VerticalTextPosition;
 
 import javax.swing.BorderFactory;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -67,7 +67,7 @@ public class PotentialNameChangerHelpView extends BorderPanel {
     AbstractLabel label = composite.getHeader().createLabel();
     label.setIcon(IconUtilities.getQuestionIcon());
     label.setOpaque(true);
-    label.setBackgroundColor(Color.WHITE);
+    label.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
     label.setVerticalTextPosition(VerticalTextPosition.TOP);
     label.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     label.getAwtComponent().setIconTextGap(12);

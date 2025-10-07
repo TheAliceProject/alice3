@@ -66,8 +66,7 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.ToolPaletteView;
 import org.lgna.project.ast.NamedUserType;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -78,19 +77,19 @@ public class TypeDeclarationView extends DeclarationView {
     super(composite);
     NamedUserType type = (NamedUserType) composite.getDeclaration();
     Theme theme = ThemeUtilities.getActiveTheme();
-    this.setBackgroundColor(theme.getMutedTypeColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Type.Color.muted"));
 
     ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
-    constructorsToolPalette.setBackgroundColor(theme.getConstructorColor());
+    constructorsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Constructor.Color"));
 
     ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
-    proceduresToolPalette.setBackgroundColor(theme.getProcedureColor());
+    proceduresToolPalette.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
 
     ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
-    functionsToolPalette.setBackgroundColor(theme.getFunctionColor());
+    functionsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
 
     ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
-    fieldsToolPalette.setBackgroundColor(theme.getFieldColor());
+    fieldsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
 
     for (ToolPaletteView toolPalette : new ToolPaletteView[] {constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette}) {
       toolPalette.getTitle().changeFont(TextPosture.OBLIQUE);

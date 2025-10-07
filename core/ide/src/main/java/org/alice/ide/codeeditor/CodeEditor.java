@@ -56,32 +56,14 @@ import org.alice.ide.x.ProjectEditorAstI18nFactory;
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.AwtContainerView;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
 import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.ScreenElement;
 import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TrackableShape;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.ConstructorBlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.UserCode;
+import org.lgna.croquet.views.*;
+import org.lgna.project.ast.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import java.awt.Color;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 
@@ -100,8 +82,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     this.rootStatementListPropertyPane = new StatementListPropertyView(factory, body.statements, 32);
 
     SwingComponentView<?> statementListComponent = null;
-    if (body instanceof ConstructorBlockStatement) {
-      ConstructorBlockStatement constructorBlockStatement = (ConstructorBlockStatement) body;
+    if (body instanceof ConstructorBlockStatement constructorBlockStatement) {
       ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
       if (constructorInvocationStatement != null) {
         SwingComponentView<?> superComponent = ProjectEditorAstI18nFactory.getInstance().createStatementPane(constructorInvocationStatement);
@@ -122,17 +103,16 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     this.addPageStartComponent(this.header);
 
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    Color color = ThemeUtilities.getActiveTheme().getCodeColor(this.code);
-    this.setBackgroundColor(color);
+
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getCodeColor(this.code));
   }
 
   @Override
   public TrackableShape getTrackableShape(DropSite potentialDropSite) {
-    if (potentialDropSite instanceof BlockStatementIndexPair) {
-      BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair) potentialDropSite;
+    if (potentialDropSite instanceof BlockStatementIndexPair blockStatementIndexPair) {
       StatementListProperty statementListProperty = blockStatementIndexPair.getBlockStatement().statements;
       int index = Math.max(0, blockStatementIndexPair.getIndex());
-      return this.getTrackableShapeAtIndexOf(statementListProperty, index, false);
+      return this.getTrackableShapeAtIndexOf(statementListProperty, index);
     } else {
       return null;
     }
@@ -143,18 +123,10 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     return this.code;
   }
 
-  private final ValueListener<Boolean> typeFeedbackListener = new ValueListener<Boolean>() {
-    @Override
-    public void valueChanged(ValueEvent<Boolean> e) {
-      CodeEditor.this.rootStatementListPropertyPane.refreshLater();
-    }
-  };
-  private final ValueListener<Formatter> formatterListener = new ValueListener<Formatter>() {
-    @Override
-    public void valueChanged(ValueEvent<Formatter> e) {
-      CodeEditor.this.header.refreshLater();
-      CodeEditor.this.rootStatementListPropertyPane.refreshLater();
-    }
+  private final ValueListener<Boolean> typeFeedbackListener = e -> CodeEditor.this.rootStatementListPropertyPane.refreshLater();
+  private final ValueListener<Formatter> formatterListener = e -> {
+    CodeEditor.this.header.refreshLater();
+    CodeEditor.this.rootStatementListPropertyPane.refreshLater();
   };
 
   @Override
@@ -221,10 +193,6 @@ public class CodeEditor extends CodePanelWithDropReceptor {
       this.boundsAtIndex = boundsAtIndex;
     }
 
-    private StatementListProperty getStatementListProperty() {
-      return this.statementListProperty;
-    }
-
     public BlockStatement getBlockStatement() {
       return (BlockStatement) this.statementListProperty.getOwner();
     }
@@ -237,9 +205,8 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     public Shape getShape(ScreenElement asSeenBy, Insets insets) {
       AwtComponentView<?> src = CodeEditor.this.getAsSeenBy();
       if (src != null) {
-        Rectangle rv = src.convertRectangle(this.boundsAtIndex, asSeenBy);
         //note: ignore insets
-        return rv;
+        return src.convertRectangle(this.boundsAtIndex, asSeenBy);
       } else {
         return null;
       }
@@ -249,11 +216,8 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     public Shape getVisibleShape(ScreenElement asSeenBy, Insets insets) {
       AwtComponentView<?> src = CodeEditor.this.getAsSeenBy();
       if (src != null) {
-        Rectangle bounds = src.convertRectangle(this.boundsAtIndex, asSeenBy);
         //note: ignore insets
-        //          java.awt.Rectangle visibleBounds = statementListPropertyPane.getVisibleRectangle( asSeenBy );
-        //          return bounds.intersection( visibleBounds );
-        return bounds;
+        return src.convertRectangle(this.boundsAtIndex, asSeenBy);
       } else {
         return null;
       }
@@ -294,7 +258,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
     }
   }
 
-  public TrackableShape getTrackableShapeAtIndexOf(StatementListProperty statementListProperty, int index, boolean EPIC_HACK_isDropConstraintDesired) {
+  public TrackableShape getTrackableShapeAtIndexOf(StatementListProperty statementListProperty, int index) {
     if (statementListProperty != null) {
       //choose any non-ancestor
 
@@ -302,9 +266,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
       DragModel dragModel = null;
       Logger.todo(dragModel);
       StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.getDropReceptor().createStatementListPropertyPaneInfos(dragModel, arbitrarilyChosenSource);
-      final int N = statementListPropertyPaneInfos.length;
-      for (int i = 0; i < N; i++) {
-        StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[i];
+      for (StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos) {
         StatementListPropertyView statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
         if (statementListPropertyPane.getProperty() == statementListProperty) {
           StatementListPropertyView.BoundInformation yBounds = statementListPropertyPane.calculateYBounds(index);
@@ -332,10 +294,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
           return new StatementListIndexTrackableShape(statementListProperty, index, statementListPropertyPane, boundsAtIndex);
         }
       }
-      //      org.lgna.project.ast.Node a = ((org.lgna.project.ast.BlockStatement)statementListProperty.getOwner()).getParent();
-      //      org.lgna.project.ast.Node b = ((org.lgna.project.ast.BlockStatement)statementListPropertyPaneInfos[0].getStatementListPropertyPane().getProperty().getOwner()).getParent();
-      //      edu.cmu.cs.dennisc.java.util.logging.Logger.severe( a, b, a.hashCode(), b.hashCode(), a.getId(), b.getId() );
-    }
+  }
 
     return null;
   }

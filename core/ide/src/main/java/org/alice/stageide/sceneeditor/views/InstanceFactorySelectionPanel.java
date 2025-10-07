@@ -65,33 +65,10 @@ import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.PanelViewController;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.SizeRequirements;
-import java.awt.AlphaComposite;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
-import java.awt.Point;
-import java.awt.Rectangle;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -99,6 +76,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * these are the tiles that appear over the left edge of the scene
  * @author Dennis Cosgrove
  */
 public class InstanceFactorySelectionPanel extends PanelViewController<InstanceFactoryState> {
@@ -364,7 +342,6 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
 
   private static final class InternalPanel extends Panel {
     public InternalPanel() {
-      this.setBackgroundColor(null);
       this.dropDown = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
     }
 
@@ -433,7 +410,6 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
 
   public InstanceFactorySelectionPanel() {
     super(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel());
-    this.setBackgroundColor(null);
     this.getAwtComponent().setOpaque(false);
   }
 

@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
 import org.alice.stageide.gallerybrowser.views.GalleryTabView;
-import org.alice.stageide.gallerybrowser.views.GalleryView;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.TreeUtilities;
 import org.lgna.croquet.views.AbstractLabel;
@@ -84,7 +83,6 @@ public class SearchTabView extends GalleryTabView {
     this.filterTextField.enableSelectAllWhenFocusGained();
 
     ScrollPane scrollPane = createGalleryScrollPane(this.filteredResourcesView);
-    this.filteredResourcesView.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
 
     this.addPageStartComponent(new LineAxisPanel(composite.getFilterState().getSidekickLabel().createLabel(), this.filterTextField));
     this.addCenterComponent(scrollPane);
@@ -95,11 +93,6 @@ public class SearchTabView extends GalleryTabView {
     super.handleCompositePreActivation();
     this.filterTextField.requestFocusLater();
   }
-
-  //@Override
-  //public void handleCompositePostDeactivation() {
-  //  super.handleCompositePostDeactivation();
-  //}
 
   public void removeAllGalleryDragComponents() {
     synchronized (this.getTreeLock()) {

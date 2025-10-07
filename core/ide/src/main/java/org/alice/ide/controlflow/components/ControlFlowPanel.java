@@ -54,6 +54,7 @@ import javax.swing.JPanel;
 import java.awt.LayoutManager;
 
 /**
+ * This is panel of control statements (doInOrder, while, if, etc) at the bottom of the coding window
  * @author Dennis Cosgrove
  */
 public class ControlFlowPanel extends Panel {
@@ -66,7 +67,6 @@ public class ControlFlowPanel extends Panel {
         this.internalAddComponent(BoxUtilities.createHorizontalSliver(8));
       }
     }
-    this.setBackgroundColor(null);
     this.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
   }
 
