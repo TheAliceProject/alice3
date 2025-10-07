@@ -175,13 +175,9 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
 
   protected void internalForgetAndRemoveComponent(AwtComponentView<?> component) {
     this.internalRemoveComponent(component, true);
-    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
-    //  this.repaint();
   }
 
   protected void internalForgetAndRemoveAllComponents() {
     this.internalRemoveAllComponents(true);
-    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent(), forgetObserver );
-    //  this.repaint();
   }
 }

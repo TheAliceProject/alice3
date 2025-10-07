@@ -43,7 +43,6 @@
 
 package org.lgna.common;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -51,14 +50,10 @@ import java.util.Random;
  */
 
 public class RandomUtilities {
-  private static Random s_random = new Random();
+  private static final Random s_random = new Random();
 
   private static int getRandomIndex(int n) {
     return s_random.nextInt(n);
-  }
-
-  public static void setSeed(long seed) {
-    s_random.setSeed(seed);
   }
 
   public static Integer nextIntegerFrom0ToNExclusive(Integer n) {
@@ -105,21 +100,13 @@ public class RandomUtilities {
     }
   }
 
-  public static <E> E getRandomValueFrom(List<E> list) {
-    LgnaIllegalArgumentException.checkArgumentIsNotNull(list, 0);
-    if (list.size() > 0) {
-      return list.get(getRandomIndex(list.size()));
+  public static <E extends Enum<? extends E>> E getRandomEnumConstant(Class<E> cls) {
+    E[] enumConstants = cls.getEnumConstants();
+    if (enumConstants.length > 0) {
+      int index = s_random.nextInt(enumConstants.length);
+      return enumConstants[index];
     } else {
-      //todo: throw Exception?
       return null;
     }
-  }
-
-  public static <E extends Enum<? extends E>> E getRandomEnumConstant(Class<E> cls) {
-    LgnaIllegalArgumentException.checkArgumentIsNotNull(cls, 0);
-    E[] enumConstants = cls.getEnumConstants();
-    assert enumConstants.length > 0 : cls;
-    int index = s_random.nextInt(enumConstants.length);
-    return enumConstants[index];
   }
 }
