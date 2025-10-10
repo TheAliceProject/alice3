@@ -3,20 +3,37 @@ package org.alice.ide.croquet.models.projecturi;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 
+import java.time.LocalDateTime;
+import java.time.format.*;
+import java.util.Locale;
 import java.util.UUID;
+
+import static org.alice.ide.ProjectFileUtilities.ORDER_FORMAT;
 
 /**
  * @author Dmitry Portnoy
  */
 public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
+    private static final DateTimeFormatter READABLE_DATETIME_FORMAT =
+            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
+
     public BackupProjectOperation() {
         super(UUID.fromString("89b65a9c-f36a-44ba-8aed-c2922d40f298"), false);
     }
 
     public YesNoCancelResult showBackupProjectOpenedDialog(String backupName, boolean isMainProjectCorrupted) {
         String title = findLocalizedText("BackupOpenedDialog.title");
-        String message = findLocalizedText("BackupOpenedDialog.message")
-                .replaceAll("</backupName/>", backupName);
+        String message = "";
+
+        String backupDateString = getDateStringFromBackupName(backupName);
+
+        if (backupDateString != null) {
+            message = findLocalizedText("BackupOpenedDialog.messageWithDate")
+                    .replaceAll("</backupDate/>", backupDateString);
+        } else {
+            message = findLocalizedText("BackupOpenedDialog.message")
+                    .replaceAll("</backupName/>", backupName);
+        }
 
         String option1 = findLocalizedText("BackupOpenedDialog.option1");
         String option2 = findLocalizedText("BackupOpenedDialog.option2");
@@ -54,11 +71,23 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
 
     public boolean showProjectLoadErrorAndLoadBackupDialog(String projectName, boolean isCurrentProjectBackup) {
         String title = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.title");
-        String message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.message")
-                .replaceAll("</projectName/>", projectName)
-                .replaceAll("</backupType/>", isCurrentProjectBackup
-                        ? "an earlier backup"
-                        : "a backup");
+        String message = "";
+
+        String backupDateString = isCurrentProjectBackup
+                ? getDateStringFromBackupName(projectName)
+                : null;
+
+        if (backupDateString == null) {
+            message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.message")
+                    .replaceAll("</projectName/>", projectName);
+        }   else {
+            message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.messageWithDate")
+                    .replaceAll("</backupDate/>", backupDateString);
+        }
+
+        message = message.replaceAll("</backupType/>", isCurrentProjectBackup
+                ? "an earlier backup"
+                : "a backup");
 
         return Dialogs.confirmWithWarning(title, message);
     }
@@ -91,5 +120,20 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         String message = findLocalizedText("MoreRecentBackupsDialog.message");
 
         return Dialogs.confirmWithWarning(title, message);
+    }
+
+    private String getDateStringFromBackupName(String name) {
+        if (name.length() < 8) {
+            return null;
+        }
+
+        try {
+            String datetime = name.substring(4, name.length() - 4);
+            LocalDateTime date = LocalDateTime.parse(datetime, ORDER_FORMAT);
+
+            return date.format(READABLE_DATETIME_FORMAT);
+        } catch (DateTimeParseException pe) {
+            return null;
+        }
     }
 }

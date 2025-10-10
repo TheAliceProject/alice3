@@ -36,9 +36,9 @@ public class ProjectFileUtilities {
   public static final String BACKUP_AUTO = "auto";
   public static final String BACKUP_EXTENSION = "bak";
   public static final String DEFAULT_BACKUP_DIR = "defaultbak";
+  public static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
   private static final String BACKUP_SAVE = "save";
-  private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
   private static final int SECONDS_BETWEEN_BACKUPS = 60;
 
