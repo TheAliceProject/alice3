@@ -43,12 +43,9 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.JointImp;
-import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 
 /**
@@ -56,71 +53,15 @@ import org.lgna.story.resources.JointId;
  */
 public class SJoint extends SMovableTurnable {
 
-  private static final MapToMap<SJointedModel, JointId, SJoint> mapToJointIdJointMap = MapToMap.newInstance();
-  private static final MapToMap<SJointedModel, String, SJoint> mapToJointNameJointMap = MapToMap.newInstance();
-
-  private static final MapToMap<SJointedModel, JointId[], SJoint[]> mapToArrayMap = MapToMap.newInstance();
-
+  // TODO Replace calls to this with calls on the model directly.
+  @Deprecated(forRemoval = true)
   static SJoint getJoint(SJointedModel jointedModel, JointId jointId) {
-    return mapToJointIdJointMap.getInitializingIfAbsent(jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
-      @Override
-      public SJoint initialize(SJointedModel jointedModel, JointId jointId) {
-        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
-        return SJoint.getInstance(jointedModelImplementation, jointId);
-      }
-    });
-  }
-
-  static SJoint getJoint(SJointedModel jointedModel, String jointName) {
-    return mapToJointNameJointMap.getInitializingIfAbsent(jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
-      @Override
-      public SJoint initialize(SJointedModel jointedModel, String jointName) {
-        JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
-        return SJoint.getInstance(jointedModelImplementation, jointName);
-      }
-    });
-  }
-
-  static SJoint[] getJointArray(SJointedModel jointedModel, JointId[] jointIdArray) {
-    return mapToArrayMap.getInitializingIfAbsent(jointedModel, jointIdArray, new MapToMap.Initializer<SJointedModel, JointId[], SJoint[]>() {
-      @Override
-      public SJoint[] initialize(SJointedModel jointedModel, JointId[] jointIdArray) {
-        SJoint[] jointArray = new SJoint[jointIdArray.length];
-        for (int i = 0; i < jointIdArray.length; i++) {
-          jointArray[i] = getJoint(jointedModel, jointIdArray[i]);
-        }
-        return jointArray;
-      }
-    });
-  }
-
-  /* package-private */
-  static SJoint[] getJointArray(SJointedModel jointedModel, JointArrayId jointArrayId) {
-    JointedModelImp jointedModelImplementation = jointedModel.getImplementation();
-    return getJointArray(jointedModel, jointedModelImplementation.getJointIdArray(jointArrayId));
-  }
-
-  private static SJoint getInstance(JointedModelImp jointedModelImplementation, JointId jointId) {
-    return getInstance(jointedModelImplementation.getJointImplementation(jointId));
-  }
-
-  //String based lookup for DynamicJointIds
-  private static SJoint getInstance(JointedModelImp jointedModelImplementation, String jointName) {
-    return getInstance(jointedModelImplementation.getJointImplementation(jointName));
-  }
-
-  private static SJoint getInstance(JointImp jointImp) {
-    SJoint rv = jointImp.getAbstraction();
-    if (rv == null) {
-      rv = new SJoint(jointImp);
-      jointImp.setAbstraction(rv);
-    }
-    return rv;
+    return jointedModel.getJoint(jointId);
   }
 
   private final JointImp implementation;
 
-  private SJoint(JointImp implementation) {
+  public SJoint(JointImp implementation) {
     this.implementation = implementation;
   }
 

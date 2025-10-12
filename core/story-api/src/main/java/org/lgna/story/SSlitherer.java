@@ -110,7 +110,7 @@ public class SSlitherer extends SJointedModel {
   }
 
   public SJoint[] getTailArray() {
-    return SJoint.getJointArray(this, this.getImplementation().getResource().getTailArray());
+    return getJointArray(getImplementation().getResource().getTailArray());
   }
 
   public SJoint getTail() {

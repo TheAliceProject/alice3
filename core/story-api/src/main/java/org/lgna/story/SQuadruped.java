@@ -183,7 +183,7 @@ public class SQuadruped extends SJointedModel implements Articulable {
   }
 
   public SJoint[] getTailArray() {
-    return SJoint.getJointArray(this, this.getImplementation().getResource().getTailArray());
+    return getJointArray(getImplementation().getResource().getTailArray());
   }
 
   public SJoint getTail() {

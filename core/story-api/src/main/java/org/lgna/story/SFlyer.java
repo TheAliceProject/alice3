@@ -103,7 +103,7 @@ public class SFlyer extends SJointedModel implements Articulable {
   }
 
   public SJoint[] getNeckArray() {
-    return SJoint.getJointArray(this, this.getImplementation().getResource().getNeckArray());
+    return getJointArray(getImplementation().getResource().getNeckArray());
   }
 
   public SJoint getNeck() {
@@ -172,7 +172,7 @@ public class SFlyer extends SJointedModel implements Articulable {
   }
 
   public SJoint[] getTailArray() {
-    return SJoint.getJointArray(this, this.getImplementation().getResource().getTailArray());
+    return getJointArray(getImplementation().getResource().getTailArray());
   }
 
   public SJoint getTail() {
