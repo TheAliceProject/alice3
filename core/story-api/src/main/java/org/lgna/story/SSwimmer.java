@@ -69,63 +69,63 @@ public class SSwimmer extends SJointedModel {
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public SJoint getRoot() {
-    return SJoint.getJoint(this, SwimmerResource.ROOT);
+    return getJoint(SwimmerResource.ROOT);
   }
 
   public SJoint getNeck() {
-    return SJoint.getJoint(this, SwimmerResource.NECK);
+    return getJoint(SwimmerResource.NECK);
   }
 
   public SJoint getHead() {
-    return SJoint.getJoint(this, SwimmerResource.HEAD);
+    return getJoint(SwimmerResource.HEAD);
   }
 
   public SJoint getMouth() {
-    return SJoint.getJoint(this, SwimmerResource.MOUTH);
+    return getJoint(SwimmerResource.MOUTH);
   }
 
   //  public SJoint getLowerLip() {
   //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
   //  }
   public SJoint getLeftEye() {
-    return SJoint.getJoint(this, SwimmerResource.LEFT_EYE);
+    return getJoint(SwimmerResource.LEFT_EYE);
   }
 
   public SJoint getRightEye() {
-    return SJoint.getJoint(this, SwimmerResource.RIGHT_EYE);
+    return getJoint(SwimmerResource.RIGHT_EYE);
   }
 
   public SJoint getLeftEyelid() {
-    return SJoint.getJoint(this, SwimmerResource.LEFT_EYELID);
+    return getJoint(SwimmerResource.LEFT_EYELID);
   }
 
   public SJoint getRightEyelid() {
-    return SJoint.getJoint(this, SwimmerResource.RIGHT_EYELID);
+    return getJoint(SwimmerResource.RIGHT_EYELID);
   }
 
   public SJoint getFrontLeftFin() {
-    return SJoint.getJoint(this, SwimmerResource.FRONT_LEFT_FIN);
+    return getJoint(SwimmerResource.FRONT_LEFT_FIN);
   }
 
   //  public SJoint getFrontLeftFinTip() {
   //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN_TIP);
   //  }
   public SJoint getFrontRightFin() {
-    return SJoint.getJoint(this, SwimmerResource.FRONT_RIGHT_FIN);
+    return getJoint(SwimmerResource.FRONT_RIGHT_FIN);
   }
 
   //  public SJoint getFrontRightFinTip() {
   //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN_TIP);
   //  }
   public SJoint getSpineBase() {
-    return SJoint.getJoint(this, SwimmerResource.SPINE_BASE);
+    return getJoint(SwimmerResource.SPINE_BASE);
   }
 
   public SJoint getSpineMiddle() {
-    return SJoint.getJoint(this, SwimmerResource.SPINE_MIDDLE);
+    return getJoint(SwimmerResource.SPINE_MIDDLE);
   }
 
   public SJoint getTail() {
-    return SJoint.getJoint(this, SwimmerResource.TAIL);
+    return getJoint(SwimmerResource.TAIL);
   }
 }

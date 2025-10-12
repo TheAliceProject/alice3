@@ -66,47 +66,47 @@ public class SSlitherer extends SJointedModel {
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public SJoint getRoot() {
-    return SJoint.getJoint(this, SlithererResource.ROOT);
+    return getJoint(SlithererResource.ROOT);
   }
 
   public SJoint getNeck() {
-    return SJoint.getJoint(this, SlithererResource.NECK);
+    return getJoint(SlithererResource.NECK);
   }
 
   public SJoint getHead() {
-    return SJoint.getJoint(this, SlithererResource.HEAD);
+    return getJoint(SlithererResource.HEAD);
   }
 
   public SJoint getMouth() {
-    return SJoint.getJoint(this, SlithererResource.MOUTH);
+    return getJoint(SlithererResource.MOUTH);
   }
 
   public SJoint getLeftEye() {
-    return SJoint.getJoint(this, SlithererResource.LEFT_EYE);
+    return getJoint(SlithererResource.LEFT_EYE);
   }
 
   public SJoint getRightEye() {
-    return SJoint.getJoint(this, SlithererResource.RIGHT_EYE);
+    return getJoint(SlithererResource.RIGHT_EYE);
   }
 
   public SJoint getLeftEyelid() {
-    return SJoint.getJoint(this, SlithererResource.LEFT_EYELID);
+    return getJoint(SlithererResource.LEFT_EYELID);
   }
 
   public SJoint getRightEyelid() {
-    return SJoint.getJoint(this, SlithererResource.RIGHT_EYELID);
+    return getJoint(SlithererResource.RIGHT_EYELID);
   }
 
   public SJoint getSpineBase() {
-    return SJoint.getJoint(this, SlithererResource.SPINE_BASE);
+    return getJoint(SlithererResource.SPINE_BASE);
   }
 
   public SJoint getSpineMiddle() {
-    return SJoint.getJoint(this, SlithererResource.SPINE_MIDDLE);
+    return getJoint(SlithererResource.SPINE_MIDDLE);
   }
 
   public SJoint getSpineUpper() {
-    return SJoint.getJoint(this, SlithererResource.SPINE_UPPER);
+    return getJoint(SlithererResource.SPINE_UPPER);
   }
 
   public SJoint[] getTailArray() {
@@ -114,7 +114,7 @@ public class SSlitherer extends SJointedModel {
   }
 
   public SJoint getTail() {
-    return SJoint.getJoint(this, SlithererResource.TAIL_0);
+    return getJoint(SlithererResource.TAIL_0);
   }
 
 }

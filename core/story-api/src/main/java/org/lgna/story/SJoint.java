@@ -46,19 +46,11 @@ package org.lgna.story;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.JointImp;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SJoint extends SMovableTurnable {
-
-  // TODO Replace calls to this with calls on the model directly.
-  @Deprecated(forRemoval = true)
-  static SJoint getJoint(SJointedModel jointedModel, JointId jointId) {
-    return jointedModel.getJoint(jointId);
-  }
-
   private final JointImp implementation;
 
   public SJoint(JointImp implementation) {
