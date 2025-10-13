@@ -204,8 +204,8 @@ public class SceneImp extends EntityImp {
 
   public void setProgram(ProgramImp program) {
     if (this.program != program) {
-      if (program != null) {
-        this.eventManager.removeListenersFrom(program.getOnscreenRenderTarget());
+      if (this.program != null) {
+        this.eventManager.removeListenersFrom(this.program.getOnscreenRenderTarget());
       }
       //handleOwnerChange( null );
       this.program = program;
