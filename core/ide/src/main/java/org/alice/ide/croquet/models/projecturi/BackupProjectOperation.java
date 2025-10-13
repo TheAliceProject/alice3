@@ -21,17 +21,19 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         super(UUID.fromString("89b65a9c-f36a-44ba-8aed-c2922d40f298"), false);
     }
 
-    public YesNoCancelResult showBackupProjectOpenedDialog(String backupName, boolean isMainProjectCorrupted) {
+    public YesNoCancelResult showBackupProjectOpenedDialog(String mainProjectName, String backupName, boolean isMainProjectCorrupted) {
         String title = findLocalizedText("BackupOpenedDialog.title");
         String message = "";
 
         String backupDateString = getDateStringFromBackupName(backupName);
 
         if (backupDateString != null) {
-            message = findLocalizedText("BackupOpenedDialog.messageWithDate")
+            message = findLocalizedText("BackupOpenedDialog.messageWithBackupDate")
+                    .replaceAll("</projectName/>", mainProjectName)
                     .replaceAll("</backupDate/>", backupDateString);
-        } else {
-            message = findLocalizedText("BackupOpenedDialog.message")
+        } else { // handle the unexpected case when the date can't be read from the backup filename
+            message = findLocalizedText("BackupOpenedDialog.messageWithBackupName")
+                    .replaceAll("</projectName/>", mainProjectName)
                     .replaceAll("</backupName/>", backupName);
         }
 
@@ -69,25 +71,26 @@ public class BackupProjectOperation extends PotentialClearanceUriCreatorIteratin
         Dialogs.showError(title, message);
     }
 
-    public boolean showProjectLoadErrorAndLoadBackupDialog(String projectName, boolean isCurrentProjectBackup) {
+    public boolean showProjectLoadErrorAndLoadBackupDialog(String mainProjectName, String backupName, boolean isCurrentProjectBackup) {
         String title = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.title");
         String message = "";
 
-        String backupDateString = isCurrentProjectBackup
-                ? getDateStringFromBackupName(projectName)
-                : null;
+        if (isCurrentProjectBackup) {
+            String backupDateString = getDateStringFromBackupName(backupName);
 
-        if (backupDateString == null) {
+            if (backupDateString != null) {
+                message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.messageWithBackupDate")
+                        .replaceAll("</projectName/>", mainProjectName)
+                        .replaceAll("</backupDate/>", backupDateString);
+            } else {  // handle the unexpected case when the date can't be read from the backup filename
+                message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.messageWithBackupName")
+                        .replaceAll("</projectName/>", mainProjectName)
+                        .replaceAll("</backupName/>", backupName);
+            }
+        } else {
             message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.message")
-                    .replaceAll("</projectName/>", projectName);
-        }   else {
-            message = findLocalizedText("ProjectLoadErrorAndLoadBackupDialog.messageWithDate")
-                    .replaceAll("</backupDate/>", backupDateString);
+                    .replaceAll("</projectName/>", mainProjectName);
         }
-
-        message = message.replaceAll("</backupType/>", isCurrentProjectBackup
-                ? "an earlier backup"
-                : "a backup");
 
         return Dialogs.confirmWithWarning(title, message);
     }
