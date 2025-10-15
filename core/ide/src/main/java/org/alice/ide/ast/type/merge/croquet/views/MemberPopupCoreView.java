@@ -65,7 +65,9 @@ public class MemberPopupCoreView extends BorderPanel {
     this.addPageStartComponent(label);
     this.addCenterComponent(component);
 
+    // the border of the header
     label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
+    // the border of the whole popup window
     this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, UIManager.getColor("Separator.foreground")));
     this.setMinimumPreferredWidth(200);
   }

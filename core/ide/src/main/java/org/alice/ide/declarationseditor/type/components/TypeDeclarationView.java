@@ -69,7 +69,9 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * This is the Scene tab at the top of alice
+ * These are tabs at the top of alice that define a type.  Most commonly, we see this as the Scene Tab, but if you open a
+ * tab for anything seen in the type hierarchy, this is what you'll see.
+ *
  * @author Dennis Cosgrove
  */
 public class TypeDeclarationView extends DeclarationView {
