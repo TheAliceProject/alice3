@@ -56,7 +56,7 @@ import java.awt.geom.GeneralPath;
 public class ArrowIcon implements Icon {
 
   private boolean rotateIfSelected = false;
-  private int size;
+  private final int size;
 
   public ArrowIcon(int size) {
     this(size, false);
@@ -88,13 +88,8 @@ public class ArrowIcon implements Icon {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     ButtonModel buttonModel = this.getButtonModel(c);
 
-    GeneralPath path;
-    if (rotateIfSelected) {
-      Heading heading = (buttonModel.isSelected() || buttonModel.isPressed()) ? Heading.SOUTH : Heading.EAST;
-      path = this.createPath(x, y, heading);
-    } else {
-      path = this.createPath(x, y, Heading.SOUTH);
-    }
+    Heading heading = !rotateIfSelected || (buttonModel.isSelected() || buttonModel.isPressed()) ? Heading.SOUTH : Heading.EAST;
+    GeneralPath path = this.createPath(x, y, heading);
 
     Graphics2D g2 = (Graphics2D) g;
     Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);

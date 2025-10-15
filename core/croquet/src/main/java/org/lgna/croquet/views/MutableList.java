@@ -53,7 +53,6 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
@@ -110,12 +109,12 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
     }
   }
 
-  private static Color BASE_COLOR = UIManager.getColor("List.background");
-  private static Color KNURL_COLOR = UIManager.getColor("Alice.Block.Knurl.Color");
-  private static Color OUTLINE_COLOR = UIManager.getColor("Alice.Background.Color.different");
-  private static Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
+  private static final Color BASE_COLOR = UIManager.getColor("List.background");
+  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.Knurl.Color");
+  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.Background.Color.different");
+  private static final Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
 
-  protected abstract class JItemAtIndexButton extends JToggleButton {
+  protected abstract static class JItemAtIndexButton extends JToggleButton {
     public JItemAtIndexButton() {
       this.setOpaque(false);
       this.setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
@@ -235,25 +234,9 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   private static final KeyStroke KEYPAD_UP_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0);
   private static final KeyStroke DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
   private static final KeyStroke KEYPAD_DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0);
-  private final ActionListener removeSelectedListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("removeSelectedItem");
-      //MutableList.this.removeSelectedItem();
-    }
-  };
-  private final ActionListener moveSelectionUpListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("moveSelectionUp");
-    }
-  };
-  private final ActionListener moveSelectionDownListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("moveSelectionDown");
-    }
-  };
+  private final ActionListener removeSelectedListener = e -> System.out.println("removeSelectedItem");
+  private final ActionListener moveSelectionUpListener = e -> System.out.println("moveSelectionUp");
+  private final ActionListener moveSelectionDownListener = e -> System.out.println("moveSelectionDown");
 
   public void registerKeyboardActions() {
     this.registerKeyboardAction(this.removeSelectedListener, DELETE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);

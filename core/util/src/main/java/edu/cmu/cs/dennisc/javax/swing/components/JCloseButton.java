@@ -63,56 +63,43 @@ public final class JCloseButton extends JButton {
       ButtonModel model = button.getModel();
 
       Graphics2D g2 = (Graphics2D) g;
-
-      int closeWidth = SIZE;
-      int closeHeight = closeWidth;
-      float size = Math.min(closeWidth, closeHeight) * 0.9f;
-
-      float w = size;
-      float h = size * 0.25f;
-      float xC = -w * 0.5f;
-      float yC = -h * 0.5f;
-      RoundRectangle2D.Float rr = new RoundRectangle2D.Float(xC, yC, w, h, h, h);
-
-      Area area0 = new Area(rr);
-      Area area1 = new Area(rr);
-
-      AffineTransform m0 = new AffineTransform();
-      m0.rotate(Math.PI * 0.25);
-      area0.transform(m0);
-
-      AffineTransform m1 = new AffineTransform();
-      m1.rotate(Math.PI * 0.75);
-      area1.transform(m1);
-
-      area0.add(area1);
-
-      int x0 = 0;
-      int y0 = 0;
-
-      AffineTransform m = new AffineTransform();
-      m.translate(x0 + (closeWidth / 2), y0 + (closeHeight / 2));
-      area0.transform(m);
-
-      boolean isParentSelected;
-      Container parent = button.getParent();
-      if (parent instanceof AbstractButton) {
-        AbstractButton parentButton = (AbstractButton) parent;
-        isParentSelected = parentButton.isSelected();
-      } else {
-        isParentSelected = false;
-      }
-
       Paint prevPaint = g2.getPaint();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+      Area area = getArea();
       if (model.isRollover() || model.isArmed()) {
         g2.setPaint(UIManager.getColor("Button.hoverBorderColor"));
-        g2.fill(area0);
+        g2.fill(area);
       } else {
         g2.setPaint(UIManager.getColor("Button.foreground"));
-        g2.draw(area0);
+        g2.draw(area);
       }
       g2.setPaint(prevPaint);
+    }
+
+    private Area getArea() {
+      // here we re-create an x from first principles.
+      float diagLength = SIZE * 0.9f;
+      float lineWidth = diagLength * 0.25f;
+      float xC = -diagLength * 0.5f;
+      float yC = -lineWidth * 0.5f;
+      // make a long skinny rectangle that would be halfway outside our drawing area, so that 0, 0 is where the x will cross
+      RoundRectangle2D.Float rr = new RoundRectangle2D.Float(xC, yC, diagLength, lineWidth, lineWidth, lineWidth);
+
+      // take our rectangle and rotate it to draw half of our x
+      Area area0 = new Area(rr);
+      area0.transform(AffineTransform.getRotateInstance(Math.PI * 0.25));
+
+      // make the other side of our x and combine them
+      Area area1 = new Area(rr);
+      area1.transform(AffineTransform.getRotateInstance(Math.PI * 0.75));
+      area0.add(area1);
+
+      // center our completed x in our space
+      AffineTransform m = new AffineTransform();
+      m.translate(SIZE * .5d, SIZE * .5d);
+      area0.transform(m);
+      return area0;
     }
 
     @Override
@@ -120,8 +107,6 @@ public final class JCloseButton extends JButton {
       return new Dimension(SIZE, SIZE);
     }
   }
-
-  private boolean isVisibleOnlyWhenParentIsSelected;
 
   public JCloseButton() {
     this.setOpaque(false);
@@ -143,10 +128,8 @@ public final class JCloseButton extends JButton {
   @Override
   public boolean contains(int x, int y) {
     Container parent = this.getParent();
-    if (parent instanceof AbstractButton button) {
-      if (!button.isSelected()) {
-        return false;
-      }
+    if (parent instanceof AbstractButton button && !button.isSelected()) {
+      return false;
     }
     return super.contains(x, y);
   }
@@ -154,10 +137,8 @@ public final class JCloseButton extends JButton {
   @Override
   public boolean isVisible() {
     Container parent = this.getParent();
-    if (parent instanceof AbstractButton button) {
-      if (!button.isSelected()) {
-        return false;
-      }
+    if (parent instanceof AbstractButton button && !button.isSelected()) {
+      return false;
     }
     return super.isVisible();
   }
