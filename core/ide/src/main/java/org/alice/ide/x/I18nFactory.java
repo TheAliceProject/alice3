@@ -162,8 +162,8 @@ public abstract class I18nFactory {
                 Component cFirst = this.getComponent(0);
                 Component cLast = this.getComponent(n - 1);
                 g.setColor(ColorUtilities.createGray(160));
-                int xB = I18nFactory.this.getPixelsPerIndent();
-                int xA = xB / 2;
+                int xA = I18nFactory.this.getPixelsPerIndent();
+                int xB = xA * 3 / 2;
                 int yTop = cFirst.getY() + cFirst.getHeight();
                 int yBottom = cLast.getY() + (cLast.getHeight() / 2);
                 g.drawLine(xA, yTop, xA, yBottom);
@@ -175,8 +175,10 @@ public abstract class I18nFactory {
                 g.drawLine(xC, yBottom, xD, yBottom);
                 g.drawLine(xD, yBottom, xD, cLast.getY());
 
-                final int HALF_TRIANGLE_WIDTH = 3;
-                GraphicsUtilities.fillTriangle(g, GraphicsUtilities.Heading.NORTH, xA - HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10);
+                final int HALF_TRIANGLE_WIDTH = 4;
+                GraphicsUtilities.fillTriangle(g, GraphicsUtilities.Heading.NORTH,
+                    xA - HALF_TRIANGLE_WIDTH, yTop - 3,
+                    HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10);
               }
               g.setColor(prev);
               super.paintComponent(g);
