@@ -472,7 +472,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     }
 
     if (backup != null) {
-      if (backupProjectOperation.showProjectLoadErrorAndLoadBackupDialog(projectFile.getName(), isBackup)) {
+      String backupName = isBackup
+              ? projectFile.getName()
+              : null;
+
+      if (backupProjectOperation.showProjectLoadErrorAndLoadBackupDialog(mainProject.getName(), backupName, isBackup)) {
         loadProject(newProjectActivity(), new FileProjectLoader(backup, makeVrReady), true, isMainProjectCorrupted, unloadableFiles);
       } else {
         showNewProjectOperation();
@@ -550,7 +554,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   private void createProjectFromBackup(File backup, File original, boolean isMainProjectCorrupted) {
-    YesNoCancelResult result = backupProjectOperation.showBackupProjectOpenedDialog(backup.getName(), isMainProjectCorrupted);
+    YesNoCancelResult result = backupProjectOperation.showBackupProjectOpenedDialog(original.getName(), backup.getName(), isMainProjectCorrupted);
 
     switch (result) {
       case YES -> {
