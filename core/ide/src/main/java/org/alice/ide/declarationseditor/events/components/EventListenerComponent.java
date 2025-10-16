@@ -87,7 +87,7 @@ public class EventListenerComponent extends BorderPanel {
 //          bodyPane.setBorder(BorderFactory.createLineBorder(Color.PINK, 3, true));
 
           BorderPanel codeContainer = new BorderPanel.Builder().pageStart(singleAbstractMethodHeader).center(bodyPane).build();
-          Color c = UIManager.getColor("Alice.Event.Color").darker();
+          Color c = UIManager.getColor("Alice.Event.color").darker();
           codeContainer.setBackgroundColor(c);
           codeContainer.setBorder(BorderFactory.createEmptyBorder(2, 6, 4, 6));
 

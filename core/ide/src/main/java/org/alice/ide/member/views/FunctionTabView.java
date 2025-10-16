@@ -53,6 +53,6 @@ import javax.swing.UIManager;
 public class FunctionTabView extends MemberTabView {
   public FunctionTabView(FunctionTabComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.color"));
   }
 }

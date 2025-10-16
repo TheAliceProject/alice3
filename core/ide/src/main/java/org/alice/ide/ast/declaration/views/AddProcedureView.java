@@ -53,6 +53,6 @@ import javax.swing.UIManager;
 public class AddProcedureView extends AddMethodView {
   public AddProcedureView(AddProcedureComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.color"));
   }
 }

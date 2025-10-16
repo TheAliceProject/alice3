@@ -57,7 +57,7 @@ import javax.swing.UIManager;
 public class EnumConstantResourceKeySelectionView extends BorderPanel {
   public EnumConstantResourceKeySelectionView(EnumConstantResourceKeySelectionComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
     List<EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
     list.setCellRenderer(new EnumConstantResourceKeyListCellRenderer());
     list.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);

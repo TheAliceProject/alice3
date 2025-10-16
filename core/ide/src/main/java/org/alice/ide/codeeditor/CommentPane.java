@@ -83,7 +83,7 @@ class CommentLine extends JSuggestiveTextArea {
     this.comment = comment;
     this.getDocument().addDocumentListener(new UnifiedDocumentListener(this::handleUpdate));
     this.setBackground(ThemeUtilities.getActiveTheme().getColorFor(Comment.class));
-    this.setForeground(UIManager.getColor("Alice.Comment.Color.foreground"));
+    this.setForeground(UIManager.getColor("Alice.Comment.foreground"));
     //this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
     this.handleUpdate();
     if (factory.isCommentMutable(comment)) {

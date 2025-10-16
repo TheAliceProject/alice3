@@ -174,7 +174,7 @@ public class TypeEditor extends BorderPanel {
     headerTrailingComponent.setBorder(BorderFactory.createEmptyBorder(2, 2, 0, 2));
 
     this.tabbedPane = composite.getTabState().createFolderTabbedPane();
-    this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
     this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
 

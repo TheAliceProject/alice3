@@ -57,6 +57,6 @@ public class MethodPreviewPane extends MemberPreviewPane<UserMethod> {
     UserMethod method = methodHub.getMember();
     this.addComponent(new MethodHubHeaderView(methodHub), "wrap");
     this.addComponent(PreviewAstI18nFactory.getInstance().createComponent(method.getBodyProperty().getValue()), "wrap");
-    this.setBackgroundColor(method.isProcedure() ? UIManager.getColor("Alice.Procedure.Color") : UIManager.getColor("Alice.Function.Color"));
+    this.setBackgroundColor(method.isProcedure() ? UIManager.getColor("Alice.Procedure.color") : UIManager.getColor("Alice.Function.color"));
   }
 }

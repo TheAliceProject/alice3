@@ -89,7 +89,7 @@ public class CardPanel extends Panel {
   public CardPanel(CardOwnerComposite composite, int hgap, int vgap) {
     super(composite);
     this.cardLayout = new CustomPreferredSizeCardLayout(hgap, vgap);
-    Color color = UIManager.getColor("Alice.Background.Color.different");
+    Color color = UIManager.getColor("Alice.differentBackground");
     if (composite != null) {
       java.util.List<Composite<?>> cards = composite.getCards();
       for (Composite<?> card : cards) {

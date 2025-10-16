@@ -113,7 +113,7 @@ public class SideView extends BorderPanel {
       toolPaletteTitle.scaleFont(1.4f);
       toolPaletteTitle.changeFont(TextWeight.BOLD);
       toolPaletteTitle.setSeparatorShowing(true);
-      toolPaletteTitle.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
+      toolPaletteTitle.setBackgroundColor(UIManager.getColor("Alice.background"));
       migPanel.addComponent(toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx");
     }
     migPanel.addComponent(new Label(), "wrap, grow, push");

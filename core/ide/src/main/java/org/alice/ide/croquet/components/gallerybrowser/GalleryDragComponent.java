@@ -121,7 +121,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
       this.baseColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 2.0, 1.0);
     } else if (!model.isInstanceCreator() || model.getNodeChildren().size() > 1) {
       // these are groups of items that we apply a folder color to
-      this.baseColor = UIManager.getColor("Alice.Gallery.Folder.Color");
+      this.baseColor = UIManager.getColor("Alice.folderColor");
     }
 
     if (!model.isBreadcrumbButtonIconDesired()) {

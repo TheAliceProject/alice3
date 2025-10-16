@@ -54,7 +54,7 @@ import java.awt.*;
  * @author Dennis Cosgrove
  */
 public class GetsPane extends Label {
-  static final Color PAINT_COLOR = UIManager.getColor("Alice.Block.Contrast.Background.Color");
+  static final Color PAINT_COLOR = UIManager.getColor("Alice.Block.contrastBackground");
 
   private GetsPane(boolean isTowardLeadingEdge, int length) {
     this.isTowardLeadingEdge = isTowardLeadingEdge;

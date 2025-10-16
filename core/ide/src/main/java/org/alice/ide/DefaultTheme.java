@@ -61,54 +61,53 @@ public class DefaultTheme implements Theme {
       return getExpressionColor(cls);
     } else  {
       // we don't expect anything to actually hit this
-      return UIManager.getColor("Alice.Background.Color.different");
+      return UIManager.getColor("Alice.differentBackground");
     }
   }
 
   private static Color getStatementColor(Class<? extends Node> cls) {
     if (Comment.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Comment.Color");
+      return UIManager.getColor("Alice.Comment.background");
     } else if (org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom(cls)) {
       // aka variable creation
-//      return UIManager.getColor("Alice.Field.Color");
-      return UIManager.getColor("Alice.Block.Canvas.Color");
+      return UIManager.getColor("Alice.Block.background");
     } else if (ClassUtilities.isAssignableToAtLeastOne(cls, AbstractStatementWithBody.class, ConditionalStatement.class)) {
       // e.g. If/Else, DoInOrder, Loops, etc
-      return UIManager.getColor("Alice.Block.Canvas.Color");
+      return UIManager.getColor("Alice.Block.background");
     } else if (ExpressionStatement.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Procedure.Block.Color");
+      return UIManager.getColor("Alice.Procedure.blockColor");
     } else if (ReturnStatement.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Function.Color");
+      return UIManager.getColor("Alice.Function.color");
     } else {
       // we don't expect anything to actually hit this
-      return UIManager.getColor("Alice.Background.Color.different");
+      return UIManager.getColor("Alice.differentBackground");
     }
   }
 
   private static Color getExpressionColor(Class<? extends Node> cls) {
     if (MethodInvocation.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Function.Block.Color");
+      return UIManager.getColor("Alice.Function.blockColor");
     } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class)) {
-      return UIManager.getColor("Alice.Function.Block.Color");
+      return UIManager.getColor("Alice.Function.blockColor");
     } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InstanceCreation.class, ArrayInstanceCreation.class)) {
-      return UIManager.getColor("Alice.Constructor.Block.Color");
+      return UIManager.getColor("Alice.Constructor.blockColor");
     } else if (ResourceExpression.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Resource.Color");
+      return UIManager.getColor("Alice.Resource.color");
     } else if (TypeExpression.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Type.Block.Color");
+      return UIManager.getColor("Alice.Type.blockColor");
     } else if (NullLiteral.class.isAssignableFrom(cls)) {
       return Color.RED;
     } else {
-      return UIManager.getColor("Alice.Noun.Color");
+      return UIManager.getColor("Alice.Instance.color");
     }
   }
 
   @Override
   public Color getColorFor(Node node) {
     if (node == null) {
-      return UIManager.getColor("Alice.Alert.Color");
+      return UIManager.getColor("Alice.Alert.color");
     } else if (node instanceof AbstractMethod m) {
-      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.Color") : UIManager.getColor("Alice.Function.Color");
+      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.color") : UIManager.getColor("Alice.Function.color");
     } else {
       Class<? extends Node> cls = node.getClass();
       return this.getColorFor(cls);
@@ -119,11 +118,11 @@ public class DefaultTheme implements Theme {
   @Override
   public Color getCodeColor(Code code) {
     if (code instanceof AbstractMethod m) {
-      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.Color") : UIManager.getColor("Alice.Function.Color");
+      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.color") : UIManager.getColor("Alice.Function.color");
     } else if (code instanceof NamedUserConstructor) {
-      return UIManager.getColor("Alice.Constructor.Color");
+      return UIManager.getColor("Alice.Constructor.color");
     } else {
-      return UIManager.getColor("Alice.Background.Color.different");
+      return UIManager.getColor("Alice.differentBackground");
     }
   }
 }

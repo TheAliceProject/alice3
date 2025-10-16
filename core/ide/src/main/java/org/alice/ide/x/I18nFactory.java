@@ -86,7 +86,7 @@ public abstract class I18nFactory {
     } else {
       Logger.severe(propertyName, owner);
       Label rv = new Label("TODO: " + propertyName);
-      rv.setBackgroundColor(UIManager.getColor("Alice.Alert.Color"));
+      rv.setBackgroundColor(UIManager.getColor("Alice.Alert.color"));
       return rv;
     }
   }

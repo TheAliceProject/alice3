@@ -72,7 +72,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
 
   public FieldView(AddFieldComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 
   @Override

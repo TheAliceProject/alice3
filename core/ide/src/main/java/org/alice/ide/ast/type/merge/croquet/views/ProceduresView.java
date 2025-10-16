@@ -51,6 +51,6 @@ import javax.swing.UIManager;
  */
 public class ProceduresView extends MethodsView {
   public ProceduresView(ProceduresToolPalette composite) {
-    super(composite, UIManager.getColor("Alice.Procedure.Color"));
+    super(composite, UIManager.getColor("Alice.Procedure.color"));
   }
 }

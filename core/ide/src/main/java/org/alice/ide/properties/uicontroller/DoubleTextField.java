@@ -75,7 +75,7 @@ public class DoubleTextField extends JTextField {
     if (isValueValid()) {
       DoubleTextField.this.setForeground(UIManager.getColor("TextField.disabledForeground"));
     } else {
-      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.Color"));
+      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.color"));
     }
   }
 
@@ -83,7 +83,7 @@ public class DoubleTextField extends JTextField {
     if (isValueValid()) {
       DoubleTextField.this.setForeground(UIManager.getColor("TextField.foreground"));
     } else {
-      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.Color"));
+      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.color"));
     }
   }
 

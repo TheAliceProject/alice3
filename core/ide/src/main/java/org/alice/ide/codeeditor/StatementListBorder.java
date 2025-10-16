@@ -210,7 +210,7 @@ public class StatementListBorder implements Border {
           } else {
 
             RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-            g2.setPaint(UIManager.getColor("Alice.Procedure.Color"));
+            g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
             g2.fill(rr);
           }
           g.setColor(Color.BLACK);
@@ -226,7 +226,7 @@ public class StatementListBorder implements Border {
           g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
         } else {
           RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-          g2.setPaint(UIManager.getColor("Alice.Procedure.Color"));
+          g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
           g2.fill(rr);
         }
         g.translate(-dx, -dy);

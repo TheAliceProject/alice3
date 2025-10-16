@@ -71,7 +71,7 @@ class MethodPane extends BorderPanel {
     this.addCenterComponent(new BodyPane(factory.createComponent(method.body.getValue())));
     this.setAlignmentX(Component.LEFT_ALIGNMENT);
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.color"));
   }
 
   @Override

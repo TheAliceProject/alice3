@@ -59,7 +59,7 @@ public final class GalleryView extends BorderPanel {
   public GalleryView(GalleryComposite composite) {
     super(composite);
     FolderTabbedPane<GalleryTab> tabs = composite.getTabState().createFolderTabbedPane();
-    tabs.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    tabs.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
     this.addCenterComponent(tabs);
     this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UIManager.getColor("Separator.foreground")));
   }

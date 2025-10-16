@@ -52,7 +52,7 @@ import java.awt.geom.GeneralPath;
 public class BeveledShape {
   //todo: base colors on fill paint
   private static final Paint HIGHLIGHT_PAINT = Color.LIGHT_GRAY;
-  private static final Paint NEUTRAL_PAINT = UIManager.getColor("Alice.Block.Foreground.Color");
+  private static final Paint NEUTRAL_PAINT = UIManager.getColor("Alice.Block.foreground");
   private static final Paint SHADOW_PAINT = Color.BLACK;
 
   private static final int CAP = BasicStroke.CAP_ROUND;

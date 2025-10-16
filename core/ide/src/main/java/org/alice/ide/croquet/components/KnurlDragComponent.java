@@ -228,7 +228,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     Shape shape = this.createShape(x, y, width, height);
     this.paintOutline(g2, shape);
     if (isKnurlDesired()) {
-      Color c = this.isActive() ? getOutlineColor() : UIManager.getColor("Alice.Block.Knurl.Color");
+      Color c = this.isActive() ? getOutlineColor() : UIManager.getColor("Alice.Block.knurlForeground");
       g2.setColor(c);
       KnurlUtilities.paintKnurl5(g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5);
     }

@@ -146,7 +146,7 @@ public class TypeBorder implements Border {
     Graphics2D g2 = (Graphics2D) g;
     g2.setPaint(getFillPaint(c, x, y, width, height));
     g2.fill(shape);
-    g2.setPaint(UIManager.getColor("Alice.Foreground.Color.different"));
+    g2.setPaint(UIManager.getColor("Alice.differentForeground"));
     g2.draw(shape);
   }
 }

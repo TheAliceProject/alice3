@@ -110,8 +110,8 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   }
 
   private static final Color BASE_COLOR = UIManager.getColor("List.background");
-  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.Knurl.Color");
-  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.Background.Color.different");
+  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.knurlForeground");
+  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.differentBackground");
   private static final Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
 
   protected abstract static class JItemAtIndexButton extends JToggleButton {

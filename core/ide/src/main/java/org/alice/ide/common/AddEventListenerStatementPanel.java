@@ -66,7 +66,7 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 
   @Override
   public Color getBackgroundColor() {
-    return UIManager.getColor("Alice.Event.Color");
+    return UIManager.getColor("Alice.Event.color");
   }
 
   @Override

@@ -73,13 +73,13 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
     LineAxisPanel rv = new LineAxisPanel();
     // we apply a semi-transparent white box here, for a bit of contrast
     rv.setBackgroundColor(new Color(255, 255, 255, 127));
-    rv.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Block.Foreground.Color"), 1));
+    rv.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Block.foreground"), 1));
 
     String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
     if ((parameterName != null) && (parameterName.length() > 0)) {
       Label l = new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT);
       l.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-      l.setForegroundColor(UIManager.getColor("Alice.Block.Contrast.Foreground.Color"));
+      l.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));
       rv.addComponent(l);
     }
     rv.addComponent(new EmptyExpressionPane((EmptyExpression) argument.expression.getValue()));

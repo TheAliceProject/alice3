@@ -106,7 +106,7 @@ public class MemberViewUtilities {
 
   public static AbstractLabel createActionMustBeTakeMemberLabel(Member member) {
     AbstractLabel rv = createMemberLabel(member, "", "", null);
-    rv.setForegroundColor(UIManager.getColor("Alice.Alert.Color"));
+    rv.setForegroundColor(UIManager.getColor("Alice.Alert.color"));
     return rv;
   }
 

@@ -57,7 +57,7 @@ import java.awt.Color;
 public class MemberView extends LineAxisPanel {
   public MemberView(MenuModel menuModel) {
     PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
-    Color color = UIManager.getColor("Alice.Background.Color.different");
+    Color color = UIManager.getColor("Alice.differentBackground");
     popupButton.setForegroundColor(color);
     popupButton.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(color, 2, true),

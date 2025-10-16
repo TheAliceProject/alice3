@@ -237,7 +237,7 @@ public class MembersView extends BorderPanel {
     InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
     this.addPageStartComponent(instanceFactoryPopupButton);
     FolderTabbedPane<MemberOrControlFlowTabComposite<?>> tabs = composite.getTabState().createFolderTabbedPane();
-    tabs.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    tabs.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
     this.addCenterComponent(tabs);
   }
 

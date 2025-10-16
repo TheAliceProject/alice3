@@ -56,7 +56,7 @@ public abstract class PotentialNameChanger<M extends Member> {
   private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
     @Override
     public Color changeColorIfAppropriate(Color defaultColor) {
-      return isRenameRequired() ? UIManager.getColor("Alice.Alert.Color") : defaultColor;
+      return isRenameRequired() ? UIManager.getColor("Alice.Alert.color") : defaultColor;
     }
   };
   private final URI uriForDescriptionPurposesOnly;

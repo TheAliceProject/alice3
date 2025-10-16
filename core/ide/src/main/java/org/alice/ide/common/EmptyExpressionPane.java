@@ -64,7 +64,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
     this.emptyExpression = emptyExpression;
     Label label = new Label(" ??? ", TextWeight.BOLD);
     label.setBorder(Theme.BLOCK_BORDER);
-    label.setForegroundColor(UIManager.getColor("Alice.Block.Contrast.Foreground.Color"));
+    label.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));
     this.addComponent(label);
   }
 
@@ -75,7 +75,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 
   @Override
   public Color getBackgroundColor() {
-    return UIManager.getColor("Alice.Block.Contrast.Background.Color");
+    return UIManager.getColor("Alice.Block.contrastBackground");
   }
 
   @Override

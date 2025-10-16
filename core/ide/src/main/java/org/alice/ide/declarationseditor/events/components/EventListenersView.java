@@ -69,7 +69,7 @@ import java.awt.*;
 public class EventListenersView extends AbstractCodeDeclarationView {
   public EventListenersView(CodeComposite composite) {
     super(composite, new EventsContentPanel((UserMethod) composite.getDeclaration()));
-    this.setBackgroundColor(UIManager.getColor("Alice.Event.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Event.color"));
     PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
     LineAxisPanel bottom = new LineAxisPanel(button);
     this.stickyBottomPanel = new StickyBottomPanel();

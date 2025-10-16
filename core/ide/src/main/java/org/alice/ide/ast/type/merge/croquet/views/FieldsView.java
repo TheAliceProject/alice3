@@ -52,6 +52,6 @@ import javax.swing.UIManager;
  */
 public class FieldsView extends MembersView<UserField> {
   public FieldsView(FieldsToolPalette composite) {
-    super(composite, UIManager.getColor("Alice.Field.Color"));
+    super(composite, UIManager.getColor("Alice.Field.color"));
   }
 }

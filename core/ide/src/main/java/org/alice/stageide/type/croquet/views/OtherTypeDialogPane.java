@@ -116,7 +116,7 @@ public class OtherTypeDialogPane extends MigPanel {
     descriptionScrollPane.setBackgroundColor(Color.WHITE);
     this.addComponent(descriptionScrollPane, "grow");
 
-    Color color = UIManager.getColor("Alice.Type.Color");
+    Color color = UIManager.getColor("Alice.Type.color");
     color = ColorUtilities.scaleHSB(color, 1.0, 0.9, 1.1);
     this.setBackgroundColor(color);
     tabbedPane.setBackgroundColor(color);

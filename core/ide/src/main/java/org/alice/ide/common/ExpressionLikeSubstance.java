@@ -78,7 +78,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   @Override
   protected Color getOutlineColor() {
-    return UIManager.getColor("Alice.Block.Foreground.Color");
+    return UIManager.getColor("Alice.Block.foreground");
   }
 
   @Override

@@ -186,7 +186,7 @@ public class IngredientsView extends MigPanel {
     FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
     this.addComponent(tabbedPane, "span 4, grow");
 
-    final Color c = UIManager.getColor("Alice.Background.Color.different");
+    final Color c = UIManager.getColor("Alice.differentBackground");
     tabbedPane.setBackgroundColor(c);
     this.setBackgroundColor(c);
   }

@@ -71,7 +71,7 @@ public class ActionStatusIcon extends AbstractIcon {
   private static final Paint ADD_REPLACE_DRAW_PAINT = Color.DARK_GRAY;
   private static final Shape ADD_SHAPE;
 
-  private static final Paint ERROR_PAINT = UIManager.getColor("Alice.Alert.Color");
+  private static final Paint ERROR_PAINT = UIManager.getColor("Alice.Alert.color");
   private static final Font ERROR_FONT = FontUtilities.deriveFont(new Font("Serif", 0, SIZE.height - 2), TextWeight.EXTRABOLD);
 
   private static final Shape CHECK_SHAPE;

@@ -122,7 +122,7 @@ public abstract class AstI18nFactory extends I18nFactory {
         label.setBorder(Theme.BLOCK_BORDER);
         label.scaleFont(this.getDeclarationNameFontScale());
         label.changeFont(TextWeight.BOLD);
-        label.setForegroundColor(UIManager.getColor("Alice.Block.Foreground.Color"));
+        label.setForegroundColor(UIManager.getColor("Alice.Block.foreground"));
       }
       rv = label;
     } else if ((owner instanceof SimpleArgument) && methodName.equals("getParameterNameText")) {

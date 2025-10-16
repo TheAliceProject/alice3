@@ -79,21 +79,21 @@ public class TypeDeclarationView extends DeclarationView {
     super(composite);
 
     NamedUserType type = composite.getDeclaration();
-    Color typeColor = UIManager.getColor("Alice.Type.Color");
+    Color typeColor = UIManager.getColor("Alice.Type.color");
     this.setBackgroundColor(typeColor);
     typePanel.setBackgroundColor(typeColor);
 
     ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
-    constructorsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Constructor.Color"));
+    constructorsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Constructor.color"));
 
     ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
-    proceduresToolPalette.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
+    proceduresToolPalette.setBackgroundColor(UIManager.getColor("Alice.Procedure.color"));
 
     ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
-    functionsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
+    functionsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Function.color"));
 
     ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
-    fieldsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
+    fieldsToolPalette.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
 
 
     PageAxisPanel membersPanel = new PageAxisPanel();
@@ -145,7 +145,7 @@ public class TypeDeclarationView extends DeclarationView {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // we paint the area outside the rounded corner. because our unruly child paints outside the box
-        g2.setColor(UIManager.getColor("Alice.Type.Color"));
+        g2.setColor(UIManager.getColor("Alice.Type.color"));
         g2.fillRect(0, 0, width, height);
 
         Color backgroundColor = c.getBackground();
