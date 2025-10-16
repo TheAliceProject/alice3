@@ -112,7 +112,7 @@ public abstract class MemberTabView extends MigPanel {
       this.addComponent(leftTopComponent, "align left");
       scrollPaneConstraints += ", span 2";
     }
-    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "wrap");
+
     this.addComponent(this.comboBox, "align right, wrap");
 
     MigPanel scrollPaneView = new MigPanel(null, "insets 0", "[]", "[]0[]");
