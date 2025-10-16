@@ -83,21 +83,15 @@ public abstract class AbstractMenu<M extends MenuItemPrepModel> extends ViewCont
     this.setIcon = icon;
   }
 
-  protected abstract boolean areIconsDisplayedInMenus();
-
   @Override
   protected JMenu createAwtComponent() {
     JMenu rv = new JMenu() {
       @Override
       public Icon getIcon() {
-        if (AbstractMenu.this.areIconsDisplayedInMenus()) {
-          if (AbstractMenu.this.isIconSet()) {
-            return AbstractMenu.this.getSetIcon();
-          } else {
-            return super.getIcon();
-          }
+        if (AbstractMenu.this.isIconSet()) {
+          return AbstractMenu.this.getSetIcon();
         } else {
-          return null;
+          return super.getIcon();
         }
       }
     };

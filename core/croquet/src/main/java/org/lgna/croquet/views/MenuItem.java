@@ -43,7 +43,6 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import org.lgna.croquet.Operation;
 
 import javax.swing.Icon;
@@ -71,14 +70,10 @@ public class MenuItem extends OperationButton<JMenuItem, Operation> {
 
       @Override
       public Icon getIcon() {
-        if (SystemUtilities.areIconsDisplayedInMenus()) {
-          if (MenuItem.this.isIconClobbered()) {
-            return MenuItem.this.getClobberIcon();
-          } else {
-            return super.getIcon();
-          }
+        if (MenuItem.this.isIconClobbered()) {
+          return MenuItem.this.getClobberIcon();
         } else {
-          return null;
+          return super.getIcon();
         }
       }
     };
