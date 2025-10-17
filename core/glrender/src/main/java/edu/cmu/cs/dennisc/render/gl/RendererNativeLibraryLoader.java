@@ -114,10 +114,7 @@ public class RendererNativeLibraryLoader {
           }
         });
 
-        //edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
-        //timer.start();
         GLProfile.initSingleton();
-        //timer.stopAndPrintResults();
       } finally {
         isInitializationAttempted = true;
       }

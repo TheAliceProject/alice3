@@ -81,7 +81,7 @@ public class RandomPersonUtilities {
             }
           }
         } else {
-          Enum hairEnum = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant((Class) hairCls);
+          Enum hairEnum = RandomUtilities.getRandomEnumConstant((Class) hairCls);
           if (!ELDER_HAIR_COLOR.equals(hairEnum.name())) {
             return (Hair) hairEnum;
           }
