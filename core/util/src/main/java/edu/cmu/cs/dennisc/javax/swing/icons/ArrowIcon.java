@@ -42,39 +42,66 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
 import javax.swing.Icon;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
+ * A chevron icon that does it's very best to mimic the menu icons that we get from swing components
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArrowIcon implements Icon {
-  protected static enum Heading {
-    EAST() {
-      @Override
-      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
-        rv.moveTo(x0, y0);
-        rv.lineTo(x1, yC);
-        rv.lineTo(x0, y1);
-        return rv;
-      }
-    }, SOUTH() {
-      @Override
-      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
-        rv.moveTo(x0, y0);
-        rv.lineTo(x1, y0);
-        rv.lineTo(xC, y1);
-        return rv;
-      }
-    };
+public class ArrowIcon implements Icon {
 
-    protected abstract GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1);
+  private boolean rotateIfSelected = false;
+  private final int size;
+
+  public ArrowIcon(int size) {
+    this(size, false);
   }
 
-  private int size;
-
-  public AbstractArrowIcon(int size) {
+  public ArrowIcon(int size, boolean rotateIfSelected) {
     this.size = size;
+    this.rotateIfSelected = rotateIfSelected;
+  }
+
+  protected ButtonModel getButtonModel(Component c) {
+    AbstractButton button = (AbstractButton) c;
+    return button.getModel();
+  }
+
+  protected Color getColor(ButtonModel model) {
+    if (!model.isEnabled()) {
+      return UIManager.getColor("ComboBox.buttonDisabledArrowColor");
+    } else if (model.isRollover() || model.isArmed()) {
+      return UIManager.getColor("ComboBox.buttonHoverArrowColor");
+    } else if (model.isPressed() || model.isSelected()) {
+      return UIManager.getColor("ComboBox.buttonPressedArrowColor");
+    } else {
+      return UIManager.getColor("ComboBox.buttonArrowColor");
+    }
+  }
+
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    ButtonModel buttonModel = this.getButtonModel(c);
+
+    Heading heading = !rotateIfSelected || (buttonModel.isSelected() || buttonModel.isPressed()) ? Heading.SOUTH : Heading.EAST;
+    GeneralPath path = this.createPath(x, y, heading);
+
+    Graphics2D g2 = (Graphics2D) g;
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    Paint drawPaint = getColor(buttonModel);
+    if (drawPaint != null) {
+      g2.setPaint(drawPaint);
+      g2.setStroke(new BasicStroke(1.5F));
+      g2.draw(path);
+    }
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 
   @Override
@@ -95,8 +122,28 @@ public abstract class AbstractArrowIcon implements Icon {
     float y1 = (y + this.size) - 1;
     float yC = (y0 + y1) * 0.5f;
     GeneralPath rv = new GeneralPath();
-    heading.addPoints(rv, x0, xC, x1, y0, yC, y1);
-    rv.closePath();
-    return rv;
+    return heading.addPoints(rv, x0, xC, x1, y0, yC, y1);
+  }
+
+  protected enum Heading {
+    EAST() {
+      @Override
+      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+        rv.moveTo(x0 + xC / 2, y0);
+        rv.lineTo(x1, yC);
+        rv.lineTo(x0 + xC / 2, y1);
+        return rv;
+      }
+    }, SOUTH() {
+      @Override
+      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+        rv.moveTo(x0, y0 + yC / 4);
+        rv.lineTo(xC, y1);
+        rv.lineTo(x1, y0 + yC / 4);
+        return rv;
+      }
+    };
+
+    protected abstract GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1);
   }
 }

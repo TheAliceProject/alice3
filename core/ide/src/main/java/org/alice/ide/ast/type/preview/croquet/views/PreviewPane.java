@@ -62,7 +62,7 @@ import java.util.List;
 public class PreviewPane extends MigPanel {
   public PreviewPane(PreviewPage page) {
     super(page, "fillx", "", "[grow 0][grow]");
-    this.setBackgroundColor(UIManager.getColor("Alice.Type.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Type.color"));
   }
 
   @Override
@@ -76,17 +76,17 @@ public class PreviewPane extends MigPanel {
 
     List<MemberHub<UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
     if (procedureHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserMethod>("procedures", UIManager.getColor("Alice.Procedure.Color"), procedureHubs), "gap 8, grow, shrink, wrap");
+      panel.addComponent(new MembersSubPane<UserMethod>("procedures", UIManager.getColor("Alice.Procedure.color"), procedureHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
     if (functionHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserMethod>("functions", UIManager.getColor("Alice.Function.Color"), functionHubs), "gap 8, grow, shrink, wrap");
+      panel.addComponent(new MembersSubPane<UserMethod>("functions", UIManager.getColor("Alice.Function.color"), functionHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
     if (fieldHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserField>("properties", UIManager.getColor("Alice.Field.Color"), fieldHubs), "gap 8, grow, shrink, wrap");
+      panel.addComponent(new MembersSubPane<UserField>("properties", UIManager.getColor("Alice.Field.color"), fieldHubs), "gap 8, grow, shrink, wrap");
     }
 
     Label classLabel = new Label("class", TypeIcon.getInstance(addMembersPage.getDstType()));

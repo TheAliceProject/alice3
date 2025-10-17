@@ -45,6 +45,7 @@ package org.alice.ide.ast.components;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.AliceFormatter;
 import org.alice.ide.formatter.Formatter;
@@ -59,22 +60,17 @@ import org.lgna.project.ast.Declaration;
 public class DeclarationNameLabel extends Label {
   private final AbstractDeclaration declaration;
 
-  private PropertyListener namePropertyAdapter = e -> DeclarationNameLabel.this.updateText();
+  private final PropertyListener namePropertyAdapter = e -> DeclarationNameLabel.this.updateText();
 
   public DeclarationNameLabel(AbstractDeclaration declaration) {
     this.declaration = declaration;
+    this.setBorder(Theme.BLOCK_BORDER);
     this.updateText();
-  }
-
-  public DeclarationNameLabel(AbstractDeclaration declaration, float fontScaleFactor) {
-    this(declaration);
-    this.scaleFont(fontScaleFactor);
   }
 
   private StringProperty getNamePropertyIfItExistsForListening() {
     Declaration declarationForNameProperty;
-    if (this.declaration instanceof AbstractMethodContainedByUserField) {
-      AbstractMethodContainedByUserField methodContainedByUserField = (AbstractMethodContainedByUserField) this.declaration;
+    if (this.declaration instanceof AbstractMethodContainedByUserField methodContainedByUserField) {
       declarationForNameProperty = methodContainedByUserField.getField();
     } else {
       declarationForNameProperty = this.declaration;

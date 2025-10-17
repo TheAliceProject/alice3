@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.croquet.PopupPrepModel;
-
-import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
@@ -53,7 +51,7 @@ import java.awt.Color;
 public class PopupButton extends AbstractPopupButton<PopupPrepModel> {
   public PopupButton(PopupPrepModel model) {
     super(model);
-    this.setClobberIcon(new DropDownArrowIcon(10, Color.DARK_GRAY));
+    this.setClobberIcon(new ArrowIcon(10));
     this.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
   }
 }

@@ -67,7 +67,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<ST
   @Override
   protected void initializeComponents() {
     super.initializeComponents();
-    this.label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Background.Color"), 2), BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+    this.label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.background"), 2), BorderFactory.createEmptyBorder(2, 2, 2, 2)));
     this.label.getAwtComponent().setOpaque(true);
     this.label.setBackgroundColor(Color.WHITE);
   }

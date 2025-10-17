@@ -71,6 +71,7 @@ import java.util.stream.Collectors;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+  // inert apparently means that you can't click on the headers to collapse/expand them
   public static boolean ARE_TOOL_PALETTES_INERT = true;
 
   static boolean getExpandedAccountingForInert(boolean isExpanded) {

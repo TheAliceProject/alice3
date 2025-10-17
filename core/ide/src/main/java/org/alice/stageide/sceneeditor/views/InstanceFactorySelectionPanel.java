@@ -293,9 +293,9 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
             }
           } else {
             if (model.isRollover()) {
-              alpha = 0.5f;
+              alpha = 0.75f;
             } else {
-              alpha = 0.25f;
+              alpha = 0.4f;
             }
           }
           nextComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);

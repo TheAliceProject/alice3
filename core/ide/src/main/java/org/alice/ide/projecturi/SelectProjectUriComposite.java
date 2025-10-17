@@ -96,7 +96,7 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
   protected Panel createView() {
     BorderPanel view = new BorderPanel(this);
     view.addCenterComponent(getTabState().createFolderTabbedPane());
-    view.setBackgroundColor(UIManager.getColor("Alice.Background.Color"));
+    view.setBackgroundColor(UIManager.getColor("Alice.background"));
     return view;
   }
 

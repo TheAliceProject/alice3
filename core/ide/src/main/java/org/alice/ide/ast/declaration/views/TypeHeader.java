@@ -60,14 +60,16 @@ import java.awt.Component;
 public class TypeHeader extends FlowPanel {
   public TypeHeader(NamedUserType type) {
     super(Alignment.LEADING);
-    this.addComponent(new Label("class ", TextPosture.OBLIQUE, TextWeight.LIGHT));
+    this.addComponent(new Label("class ", TextPosture.OBLIQUE, TextWeight.BOLD));
     this.addComponent(TypeComponent.createInstance(type));
-    this.addComponent(new Label(" extends ", TextPosture.OBLIQUE, TextWeight.LIGHT));
+    this.addComponent(new Label(" extends ", TextPosture.OBLIQUE, TextWeight.BOLD));
     this.addComponent(TypeComponent.createInstance(type != null ? type.getSuperType() : null));
 
     for (Component awtComponent : this.getAwtComponent().getComponents()) {
-      FontUtilities.setFontToScaledFont(awtComponent, 1.8f);
+      FontUtilities.setFontToScaledFont(awtComponent, 1.2f);
+      awtComponent.setForeground(this.getForegroundColor());
+      awtComponent.setBackground(this.getBackgroundColor());
     }
-    this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
+    this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 18));
   }
 }

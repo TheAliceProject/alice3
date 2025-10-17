@@ -51,6 +51,6 @@ import javax.swing.UIManager;
  */
 public class FunctionsView extends MethodsView {
   public FunctionsView(FunctionsToolPalette composite) {
-    super(composite, UIManager.getColor("Alice.Function.Color"));
+    super(composite, UIManager.getColor("Alice.Function.color"));
   }
 }

@@ -54,6 +54,6 @@ public class FieldPreviewPane extends MemberPreviewPane<UserField> {
   public FieldPreviewPane(MemberHub<UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired) {
     super(fieldHub, isAlphaDesiredWhenSelectionIsRequired);
     this.addComponent(new FieldHubDeclarationView(fieldHub), "wrap");
-    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 }

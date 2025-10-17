@@ -50,80 +50,29 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.property.ListProperty;
 import org.alice.ide.IDE;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.IdeExpression;
 import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.codeeditor.CommentPane;
 import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
 import org.alice.ide.codeeditor.ParametersPane;
-import org.alice.ide.common.AbstractStatementPane;
-import org.alice.ide.common.AnonymousConstructorPane;
-import org.alice.ide.common.AssignmentExpressionPane;
-import org.alice.ide.common.DefaultNodeListPropertyPane;
-import org.alice.ide.common.DefaultStatementPane;
-import org.alice.ide.common.ExpressionStatementPane;
-import org.alice.ide.common.GetsPane;
-import org.alice.ide.common.LocalDeclarationPane;
-import org.alice.ide.common.LocalPane;
-import org.alice.ide.common.TypeComponent;
+import org.alice.ide.common.*;
 import org.alice.ide.croquet.models.ast.cascade.ArgumentCascade;
 import org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState;
 import org.alice.ide.i18n.MethodInvocationChunk;
-import org.alice.ide.x.components.ExpressionListPropertyPane;
-import org.alice.ide.x.components.ExpressionPropertyView;
-import org.alice.ide.x.components.ExpressionView;
-import org.alice.ide.x.components.FieldAccessView;
-import org.alice.ide.x.components.InfixExpressionView;
-import org.alice.ide.x.components.InstanceCreationView;
-import org.alice.ide.x.components.InstancePropertyLabelView;
-import org.alice.ide.x.components.KeyedArgumentView;
-import org.alice.ide.x.components.ListPropertyLabelsView;
-import org.alice.ide.x.components.NodePropertyView;
-import org.alice.ide.x.components.ResourcePropertyView;
-import org.alice.ide.x.components.StatementListPropertyView;
+import org.alice.ide.x.components.*;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.AbstractArgument;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractNode;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AnonymousUserConstructor;
-import org.lgna.project.ast.AssignmentExpression;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.Comment;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionListProperty;
-import org.lgna.project.ast.ExpressionProperty;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InfixExpression;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.KeyedArgumentListProperty;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.NodeProperty;
-import org.lgna.project.ast.ResourceProperty;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SimpleArgumentListProperty;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.TypeExpression;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
-import java.awt.Paint;
+import javax.swing.UIManager;
+import java.awt.Color;
 import java.lang.reflect.Method;
 import java.util.Set;
 
@@ -137,8 +86,8 @@ public abstract class AstI18nFactory extends I18nFactory {
     return component;
   }
 
-  public Paint getInvalidExpressionPaint(Paint paint, int x, int y, int width, int height) {
-    return paint;
+  public Color getInvalidExpressionColor(Color color) {
+    return color;
   }
 
   public boolean isCommentMutable(Comment comment) {
@@ -170,10 +119,10 @@ public abstract class AstI18nFactory extends I18nFactory {
       DeclarationNameLabel label = new DeclarationNameLabel(declaration);
       if (declaration instanceof AbstractMethod) {
         AbstractMethod method = (AbstractMethod) declaration;
-        if (method.getReturnType() == JavaType.VOID_TYPE) {
-          label.scaleFont(this.getDeclarationNameFontScale());
-          label.changeFont(TextWeight.BOLD);
-        }
+        label.setBorder(Theme.BLOCK_BORDER);
+        label.scaleFont(this.getDeclarationNameFontScale());
+        label.changeFont(TextWeight.BOLD);
+        label.setForegroundColor(UIManager.getColor("Alice.Block.foreground"));
       }
       rv = label;
     } else if ((owner instanceof SimpleArgument) && methodName.equals("getParameterNameText")) {

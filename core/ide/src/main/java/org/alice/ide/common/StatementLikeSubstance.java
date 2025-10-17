@@ -48,9 +48,9 @@ import org.lgna.project.ast.Statement;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
-import java.awt.Paint;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -111,13 +111,13 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
   }
 
   @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    return ThemeUtilities.getActiveTheme().getPaintFor(this.statementCls, x, y, width, height);
+  public Color getBackgroundColor() {
+    return ThemeUtilities.getActiveTheme().getColorFor(this.statementCls);
   }
 
   @Override
   protected RoundRectangle2D.Float createShape(int x, int y, int width, int height) {
-    return new RoundRectangle2D.Float(x, y, width - 1, height - 1, 8, 8);
+    return new RoundRectangle2D.Float(x + 1, y + 1, width - 2, height - 2, 8, 8);
   }
 
   @Override

@@ -57,7 +57,6 @@ public class HorizontalWrapList<T> extends List<T> {
     super(model);
     this.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);
     this.setVisibleRowCount(visibleRowCount);
-    this.setBackgroundColor(IngredientsView.BACKGROUND_COLOR);
     this.setCellRenderer(cellRenderer);
     this.getAwtComponent().setEnabled(model.isEnabled());
   }

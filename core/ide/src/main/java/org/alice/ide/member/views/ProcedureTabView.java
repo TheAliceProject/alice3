@@ -47,11 +47,12 @@ import org.alice.ide.member.ProcedureTabComposite;
 import javax.swing.UIManager;
 
 /**
+ * this is the tab that appears on the left with procedures we can drag in
  * @author Dennis Cosgrove
  */
 public class ProcedureTabView extends MemberTabView {
   public ProcedureTabView(ProcedureTabComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Procedure.color"));
   }
 }

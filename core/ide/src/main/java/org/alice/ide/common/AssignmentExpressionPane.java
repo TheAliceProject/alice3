@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
@@ -119,7 +120,7 @@ public class AssignmentExpressionPane extends LineAxisPanel {
         parent.addComponent(new Label("TODO"));
       }
     } else {
-      parent.addComponent(new Label("???"));
+      parent.addComponent(new Label("???", TextWeight.BOLD));
     }
 
     if (left instanceof ArrayAccess) {

@@ -42,123 +42,87 @@
  *******************************************************************************/
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import org.lgna.project.ast.*;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-  // this big fancy function returns... some shade of purple or yellow. that's all.  occasionally we go wild and return an orange, but that's pretty rare.
-  @Override
-  public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height) {
-    Color color = this.getColorFor(cls);
-    if (Comment.class.isAssignableFrom(cls)) {
-      return color;
-    } else {
-      if (ClassUtilities.isAssignableToAtLeastOne(cls, DoTogether.class, EachInArrayTogether.class)) {
-        Color colorA = ColorUtilities.scaleHSB(color, 1.0, 0.9, 0.85);
-        Color colorB = ColorUtilities.scaleHSB(color, 1.0, 1.0, 1.15);
-        return new GradientPaint(x, y, colorA, x + 200, y, colorB);
-      } else {
-        return color;
-        //return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
-      }
-    }
-  }
 
   @Override
   public Color getColorFor(Class<? extends Node> cls) {
     if (Statement.class.isAssignableFrom(cls)) {
-      if (Comment.class.isAssignableFrom(cls)) {
-        return UIManager.getColor("Alice.Comment.Color");
-      } else {
-        //        if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
-        //          return new java.awt.Color( 255, 230, 180 );
-        ////        } else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
-        ////          return new java.awt.Color( 255, 230, 180 );
-        //        } else {
-        return UIManager.getColor("Alice.Procedure.Block.Color");
-        //return new java.awt.Color( 255, 255, 210 );
-        //        }
-      }
+      return getStatementColor(cls);
     } else if (Expression.class.isAssignableFrom(cls)) {
-      if (ClassUtilities.isAssignableToAtLeastOne(cls, MethodInvocation.class)) {
-        return UIManager.getColor("Alice.Function.Block.Color");
-      } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class)) {
-        return UIManager.getColor("Alice.Function.Block.Color").brighter();
-      } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InstanceCreation.class, ArrayInstanceCreation.class)) {
-        return UIManager.getColor("Alice.Constructor.Block.Color");
-      } else if (ResourceExpression.class.isAssignableFrom(cls)) {
-        return UIManager.getColor("Alice.Resource.Color");
-      } else {
-        if (NullLiteral.class.isAssignableFrom(cls)) {
-          return Color.RED;
-        } else {
-          return UIManager.getColor("Alice.Noun.Color");
-        }
-      }
-    } else if (AbstractField.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Field.Color");
-    } else if (AbstractParameter.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Field.Color");
-    } else if (AbstractType.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Type.Color");
-    } else if (UserLocal.class.isAssignableFrom(cls)) {
-      return UIManager.getColor("Alice.Field.Color");
+      return getExpressionColor(cls);
+    } else  {
+      // we don't expect anything to actually hit this
+      return UIManager.getColor("Alice.differentBackground");
+    }
+  }
+
+  private static Color getStatementColor(Class<? extends Node> cls) {
+    if (Comment.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Comment.background");
+    } else if (org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom(cls)) {
+      // aka variable creation
+      return UIManager.getColor("Alice.Block.background");
+    } else if (ClassUtilities.isAssignableToAtLeastOne(cls, AbstractStatementWithBody.class, ConditionalStatement.class)) {
+      // e.g. If/Else, DoInOrder, Loops, etc
+      return UIManager.getColor("Alice.Block.background");
+    } else if (ExpressionStatement.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Procedure.blockColor");
+    } else if (ReturnStatement.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Function.color");
     } else {
-      return Color.BLUE;
+      // we don't expect anything to actually hit this
+      return UIManager.getColor("Alice.differentBackground");
+    }
+  }
+
+  private static Color getExpressionColor(Class<? extends Node> cls) {
+    if (MethodInvocation.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Function.blockColor");
+    } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InfixExpression.class, LogicalComplement.class, StringConcatenation.class)) {
+      return UIManager.getColor("Alice.Function.blockColor");
+    } else if (ClassUtilities.isAssignableToAtLeastOne(cls, InstanceCreation.class, ArrayInstanceCreation.class)) {
+      return UIManager.getColor("Alice.Constructor.blockColor");
+    } else if (ResourceExpression.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Resource.color");
+    } else if (TypeExpression.class.isAssignableFrom(cls)) {
+      return UIManager.getColor("Alice.Type.blockColor");
+    } else if (NullLiteral.class.isAssignableFrom(cls)) {
+      return Color.RED;
+    } else {
+      return UIManager.getColor("Alice.Instance.color");
     }
   }
 
   @Override
   public Color getColorFor(Node node) {
-    if (node != null) {
-      if (node instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) node;
-        if (method.isProcedure()) {
-          return UIManager.getColor("Alice.Procedure.Color");
-        } else {
-          return UIManager.getColor("Alice.Function.Color");
-        }
-      } else {
-        Class<? extends Node> cls = node.getClass();
-        //        if( node instanceof org.lgna.project.ast.FieldAccess ) {
-        //          org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
-        //          if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-        //            //pass
-        //          } else {
-        //            cls = org.lgna.project.ast.MethodInvocation.class;
-        //          }
-        //        }
-        return this.getColorFor(cls);
-      }
+    if (node == null) {
+      return UIManager.getColor("Alice.Alert.color");
+    } else if (node instanceof AbstractMethod m) {
+      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.color") : UIManager.getColor("Alice.Function.color");
     } else {
-      return Color.RED;
+      Class<? extends Node> cls = node.getClass();
+      return this.getColorFor(cls);
     }
   }
 
-  // cute little bit of color on the very outermost edge of the coding area that shows what we're writing. subtle and
-  // adorbs, completely overshadowed by the giant do in order that is always there.
+  // cute little bit of color on tab/the very outermost edge of the coding area that shows what we're writing
   @Override
   public Color getCodeColor(Code code) {
-    if (code instanceof UserMethod) {
-      UserMethod userMethod = (UserMethod) code;
-      if (userMethod.isProcedure()) {
-        return UIManager.getColor("Alice.Procedure.Color");
-      } else {
-        return UIManager.getColor("Alice.Function.Color");
-      }
+    if (code instanceof AbstractMethod m) {
+      return m.isProcedure() ? UIManager.getColor("Alice.Procedure.color") : UIManager.getColor("Alice.Function.color");
     } else if (code instanceof NamedUserConstructor) {
-      return UIManager.getColor("Alice.Constructor.Color");
+      return UIManager.getColor("Alice.Constructor.color");
     } else {
-      return Color.GRAY;
+      return UIManager.getColor("Alice.differentBackground");
     }
   }
 }

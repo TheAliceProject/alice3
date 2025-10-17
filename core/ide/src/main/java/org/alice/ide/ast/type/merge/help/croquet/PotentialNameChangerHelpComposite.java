@@ -72,7 +72,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<
     @Override
     public Color changeColorIfAppropriate(Color defaultColor) {
       if (isRetainBothSelected()) {
-        return areNamesIdentical() ? UIManager.getColor("Alice.Alert.Color") : defaultColor;
+        return areNamesIdentical() ? UIManager.getColor("Alice.Alert.color") : defaultColor;
       } else {
         return defaultColor;
       }

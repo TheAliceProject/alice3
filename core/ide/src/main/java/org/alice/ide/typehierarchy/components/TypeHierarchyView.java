@@ -67,7 +67,6 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -184,17 +183,14 @@ public class TypeHierarchyView extends BorderPanel {
 
   public TypeHierarchyView(TypeHierarchyComposite composite) {
     super(composite, 0, 4);
-    Color color = UIManager.getColor("Alice.Type.Color.muted");
     this.jTree = new JTree(this.treeModel);
     this.jTree.setRootVisible(false);
     this.jTree.setCellRenderer(new NamedUserTypeTreeCellRenderer());
-    this.jTree.setBackground(color);
 
     SwingComponentView<?> viewportView = new SwingAdapter(this.jTree);
     ScrollPane scrollPane = new ScrollPane(viewportView);
     String hierarchyText = ResourceBundleUtilities.getStringForKey("typeHierarchy", getClass());
     Label label = new Label(hierarchyText, 1.2f, TextPosture.OBLIQUE, TextWeight.LIGHT);
-    this.setBackgroundColor(color);
     this.addPageStartComponent(label);
     this.addCenterComponent(scrollPane);
   }

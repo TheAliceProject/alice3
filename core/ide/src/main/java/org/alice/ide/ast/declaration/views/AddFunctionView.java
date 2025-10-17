@@ -53,6 +53,6 @@ import javax.swing.UIManager;
 public class AddFunctionView extends AddMethodView {
   public AddFunctionView(AddFunctionComposite composite) {
     super(composite);
-    this.setBackgroundColor(UIManager.getColor("Alice.Function.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.color"));
   }
 }

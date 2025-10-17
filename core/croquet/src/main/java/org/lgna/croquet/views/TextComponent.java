@@ -43,13 +43,13 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder;
 import org.lgna.croquet.StringState;
 
+import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.JTextComponent;
-import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -57,9 +57,6 @@ import java.awt.event.FocusListener;
  * @author Dennis Cosgrove
  */
 public abstract class TextComponent<J extends JTextComponent> extends ViewController<J, StringState> {
-  private final BevelBorder outsideBorder = new BevelBorder(BevelBorder.LOWERED);
-  private final EmptyBorder insideBorder = new EmptyBorder();
-  private final CompoundBorder border = new CompoundBorder(outsideBorder, insideBorder);
 
   private final FocusListener selectAllFocusListener = new FocusListener() {
     @Override
@@ -76,9 +73,12 @@ public abstract class TextComponent<J extends JTextComponent> extends ViewContro
     super(model);
     J jTextComponent = this.getAwtComponent();
     model.getSwingModel().install(this);
-    jTextComponent.setBorder(this.border);
+    final Border outsideBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
+    final Border insideBorder = BorderFactory.createEmptyBorder(4, 14, 12, 2);
+    final CompoundBorder border = new CompoundBorder(outsideBorder, insideBorder);
+    this.getAwtComponent().setBorder(border);
+    jTextComponent.setBorder(border);
     jTextComponent.setEnabled(model.isEnabled());
-    this.setMargin(new Insets(4, 4, 2, 2));
   }
 
   public boolean isEditable() {
@@ -92,21 +92,6 @@ public abstract class TextComponent<J extends JTextComponent> extends ViewContro
 
   public void enableSelectAllWhenFocusGained() {
     this.getAwtComponent().addFocusListener(this.selectAllFocusListener);
-  }
-
-  public void disableSelectAllWhenFocusGained() {
-    this.getAwtComponent().removeFocusListener(this.selectAllFocusListener);
-  }
-
-  public Insets getMargin() {
-    //return this.getAwtComponent().getMargin();
-    return this.insideBorder.getBorderInsets();
-  }
-
-  public void setMargin(Insets margin) {
-    this.checkEventDispatchThread();
-    //this.getAwtComponent().setMargin( margin );
-    this.insideBorder.setBorderInsets(margin);
   }
 
   public void selectAll() {

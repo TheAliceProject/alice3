@@ -63,22 +63,19 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserMethod;
 
-import javax.swing.BorderFactory;
-import javax.swing.JScrollBar;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 public class EventListenersView extends AbstractCodeDeclarationView {
   public EventListenersView(CodeComposite composite) {
     super(composite, new EventsContentPanel((UserMethod) composite.getDeclaration()));
+    this.setBackgroundColor(UIManager.getColor("Alice.Event.color"));
     PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
     LineAxisPanel bottom = new LineAxisPanel(button);
     this.stickyBottomPanel = new StickyBottomPanel();
     this.stickyBottomPanel.setBottomView(bottom);
-
-    this.stickyBottomPanel.setBackgroundColor(this.getBackgroundColor());
     this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
-    this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-    this.scrollPane.setBackgroundColor(this.getBackgroundColor());
+    this.setBorder(BorderFactory.createEmptyBorder(14, 8, 4, 8));
     this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());
   }
 
@@ -117,7 +114,6 @@ public class EventListenersView extends AbstractCodeDeclarationView {
 
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
-    //
   }
 
   @Override

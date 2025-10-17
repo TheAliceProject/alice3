@@ -43,7 +43,6 @@
 package org.alice.stageide.personresource.views.renderers;
 
 import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
-import org.alice.stageide.personresource.views.IngredientsView;
 import org.lgna.story.resources.sims2.LocalizedResource;
 
 import javax.swing.*;
@@ -86,7 +85,7 @@ public enum SimpleListCellRenderer implements ListCellRenderer {
       this.label.setForeground(UIManager.getColor("List.selectionForeground"));
       this.label.setOpaque(true);
     } else {
-      this.label.setBackground(IngredientsView.UNSELECTED_COLOR);
+      this.label.setBackground(UIManager.getColor("List.background"));
       this.label.setForeground(list.isEnabled() ? UIManager.getColor("List.foreground") : UIManager.getColor("List.disabledForeground"));
       this.label.setOpaque(list.isEnabled());
     }

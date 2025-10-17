@@ -48,7 +48,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
@@ -683,11 +682,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.expandButton = docFrame.getSetToSetupScenePerspectiveOperation().createButton();
     this.expandButton.setClobberIcon(EXPAND_ICON);
     //todo: tool tip text
-    //this.expandButton.getAwtComponent().setText( null );
-    this.expandButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
     this.contractButton = docFrame.getSetToCodePerspectiveOperation().createButton();
     this.contractButton.setClobberIcon(CONTRACT_ICON);
-    this.contractButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
     this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
     this.orthographicCameraImp = new OrthographicCameraImp();
     this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);

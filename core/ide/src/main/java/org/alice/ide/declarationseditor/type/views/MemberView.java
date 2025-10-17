@@ -48,6 +48,8 @@ import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.PopupButton;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
+import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +57,11 @@ import javax.swing.BorderFactory;
 public class MemberView extends LineAxisPanel {
   public MemberView(MenuModel menuModel) {
     PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
-    popupButton.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+    Color color = UIManager.getColor("Alice.differentBackground");
+    popupButton.setForegroundColor(color);
+    popupButton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(color, 2, true),
+        BorderFactory.createEmptyBorder(6, 6, 6, 6)));
     this.addComponent(popupButton);
     this.addComponent(BoxUtilities.createHorizontalSliver(8));
   }

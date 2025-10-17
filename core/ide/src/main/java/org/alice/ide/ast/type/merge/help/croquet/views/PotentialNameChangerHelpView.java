@@ -67,7 +67,7 @@ public class PotentialNameChangerHelpView extends BorderPanel {
     AbstractLabel label = composite.getHeader().createLabel();
     label.setIcon(IconUtilities.getQuestionIcon());
     label.setOpaque(true);
-    label.setBackgroundColor(UIManager.getColor("Alice.Background.Color.different"));
+    label.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
     label.setVerticalTextPosition(VerticalTextPosition.TOP);
     label.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     label.getAwtComponent().setIconTextGap(12);

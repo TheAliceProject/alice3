@@ -134,7 +134,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
     if (this.label == null) {
       this.label = new Label(this.getLabelText());
       if (Comment.class.isAssignableFrom(this.getStatementCls())) {
-        this.label.setForegroundColor(UIManager.getColor("Alice.Comment.Color.foreground"));
+        this.label.setForegroundColor(UIManager.getColor("Alice.Comment.foreground"));
       }
       //this.label.setFontToScaledFont( 1.2f );
       this.addComponent(this.label);

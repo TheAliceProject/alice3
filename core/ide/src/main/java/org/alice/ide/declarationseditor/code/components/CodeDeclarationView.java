@@ -43,17 +43,20 @@
 
 package org.alice.ide.declarationseditor.code.components;
 
+import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codeeditor.CodeEditor;
 import org.alice.ide.declarationseditor.CodeComposite;
 import org.alice.ide.x.ProjectEditorAstI18nFactory;
 import org.lgna.croquet.views.AwtComponentView;
 
 /**
+ * these are the method and procedure tabs of the editor
  * @author Dennis Cosgrove
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
   public CodeDeclarationView(CodeComposite composite) {
     super(composite, new CodeEditor(ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration()));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getCodeColor(composite.getDeclaration()));
   }
 
   @Override

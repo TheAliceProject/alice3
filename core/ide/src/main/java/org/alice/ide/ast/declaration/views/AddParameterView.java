@@ -76,7 +76,7 @@ public class AddParameterView extends DeclarationView<UserParameter> {
     this.warningPanel = new BorderPanel.Builder().hgap(32).lineStart(warningLabel).center(pane).build();
 
     this.warningPanel.setBorder(BorderFactory.createEmptyBorder(32, 8, 32, 8));
-    this.setBackgroundColor(UIManager.getColor("Alice.Field.Color"));
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 
   @Override

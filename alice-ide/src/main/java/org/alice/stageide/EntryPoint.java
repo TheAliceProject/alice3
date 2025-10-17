@@ -44,7 +44,6 @@ package org.alice.stageide;
 
 import com.formdev.flatlaf.FlatLaf;
 import edu.cmu.cs.dennisc.crash.CrashDetector;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -58,8 +57,9 @@ import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
 
 import javax.swing.*;
-import java.awt.Frame;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -83,6 +83,12 @@ public class EntryPoint extends Application {
     String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
     System.out.println("version: " + text);
 
+    File font_file = new File(EntryPoint.class.getResource("/org/alice/stageide/fonts/NotoSans.ttf").getPath());
+    try {
+      GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, font_file));
+    } catch (FontFormatException | IOException e) {
+    }
+
     // This resources file is where all the theme colors are defined
     FlatLaf.registerCustomDefaultsSource("org.alice.stageide.themes");
 
@@ -92,6 +98,8 @@ public class EntryPoint extends Application {
         javax.swing.UIManager.setLookAndFeel((useDarkMode ? new com.formdev.flatlaf.FlatDarkLaf() : new com.formdev.flatlaf.FlatLightLaf()));
         com.formdev.flatlaf.FlatLaf.updateUI();
       } catch (UnsupportedLookAndFeelException updateFlatLafThemeException) {
+      Logger.severe("Was unable to set look and feel theme: " + updateFlatLafThemeException.getMessage());
+      updateFlatLafThemeException.printStackTrace();
     }
 
     // Initialize Swing here to do it on the correct thread, outside of JavaFX
@@ -108,10 +116,6 @@ public class EntryPoint extends Application {
       UIManager.put("ScrollBar.width", 13);
       UIManager.put("ScrollBar.incrementButtonGap", 0);
       UIManager.put("ScrollBar.decrementButtonGap", 0);
-      UIManager.put("ScrollBar.thumb", ColorUtilities.createGray(140));
-
-      //java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
-      //javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
       ConsistentMouseDragEventQueue.pushIfAppropriate();
 

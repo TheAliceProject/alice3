@@ -44,7 +44,6 @@ package org.alice.ide.members.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder;
 import org.alice.ide.ast.EmptyExpression;
 import org.alice.ide.common.AbstractArgumentListPropertyPane;
 import org.alice.ide.common.EmptyExpressionPane;
@@ -56,6 +55,8 @@ import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 
+import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -70,13 +71,16 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
   @Override
   protected AwtComponentView<?> createComponent(SimpleArgument argument) {
     LineAxisPanel rv = new LineAxisPanel();
+    // we apply a semi-transparent white box here, for a bit of contrast
     rv.setBackgroundColor(new Color(255, 255, 255, 127));
-    rv.setBorder(new OutlinedBorder(1, 4, 1, 4, Color.LIGHT_GRAY));
+    rv.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Block.foreground"), 1));
 
     String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
-    //edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
     if ((parameterName != null) && (parameterName.length() > 0)) {
-      rv.addComponent(new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT));
+      Label l = new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT);
+      l.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+      l.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));
+      rv.addComponent(l);
     }
     rv.addComponent(new EmptyExpressionPane((EmptyExpression) argument.expression.getValue()));
     return rv;

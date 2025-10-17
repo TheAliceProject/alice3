@@ -154,8 +154,6 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   public MembersView(MembersToolPalette<?, M> composite, Color backgroundColor) {
     super(composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + "24[grow]");
 
-    //todo
-    backgroundColor = ColorUtilities.scaleHSB(backgroundColor, 1.0, 1.0, 1.1);
     this.setBackgroundColor(backgroundColor);
 
     String titleText = getTitleText(composite);
