@@ -79,187 +79,187 @@ public class SQuadruped extends SJointedModel implements Articulable {
 
   @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
   public SJoint getRoot() {
-    return SJoint.getJoint(this, QuadrupedResource.ROOT);
+    return getJoint(QuadrupedResource.ROOT);
   }
 
   public SJoint getSpineBase() {
-    return SJoint.getJoint(this, QuadrupedResource.SPINE_BASE);
+    return getJoint(QuadrupedResource.SPINE_BASE);
   }
 
   public SJoint getSpineMiddle() {
-    return SJoint.getJoint(this, QuadrupedResource.SPINE_MIDDLE);
+    return getJoint(QuadrupedResource.SPINE_MIDDLE);
   }
 
   public SJoint getSpineUpper() {
-    return SJoint.getJoint(this, QuadrupedResource.SPINE_UPPER);
+    return getJoint(QuadrupedResource.SPINE_UPPER);
   }
 
   public SJoint getNeck() {
-    return SJoint.getJoint(this, QuadrupedResource.NECK);
+    return getJoint(QuadrupedResource.NECK);
   }
 
   public SJoint getHead() {
-    return SJoint.getJoint(this, QuadrupedResource.HEAD);
+    return getJoint(QuadrupedResource.HEAD);
   }
 
   public SJoint getLeftEye() {
-    return SJoint.getJoint(this, QuadrupedResource.LEFT_EYE);
+    return getJoint(QuadrupedResource.LEFT_EYE);
   }
 
   public SJoint getLeftEyelid() {
-    return SJoint.getJoint(this, QuadrupedResource.LEFT_EYELID);
+    return getJoint(QuadrupedResource.LEFT_EYELID);
   }
 
   public SJoint getLeftEar() {
-    return SJoint.getJoint(this, QuadrupedResource.LEFT_EAR);
+    return getJoint(QuadrupedResource.LEFT_EAR);
   }
 
   public SJoint getMouth() {
-    return SJoint.getJoint(this, QuadrupedResource.MOUTH);
+    return getJoint(QuadrupedResource.MOUTH);
   }
 
   public SJoint getRightEar() {
-    return SJoint.getJoint(this, QuadrupedResource.RIGHT_EAR);
+    return getJoint(QuadrupedResource.RIGHT_EAR);
   }
 
   public SJoint getRightEye() {
-    return SJoint.getJoint(this, QuadrupedResource.RIGHT_EYE);
+    return getJoint(QuadrupedResource.RIGHT_EYE);
   }
 
   public SJoint getRightEyelid() {
-    return SJoint.getJoint(this, QuadrupedResource.RIGHT_EYELID);
+    return getJoint(QuadrupedResource.RIGHT_EYELID);
   }
 
   public SJoint getFrontLeftClavicle() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_CLAVICLE);
+    return getJoint(QuadrupedResource.FRONT_LEFT_CLAVICLE);
   }
 
   public SJoint getFrontLeftShoulder() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_SHOULDER);
+    return getJoint(QuadrupedResource.FRONT_LEFT_SHOULDER);
   }
 
   public SJoint getFrontLeftKnee() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_KNEE);
+    return getJoint(QuadrupedResource.FRONT_LEFT_KNEE);
   }
 
   public SJoint getFrontLeftAnkle() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_ANKLE);
+    return getJoint(QuadrupedResource.FRONT_LEFT_ANKLE);
   }
 
   public SJoint getFrontLeftFoot() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_FOOT);
+    return getJoint(QuadrupedResource.FRONT_LEFT_FOOT);
   }
 
   public SJoint getFrontLeftToe() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_LEFT_TOE);
+    return getJoint(QuadrupedResource.FRONT_LEFT_TOE);
   }
 
   public SJoint getFrontRightClavicle() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_CLAVICLE);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_CLAVICLE);
   }
 
   public SJoint getFrontRightShoulder() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_SHOULDER);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_SHOULDER);
   }
 
   public SJoint getFrontRightKnee() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_KNEE);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_KNEE);
   }
 
   public SJoint getFrontRightAnkle() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_ANKLE);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_ANKLE);
   }
 
   public SJoint getFrontRightFoot() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_FOOT);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_FOOT);
   }
 
   public SJoint getFrontRightToe() {
-    return SJoint.getJoint(this, QuadrupedResource.FRONT_RIGHT_TOE);
+    return getJoint(QuadrupedResource.FRONT_RIGHT_TOE);
   }
 
   public SJoint getPelvisLowerBody() {
-    return SJoint.getJoint(this, QuadrupedResource.PELVIS_LOWER_BODY);
+    return getJoint(QuadrupedResource.PELVIS_LOWER_BODY);
   }
 
   public SJoint[] getTailArray() {
-    return SJoint.getJointArray(this, this.getImplementation().getResource().getTailArray());
+    return getJointArray(getImplementation().getResource().getTailArray());
   }
 
   public SJoint getTail() {
-    return SJoint.getJoint(this, QuadrupedResource.TAIL_0);
+    return getJoint(QuadrupedResource.TAIL_0);
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   @Deprecated
   public SJoint getTail1() {
-    return SJoint.getJoint(this, QuadrupedResource.TAIL_0);
+    return getJoint(QuadrupedResource.TAIL_0);
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   @Deprecated
   public SJoint getTail2() {
-    return SJoint.getJoint(this, QuadrupedResource.TAIL_1);
+    return getJoint(QuadrupedResource.TAIL_1);
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   @Deprecated
   public SJoint getTail3() {
-    return SJoint.getJoint(this, QuadrupedResource.TAIL_2);
+    return getJoint(QuadrupedResource.TAIL_2);
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   @Deprecated
   public SJoint getTail4() {
-    return SJoint.getJoint(this, QuadrupedResource.TAIL_3);
+    return getJoint(QuadrupedResource.TAIL_3);
   }
 
   public SJoint getBackLeftHip() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_HIP);
+    return getJoint(QuadrupedResource.BACK_LEFT_HIP);
   }
 
   public SJoint getBackLeftKnee() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_KNEE);
+    return getJoint(QuadrupedResource.BACK_LEFT_KNEE);
   }
 
   public SJoint getBackLeftHock() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_HOCK);
+    return getJoint(QuadrupedResource.BACK_LEFT_HOCK);
   }
 
   public SJoint getBackLeftAnkle() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_ANKLE);
+    return getJoint(QuadrupedResource.BACK_LEFT_ANKLE);
   }
 
   public SJoint getBackLeftFoot() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_FOOT);
+    return getJoint(QuadrupedResource.BACK_LEFT_FOOT);
   }
 
   public SJoint getBackLeftToe() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_LEFT_TOE);
+    return getJoint(QuadrupedResource.BACK_LEFT_TOE);
   }
 
   public SJoint getBackRightHip() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_HIP);
+    return getJoint(QuadrupedResource.BACK_RIGHT_HIP);
   }
 
   public SJoint getBackRightKnee() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_KNEE);
+    return getJoint(QuadrupedResource.BACK_RIGHT_KNEE);
   }
 
   public SJoint getBackRightHock() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_HOCK);
+    return getJoint(QuadrupedResource.BACK_RIGHT_HOCK);
   }
 
   public SJoint getBackRightAnkle() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_ANKLE);
+    return getJoint(QuadrupedResource.BACK_RIGHT_ANKLE);
   }
 
   public SJoint getBackRightFoot() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_FOOT);
+    return getJoint(QuadrupedResource.BACK_RIGHT_FOOT);
   }
 
   public SJoint getBackRightToe() {
-    return SJoint.getJoint(this, QuadrupedResource.BACK_RIGHT_TOE);
+    return getJoint(QuadrupedResource.BACK_RIGHT_TOE);
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)

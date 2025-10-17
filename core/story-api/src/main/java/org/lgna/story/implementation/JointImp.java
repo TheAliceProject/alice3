@@ -70,6 +70,9 @@ public abstract class JointImp extends AbstractTransformableImp {
 
   @Override
   public final SJoint getAbstraction() {
+    if (abstraction == null) {
+      setAbstraction(new SJoint(this));
+    }
     return this.abstraction;
   }
 
