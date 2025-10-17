@@ -61,14 +61,11 @@ public final class ConstructorMenuModel extends MemberMenuModel<NamedUserConstru
   private static InitializingIfAbsentMap<NamedUserConstructor, ConstructorMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static ConstructorMenuModel getInstance(NamedUserConstructor constructor) {
-    return map.getInitializingIfAbsent(constructor, new InitializingIfAbsentMap.Initializer<NamedUserConstructor, ConstructorMenuModel>() {
-      @Override
-      public ConstructorMenuModel initialize(NamedUserConstructor key) {
-        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-        DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-        prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
-        return new ConstructorMenuModel(key, prepModels);
-      }
+    return map.get(constructor, key -> {
+      List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+      DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+      prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
+      return new ConstructorMenuModel(key, prepModels);
     });
   }
 

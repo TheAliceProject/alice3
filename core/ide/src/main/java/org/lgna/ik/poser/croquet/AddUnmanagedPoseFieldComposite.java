@@ -67,12 +67,7 @@ public class AddUnmanagedPoseFieldComposite extends AddFieldComposite {
   private static InitializingIfAbsentMap<NamedUserType, AddUnmanagedPoseFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddUnmanagedPoseFieldComposite getInstance(NamedUserType declaringType) {
-    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, AddUnmanagedPoseFieldComposite>() {
-      @Override
-      public AddUnmanagedPoseFieldComposite initialize(NamedUserType declaringType) {
-        return new AddUnmanagedPoseFieldComposite(declaringType);
-      }
-    });
+    return map.get(declaringType, AddUnmanagedPoseFieldComposite::new);
   }
 
   private AddUnmanagedPoseFieldComposite(NamedUserType declaringType) {

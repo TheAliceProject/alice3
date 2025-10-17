@@ -62,19 +62,16 @@ public final class FieldMenuModel extends MemberMenuModel<UserField> {
   private static InitializingIfAbsentMap<UserField, FieldMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static FieldMenuModel getInstance(UserField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, FieldMenuModel>() {
-      @Override
-      public FieldMenuModel initialize(UserField key) {
-        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-        prepModels.add(RenameFieldComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
-        prepModels.add(DeleteFieldOperation.getInstance(key).getMenuItemPrepModel());
+    return map.get(field, key -> {
+      List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+      prepModels.add(RenameFieldComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
+      prepModels.add(DeleteFieldOperation.getInstance(key).getMenuItemPrepModel());
 
-        if (key.getValueType() != null && key.getValueType().isAssignableTo(SMarker.class)) {
-          prepModels.add(MarkerColorIdCascade.getInstance(key).getMenuModel());
-        }
-
-        return new FieldMenuModel(key, prepModels);
+      if (key.getValueType() != null && key.getValueType().isAssignableTo(SMarker.class)) {
+        prepModels.add(MarkerColorIdCascade.getInstance(key).getMenuModel());
       }
+
+      return new FieldMenuModel(key, prepModels);
     });
   }
 

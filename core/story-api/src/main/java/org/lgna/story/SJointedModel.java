@@ -69,18 +69,18 @@ public abstract class SJointedModel extends SModel {
   //todo: make protected
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint getJoint(JointId jointId) {
-    return jointsById.getInitializingIfAbsent(jointId, id -> getImplementation().getJointImplementation(id).getAbstraction());
+    return jointsById.get(jointId, id -> getImplementation().getJointImplementation(id).getAbstraction());
   }
 
   // String based lookup for DynamicJointIds
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint getJoint(String jointName) {
-    return jointsByName.getInitializingIfAbsent(jointName, name -> getImplementation().getJointImplementation(name).getAbstraction());
+    return jointsByName.get(jointName, name -> getImplementation().getJointImplementation(name).getAbstraction());
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint[] getJointArray(JointId[] jointIdArray) {
-    return jointArrays.getInitializingIfAbsent(jointIdArray, this::newJointArray);
+    return jointArrays.get(jointIdArray, this::newJointArray);
   }
 
   private SJoint[] newJointArray(JointId[] idArray) {

@@ -60,12 +60,7 @@ public class FieldAccessDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<AbstractField, FieldAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static FieldAccessDragModel getInstance(AbstractField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldAccessDragModel>() {
-      @Override
-      public FieldAccessDragModel initialize(AbstractField field) {
-        return new FieldAccessDragModel(field);
-      }
-    });
+    return map.get(field, FieldAccessDragModel::new);
   }
 
   private final AbstractField field;

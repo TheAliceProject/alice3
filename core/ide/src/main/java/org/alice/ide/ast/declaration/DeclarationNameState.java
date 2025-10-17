@@ -58,12 +58,7 @@ public class DeclarationNameState extends StringState {
 
   public static DeclarationNameState getInstance(AbstractDeclaration declaration) {
     if (declaration.getNamePropertyIfItExists() != null) {
-      return map.getInitializingIfAbsent(declaration, new InitializingIfAbsentMap.Initializer<AbstractDeclaration, DeclarationNameState>() {
-        @Override
-        public DeclarationNameState initialize(AbstractDeclaration declaration) {
-          return new DeclarationNameState(declaration);
-        }
-      });
+      return map.get(declaration, DeclarationNameState::new);
     } else {
       //todo: return disabled?
       return null;

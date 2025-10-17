@@ -56,12 +56,7 @@ public final class AddFunctionComposite extends AddMethodComposite {
   private static InitializingIfAbsentMap<UserType<?>, AddFunctionComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddFunctionComposite getInstance(UserType<?> declaringType) {
-    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddFunctionComposite>() {
-      @Override
-      public AddFunctionComposite initialize(UserType<?> declaringType) {
-        return new AddFunctionComposite(declaringType);
-      }
-    });
+    return map.get(declaringType, AddFunctionComposite::new);
   }
 
   private AddFunctionComposite(UserType<?> declaringType) {

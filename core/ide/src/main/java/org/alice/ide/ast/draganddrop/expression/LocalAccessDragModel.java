@@ -64,12 +64,7 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<UserLocal, LocalAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static LocalAccessDragModel getInstance(UserLocal local) {
-    return map.getInitializingIfAbsent(local, new InitializingIfAbsentMap.Initializer<UserLocal, LocalAccessDragModel>() {
-      @Override
-      public LocalAccessDragModel initialize(UserLocal local) {
-        return new LocalAccessDragModel(local);
-      }
-    });
+    return map.get(local, LocalAccessDragModel::new);
   }
 
   private final UserLocal local;

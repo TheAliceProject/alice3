@@ -60,12 +60,7 @@ public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<AbstractField, FieldArrayAtIndexDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static FieldArrayAtIndexDragModel getInstance(AbstractField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayAtIndexDragModel>() {
-      @Override
-      public FieldArrayAtIndexDragModel initialize(AbstractField field) {
-        return new FieldArrayAtIndexDragModel(field);
-      }
-    });
+    return map.get(field, FieldArrayAtIndexDragModel::new);
   }
 
   private final AbstractField field;

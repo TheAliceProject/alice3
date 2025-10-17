@@ -58,12 +58,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
   private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static synchronized InsertLocalDeclarationStatementComposite getInstance(BlockStatementIndexPair blockStatementIndexPair) {
-    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
-      @Override
-      public InsertLocalDeclarationStatementComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
-        return new InsertLocalDeclarationStatementComposite(blockStatementIndexPair);
-      }
-    });
+    return map.get(blockStatementIndexPair, InsertLocalDeclarationStatementComposite::new);
   }
 
   private InsertLocalDeclarationStatementComposite(BlockStatementIndexPair blockStatementIndexPair) {

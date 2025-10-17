@@ -70,12 +70,9 @@ public final class GraphicsContext {
     if (SwingUtilities.isEventDispatchThread()) {
       rv = edtInstance;
     } else {
-      rv = map.getInitializingIfAbsent(Thread.currentThread(), new InitializingIfAbsentMap.Initializer<Thread, GraphicsContext>() {
-        @Override
-        public GraphicsContext initialize(Thread key) {
-          Logger.outln("note: creating graphics context on thread", key);
-          return new GraphicsContext();
-        }
+      rv = map.get(Thread.currentThread(), key -> {
+        Logger.outln("note: creating graphics context on thread", key);
+        return new GraphicsContext();
       });
     }
     rv.pushAll((Graphics2D) g);

@@ -97,7 +97,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   private static InitializingIfAbsentMap<URI, UriGalleryDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static UriGalleryDragModel getInstance(URI uri) {
-    return map.getInitializingIfAbsent(uri, UriGalleryDragModel::new);
+    return map.get(uri, UriGalleryDragModel::new);
   }
 
   private final URI uri;

@@ -60,12 +60,7 @@ public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
 
   public static DeclareAnimationProcedureDialog getInstance(NamedUserType declaringType) {
     if (PoserComposite.isPoseable(declaringType)) {
-      return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclareAnimationProcedureDialog>() {
-        @Override
-        public DeclareAnimationProcedureDialog initialize(NamedUserType declaringType) {
-          return new DeclareAnimationProcedureDialog(declaringType);
-        }
-      });
+      return map.get(declaringType, DeclareAnimationProcedureDialog::new);
     } else {
       return null;
     }

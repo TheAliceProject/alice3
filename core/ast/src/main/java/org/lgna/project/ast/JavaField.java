@@ -64,12 +64,7 @@ public class JavaField extends AbstractField {
 
   public static JavaField getInstance(FieldReflectionProxy fieldReflectionProxy) {
     if (fieldReflectionProxy != null) {
-      return mapReflectionProxyToInstance.getInitializingIfAbsent(fieldReflectionProxy, new InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
-        @Override
-        public JavaField initialize(FieldReflectionProxy key) {
-          return new JavaField(key);
-        }
-      });
+      return mapReflectionProxyToInstance.get(fieldReflectionProxy, JavaField::new);
     } else {
       return null;
     }

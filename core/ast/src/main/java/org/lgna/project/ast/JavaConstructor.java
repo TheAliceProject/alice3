@@ -67,12 +67,7 @@ public class JavaConstructor extends AbstractConstructor {
 
   public static JavaConstructor getInstance(ConstructorReflectionProxy constructorReflectionProxy) {
     if (constructorReflectionProxy != null) {
-      return mapReflectionProxyToInstance.getInitializingIfAbsent(constructorReflectionProxy, new InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
-        @Override
-        public JavaConstructor initialize(ConstructorReflectionProxy key) {
-          return new JavaConstructor(key);
-        }
-      });
+      return mapReflectionProxyToInstance.get(constructorReflectionProxy, JavaConstructor::new);
     } else {
       return null;
     }
