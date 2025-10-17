@@ -84,9 +84,6 @@ public class SSwimmer extends SJointedModel {
     return getJoint(SwimmerResource.MOUTH);
   }
 
-  //  public SJoint getLowerLip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
-  //  }
   public SJoint getLeftEye() {
     return getJoint(SwimmerResource.LEFT_EYE);
   }
@@ -107,16 +104,10 @@ public class SSwimmer extends SJointedModel {
     return getJoint(SwimmerResource.FRONT_LEFT_FIN);
   }
 
-  //  public SJoint getFrontLeftFinTip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN_TIP);
-  //  }
   public SJoint getFrontRightFin() {
     return getJoint(SwimmerResource.FRONT_RIGHT_FIN);
   }
 
-  //  public SJoint getFrontRightFinTip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN_TIP);
-  //  }
   public SJoint getSpineBase() {
     return getJoint(SwimmerResource.SPINE_BASE);
   }

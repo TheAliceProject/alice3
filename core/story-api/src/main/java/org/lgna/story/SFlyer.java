@@ -118,9 +118,6 @@ public class SFlyer extends SJointedModel implements Articulable {
     return getJoint(FlyerResource.MOUTH);
   }
 
-  //  public SJoint getLowerLip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
-  //  }
   public SJoint getLeftEye() {
     return getJoint(FlyerResource.LEFT_EYE);
   }
@@ -149,9 +146,6 @@ public class SFlyer extends SJointedModel implements Articulable {
     return getJoint(FlyerResource.LEFT_WING_WRIST);
   }
 
-  //  public SJoint getLeftWingTip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_TIP);
-  //  }
   public SJoint getRightWingShoulder() {
     return getJoint(FlyerResource.RIGHT_WING_SHOULDER);
   }
@@ -164,9 +158,6 @@ public class SFlyer extends SJointedModel implements Articulable {
     return getJoint(FlyerResource.RIGHT_WING_WRIST);
   }
 
-  //  public SJoint getRightWingTip() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_TIP);
-  //  }
   public SJoint getPelvisLowerBody() {
     return getJoint(FlyerResource.PELVIS_LOWER_BODY);
   }
@@ -207,9 +198,6 @@ public class SFlyer extends SJointedModel implements Articulable {
     return getJoint(FlyerResource.LEFT_FOOT);
   }
 
-  //  public SJoint getLeftToe() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_TOE);
-  //  }
   public SJoint getRightHip() {
     return getJoint(FlyerResource.RIGHT_HIP);
   }
@@ -225,10 +213,6 @@ public class SFlyer extends SJointedModel implements Articulable {
   public SJoint getRightFoot() {
     return getJoint(FlyerResource.RIGHT_FOOT);
   }
-
-  //  public SJoint getRightToe() {
-  //     return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
-  //  }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public void strikePose(FlyerPose pose, StrikePose.Detail... details) {
