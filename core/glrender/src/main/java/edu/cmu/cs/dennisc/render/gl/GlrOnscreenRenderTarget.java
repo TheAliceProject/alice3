@@ -144,5 +144,12 @@ class GlrOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderT
     return this.glPanel;
   }
 
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    forgetAllCachedItems();
+    clearUnusedTextures();
+    glPanel.destroy();
+  }
 
 }
