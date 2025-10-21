@@ -61,11 +61,7 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
   private static InitializingIfAbsentMap<NamedUserType, DeclarePoseFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
 
   public static DeclarePoseFieldOperation getInstance(NamedUserType declaringType) {
-    if (PoserComposite.isPoseable(declaringType)) {
-      return map.get(declaringType, DeclarePoseFieldOperation::new);
-    } else {
-      return null;
-    }
+    return PoserComposite.isPoseable(declaringType) ? map.get(declaringType, DeclarePoseFieldOperation::new) : null;
   }
 
   private DeclarePoseFieldOperation(NamedUserType declaringType) {

@@ -66,11 +66,7 @@ public class JavaConstructor extends AbstractConstructor {
   private static final InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
   public static JavaConstructor getInstance(ConstructorReflectionProxy constructorReflectionProxy) {
-    if (constructorReflectionProxy != null) {
-      return mapReflectionProxyToInstance.get(constructorReflectionProxy, JavaConstructor::new);
-    } else {
-      return null;
-    }
+    return constructorReflectionProxy != null ? mapReflectionProxyToInstance.get(constructorReflectionProxy, JavaConstructor::new) : null;
   }
 
   public static JavaConstructor getInstance(Constructor<?> cnstrctr) {

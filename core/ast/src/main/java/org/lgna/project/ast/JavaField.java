@@ -63,11 +63,7 @@ public class JavaField extends AbstractField {
   private static final InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
   public static JavaField getInstance(FieldReflectionProxy fieldReflectionProxy) {
-    if (fieldReflectionProxy != null) {
-      return mapReflectionProxyToInstance.get(fieldReflectionProxy, JavaField::new);
-    } else {
-      return null;
-    }
+    return fieldReflectionProxy != null ? mapReflectionProxyToInstance.get(fieldReflectionProxy, JavaField::new) : null;
   }
 
   public static JavaField getInstance(Field fld) {

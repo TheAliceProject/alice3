@@ -57,12 +57,8 @@ public class DeclarationNameState extends StringState {
   private static InitializingIfAbsentMap<AbstractDeclaration, DeclarationNameState> map = Maps.newInitializingIfAbsentHashMap();
 
   public static DeclarationNameState getInstance(AbstractDeclaration declaration) {
-    if (declaration.getNamePropertyIfItExists() != null) {
-      return map.get(declaration, DeclarationNameState::new);
-    } else {
-      //todo: return disabled?
-      return null;
-    }
+    //todo: return disabled on null?
+    return declaration.getNamePropertyIfItExists() != null ? map.get(declaration, DeclarationNameState::new) : null;
   }
 
   private DeclarationNameState(AbstractDeclaration declaration) {

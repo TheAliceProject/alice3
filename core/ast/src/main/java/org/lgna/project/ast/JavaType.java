@@ -158,11 +158,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
   }
 
   public static JavaType getInstance(final ClassReflectionProxy classReflectionProxy) {
-    if (classReflectionProxy != null) {
-      return mapReflectionProxyToInstance.get(classReflectionProxy, JavaType::new);
-    } else {
-      return null;
-    }
+    return classReflectionProxy != null ? mapReflectionProxyToInstance.get(classReflectionProxy, JavaType::new) : null;
   }
 
   public static JavaType getInstance(Class<?> cls) {

@@ -59,11 +59,7 @@ public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
   private static InitializingIfAbsentMap<NamedUserType, DeclareAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
   public static DeclareAnimationProcedureDialog getInstance(NamedUserType declaringType) {
-    if (PoserComposite.isPoseable(declaringType)) {
-      return map.get(declaringType, DeclareAnimationProcedureDialog::new);
-    } else {
-      return null;
-    }
+    return PoserComposite.isPoseable(declaringType) ? map.get(declaringType, DeclareAnimationProcedureDialog::new) : null;
   }
 
   private DeclareAnimationProcedureDialog(NamedUserType declaringType) {
