@@ -90,7 +90,6 @@ public class PreviewPane extends MigPanel {
     }
 
     Label classLabel = new Label("class", TypeIcon.getInstance(addMembersPage.getDstType()));
-    //classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
     classLabel.scaleFont(1.2f);
     classLabel.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
     this.addComponent(classLabel, "split 3, grow, shrink, push");

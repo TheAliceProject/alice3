@@ -70,10 +70,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
     return this.isIconClobbered;
   }
 
-  public void setIconClobbered(boolean isIconClobbered) {
-    this.isIconClobbered = isIconClobbered;
-  }
-
   public Icon getClobberIcon() {
     return this.clobberIcon;
   }
@@ -81,10 +77,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   public void setClobberIcon(Icon clobberIcon) {
     this.clobberIcon = clobberIcon;
     this.isIconClobbered = true;
-  }
-
-  public int getIconTextGap() {
-    return this.getAwtComponent().getIconTextGap();
   }
 
   public void setIconTextGap(int iconTextGap) {
@@ -144,10 +136,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
     this.checkEventDispatchThread();
     this.getAwtComponent().setVerticalAlignment(verticalAlignment.getInternal());
-  }
-
-  public Insets getMargin() {
-    return this.getAwtComponent().getMargin();
   }
 
   public void setMargin(Insets margin) {

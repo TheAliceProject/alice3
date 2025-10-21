@@ -61,20 +61,20 @@ public class FontUtilities {
   }
 
   public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attribute, Object value) {
-    Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
+    Map<java.awt.font.TextAttribute, Object> map = new HashMap<>();
     map.put(attribute, value);
     setFontToDerivedFont(component, map);
   }
 
   public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB) {
-    Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
+    Map<java.awt.font.TextAttribute, Object> map = new HashMap<>();
     map.put(attributeA, valueA);
     map.put(attributeB, valueB);
     setFontToDerivedFont(component, map);
   }
 
   public static void setFontToDerivedFont(Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC) {
-    Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
+    Map<java.awt.font.TextAttribute, Object> map = new HashMap<>();
     map.put(attributeA, valueA);
     map.put(attributeB, valueB);
     map.put(attributeC, valueC);
@@ -83,7 +83,7 @@ public class FontUtilities {
 
   public static void setFontToDerivedFont(Component component, TextAttribute<?>... textAttributes) {
     Font font = component.getFont();
-    Map<java.awt.font.TextAttribute, Object> map = new HashMap<java.awt.font.TextAttribute, Object>();
+    Map<java.awt.font.TextAttribute, Object> map = new HashMap<>();
     for (TextAttribute<?> textAttribute : textAttributes) {
       map.put(textAttribute.getKey(), textAttribute.getValue());
     }

@@ -69,6 +69,7 @@ public class InfixExpressionView extends AbstractExpressionView<InfixExpression>
         JLabel label = (JLabel) child;
         String text = label.getText();
         //todo: remove this terrible hack
+        // (this "terrible hack" changes the size of the math functions in dropdowns)
         boolean isScaleDesired = false;
         if (text.length() == 3) {
           char c0 = text.charAt(0);

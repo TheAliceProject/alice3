@@ -50,21 +50,14 @@ import edu.cmu.cs.dennisc.javax.swing.models.ListModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.WizardDialogContentComposite;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CardPanel;
-import org.lgna.croquet.views.Dialog;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -299,7 +292,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
         }
       };
       list.setSelectionModel(this.listSelectionModel);
-      list.setAlignmentX(0.0f);
+      list.setAlignmentX(Component.LEFT_ALIGNMENT);
       //list.setEnabled( false );
       list.setCellRenderer(this.listCellRenderer);
 

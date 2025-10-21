@@ -49,12 +49,9 @@ import org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExp
 import org.lgna.croquet.DragModel;
 import org.lgna.project.ast.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
@@ -81,11 +78,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
     return UIManager.getColor("Alice.Block.foreground");
   }
 
-  @Override
-  protected LayoutManager createLayoutManager(JPanel jComponent) {
-    return new BoxLayout(jComponent, BoxLayout.LINE_AXIS);
-  }
-
   protected boolean isExpressionTypeFeedbackDesired() {
     return IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
   }
@@ -94,9 +86,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
     if (e != null) {
       Node parent = e.getParent();
       if (parent != null) {
-        if (ClassUtilities.isAssignableToAtLeastOne(parent.getClass(), ArrayAccess.class, ArrayLength.class)) {
-          return true;
-        }
+        return ClassUtilities.isAssignableToAtLeastOne(parent.getClass(), ArrayAccess.class, ArrayLength.class);
       }
     }
     return false;
@@ -113,7 +103,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   @Override
   protected int getDockInsetLeft() {
-    if (this.isVoid || (this.isExpressionTypeFeedbackDesired() == false)) {
+    if (this.isVoid || !this.isExpressionTypeFeedbackDesired()) {
       return 0;
     } else {
       return DOCKING_BAY_INSET_LEFT + 2;
@@ -149,12 +139,9 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   protected BeveledShape createBoundsShape(int x, int y, int width, int height) {
     AbstractType<?, ?, ?> type = this.getExpressionType();
-    if (type != null) {
-      //      assert type != org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
-    } else {
+    if (type == null) {
       type = JavaType.OBJECT_TYPE;
     }
-    //    java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
     int left = this.getDockInsetLeft();
     int top = this.getInsetTop();
     int right = this.getInsetRight();
@@ -182,9 +169,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   @Override
   protected void paintPrologue(Graphics2D g2, int x, int y, int width, int height) {
-    if (this.isVoid || (this.isExpressionTypeFeedbackDesired() == false)) {
-      //pass
-    } else {
+    if (!this.isVoid && this.isExpressionTypeFeedbackDesired()) {
       BevelState bevelState = BevelState.FLUSH;
       BeveledShape beveledShape = createBoundsShape(x, y, width, height);
       g2.setPaint(this.getBackgroundColor());
@@ -193,27 +178,4 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
   }
 
   public abstract AbstractType<?, ?, ?> getExpressionType();
-  //  @Override
-  //  protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-  //    java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );
-  //    org.lgna.project.ast.AbstractType type = getExpressionType();
-  //    if( type != null ) {
-  //      assert type != org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
-  //    } else {
-  //      type = org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
-  //    }
-  //    edu.cmu.cs.dennisc.awt.BeveledShape rv = edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, DOCKING_BAY_INSET_LEFT, Math.min( getHeight()*0.5f, 16.0f ) );
-  //    return rv;
-  //  }
-
-  //todo
-  //  @Override
-  //  protected boolean isActuallyPotentiallyActive() {
-  //    return false;
-  //  }
-  //  //todo
-  //  @Override
-  //  protected boolean isActuallyPotentiallySelectable() {
-  //    return false;
-  //  }
 }

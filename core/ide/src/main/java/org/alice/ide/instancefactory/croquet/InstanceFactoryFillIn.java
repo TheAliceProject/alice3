@@ -59,12 +59,9 @@ import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NamedUserType;
 
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Map;
 import java.util.UUID;
@@ -125,8 +122,8 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
     int sidePadding = (desiredIconSize.width - icon.getIconWidth()) / 2;
     label.setBorder(new EmptyBorder(0, sidePadding, 0, sidePadding));
 
-    expressionPane.setAlignmentY(0.5f);
-    label.setAlignmentY(0.5f);
+    expressionPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+    label.setAlignmentY(Component.CENTER_ALIGNMENT);
 
     JPanel rv = new JPanel();
     //    rv.setLayout( new java.awt.BorderLayout() );

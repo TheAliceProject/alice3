@@ -42,24 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
-import java.awt.Color;
-import java.util.List;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.croquet.models.help.ReportIssueComposite;
+import org.alice.ide.issue.SubmitReportUtilities;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
-
-import org.alice.ide.croquet.models.help.ReportIssueComposite;
-import org.alice.ide.issue.SubmitReportUtilities;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.FormPanel;
-import org.lgna.croquet.views.Hyperlink;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LabeledFormRow;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.TextArea;
-import org.lgna.croquet.views.VerticalAlignment;
-
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.List;
 
 /**
  * @author Matt May
@@ -92,11 +84,11 @@ public class ReportIssueView extends AbstractIssueView {
     Color backgroundColor = Color.DARK_GRAY;
     Label headerLabel = new Label();
     headerLabel.setIcon(headerIcon);
-    headerLabel.setAlignmentX(0.5f);
+    headerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     Hyperlink link = composite.getBrowserOperation().createHyperlink();
     link.setForegroundColor(Color.LIGHT_GRAY);
     link.getAwtComponent().setBackground(backgroundColor);
-    link.setAlignmentX(0.5f);
+    link.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     PageAxisPanel lineStartPanel = new PageAxisPanel(headerLabel, link);
 

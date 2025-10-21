@@ -100,34 +100,7 @@ public class CascadeMenuItem extends ViewController<JMenuItem, CascadeItem<?, ?>
         }
         //      } else {
         //        return null;
-        //      }
       }
-      //    @Override
-      //    protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-      //      int id = e.getID();
-      //      boolean isSuperRequired = true;
-      //      if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-      //        if( rtRoot != null ) {
-      //          if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
-      //            this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
-      //            edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
-      //            isSuperRequired = false;
-      //          }
-      //        }
-      //      } else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
-      //        if( this.pushedCursor != null ) {
-      //          java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
-      //          if( this.pushedCursor != poppedCursor ) {
-      //            edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
-      //          }
-      //          this.pushedCursor = null;
-      //          isSuperRequired = false;
-      //        }
-      //      }
-      //      if( isSuperRequired ) {
-      //        super.processMouseEvent( e );
-      //      }
-      //    }
     };
   }
 }
