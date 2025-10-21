@@ -88,11 +88,11 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 
   @Override
   protected int getInsetTop() {
-    return 0;
+    return Theme.BLOCK_MARGINS_HEIGHT;
   }
 
   @Override
   protected int getInsetBottom() {
-    return 1;
+    return Theme.BLOCK_MARGINS_HEIGHT;
   }
 }

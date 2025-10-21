@@ -44,6 +44,7 @@ package org.alice.ide.members.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.EmptyExpression;
 import org.alice.ide.common.AbstractArgumentListPropertyPane;
 import org.alice.ide.common.EmptyExpressionPane;
@@ -78,7 +79,7 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
     String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
     if ((parameterName != null) && (parameterName.length() > 0)) {
       Label l = new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT);
-      l.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+      l.setBorder(Theme.BLOCK_BORDER);
       l.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));
       rv.addComponent(l);
     }

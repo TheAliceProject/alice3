@@ -83,31 +83,9 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
     return this.statementCls;
   }
 
-  private static final int INSET = 1;
-
-  @Override
-  protected int getInsetTop() {
-    return StatementLikeSubstance.INSET;
-  }
-
   @Override
   protected int getDockInsetLeft() {
     return 1;
-  }
-
-  @Override
-  protected int getInternalInsetLeft() {
-    return StatementLikeSubstance.INSET + 2;
-  }
-
-  @Override
-  protected int getInsetBottom() {
-    return StatementLikeSubstance.INSET + 2;
-  }
-
-  @Override
-  protected int getInsetRight() {
-    return StatementLikeSubstance.INSET + 4;
   }
 
   @Override

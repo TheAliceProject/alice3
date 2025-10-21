@@ -59,8 +59,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
-  private static final int INSET = 2;
-  public static final int DOCKING_BAY_INSET_LEFT = 5;
+  public static final int DOCKING_BAY_INSET_LEFT = 7;
 
   private final boolean isVoid;
 
@@ -94,47 +93,27 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
   @Override
   protected int getInsetTop() {
-    if (this.isVoid) {
-      return 0;
-    } else {
-      return ExpressionLikeSubstance.INSET;
-    }
+    return this.isVoid ? 0 : super.getInsetTop();
   }
 
   @Override
   protected int getDockInsetLeft() {
-    if (this.isVoid || !this.isExpressionTypeFeedbackDesired()) {
-      return 0;
-    } else {
-      return DOCKING_BAY_INSET_LEFT + 2;
-    }
+    return (this.isVoid || !this.isExpressionTypeFeedbackDesired()) ? 0 : DOCKING_BAY_INSET_LEFT;
   }
 
   @Override
   protected int getInternalInsetLeft() {
-    if (this.isVoid) {
-      return 0;
-    } else {
-      return 1;
-    }
+    return this.isVoid ? 0 : super.getInternalInsetLeft();
   }
 
   @Override
   protected int getInsetBottom() {
-    if (this.isVoid) {
-      return 0;
-    } else {
-      return ExpressionLikeSubstance.INSET;
-    }
+    return this.isVoid ? 0 : super.getInsetBottom();
   }
 
   @Override
   protected int getInsetRight() {
-    if (this.isVoid) {
-      return 0;
-    } else {
-      return ExpressionLikeSubstance.INSET;
-    }
+    return this.isVoid ? 0 : super.getInsetRight();
   }
 
   protected BeveledShape createBoundsShape(int x, int y, int width, int height) {
