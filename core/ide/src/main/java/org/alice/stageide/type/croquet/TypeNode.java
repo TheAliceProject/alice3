@@ -50,16 +50,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Dennis Cosgrove
  */
 public class TypeNode extends DefaultMutableTreeNode {
-  //  private static final InitializingIfAbsentMap<AbstractType<?, ?, ?>, TypeNode> map = Maps.newInitializingIfAbsentHashMap();
-  //
-  //  public static TypeNode getInstance(AbstractType<?, ?, ?> type ) {
-  //    return map.get(type, new InitializingIfAbsentMap.Initializer<AbstractType<?, ?, ?>, TypeNode>() {
-  //      public TypeNode initialize(AbstractType<?, ?, ?> key) {
-  //        return new TypeNode(key);
-  //      }
-  //    });
-  //  }
-
   private final AbstractType<?, ?, ?> type;
 
   public TypeNode(AbstractType<?, ?, ?> type) {
