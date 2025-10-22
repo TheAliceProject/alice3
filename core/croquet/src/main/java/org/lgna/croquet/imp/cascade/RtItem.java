@@ -243,6 +243,8 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
       rv = menu;
     }
     jMenuItem.setText(item.getMenuItemText());
+    // this is a bit of a hack because flatlaf just doesn't render the icon if it is disabled?
+    jMenuItem.setDisabledIcon(item.getMenuItemIcon(this.getNode()));
     jMenuItem.setIcon(item.getMenuItemIcon(this.getNode()));
     return rv;
   }

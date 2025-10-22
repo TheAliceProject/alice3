@@ -47,8 +47,10 @@ import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 import java.util.UUID;
 
 /**
@@ -88,7 +90,10 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
     if (isValid(text)) {
       JLabel rv = new JLabel();
       rv.setText(text + ":");
+      rv.setForeground(UIManager.getColor("Label.disabledForeground"));
       FontUtilities.setFontToDerivedFont(rv, TextPosture.OBLIQUE);
+      // add some border because the oblique text runs over
+      rv.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
       return rv;
     } else {
       return null;
