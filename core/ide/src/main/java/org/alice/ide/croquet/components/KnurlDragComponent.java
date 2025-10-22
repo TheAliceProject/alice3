@@ -148,6 +148,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
       @Override
       public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int x = 0;
         int y = 0;
         int width = this.getWidth();
