@@ -61,7 +61,6 @@ public class CascadeMenuItem extends ViewController<JMenuItem, CascadeItem<?, ?>
 
   @Override
   protected JMenuItem createAwtComponent() {
-    JMenuItem item = new JMenuItem();
-    return item;
+    return new JMenuItem();
   }
 }
