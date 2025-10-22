@@ -144,107 +144,11 @@ public class BeveledShapeForType extends BeveledShape {
       GeneralPath highlightPath = new GeneralPath();
       rv = new BeveledShapeForType(basePath, shadowPath, null, highlightPath, y0, y0);
     } else if (type.isAssignableTo(String.class)) {
-
-      float yDelta = height * 0.2f;
-      float yA = y0 + yDelta;
-      float yB = y1 - yDelta;
-
-      float xDelta = width * 0.2f;
-      float xA = x0 + xDelta;
-      float xB = x1 - xDelta;
-
-      GeneralPath basePath = new GeneralPath();
-      basePath.moveTo(x1, y0);
-      basePath.curveTo(x0, y0, xB, yB, x0, yB);
-      basePath.lineTo(x0, y1);
-      basePath.curveTo(x1, y1, xA, yA, x1, yA);
-
-      GeneralPath shadowPath = new GeneralPath();
-      shadowPath.moveTo(x0, y1);
-      shadowPath.curveTo(x1, y1, xA, yA, x1, yA);
-
-      GeneralPath highlightPath = new GeneralPath();
-      highlightPath.moveTo(x1, y0);
-      highlightPath.curveTo(x0, y0, xB, yB, x0, yB);
-      highlightPath.lineTo(x0, y1);
-
-      rv = new BeveledShapeForType(basePath, highlightPath, null, shadowPath, y0, yA);
+      rv = getBeveledShapeForString(x0, y0, width, height, y1, x1);
     } else if (type.isAssignableTo(Number.class) /* || type.isAssignableTo( edu.cmu.cs.dennisc.boundedvalue.Portion.class ) || type.isAssignableTo( edu.cmu.cs.dennisc.math.Angle.class ) */) {
-      //todo: Integer
-      //      if( Integer.class.isAssignableFrom( type ) ) {
-      //      } else {
-      //      }
-      float yDelta = height * 0.333f;
-      float yA = y0 + yDelta;
-      float yB = y1 - yDelta;
-
-      float xA = x0 + ((yB - yA) * 0.5f);
-
-      GeneralPath basePath = new GeneralPath();
-      basePath.moveTo(x1, y0);
-      basePath.lineTo(x0, y0);
-      basePath.lineTo(x0, yA);
-      basePath.lineTo(x1, yA);
-      basePath.lineTo(x1, yB);
-      basePath.lineTo(x0, yB);
-      basePath.lineTo(x0, y1);
-      basePath.lineTo(x1, y1);
-
-      GeneralPath shadowRaisedPath = new GeneralPath();
-      shadowRaisedPath.moveTo(x0, yA);
-      shadowRaisedPath.lineTo(x1, yA);
-
-      shadowRaisedPath.moveTo(x0, y1);
-      shadowRaisedPath.lineTo(x1, y1);
-
-      GeneralPath neutralRaisedPath = new GeneralPath();
-      neutralRaisedPath.moveTo(x1, yA);
-      neutralRaisedPath.lineTo(x1, yB);
-      neutralRaisedPath.lineTo(xA, yB);
-
-      GeneralPath highlightRaisedPath = new GeneralPath();
-      highlightRaisedPath.moveTo(x1, y0);
-      highlightRaisedPath.lineTo(x0, y0);
-      highlightRaisedPath.lineTo(x0, yA);
-
-      highlightRaisedPath.moveTo(xA, yB);
-      highlightRaisedPath.lineTo(x0, yB);
-      highlightRaisedPath.lineTo(x0, y1);
-
-      GeneralPath shadowSunkenPath = new GeneralPath();
-      shadowSunkenPath.moveTo(x1, y0);
-      shadowSunkenPath.lineTo(x0, y0);
-      shadowSunkenPath.lineTo(x0, yA);
-      shadowSunkenPath.moveTo(x1, yA);
-      shadowSunkenPath.lineTo(x1, yB);
-      shadowSunkenPath.lineTo(x0, yB);
-      shadowSunkenPath.lineTo(x0, y1);
-
-      GeneralPath highlightSunkenPath = new GeneralPath();
-      highlightSunkenPath.moveTo(x0, yA);
-      highlightSunkenPath.lineTo(x1, yA);
-      highlightSunkenPath.moveTo(x0, y1);
-      highlightSunkenPath.lineTo(x1, y1);
-      rv = new BeveledShapeForType(basePath, highlightRaisedPath, neutralRaisedPath, shadowRaisedPath, highlightSunkenPath, null, shadowSunkenPath, y0, y1);
+      rv = getBeveledShapeForNumber(x0, y0, height, y1, x1);
     } else if (type.isAssignableTo(Boolean.class) || type.isAssignableTo(Boolean.TYPE)) {
-      float xA = (x0 + x1) * 0.7f;
-      float yA = (y0 + y1) * 0.5f;
-      GeneralPath basePath = new GeneralPath();
-      basePath.moveTo(x1, y0);
-      basePath.lineTo(x0, y0);
-      basePath.quadTo(xA, yA, x0, y1);
-      basePath.lineTo(x1, y1);
-
-      GeneralPath shadowPath = new GeneralPath();
-      shadowPath.moveTo(x0, y1);
-      shadowPath.lineTo(x1, y1);
-
-      GeneralPath highlightPath = new GeneralPath();
-      highlightPath.moveTo(x1, y0);
-      highlightPath.lineTo(x0, y0);
-      highlightPath.quadTo(xA, yA, x0, y1);
-
-      rv = new BeveledShapeForType(basePath, highlightPath, null, shadowPath, y0, y1);
+      rv = getBeveledShapeForBoolean(x0, y0, x1, y1);
     } else {
       rv = null;
       for (Class<?> cls : s_roundTypes) {
@@ -263,25 +167,144 @@ public class BeveledShapeForType extends BeveledShape {
         }
       }
       if (rv == null) {
-        //java.awt.Shape base = new java.awt.geom.Rectangle2D.Float( x0, y0, width, height );
-        GeneralPath basePath = new GeneralPath();
-        basePath.moveTo(x1, y0);
-        basePath.lineTo(x0, y0);
-        basePath.lineTo(x0, y1);
-        basePath.lineTo(x1, y1);
-
-        GeneralPath highlighPath = new GeneralPath();
-        highlighPath.moveTo(x1, y0);
-        highlighPath.lineTo(x0, y0);
-        highlighPath.lineTo(x0, y1);
-
-        GeneralPath shadowPath = new GeneralPath();
-        shadowPath.moveTo(x0, y1);
-        shadowPath.lineTo(x1, y1);
-
-        rv = new BeveledShapeForType(basePath, highlighPath, null, shadowPath, y0, y1);
+        rv = getDefaultBeveledShape(x0, y0, x1, y1);
       }
     }
+    return rv;
+  }
+
+  private static BeveledShapeForType getBeveledShapeForString(float x0, float y0, float width, float height, float y1, float x1) {
+    BeveledShapeForType rv;
+    float yDelta = height * 0.2f;
+    float yA = y0 + yDelta;
+    float yB = y1 - yDelta;
+
+    float xDelta = width * 0.2f;
+    float xA = x0 + xDelta;
+    float xB = x1 - xDelta;
+
+    GeneralPath basePath = new GeneralPath();
+    basePath.moveTo(x1, y0);
+    basePath.curveTo(x0, y0, xB, yB, x0, yB);
+    basePath.lineTo(x0, y1);
+    basePath.curveTo(x1, y1, xA, yA, x1, yA);
+
+    GeneralPath shadowPath = new GeneralPath();
+    shadowPath.moveTo(x0, y1);
+    shadowPath.curveTo(x1, y1, xA, yA, x1, yA);
+
+    GeneralPath highlightPath = new GeneralPath();
+    highlightPath.moveTo(x1, y0);
+    highlightPath.curveTo(x0, y0, xB, yB, x0, yB);
+    highlightPath.lineTo(x0, y1);
+
+    rv = new BeveledShapeForType(basePath, highlightPath, null, shadowPath, y0, yA);
+    return rv;
+  }
+
+  private static BeveledShapeForType getBeveledShapeForNumber(float x0, float y0, float height, float y1, float x1) {
+    BeveledShapeForType rv;
+    //todo: Integer
+    //      if( Integer.class.isAssignableFrom( type ) ) {
+    //      } else {
+    //      }
+    float yDelta = height * 0.333f;
+    float yA = y0 + yDelta;
+    float yB = y1 - yDelta;
+
+    float xA = x0 + ((yB - yA) * 0.5f);
+
+    GeneralPath basePath = new GeneralPath();
+    basePath.moveTo(x1, y0);
+    basePath.lineTo(x0, y0);
+    basePath.lineTo(x0, yA);
+    basePath.lineTo(x1, yA);
+    basePath.lineTo(x1, yB);
+    basePath.lineTo(x0, yB);
+    basePath.lineTo(x0, y1);
+    basePath.lineTo(x1, y1);
+
+    GeneralPath shadowRaisedPath = new GeneralPath();
+    shadowRaisedPath.moveTo(x0, yA);
+    shadowRaisedPath.lineTo(x1, yA);
+
+    shadowRaisedPath.moveTo(x0, y1);
+    shadowRaisedPath.lineTo(x1, y1);
+
+    GeneralPath neutralRaisedPath = new GeneralPath();
+    neutralRaisedPath.moveTo(x1, yA);
+    neutralRaisedPath.lineTo(x1, yB);
+    neutralRaisedPath.lineTo(xA, yB);
+
+    GeneralPath highlightRaisedPath = new GeneralPath();
+    highlightRaisedPath.moveTo(x1, y0);
+    highlightRaisedPath.lineTo(x0, y0);
+    highlightRaisedPath.lineTo(x0, yA);
+
+    highlightRaisedPath.moveTo(xA, yB);
+    highlightRaisedPath.lineTo(x0, yB);
+    highlightRaisedPath.lineTo(x0, y1);
+
+    GeneralPath shadowSunkenPath = new GeneralPath();
+    shadowSunkenPath.moveTo(x1, y0);
+    shadowSunkenPath.lineTo(x0, y0);
+    shadowSunkenPath.lineTo(x0, yA);
+    shadowSunkenPath.moveTo(x1, yA);
+    shadowSunkenPath.lineTo(x1, yB);
+    shadowSunkenPath.lineTo(x0, yB);
+    shadowSunkenPath.lineTo(x0, y1);
+
+    GeneralPath highlightSunkenPath = new GeneralPath();
+    highlightSunkenPath.moveTo(x0, yA);
+    highlightSunkenPath.lineTo(x1, yA);
+    highlightSunkenPath.moveTo(x0, y1);
+    highlightSunkenPath.lineTo(x1, y1);
+    rv = new BeveledShapeForType(basePath, highlightRaisedPath, neutralRaisedPath, shadowRaisedPath, highlightSunkenPath, null, shadowSunkenPath, y0, y1);
+    return rv;
+  }
+
+  private static BeveledShapeForType getBeveledShapeForBoolean(float x0, float y0, float x1, float y1) {
+    BeveledShapeForType rv;
+    float xA = (x0 + x1) * 0.7f;
+    float yA = (y0 + y1) * 0.5f;
+    GeneralPath basePath = new GeneralPath();
+    basePath.moveTo(x1, y0);
+    basePath.lineTo(x0, y0);
+    basePath.quadTo(xA, yA, x0, y1);
+    basePath.lineTo(x1, y1);
+
+    GeneralPath shadowPath = new GeneralPath();
+    shadowPath.moveTo(x0, y1);
+    shadowPath.lineTo(x1, y1);
+
+    GeneralPath highlightPath = new GeneralPath();
+    highlightPath.moveTo(x1, y0);
+    highlightPath.lineTo(x0, y0);
+    highlightPath.quadTo(xA, yA, x0, y1);
+
+    rv = new BeveledShapeForType(basePath, highlightPath, null, shadowPath, y0, y1);
+    return rv;
+  }
+
+  private static BeveledShapeForType getDefaultBeveledShape(float x0, float y0, float x1, float y1) {
+    BeveledShapeForType rv;
+    //java.awt.Shape base = new java.awt.geom.Rectangle2D.Float( x0, y0, width, height );
+    GeneralPath basePath = new GeneralPath();
+    basePath.moveTo(x1, y0);
+    basePath.lineTo(x0, y0);
+    basePath.lineTo(x0, y1);
+    basePath.lineTo(x1, y1);
+
+    GeneralPath highlighPath = new GeneralPath();
+    highlighPath.moveTo(x1, y0);
+    highlighPath.lineTo(x0, y0);
+    highlighPath.lineTo(x0, y1);
+
+    GeneralPath shadowPath = new GeneralPath();
+    shadowPath.moveTo(x0, y1);
+    shadowPath.lineTo(x1, y1);
+
+    rv = new BeveledShapeForType(basePath, highlighPath, null, shadowPath, y0, y1);
     return rv;
   }
 
