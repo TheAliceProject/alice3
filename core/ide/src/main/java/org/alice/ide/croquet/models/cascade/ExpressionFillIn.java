@@ -106,12 +106,4 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       return expressionPane;
     }
   }
-  //  @Override
-  //  public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemIcon( step );
-  //  }
-  //  @Override
-  //  public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemText( step );
-  //  }
 }
