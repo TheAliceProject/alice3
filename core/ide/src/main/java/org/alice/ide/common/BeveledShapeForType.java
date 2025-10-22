@@ -95,72 +95,40 @@ public class BeveledShapeForType extends BeveledShape {
     return rv;
   }
 
-  private void addRoundRectShadow(GeneralPath shad, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1) {
-    float x;
-    float y;
-    float a;
-    float b;
-    x = xA;
-    y = y1;
-    a = x0;
-    b = y1;
-    shad.moveTo(x, y);
-    x = xB;
-    y = y1;
-    shad.lineTo(x, y);
-    x = x1;
-    y = yB;
-    a = x1;
-    b = y1;
-    shad.quadTo(a, b, x, y);
-    x = x1;
-    y = yA;
-    shad.lineTo(x, y);
+  private void addRoundRectShadow(GeneralPath shad, float xA, float yA, float xB, float yB, float x1, float y1) {
+    shad.moveTo(xA, y1);
+    shad.lineTo(xB, y1);
+    shad.quadTo(x1, y1, x1, yB);
+    shad.lineTo(x1, yA);
   }
 
-  private void addRoundRectHighlight(GeneralPath high, float x0, float y0, float xA, float yA, float xB, float yB, float x1, float y1) {
-    assert high != null;
-    float x;
-    float y;
-    float a;
-    float b;
-    x = xB;
-    y = y0;
-    high.moveTo(x, y);
-    x = xA;
-    y = y0;
-    high.lineTo(x, y);
-    x = x0;
-    y = yA;
-    a = x0;
-    b = y0;
-    high.quadTo(a, b, x, y);
-    high.lineTo(x0, m_yTop);
-    high.moveTo(x0, m_yBottom);
-    x = x0;
-    y = yB;
-    high.lineTo(x, y);
-  }
+ private void addRoundRectHighlight(GeneralPath high, float x0, float y0, float xA, float yA, float xB, float yB) {
+      assert high != null;
+      high.moveTo(xB, y0);
+      high.lineTo(xA, y0);
+      high.quadTo(x0, y0, x0, yA);
+      high.lineTo(x0, m_yTop);
+      high.moveTo(x0, m_yBottom);
+      high.lineTo(x0, yB);
+    }
 
   public void union(RoundRectangle2D.Float roundRect) {
-    float x0 = roundRect.x;
     float xA = roundRect.x + roundRect.arcwidth;
     float xB = (roundRect.x + roundRect.width) - roundRect.arcwidth;
     float x1 = roundRect.x + roundRect.width;
-    float y0 = roundRect.y;
     float yA = roundRect.y + roundRect.archeight;
     float yB = (roundRect.y + roundRect.height) - roundRect.archeight;
     float y1 = roundRect.y + roundRect.height;
 
     m_base = union(m_base, roundRect);
-    addRoundRectShadow(m_shadowForRaised, x0, y0, xA, yA, xB, yB, x1, y1);
-    addRoundRectHighlight(m_highlightForRaised, x0, y0, xA, yA, xB, yB, x1, y1);
+    addRoundRectShadow(m_shadowForRaised, xA, yA, xB, yB, x1, y1);
+    addRoundRectHighlight(m_highlightForRaised, xA, yA, xB, yB, x1, y1);
 
     if (m_highlightForSunken != m_shadowForRaised) {
-      addRoundRectShadow(m_highlightForSunken, x0, y0, xA, yA, xB, yB, x1, y1);
+      addRoundRectShadow(m_highlightForSunken, xA, yA, xB, yB, x1, y1);
     }
     if (m_shadowForSunken != m_highlightForRaised) {
-      addRoundRectHighlight(m_shadowForSunken, x0, y0, xA, yA, xB, yB, x1, y1);
+      addRoundRectHighlight(m_shadowForSunken, xA, yA, xB, yB, x1, y1);
     }
   }
 
