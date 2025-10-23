@@ -60,16 +60,7 @@ public final class PoseExpressionCreatorComposite extends SingleValueCreatorInpu
   private static InitializingIfAbsentMap<NamedUserType, PoseExpressionCreatorComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static PoseExpressionCreatorComposite getInstance(NamedUserType declaringType) {
-    if (PoserComposite.isPoseable(declaringType)) {
-      return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, PoseExpressionCreatorComposite>() {
-        @Override
-        public PoseExpressionCreatorComposite initialize(NamedUserType declaringType) {
-          return new PoseExpressionCreatorComposite(declaringType);
-        }
-      });
-    } else {
-      return null;
-    }
+    return PoserComposite.isPoseable(declaringType) ? map.get(declaringType, PoseExpressionCreatorComposite::new) : null;
   }
 
   private PoseExpressionCreatorComposite(NamedUserType declaringType) {

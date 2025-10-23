@@ -132,12 +132,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           if (item != null) {
             NamedUserType namedUserType = (NamedUserType) item.getType();
             if (namedUserType != null) {
-              TypeListPair typeListPair = map.getInitializingIfAbsent(namedUserType, new InitializingIfAbsentMap.Initializer<NamedUserType, TypeListPair>() {
-                @Override
-                public TypeListPair initialize(NamedUserType key) {
-                  return new TypeListPair(key);
-                }
-              });
+              TypeListPair typeListPair = map.get(namedUserType, TypeListPair::new);
               typeListPair.addDeclarationComposite(item);
               if (!typeListPairs.contains(typeListPair)) {
                 typeListPairs.add(typeListPair);

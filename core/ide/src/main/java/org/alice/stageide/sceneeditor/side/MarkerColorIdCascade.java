@@ -63,12 +63,7 @@ public final class MarkerColorIdCascade extends ImmutableCascade<Expression> {
   private static InitializingIfAbsentMap<UserField, MarkerColorIdCascade> map = Maps.newInitializingIfAbsentHashMap();
 
   public static MarkerColorIdCascade getInstance(UserField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, MarkerColorIdCascade>() {
-      @Override
-      public MarkerColorIdCascade initialize(UserField key) {
-        return new MarkerColorIdCascade(key);
-      }
-    });
+    return map.get(field, MarkerColorIdCascade::new);
   }
 
   private final UserField field;

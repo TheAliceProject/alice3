@@ -55,12 +55,7 @@ public class UnmanagedEditFieldComposite extends EditFieldComposite {
   private static InitializingIfAbsentMap<UserField, UnmanagedEditFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static synchronized UnmanagedEditFieldComposite getInstance(UserField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, UnmanagedEditFieldComposite>() {
-      @Override
-      public UnmanagedEditFieldComposite initialize(UserField field) {
-        return new UnmanagedEditFieldComposite(field);
-      }
-    });
+    return map.get(field, UnmanagedEditFieldComposite::new);
   }
 
   public UnmanagedEditFieldComposite(UserField field) {

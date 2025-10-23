@@ -67,12 +67,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   private static InitializingIfAbsentMap<UserCode, AddParameterComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddParameterComposite getInstance(UserCode code) {
-    return map.getInitializingIfAbsent(code, new InitializingIfAbsentMap.Initializer<UserCode, AddParameterComposite>() {
-      @Override
-      public AddParameterComposite initialize(UserCode key) {
-        return new AddParameterComposite(key);
-      }
-    });
+    return map.get(code, AddParameterComposite::new);
   }
 
   private final BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState("isRequirementToUpdateInvocationsUnderstoodState", false);

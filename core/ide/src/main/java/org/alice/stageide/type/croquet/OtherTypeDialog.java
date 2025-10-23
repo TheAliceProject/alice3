@@ -169,7 +169,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(JavaType rootType) {
-    return this.mapTypeToValueCreator.getInitializingIfAbsent(rootType, ValueCreatorForRootFilterType::new);
+    return this.mapTypeToValueCreator.get(rootType, ValueCreatorForRootFilterType::new);
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(Class<? extends SThing> rootCls) {

@@ -65,12 +65,7 @@ public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<Expre
   private static InitializingIfAbsentMap<AbstractType, TypeExpressionCascadeMenu> map = Maps.newInitializingIfAbsentHashMap();
 
   public static TypeExpressionCascadeMenu getInstance(AbstractType type) {
-    return map.getInitializingIfAbsent(type, new InitializingIfAbsentMap.Initializer<AbstractType, TypeExpressionCascadeMenu>() {
-      @Override
-      public TypeExpressionCascadeMenu initialize(AbstractType key) {
-        return new TypeExpressionCascadeMenu(key, null);
-      }
-    });
+    return map.get(type, key -> new TypeExpressionCascadeMenu(key, null));
   }
 
   public static TypeExpressionCascadeMenu getInstance(Class<?> cls) {

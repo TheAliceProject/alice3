@@ -59,12 +59,7 @@ public class HighlightFieldOperation extends Operation {
   private static InitializingIfAbsentMap<UserField, HighlightFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
 
   public static synchronized HighlightFieldOperation getInstance(UserField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, HighlightFieldOperation>() {
-      @Override
-      public HighlightFieldOperation initialize(UserField field) {
-        return new HighlightFieldOperation(field);
-      }
-    });
+    return map.get(field, HighlightFieldOperation::new);
   }
 
   private final UserField field;

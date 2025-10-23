@@ -61,12 +61,7 @@ public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<AbstractField, FieldArrayLengthDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static FieldArrayLengthDragModel getInstance(AbstractField field) {
-    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayLengthDragModel>() {
-      @Override
-      public FieldArrayLengthDragModel initialize(AbstractField field) {
-        return new FieldArrayLengthDragModel(field);
-      }
-    });
+    return map.get(field, FieldArrayLengthDragModel::new);
   }
 
   private final AbstractField field;

@@ -77,12 +77,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
   private static final int LAYER_ID = JLayeredPane.POPUP_LAYER + 1;
 
   private ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView(AbstractWindow<?> window) {
-    return mapWindowToStencilView.getInitializingIfAbsent(window, new InitializingIfAbsentMap.Initializer<AbstractWindow<?>, ImageCaptureRectangleStencilView>() {
-      @Override
-      public ImageCaptureRectangleStencilView initialize(AbstractWindow<?> key) {
-        return new ImageCaptureRectangleStencilView(key, LAYER_ID, ImageCaptureComposite.this);
-      }
-    });
+    return mapWindowToStencilView.get(window, key -> new ImageCaptureRectangleStencilView(key, LAYER_ID, ImageCaptureComposite.this));
   }
 
   private final Operation captureEntireWindowOperation = this.createActionOperation("captureEntireWindow", new Action() {

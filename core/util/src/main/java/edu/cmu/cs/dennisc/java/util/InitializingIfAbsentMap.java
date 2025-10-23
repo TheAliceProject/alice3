@@ -43,14 +43,11 @@
 package edu.cmu.cs.dennisc.java.util;
 
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface InitializingIfAbsentMap<K, V> extends Map<K, V> {
-  public static interface Initializer<K, V> {
-    public V initialize(K key);
-  }
-
-  public V getInitializingIfAbsent(K key, Initializer<K, V> initializer);
+  V get(K key, Function<K, V> initializer);
 }

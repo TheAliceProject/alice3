@@ -64,20 +64,17 @@ public final class MethodMenuModel extends MemberMenuModel<UserMethod> {
   private static InitializingIfAbsentMap<UserMethod, MethodMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static MethodMenuModel getInstance(final UserMethod method) {
-    return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<UserMethod, MethodMenuModel>() {
-      @Override
-      public MethodMenuModel initialize(UserMethod key) {
-        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-        prepModels.add(RenameMethodComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
-        prepModels.add(DeleteMethodOperation.getInstance(key).getMenuItemPrepModel());
-        DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-        prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
-        ChangeAnimationProcedureDialog changeAnimationProcedureDialog = ChangeAnimationProcedureDialog.getInstance(method);
-        if (changeAnimationProcedureDialog != null) {
-          prepModels.add(changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel());
-        }
-        return new MethodMenuModel(key, prepModels);
+    return map.get(method, key -> {
+      List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+      prepModels.add(RenameMethodComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
+      prepModels.add(DeleteMethodOperation.getInstance(key).getMenuItemPrepModel());
+      DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+      prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
+      ChangeAnimationProcedureDialog changeAnimationProcedureDialog = ChangeAnimationProcedureDialog.getInstance(method);
+      if (changeAnimationProcedureDialog != null) {
+        prepModels.add(changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel());
       }
+      return new MethodMenuModel(key, prepModels);
     });
   }
 
