@@ -115,6 +115,7 @@ import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
@@ -266,7 +267,7 @@ public abstract class StageIDE extends IDE {
       Label rv = new Label(icon);
       //      rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
       //      rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
-      rv.getAwtComponent().setAlignmentY(0.5f);
+      rv.getAwtComponent().setAlignmentY(Component.CENTER_ALIGNMENT);
       return rv;
     }
     return super.getPrefixPaneForFieldAccessIfAppropriate(fieldAccess);

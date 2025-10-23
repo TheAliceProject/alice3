@@ -66,6 +66,8 @@ public class MethodsSubView<C extends MethodsSubComposite> extends PageAxisPanel
   public MethodsSubView(MethodsSubComposite composite) {
     super(composite);
     this.setMaximumSizeClampedToPreferredSize(true);
+    // this is a sub view, so indent and leave some space after
+    // no space on the right because that could trigger a scrollbar that we don't need
     this.setBorder(BorderFactory.createEmptyBorder(0, 8, 12, 0));
   }
 

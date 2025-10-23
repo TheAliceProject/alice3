@@ -124,7 +124,7 @@ public abstract class I18nFactory {
       for (Chunk chunk : chunks) {
         SwingComponentView<?> component = createComponent(chunk, owner);
         assert component != null : chunk.toString();
-        //        rv.setAlignmentY( 0.5f );
+//        rv.setAlignmentY(Component.CENTER_ALIGNMENT);
         rv.addComponent(component);
       }
       return rv;

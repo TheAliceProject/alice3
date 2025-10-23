@@ -445,9 +445,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
       JLabel messageLabel = new JLabel(numberModel.message);
       //messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-      messageLabel.setAlignmentX(0.0f);
-      lineAxisPanel.setAlignmentX(0.0f);
-      gridBagPanel.setAlignmentX(0.0f);
+      messageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+      lineAxisPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+      gridBagPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
       this.add(messageLabel);

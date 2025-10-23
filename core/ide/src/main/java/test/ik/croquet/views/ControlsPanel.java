@@ -45,22 +45,11 @@ package test.ik.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextFamily;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.List;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.TextArea;
+import org.lgna.croquet.views.*;
 import org.lgna.ik.core.solver.Bone;
-import test.ik.croquet.AnchorJointIdState;
-import test.ik.croquet.BonesState;
-import test.ik.croquet.ControlsComposite;
-import test.ik.croquet.EndJointIdState;
-import test.ik.croquet.InfoState;
-import test.ik.croquet.IsAngularEnabledState;
-import test.ik.croquet.IsLinearEnabledState;
+import test.ik.croquet.*;
+
+import java.awt.Component;
 
 /**
  * @author Dennis Cosgrove
@@ -82,7 +71,7 @@ public class ControlsPanel extends PageAxisPanel {
     this.addComponent(new Label("chain:", TextPosture.OBLIQUE));
 
     List<Bone> list = BonesState.getInstance().createList();
-    list.setAlignmentX(0.0f);
+    list.setAlignmentX(Component.LEFT_ALIGNMENT);
     list.setBackgroundColor(null);
     this.addComponent(list);
 
@@ -97,7 +86,7 @@ public class ControlsPanel extends PageAxisPanel {
     textArea.setBorder(null);
     textArea.changeFont(TextFamily.MONOSPACED);
     ScrollPane scrollPane = new ScrollPane(textArea);
-    scrollPane.setAlignmentX(0.0f);
+    scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
     this.addComponent(scrollPane);
     this.setMinimumPreferredWidth(200);
   }

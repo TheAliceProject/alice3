@@ -55,58 +55,22 @@ import javax.swing.event.PopupMenuListener;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMenu<M extends MenuItemPrepModel> extends ViewController<JMenu, M> implements MenuItemContainer {
-  private boolean isIconSet;
-  private Icon setIcon;
 
   public AbstractMenu(M model) {
     super(model);
-  }
-
-  protected Icon getSetIcon() {
-    return this.setIcon;
-  }
-
-  public boolean isIconSet() {
-    return this.isIconSet;
-  }
-
-  public void setIconSet(boolean isIconSet) {
-    this.isIconSet = isIconSet;
   }
 
   public Icon getIcon() {
     return this.getAwtComponent().getIcon();
   }
 
-  public void setIcon(Icon icon) {
-    this.setIconSet(true);
-    this.setIcon = icon;
-  }
-
-  protected abstract boolean areIconsDisplayedInMenus();
-
   @Override
   protected JMenu createAwtComponent() {
-    JMenu rv = new JMenu() {
-      @Override
-      public Icon getIcon() {
-        if (AbstractMenu.this.areIconsDisplayedInMenus()) {
-          if (AbstractMenu.this.isIconSet()) {
-            return AbstractMenu.this.getSetIcon();
-          } else {
-            return super.getIcon();
-          }
-        } else {
-          return null;
-        }
-      }
-    };
-
+    JMenu menu = new JMenu();
     if (getModel().showScrollArrows()) {
-      ScrollingPopupMenuUtilities.initializeScrollingCapability(rv.getPopupMenu());
+      ScrollingPopupMenuUtilities.initializeScrollingCapability(menu.getPopupMenu());
     }
-
-    return rv;
+    return menu;
   }
 
   @Override

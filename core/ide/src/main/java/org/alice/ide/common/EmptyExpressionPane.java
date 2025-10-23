@@ -52,8 +52,10 @@ import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
- * these are the placeholder parameters that we see in the procedures/functions that are not yet created
+ * These are the placeholder parameters that we see in the procedures/functions that are not yet created
  * but available to be dragged from the tabs on the left
+ *
+ * These are also found in the dropdowns
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
@@ -63,6 +65,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
     super(null);
     this.emptyExpression = emptyExpression;
     Label label = new Label(" ??? ", TextWeight.BOLD);
+    label.setFontSize(label.getFont().getSize() * .9f);
     label.setBorder(Theme.BLOCK_BORDER);
     label.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));
     this.addComponent(label);
@@ -85,11 +88,11 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 
   @Override
   protected int getInsetTop() {
-    return 0;
+    return Theme.BLOCK_MARGINS_HEIGHT;
   }
 
   @Override
   protected int getInsetBottom() {
-    return 1;
+    return Theme.BLOCK_MARGINS_HEIGHT;
   }
 }

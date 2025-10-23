@@ -42,31 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-import java.awt.Font;
 import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public class UIManagerUtilities {
-  public static void setDefaultFontResource(FontUIResource fontUIResource) {
-    for (Object key : UIManager.getDefaults().keySet()) {
-      Object value = UIManager.get(key);
-      if (value instanceof FontUIResource) {
-        UIManager.put(key, fontUIResource);
-      }
-    }
-  }
-
-  public static void setDefaultFont(Font font) {
-    setDefaultFontResource(new FontUIResource(font));
-  }
 
   private static void scaleFontIfApplicable(UIDefaults uiDefaults, Object key, FontUIResource prevFontUIResource, double scale) {
     int prevSize = prevFontUIResource.getSize();
@@ -120,18 +106,4 @@ public class UIManagerUtilities {
     }
   }
 
-  public static boolean setLookAndFeel(String plafName) {
-    UIManager.LookAndFeelInfo lookAndFeelInfo = PlafUtilities.getInstalledLookAndFeelInfoNamed(plafName);
-    if (lookAndFeelInfo != null) {
-      try {
-        UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
-        return true;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
 }

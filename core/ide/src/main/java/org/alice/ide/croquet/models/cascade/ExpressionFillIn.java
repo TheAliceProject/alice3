@@ -53,10 +53,8 @@ import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.Dimension;
 import java.util.UUID;
 
 /**
@@ -98,7 +96,9 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       }
       rv.add(expressionPane);
       if (trailingLabel != null) {
-        trailingLabel.setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 0));
+        // add some border because the oblique text runs over
+        trailingLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
+        rv.add(Box.createRigidArea(new Dimension(5, 0)));
         rv.add(trailingLabel);
       }
       return rv;
@@ -106,12 +106,4 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       return expressionPane;
     }
   }
-  //  @Override
-  //  public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemIcon( step );
-  //  }
-  //  @Override
-  //  public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemText( step );
-  //  }
 }

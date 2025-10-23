@@ -43,7 +43,6 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import org.lgna.croquet.AbstractMenuModel;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
@@ -54,11 +53,6 @@ import org.lgna.croquet.history.UserActivity;
 public class Menu extends AbstractMenu<AbstractMenuModel> {
   public Menu(AbstractMenuModel model) {
     super(model);
-  }
-
-  @Override
-  protected boolean areIconsDisplayedInMenus() {
-    return SystemUtilities.areIconsDisplayedInMenus();
   }
 
   @Override

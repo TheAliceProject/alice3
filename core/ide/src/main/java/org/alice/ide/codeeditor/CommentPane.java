@@ -147,6 +147,7 @@ class CommentLine extends JSuggestiveTextArea {
     Graphics g = GraphicsUtilities.getGraphics();
     FontMetrics fm = g.getFontMetrics(this.getFont());
     Rectangle2D bounds = fm.getStringBounds("//", g);
+    // adds space for the //
     this.setBorder(BorderFactory.createEmptyBorder(0, (int) bounds.getWidth() + 2, 0, 0));
   }
 

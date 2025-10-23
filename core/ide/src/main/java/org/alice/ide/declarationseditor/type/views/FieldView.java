@@ -50,9 +50,10 @@ import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.UserField;
 
 import javax.swing.BorderFactory;
-import java.awt.Color;
+import javax.swing.UIManager;
 
 /**
+ * fields are also known as the 'properties' section on the scene tab & others
  * @author Dennis Cosgrove
  */
 public class FieldView extends MemberView {
@@ -62,7 +63,7 @@ public class FieldView extends MemberView {
     if (managementLevel == ManagementLevel.MANAGED) {
       Label label = new Label("*");
       label.setToolTipText("managed by the scene editor");
-      label.setForegroundColor(Color.GRAY);
+      label.setForegroundColor(UIManager.getColor("Label.disabledForeground"));
       label.scaleFont(2.0f);
       label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
       this.addComponent(label);

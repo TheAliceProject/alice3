@@ -43,7 +43,7 @@
 
 package org.alice.ide.x.components;
 
-import org.alice.ide.ThemeUtilities;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.x.AstI18nFactory;
@@ -59,7 +59,7 @@ public class ThisExpressionLikeView extends AbstractExpressionView<Expression> {
   private ThisExpressionLikeView(AstI18nFactory factory, Expression expression) {
     super(factory, expression);
     Label l = new Label(FormatterState.getInstance().getValue().getTextForThis());
-    l.setBorder(ThemeUtilities.getActiveTheme().BLOCK_BORDER);
+    l.setBorder(Theme.BLOCK_BORDER);
     this.addComponent(l);
   }
 
