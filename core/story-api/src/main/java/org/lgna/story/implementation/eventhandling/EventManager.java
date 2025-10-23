@@ -110,7 +110,7 @@ public class EventManager {
     }
   }
 
-  private KeyListener keyAdapter = new KeyListener() {
+  private final KeyListener keyAdapter = new KeyListener() {
     @Override
     public void keyPressed(KeyEvent e) {
       org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
@@ -130,7 +130,7 @@ public class EventManager {
     }
   };
 
-  private FocusListener focusAdapter = new FocusListener() {
+  private final FocusListener focusAdapter = new FocusListener() {
 
     @Override
     public void focusGained(FocusEvent e) {
@@ -183,18 +183,14 @@ public class EventManager {
     component.removeFocusListener(this.focusAdapter);
   }
 
-  private AbstractEventHandler<?, ?>[] getEventHandlers() {
-    return handlers;
-  }
-
   public void silenceAllListeners() {
-    for (AbstractEventHandler<?, ?> handler : this.getEventHandlers()) {
+    for (AbstractEventHandler<?, ?> handler : handlers) {
       handler.silenceListeners();
     }
   }
 
   public void restoreAllListeners() {
-    for (AbstractEventHandler<?, ?> handler : this.getEventHandlers()) {
+    for (AbstractEventHandler<?, ?> handler : handlers) {
       handler.restoreListeners();
     }
   }
