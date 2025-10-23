@@ -48,5 +48,7 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 public interface OnscreenRenderTarget extends RenderTarget {
-  public JPanel getAwtComponent();
+  JPanel getAwtComponent();
+
+  void release();
 }

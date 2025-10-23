@@ -291,6 +291,7 @@ public abstract class ProgramImp {
       GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
       renderFactory.decrementAutomaticDisplayCount();
       renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
+      renderFactory.releaseTarget(onscreenRenderTarget);
     } else {
       Logger.severe(this.isAnimatorStarted);
     }

@@ -72,6 +72,11 @@ public class GlrRenderFactory implements RenderFactory {
     RendererNativeLibraryLoader.initializeIfNecessary();
   }
 
+  public void releaseTarget(OnscreenRenderTarget onscreenRenderTarget) {
+    onscreenLookingGlasses.remove(onscreenRenderTarget);
+    onscreenRenderTarget.release();
+  }
+
   private static class SingletonHolder {
     private static final GlrRenderFactory instance = new GlrRenderFactory();
   }
@@ -105,8 +110,7 @@ public class GlrRenderFactory implements RenderFactory {
     Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
     synchronized (this.toBeReleased) {
       for (Releasable releasable : this.toBeReleased) {
-        if (releasable instanceof GlrOnscreenRenderTarget) {
-          GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget) releasable;
+        if (releasable instanceof GlrOnscreenRenderTarget onscreenLookingGlass) {
           this.onscreenLookingGlasses.remove(onscreenLookingGlass);
           //this.animator.remove(onscreenLookingGlass.getGLAutoDrawable() );
         } else if (releasable instanceof GlrOffscreenRenderTarget) {
