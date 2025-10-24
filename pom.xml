@@ -77,6 +77,7 @@
 
     <jogl.version>2.5.0</jogl.version>
     <gluegen.version>2.5.0</gluegen.version>
+    <flatlaf.version>3.6</flatlaf.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.9.0.3</alice.build.version>
@@ -264,12 +265,43 @@
         <artifactId>jgltf-model</artifactId>
         <version>2.0.0</version>
       </dependency>
+
+      <!-- https://www.formdev.com/flatlaf/native-libraries/-->
       <dependency>
         <groupId>com.formdev</groupId>
         <artifactId>flatlaf</artifactId>
-        <version>3.6</version>
-        <scope>compile</scope>
+        <version>${flatlaf.version}</version>
+        <classifier>no-natives</classifier>
       </dependency>
+      <dependency>
+        <groupId>com.formdev</groupId>
+        <artifactId>flatlaf</artifactId>
+        <version>${flatlaf.version}</version>
+        <classifier>linux-x86_64</classifier>
+        <type>so</type>
+      </dependency>
+      <dependency>
+        <groupId>com.formdev</groupId>
+        <artifactId>flatlaf</artifactId>
+        <version>${flatlaf.version}</version>
+        <classifier>macos-arm64</classifier>
+        <type>dylib</type>
+      </dependency>
+      <dependency>
+        <groupId>com.formdev</groupId>
+        <artifactId>flatlaf</artifactId>
+        <version>${flatlaf.version}</version>
+        <classifier>macos-x86_64</classifier>
+        <type>dylib</type>
+      </dependency>
+      <dependency>
+        <groupId>com.formdev</groupId>
+        <artifactId>flatlaf</artifactId>
+        <version>${flatlaf.version}</version>
+        <classifier>windows-x86_64</classifier>
+        <type>dll</type>
+      </dependency>
+
       <!-- https://mvnrepository.com/artifact/com.sun.media/jai-codec -->
       <dependency>
         <groupId>com.sun.media</groupId>

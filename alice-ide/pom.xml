@@ -64,9 +64,35 @@
       <artifactId>core</artifactId>
       <version>1.47.1</version>
     </dependency>
+
     <dependency>
       <groupId>com.formdev</groupId>
       <artifactId>flatlaf</artifactId>
+      <classifier>no-natives</classifier>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>linux-x86_64</classifier>
+      <type>so</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>macos-arm64</classifier>
+      <type>dylib</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>macos-x86_64</classifier>
+      <type>dylib</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>windows-x86_64</classifier>
+      <type>dll</type>
     </dependency>
   </dependencies>
 
