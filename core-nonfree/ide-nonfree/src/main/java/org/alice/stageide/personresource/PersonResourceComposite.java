@@ -203,31 +203,22 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
     this.ingredientsComposite.setStates(personResource);
   }
 
-  private static final class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
-    public Object ENTRY_POINT_createInstance(InstanceCreation instanceCreation) {
-      return this.evaluate(instanceCreation);
-    }
-  }
-
-  private final InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+  private final ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
   private void initializePreviousExpression() {
     ExpressionCascadeManager expressionCascadeManager = StageIDE.getActiveInstance().getExpressionCascadeManager();
     Expression expression = expressionCascadeManager.getPreviousExpression();
     boolean isLifeStageStateEnabled = true;
-    if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    if (expression instanceof InstanceCreation instanceCreation) {
       AbstractType<?, ?, ?> type = instanceCreation.getType();
-      if (type instanceof JavaType) {
-        JavaType javaType = (JavaType) type;
+      if (type instanceof JavaType javaType) {
         if (javaType.isAssignableTo(PersonResource.class)) {
           //note: duplicated below
           isLifeStageStateEnabled = false;
 
-          Object instance = vm.ENTRY_POINT_createInstance(instanceCreation);
+          Object instance = instanceCreation.evaluate(vm);
 
-          if (instance instanceof PersonResource) {
-            PersonResource personResource = (PersonResource) instance;
+          if (instance instanceof PersonResource personResource) {
             this.ingredientsComposite.setStates(personResource);
             //note: duplicated above
             isLifeStageStateEnabled = false;

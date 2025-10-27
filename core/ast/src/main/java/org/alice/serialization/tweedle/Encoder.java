@@ -12,7 +12,7 @@ import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.code.InstantiableTweedleNode;
-import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -510,8 +510,8 @@ public class Encoder extends SourceCodeGenerator {
     String className = getDeclaringJavaClassName(creation);
     if (className != null) {
       if (className.endsWith("PersonResource")) {
-        InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
-        final Object summary = vm.createInstance(creation);
+        ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
+        final Object summary = creation.evaluate(vm);
         if (summary != null) {
           appendInstantiation("PersonResource", () -> appendArg("name", () -> appendEscapedString("Person/" + summary)));
           return;
