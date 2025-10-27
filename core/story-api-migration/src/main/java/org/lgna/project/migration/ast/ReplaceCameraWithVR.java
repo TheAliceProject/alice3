@@ -10,7 +10,7 @@ import org.lgna.project.Version;
 import org.lgna.project.ast.*;
 import org.lgna.project.migration.AstMigration;
 import org.lgna.project.migration.MigrationManager;
-import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.*;
 import org.lgna.story.Orientation;
 
@@ -25,7 +25,7 @@ public class ReplaceCameraWithVR extends AstMigration {
   AbstractType<?, ?, ?> cameraType = JavaType.getInstance(SCamera.class);
   AbstractType<?, ?, ?> vrUserType = JavaType.getInstance(SVRUser.class);
   AbstractType<?, ?, ?> cameraMarkerType = JavaType.getInstance(SCameraMarker.class);
-  InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+  ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
   private final String sCamera = SCamera.class.getSimpleName();
   private final String getHeadset = "getHeadset";
   private final String setPositionRelativeToVehicle = "setPositionRelativeToVehicle";
@@ -122,14 +122,11 @@ public class ReplaceCameraWithVR extends AstMigration {
     Node stmt = setOrientationCall.getParent();
     // Get the block containing the statement
     Node grandparent = stmt.getParent();
-    if (grandparent instanceof BlockStatement) {
-      BlockStatement block = (BlockStatement) grandparent;
+    if (grandparent instanceof BlockStatement block) {
       Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
-      if (orientationExp instanceof InstanceCreation) {
-        InstanceCreation creation = (InstanceCreation) orientationExp;
-        final Object ori = vm.createInstance(creation);
-        if (ori instanceof Orientation) {
-          Orientation cameraOrientation = (Orientation) ori;
+      if (orientationExp instanceof InstanceCreation creation) {
+        final Object ori = creation.evaluate(vm);
+        if (ori instanceof Orientation cameraOrientation) {
 
           UnitQuaternion vrUserOrientation = getLeveledOrientation(cameraOrientation);
           replaceOrientationArgs(creation, vrUserOrientation);
@@ -189,9 +186,8 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   private void levelMarkerOrientation(MethodInvocation setOrientationCall) {
     Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
-    if (orientationExp instanceof InstanceCreation) {
-      InstanceCreation creation = (InstanceCreation) orientationExp;
-      final Object orientation = vm.createInstance(creation);
+    if (orientationExp instanceof InstanceCreation creation) {
+      final Object orientation = creation.evaluate(vm);
       if (orientation instanceof Orientation) {
         UnitQuaternion markerOrientation = getLeveledOrientation((Orientation) orientation);
         replaceOrientationArgs(creation, markerOrientation);
@@ -205,15 +201,12 @@ public class ReplaceCameraWithVR extends AstMigration {
     Node stmt = invocation.getParent();
 
     Node grandparent = stmt.getParent();
-    if (grandparent instanceof BlockStatement) {
-      BlockStatement block = (BlockStatement) grandparent;
+    if (grandparent instanceof BlockStatement block) {
       Expression positionExp = invocation.requiredArguments.get(0).expression.getValue();
-      if (positionExp instanceof InstanceCreation) {
-        InstanceCreation creation = (InstanceCreation) positionExp;
-        final Object pos = vm.createInstance(creation);
+      if (positionExp instanceof InstanceCreation creation) {
+        final Object pos = creation.evaluate(vm);
         Runnable result;
-        if (pos instanceof Position) {
-          Position cameraPosition = (Position) pos;
+        if (pos instanceof Position cameraPosition) {
 
           SimpleArgument arg = creation.requiredArguments.get(1);
           arg.expression.setValue(new DoubleLiteral(cameraPosition.getUp() - defaultHeight));
@@ -235,11 +228,9 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   private void lowerMarkerPosition(MethodInvocation setPositionCall) {
     Expression positionExp = setPositionCall.requiredArguments.get(0).expression.getValue();
-    if (positionExp instanceof InstanceCreation) {
-      InstanceCreation creation = (InstanceCreation) positionExp;
-      final Object pos = vm.createInstance(creation);
-      if (pos instanceof Position) {
-        Position markerPosition = (Position) pos;
+    if (positionExp instanceof InstanceCreation creation) {
+      final Object pos = creation.evaluate(vm);
+      if (pos instanceof Position markerPosition) {
         SimpleArgument arg = creation.requiredArguments.get(1);
         arg.expression.setValue(new DoubleLiteral(markerPosition.getUp() - defaultHeight));
         Logger.outln("Lowered position on CameraMarker");
@@ -266,9 +257,7 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   private void replaceParamReferences(AbstractMethod oldMethod, AbstractMethod newMethod, ArrayList<? extends AbstractArgument> args, BiFunction<JavaMethodParameter, AbstractMethod, AbstractParameter> filter) {
     for (AbstractArgument argument : args) {
-      AbstractParameter param = argument.parameter.getValue();
-      if (param instanceof JavaMethodParameter) {
-        JavaMethodParameter javaParam = (JavaMethodParameter) param;
+      if (argument.parameter.getValue() instanceof JavaMethodParameter javaParam) {
         if (oldMethod == javaParam.getCode()) {
           argument.parameter.setValue(filter.apply(javaParam, newMethod));
         }

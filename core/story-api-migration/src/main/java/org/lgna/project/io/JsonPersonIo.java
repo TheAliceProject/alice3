@@ -47,7 +47,7 @@ import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
@@ -64,12 +64,11 @@ public class JsonPersonIo extends JsonModelIo {
   }
 
   private void initializeFromPersonResources(Set<InstanceCreation> resourceCreations) {
-    InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+    ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
     modelResources = new HashSet<>();
     for (InstanceCreation creation : resourceCreations) {
-      final Object instance = vm.createInstance(creation);
-      if (instance instanceof JointedModelResource) {
-        modelResources.add((JointedModelResource) instance);
+      if (creation.evaluate(vm) instanceof JointedModelResource jointedModelResource) {
+        modelResources.add(jointedModelResource);
       }
     }
     ModelResourceInfo modelInfo = personModelInfo("PersonResource", "");
