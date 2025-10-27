@@ -123,7 +123,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
-public abstract class StageIDE extends IDE {
+public class StageIDE extends IDE {
   public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
   public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
   private static final String MODEL_IMPORT_DIRECTORY_KEY = "modelImportDirectory";
