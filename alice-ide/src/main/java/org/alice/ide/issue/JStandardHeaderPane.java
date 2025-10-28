@@ -40,14 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.issue.swing;
+package org.alice.ide.issue;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
 import net.miginfocom.swing.MigLayout;
-import org.alice.ide.issue.UserProgramRunningStateUtilities;
 import org.lgna.issue.ApplicationIssueConfiguration;
 
 import javax.swing.BorderFactory;

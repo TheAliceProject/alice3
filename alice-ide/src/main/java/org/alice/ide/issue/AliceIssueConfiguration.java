@@ -42,15 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import com.jogamp.opengl.GLException;
 import org.lgna.issue.ApplicationIssueConfiguration;
+import org.lgna.issue.IssueSubmissionProgressWorker;
 import org.lgna.issue.swing.JSubmitPane;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
+public class AliceIssueConfiguration implements ApplicationIssueConfiguration {
+  @Override
+  public String getSubmitActionName() {
+    return "submit bug report";
+  }
+
+  @Override
+  public JPanel createHeaderPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget) {
+    return originalThrowableOrTarget instanceof GLException ? new JGraphicsHeaderPane(this) : new JStandardHeaderPane(this);
+  }
+
   @Override
   public String getApplicationName() {
     return "Alice";
@@ -72,7 +85,7 @@ public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
     int option = JOptionPane.showConfirmDialog(jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
     if (option != JOptionPane.CANCEL_OPTION) {
       jSubmitPane.setSubmitAttempted(true);
-      new AliceIssueSubmissionProgressWorker(jSubmitPane, option == JOptionPane.YES_OPTION).execute();
+      new IssueSubmissionProgressWorker(jSubmitPane, option == JOptionPane.YES_OPTION).execute();
     }
   }
 }
