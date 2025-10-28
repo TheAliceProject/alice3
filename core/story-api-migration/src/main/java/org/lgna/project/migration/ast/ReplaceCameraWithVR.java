@@ -131,7 +131,7 @@ public class ReplaceCameraWithVR extends AstMigration {
           UnitQuaternion vrUserOrientation = getLeveledOrientation(cameraOrientation);
           replaceOrientationArgs(creation, vrUserOrientation);
 
-          UnitQuaternion headsetOrientation = getHeadsetOrientation(cameraOrientation);
+          UnitQuaternion headsetOrientation = SVRUser.HEADSET_ORIENTATION.asUnitQuaternion();
           ExpressionStatement setHeadsetOrientation =
               setHeadsetOrientationStatement(setOrientationCall.expression.getValue(), headsetOrientation);
           manager.addFinalization(() -> block.statements.add(setHeadsetOrientation));
@@ -144,12 +144,8 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private UnitQuaternion getLeveledOrientation(Orientation orientation) {
-    EulerAngles angles = orientation.asEulerAngles();
-
-    Angle flatPitch = angles.pitch().toNearestPi();
-    Angle flatRoll = angles.roll().toNearestPi();
-    EulerAngles vrUserAngles = new EulerAngles(flatPitch, angles.yaw(), flatRoll, angles.order());
-    return vrUserAngles.asUnitQuaternion();
+    return new EulerAngles(Angle.ZERO, orientation.asEulerAngles().yaw(), Angle.ZERO, EulerAngles.Order.YAW_PITCH_ROLL)
+        .asUnitQuaternion();
   }
 
   private static void replaceOrientationArgs(InstanceCreation creation, UnitQuaternion newOrientation) {
@@ -158,14 +154,6 @@ public class ReplaceCameraWithVR extends AstMigration {
     args.get(1).expression.setValue(new DoubleLiteral(newOrientation.y()));
     args.get(2).expression.setValue(new DoubleLiteral(newOrientation.z()));
     args.get(3).expression.setValue(new DoubleLiteral(newOrientation.w()));
-  }
-
-  private UnitQuaternion getHeadsetOrientation(Orientation cameraOrientation) {
-    EulerAngles angles = cameraOrientation.asEulerAngles();
-    Angle flatPitchOffset = angles.pitch().minus(angles.pitch().toNearestPi());
-    Angle flatRollOffset = angles.roll().minus(angles.roll().toNearestPi());
-    EulerAngles headsetAngles = new EulerAngles(flatPitchOffset, Angle.ZERO, flatRollOffset, angles.order());
-    return headsetAngles.asUnitQuaternion();
   }
 
   private ExpressionStatement setHeadsetOrientationStatement(Expression userExpression, UnitQuaternion headsetOrientation) {
