@@ -383,11 +383,6 @@
       </dependency>
 
       <dependency>
-        <groupId>com.sun</groupId>
-        <artifactId>javamp3</artifactId>
-        <version>1.0</version>
-      </dependency>
-      <dependency>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-runtime</artifactId>
         <version>4.9.3</version>
