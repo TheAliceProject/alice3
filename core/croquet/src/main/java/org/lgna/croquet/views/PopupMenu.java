@@ -128,6 +128,7 @@ public class PopupMenu extends ViewController<JPopupMenu, PopupPrepModel> implem
   public void addMenu(Menu menu) {
     this.checkEventDispatchThread();
     this.getAwtComponent().add(menu.getAwtComponent());
+    menu.setActivity(userActivity);
   }
 
   @Override

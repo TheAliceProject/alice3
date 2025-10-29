@@ -44,13 +44,14 @@
 package org.lgna.croquet.views;
 
 import org.lgna.croquet.AbstractMenuModel;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Menu extends AbstractMenu<AbstractMenuModel> {
+  private UserActivity activity;
+
   public Menu(AbstractMenuModel model) {
     super(model);
   }
@@ -81,7 +82,10 @@ public class Menu extends AbstractMenu<AbstractMenuModel> {
 
   @Override
   public UserActivity getActivity() {
-    // TODO Build menus with the root application or project activity and hold onto it?
-    return Application.getActiveInstance().getOpenActivity();
+    return activity;
+  }
+
+  public void setActivity(UserActivity activity) {
+    this.activity = activity;
   }
 }
