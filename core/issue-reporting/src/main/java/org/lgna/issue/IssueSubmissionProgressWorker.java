@@ -58,15 +58,25 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueSubmissionProgressWorker extends WorkerWithProgress<Boolean, String> {
+public class IssueSubmissionProgressWorker extends WorkerWithProgress<Boolean, String> {
   private static final String START_MESSAGE = "START_MESSAGE";
   private static final String END_MESSAGE = "END_MESSAGE";
+  protected final boolean isProjectAttachmentDesired;
 
-  public IssueSubmissionProgressWorker(JSubmitPane owner) {
+  public IssueSubmissionProgressWorker(JSubmitPane owner, boolean isProjectAttachmentDesired) {
     this.owner = owner;
+    this.isProjectAttachmentDesired = isProjectAttachmentDesired;
   }
 
-  protected abstract Boolean doInternal_onBackgroundThread(Issue.Builder issueBuilder) throws Exception;
+  protected Boolean doInternal_onBackgroundThread(Issue.Builder issueBuilder) throws Exception {
+    this.publish("issueBuilder: " + issueBuilder);
+    this.publish("attach project: " + this.isProjectAttachmentDesired);
+    for (int i = 0; i < 20; i++) {
+      this.publish(Integer.toString(i));
+      Thread.sleep(200);
+    }
+    return true;
+  }
 
   @Override
   protected final Boolean do_onBackgroundThread() throws Exception {

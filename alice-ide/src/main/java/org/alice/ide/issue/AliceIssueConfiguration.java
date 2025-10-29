@@ -40,26 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.apis.org.lgna.story;
+package org.alice.ide.issue;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
-import org.lgna.project.reflect.ClassInfo;
-import org.lgna.project.reflect.ClassInfoManager;
+import com.jogamp.opengl.GLException;
+import org.lgna.issue.ApplicationIssueConfiguration;
+import org.lgna.issue.IssueSubmissionProgressWorker;
+import org.lgna.issue.swing.JSubmitPane;
 
-public class ClassInfoUtilities {
-  private ClassInfoUtilities() {
-    throw new AssertionError();
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class AliceIssueConfiguration implements ApplicationIssueConfiguration {
+  @Override
+  public String getSubmitActionName() {
+    return "submit bug report";
   }
 
-  public static void loadClassInfos() {
-    String json = TextFileUtilities.read(ClassInfoUtilities.class.getResourceAsStream("classinfos.json"));
-    ObjectMapper mapper = new ObjectMapper();
-      try {
-        ClassInfoManager.addClassInfos(mapper.readValue(json, ClassInfo[].class));
-      } catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-      }
+  @Override
+  public JPanel createHeaderPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget) {
+    return originalThrowableOrTarget instanceof GLException ? new JGraphicsHeaderPane(this) : new JStandardHeaderPane(this);
+  }
+
+  @Override
+  public String getApplicationName() {
+    return "Alice";
+  }
+
+  @Override
+  public String getDownloadUrlSpec() {
+    return "http://www.alice.org/get-alice/alice-3";
+  }
+
+  @Override
+  public String getDownloadUrlText() {
+    return this.getDownloadUrlSpec();
+  }
+
+  @Override
+  public void submit(JSubmitPane jSubmitPane) {
+    ApplicationIssueConfiguration config = jSubmitPane.getConfig();
+    int option = JOptionPane.showConfirmDialog(jSubmitPane, "Submitting your current project might greatly help the " + config.getApplicationName() + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + config.getApplicationName() + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
+    if (option != JOptionPane.CANCEL_OPTION) {
+      jSubmitPane.setSubmitAttempted(true);
+      new IssueSubmissionProgressWorker(jSubmitPane, option == JOptionPane.YES_OPTION).execute();
+    }
   }
 }

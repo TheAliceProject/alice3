@@ -42,9 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formdev.flatlaf.FlatLaf;
 import edu.cmu.cs.dennisc.crash.CrashDetector;
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
@@ -53,8 +56,9 @@ import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
+import org.lgna.project.reflect.ClassInfo;
+import org.lgna.project.reflect.ClassInfoManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -171,7 +175,8 @@ public class EntryPoint extends Application {
         System.out.println(localeTest);
       }
 
-      AliceIde ide = new AliceIde(crashDetector);
+      loadClassInfos();
+      StageIDE ide = new StageIDE(crashDetector);
       if (file != null) {
         if (file.exists()) {
           ide.setProjectFileToLoadOnWindowOpened(file);
@@ -187,6 +192,16 @@ public class EntryPoint extends Application {
 
     // Call to initialize JavaFX
     launch(args);
+  }
+
+  private static void loadClassInfos() {
+    String json = TextFileUtilities.read(EntryPoint.class.getResourceAsStream("classinfos.json"));
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      ClassInfoManager.addClassInfos(mapper.readValue(json, ClassInfo[].class));
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
