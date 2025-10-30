@@ -65,6 +65,7 @@ public abstract class AbstractAnimator implements Animator {
   private double tCurrent;
 
   private boolean isPaused = false;
+  private boolean isCancelled = false;
 
   protected abstract void updateCurrentTime(boolean isPaused);
 
@@ -123,13 +124,9 @@ public abstract class AbstractAnimator implements Animator {
     this.isPaused = isPaused;
   }
 
-  protected WaitingAnimation createWaitingAnimation(Animation animation, AnimationObserver animationObserver, Thread currentThread) {
-    return new WaitingAnimation(animation, animationObserver, currentThread);
-  }
-
   @Override
   public void invokeLater(Animation animation, AnimationObserver animationObserver) {
-    WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, null);
+    WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, null);
     this.waitingAnimations.add(waitingAnimation);
   }
 
@@ -139,9 +136,13 @@ public abstract class AbstractAnimator implements Animator {
 
   @Override
   public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException {
+    if (isCancelled) {
+      return;
+    }
+
     if (this.isAcceptableThread()) {
       Thread currentThread = Thread.currentThread();
-      WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, currentThread);
+      WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, currentThread);
       synchronized (currentThread) {
         this.waitingAnimations.add(waitingAnimation);
         currentThread.wait();
@@ -178,6 +179,8 @@ public abstract class AbstractAnimator implements Animator {
 
   @Override
   public void cancelAnimation() {
+    isCancelled = true;
+
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();

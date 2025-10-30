@@ -71,7 +71,9 @@ public class RunProgramContext extends ProgramContext {
 
   @Override
   public void cleanUpProgram() {
-    this.getContainer().removeAll();
+    if (this.getContainer() != null) {
+      this.getContainer().removeAll();
+    }
     super.cleanUpProgram();
   }
 }

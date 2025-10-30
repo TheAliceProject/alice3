@@ -252,10 +252,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     this.internalAddComponent(component, constraints);
   }
 
-  public void forgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalForgetAndRemoveComponent(component);
-  }
-
   public void removeAllComponents() {
     this.internalRemoveAllComponents();
   }

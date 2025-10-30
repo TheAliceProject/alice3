@@ -88,16 +88,16 @@ public class WaitingAnimation {
     notifyNext();
   }
 
-  public void notifyNext() {
+  @Override
+  public String toString() {
+    return this.getClass().getName() + "[animation=" + m_animation + ";observer=" + m_animationObserver + ";thread=" + m_thread + "]";
+  }
+
+  private void notifyNext() {
     if (m_thread != null) {
       synchronized (m_thread) {
         m_thread.notify();
       }
     }
-  }
-
-  @Override
-  public String toString() {
-    return this.getClass().getName() + "[animation=" + m_animation + ";observer=" + m_animationObserver + ";thread=" + m_thread + "]";
   }
 }

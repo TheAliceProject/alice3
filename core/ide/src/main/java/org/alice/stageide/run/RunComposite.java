@@ -156,6 +156,8 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   private void stopProgram() {
+    getView().forgetAndRemoveAllComponents();
+
     if (this.programContext != null) {
       this.programContext.cleanUpProgram();
       this.programContext = null;

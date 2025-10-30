@@ -102,10 +102,6 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     return rv;
   }
 
-  public int getComponentZOrder(AwtComponentView<?> component) {
-    return this.getAwtComponent().getComponentZOrder(component.getAwtComponent());
-  }
-
   public void setComponentZOrder(AwtComponentView<?> component, int index) {
     this.checkEventDispatchThread();
     this.getAwtComponent().setComponentZOrder(component.getAwtComponent(), index);
@@ -171,10 +167,6 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
 
   protected final void internalRemoveAllComponents() {
     this.internalRemoveAllComponents(false);
-  }
-
-  protected void internalForgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalRemoveComponent(component, true);
   }
 
   protected void internalForgetAndRemoveAllComponents() {
