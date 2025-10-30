@@ -83,11 +83,10 @@ public class SideView extends BorderPanel {
     ItemSelectablePanel<HandleStyle> radioButtons = new DefaultRadioButtons<>(composite.getHandleStyleState(), false) {
       @Override
       protected BooleanStateButton<?> createButtonForItemSelectedState(HandleStyle item, BooleanState itemSelectedState) {
-        PushButton b = itemSelectedState.createPushButton();
-        b.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
-        b.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
-        b.setSelectedColor(UIManager.getColor("ComboBox.selectionBackground"));
-        return b;
+        ToggleButton button = itemSelectedState.createToggleButton();
+        button.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
+        button.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
+        return button;
       }
     };
     migPanel.addComponent(new LineAxisPanel(composite.getHandleStyleState().getSidekickLabel().createLabel(1.2f), radioButtons), "wrap");
