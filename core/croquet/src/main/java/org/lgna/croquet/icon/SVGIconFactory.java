@@ -42,34 +42,47 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
-import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.net.URL;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageIconFactory {
-  public MultipleSourceImageIconFactory(int defaultIndex, ImageIcon... imageIcons) {
-    super(defaultIndex, imageIcons);
-  }
+public class SVGIconFactory extends AbstractIconFactory {
+  private final FlatSVGIcon defaultIcon;
 
+  public SVGIconFactory(URL iconName) {
+    super(IsCachingDesired.FALSE);
+    this.defaultIcon = new FlatSVGIcon(iconName);
+  }
 
   @Override
   protected Icon createIcon(Dimension size) {
-    ImageIcon imageIcon = this.getSourceImageIcon(size);
-    if (imageIcon != null) {
-      if ((imageIcon.getIconWidth() == size.width) && (imageIcon.getIconHeight() == size.height)) {
-        return imageIcon;
+    try {
+      if (defaultIcon.hasFound()) {
+        return defaultIcon.derive(size.width, size.height);
       } else {
-        return new ScaledIcon(imageIcon, size);
+        return new ColorIcon(Color.MAGENTA, size.width, size.height);
       }
-    } else {
+    }  catch (NullPointerException e) {
+      // apparently hasFound will throw an exception if it hasn't found the file. Hopefully this is fixed in the future
+      // and we won't need this catch
       return new ColorIcon(Color.RED, size.width, size.height);
+    }
+  }
+
+  @Override
+  public final Dimension getDefaultSize(Dimension fallbackSize) {
+   try {
+      return new Dimension(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
+    } catch (NullPointerException e) {
+      // see comment above about exceptions
+      return fallbackSize;
     }
   }
 }
