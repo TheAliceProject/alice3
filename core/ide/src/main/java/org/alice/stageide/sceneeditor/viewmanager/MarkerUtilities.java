@@ -45,7 +45,6 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import org.alice.ide.Theme;
 import org.alice.ide.icons.Icons;
@@ -63,13 +62,9 @@ import org.lgna.story.Color;
 import org.lgna.story.SMarker;
 import org.lgna.story.SThingMarker;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
@@ -188,36 +183,17 @@ public class MarkerUtilities {
     return new FlatSVGIcon(markerIconURL);
   }
 
-  private static Icon loadIconForCameraMarker(Color color) {
-    URL markerIconURL = StorytellingSceneEditor.class.getResource(
-        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
+  private static Icon loadIconForCameraMarker(Color colorToApply) {
+    URL markerIconURL = Icons.class.getResource(
+        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? "images/markers/VrRigGrayscale.svg" : "images/markers/cameraGrayscale.svg");
     if (markerIconURL == null) {
       return null;
     }
-    try {
-      BufferedImage markerImage = ImageIO.read(markerIconURL);
-      applyColor(markerImage, color);
-      if ((markerImage.getWidth() == MarkerUtilities.ICON_SIZE.width) && markerImage.getHeight() == MarkerUtilities.ICON_SIZE.height) {
-        return new ImageIcon(markerImage);
-      } else {
-        return new ScaledIcon(new ImageIcon(markerImage), MarkerUtilities.ICON_SIZE);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+
+    FlatSVGIcon.ColorFilter filter = new FlatSVGIcon.ColorFilter(colorToApply::applyTo);
+    return new FlatSVGIcon(markerIconURL).derive(MarkerUtilities.ICON_SIZE.width, MarkerUtilities.ICON_SIZE.height).setColorFilter(filter);
   }
 
-  private static void applyColor(BufferedImage image, Color color) {
-    for (int y = 0; y < image.getHeight(); y++) {
-      for (int x = 0; x < image.getWidth(); x++) {
-        int rgb = image.getRGB(x, y);
-        java.awt.Color pixelColor = new java.awt.Color(rgb);
-        if ((rgb & 0xFF000000) == 0xFF000000) {
-          image.setRGB(x, y, color.applyTo(pixelColor).getRGB());
-        }
-      }
-    }
-  }
 
   public static IconFactory getIconFactoryForObjectMarker(UserField marker) {
     if (marker != null) {

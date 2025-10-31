@@ -52,12 +52,11 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.*;
+import org.lgna.croquet.views.Button;
 import org.lgna.project.ast.UserField;
 
+import javax.swing.*;
 import javax.swing.AbstractButton;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -75,23 +74,7 @@ public class MarkersView extends BorderPanel {
 
     @Override
     protected AbstractButton createAwtComponent() {
-      return new JToggleButton() {
-        @Override
-        public Color getBackground() {
-          if (this.isSelected()) {
-            return UIManager.getColor("List.selectionBackground");
-          } else {
-            return UIManager.getColor("List.background");
-          }
-        }
-        public Color getForeground() {
-          if (this.isSelected()) {
-            return UIManager.getColor("List.selectionForeground");
-          } else {
-            return super.getForeground();
-          }
-        }
-      };
+      return new JToggleButton();
     }
   }
 
@@ -128,15 +111,6 @@ public class MarkersView extends BorderPanel {
             }
 
           }
-
-          //          @Override
-          //          public boolean contains( int x, int y ) {
-          //            if( isFieldSelected() ) {
-          //              return super.contains( x, y );
-          //            } else {
-          //              return false;
-          //            }
-          //          }
         };
       }
     }
@@ -223,7 +197,11 @@ public class MarkersView extends BorderPanel {
 
   public MarkersView(MarkersToolPalette composite) {
     super(composite);
-    this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
+    Button b1 = composite.getMoveToMarkerOperation().createButton();
+    b1.setMargin(new Insets(5, 5, 5, 5));
+    Button b2 = composite.getMoveMarkerToOperation().createButton();
+    b2.setMargin(new Insets(5, 5, 5, 5));
+    this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, b1, b2));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
     this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
   }
