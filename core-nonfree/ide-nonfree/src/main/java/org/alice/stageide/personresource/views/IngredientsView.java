@@ -43,9 +43,10 @@
 
 package org.alice.stageide.personresource.views;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.custom.ColorCustomExpressionCreatorComposite;
 import org.alice.stageide.personresource.IngredientsComposite;
 import org.alice.stageide.personresource.SkinColorState;
@@ -69,7 +70,7 @@ public class IngredientsView extends MigPanel {
   private final Label isLifeStageLockedLabel = new Label();
   private final HorizontalWrapList<LifeStage> lifeStageList;
 
-  private static final Icon LOCKED_ICON = IconUtilities.createImageIcon(IngredientsComposite.class.getResource("images/locked.png"));
+  private static final Icon LOCKED_ICON = new FlatSVGIcon(Icons.class.getResource("images/locked.svg"));
 
   public IngredientsView(final IngredientsComposite composite) {
     super(composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]");
