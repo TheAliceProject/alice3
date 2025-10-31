@@ -96,6 +96,7 @@ import org.alice.stageide.member.VehicleProceduresComposite;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.SVGIconFactory;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
@@ -153,7 +154,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/Camera.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new SVGIconFactory(Icons.class.getResource("images/Camera.svg")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/LeftHand.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/VRHeadset.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new ImageIconFactory(Icons.class.getResource("images/VRUser.png")));

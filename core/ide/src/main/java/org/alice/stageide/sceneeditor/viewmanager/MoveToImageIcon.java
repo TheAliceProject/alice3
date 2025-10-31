@@ -43,18 +43,17 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.alice.ide.icons.Icons;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 public class MoveToImageIcon implements Icon {
 
@@ -74,9 +73,9 @@ public class MoveToImageIcon implements Icon {
 
   public MoveToImageIcon() {
     super();
-    this.arrowImage = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/moveToArrowIcon.png"));
+    this.arrowImage = new FlatSVGIcon(Icons.class.getResource("images/moveToArrowIcon.svg"));
     this.disabledArrowImage = desaturate(this.arrowImage);
-    this.unknownImage = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/unknownIcon.png"));
+    this.unknownImage = new FlatSVGIcon(Icons.class.getResource("images/unknownIcon.svg"));
     this.disabledUnknownImage = desaturate(this.unknownImage);
   }
 

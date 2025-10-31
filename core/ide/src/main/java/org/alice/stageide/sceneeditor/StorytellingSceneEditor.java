@@ -42,17 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.util.*;
-
-import javax.swing.Icon;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
-
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
@@ -60,20 +50,19 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
-import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
-import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
-import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.event.*;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
@@ -88,12 +77,7 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.ClippedZPlane;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.*;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
@@ -105,13 +89,7 @@ import org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget;
 import org.alice.stageide.sceneeditor.interact.GlobalDragAdapter;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
-import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
-import org.alice.stageide.sceneeditor.viewmanager.CameraViewCellRenderer;
-import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
-import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
-import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
-import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
-import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.*;
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.*;
@@ -120,30 +98,27 @@ import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.InputEventTrigger;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.ComboBox;
-import org.lgna.croquet.views.CompassPointSpringPanel;
-import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.SpringPanel.Horizontal;
 import org.lgna.croquet.views.SpringPanel.Vertical;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.Project;
 import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
 import org.lgna.story.implementation.*;
-
-import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.ModelResource;
+
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.*;
+import java.util.List;
 
 /**
  * @author dculyba
@@ -241,8 +216,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     return this.dropReceptor;
   }
 
-  private static Icon EXPAND_ICON = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/24/expand.png"));
-  private static Icon CONTRACT_ICON = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/24/contract.png"));
+  private static Icon EXPAND_ICON = new FlatSVGIcon(Icons.class.getResource("images/expand.svg")).derive(24, 24);
+  private static Icon CONTRACT_ICON = new FlatSVGIcon(Icons.class.getResource("images/contract.svg")).derive(24, 24);
 
   private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
     @Override
