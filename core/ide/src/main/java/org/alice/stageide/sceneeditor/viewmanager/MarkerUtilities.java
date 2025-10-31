@@ -54,7 +54,7 @@ import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.SVGIconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.UserField;
@@ -82,7 +82,7 @@ public class MarkerUtilities {
   private static final String[] COLOR_NAME_KEYS;
   private static final Color[] COLORS;
 
-  private static final HashMap<CameraOption, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
+  private static final HashMap<CameraOption, Tuple2<SVGIconFactory, SVGIconFactory>> cameraToIconMap = Maps.newHashMap();
 
   private static final HashMap<Color, Icon> colorToObjectIcon = Maps.newHashMap();
   private static final HashMap<Color, Icon> colorToCameraIcon = Maps.newHashMap();
@@ -174,14 +174,11 @@ public class MarkerUtilities {
   }
 
   public static void addIconForCameraOption(CameraOption option, String iconName) {
-    URL normalIconURL = StorytellingSceneEditor.class.getResource("images/" + iconName + "Icon.png");
+    URL normalIconURL = Icons.class.getResource("images/views/" + iconName + "Icon.svg");
     assert normalIconURL != null;
-    ImageIcon normalIcon = new ImageIcon(normalIconURL);
-    URL highlightedIconURL = StorytellingSceneEditor.class.getResource("images/" + iconName + "Icon_highlighted.png");
+    URL highlightedIconURL = Icons.class.getResource("images/views/" + iconName + "Icon_highlighted.svg");
     assert highlightedIconURL != null;
-    ImageIcon highlightedIcon = new ImageIcon(highlightedIconURL);
-
-    cameraToIconMap.put(option, Tuple2.createInstance(new ImageIconFactory(normalIcon), new ImageIconFactory(highlightedIcon)));
+    cameraToIconMap.put(option, Tuple2.createInstance(new SVGIconFactory(normalIconURL), new SVGIconFactory(highlightedIconURL)));
   }
 
   private static Icon loadIconForObjectMarker(Color color) {
