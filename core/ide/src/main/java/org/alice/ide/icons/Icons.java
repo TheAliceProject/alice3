@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
 
 import javax.swing.Icon;
-import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
@@ -61,18 +60,12 @@ public class Icons {
   public static final int SMALL_HEIGHT = 24;
 
   public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon(0, SMALL_HEIGHT);
-  public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/folder.png"));
-  public static final Icon FOLDER_BACK_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderBack.png"));
-  public static final Icon FOLDER_FRONT_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderFront.png"));
+  public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/folder.png"));
 
-  public static final Dimension FOLDER_ICON_LARGE_SIZE = new Dimension(FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight());
+  public static final Icon NEXT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-next.png"));
+  public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-previous.png"));
 
-  public static final Icon NEXT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/go-next.png"));
-  public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/go-previous.png"));
-
-  public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/document-open.png"));
-  public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/document-save.png"));
-
-  public static final Icon TRASH_CAN_FULL_ICON = IconUtilities.createImageIcon(Icons.class.getResource("images/32x40/fulltrash.png"));
-  public static final Icon TRASH_CAN_EMPTY_ICON = IconUtilities.createImageIcon(Icons.class.getResource("images/32x40/emptytrash.png"));
+  // TODO- these can probably be removed, but I haven't yet been able to prove if they ever do or don't show up in the ui
+  public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-open.png"));
+  public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-save.png"));
 }

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.recyclebin.icons;
+package org.alice.ide.icons;
 
 import javax.swing.Icon;
 import java.awt.AlphaComposite;
@@ -58,7 +58,7 @@ import java.awt.geom.GeneralPath;
  * This class has been automatically generated using svg2java
  *
  */
-public class OpenTrashCanSymbolicStyleIcon implements Icon {
+public class OpenTrashIcon implements Icon {
 
   private float origAlpha = 1.0f;
 
@@ -325,7 +325,7 @@ public class OpenTrashCanSymbolicStyleIcon implements Icon {
    * @param height dimension
    * @param fillColor background
    */
-  public OpenTrashCanSymbolicStyleIcon(int width, int height, Color fillColor) {
+  public OpenTrashIcon(int width, int height, Color fillColor) {
     this.width = width;
     this.height = height;
     this.fillColor = fillColor;

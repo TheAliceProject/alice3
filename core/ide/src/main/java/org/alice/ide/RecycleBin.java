@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.recyclebin;
+package org.alice.ide;
 
 import org.alice.ide.members.MembersComposite;
 import org.lgna.croquet.DropReceptor;

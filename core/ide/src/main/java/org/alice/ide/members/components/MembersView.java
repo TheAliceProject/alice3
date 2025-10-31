@@ -53,9 +53,9 @@ import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
 import org.alice.ide.member.MemberOrControlFlowTabComposite;
 import org.alice.ide.members.MembersComposite;
-import org.alice.ide.recyclebin.RecycleBin;
-import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
-import org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon;
+import org.alice.ide.RecycleBin;
+import org.alice.ide.icons.ClosedTrashIcon;
+import org.alice.ide.icons.OpenTrashIcon;
 import org.lgna.croquet.*;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
@@ -90,7 +90,7 @@ public class MembersView extends BorderPanel {
   private static final int SIZE = 32;
 
   private static enum DragReceptorState {
-    IDLE(null, null, null, 0), STARTED(Color.YELLOW, new Color(191, 191, 191, 0), null, SIZE), ENTERED(Color.YELLOW, new Color(127, 127, 127, 191), new ClosedTrashCanSymbolicStyleIcon(128, 128, Color.LIGHT_GRAY), SIZE), ENTERED_FAR_ENOUGH(new Color(0xCCFF99), new Color(127, 127, 127, 191), new OpenTrashCanSymbolicStyleIcon(128, 128, Color.WHITE), SIZE);
+    IDLE(null, null, null, 0), STARTED(Color.YELLOW, new Color(191, 191, 191, 0), null, SIZE), ENTERED(Color.YELLOW, new Color(127, 127, 127, 191), new ClosedTrashIcon(128, 128, Color.LIGHT_GRAY), SIZE), ENTERED_FAR_ENOUGH(new Color(0xCCFF99), new Color(127, 127, 127, 191), new OpenTrashIcon(128, 128, Color.WHITE), SIZE);
     private final Color colorA;
     private final Color colorB;
     private final Icon icon;
