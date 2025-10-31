@@ -42,25 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.function.Function;
-
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 import org.alice.ide.Theme;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.CameraOption;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.ImageIconFactory;
 import org.lgna.project.ast.AbstractField;
@@ -71,12 +63,16 @@ import org.lgna.story.Color;
 import org.lgna.story.SMarker;
 import org.lgna.story.SThingMarker;
 
-import edu.cmu.cs.dennisc.pattern.Tuple2;
-
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * @author dculyba
@@ -93,7 +89,7 @@ public class MarkerUtilities {
   private static final HashMap<Color, Icon> colorToVrUserIcon = Maps.newHashMap();
 
   static {
-    String[] colorNameKeys = {
+    COLOR_NAME_KEYS = new String[]{
         "red",
         "green",
         //        "blue",
@@ -104,9 +100,8 @@ public class MarkerUtilities {
         "pink",
         "purple",
     };
-    COLOR_NAME_KEYS = colorNameKeys;
 
-    Color[] colors = {
+    COLORS = new Color[]{
         Color.RED,
         Color.GREEN,
         //        org.lgna.story.Color.BLUE,
@@ -117,7 +112,6 @@ public class MarkerUtilities {
         Color.PINK,
         Color.PURPLE
     };
-    COLORS = colors;
   }
 
   private static String findLocalizedText(String subKey) {
@@ -127,14 +121,9 @@ public class MarkerUtilities {
       String key = MarkerUtilities.class.getSimpleName();
 
       if (subKey != null) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(key);
-        sb.append(".");
-        sb.append(subKey);
-        key = sb.toString();
+        key = key + "." + subKey;
       }
-      String rv = resourceBundle.getString(key);
-      return rv;
+      return resourceBundle.getString(key);
     } catch (MissingResourceException mre) {
       return null;
     }
@@ -161,15 +150,9 @@ public class MarkerUtilities {
     int index = getColorIndexForColor(color);
     if (index != -1) {
       String colorName = COLOR_NAME_KEYS[index];
-      String properName = colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
-      return properName;
+      return colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
     }
     return "White";
-  }
-
-  private static String getIconSuffixForMarkerColor(Color color) {
-    String colorName = getColorFileName(color);
-    return "_" + colorName + ".png";
   }
 
   public static String getNameForView(CameraOption cameraOption) {
@@ -201,11 +184,11 @@ public class MarkerUtilities {
     cameraToIconMap.put(option, Tuple2.createInstance(new ImageIconFactory(normalIcon), new ImageIconFactory(highlightedIcon)));
   }
 
-  private static ImageIcon loadIconForObjectMarker(Color color) {
-    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/axis" + getIconSuffixForMarkerColor(color));
+  private static Icon loadIconForObjectMarker(Color color) {
+    String colorSuffix = "_" + getColorFileName(color) + ".svg";
+    URL markerIconURL = Icons.class.getResource("images/markers/axis" + colorSuffix);
     assert markerIconURL != null : color;
-    ImageIcon markerIcon = new ImageIcon(markerIconURL);
-    return markerIcon;
+    return new FlatSVGIcon(markerIconURL);
   }
 
   private static Icon loadIconForCameraMarker(Color color) {
