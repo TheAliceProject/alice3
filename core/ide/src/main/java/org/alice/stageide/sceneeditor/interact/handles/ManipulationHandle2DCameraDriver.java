@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.Icons;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.ManipulationEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * @author David Culyba
@@ -55,12 +56,21 @@ import javax.swing.ImageIcon;
 public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHandle2D {
 
   private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-    Inactive("images/drive.png"), Highlighted("images/driveHighlight.png"), Back("images/driveBack.png"), BackLeft("images/driveBackLeft.png"), BackRight("images/driveBackRight.png"), Forward("images/driveForward.png"), ForwardLeft("images/driveForwardLeft.png"), ForwardRight("images/driveForwardRight.png"), Left("images/driveLeft.png"), Right("images/driveRight.png");
+    Inactive("images/handles/drive.svg"),
+    Highlighted("images/handles/driveHighlight.svg"),
+    Back("images/handles/driveBack.svg"),
+    BackLeft("images/handles/driveBackLeft.svg"),
+    BackRight("images/handles/driveBackRight.svg"),
+    Forward("images/handles/driveForward.svg"),
+    ForwardLeft("images/handles/driveForwardLeft.svg"),
+    ForwardRight("images/handles/driveForwardRight.scg"),
+    Left("images/handles/driveLeft.svg"),
+    Right("images/handles/driveRight.svg");
 
     private ControlState(String resourceString) {
       Icon icon;
       try {
-        icon = new ImageIcon(this.getClass().getResource(resourceString));
+        icon = new FlatSVGIcon(Icons.class.getResource(resourceString));
       } catch (Exception e) {
         Logger.errln("cannot load", resourceString, this);
         icon = null;
@@ -77,7 +87,7 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
   }
 
   public ManipulationHandle2DCameraDriver() {
-    super("images/driveMask.png");
+    super("images/handles/driveMask.svg");
   }
 
   @Override

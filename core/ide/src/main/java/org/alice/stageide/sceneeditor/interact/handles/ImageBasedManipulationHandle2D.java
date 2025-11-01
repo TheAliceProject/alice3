@@ -42,17 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.handles;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-
-import edu.cmu.cs.dennisc.image.ImageUtilities;
+import com.formdev.flatlaf.extras.FlatSVGUtils;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.Icons;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;
 
 import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 
 /**
  * @author David Culyba
@@ -65,7 +65,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
   public ImageBasedManipulationHandle2D(String maskResourceName) {
     BufferedImage image;
     try {
-      image = ImageUtilities.read(this.getClass().getResource(maskResourceName));
+      image = FlatSVGUtils.svg2image(Icons.class.getResource(maskResourceName), 1);
     } catch (Throwable t) {
       Logger.errln(maskResourceName, this);
       image = null;

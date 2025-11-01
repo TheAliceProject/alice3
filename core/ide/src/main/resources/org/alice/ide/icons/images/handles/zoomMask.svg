@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="34"
+   height="35"
+   viewBox="0 0 34 35"
+   fill="none"
+   version="1.1"
+   id="svg372"
+   sodipodi:docname="zoomMask.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview374"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="20.057143"
+     inkscape:cx="16.976496"
+     inkscape:cy="17.5"
+     inkscape:window-width="1296"
+     inkscape:window-height="924"
+     inkscape:window-x="1897"
+     inkscape:window-y="40"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g358" />
+  <g
+     clip-path="url(#clip0_285_7245)"
+     id="g358">
+    <path
+       d="M23.2857 6.86914H10.7992C10.6749 6.86914 10.5742 6.96987 10.5742 7.09412V8.54703C10.5742 8.65021 10.6435 8.74003 10.7438 8.76455C12.2485 9.13267 15.4053 9.79391 17.2719 9.79391C19.1367 9.79391 21.9717 9.068 23.3511 8.66282C23.4464 8.63483 23.5107 8.54741 23.5107 8.44806V7.09412C23.5107 6.96987 23.41 6.86914 23.2857 6.86914Z"
+       fill="#f00"
+       id="path348" />
+    <path
+       d="M16.4237 34.8797V32.8548L0 18.231V19.9183L16.4237 34.8797Z"
+       fill="#0f0"
+       id="path350" />
+    <path
+       d="M33.7475 18.231L16.4239 32.8548V34.8797L33.7475 20.1433V18.231Z"
+       fill="#0f0"
+       id="path352" />
+    <path
+       d="M4.72473 4.95675L16.8738 0.119629L28.6854 4.95675H23.3983V7.54405C22.0109 7.91903 18.7636 8.66897 16.8738 8.66897C14.9839 8.66897 11.9617 7.91903 10.6868 7.54405V4.95675H4.72473Z"
+       fill="#FF0000"
+       stroke="#FF0000"
+       stroke-width="0.224983"
+       id="path354" />
+    <path
+       d="M16.4239 32.8549L0.225159 18.3435H8.99948V13.0564C8.99948 13.0564 12.3742 10.6933 17.0989 10.6941C21.8235 10.6948 24.7483 13.0564 24.7483 13.0564V18.3435H33.5226L16.4239 32.8549Z"
+       fill="#00FF00"
+       stroke="#00FF00"
+       stroke-width="0.224983"
+       id="path356" />
+  </g>
+  <defs
+     id="defs370">
+    <linearGradient
+       id="paint0_linear_285_7245"
+       x1="10.5742"
+       y1="8.33153"
+       x2="23.5107"
+       y2="8.44402"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#FF8686"
+         id="stop360" />
+      <stop
+         offset="0.514423"
+         stop-color="#CD0000"
+         id="stop362" />
+      <stop
+         offset="1"
+         stop-color="#6B0000"
+         id="stop364" />
+    </linearGradient>
+    <clipPath
+       id="clip0_285_7245">
+      <rect
+         width="34"
+         height="35"
+         fill="white"
+         id="rect367" />
+    </clipPath>
+  </defs>
+</svg>

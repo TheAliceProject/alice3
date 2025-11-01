@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.Icons;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.event.ManipulationEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * @author David Culyba
@@ -55,12 +56,21 @@ import javax.swing.ImageIcon;
 public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHandle2D {
 
   private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-    Inactive("images/slide.png"), Highlighted("images/slideHighlight.png"), Down("images/slideDown.png"), DownLeft("images/slideDownLeft.png"), DownRight("images/slideDownRight.png"), Up("images/slideUp.png"), UpLeft("images/slideUpLeft.png"), UpRight("images/slideUpRight.png"), Left("images/slideLeft.png"), Right("images/slideRight.png");
+    Inactive("images/handles/slide.svg"),
+    Highlighted("images/handles/slideHighlight.svg"),
+    Down("images/handles/slideDown.svg"),
+    DownLeft("images/handles/slideDownLeft.svg"),
+    DownRight("images/handles/slideDownRight.svg"),
+    Up("images/handles/slideUp.svg"),
+    UpLeft("images/handles/slideUpLeft.svg"),
+    UpRight("images/handles/slideUpRight.svg"),
+    Left("images/handles/slideLeft.svg"),
+    Right("images/handles/slideRight.svg");
 
     private ControlState(String resourceString) {
       Icon icon;
       try {
-        icon = new ImageIcon(this.getClass().getResource(resourceString));
+        icon = new FlatSVGIcon(Icons.class.getResource(resourceString));
       } catch (Exception e) {
         Logger.errln("cannot load", resourceString, this);
         icon = null;
@@ -87,7 +97,7 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
   private boolean movingDown = false;
 
   public ManipulationHandle2DCameraStrafe() {
-    super("images/slideMask.png");
+    super("images/handles/slideMask.svg");
   }
 
   public void remapDirections(MovementDirection up, MovementDirection down, MovementDirection left, MovementDirection right) {
