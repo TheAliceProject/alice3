@@ -435,7 +435,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void centerCameraOnSelectedField(UserActivity activity) {
-    mainCameraViewTracker.centerCameraOnField(activity, movableSceneCameraImp, getSelectedField());
+    UserField field = getSelectedField();
+    if (getActiveSceneField() != field) {
+      mainCameraViewTracker.centerCameraOnField(activity, movableSceneCameraImp, field);
+    }
   }
 
   @Override
