@@ -389,10 +389,8 @@ public abstract class ProgramImp {
   }
 
   public void shutDown() {
-    // stopAnimator needs to be called before setActiveScene(null) to prevent the
-    // deactived scene from starting an WaitingAnimation on which stop() will never be called
-    this.stopAnimator();
     this.abstraction.setActiveScene(null);
+    this.stopAnimator();
     this.isProgramClosedExceptionDesired = true;
   }
 

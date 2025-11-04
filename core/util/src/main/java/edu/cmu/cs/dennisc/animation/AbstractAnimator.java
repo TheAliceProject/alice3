@@ -136,16 +136,15 @@ public abstract class AbstractAnimator implements Animator {
 
   @Override
   public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException {
-    if (isCancelled) {
-      return;
-    }
-
     if (this.isAcceptableThread()) {
       Thread currentThread = Thread.currentThread();
       WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, currentThread);
       synchronized (currentThread) {
         this.waitingAnimations.add(waitingAnimation);
-        currentThread.wait();
+
+        if (!isCancelled) {
+          currentThread.wait();
+        }
       }
       if (waitingAnimation.getException() != null) {
         throw new InvocationTargetException(waitingAnimation.getException());
