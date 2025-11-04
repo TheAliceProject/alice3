@@ -80,12 +80,9 @@ public abstract class RenameComposite<V extends RenamePanel> extends SimpleOpera
       if (explanation != null) {
         errorStatus.setText(explanation);
         return errorStatus;
-      } else {
-        return IS_GOOD_TO_GO_STATUS;
       }
-    } else {
-      return IS_GOOD_TO_GO_STATUS;
     }
+    return IS_GOOD_TO_GO_STATUS;
   }
 
   protected abstract String getInitialValue();

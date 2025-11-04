@@ -64,8 +64,7 @@ public abstract class NodeNameValidator extends NameValidator {
   public final boolean isNameValid(String name) {
     if (IsIdentifierNameValidityStrictState.getInstance().getValue()) {
       return StaticAnalysisUtilities.isValidIdentifier(name);
-    } else {
-      return (name != null) && (name.length() > 0);
     }
+    return (name != null) && !name.isEmpty();
   }
 }
