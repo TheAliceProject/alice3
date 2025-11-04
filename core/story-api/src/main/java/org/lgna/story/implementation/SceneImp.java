@@ -129,25 +129,13 @@ public class SceneImp extends EntityImp {
     this.eventManager.sceneActivated();
   }
 
-  private void changeActiveStatus(ProgramImp programImp, boolean isActive, int activationCount) {
+  private void wrapUpProgram(boolean isActive) {
     double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
     program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
     if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-      this.getAbstraction().handleActiveChanged(isActive, activationCount);
+      this.getAbstraction().handleActiveChanged(isActive, activeCount);
     }
     program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
-    if (isActive) {
-      //This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
-      //All this info is critical to a scene running
-      AdapterFactory.getAdapterFor(this.sgScene);
-
-      this.addCamerasTo(programImp);
-      if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-        this.fireSceneActivationListeners();
-      }
-    } else {
-      this.removeCamerasFrom(programImp);
-    }
   }
 
   public void activate(ProgramImp programImp) {
@@ -157,7 +145,15 @@ public class SceneImp extends EntityImp {
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.setGlobalBrightness(0.0f);
     }
-    this.changeActiveStatus(program, true, activeCount);
+    wrapUpProgram(true);
+    //This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
+    //All this info is critical to a scene running
+    AdapterFactory.getAdapterFor(this.sgScene);
+
+    this.addCamerasTo(program);
+    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
+      this.fireSceneActivationListeners();
+    }
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.animateGlobalBrightness(1.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
@@ -169,7 +165,8 @@ public class SceneImp extends EntityImp {
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.animateGlobalBrightness(0.0f, 0.25, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
-    this.changeActiveStatus(programImp, false, activeCount);
+    wrapUpProgram(false);
+    this.removeCamerasFrom(programImp);
     this.setProgram(null);
   }
 
