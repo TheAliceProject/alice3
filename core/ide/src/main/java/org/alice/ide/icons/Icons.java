@@ -43,6 +43,7 @@
 
 package org.alice.ide.icons;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
 
@@ -60,12 +61,13 @@ public class Icons {
   public static final int SMALL_HEIGHT = 24;
 
   public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon(0, SMALL_HEIGHT);
-  public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/folder.png"));
+  public static final Icon FOLDER_ICON_SMALL = new FlatSVGIcon(Icons.class.getResource("images/folder.svg")).derive(SMALL_WIDTH, SMALL_HEIGHT);
 
+  // these are used in the defunct toolbar and the model import dialog
   public static final Icon NEXT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-next.png"));
   public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-previous.png"));
 
-  // TODO- these can probably be removed, but I haven't yet been able to prove if they ever do or don't show up in the ui
+  // TODO- these are only used in the defunct toolbar, is that ever coming back?
   public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-open.png"));
   public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-save.png"));
 }
