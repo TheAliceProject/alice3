@@ -44,13 +44,12 @@
 package org.alice.ide.name.validators;
 
 import org.alice.ide.name.NameValidator;
-import org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState;
 import org.lgna.project.ast.Node;
 import org.lgna.project.ast.StaticAnalysisUtilities;
 
 public abstract class NodeNameValidator extends NameValidator {
 
-  private Node node;
+  private final Node node;
 
   public NodeNameValidator(Node node) {
     this.node = node;
@@ -62,9 +61,6 @@ public abstract class NodeNameValidator extends NameValidator {
 
   @Override
   public final boolean isNameValid(String name) {
-    if (IsIdentifierNameValidityStrictState.getInstance().getValue()) {
-      return StaticAnalysisUtilities.isValidIdentifier(name);
-    }
-    return (name != null) && !name.isEmpty();
+    return StaticAnalysisUtilities.isValidIdentifier(name);
   }
 }
