@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1541"
+   width="160"
+   height="140"
+   viewBox="0 0 160 140"
+   sodipodi:docname="VRHeadset.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview120"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     showgrid="true"
+     fit-margin-left="-5"
+     fit-margin-right="-5"
+     width="341.33334px"
+     inkscape:zoom="2.0624999"
+     inkscape:cx="163.39395"
+     inkscape:cy="148.36364"
+     inkscape:window-width="1739"
+     inkscape:window-height="926"
+     inkscape:window-x="1856"
+     inkscape:window-y="126"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1541"
+     scale-x="0.5"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="281.21213,160.78788"
+       orientation="0,-1"
+       id="guide99" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1545" />
+  <g
+     id="g1547"
+     transform="matrix(0.47760567,0,0,0.48284831,-0.89626809,-12.371816)">
+    <path
+       d="m 311.99875,100.41018 c 9.12253,0.0418 19.75882,9.81383 19.75882,18.93645 v 101.85255 c 0,15.30022 -9.75213,20.10872 -18.95281,20.06686 l -106.56234,-0.48485 c -34.74373,-0.15808 -49.67343,-46.71192 -49.67343,-46.71192 H 20.679748 c 0,0 -11.2555055,-4.82902 -13.679748,-17.60228 V 158.9324 C 9.0369244,146.06605 20.679748,141.61161 20.679748,141.61161 H 156.56899 c 0,0 18.61359,-41.828674 49.67343,-41.686278 z"
+       fill="#000000"
+       id="path9"
+       style="stroke-width:1.32896" />
+    <path
+       d="m 225.31507,120.58905 c 0,0 76.99312,0.46195 88.63453,0.48485 v 98.04083 c -26.6303,0.21232 -86.25591,-0.13332 -88.63453,0 -41.3797,2.31924 -47.68934,-28.90893 -47.68934,-28.90893 h 33.08621 v 7.69772 h 6.79195 v -60.87446 h -6.79195 v 6.85922 h -33.08621 c 0,0 11.20254,-24.26872 47.68934,-23.29923 z"
+       fill="#fbfbfb"
+       id="path11"
+       style="stroke-width:1.34076" />
+  </g>
+</svg>
