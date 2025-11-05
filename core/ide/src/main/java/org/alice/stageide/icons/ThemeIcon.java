@@ -43,6 +43,7 @@
 package org.alice.stageide.icons;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.croquet.icon.AbstractIcon;
 
@@ -60,7 +61,7 @@ public class ThemeIcon extends AbstractIcon {
 
   public ThemeIcon(Dimension size, ResourceKey key) {
     super(size);
-    this.icon = IconUtilities.createImageIcon(ThemeIcon.class.getResource("themes/" + key.getInternalName() + ".png"));
+    this.icon = IconUtilities.createImageIcon(Icons.class.getResource("images/themes/" + key.getInternalName() + ".png"));
   }
 
   @Override
