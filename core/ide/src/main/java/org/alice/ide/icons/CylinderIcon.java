@@ -40,42 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Stroke;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AxesIcon extends ShapeIcon {
-  private static void drawLine(Graphics2D g2, Paint paint, Stroke stroke, float x0, float y0, float x1, float y1) {
-    g2.setPaint(paint);
-    g2.setStroke(stroke);
-    drawLine(g2, x0, y0, x1, y1);
-  }
-
-  public AxesIcon(Dimension size) {
+public class CylinderIcon extends ShapeIcon {
+  public CylinderIcon(Dimension size) {
     super(size);
   }
 
   @Override
   protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    float scaledWidth = width * .9f;
-    float scaledHeight = height * .9f;
-    float offsetOriginY = scaledHeight * 0.2f;
-    float xInset = (width - scaledWidth);
-    float portion = 0.4f;
-    float originX = (scaledWidth * portion) + xInset;
-    BasicStroke stroke = new BasicStroke(scaledWidth * .04f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    drawLine(g2, Color.GREEN, stroke, originX, offsetOriginY, originX, scaledHeight - offsetOriginY);
-    drawLine(g2, Color.RED, stroke, xInset, scaledHeight, originX, scaledHeight - offsetOriginY);
-    drawLine(g2, Color.BLUE, stroke, xInset, scaledHeight - offsetOriginY - (offsetOriginY * (portion / (1 - portion))), originX, scaledHeight - offsetOriginY);
-    drawLine(g2, Color.WHITE, stroke, scaledWidth, scaledHeight, originX, scaledHeight - offsetOriginY);
+    float capHeight = height * 0.2f;
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D topCap = new Ellipse2D.Float(x, 0, w, capHeight);
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height - capHeight, w, capHeight);
+    Rectangle2D core = new Rectangle2D.Float(x, capHeight * 0.5f, w, height - capHeight);
+    Area area = new Area(core);
+    area.add(new Area(bottomCap));
+
+    g2.setPaint(fillPaint);
+    g2.fill(area);
+    g2.setPaint(drawPaint);
+    g2.draw(area);
+
+    g2.setPaint(fillPaint);
+    g2.fill(topCap);
+    g2.setPaint(drawPaint);
+    g2.draw(topCap);
   }
 }

@@ -40,21 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
+
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.stageide.modelresource.PersonResourceKey;
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.awt.Shape;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlusIconFactory extends ShapeIconFactory {
-  private static class SingletonHolder {
-    private static PlusIconFactory instance = new PlusIconFactory();
+public class PersonResourceIconFactory extends AbstractIconFactory {
+  private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
+
+  public PersonResourceIconFactory() {
+    super(IsCachingDesired.TRUE);
+    //todo
+    this.iconFactories = (List) Collections.unmodifiableList(Lists.newArrayList(PersonResourceKey.getChildInstance().getIconFactory(), PersonResourceKey.getElderInstance().getIconFactory(), PersonResourceKey.getTeenInstance().getIconFactory(), PersonResourceKey.getAdultInstance().getIconFactory(), PersonResourceKey.getToddlerInstance().getIconFactory()));
   }
 
-  public static PlusIconFactory getInstance() {
-    return SingletonHolder.instance;
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new CollageIcon(size, this.iconFactories) {
+      @Override
+      protected Shape createBackShape(double width, double height) {
+        return null;
+      }
+
+      @Override
+      protected Shape createFrontShape(double width, double height) {
+        return null;
+      }
+
+      @Override
+      protected double getX(int i) {
+        switch (i) {
+        case 0:
+          return 0.5;
+        case 1:
+          return 0.2;
+        case 2:
+          return 0.4;
+        case 3:
+          return 0.6;
+        case 4:
+          return 0.3;
+        default:
+          return super.getX(i);
+        }
+      }
+    };
   }
 
-  private PlusIconFactory() {
-    super(PlusIcon::new);
+  @Override
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    if (this.iconFactories.size() > 0) {
+      return this.iconFactories.get(0).getDefaultSize(fallbackSize);
+    } else {
+      return fallbackSize;
+    }
   }
 }

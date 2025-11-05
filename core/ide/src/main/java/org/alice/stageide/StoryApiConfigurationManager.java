@@ -56,7 +56,7 @@ import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportTyp
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
 import org.alice.ide.iconfactory.IconFactoryManager;
-import org.alice.ide.icons.Icons;
+import org.alice.ide.icons.*;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
@@ -68,7 +68,6 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
 import org.alice.stageide.iconfactory.StoryIconFactoryManager;
-import org.alice.stageide.icons.*;
 import org.alice.stageide.instancefactory.croquet.joint.all.*;
 import org.alice.stageide.member.*;
 import org.lgna.croquet.CascadeBlankChild;

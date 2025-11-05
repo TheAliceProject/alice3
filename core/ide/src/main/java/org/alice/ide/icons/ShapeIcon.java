@@ -40,27 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import org.lgna.croquet.icon.AbstractIcon;
+
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Polygon;
-import java.awt.Shape;
+import java.awt.geom.GeneralPath;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GroundIcon extends ShapeIcon {
-  public GroundIcon(Dimension size) {
+public abstract class ShapeIcon extends AbstractIcon {
+  protected static void drawLine(Graphics2D g2, float x0, float y0, float x1, float y1) {
+    GeneralPath path = new GeneralPath();
+    path.moveTo(x0, y0);
+    path.lineTo(x1, y1);
+    g2.draw(path);
+  }
+
+  protected static final int PAD = 2;
+  protected static final Color FILL_PAINT = new Color(191, 191, 255);
+
+  public ShapeIcon(Dimension size) {
     super(size);
   }
 
+  protected abstract void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint);
+
   @Override
-  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    Shape shape = new Polygon(new int[] {0, width, (int) (width * .75), (int) (.25 * width)}, new int[] {(int) (.8 * height), (int) (.8 * height), (int) (.2 * height), (int) (.2 * height)}, 4);
-    g2.setPaint(fillPaint);
-    g2.fill(shape);
+  protected void paintIcon(Component c, Graphics2D g2) {
+    int xOffset = PAD;
+    int yOffset = PAD;
+    int width = this.getIconWidth() - PAD - PAD;
+    int height = this.getIconHeight() - PAD - PAD;
+
+    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
+    gc.pushAndSetAntialiasing(true);
+    try {
+      g2.translate(xOffset, yOffset);
+      this.paintIcon(c, g2, width, height, FILL_PAINT, Color.BLACK);
+      g2.translate(-xOffset, -yOffset);
+    } finally {
+      gc.popAll();
+    }
   }
 }

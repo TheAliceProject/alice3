@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import org.alice.stageide.icons.GroupIconFactory;
+import org.alice.ide.icons.GroupIconFactory;
 import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 

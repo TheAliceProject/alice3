@@ -40,53 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
-import org.lgna.croquet.icon.AbstractIcon;
-
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.geom.GeneralPath;
+import java.awt.Shape;
+import java.awt.font.GlyphVector;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeIcon extends AbstractIcon {
-  protected static void drawLine(Graphics2D g2, float x0, float y0, float x1, float y1) {
-    GeneralPath path = new GeneralPath();
-    path.moveTo(x0, y0);
-    path.lineTo(x1, y1);
-    g2.draw(path);
-  }
+public class TextModelIcon extends ShapeIcon {
+  private final Font font;
 
-  protected static final int PAD = 2;
-  protected static final Color FILL_PAINT = new Color(191, 191, 255);
-
-  public ShapeIcon(Dimension size) {
+  public TextModelIcon(Dimension size) {
     super(size);
+    this.font = new Font(null, Font.ITALIC, (size.height * 4) / 5);
   }
-
-  protected abstract void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint);
 
   @Override
-  protected void paintIcon(Component c, Graphics2D g2) {
-    int xOffset = PAD;
-    int yOffset = PAD;
-    int width = this.getIconWidth() - PAD - PAD;
-    int height = this.getIconHeight() - PAD - PAD;
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Font prevFont = g2.getFont();
+    g2.setFont(font);
 
-    GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g2);
-    gc.pushAndSetAntialiasing(true);
-    try {
-      g2.translate(xOffset, yOffset);
-      this.paintIcon(c, g2, width, height, FILL_PAINT, Color.BLACK);
-      g2.translate(-xOffset, -yOffset);
-    } finally {
-      gc.popAll();
-    }
+    String text = "A";
+    FontMetrics fm = g2.getFontMetrics();
+    int messageWidth = fm.stringWidth(text);
+    int ascent = fm.getMaxAscent();
+    int descent = fm.getMaxDescent();
+    int x = (width / 2) - (messageWidth / 2);
+    int y = ((height / 2) + (ascent / 2)) - (descent / 2);
+
+    GlyphVector glyphVector = font.createGlyphVector(g2.getFontRenderContext(), text);
+    Shape outline = glyphVector.getOutline(x, y);
+    g2.setPaint(drawPaint);
+    g2.draw(outline);
+
+    g2.setPaint(fillPaint);
+    g2.fill(outline);
+    //    g2.drawString( text, x, y );
+
+    g2.setFont(prevFont);
   }
 }

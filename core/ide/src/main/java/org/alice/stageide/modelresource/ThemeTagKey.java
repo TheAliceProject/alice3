@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import org.alice.stageide.icons.ThemeIconFactory;
+import org.alice.ide.icons.ThemeIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 
 /**

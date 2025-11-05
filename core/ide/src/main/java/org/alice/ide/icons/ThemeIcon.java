@@ -40,35 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
-import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.croquet.icon.AbstractIcon;
 
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Shape;
-import java.awt.geom.RoundRectangle2D;
-import java.util.List;
+import java.awt.Graphics2D;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GroupIcon extends CollageIcon {
-  public GroupIcon(Dimension size, List<? extends AbstractSingleSourceImageIconFactory> iconFactories) {
-    super(size, iconFactories);
-  }
+public class ThemeIcon extends AbstractIcon {
+  private final ImageIcon icon;
 
-  private static final double ROUND = 10;
-
-  @Override
-  protected Shape createBackShape(double width, double height) {
-    RoundRectangle2D a = new RoundRectangle2D.Double(0, 0, width * 0.4, height, ROUND, ROUND);
-    RoundRectangle2D b = new RoundRectangle2D.Double(0, height * 0.1, width, height * 0.9, ROUND, ROUND);
-    return AreaUtilities.createUnion(a, b);
+  public ThemeIcon(Dimension size, ResourceKey key) {
+    super(size);
+    this.icon = IconUtilities.createImageIcon(Icons.class.getResource("images/themes/" + key.getInternalName() + ".png"));
   }
 
   @Override
-  protected Shape createFrontShape(double width, double height) {
-    return new RoundRectangle2D.Double(0, height * 0.5, width, height * 0.5, ROUND, ROUND);
+  protected void paintIcon(Component c, Graphics2D g2) {
+    if (this.icon != null) {
+      g2.drawImage(this.icon.getImage(), 0, 0, this.getIconWidth(), this.getIconHeight(), c);
+    } else {
+      g2.setColor(Color.RED);
+      g2.fillRect(0, 0, this.getIconWidth(), this.getIconHeight());
+    }
   }
 }

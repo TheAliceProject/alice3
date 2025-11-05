@@ -40,48 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import org.lgna.croquet.icon.EmptyIconFactory;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.ImageIconFactory;
-import org.lgna.croquet.icon.TrimmedImageIconFactory;
-import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resourceutilities.SimsThumbnailMaker;
-
-import java.awt.image.BufferedImage;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Polygon;
+import java.awt.Shape;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimsIconFactoryManager {
+public class GroundIcon extends ShapeIcon {
+  public GroundIcon(Dimension size) {
+    super(size);
+  }
 
-  public static IconFactory createIconFactory(ModelResource instance) {
-    if (instance instanceof PersonResource) {
-      PersonResource personResource = (PersonResource) instance;
-      try {
-        SimsThumbnailMaker thumbnailMaker = SimsThumbnailMaker.getInstance();
-        BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource(personResource);
-        int width = thumbnailMaker.getWidth();
-        int height = thumbnailMaker.getHeight();
-
-        //Used for saving out gallery thumbnails for the sims lifestages
-        //          java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
-        //          edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
-
-        if ((width == image.getWidth()) && (height == image.getHeight())) {
-          return new ImageIconFactory(image);
-        } else {
-          return new TrimmedImageIconFactory(image, width, height);
-        }
-      } catch (Throwable t) {
-        System.err.println("Person thumbnail creation failed so it will be blank.");
-        t.printStackTrace();
-        return EmptyIconFactory.getInstance();
-      }
-    } else {
-      return null;
-    }
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Shape shape = new Polygon(new int[] {0, width, (int) (width * .75), (int) (.25 * width)}, new int[] {(int) (.8 * height), (int) (.8 * height), (int) (.2 * height), (int) (.2 * height)}, 4);
+    g2.setPaint(fillPaint);
+    g2.fill(shape);
   }
 }

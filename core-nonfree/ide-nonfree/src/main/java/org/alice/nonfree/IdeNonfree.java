@@ -64,7 +64,7 @@ import org.alice.stageide.cascade.SimsExpressionCascadeManager;
 import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.PersonResourceKeyUriIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.ResourceKeyUriIteratingOperation;
-import org.alice.stageide.icons.SimsIconFactoryManager;
+import org.alice.ide.icons.SimsIconFactoryManager;
 import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.PersonResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;

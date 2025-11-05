@@ -49,7 +49,7 @@ import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
 import org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView;
 import org.alice.stageide.gallerybrowser.views.GalleryView;
-import org.alice.stageide.icons.TorusIcon;
+import org.alice.ide.icons.TorusIcon;
 import org.alice.stageide.modelresource.TreeUtilities;
 import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SimpleComposite;

@@ -40,43 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderIcon extends ShapeIcon {
-  public CylinderIcon(Dimension size) {
-    super(size);
+public class PlusIconFactory extends ShapeIconFactory {
+  private static class SingletonHolder {
+    private static PlusIconFactory instance = new PlusIconFactory();
   }
 
-  @Override
-  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    float capHeight = height * 0.2f;
-    float x = 0.1f * width;
-    float w = 0.8f * width;
-    Ellipse2D topCap = new Ellipse2D.Float(x, 0, w, capHeight);
-    Ellipse2D bottomCap = new Ellipse2D.Float(x, height - capHeight, w, capHeight);
-    Rectangle2D core = new Rectangle2D.Float(x, capHeight * 0.5f, w, height - capHeight);
-    Area area = new Area(core);
-    area.add(new Area(bottomCap));
+  public static PlusIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-    g2.setPaint(fillPaint);
-    g2.fill(area);
-    g2.setPaint(drawPaint);
-    g2.draw(area);
-
-    g2.setPaint(fillPaint);
-    g2.fill(topCap);
-    g2.setPaint(drawPaint);
-    g2.draw(topCap);
+  private PlusIconFactory() {
+    super(PlusIcon::new);
   }
 }

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -48,79 +48,61 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
+import java.awt.geom.Ellipse2D;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxIcon extends ShapeIcon {
-  private static final float x0 = 0.0f;
-  private static final float xA = 0.4f;
-  private static final float xB = 0.6f;
-  private static final float x1 = 1.0f;
+public class JointIcon extends ShapeIcon {
+  private final Stroke boneStroke;
+  private final Stroke jointOutlineStroke;
+  private final float jointWidth;
+  private final float jointHeight;
 
-  private static final float y0 = 0.0f;
-  private static final float yA = 0.2f;
-  private static final float yB = 0.4f;
-  private static final float yC = 0.8f;
-  private static final float y1 = 1.0f;
-
-  private static final Point2D.Float a0 = new Point2D.Float(xA, y1);
-  private static final Point2D.Float b0 = new Point2D.Float(x0, yC);
-  private static final Point2D.Float c0 = new Point2D.Float(x0, yA);
-  private static final Point2D.Float d0 = new Point2D.Float(xA, yB);
-
-  private static final Point2D.Float a1 = c0;
-  private static final Point2D.Float b1 = d0;
-  private static final Point2D.Float c1 = new Point2D.Float(x1, yA);
-  private static final Point2D.Float d1 = new Point2D.Float(xB, y0);
-
-  private static final Point2D.Float a2 = c1;
-  private static final Point2D.Float b2 = b1;
-  private static final Point2D.Float c2 = a0;
-  private static final Point2D.Float d2 = new Point2D.Float(x1, yC);
-
-  private static final Color SHADOW_COLOR = FILL_PAINT.darker();
-  private final Stroke STROKE = new BasicStroke(0.0f);
-
-  private static Shape createFace(Point2D.Float a, Point2D.Float b, Point2D.Float c, Point2D.Float d, int width, int height) {
-    GeneralPath path = new GeneralPath();
-    path.moveTo(a.x * width, a.y * height);
-    path.lineTo(b.x * width, b.y * height);
-    path.lineTo(c.x * width, c.y * height);
-    path.lineTo(d.x * width, d.y * height);
-    path.closePath();
-    return path;
+  public JointIcon(Dimension size) {
+    super(size);
+    int n = Math.min(size.width, size.height);
+    boneStroke = new BasicStroke(n / 12.0f);
+    jointOutlineStroke = new BasicStroke(1.0f);
+    jointHeight = n * 0.25f;
+    jointWidth = jointHeight;
   }
 
-  public BoxIcon(Dimension size) {
-    super(size);
+  private void drawJoint(Graphics2D g2, float x, float y, Paint fillPaint, Paint outlinePaint) {
+    Ellipse2D.Float ellipse = new Ellipse2D.Float(x - (this.jointWidth * 0.5f), y - (this.jointHeight * 0.5f), this.jointWidth, this.jointHeight);
+    if (fillPaint != null) {
+      g2.setPaint(fillPaint);
+      g2.fill(ellipse);
+    }
+    if (outlinePaint != null) {
+      g2.setPaint(outlinePaint);
+      g2.draw(ellipse);
+    }
   }
 
   @Override
   protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    final float INSET_X = this.jointWidth;
+    final float INSET_Y = this.jointHeight;
+    final float JOINT_A_X = INSET_X;
+    final float JOINT_A_Y = INSET_Y;
+    final float JOINT_B_X = width * 0.75f;
+    final float JOINT_B_Y = height * 0.4f;
+    final float JOINT_C_X = width * 0.5f;
+    final float JOINT_C_Y = height - INSET_Y;
+
     Stroke prevStroke = g2.getStroke();
     try {
-      g2.setStroke(STROKE);
-      Shape face0 = createFace(a0, b0, c0, d0, width, height);
-      Shape face1 = createFace(a1, b1, c1, d1, width, height);
-      Shape face2 = createFace(a2, b2, c2, d2, width, height);
-
-      g2.setPaint(SHADOW_COLOR);
-      g2.fill(face0);
-      g2.setPaint(fillPaint);
-      g2.fill(face1);
-      g2.fill(face2);
-      g2.setPaint(drawPaint);
-      g2.draw(face0);
-      g2.draw(face1);
-      g2.draw(face2);
+      g2.setStroke(boneStroke);
+      drawLine(g2, JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y);
+      drawLine(g2, JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y);
+      g2.setStroke(jointOutlineStroke);
+      this.drawJoint(g2, JOINT_B_X, JOINT_B_Y, Color.RED, Color.BLACK);
+      this.drawJoint(g2, JOINT_A_X, JOINT_A_Y, Color.LIGHT_GRAY, Color.BLACK);
+      this.drawJoint(g2, JOINT_C_X, JOINT_C_Y, Color.LIGHT_GRAY, Color.BLACK);
     } finally {
       g2.setStroke(prevStroke);
     }
-
   }
 }

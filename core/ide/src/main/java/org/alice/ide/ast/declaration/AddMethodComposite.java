@@ -44,7 +44,7 @@ package org.alice.ide.ast.declaration;
 
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
-import org.alice.stageide.icons.PlusIconFactory;
+import org.alice.ide.icons.PlusIconFactory;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;

@@ -40,58 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import java.awt.Color;
-import java.awt.Component;
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import javax.swing.Icon;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TorusIcon extends ShapeIcon {
-  public TorusIcon(Dimension size) {
-    super(size);
-  }
 
-  private static Ellipse2D.Float createEllipse(float portion, int width, int height) {
-    float diameter = Math.min(width, height) * portion;
-    float x = (width - diameter) / 2;
-    float y = (height - diameter) / 2;
-    return new Ellipse2D.Float(x, y, diameter, diameter);
-  }
+// A group icon is used in the gallery to dynamically create an icon that looks like a folder of the icons inside
 
-  private static void paint(Graphics2D g2, float outerPortion, float innerPortion, int width, int height, Paint fillPaint, Paint outerDrawPaint, Paint innerDrawPaint) {
-    Ellipse2D outer = createEllipse(outerPortion, width, height);
-    Ellipse2D inner = createEllipse(innerPortion, width, height);
-    Area area = new Area(outer);
-    area.subtract(new Area(inner));
-    if (fillPaint != null) {
-      g2.setPaint(fillPaint);
-      g2.fill(area);
-    }
-    if (outerDrawPaint != null) {
-      g2.setPaint(outerDrawPaint);
-      g2.draw(outer);
-    }
-    if (innerDrawPaint != null) {
-      g2.setPaint(innerDrawPaint);
-      g2.draw(inner);
-    }
+public class GroupIconFactory extends AbstractIconFactory {
+  private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
+
+  public GroupIconFactory(List<? extends AbstractSingleSourceImageIconFactory> iconFactories) {
+    super(IsCachingDesired.TRUE);
+    this.iconFactories = iconFactories;
   }
 
   @Override
-  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    paint(g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, Color.GRAY);
-    if (height > 64) {
-      paint(g2, 0.825f, 0.675f, width, height, new Color(255, 255, 255, 63), null, null);
-      paint(g2, 0.9f, 0.6f, width, height, new Color(255, 255, 255, 63), null, null);
+  protected Icon createIcon(Dimension size) {
+    return new GroupIcon(size, this.iconFactories);
+  }
+
+  @Override
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    if (this.iconFactories.size() > 0) {
+      return this.iconFactories.get(0).getDefaultSize(fallbackSize);
     } else {
-      paint(g2, 0.825f, 0.675f, width, height, new Color(255, 255, 255, 127), null, null);
+      return fallbackSize;
     }
   }
 }

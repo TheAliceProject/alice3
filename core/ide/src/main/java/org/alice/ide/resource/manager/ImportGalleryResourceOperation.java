@@ -6,7 +6,7 @@ import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.gallerybrowser.ImportGalleryResourceComposite;
-import org.alice.stageide.icons.PlusIconFactory;
+import org.alice.ide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FileDialogValueCreator;

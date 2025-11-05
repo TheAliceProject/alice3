@@ -40,26 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
 import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 
-import java.awt.*;
-import java.util.function.Function;
+import javax.swing.Icon;
+import java.awt.Dimension;
 
 /**
- * @author Jen Smith
+ * @author Dennis Cosgrove
  */
+public class SceneIconFactory extends ResolutionIndependentIconFactory {
+  private static class SingletonHolder {
+    private static SceneIconFactory instance = new SceneIconFactory();
+  }
 
-public class ShapeIconFactory extends ResolutionIndependentIconFactory {
-  final Function<Dimension, ShapeIcon> iconConstructor;
+  public static SceneIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-  public ShapeIconFactory(Function<Dimension, ShapeIcon> iconC)  {
-    iconConstructor = iconC;
+  private SceneIconFactory() {
+    super(IsCachingDesired.TRUE);
   }
 
   @Override
-  protected ShapeIcon createIcon(Dimension size) {
-      return iconConstructor.apply(size);
+  protected Icon createIcon(Dimension size) {
+    return new SceneIcon(size);
+  }
+
+  public void markAllIconsDirty() {
+    for (Icon icon : this.getMapValues()) {
+      if (icon instanceof SceneIcon) {
+        SceneIcon sceneIcon = (SceneIcon) icon;
+        sceneIcon.markDirty();
+      }
+    }
   }
 }

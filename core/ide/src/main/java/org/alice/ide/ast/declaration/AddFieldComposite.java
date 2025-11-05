@@ -48,7 +48,7 @@ import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState;
-import org.alice.stageide.icons.PlusIconFactory;
+import org.alice.ide.icons.PlusIconFactory;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;

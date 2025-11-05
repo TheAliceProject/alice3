@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.Theme;
 import org.alice.ide.member.*;
-import org.alice.stageide.icons.PlusIconFactory;
+import org.alice.ide.icons.PlusIconFactory;
 import org.lgna.croquet.views.*;
 import org.lgna.project.ast.Member;
 

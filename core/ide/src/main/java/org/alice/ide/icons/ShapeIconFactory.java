@@ -40,34 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
-import org.alice.ide.Theme;
 import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 
-import javax.swing.Icon;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
+import java.util.function.Function;
 
 /**
- * @author Dennis Cosgrove
+ * @author Jen Smith
  */
-public class ColorIconFactory extends ResolutionIndependentIconFactory {
-  private final Color color;
-  private final Dimension defaultSize = Theme.EXTRA_SMALL_SQUARE_ICON_SIZE;
 
-  public ColorIconFactory(Color color) {
-    super(IsCachingDesired.FALSE);
-    this.color = color;
-  }
+public class ShapeIconFactory extends ResolutionIndependentIconFactory {
+  final Function<Dimension, ShapeIcon> iconConstructor;
 
-  public Dimension getDefaultSize(Dimension fallbackSize) {
-    return this.defaultSize;
+  public ShapeIconFactory(Function<Dimension, ShapeIcon> iconC)  {
+    iconConstructor = iconC;
   }
 
   @Override
-  protected Icon createIcon(Dimension size) {
-    return new ColorIcon(this.color, size.width, size.height);
+  protected ShapeIcon createIcon(Dimension size) {
+      return iconConstructor.apply(size);
   }
 }

@@ -40,50 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
+import java.awt.BasicStroke;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.font.GlyphVector;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelIcon extends ShapeIcon {
-  private final Font font;
-
-  public TextModelIcon(Dimension size) {
+public class ConeIcon extends ShapeIcon {
+  public ConeIcon(Dimension size) {
     super(size);
-    this.font = new Font(null, Font.ITALIC, (size.height * 4) / 5);
   }
 
   @Override
   protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    Font prevFont = g2.getFont();
-    g2.setFont(font);
-
-    String text = "A";
-    FontMetrics fm = g2.getFontMetrics();
-    int messageWidth = fm.stringWidth(text);
-    int ascent = fm.getMaxAscent();
-    int descent = fm.getMaxDescent();
-    int x = (width / 2) - (messageWidth / 2);
-    int y = ((height / 2) + (ascent / 2)) - (descent / 2);
-
-    GlyphVector glyphVector = font.createGlyphVector(g2.getFontRenderContext(), text);
-    Shape outline = glyphVector.getOutline(x, y);
-    g2.setPaint(drawPaint);
-    g2.draw(outline);
+    float capHeight = height * 0.2f;
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height - capHeight, w, capHeight);
+    GeneralPath core = new GeneralPath();
+    core.moveTo(width * 0.5f, 0);
+    core.lineTo(width * 0.9f, height - (capHeight * 0.5f));
+    core.lineTo(width * 0.1f, height - (capHeight * 0.5f));
+    core.closePath();
+    Area area = new Area(core);
+    area.add(new Area(bottomCap));
 
     g2.setPaint(fillPaint);
-    g2.fill(outline);
-    //    g2.drawString( text, x, y );
+    g2.fill(area);
+    g2.setPaint(drawPaint);
+    g2.draw(area);
 
-    g2.setFont(prevFont);
+    if (height > 128) {
+      g2.setStroke(new BasicStroke(0.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[] {height * 0.05f}, 0.0f));
+      g2.draw(bottomCap);
+    }
   }
 }

@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.icons;
 
-import org.alice.stageide.icons.ShapeIcon;
-
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import java.awt.*;

@@ -40,58 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.math.GoldenRatio;
-
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+import java.awt.Stroke;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardIcon extends ShapeIcon {
-  public BillboardIcon(Dimension size) {
+public class AxesIcon extends ShapeIcon {
+  private static void drawLine(Graphics2D g2, Paint paint, Stroke stroke, float x0, float y0, float x1, float y1) {
+    g2.setPaint(paint);
+    g2.setStroke(stroke);
+    drawLine(g2, x0, y0, x1, y1);
+  }
+
+  public AxesIcon(Dimension size) {
     super(size);
   }
 
   @Override
   protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
-    float h = width / (float) GoldenRatio.PHI;
-    float x = 0.0f;
-    float y = (height - h) * 0.5f;
-    Shape outerShape = new Rectangle2D.Float(x, y, width, h);
-    g2.setPaint(fillPaint);
-    g2.fill(outerShape);
-    g2.setPaint(drawPaint);
-    g2.draw(outerShape);
-
-    float offset;
-    if (width > 64) {
-      offset = 0.05f * width;
-    } else {
-      offset = 0.1f * width;
-    }
-    Rectangle2D.Float innerShape = new Rectangle2D.Float(x + offset, y + offset, width - (offset * 2), h - (offset * 2));
-
-    Paint innerFillPaint;
-    if (fillPaint instanceof Color) {
-      Color fillColor = (Color) fillPaint;
-      innerFillPaint = new GradientPaint((float) innerShape.getMinX(), (float) innerShape.getMinY(), fillColor.brighter(), (float) innerShape.getCenterX(), (float) innerShape.getMaxY(), fillColor);
-    } else {
-      innerFillPaint = fillPaint;
-    }
-
-    g2.setPaint(innerFillPaint);
-    g2.fill(innerShape);
-    g2.setPaint(Color.DARK_GRAY);
-    g2.draw(innerShape);
-
+    float scaledWidth = width * .9f;
+    float scaledHeight = height * .9f;
+    float offsetOriginY = scaledHeight * 0.2f;
+    float xInset = (width - scaledWidth);
+    float portion = 0.4f;
+    float originX = (scaledWidth * portion) + xInset;
+    BasicStroke stroke = new BasicStroke(scaledWidth * .04f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    drawLine(g2, Color.GREEN, stroke, originX, offsetOriginY, originX, scaledHeight - offsetOriginY);
+    drawLine(g2, Color.RED, stroke, xInset, scaledHeight, originX, scaledHeight - offsetOriginY);
+    drawLine(g2, Color.BLUE, stroke, xInset, scaledHeight - offsetOriginY - (offsetOriginY * (portion / (1 - portion))), originX, scaledHeight - offsetOriginY);
+    drawLine(g2, Color.WHITE, stroke, scaledWidth, scaledHeight, originX, scaledHeight - offsetOriginY);
   }
 }

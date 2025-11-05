@@ -40,40 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.icons;
+package org.alice.ide.icons;
 
-import org.lgna.croquet.icon.AbstractIconFactory;
-import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
-
-import javax.swing.Icon;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.util.List;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Ellipse2D;
 
 /**
  * @author Dennis Cosgrove
  */
-
-// A group icon is used in the gallery to dynamically create an icon that looks like a folder of the icons inside
-
-public class GroupIconFactory extends AbstractIconFactory {
-  private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
-
-  public GroupIconFactory(List<? extends AbstractSingleSourceImageIconFactory> iconFactories) {
-    super(IsCachingDesired.TRUE);
-    this.iconFactories = iconFactories;
+public class DiscIcon extends ShapeIcon {
+  public DiscIcon(Dimension size) {
+    super(size);
   }
 
   @Override
-  protected Icon createIcon(Dimension size) {
-    return new GroupIcon(size, this.iconFactories);
-  }
-
-  @Override
-  public Dimension getDefaultSize(Dimension fallbackSize) {
-    if (this.iconFactories.size() > 0) {
-      return this.iconFactories.get(0).getDefaultSize(fallbackSize);
-    } else {
-      return fallbackSize;
-    }
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height * 0.8f, w, height * 0.2f);
+    g2.setPaint(fillPaint);
+    g2.fill(bottomCap);
+    g2.setPaint(drawPaint);
+    g2.draw(bottomCap);
   }
 }
