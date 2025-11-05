@@ -63,7 +63,7 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
     BackRight("images/handles/driveBackRight.svg"),
     Forward("images/handles/driveForward.svg"),
     ForwardLeft("images/handles/driveForwardLeft.svg"),
-    ForwardRight("images/handles/driveForwardRight.scg"),
+    ForwardRight("images/handles/driveForwardRight.svg"),
     Left("images/handles/driveLeft.svg"),
     Right("images/handles/driveRight.svg");
 
