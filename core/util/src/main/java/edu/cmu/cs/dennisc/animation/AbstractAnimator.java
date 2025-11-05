@@ -65,7 +65,7 @@ public abstract class AbstractAnimator implements Animator {
   private double tCurrent;
 
   private boolean isPaused = false;
-  private boolean isCancelled = false;
+  private volatile boolean isCancelled = false;
 
   protected abstract void updateCurrentTime(boolean isPaused);
 
@@ -140,9 +140,8 @@ public abstract class AbstractAnimator implements Animator {
       Thread currentThread = Thread.currentThread();
       WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, currentThread);
       synchronized (currentThread) {
-        this.waitingAnimations.add(waitingAnimation);
-
         if (!isCancelled) {
+          this.waitingAnimations.add(waitingAnimation);
           currentThread.wait();
         }
       }

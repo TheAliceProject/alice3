@@ -68,12 +68,4 @@ public class RunProgramContext extends ProgramContext {
   public Container getContainer() {
     return this.getOnscreenRenderTarget().getAwtComponent().getParent();
   }
-
-  @Override
-  public void cleanUpProgram() {
-    if (this.getContainer() != null) {
-      this.getContainer().removeAll();
-    }
-    super.cleanUpProgram();
-  }
 }

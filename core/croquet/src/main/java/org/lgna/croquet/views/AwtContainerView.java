@@ -102,11 +102,6 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     return rv;
   }
 
-  public void setComponentZOrder(AwtComponentView<?> component, int index) {
-    this.checkEventDispatchThread();
-    this.getAwtComponent().setComponentZOrder(component.getAwtComponent(), index);
-  }
-
   public int getComponentCount() {
     return getAwtComponent().getComponentCount();
   }
