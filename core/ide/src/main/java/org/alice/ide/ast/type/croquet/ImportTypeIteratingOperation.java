@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.icons.PlusIconFactory;
+import org.alice.ide.icons.PlusIconFactory;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.FileDialogValueCreator;

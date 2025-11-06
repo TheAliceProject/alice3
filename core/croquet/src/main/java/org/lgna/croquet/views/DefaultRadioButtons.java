@@ -49,6 +49,7 @@ import org.lgna.croquet.SingleSelectListState;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 
 /**
@@ -69,6 +70,7 @@ public class DefaultRadioButtons<E> extends ItemSelectablePanel<E> {
     GBC_HORIZONTAL.fill = GridBagConstraints.VERTICAL;
     GBC_HORIZONTAL.anchor = GridBagConstraints.NORTHWEST;
     GBC_HORIZONTAL.weightx = 0.0f;
+    GBC_HORIZONTAL.insets = new Insets(2, 2, 2, 2);
   }
 
   private final boolean isVertical;
@@ -86,7 +88,6 @@ public class DefaultRadioButtons<E> extends ItemSelectablePanel<E> {
 
   @Override
   protected BooleanStateButton<?> createButtonForItemSelectedState(E item, BooleanState itemSelectedState) {
-    //booleanState.setTextForBothTrueAndFalse( item.toString() );
     return itemSelectedState.createRadioButton();
   }
 

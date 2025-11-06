@@ -50,7 +50,6 @@ import org.lgna.croquet.triggers.ItemEventTrigger;
 import org.lgna.croquet.views.CheckBox;
 import org.lgna.croquet.views.OperationButton;
 import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.PushButton;
 import org.lgna.croquet.views.RadioButton;
 import org.lgna.croquet.views.ToggleButton;
 
@@ -243,11 +242,6 @@ public abstract class BooleanState extends State<Boolean> {
     return new ToggleButton(this);
   }
 
-  @Deprecated
-  public PushButton createPushButton() {
-    return new PushButton(this);
-  }
-
   public Operation getSetToTrueOperation() {
     return this.imp.getSetToTrueOperation();
   }
@@ -363,10 +357,5 @@ public abstract class BooleanState extends State<Boolean> {
 
   private boolean isItemStateChangedToBeIgnored = false;
 
-  private final ItemListener itemListener = new ItemListener() {
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-      BooleanState.this.handleItemStateChanged(e);
-    }
-  };
+  private final ItemListener itemListener = BooleanState.this::handleItemStateChanged;
 }

@@ -43,8 +43,8 @@
 
 package org.alice.interact.handle;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 
 import javax.swing.Icon;
 
@@ -53,14 +53,17 @@ import javax.swing.Icon;
  */
 public enum HandleStyle {
 
-  DEFAULT("defaultHandlesIcon.png", "tooltipDefault"), ROTATION("rotationHandlesIcon.png", "tooltipRotation"), TRANSLATION("translateHandlesIcon.png", "tooltipTranslation"), RESIZE("resizeHandlesIcon.png", "tooltipResize");
+  DEFAULT("defaultHandlesIcon.svg", "tooltipDefault"),
+  ROTATION("rotationHandlesIcon.svg", "tooltipRotation"),
+  TRANSLATION("translateHandlesIcon.svg", "tooltipTranslation"),
+  RESIZE("resizeHandlesIcon.svg", "tooltipResize");
 
   private Icon icon;
   private String toolTipKey;
 
   HandleStyle(String iconName, String toolTipKey) {
     if (iconName != null) {
-      this.icon = IconUtilities.createImageIcon(HandleStyle.class.getResource("images/" + iconName));
+      this.icon = new FlatSVGIcon(HandleStyle.class.getResource("images/" + iconName));
     }
     this.toolTipKey = toolTipKey;
   }

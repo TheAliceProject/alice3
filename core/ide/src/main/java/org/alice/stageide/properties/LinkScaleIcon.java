@@ -42,50 +42,64 @@
  *******************************************************************************/
 package org.alice.stageide.properties;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
  */
 public class LinkScaleIcon implements Icon {
   private static Icon createImageIcon(String path) {
-    return new ImageIcon(LinkScaleButton.class.getResource(path));
+     return new FlatSVGIcon(Objects.requireNonNull(org.alice.ide.icons.Icons.class.getResource(path)));
   }
 
-  /*package-private*/static final Icon SCALE_ICON = new LinkScaleIcon(createImageIcon("images/scaleLinked.png"), createImageIcon("images/scaleUnlinked.png"));
-  /*package-private*/static final Icon SUB_SCALE_ICON = new LinkScaleIcon(createImageIcon("images/subScaleLinked.png"), createImageIcon("images/subScaleUnlinked.png"));
-  /*package-private*/static final Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon(createImageIcon("images/subScaleLinked_long.png"), createImageIcon("images/subScaleUnlinked_long.png"));
+  /*package-private*/static final Icon SCALE_ICON = new LinkScaleIcon(
+      createImageIcon("images/scaleLinked.svg"),
+      createImageIcon("images/scaleLinkedHighlight.svg"),
+      createImageIcon("images/scaleUnlinked.svg"));
+
+  /*package-private*/static final Icon SUB_SCALE_ICON = new LinkScaleIcon(
+      createImageIcon("images/subScaleLinked.svg"),
+      createImageIcon("images/subScaleLinkedHighlight.svg"),
+      createImageIcon("images/subScaleUnlinked.svg"));
+
+  /*package-private*/static final Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon(
+      createImageIcon("images/subScaleLinked_long.svg"),
+      createImageIcon("images/subScaleLinkedHighlight_long.svg"),
+      createImageIcon("images/subScaleUnlinked_long.svg"));
 
   private final Icon selectedIcon;
+  private final Icon highlightedIcon;
   private final Icon unselectedIcon;
 
-  public LinkScaleIcon(Icon selectedIcon, Icon unselectedIcon) {
-    this.selectedIcon = selectedIcon;
-    this.unselectedIcon = unselectedIcon;
+  public LinkScaleIcon(Icon selected, Icon highlighted, Icon unselected) {
+    selectedIcon = selected;
+    highlightedIcon = highlighted;
+    unselectedIcon = unselected;
   }
 
   @Override
   public int getIconWidth() {
-    return Math.max(this.selectedIcon.getIconWidth(), this.unselectedIcon.getIconWidth());
+    return Math.max(selectedIcon.getIconWidth(), unselectedIcon.getIconWidth());
   }
 
   @Override
   public int getIconHeight() {
-    return Math.max(this.selectedIcon.getIconHeight(), this.unselectedIcon.getIconHeight());
+    return Math.max(selectedIcon.getIconHeight(), unselectedIcon.getIconHeight());
   }
 
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (c instanceof AbstractButton) {
-      AbstractButton button = (AbstractButton) c;
+    if (c instanceof AbstractButton button) {
       ButtonModel buttonModel = button.getModel();
-      Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
+      Icon icon = buttonModel.isSelected() ? (buttonModel.isRollover() ? highlightedIcon : selectedIcon) : unselectedIcon;
       icon.paintIcon(c, g, x, y);
     } else {
       g.setColor(Color.RED);

@@ -45,36 +45,18 @@ package org.alice.stageide.icons;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
-import org.lgna.croquet.icon.EmptyIconFactory;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.ImageIconFactory;
-import org.lgna.croquet.icon.MultipleSourceImageIconFactory;
-import org.lgna.croquet.icon.TrimmedImageIconFactory;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SimpleArgumentListProperty;
-import org.lgna.project.ast.UserConstructor;
-import org.lgna.project.ast.UserField;
+import org.lgna.croquet.icon.*;
+import org.lgna.project.ast.*;
 import org.lgna.story.Color;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -113,17 +95,6 @@ public class IconFactoryManager {
     return setOfClassesWithIcons;
   }
 
-  private static ImageIcon getIcon(Class<?> cls, boolean isSmall) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("images/");
-    sb.append(cls.getName().replace(".", "/"));
-    if (isSmall) {
-      sb.append("_small");
-    }
-    sb.append(".png");
-    return IconUtilities.createImageIcon(GalleryDragModel.class.getResource(sb.toString()));
-  }
-
   private abstract static class UrlResourceDeclaration implements ResourceDeclaration {
     protected abstract Class<? extends ModelResource> getModelResourceClass();
 
@@ -133,14 +104,15 @@ public class IconFactoryManager {
 
     @Override
     public final IconFactory createIconFactory() {
-      Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
+      Class<? extends ModelResource> cls = this.getModelResourceClass();
       String modelResourceName = this.getModelResourceName();
-      if (modelResourceName == null && getSetOfClassesWithIcons().contains(modelResourceCls)) {
-        ImageIcon smallIcon = getIcon(modelResourceCls, true);
-        ImageIcon largeIcon = getIcon(modelResourceCls, false);
-        return new MultipleSourceImageIconFactory(1, smallIcon, largeIcon);
+      if (modelResourceName == null && getSetOfClassesWithIcons().contains(cls)) {
+        StringBuilder sb = new StringBuilder("images/resources/");
+        sb.append(cls.getSimpleName());
+        sb.append(".svg");
+        return new SVGIconFactory(Icons.class.getResource(sb.toString()));
       }
-      return createIconFactoryFromUrl(modelResourceCls != null ? getThumbnailUrl() : null);
+      return createIconFactoryFromUrl(cls != null ? getThumbnailUrl() : null);
     }
 
     private IconFactory createIconFactoryFromUrl(URL url) {

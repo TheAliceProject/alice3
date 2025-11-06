@@ -56,7 +56,7 @@ import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportTyp
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
 import org.alice.ide.iconfactory.IconFactoryManager;
-import org.alice.ide.icons.Icons;
+import org.alice.ide.icons.*;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
@@ -68,49 +68,25 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
 import org.alice.stageide.iconfactory.StoryIconFactoryManager;
-import org.alice.stageide.icons.*;
-import org.alice.stageide.instancefactory.croquet.joint.all.LocalAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessMethodInvocationJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ThisFieldAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ThisJointedTypeMenuModel;
-import org.alice.stageide.member.AddListenerProceduresComposite;
-import org.alice.stageide.member.AppearanceFunctionsComposite;
-import org.alice.stageide.member.AppearanceProceduresComposite;
-import org.alice.stageide.member.AtmosphereFunctionsComposite;
-import org.alice.stageide.member.AtmosphereProceduresComposite;
-import org.alice.stageide.member.AudioProceduresComposite;
-import org.alice.stageide.member.FieldOfViewFunctionsComposite;
-import org.alice.stageide.member.FieldOfViewProceduresComposite;
-import org.alice.stageide.member.JointFunctionsComposite;
-import org.alice.stageide.member.OrientationProceduresComposite;
-import org.alice.stageide.member.PositionAndOrientationProceduresComposite;
-import org.alice.stageide.member.PositionProceduresComposite;
-import org.alice.stageide.member.PromptUserFunctionsComposite;
-import org.alice.stageide.member.SayThinkProceduresComposite;
-import org.alice.stageide.member.SizeFunctionsComposite;
-import org.alice.stageide.member.SizeProceduresComposite;
-import org.alice.stageide.member.TextProceduresComposite;
-import org.alice.stageide.member.TimingProceduresComposite;
-import org.alice.stageide.member.VehicleProceduresComposite;
+import org.alice.stageide.instancefactory.croquet.joint.all.*;
+import org.alice.stageide.member.*;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeMenuModel;
-import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.SVGIconFactory;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.*;
 import org.lgna.story.*;
-import org.lgna.story.resources.*;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.DynamicResource;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove
@@ -153,10 +129,10 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/256x256/Camera.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new ImageIconFactory(Icons.class.getResource("images/VRUser.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new SVGIconFactory(Icons.class.getResource("images/Camera.svg")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new SVGIconFactory(Icons.class.getResource("images/LeftHand.svg")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new SVGIconFactory(Icons.class.getResource("images/VRHeadset.svg")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new SVGIconFactory(Icons.class.getResource("images/VRUser.svg")));
 
     this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), FieldOfViewProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 

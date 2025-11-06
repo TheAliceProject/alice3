@@ -42,12 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.text.MessageFormat;
-import java.util.UUID;
-
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
@@ -56,6 +50,11 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.TransformableImp;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.text.MessageFormat;
+import java.util.UUID;
 
 /**
  * @author dculyba
@@ -87,9 +86,9 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
     this.toMoveToImp = toMoveTo;
     this.toMoveToName = toMoveToName;
     if (this.toMoveToImp != null) {
-      this.imageIcon.setRightImage(icon);
+      this.imageIcon.setRightIcon(icon);
     } else {
-      this.imageIcon.setRightImage(null);
+      this.imageIcon.setRightIcon(null);
     }
   }
 
@@ -97,9 +96,9 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
     this.toMoveImp = toMove;
     this.toMoveName = toMoveName;
     if (this.toMoveImp != null) {
-      this.imageIcon.setLeftImage(icon);
+      this.imageIcon.setLeftIcon(icon);
     } else {
-      this.imageIcon.setLeftImage(null);
+      this.imageIcon.setLeftIcon(null);
     }
   }
 

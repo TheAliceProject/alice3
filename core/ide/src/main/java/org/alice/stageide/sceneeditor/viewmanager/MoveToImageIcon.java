@@ -43,9 +43,11 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.alice.ide.icons.Icons;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -53,56 +55,30 @@ import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 public class MoveToImageIcon implements Icon {
 
-  public static int SUB_ICON_WIDTH = 32;
-  public static int SUB_ICON_HEIGHT = 32;
+  private Icon leftIcon;
+  private Icon disabledLeftIcon;
+  private Icon rightIcon;
+  private Icon disabledRightIcon;
 
-  private static int HORIZONTAL_OFFSET = -4;
-
-  private Icon leftImage;
-  private Icon disabledLeftImage;
-  private Icon rightImage;
-  private Icon disabledRightImage;
-  private Icon arrowImage;
-  private Icon disabledArrowImage;
-  private Icon unknownImage;
-  private Icon disabledUnknownImage;
+  private final FlatSVGIcon arrowIcon;
+  private final FlatSVGIcon unknownIcon;
 
   public MoveToImageIcon() {
     super();
-    this.arrowImage = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/moveToArrowIcon.png"));
-    this.disabledArrowImage = desaturate(this.arrowImage);
-    this.unknownImage = IconUtilities.createImageIcon(StorytellingSceneEditor.class.getResource("images/unknownIcon.png"));
-    this.disabledUnknownImage = desaturate(this.unknownImage);
+    arrowIcon = new FlatSVGIcon(Icons.class.getResource("images/moveToArrowIcon.svg"));
+    unknownIcon = new FlatSVGIcon(Icons.class.getResource("images/unknownIcon.svg"));
   }
-
-  public MoveToImageIcon(Icon leftImage, Icon rightImage) {
-    this();
-    this.setLeftImage(leftImage);
-    this.setRightImage(rightImage);
-  }
-
   private Icon getLeftIcon() {
     return getLeftIcon(false);
   }
 
   private Icon getLeftIcon(boolean disabled) {
-    if (this.leftImage != null) {
-      if (disabled) {
-        return this.disabledLeftImage;
-      } else {
-        return this.leftImage;
-      }
+    if (leftIcon != null) {
+      return disabled ? disabledLeftIcon : leftIcon;
     }
-    if (disabled) {
-      return this.disabledUnknownImage;
-    } else {
-      return this.unknownImage;
-    }
+    return disabled ? unknownIcon.getDisabledIcon() : unknownIcon;
   }
 
   private Icon getRightIcon() {
@@ -110,52 +86,42 @@ public class MoveToImageIcon implements Icon {
   }
 
   private Icon getRightIcon(boolean disabled) {
-    if (this.rightImage != null) {
-      if (disabled) {
-        return this.disabledRightImage;
-      } else {
-        return this.rightImage;
-      }
+    if (rightIcon != null) {
+      return disabled ? disabledRightIcon : rightIcon;
     }
-    if (disabled) {
-      return this.disabledUnknownImage;
-    } else {
-      return this.unknownImage;
-    }
+    return disabled ? unknownIcon.getDisabledIcon() : unknownIcon;
   }
 
   private Icon getArrowIcon(boolean disabled) {
-    if (disabled) {
-      return this.disabledArrowImage;
-    } else {
-      return this.arrowImage;
-    }
+   return disabled ? arrowIcon.getDisabledIcon() : arrowIcon;
   }
 
   @Override
   public int getIconWidth() {
-    return this.getLeftIcon().getIconWidth() + this.arrowImage.getIconWidth() + this.getRightIcon().getIconWidth() + (HORIZONTAL_OFFSET * 2);
+    return getLeftIcon().getIconWidth() + arrowIcon.getIconWidth() + getRightIcon().getIconWidth();
   }
 
   @Override
   public int getIconHeight() {
-    return Math.max(this.arrowImage.getIconHeight(), Math.max(this.getLeftIcon().getIconHeight(), this.getRightIcon().getIconHeight()));
+    return Math.max(arrowIcon.getIconHeight(), Math.max(getLeftIcon().getIconHeight(), getRightIcon().getIconHeight()));
   }
 
-  public void setLeftImage(Icon leftImage) {
-    this.leftImage = leftImage;
-    this.disabledLeftImage = desaturate(this.leftImage);
+  public void setLeftIcon(Icon icon) {
+    leftIcon = icon;
+    if (leftIcon != null && leftIcon instanceof FlatSVGIcon svgIcon) {
+      disabledLeftIcon = svgIcon.getDisabledIcon();
+    } else {
+      disabledLeftIcon = desaturate(leftIcon);
+    }
   }
 
-  public void setRightImage(Icon rightImage) {
-    this.rightImage = rightImage;
-    this.disabledRightImage = desaturate(this.rightImage);
-  }
-
-  public static BufferedImage desaturate(BufferedImage source) {
-    ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-    colorConvert.filter(source, source);
-    return source;
+  public void setRightIcon(Icon icon) {
+    rightIcon = icon;
+    if (rightIcon != null && rightIcon instanceof FlatSVGIcon svgIcon) {
+      disabledRightIcon = svgIcon.getDisabledIcon();
+    } else {
+      disabledRightIcon = desaturate(rightIcon);
+    }
   }
 
   public static Icon desaturate(Icon source) {
@@ -175,30 +141,30 @@ public class MoveToImageIcon implements Icon {
       colorConvert.filter(imgSrc, imgSrc);
       return new ImageIcon(imgSrc);
     }
-    return source;
+    return null;
   }
 
   @Override
   public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-    int xPos = HORIZONTAL_OFFSET;
-    int yOffset = (int) ((this.getIconHeight() - this.getLeftIcon().getIconHeight()) * .5);
+    final boolean disabled = (c != null) && !c.isEnabled();
 
-    boolean disabled = (c != null) && !c.isEnabled();
+    // draw the left icon
+    Icon left = getLeftIcon(disabled);
+    int xPos = 0;
+    int yOffset = (int) ((getIconHeight() - left.getIconHeight()) * .5);
+    left.paintIcon(c, g, x + xPos, y + yOffset);
 
-    this.getLeftIcon(disabled).paintIcon(c, g, x + xPos, y + yOffset);
-    xPos += this.getLeftIcon(disabled).getIconWidth();
-    yOffset = (int) ((this.getIconHeight() - this.getArrowIcon(disabled).getIconHeight()) * .5);
-    this.getArrowIcon(disabled).paintIcon(c, g, x + xPos, y + yOffset);
-    xPos += this.getArrowIcon(disabled).getIconWidth();
-    yOffset = (int) ((this.getIconHeight() - this.getRightIcon().getIconHeight()) * .5);
-    this.getRightIcon(disabled).paintIcon(c, g, x + xPos, y + yOffset);
-    //    if (!c.isEnabled()) {
-    //      if (g instanceof java.awt.Graphics2D) {
-    //        java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-    //        g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
-    //        g2.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-    //      }
-    //    }
+    // draw the arrow
+    Icon arrow = getArrowIcon(disabled);
+    xPos += left.getIconWidth();
+    yOffset = (int) ((getIconHeight() - arrow.getIconHeight()) * .5);
+    arrow.paintIcon(c, g, x + xPos, y + yOffset);
+
+    // draw the right icon
+    Icon right =  getRightIcon(disabled);
+    xPos += arrow.getIconWidth();
+    yOffset = (int) ((this.getIconHeight() - right.getIconHeight()) * .5);
+    right.paintIcon(c, g, x + xPos, y + yOffset);
   }
 
 }

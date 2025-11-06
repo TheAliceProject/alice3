@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="22"
+   height="20"
+   viewBox="0 0 22 20"
+   fill="none"
+   version="1.1"
+   id="svg25"
+   sodipodi:docname="moveToArrowIcon.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview27"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="35"
+     inkscape:cx="11.014286"
+     inkscape:cy="10"
+     inkscape:window-width="1680"
+     inkscape:window-height="922"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg25" />
+  <mask
+     id="path-1-outside-1_227_10836"
+     maskUnits="userSpaceOnUse"
+     x="3"
+     y="3.07959"
+     width="16"
+     height="13"
+     fill="black">
+    <rect
+       fill="white"
+       x="3"
+       y="3.07959"
+       width="16"
+       height="13"
+       id="rect9" />
+    <path
+       d="M17.8027 9.47274C17.9036 9.55282 17.9035 9.70596 17.8027 9.78603L12.3243 14.1346C12.1933 14.2387 12 14.1453 12 13.978V11.3284C12 11.218 11.9105 11.1284 11.8 11.1284H4.2C4.08954 11.1284 4 11.0389 4 10.9284V8.32842C4 8.21796 4.08954 8.12842 4.2 8.12842H11.8C11.9105 8.12842 12 8.03887 12 7.92842V5.27988C12 5.11253 12.1933 5.01918 12.3244 5.12325L17.8027 9.47274Z"
+       id="path11" />
+  </mask>
+  <path
+     d="m 17.8027,9.8438098 c 0.1009,0.08008 0.1008,0.2332202 0,0.3132902 l -5.4784,4.34857 C 12.1933,14.60977 12,14.51637 12,14.34907 v -2.6496 c 0,-0.1104 -0.0895,-0.2 -0.2,-0.2 H 4.2 c -0.11046,0 -0.2,-0.0895 -0.2,-0.2 V 8.6994898 c 0,-0.11046 0.08954,-0.2 0.2,-0.2 h 7.6 c 0.1105,0 0.2,-0.08955 0.2,-0.2 v -2.64854 c 0,-0.16735 0.1933,-0.2607 0.3244,-0.15663 z"
+     fill="url(#paint0_linear_227_10836)"
+     id="path14"
+     style="fill:url(#paint0_linear_227_10836)" />
+  <path
+     d="m 12.3244,5.12325 -0.6218,0.78317 z m -1e-4,9.01135 0.6218,0.7833 z m 5.4784,-4.34857 0.6217,0.78327 z m 0,-0.31329 -0.6218,0.78316 z m 0,0.31329 -0.6217,-0.78324 -5.4784,4.34861 0.6217,0.7832 0.6218,0.7833 5.4783,-4.3486 z M 12,13.978 h 1 v -2.6496 h -1 -1 v 2.6496 z m -0.2,-2.8496 v -1 H 4.2 v 1 1 h 7.6 z M 4,10.9284 H 5 V 8.32842 H 4 3 V 10.9284 Z M 4.2,8.12842 v 1 h 7.6 v -1 -1 H 4.2 Z m 7.8,-0.2 h 1 V 5.27988 h -1 -1 v 2.64854 z m 0.3244,-2.80517 -0.6218,0.78317 5.4783,4.34948 0.6218,-0.78316 0.6218,-0.78317 -5.4783,-4.3495 z M 12,5.27988 h 1 c 0,0.66943 -0.7732,1.04279 -1.2974,0.62654 L 12.3244,5.12325 12.9462,4.34007 C 12.1597,3.71569 11,4.27574 11,5.27988 Z m -0.2,2.84854 v 1 c 0.6627,0 1.2,-0.53726 1.2,-1.2 h -1 -1 c 0,-0.44183 0.3582,-0.8 0.8,-0.8 z m -7.8,0.2 h 1 c 0,0.44183 -0.35817,0.8 -0.8,0.8 v -1 -1 c -0.66274,0 -1.2,0.53726 -1.2,1.2 z m 0.2,2.79998 v -1 c 0.44183,0 0.8,0.3582 0.8,0.8 H 4 3 c 0,0.6628 0.53726,1.2 1.2,1.2 z m 7.8,0.2 h 1 c 0,-0.6627 -0.5373,-1.2 -1.2,-1.2 v 1 1 c -0.4418,0 -0.8,-0.3582 -0.8,-0.8 z m 0.3243,2.8062 -0.6217,-0.7832 C 12.2269,12.9352 13,13.3086 13,13.978 h -1 -1 c 0,1.0041 1.1596,1.5641 1.9461,0.9399 z m 5.4784,-4.34857 0.6217,0.78327 c 0.6052,-0.4804 0.6053,-1.39927 10e-5,-1.87973 L 17.8027,9.47274 17.1809,10.2559 C 16.7775,9.93561 16.7775,9.32306 17.181,9.00279 Z"
+     fill="#7c7c7e"
+     mask="url(#path-1-outside-1_227_10836)"
+     id="path16"
+     transform="translate(0,0.37106719)" />
+  <defs
+     id="defs23">
+    <linearGradient
+       id="paint0_linear_227_10836"
+       x1="4"
+       y1="9.5"
+       x2="17.5"
+       y2="9.5"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,0.37106985)">
+      <stop
+         stop-color="#84879F"
+         id="stop18" />
+      <stop
+         offset="1"
+         stop-color="#E3E7FF"
+         id="stop20" />
+    </linearGradient>
+  </defs>
+</svg>

@@ -167,10 +167,6 @@ public class TypeEditor extends BorderPanel {
 
     SwingComponentView<?> headerTrailingComponent = composite.getControlsComposite().getView();
 
-    //    final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
-    //    if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
-    //      headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
-    //    }
     headerTrailingComponent.setBorder(BorderFactory.createEmptyBorder(2, 2, 0, 2));
 
     this.tabbedPane = composite.getTabState().createFolderTabbedPane();

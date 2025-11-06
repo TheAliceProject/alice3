@@ -44,8 +44,8 @@
 package org.alice.stageide;
 
 import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.icons.RoomIcon;
-import org.alice.stageide.icons.ShapeIconFactory;
+import org.alice.ide.icons.RoomIcon;
+import org.alice.ide.icons.ShapeIconFactory;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;

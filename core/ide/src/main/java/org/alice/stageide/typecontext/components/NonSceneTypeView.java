@@ -43,30 +43,24 @@
 
 package org.alice.stageide.typecontext.components;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon;
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.icons.SceneIconFactory;
+import org.alice.ide.icons.SceneIconFactory;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.typecontext.NonSceneTypeComposite;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.CornerSpringPanel;
-import org.lgna.croquet.views.HorizontalAlignment;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.BoxLayout;
@@ -123,7 +117,7 @@ class SelectedTypeView extends BorderPanel {
 }
 
 class ReturnToSceneTypeButton extends Button {
-  private static Icon BACK_ICON = IconUtilities.createImageIcon(NonSceneTypeView.class.getResource("images/24/back.png"));
+  private static Icon BACK_ICON = new FlatSVGIcon(Icons.class.getResource("images/contract.svg")).derive(24, 24);
   private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE), 0.5f));
   private final Label typeIconLabel = new Label();
 
