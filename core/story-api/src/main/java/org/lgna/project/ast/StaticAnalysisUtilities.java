@@ -55,24 +55,26 @@ import java.util.Set;
 public class StaticAnalysisUtilities {
 
   public static boolean isValidIdentifier(String identifier) {
-    if (identifier != null) {
-      final int N = identifier.length();
-      if (N > 0) {
-        char c0 = identifier.charAt(0);
-        if (Character.isLetter(c0) || (c0 == '_')) {
-          for (int i = 1; i < N; i++) {
-            char cI = identifier.charAt(i);
-            if (Character.isLetterOrDigit(cI) || (cI == '_')) {
-              //pass
-            } else {
-              return false;
-            }
-          }
-          return true;
-        }
+    if (identifier == null) {
+      return false;
+    }
+    final int N = identifier.length();
+    if (N <= 0) {
+      return false;
+    }
+    char c0 = identifier.charAt(0);
+    if (!Character.isLetter(c0) && (c0 != '_')) {
+      // Must start with letter or underscore
+      return false;
+    }
+    for (int i = 1; i < N; i++) {
+      char cI = identifier.charAt(i);
+      if (!Character.isLetterOrDigit(cI) && (cI != '_')) {
+        // Must contain only letters, numbers, or underscores
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   private static String getConventionalIdentifierName(String name, boolean cap) {

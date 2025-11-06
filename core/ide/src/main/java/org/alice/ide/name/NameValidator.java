@@ -54,14 +54,14 @@ public abstract class NameValidator {
   public abstract boolean isNameAvailable(String name);
 
   public final String getExplanationIfOkButtonShouldBeDisabled(String name) {
-    if (this.isNameValid(name)) {
-      if (this.isNameAvailable(name)) {
-        return null;
-      } else {
-        return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAvailable").replaceAll("</name/>", "\"" + Matcher.quoteReplacement(name) + "\"");
-      }
-    } else {
-      return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAValidName").replaceAll("</name/>", "\"" + Matcher.quoteReplacement(name) + "\"");
+    if (!isNameValid(name)) {
+      return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAValidName")
+          .replaceAll("</name/>", "\"" + Matcher.quoteReplacement(name == null ? "null" : name) + "\"");
     }
+    if (!isNameAvailable(name)) {
+      return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAvailable")
+          .replaceAll("</name/>", "\"" + Matcher.quoteReplacement(name == null ? "null" : name) + "\"");
+    }
+    return null;
   }
 }

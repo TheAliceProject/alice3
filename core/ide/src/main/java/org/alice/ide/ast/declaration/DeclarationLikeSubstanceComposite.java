@@ -53,7 +53,6 @@ import org.alice.ide.croquet.models.ast.declaration.TypeFillIn;
 import org.alice.ide.croquet.models.declaration.InitializerStateOwner;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.custom.ArrayCustomExpressionCreatorComposite;
-import org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState;
 import org.alice.ide.preview.PreviewContainingOperationInputDialogCoreComposite;
 import org.alice.stageide.type.croquet.OtherTypeDialog;
 import org.lgna.croquet.AbstractSeverityStatusComposite;
@@ -393,11 +392,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
   }
 
   protected final boolean isNameValid(String name) {
-    if (IsIdentifierNameValidityStrictState.getInstance().getValue()) {
-      return StaticAnalysisUtilities.isValidIdentifier(name);
-    } else {
-      return (name != null) && (name.length() > 0);
-    }
+    return StaticAnalysisUtilities.isValidIdentifier(name);
   }
 
   protected abstract boolean isNameAvailable(String name);
