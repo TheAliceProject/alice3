@@ -198,9 +198,7 @@ public class MarkersView extends BorderPanel {
   public MarkersView(MarkersToolPalette composite) {
     super(composite);
     Button b1 = composite.getMoveToMarkerOperation().createButton();
-    b1.setMargin(new Insets(5, 5, 5, 5));
     Button b2 = composite.getMoveMarkerToOperation().createButton();
-    b2.setMargin(new Insets(5, 5, 5, 5));
     this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, b1, b2));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
     this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
