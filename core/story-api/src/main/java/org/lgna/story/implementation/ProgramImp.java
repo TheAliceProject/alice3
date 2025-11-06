@@ -61,7 +61,6 @@ import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
@@ -74,8 +73,6 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 /**
  * @author Dennis Cosgrove
@@ -246,10 +243,6 @@ public abstract class ProgramImp {
     return this.isControlPanelDesired;
   }
 
-  public void setControlPanelDesired(boolean isControlPanelDesired) {
-    this.isControlPanelDesired = isControlPanelDesired;
-  }
-
   public SProgram getAbstraction() {
     return this.abstraction;
   }
@@ -332,7 +325,7 @@ public abstract class ProgramImp {
         this.awtContainer.add(controlPanel, BorderLayout.PAGE_START);
       }
       if (this.awtContainer instanceof JComponent) {
-        ((JComponent) this.awtContainer).revalidate();
+        this.awtContainer.revalidate();
       }
     }
   }
@@ -350,42 +343,6 @@ public abstract class ProgramImp {
 
   public void initializeInAwtContainer(Container awtContainer) {
     this.initializeInAwtContainer(new DefaultAwtContainerInitializer(awtContainer));
-  }
-
-  public void initializeInFrame(final JFrame frame, final Runnable runnable) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        ProgramImp.this.addComponents(new DefaultAwtContainerInitializer(frame.getContentPane()));
-        frame.setVisible(true);
-        runnable.run();
-        requestFocusInWindow();
-      }
-    });
-  }
-
-  public void initializeInFrame(JFrame frame) {
-    final CyclicBarrier barrier = new CyclicBarrier(2);
-    this.initializeInFrame(frame, new Runnable() {
-      @Override
-      public void run() {
-        try {
-          barrier.await();
-        } catch (InterruptedException ie) {
-          throw new RuntimeException(ie);
-        } catch (BrokenBarrierException bbe) {
-          throw new RuntimeException(bbe);
-        }
-      }
-    });
-    try {
-      barrier.await();
-    } catch (InterruptedException ie) {
-      throw new RuntimeException(ie);
-    } catch (BrokenBarrierException bbe) {
-      throw new RuntimeException(bbe);
-    }
-    this.startAnimator();
   }
 
   public void shutDown() {

@@ -64,8 +64,4 @@ public class RunProgramContext extends ProgramContext {
     this.disableRendering();
     this.getProgramImp().initializeInAwtContainer(awtContainerInitializer);
   }
-
-  public Container getContainer() {
-    return this.getOnscreenRenderTarget().getAwtComponent().getParent();
-  }
 }
