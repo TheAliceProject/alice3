@@ -71,7 +71,7 @@ public abstract class AbstractAnimator implements Animator {
   private double speedFactor = 1.0;
   private double tCurrent;
 
-  private AnimationState state = AnimationState.RUNNING;
+  private volatile AnimationState state = AnimationState.RUNNING;
 
   protected abstract void updateCurrentTime();
 
