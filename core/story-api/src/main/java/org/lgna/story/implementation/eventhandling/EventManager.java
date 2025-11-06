@@ -45,9 +45,6 @@ package org.lgna.story.implementation.eventhandling;
 
 import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
-import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
-import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.DragAdapter.CameraView;
@@ -77,7 +74,6 @@ import java.util.Map;
 public class EventManager {
 
   private final SceneImp scene;
-  private final InputEventRecorder inputRecorder;
   private final KeyPressedHandler keyHandler = new KeyPressedHandler();
   private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
   private final TransformationHandler transHandler = new TransformationHandler();
@@ -92,7 +88,7 @@ public class EventManager {
 
   private final TimerContingencyManager contingent;
 
-  public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
+  private final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
 
   public CollisionHandler getCollisionHandler() {
     return collisionHandler;
@@ -101,28 +97,19 @@ public class EventManager {
   private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
     @Override
     protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickCountUnquote) {
-      inputRecorder.record(createWrapper(e));
       EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote(e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction());
-    }
-
-    public void handleReplayedEvent(MouseEventWrapper e) {
-      mouseQuoteClickedUnquote(e.getTranslatedPointIfNecessary(scene.getProgram().getOnscreenRenderTarget().getAwtComponent()), 0);
     }
   }
 
   private final KeyListener keyAdapter = new KeyListener() {
     @Override
     public void keyPressed(KeyEvent e) {
-      org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
-      inputRecorder.record(e);
-      keyHandler.handleKeyPress(event);
+      keyHandler.handleKeyPress(new org.lgna.story.event.KeyEvent(e));
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-      org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
-      inputRecorder.record(e);
-      keyHandler.handleKeyRelease(event);
+      keyHandler.handleKeyRelease(new org.lgna.story.event.KeyEvent(e));
     }
 
     @Override
@@ -149,16 +136,11 @@ public class EventManager {
     for (AbstractEventHandler<?, ?> handler : handlers) {
       handler.setScene(scene);
     }
-    inputRecorder = new InputEventRecorder(scene);
     contingent = new TimerContingencyManager(timer);
   }
 
   public void initialize() {
     scene.addSceneActivationListener(timer);
-  }
-
-  public MouseEventWrapper createWrapper(MouseEvent e) {
-    return new MouseEventWrapper(e);
   }
 
   public void removeKeyListener(KeyPressListener keyListener) {
@@ -296,9 +278,5 @@ public class EventManager {
 
   public void removeSceneActivationListener(SceneActivationListener listener) {
     sceneActivationHandler.removeListener(listener);
-  }
-
-  public EventScript getScript() {
-    return inputRecorder.getScript();
   }
 }
