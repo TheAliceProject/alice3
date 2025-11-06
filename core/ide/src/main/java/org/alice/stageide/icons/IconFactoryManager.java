@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.icons.Icons;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
@@ -266,7 +265,7 @@ public class IconFactoryManager {
         }
       }
     }
-    JavaField argumentField = ConstructorArgumentUtilities.getField(requiredArguments);
+    JavaField argumentField = requiredArguments.getJavaField();
     if (argumentField != null) {
       if (argumentField.isStatic()) {
         Field fld = argumentField.getFieldReflectionProxy().getReification();
