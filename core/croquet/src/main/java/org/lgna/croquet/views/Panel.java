@@ -137,10 +137,6 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
     this.internalRemoveComponent(component);
   }
 
-  public void forgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalForgetAndRemoveComponent(component);
-  }
-
   public void removeAllComponents() {
     this.internalRemoveAllComponents();
   }

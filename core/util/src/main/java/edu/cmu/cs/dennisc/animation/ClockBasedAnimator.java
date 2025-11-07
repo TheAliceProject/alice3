@@ -52,7 +52,7 @@ public class ClockBasedAnimator extends AbstractAnimator {
   private double m_tPreviousSimulation = Double.NaN;
 
   @Override
-  protected void updateCurrentTime(boolean isPaused) {
+  protected void updateCurrentTime() {
     //todo: optimize for speed factor == 0
     double tCurrentClock = Clock.getCurrentTime();
     double tCurrentSimulation;

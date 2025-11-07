@@ -58,15 +58,22 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimator implements Animator {
+
+  private enum AnimationState {
+    RUNNING,
+    PAUSED,
+    CANCELLED
+  }
+
   private final Queue<WaitingAnimation> waitingAnimations = Queues.newConcurrentLinkedQueue();
   private final List<FrameObserver> frameObservers = Lists.newCopyOnWriteArrayList();
 
   private double speedFactor = 1.0;
   private double tCurrent;
 
-  private boolean isPaused = false;
+  private volatile AnimationState state = AnimationState.RUNNING;
 
-  protected abstract void updateCurrentTime(boolean isPaused);
+  protected abstract void updateCurrentTime();
 
   protected final void setCurrentTime(double tCurrent) {
     this.tCurrent = tCurrent;
@@ -89,13 +96,13 @@ public abstract class AbstractAnimator implements Animator {
 
   @Override
   public void update() {
-    boolean isPaused = this.speedFactor <= 0.0;
-    updateCurrentTime(isPaused);
+    AnimationState newState = this.speedFactor <= 0.0 ? AnimationState.PAUSED : AnimationState.RUNNING;
+    updateCurrentTime();
 
     // Run update logic once after a pause
-    if (!isPaused || !this.isPaused) {
+    if (newState == AnimationState.RUNNING || this.state == AnimationState.RUNNING) {
       double tCurrent = getCurrentTime();
-      if (this.waitingAnimations.size() > 0) {
+      if (!this.waitingAnimations.isEmpty()) {
         Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
         Set<Animated> allAnimated = new HashSet<>();
         while (iterator.hasNext()) {
@@ -113,23 +120,19 @@ public abstract class AbstractAnimator implements Animator {
           animated.applyAnimation();
         }
       }
-      if (this.frameObservers.size() > 0) {
+      if (!this.frameObservers.isEmpty()) {
         for (FrameObserver frameObserver : this.frameObservers) {
           frameObserver.update(tCurrent);
         }
       }
     }
 
-    this.isPaused = isPaused;
-  }
-
-  protected WaitingAnimation createWaitingAnimation(Animation animation, AnimationObserver animationObserver, Thread currentThread) {
-    return new WaitingAnimation(animation, animationObserver, currentThread);
+    this.state = newState;
   }
 
   @Override
   public void invokeLater(Animation animation, AnimationObserver animationObserver) {
-    WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, null);
+    WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, null);
     this.waitingAnimations.add(waitingAnimation);
   }
 
@@ -141,10 +144,12 @@ public abstract class AbstractAnimator implements Animator {
   public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException {
     if (this.isAcceptableThread()) {
       Thread currentThread = Thread.currentThread();
-      WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, currentThread);
+      WaitingAnimation waitingAnimation = new WaitingAnimation(animation, animationObserver, currentThread);
       synchronized (currentThread) {
-        this.waitingAnimations.add(waitingAnimation);
-        currentThread.wait();
+        if (this.state != AnimationState.CANCELLED) {
+          this.waitingAnimations.add(waitingAnimation);
+          currentThread.wait();
+        }
       }
       if (waitingAnimation.getException() != null) {
         throw new InvocationTargetException(waitingAnimation.getException());
@@ -178,6 +183,8 @@ public abstract class AbstractAnimator implements Animator {
 
   @Override
   public void cancelAnimation() {
+    this.state = AnimationState.CANCELLED;
+
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();
