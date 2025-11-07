@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.icons.Icons;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
@@ -69,12 +68,12 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class IconFactoryManager {
-  private static interface ResourceDeclaration {
-    public IconFactory createIconFactory();
+  private interface ResourceDeclaration {
+    IconFactory createIconFactory();
   }
 
   // @formatter:off
-  private static Set<Class<? extends JointedModelResource>> setOfClassesWithIcons = Sets.newHashSet(
+  private static final Set<Class<? extends JointedModelResource>> setOfClassesWithIcons = Sets.newHashSet(
       BipedResource.class,
       FishResource.class,
       FlyerResource.class,
@@ -106,11 +105,9 @@ public class IconFactoryManager {
     public final IconFactory createIconFactory() {
       Class<? extends ModelResource> cls = this.getModelResourceClass();
       String modelResourceName = this.getModelResourceName();
-      if (modelResourceName == null && getSetOfClassesWithIcons().contains(cls)) {
-        StringBuilder sb = new StringBuilder("images/resources/");
-        sb.append(cls.getSimpleName());
-        sb.append(".svg");
-        return new SVGIconFactory(Icons.class.getResource(sb.toString()));
+      if (modelResourceName == null && setOfClassesWithIcons.contains(cls)) {
+        String sb = "images/resources/" + cls.getSimpleName() + ".svg";
+        return new SVGIconFactory(Icons.class.getResource(sb));
       }
       return createIconFactoryFromUrl(cls != null ? getThumbnailUrl() : null);
     }
@@ -155,8 +152,7 @@ public class IconFactoryManager {
       if (this == obj) {
         return true;
       }
-      if (obj instanceof ResourceEnumConstant) {
-        ResourceEnumConstant other = (ResourceEnumConstant) obj;
+      if (obj instanceof ResourceEnumConstant other) {
         return this.enm.equals(other.enm);
       }
       return false;
@@ -196,8 +192,7 @@ public class IconFactoryManager {
       if (this == obj) {
         return true;
       }
-      if (obj instanceof ResourceType) {
-        ResourceType other = (ResourceType) obj;
+      if (obj instanceof ResourceType other) {
         return this.cls.equals(other.cls);
       }
       return false;
@@ -220,7 +215,7 @@ public class IconFactoryManager {
     @Override
     public IconFactory createIconFactory() {
       if (instance instanceof ModelStructure) {
-        return getIconFactoryForModelStructure((ModelStructure) instance);
+        return getIconFactoryForModelStructure((ModelStructure<?, ?>) instance);
       } else {
         return NebulousIde.nonfree.createIconFactory(this.instance);
       }
@@ -231,8 +226,7 @@ public class IconFactoryManager {
       if (this == obj) {
         return true;
       }
-      if (obj instanceof ResourceInstance) {
-        ResourceInstance other = (ResourceInstance) obj;
+      if (obj instanceof ResourceInstance other) {
         return this.instance.equals(other.instance);
       }
       return false;
@@ -244,10 +238,10 @@ public class IconFactoryManager {
     }
   }
 
-  private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
-  private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
-  private static Map<ModelStructure, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
-  private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
+  private static final Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
+  private static final Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
+  private static final Map<ModelStructure<?, ?>, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
+  private static final Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
 
   private IconFactoryManager() {
   }
@@ -266,13 +260,12 @@ public class IconFactoryManager {
       Expression expression0 = arg0.expression.getValue();
       if (expression0 instanceof InstanceCreation) {
         Object instance = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(expression0);
-        if (instance instanceof ModelResource) {
-          ModelResource modelResource = (ModelResource) instance;
+        if (instance instanceof ModelResource modelResource) {
           return new ResourceInstance(modelResource);
         }
       }
     }
-    JavaField argumentField = ConstructorArgumentUtilities.getField(requiredArguments);
+    JavaField argumentField = requiredArguments.getJavaField();
     if (argumentField != null) {
       if (argumentField.isStatic()) {
         Field fld = argumentField.getFieldReflectionProxy().getReification();
@@ -297,8 +290,7 @@ public class IconFactoryManager {
 
   private static int getRequiredArgumentsInInitializer(UserField userField) {
     Expression initializer = userField.initializer.getValue();
-    if (initializer instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) initializer;
+    if (initializer instanceof InstanceCreation instanceCreation) {
       return instanceCreation.requiredArguments.size();
     }
     return -1;
@@ -306,8 +298,7 @@ public class IconFactoryManager {
 
   private static ResourceDeclaration createResourceDeclarationFromField(UserField userField) {
     Expression initializer = userField.initializer.getValue();
-    if (initializer instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) initializer;
+    if (initializer instanceof InstanceCreation instanceCreation) {
       return createResourceDeclarationFromRequiredArguments(instanceCreation.requiredArguments);
     }
     return null;
@@ -333,7 +324,7 @@ public class IconFactoryManager {
     return iconFactory;
   }
 
-  public static IconFactory getIconFactoryForModelStructure(ModelStructure modelStructure) {
+  public static IconFactory getIconFactoryForModelStructure(ModelStructure<?, ?> modelStructure) {
     IconFactory iconFactory = mapModelStructureToIconFactory.get(modelStructure);
     if (iconFactory == null) {
       URL url = null;
@@ -394,7 +385,7 @@ public class IconFactoryManager {
           }
           break;
         case 1:
-          AbstractParameter parameter0 = parameters.get(0);
+          AbstractParameter parameter0 = parameters.getFirst();
           AbstractType<?, ?, ?> parameter0Type = parameter0.getValueType();
           if (parameter0Type != null) {
             if (parameter0Type.isAssignableTo(ModelResource.class)) {

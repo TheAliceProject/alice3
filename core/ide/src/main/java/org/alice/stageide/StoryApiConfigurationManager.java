@@ -62,7 +62,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.member.FilteredMethodsSubComposite;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
@@ -546,16 +545,16 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       // public Alice(AliceResource resource) { super(resource); }
       // public Biped(BipedResource resource) { super(resource); }
       Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
-      AbstractType<?, ?, ?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type(constructor0);
+      AbstractType<?, ?, ?> constructorParameterType = constructor0.getFirstParameterType();
       AbstractType<?, ?, ?> inferredResourceType = constructorParameterType;
       if (inferredResourceType == null) {
-        JavaField field = ConstructorArgumentUtilities.getArgumentField(constructor0);
+        JavaField field = getArgumentField(constructor0);
         if (field != null) {
           inferredResourceType = field.getValueType();
         }
       }
       JavaType ancestorType = rv.getFirstEncounteredJavaType();
-      if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
+      if (constructorParameterType != ancestorType.getFirstParameterType()) {
         if (inferredResourceType != null) {
           addMethodsToType(rv, inferredResourceType);
         } else if (firstArgument instanceof DynamicResource) {
@@ -566,6 +565,16 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       }
     }
     return rv;
+  }
+
+  private static JavaField getArgumentField(AbstractConstructor constructor0) {
+    if (!(constructor0 instanceof NamedUserConstructor namedUserConstructor)) {
+      return null;
+    }
+
+    ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+    SimpleArgumentListProperty args = constructorInvocationStatement.requiredArguments;
+    return args.getJavaField();
   }
 
   @Override

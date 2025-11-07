@@ -283,7 +283,7 @@ public class TypeManager {
 
   private static AbstractType<?, ?, ?>[] getArgumentTypes(AbstractType<?, ?, ?> ancestorType, AbstractType<?, ?, ?> resourceType) {
     List<AbstractType<?, ?, ?>> types = Lists.newLinkedList();
-    updateArgumentTypes(types, ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType), resourceType);
+    updateArgumentTypes(types, ancestorType.getFirstParameterType(), resourceType);
     AbstractType<?, ?, ?>[] rv = new AbstractType<?, ?, ?>[types.size()];
     types.toArray(rv);
     return rv;
@@ -450,10 +450,10 @@ public class TypeManager {
   }
 
   public static NamedUserType getNamedUserTypeFromSuperType(JavaType superType) {
-    AbstractType<?, ?, ?> parameter0Type = ConstructorArgumentUtilities.getContructor0Parameter0Type(superType);
+    AbstractType<?, ?, ?> parameter0Type = superType.getFirstParameterType();
     ExtendsTypeCriterion criterion;
     if (parameter0Type != null) {
-      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion(superType, ConstructorArgumentUtilities.getContructor0Parameter0Type(superType));
+      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion(superType, superType.getFirstParameterType());
     } else {
       criterion = new DefaultConstructorExtendsTypeCriterion(superType);
     }

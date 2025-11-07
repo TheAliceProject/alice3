@@ -56,7 +56,7 @@ import java.util.function.BinaryOperator;
 public abstract class AbstractType<C extends AbstractConstructor, M extends AbstractMethod, F extends AbstractField> extends AbstractAccessibleDeclaration {
   public JavaType getFirstEncounteredJavaType() {
     AbstractType<?, ?, ?> type = this;
-    while ((type instanceof JavaType) == false) {
+    while (!(type instanceof JavaType)) {
       type = type.getSuperType();
     }
     return (JavaType) type;
@@ -173,10 +173,19 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
   public AbstractConstructor getFirstDeclaredConstructor() {
     List<? extends AbstractConstructor> constructors = getDeclaredConstructors();
-    if (constructors.size() > 0) {
-      return constructors.get(0);
+    if (!constructors.isEmpty()) {
+      return constructors.getFirst();
     }
     return null;
+  }
+
+  public AbstractType<?, ?, ?> getFirstParameterType() {
+    // if we have a constructor, and it has at least one parameter, this will return the type of the first parameter
+   AbstractConstructor constructor = getFirstDeclaredConstructor();
+   if (constructor == null) {
+     return null;
+   }
+   return constructor.getFirstParameterType();
   }
 
   public M getDeclaredMethod(String name, AbstractType<?, ?, ?>... parameterTypes) {
@@ -225,12 +234,8 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
     return rv;
   }
 
-  public F getDeclaredField(Class<?> valueCls, String name) {
-    return getDeclaredField(JavaType.getInstance(valueCls), name);
-  }
-
   public F getDeclaredField(String name) {
-    return getDeclaredField((AbstractType<?, ?, ?>) null, name);
+    return getDeclaredField(null, name);
   }
 
   public abstract AbstractType<?, ?, ?> getArrayType();
@@ -249,13 +254,10 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
     return rv;
   }
 
-  public AbstractField findField(Class<?> valueCls, String name) {
-    return findField(JavaType.getInstance(valueCls), name);
 
-  }
 
   public AbstractField findField(String name) {
-    return findField((AbstractType<?, ?, ?>) null, name);
+    return findField(null, name);
   }
 
   public AbstractMethod findMethod(String name, AbstractType<?, ?, ?>... parameterTypes) {
