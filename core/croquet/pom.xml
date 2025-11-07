@@ -68,5 +68,51 @@
       <groupId>com.miglayout</groupId>
       <artifactId>miglayout-swing</artifactId>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.github.weisj/jsvg -->
+    <dependency>
+      <groupId>com.github.weisj</groupId>
+      <artifactId>jsvg</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>no-natives</classifier>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>linux-x86_64</classifier>
+      <type>so</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>macos-arm64</classifier>
+      <type>dylib</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>macos-x86_64</classifier>
+      <type>dylib</type>
+    </dependency>
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <classifier>windows-x86_64</classifier>
+      <type>dll</type>
+    </dependency>
+    <!-- Using other FlatLaf libraries, it is required to exclude "com.formdev:flatlaf" -->
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf-extras</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.formdev</groupId>
+          <artifactId>flatlaf</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 </project>
