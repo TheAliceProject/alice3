@@ -65,6 +65,11 @@
       <version>1.47.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.github.weisj/jsvg -->
+    <dependency>
+      <groupId>com.github.weisj</groupId>
+      <artifactId>jsvg</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.formdev</groupId>
       <artifactId>flatlaf</artifactId>

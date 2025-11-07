@@ -69,6 +69,11 @@
       <artifactId>miglayout-swing</artifactId>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.github.weisj/jsvg -->
+    <dependency>
+      <groupId>com.github.weisj</groupId>
+      <artifactId>jsvg</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.formdev</groupId>
       <artifactId>flatlaf</artifactId>
