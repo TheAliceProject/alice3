@@ -46,6 +46,9 @@ package org.lgna.story;
 import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.story.implementation.ProgramImp;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,4 +81,13 @@ import org.lgna.story.implementation.ProgramImp;
   public void setSimulationSpeedFactor(Number simulationSpeedFactor) {
     this.implementation.setSimulationSpeedFactor(simulationSpeedFactor.doubleValue());
   }
+
+  public void initializeInFrame(String[] args) {
+    final int DEFAULT_CLOSE_OPERATION = WindowConstants.EXIT_ON_CLOSE;
+    JFrame frame = new JFrame();
+    frame.setSize(640, 480);
+    frame.setDefaultCloseOperation(DEFAULT_CLOSE_OPERATION);
+    this.implementation.initializeInFrame(frame);
+  }
+
 }
