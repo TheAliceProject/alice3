@@ -66,7 +66,7 @@ import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
-import org.alice.stageide.iconfactory.StoryIconFactoryManager;
+import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.stageide.instancefactory.croquet.joint.all.*;
 import org.alice.stageide.member.*;
 import org.lgna.croquet.CascadeBlankChild;

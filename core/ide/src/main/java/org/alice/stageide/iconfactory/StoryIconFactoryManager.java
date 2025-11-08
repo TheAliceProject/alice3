@@ -40,10 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.iconfactory;
+package org.alice.ide.iconfactory;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.iconfactory.IconFactoryManager;
+import org.alice.ide.icons.FieldIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.UserField;

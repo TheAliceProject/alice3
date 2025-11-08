@@ -40,32 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.ide.icons;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.worker.Worker;
 
 import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
+public class UrlAsynchronousIcon extends AsynchronousIcon {
+  protected final URL url;
+
   private class IconWorker extends Worker<Icon> {
     @Override
     protected Icon do_onBackgroundThread() throws Exception {
-      return AsynchronousWorkerIcon.this.do_onBackgroundThread();
+      return UrlAsynchronousIcon.this.do_onBackgroundThread();
     }
 
     @Override
     protected void handleDone_onEventDispatchThread(Icon value) {
-      AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread(value);
+      UrlAsynchronousIcon.this.handleDone_onEventDispatchThread(value);
     }
   }
 
-  public AsynchronousWorkerIcon(int iconWidthFallback, int iconHeightFallback) {
+  public UrlAsynchronousIcon(int iconWidthFallback, int iconHeightFallback, URL url) {
     this.iconWidthFallback = iconWidthFallback;
     this.iconHeightFallback = iconHeightFallback;
+    this.url = url;
   }
 
   @Override
@@ -108,7 +115,17 @@ public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
     }
   }
 
-  protected abstract Icon do_onBackgroundThread() throws Exception;
+  @Override
+  protected void paintIconFallback(Component c, Graphics g, int x, int y) {
+    if (c.isOpaque()) {
+      g.setColor(c.getBackground());
+      g.fillRect(x, y, this.getIconWidthFallback(), this.getIconHeightFallback());
+    }
+  }
+
+  protected Icon do_onBackgroundThread() throws Exception {
+    return IconUtilities.createImageIcon(this.url);
+  }
 
   private void handleDone_onEventDispatchThread(Icon value) {
     this.repaintComponentsIfNecessary();
