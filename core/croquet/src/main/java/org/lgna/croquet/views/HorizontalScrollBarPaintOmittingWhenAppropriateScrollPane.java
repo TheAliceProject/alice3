@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
 
 /**
@@ -52,10 +51,5 @@ public class HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane extends S
   public HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane(AwtComponentView<?> view) {
     super(view);
     this.setHorizontalScrollbarPolicy(HorizontalScrollbarPolicy.ALWAYS);
-  }
-
-  @Override
-  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-    return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
   }
 }

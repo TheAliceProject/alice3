@@ -62,29 +62,8 @@ import java.awt.Dimension;
  */
 public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 
-  protected static class JViewBasedBackgroundColorScrollBar extends JScrollBar {
-    public JViewBasedBackgroundColorScrollBar(int orientation) {
-      super(orientation);
-    }
-
-    @Override
-    public Color getBackground() {
-      javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane) this.getParent();
-      if (scrollPane != null) {
-        Color scrollPaneBackground = scrollPane.getBackground();
-        return scrollPaneBackground;
-        //todo?
-        //return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( scrollPaneBackground, 1.0, 0.7, 1.1 );
-      }
-      return super.getBackground();
-    }
-  }
-
   public JScrollPaneCoveringLinuxPaintBug(Component view) {
     super(view);
-    if (SystemUtilities.isLinux()) {
-      this.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
-    }
     int inset = SmallerFootprintScrollBarUI.INSET;
     Border border = BorderFactory.createEmptyBorder(inset, inset, inset, inset);
     JScrollBar verticalScrollBar = this.getVerticalScrollBar();
@@ -114,12 +93,12 @@ public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
 
   @Override
   public JScrollBar createHorizontalScrollBar() {
-    return new JViewBasedBackgroundColorScrollBar(JScrollBar.HORIZONTAL);
+    return new JScrollBar(JScrollBar.HORIZONTAL);
   }
 
   @Override
   public JScrollBar createVerticalScrollBar() {
-    return new JViewBasedBackgroundColorScrollBar(JScrollBar.VERTICAL);
+    return new JScrollBar(JScrollBar.VERTICAL);
   }
 
   public static void main(String[] args) {

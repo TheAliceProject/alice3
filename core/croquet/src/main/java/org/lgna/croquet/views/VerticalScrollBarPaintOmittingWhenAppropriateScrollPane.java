@@ -43,7 +43,6 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
-import edu.cmu.cs.dennisc.javax.swing.components.VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane;
 
 /**
  * @author Dennis Cosgrove
@@ -52,10 +51,5 @@ public class VerticalScrollBarPaintOmittingWhenAppropriateScrollPane extends Scr
   public VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(AwtComponentView<?> view) {
     super(view);
     this.setVerticalScrollbarPolicy(VerticalScrollbarPolicy.ALWAYS);
-  }
-
-  @Override
-  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-    return new VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
   }
 }
