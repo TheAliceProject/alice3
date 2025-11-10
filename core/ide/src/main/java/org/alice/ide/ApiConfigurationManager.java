@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.tree.DefaultNode;
 import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.ast.ExpressionCreator;
-import org.alice.ide.iconfactory.IconFactoryManager;
+import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.stageide.StoryApiConfigurationManager;
@@ -57,19 +57,7 @@ import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -257,5 +245,5 @@ public abstract class ApiConfigurationManager {
 
   public abstract boolean isExportTypeDesiredFor(NamedUserType type);
 
-  public abstract IconFactoryManager createIconFactoryManager();
+  public abstract StoryIconFactoryManager createIconFactoryManager();
 }

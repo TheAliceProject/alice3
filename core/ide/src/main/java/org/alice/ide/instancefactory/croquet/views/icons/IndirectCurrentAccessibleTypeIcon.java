@@ -44,6 +44,7 @@ package org.alice.ide.instancefactory.croquet.views.icons;
 
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
+import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.icons.IconFactoryManager;
@@ -75,7 +76,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
       if (instanceFactory instanceof ThisFieldAccessFactory) {
         ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
         UserField field = thisFieldAccessFactory.getField();
-        org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
+        StoryIconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
         rv = iconFactoryManager.getIconFactory(field, IconFactoryManager.getIconFactoryForField(field));
       }
       if (rv == null) {

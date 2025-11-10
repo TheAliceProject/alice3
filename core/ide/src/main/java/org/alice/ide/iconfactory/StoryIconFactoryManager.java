@@ -55,12 +55,11 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 
-public class StoryIconFactoryManager implements IconFactoryManager {
+public class StoryIconFactoryManager {
 
   public StoryIconFactoryManager() {
   }
 
-  @Override
   public IconFactory getIconFactory(UserField field, IconFactory fallbackIconFactory) {
     AbstractType<?, ?, ?> type = field.getValueType();
     if (type.isAssignableTo(Visual.class)) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
@@ -77,7 +76,6 @@ public class StoryIconFactoryManager implements IconFactoryManager {
     }
   }
 
-  @Override
   public void markIconFactoryForFieldDirty(UserField field) {
     FieldIconFactory iconFactory = this.mapFieldToIconFactory.get(field);
     if (iconFactory != null) {
