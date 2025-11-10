@@ -46,8 +46,17 @@ package org.lgna.story;
 import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.story.implementation.ProgramImp;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 /**
  * @author Dennis Cosgrove
+ *
+ * An SProgram is the root instance for a project in Alice.
+ * The user's SProgram class is based on this class through reflection and bootstrap code (see BootstrapUtilities.java).
+ * The family of S_ classes in java should be changed only with careful consideration.
+ *
+ * The file classinfos.json identifies the classes and methods that can compose an Alice project.
  */
 @ClassTemplate(isFollowToSuperClassDesired = false) public/* abstract */class SProgram {
   private final ProgramImp implementation = ProgramImp.createInstance(this);
@@ -78,4 +87,13 @@ import org.lgna.story.implementation.ProgramImp;
   public void setSimulationSpeedFactor(Number simulationSpeedFactor) {
     this.implementation.setSimulationSpeedFactor(simulationSpeedFactor.doubleValue());
   }
+
+  public void initializeInFrame(String[] args) {
+    final int DEFAULT_CLOSE_OPERATION = WindowConstants.EXIT_ON_CLOSE;
+    JFrame frame = new JFrame();
+    frame.setSize(640, 480);
+    frame.setDefaultCloseOperation(DEFAULT_CLOSE_OPERATION);
+    this.implementation.initializeInFrame(frame);
+  }
+
 }
