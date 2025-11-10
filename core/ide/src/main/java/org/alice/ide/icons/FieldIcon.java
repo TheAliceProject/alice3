@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.iconfactory;
+package org.alice.ide.icons;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -48,7 +48,6 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
 import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
 import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;

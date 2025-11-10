@@ -63,7 +63,7 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.highlight.IdeHighlightStencil;
-import org.alice.ide.iconfactory.IconFactoryManager;
+import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.perspectives.ProjectPerspective;
@@ -74,12 +74,7 @@ import org.alice.stageide.perspectives.CodePerspective;
 import org.alice.stageide.perspectives.PerspectiveState;
 import org.alice.stageide.perspectives.SetupScenePerspective;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemState;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.PerspectiveDocumentFrame;
-import org.lgna.croquet.State;
+import org.lgna.croquet.*;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
@@ -248,7 +243,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.typeMetaState;
   }
 
-  public IconFactoryManager getIconFactoryManager() {
+  public StoryIconFactoryManager getIconFactoryManager() {
     return this.iconFactoryManager;
   }
 
@@ -347,7 +342,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   private final InstanceFactoryState instanceFactoryState;
 
-  private final IconFactoryManager iconFactoryManager;
+  private final StoryIconFactoryManager iconFactoryManager;
 
   private final DeclarationsEditorComposite declarationsEditorComposite = new DeclarationsEditorComposite();
 

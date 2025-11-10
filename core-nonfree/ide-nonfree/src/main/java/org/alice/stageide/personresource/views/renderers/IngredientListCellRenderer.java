@@ -44,8 +44,8 @@ package org.alice.stageide.personresource.views.renderers;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.UrlAsynchronousIcon;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.icons.UrlAsynchronousIcon;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.LifeStage;

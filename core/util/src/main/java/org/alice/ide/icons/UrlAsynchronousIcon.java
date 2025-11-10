@@ -40,50 +40,98 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.iconfactory;
+package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.iconfactory.IconFactoryManager;
-import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.UserField;
-import org.lgna.story.Visual;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.worker.Worker;
 
-import java.util.Map;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Dennis Cosgrove
  */
+public class UrlAsynchronousIcon extends AsynchronousIcon {
+  protected final URL url;
 
-public class StoryIconFactoryManager implements IconFactoryManager {
+  private class IconWorker extends Worker<Icon> {
+    @Override
+    protected Icon do_onBackgroundThread() throws Exception {
+      return UrlAsynchronousIcon.this.do_onBackgroundThread();
+    }
 
-  public StoryIconFactoryManager() {
+    @Override
+    protected void handleDone_onEventDispatchThread(Icon value) {
+      UrlAsynchronousIcon.this.handleDone_onEventDispatchThread(value);
+    }
+  }
+
+  public UrlAsynchronousIcon(int iconWidthFallback, int iconHeightFallback, URL url) {
+    this.iconWidthFallback = iconWidthFallback;
+    this.iconHeightFallback = iconHeightFallback;
+    this.url = url;
   }
 
   @Override
-  public IconFactory getIconFactory(UserField field, IconFactory fallbackIconFactory) {
-    AbstractType<?, ?, ?> type = field.getValueType();
-    if (type.isAssignableTo(Visual.class)) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
-      synchronized (this.mapFieldToIconFactory) {
-        FieldIconFactory iconFactory = this.mapFieldToIconFactory.get(field);
-        if (iconFactory == null) {
-            iconFactory = new FieldIconFactory(field, fallbackIconFactory);
-            this.mapFieldToIconFactory.put(field, iconFactory);
-        }
-        return iconFactory;
+  protected int getIconWidthFallback() {
+    return this.iconWidthFallback;
+  }
+
+  @Override
+  protected int getIconHeightFallback() {
+    return this.iconHeightFallback;
+  }
+
+  private Icon getIconFromDoneWorker() {
+    try {
+      return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
+    } catch (InterruptedException ie) {
+      throw new Error(ie);
+    } catch (ExecutionException ee) {
+      throw new Error(ee);
+    }
+  }
+
+  @Override
+  protected Icon getResult(boolean isPaint) {
+    if (this.worker != null) {
+      if (this.worker.isDone()) {
+        return this.getIconFromDoneWorker();
+      } else {
+        return null;
       }
     } else {
-      return fallbackIconFactory;
+      if (isPaint) {
+        this.worker = new IconWorker();
+        this.worker.execute();
+        if (this.worker.isDone()) {
+          return this.getIconFromDoneWorker();
+        }
+      }
+      return null;
     }
   }
 
   @Override
-  public void markIconFactoryForFieldDirty(UserField field) {
-    FieldIconFactory iconFactory = this.mapFieldToIconFactory.get(field);
-    if (iconFactory != null) {
-      iconFactory.markAllIconsDirty();
+  protected void paintIconFallback(Component c, Graphics g, int x, int y) {
+    if (c.isOpaque()) {
+      g.setColor(c.getBackground());
+      g.fillRect(x, y, this.getIconWidthFallback(), this.getIconHeightFallback());
     }
   }
 
-  private final Map<UserField, FieldIconFactory> mapFieldToIconFactory = Maps.newWeakHashMap();
+  protected Icon do_onBackgroundThread() throws Exception {
+    return IconUtilities.createImageIcon(this.url);
+  }
+
+  private void handleDone_onEventDispatchThread(Icon value) {
+    this.repaintComponentsIfNecessary();
+  }
+
+  private final int iconWidthFallback;
+  private final int iconHeightFallback;
+  private IconWorker worker;
 }

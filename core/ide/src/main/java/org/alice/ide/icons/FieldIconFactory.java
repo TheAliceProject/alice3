@@ -40,34 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.javax.swing;
+package org.alice.ide.icons;
+
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.UserField;
 
 import javax.swing.Icon;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.net.URL;
+import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
-  public UrlAsynchronousIcon(int iconWidthFallback, int iconHeightFallback, URL url) {
-    super(iconWidthFallback, iconHeightFallback);
-    this.url = url;
+public class FieldIconFactory extends AbstractIconFactory {
+  public FieldIconFactory(UserField field, IconFactory fallbackIconFactory) {
+    super(IsCachingDesired.TRUE);
+    this.field = field;
+    this.fallbackIconFactory = fallbackIconFactory;
   }
 
   @Override
-  protected void paintIconFallback(Component c, Graphics g, int x, int y) {
-    if (c.isOpaque()) {
-      g.setColor(c.getBackground());
-      g.fillRect(x, y, this.getIconWidthFallback(), this.getIconHeightFallback());
+  protected Icon createIcon(Dimension size) {
+    return new FieldIcon(this.field, this.fallbackIconFactory.getIconToFit(size));
+  }
+
+  public void markAllIconsDirty() {
+    for (Icon icon : this.getMapValues()) {
+      if (icon instanceof FieldIcon) {
+        FieldIcon fieldIcon = (FieldIcon) icon;
+        fieldIcon.markDirty();
+      }
     }
   }
 
-  @Override
-  protected Icon do_onBackgroundThread() throws Exception {
-    return IconUtilities.createImageIcon(this.url);
-  }
-
-  private final URL url;
+  private final UserField field;
+  private final IconFactory fallbackIconFactory;
 }
