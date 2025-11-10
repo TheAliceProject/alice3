@@ -51,6 +51,12 @@ import javax.swing.WindowConstants;
 
 /**
  * @author Dennis Cosgrove
+ *
+ * An SProgram is the root instance for a project in Alice.
+ * The user's SProgram class is based on this class through reflection and bootstrap code (see BootstrapUtilities.java).
+ * The family of S_ classes in java should be changed only with careful consideration.
+ *
+ * The file classinfos.json identifies the classes and methods that can compose an Alice project.
  */
 @ClassTemplate(isFollowToSuperClassDesired = false) public/* abstract */class SProgram {
   private final ProgramImp implementation = ProgramImp.createInstance(this);
