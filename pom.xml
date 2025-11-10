@@ -77,7 +77,9 @@
 
     <jogl.version>2.5.0</jogl.version>
     <gluegen.version>2.5.0</gluegen.version>
-    <flatlaf.version>3.6</flatlaf.version>
+    <!-- flatlaf, flatlaf extras, and jsvg are version sensitive, so these two identifier should change together. -->
+    <flatlaf.version>3.6.2</flatlaf.version>
+    <weisj.version>2.0.0</weisj.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.9.0.3</alice.build.version>
@@ -264,7 +266,7 @@
       <dependency>
         <groupId>com.github.weisj</groupId>
         <artifactId>jsvg</artifactId>
-        <version>2.0.0</version>
+        <version>${weisj.version}</version>
       </dependency>
       <!-- https://www.formdev.com/flatlaf/native-libraries/-->
       <dependency>
