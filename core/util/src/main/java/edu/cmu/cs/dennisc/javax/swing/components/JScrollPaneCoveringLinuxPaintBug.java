@@ -42,7 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI;
 
 import javax.swing.BorderFactory;

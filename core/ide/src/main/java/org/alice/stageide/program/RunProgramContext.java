@@ -46,8 +46,6 @@ package org.alice.stageide.program;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.ProgramImp;
 
-import java.awt.Container;
-
 /**
  * @author Dennis Cosgrove
  */
