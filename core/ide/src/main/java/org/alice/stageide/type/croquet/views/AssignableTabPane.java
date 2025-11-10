@@ -48,7 +48,6 @@ import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.MultipleSelectionListView;
 import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
 import org.lgna.project.ast.UserField;
 
 import javax.swing.BorderFactory;
@@ -62,7 +61,7 @@ public class AssignableTabPane extends BorderPanel {
     super(tab, 4, 4);
     MultipleSelectionListView<UserField> listView = tab.getSceneFieldsState().createMultipleSelectionListView();
     listView.setCellRenderer(new FieldCellRenderer(tab.getTypeTreeState()));
-    ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(listView);
+    ScrollPane listScrollPane = new ScrollPane(listView, ScrollPane.VerticalScrollbarPolicy.ALWAYS, null);
 
     Color color = new Color(221, 221, 255);
     listScrollPane.setBackgroundColor(color);

@@ -50,7 +50,6 @@ import org.lgna.croquet.views.List;
 import org.lgna.croquet.views.MigPanel;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.TextField;
-import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
 import org.lgna.project.ast.Member;
 
 import javax.swing.BorderFactory;
@@ -118,7 +117,7 @@ public class ContainsTabPane extends MigPanel {
 
     this.listView = tab.getMemberListState().createList();
     this.listView.setCellRenderer(new MemberCellRenderer());
-    ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.listView);
+    ScrollPane listScrollPane = new ScrollPane(listView, ScrollPane.VerticalScrollbarPolicy.ALWAYS, null);
 
     this.addComponent(new Label("<html>Search for a procedure or function<br>whose class you would like to select.</html>"), "wrap");
     this.addComponent(this.filterTextField, "growx, wrap");
