@@ -63,24 +63,24 @@ public class LocaleState extends PreferenceMutableDataSingleSelectListState<Loca
   }
 
   private LocaleState() {
-    super(Application.APPLICATION_UI_GROUP, UUID.fromString("b9ed4d66-2eef-4d7d-b816-55451b437721"), 0, LocaleCodec.SINGLETON, new Locale("en", "US"),
-          //        new java.util.Locale( "pt" ),
-          new Locale("pt", "BR"), new Locale("es"),
-          //        new java.util.Locale( "fr" ),
-          //        new java.util.Locale( "fr", "BE" ),
-          //        new java.util.Locale( "it" ),
-          //        new java.util.Locale( "nl" ),
-          //        new java.util.Locale( "de" ),
-          new Locale("el"), new Locale("ro"),
-          //        new java.util.Locale( "cs" ),
-          new Locale("sl"),
-          //        new java.util.Locale( "lt" ),
-          new Locale("ru"), new Locale("uk"), new Locale("tr"), new Locale("ar"),
-          //        new java.util.Locale( "iw" ),
-          //        new java.util.Locale( "in" ),
-          new Locale("zh", "CN"), new Locale("ja"), new Locale("bg")
-          //        new java.util.Locale( "zh", "TW" ),
-          //        new java.util.Locale( "ko" )
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("b9ed4d66-2eef-4d7d-b816-55451b437721"), 0, LocaleCodec.SINGLETON, Locale.of("en", "US"),
+          //        Locale.of( "pt" ),
+          Locale.of("pt", "BR"), Locale.of("es"),
+          //        Locale.of( "fr" ),
+          //        Locale.of( "fr", "BE" ),
+          //        Locale.of( "it" ),
+          //        Locale.of( "nl" ),
+          //        Locale.of( "de" ),
+          Locale.of("el"), Locale.of("ro"),
+          //        Locale.of( "cs" ),
+          Locale.of("sl"),
+          //        Locale.of( "lt" ),
+          Locale.of("ru"), Locale.of("uk"), Locale.of("tr"), Locale.of("ar"),
+          //        Locale.of( "iw" ),
+          //        Locale.of( "in" ),
+          Locale.of("zh", "CN"), Locale.of("ja"), Locale.of("bg")
+          //        Locale.of( "zh", "TW" ),
+          //        Locale.of( "ko" )
     );
     this.addNewSchoolValueListener(e -> RestartRequiredOperation.getInstance().fire());
   }

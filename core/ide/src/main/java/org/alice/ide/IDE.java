@@ -159,7 +159,7 @@ public abstract class IDE extends ProjectApplication {
     String forcedLocaleString = System.getProperty("org.alice.ide.locale");
     Locale forcedLocale = null;
     if (forcedLocaleString != null) {
-      forcedLocale = new Locale(forcedLocaleString);
+      forcedLocale = Locale.of(forcedLocaleString);
     }
     if (forcedLocale != null) {
       Application.getActiveInstance().setLocale(forcedLocale);

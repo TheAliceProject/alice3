@@ -75,7 +75,7 @@ public enum LocaleCodec implements ItemCodec<Locale> {
       String language = binaryDecoder.decodeString();
       String country = binaryDecoder.decodeString();
       String variant = binaryDecoder.decodeString();
-      return new Locale(language, country, variant);
+      return Locale.of(language, country, variant);
     } else {
       return null;
     }
