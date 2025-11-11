@@ -52,7 +52,7 @@ import org.alice.ide.croquet.components.KnurlDragComponent;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.icons.PlusIconFactory;
 import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.ResourceKey;

@@ -112,23 +112,23 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   public StoryApiConfigurationManager() {
     BeveledShapeForType.addRoundType(SThing.class);
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
+    IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
+    IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
+    IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
+    IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
+    IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
+    IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
+    IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
+    IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
+    IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
+    IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
+    IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new SVGIconFactory(Icons.class.getResource("images/Camera.svg")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new SVGIconFactory(Icons.class.getResource("images/LeftHand.svg")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new SVGIconFactory(Icons.class.getResource("images/VRHeadset.svg")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new SVGIconFactory(Icons.class.getResource("images/VRUser.svg")));
+    IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
+    IconFactoryManager.registerIconFactory(SCamera.class, new SVGIconFactory(Icons.class.getResource("images/Camera.svg")));
+    IconFactoryManager.registerIconFactory(SVRHand.class, new SVGIconFactory(Icons.class.getResource("images/LeftHand.svg")));
+    IconFactoryManager.registerIconFactory(SVRHeadset.class, new SVGIconFactory(Icons.class.getResource("images/VRHeadset.svg")));
+    IconFactoryManager.registerIconFactory(SVRUser.class, new SVGIconFactory(Icons.class.getResource("images/VRUser.svg")));
 
     this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), FieldOfViewProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 

@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 import org.alice.ide.Theme;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.IconFactory;

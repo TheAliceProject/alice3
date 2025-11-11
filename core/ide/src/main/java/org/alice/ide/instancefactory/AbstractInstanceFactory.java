@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractDeclaration;

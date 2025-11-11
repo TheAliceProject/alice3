@@ -98,7 +98,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   }
 
   public IconFactory getIconFactory() {
-    return org.alice.stageide.icons.IconFactoryManager.getRegisteredIconFactory(JavaType.getInstance(sModel.getClass()));
+    return org.alice.ide.icons.IconFactoryManager.getRegisteredIconFactory(JavaType.getInstance(sModel.getClass()));
   }
 
 }

@@ -71,7 +71,7 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.SceneAdapter;
 import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
 import org.alice.ide.icons.ColorIconFactory;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.icons.SceneIconFactory;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.ThumbnailGenerator;

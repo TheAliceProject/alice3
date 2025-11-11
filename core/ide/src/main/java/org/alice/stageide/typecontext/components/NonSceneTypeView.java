@@ -52,7 +52,7 @@ import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.icons.SceneIconFactory;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.typecontext.NonSceneTypeComposite;

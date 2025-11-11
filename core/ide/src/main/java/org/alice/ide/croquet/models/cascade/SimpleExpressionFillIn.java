@@ -44,7 +44,7 @@
 package org.alice.ide.croquet.models.cascade;
 
 import org.alice.ide.Theme;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.cascade.ItemNode;

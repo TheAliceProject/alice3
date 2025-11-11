@@ -50,7 +50,7 @@ import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
