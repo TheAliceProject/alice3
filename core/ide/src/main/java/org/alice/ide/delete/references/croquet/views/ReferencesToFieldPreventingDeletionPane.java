@@ -42,16 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.delete.references.croquet.views;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-
 import org.alice.ide.Theme;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedIcon;
 import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.BorderPanel;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
 
 /**
  * @author Matt May

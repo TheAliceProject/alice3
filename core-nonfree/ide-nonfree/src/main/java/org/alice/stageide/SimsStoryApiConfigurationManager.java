@@ -43,7 +43,7 @@
 
 package org.alice.stageide;
 
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.icons.RoomIcon;
 import org.alice.ide.icons.ShapeIconFactory;
 import org.lgna.project.ast.AbstractDeclaration;

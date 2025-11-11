@@ -61,7 +61,7 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.stageide.modelresource.AddFieldCascade;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;

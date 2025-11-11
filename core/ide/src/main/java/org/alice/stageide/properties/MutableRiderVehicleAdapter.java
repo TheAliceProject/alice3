@@ -47,7 +47,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractField;
