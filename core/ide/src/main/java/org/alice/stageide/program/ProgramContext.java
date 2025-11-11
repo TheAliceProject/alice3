@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.ide.IDE;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.issue.UserProgramRunningStateUtilities;
-import org.alice.stageide.StageIDE;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.apis.story.event.ArrowKeyAdapter;
 import org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter;
