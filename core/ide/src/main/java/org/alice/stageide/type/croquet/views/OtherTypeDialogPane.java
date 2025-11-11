@@ -57,7 +57,6 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.Separator;
 import org.lgna.croquet.views.Tree;
 import org.lgna.croquet.views.VerticalAlignment;
-import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
@@ -105,7 +104,7 @@ public class OtherTypeDialogPane extends MigPanel {
     FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
     this.addComponent(tabbedPane, "grow");
 
-    ScrollPane treeScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.treeView);
+    ScrollPane treeScrollPane = new ScrollPane(treeView, ScrollPane.VerticalScrollbarPolicy.ALWAYS, null);
     this.addComponent(treeScrollPane, "grow");
 
     this.descriptionLabel = composite.getDescriptionText().createLabel();
