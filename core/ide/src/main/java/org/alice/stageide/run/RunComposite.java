@@ -93,7 +93,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     this.getLaunchOperation().setButtonIcon(new RunIcon());
   }
 
-  private transient RunProgramContext programContext;
+  private transient volatile RunProgramContext programContext;
   private static final double IDE_WIDTH_TO_RUN_WIDTH_RATIO = 0.9;
   private Point location = null;
   private Dimension size = null;
@@ -160,11 +160,12 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   private void stopProgram() {
     getView().forgetAndRemoveAllComponents();
 
-    if (this.programContext != null) {
-      this.programContext.cleanUpProgram();
-      this.programContext = null;
+    final RunProgramContext oldContext = programContext;
+    programContext = null;
+    if (oldContext != null) {
+      new ComponentExecutor(oldContext::cleanUpProgram, "Clean up off of event dispatch thread").start();
     } else {
-      Logger.warning(this);
+      Logger.warning(this, "The programContext is null but should not be. Nothing to clean up.");
     }
     AdapterFactory.forgetAllElements();
   }
