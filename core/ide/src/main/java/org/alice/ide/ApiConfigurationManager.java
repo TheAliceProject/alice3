@@ -120,20 +120,6 @@ public abstract class ApiConfigurationManager {
     return rv;
   }
 
-  protected abstract boolean isNamedUserTypesAcceptableForGallery(NamedUserType type);
-
-  public final DefaultNode<NamedUserType> getNamedUserTypesAsTreeFilteredForGallery() {
-    DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
-    if (rv != null) {
-      for (DefaultNode<NamedUserType> child : rv.getChildren()) {
-        if (!this.isNamedUserTypesAcceptableForGallery(child.getValue())) {
-          rv.removeChild(child);
-        }
-      }
-    }
-    return rv;
-  }
-
   public final List<JavaType> getPrimeTimeSelectableJavaTypes() {
     List<JavaType> rv = Lists.newLinkedList();
     this.addPrimeTimeJavaTypes(rv);
@@ -146,11 +132,6 @@ public abstract class ApiConfigurationManager {
     return rv;
   }
 
-  //  public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
-  //    java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-  //    this.addAliceTypes( rv, true );
-  //    return rv;
-  //  }
   protected List<? super JavaType> addPrimeTimeJavaTypes(List<? super JavaType> rv) {
     rv.add(JavaType.DOUBLE_OBJECT_TYPE);
     rv.add(JavaType.INTEGER_OBJECT_TYPE);
@@ -163,32 +144,6 @@ public abstract class ApiConfigurationManager {
     return rv;
   }
 
-  protected boolean isInclusionOfTypeDesired(UserType<?> userType) {
-    return true;
-    //return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
-  }
-
-  //  protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-  //    org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-  //    if( sceneType != null ) {
-  //      rv.add( sceneType );
-  //      for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-  //        org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-  //        if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
-  //          org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
-  //          if( rv.contains( valueType ) ) {
-  //            //pass
-  //          } else {
-  //            if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
-  //              rv.add( valueTypeInAlice );
-  //            }
-  //          }
-  //        }
-  //      }
-  //    }
-  //    return rv;
-  //  }
-
   private final Map<AbstractType<?, ?, ?>, String> mapTypeToText = Maps.newHashMap();
 
   private static String createExampleText(String examples) {
@@ -197,7 +152,7 @@ public abstract class ApiConfigurationManager {
   }
 
   public String getMenuTextForType(AbstractType<?, ?, ?> type) {
-    if (this.mapTypeToText.size() == 0) {
+    if (this.mapTypeToText.isEmpty()) {
       this.mapTypeToText.put(JavaType.DOUBLE_OBJECT_TYPE, createExampleText("0.25, 1.0, 3.14, 98.6"));
       this.mapTypeToText.put(JavaType.INTEGER_OBJECT_TYPE, createExampleText("1, 2, 42, 100"));
       this.mapTypeToText.put(JavaType.BOOLEAN_OBJECT_TYPE, createExampleText("true, false"));
@@ -211,10 +166,6 @@ public abstract class ApiConfigurationManager {
   }
 
   public abstract boolean isDeclaringTypeForManagedFields(UserType<?> type);
-
-  public final boolean isSelectable(AbstractType<?, ?, ?> type) {
-    return this.isInstanceFactoryDesiredForType(type);
-  }
 
   public abstract boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type);
 
@@ -231,8 +182,6 @@ public abstract class ApiConfigurationManager {
   public abstract JavaType getGalleryResourceParentFor(JavaType type);
 
   public abstract List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type);
-
-  public abstract AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType);
 
   public abstract SwingComponentView<?> createReplacementForFieldAccessIfAppropriate(FieldAccess fieldAccess);
 

@@ -61,7 +61,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.member.FilteredMethodsSubComposite;
-import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
@@ -165,11 +164,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
     private double getValue(AbstractType<?, ?, ?> type) {
       Double value = mapTypeToValue.get(type);
-      if (value != null) {
-        return value;
-      } else {
-        return DEFAULT_VALUE;
-      }
+      return Objects.requireNonNullElse(value, DEFAULT_VALUE);
     }
 
     @Override
@@ -190,13 +185,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  protected boolean isNamedUserTypesAcceptableForGallery(NamedUserType type) {
-    return type.isAssignableTo(SModel.class);
-  }
-
-  @Override
   protected boolean isNamedUserTypesAcceptableForSelection(NamedUserType type) {
-    return (type.isAssignableTo(SProgram.class) == false) || IsIncludingProgramType.getInstance().getValue();
+    return (!type.isAssignableTo(SProgram.class)) || IsIncludingProgramType.getInstance().getValue();
   }
 
   @Override
@@ -269,7 +259,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   private CascadeMenuModel<InstanceFactory> getCameraFieldsMenu(UserField cameraField) {
     if (cameraFieldsMenuModel == null) {
-      cameraFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
+      cameraFieldsMenuModel = new CascadeMenuModel<>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
           for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
@@ -283,7 +273,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   private CascadeMenuModel<InstanceFactory> getVrUserFieldsMenu(UserField vrField) {
     if (vrUserFieldsMenuModel == null) {
-      vrUserFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
+      vrUserFieldsMenuModel = new CascadeMenuModel<>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
           for (AbstractMethod method : SVRUser.getDeviceMethods(vrField.getValueType())) {
@@ -323,21 +313,6 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     } else {
       return null;
     }
-  }
-
-  @Override
-  public AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType) {
-    List<NamedUserType> types = TypeManager.getNamedUserTypesFromSuperTypes(StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes());
-    for (AbstractType<?, ?, ?> type : types) {
-      AbstractConstructor constructor = type.getDeclaredConstructors().get(0);
-      List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
-      if (parameters.size() == 1) {
-        if (parameters.get(0).getValueType().isAssignableFrom(argumentType)) {
-          return constructor;
-        }
-      }
-    }
-    return null;
   }
 
   private DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
@@ -391,18 +366,11 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  protected List<? super JavaType> addPrimeTimeJavaTypes(List<? super JavaType> rv) {
-    rv = super.addPrimeTimeJavaTypes(rv);
-    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
-    return rv;
-  }
-
-  @Override
   protected List<? super JavaType> addSecondaryJavaTypes(List<? super JavaType> rv) {
     super.addSecondaryJavaTypes(rv);
 
     rv.add(JavaType.getInstance(SJoint.class));
+    // the nulls added to the list become line breaks in dialogs where you can choose a type
     rv.add(null);
     if (StageIDE.getActiveInstance().getSceneEditor().isVrActive()) {
       rv.add(JavaType.getInstance(SVRHand.class));
@@ -444,7 +412,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
         if (fld.isAnnotationPresent(FieldTemplate.class)) {
           FieldTemplate propertyFieldTemplate = fld.getAnnotation(FieldTemplate.class);
           String methodNameHint = propertyFieldTemplate.methodNameHint();
-          if (methodNameHint.length() > 0) {
+          if (!methodNameHint.isEmpty()) {
             return methodNameHint;
           }
         }
@@ -578,18 +546,16 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   @Override
   public boolean isExportTypeDesiredFor(NamedUserType type) {
     if (IsIncludingImportAndExportType.getValue()) {
-      return (type.isAssignableTo(SScene.class) == false) && (type.isAssignableTo(SProgram.class) == false);
+      return (!type.isAssignableTo(SScene.class)) && (!type.isAssignableTo(SProgram.class));
     } else {
       return false;
     }
   }
 
   private AbstractType<?, ?, ?> getSpecificPoseBuilderType(Expression expression) {
-    if (expression instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expression;
+    if (expression instanceof MethodInvocation methodInvocation) {
       return getSpecificPoseBuilderType(methodInvocation.expression.getValue());
-    } else if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    } else if (expression instanceof InstanceCreation instanceCreation) {
       return instanceCreation.getType();
     } else {
       return null;
