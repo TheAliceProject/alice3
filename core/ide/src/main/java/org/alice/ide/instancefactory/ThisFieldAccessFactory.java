@@ -122,7 +122,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 
     ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
     if (projectDocumentFrame != null) {
-      return projectDocumentFrame.getIconFactoryManager().getIconFactory(this.field, fallbackIconFactory);
+      return IconFactoryManager.getDynamicIconFactoryForField(this.field, fallbackIconFactory);
     } else {
       return fallbackIconFactory;
     }

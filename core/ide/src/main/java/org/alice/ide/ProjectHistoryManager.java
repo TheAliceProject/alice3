@@ -50,14 +50,15 @@ import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
+import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.edits.StateEdit;
-import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.croquet.views.ComponentManager;
@@ -129,7 +130,7 @@ public class ProjectHistoryManager {
 
   private void markDirty(ProjectDocumentFrame projectDocumentFrame, ThisFieldAccessFactory thisFieldAccessFactory) {
     UserField userField = thisFieldAccessFactory.getField();
-    projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty(userField);
+    IconFactoryManager.markDynamicIconFactoryForFieldDirty(userField);
     InstanceFactoryFillIn.getInstance(thisFieldAccessFactory).markDirty();
     for (SwingComponentView<?> component : ComponentManager.getComponents(projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel())) {
       //note: rendering artifact for faux combo boxes when only invoking repaint.

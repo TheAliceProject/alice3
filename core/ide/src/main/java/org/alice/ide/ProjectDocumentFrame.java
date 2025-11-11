@@ -63,7 +63,6 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.highlight.IdeHighlightStencil;
-import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.perspectives.ProjectPerspective;
@@ -109,7 +108,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     this.metaDeclarationFauxState = new MetaDeclarationFauxState(this);
     this.instanceFactoryState = new InstanceFactoryState(this);
     this.findComposite = new FindComposite(this);
-    this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
   }
 
   private static final KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.SHIFT_MASK);
@@ -243,10 +241,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.typeMetaState;
   }
 
-  public StoryIconFactoryManager getIconFactoryManager() {
-    return this.iconFactoryManager;
-  }
-
   public DeclarationsEditorComposite getDeclarationsEditorComposite() {
     return this.declarationsEditorComposite;
   }
@@ -341,8 +335,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   private final MetaDeclarationFauxState metaDeclarationFauxState;
 
   private final InstanceFactoryState instanceFactoryState;
-
-  private final StoryIconFactoryManager iconFactoryManager;
 
   private final DeclarationsEditorComposite declarationsEditorComposite = new DeclarationsEditorComposite();
 

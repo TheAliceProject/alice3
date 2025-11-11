@@ -55,7 +55,6 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
-import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.icons.*;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
@@ -618,10 +617,5 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   public boolean isBuildMethod(MethodInvocation methodInvocation) {
     return getBuildMethodPoseBuilderType(methodInvocation, false) != null;
-  }
-
-  @Override
-  public StoryIconFactoryManager createIconFactoryManager() {
-    return new StoryIconFactoryManager();
   }
 }

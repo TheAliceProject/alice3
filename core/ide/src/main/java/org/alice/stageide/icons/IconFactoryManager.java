@@ -45,6 +45,7 @@ package org.alice.stageide.icons;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.FieldIconFactory;
 import org.alice.ide.icons.Icons;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
@@ -52,6 +53,7 @@ import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.lgna.croquet.icon.*;
 import org.lgna.project.ast.*;
 import org.lgna.story.Color;
+import org.lgna.story.Visual;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 
@@ -402,6 +404,36 @@ public class IconFactoryManager {
       }
     }
     return EmptyIconFactory.getInstance();
+  }
+
+  // There is a chance that we're dynamically rendering our icons for our fields, so we have extra logic here for managing that
+  private static final Map<UserField, FieldIconFactory> mapFieldToIconFactory = Maps.newWeakHashMap();
+
+  public static void markDynamicIconFactoryForFieldDirty(UserField field) {
+    FieldIconFactory iconFactory = mapFieldToIconFactory.get(field);
+    if (iconFactory != null) {
+      iconFactory.markAllIconsDirty();
+    }
+  }
+
+  public static IconFactory getDynamicIconFactoryForField(UserField field, IconFactory fallbackIconFactory) {
+    AbstractType<?, ?, ?> type = field.getValueType();
+    if (type.isAssignableTo(Visual.class)) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
+      synchronized (mapFieldToIconFactory) {
+        FieldIconFactory iconFactory = mapFieldToIconFactory.get(field);
+        if (iconFactory == null) {
+          iconFactory = new FieldIconFactory(field, fallbackIconFactory);
+          mapFieldToIconFactory.put(field, iconFactory);
+        }
+        return iconFactory;
+      }
+    } else {
+      return fallbackIconFactory;
+    }
+  }
+
+  public static IconFactory getDynamicIconFactoryForField(UserField field) {
+    return getDynamicIconFactoryForField(field, getIconFactoryForField(field));
   }
 
   public static IconFactory getIconFactoryForField(UserField userField) {

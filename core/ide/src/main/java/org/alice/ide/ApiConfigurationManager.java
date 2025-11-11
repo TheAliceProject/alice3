@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.tree.DefaultNode;
 import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.ast.ExpressionCreator;
-import org.alice.ide.iconfactory.StoryIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.stageide.StoryApiConfigurationManager;
@@ -244,6 +243,4 @@ public abstract class ApiConfigurationManager {
   public abstract boolean isTabClosable(AbstractCode code);
 
   public abstract boolean isExportTypeDesiredFor(NamedUserType type);
-
-  public abstract StoryIconFactoryManager createIconFactoryManager();
 }
