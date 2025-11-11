@@ -195,8 +195,8 @@ import java.util.Map;
 
   @Override
   public void dispose() {
-    this.renderContext.gl.glFlush();
     if (isValid()) {
+      this.renderContext.gl.glFlush();
       this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
       this.renderContext.gl.glPopMatrix();
       this.renderContext.gl.glMatrixMode(GL_PROJECTION);

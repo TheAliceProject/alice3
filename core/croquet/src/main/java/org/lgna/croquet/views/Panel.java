@@ -142,7 +142,9 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
   }
 
   public void forgetAndRemoveAllComponents() {
-    this.internalForgetAndRemoveAllComponents();
+    synchronized (this.getTreeLock()) {
+      this.internalForgetAndRemoveAllComponents();
+    }
   }
 
   private boolean isInTheMidstOfRefreshing = false;

@@ -71,27 +71,22 @@ public final class TextureBinding implements ForgettableBinding {
     }
 
     private boolean isUpdateNecessary(GL gl, TextureData textureData) {
-      if (this.texture != null) {
-        if (this.textureData != textureData) {
-          Logger.info("textureData changed", this.textureData, textureData);
-          return true;
-        } else {
-          if (this.gl != gl) {
-            Logger.info("gl changed", this.gl, gl);
-            return true;
-          } else {
-            int textureObject = this.texture.getTextureObject(this.gl);
-            if (gl.glIsTexture(textureObject)) {
-              return false;
-            } else {
-              Logger.info("glIsTexture is false");
-              return true;
-            }
-          }
-        }
-      } else {
+      if (this.texture == null) {
         return true;
       }
+      if (this.textureData != textureData) {
+        Logger.info("textureData changed", this.textureData, textureData);
+        return true;
+      }
+      if (this.gl != gl) {
+        Logger.info("gl changed", this.gl, gl);
+        return true;
+      }
+      if (!gl.glIsTexture(texture.getTextureObject(this.gl))) {
+        Logger.info("glIsTexture is false");
+        return true;
+      }
+      return false;
     }
 
     private void updateIfNecessary(GL gl, TextureData textureData) {
