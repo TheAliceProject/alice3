@@ -96,14 +96,6 @@ import org.lgna.story.implementation.ProgramImp;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramContext {
-  protected static NamedUserType getUpToDateProgramTypeFromActiveIde() {
-    final StageIDE ide = StageIDE.getActiveInstance();
-    if (ide != null) {
-      return ide.getUpToDateProgramType();
-    } else {
-      return null;
-    }
-  }
 
   private final UserInstance programInstance;
   private final VirtualMachine vm;

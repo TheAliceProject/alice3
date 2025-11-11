@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.alice.stageide.run.views.RunView;
 import org.alice.stageide.run.views.icons.RunIcon;
@@ -58,6 +59,7 @@ import org.lgna.croquet.views.AwtAdapter;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.FixedAspectRatioPanel;
 import org.lgna.croquet.views.Frame;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.ProgramImp;
 
 import javax.swing.AbstractAction;
@@ -117,7 +119,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
   private class ProgramRunnable implements Runnable {
     public ProgramRunnable(ProgramImp.AwtContainerInitializer awtContainerInitializer) {
-      RunComposite.this.programContext = new RunProgramContext();
+      RunComposite.this.programContext = new RunProgramContext(programType);
       RunComposite.this.programContext.getProgramImp().setRestartAction(RunComposite.this.restartAction);
       RunComposite.this.programContext.getProgramImp().setSpeedFormat(RunComposite.this.speedFormat.getText());
       RunComposite.this.programContext.initializeInContainer(awtContainerInitializer);
@@ -186,6 +188,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   @Override
   protected void handlePreShowWindow(Frame parentFrame, Frame frame) {
     super.handlePreShowWindow(parentFrame, frame);
+    programType = getUpToDateProgramTypeFromActiveIde();
     this.startProgram();
     if (this.size != null) {
       frame.setSize(this.size);
@@ -200,6 +203,11 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     } else {
       frame.setLocationRelativeTo(parentFrame);
     }
+  }
+
+  private static NamedUserType getUpToDateProgramTypeFromActiveIde() {
+    final StageIDE ide = StageIDE.getActiveInstance();
+    return ide != null ? ide.getUpToDateProgramType() : null;
   }
 
   @Override
@@ -236,5 +244,5 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   private FastForwardToStatementOperation fastForwardToStatementOperation;
-
+  private NamedUserType programType;
 }

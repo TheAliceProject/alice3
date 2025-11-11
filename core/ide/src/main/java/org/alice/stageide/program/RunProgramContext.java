@@ -54,10 +54,6 @@ public class RunProgramContext extends ProgramContext {
     super(programType);
   }
 
-  public RunProgramContext() {
-    this(getUpToDateProgramTypeFromActiveIde());
-  }
-
   public void initializeInContainer(ProgramImp.AwtContainerInitializer awtContainerInitializer) {
     this.disableRendering();
     this.getProgramImp().initializeInAwtContainer(awtContainerInitializer);
