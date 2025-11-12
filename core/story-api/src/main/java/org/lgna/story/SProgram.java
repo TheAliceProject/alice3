@@ -46,6 +46,9 @@ package org.lgna.story;
 import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.story.implementation.ProgramImp;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 /**
  * @author Dennis Cosgrove
  *
