@@ -44,19 +44,13 @@
 package org.lgna.croquet.imp.cascade;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.AbstractCascadeMenuModel;
-import org.lgna.croquet.CascadeBlank;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeBlankOwner;
-import org.lgna.croquet.CascadeCancel;
-import org.lgna.croquet.CascadeFillIn;
-import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.CascadeSeparator;
+import org.lgna.croquet.*;
 import org.lgna.croquet.views.CascadeMenu;
 import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.ViewController;
 
+import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -244,8 +238,9 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
     }
     jMenuItem.setText(item.getMenuItemText());
     // this is a bit of a hack because flatlaf just doesn't render the icon if it is disabled?
-    jMenuItem.setDisabledIcon(item.getMenuItemIcon(this.getNode()));
-    jMenuItem.setIcon(item.getMenuItemIcon(this.getNode()));
+    Icon icon = item.getMenuItemIcon(this.getNode());
+    jMenuItem.setDisabledIcon(icon);
+    jMenuItem.setIcon(icon);
     return rv;
   }
 
