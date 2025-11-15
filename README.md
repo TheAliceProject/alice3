@@ -4,7 +4,7 @@
 
 ### Latest Released Build:
 
-[![](https://img.shields.io/badge/3.9.0.2-green.svg)](https://www.alice.org/get-alice/alice-3/)
+[![](https://img.shields.io/badge/3.9.1.0-green.svg)](https://www.alice.org/get-alice/alice-3/)
 
 ## Building Alice 3 from the source
 
