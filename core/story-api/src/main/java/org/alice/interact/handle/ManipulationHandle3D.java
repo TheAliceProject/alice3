@@ -433,20 +433,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected Color4f getDesiredColor(HandleRenderState renderState) {
     Color4f baseColor = this.getBaseColor();
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return baseColor;
-    case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-      return baseColor;
-    case VISIBLE_AND_ACTIVE:
-      return baseColor;
-    case VISIBLE_AND_ROLLOVER:
-      return baseColor;
-    case JUST_VISIBLE:
-      return baseColor;
-    default:
-      return baseColor;
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> baseColor;
+    case VISIBLE_BUT_SIBLING_IS_ACTIVE -> baseColor;
+    case VISIBLE_AND_ACTIVE -> baseColor;
+    case VISIBLE_AND_ROLLOVER -> baseColor;
+    case JUST_VISIBLE -> baseColor;
+    default -> baseColor;
+    };
   }
 
   @Override
@@ -476,20 +470,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected double getDesiredOpacity(HandleRenderState renderState) {
     //    PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" camera opacity: "+this.cameraRelativeOpacity);
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return 0.0d;
-    case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-      return .5d * this.cameraRelativeOpacity;
-    case VISIBLE_AND_ACTIVE:
-      return 1.0d * this.cameraRelativeOpacity;
-    case VISIBLE_AND_ROLLOVER:
-      return .75d * this.cameraRelativeOpacity;
-    case JUST_VISIBLE:
-      return .6d * this.cameraRelativeOpacity;
-    default:
-      return 0.0d;
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> 0.0d;
+    case VISIBLE_BUT_SIBLING_IS_ACTIVE -> .5d * this.cameraRelativeOpacity;
+    case VISIBLE_AND_ACTIVE -> 1.0d * this.cameraRelativeOpacity;
+    case VISIBLE_AND_ROLLOVER -> .75d * this.cameraRelativeOpacity;
+    case JUST_VISIBLE -> .6d * this.cameraRelativeOpacity;
+    default -> 0.0d;
+    };
   }
 
   public AffineMatrix4x4 getTransformationForAxis(Vector3 axis) {

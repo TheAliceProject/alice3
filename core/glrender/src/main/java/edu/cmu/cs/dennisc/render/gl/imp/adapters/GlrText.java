@@ -104,24 +104,16 @@ public class GlrText extends GlrGeometry<Text> {
     }
 
     private String getErrorString(int error) {
-      switch (error) {
-      case GLU_TESS_MISSING_BEGIN_POLYGON:
-        return "GLU_TESS_MISSING_BEGIN_POLYGON";
-      case GLU_TESS_MISSING_END_POLYGON:
-        return "GLU_TESS_MISSING_END_POLYGON";
-      case GLU_TESS_MISSING_BEGIN_CONTOUR:
-        return "GLU_TESS_MISSING_BEGIN_CONTOUR";
-      case GLU_TESS_MISSING_END_CONTOUR:
-        return "GLU_TESS_MISSING_END_CONTOUR";
-      case GLU_TESS_COORD_TOO_LARGE:
-        return "GLU_TESS_COORD_TOO_LARGE";
-      case GLU_TESS_NEED_COMBINE_CALLBACK:
-        return "GLU_TESS_NEED_COMBINE_CALLBACK";
-      case GLU_OUT_OF_MEMORY:
-        return "GLU_OUT_OF_MEMORY";
-      default:
-        return "UNKNOWN";
-      }
+      return switch (error) {
+      case GLU_TESS_MISSING_BEGIN_POLYGON -> "GLU_TESS_MISSING_BEGIN_POLYGON";
+      case GLU_TESS_MISSING_END_POLYGON -> "GLU_TESS_MISSING_END_POLYGON";
+      case GLU_TESS_MISSING_BEGIN_CONTOUR -> "GLU_TESS_MISSING_BEGIN_CONTOUR";
+      case GLU_TESS_MISSING_END_CONTOUR -> "GLU_TESS_MISSING_END_CONTOUR";
+      case GLU_TESS_COORD_TOO_LARGE -> "GLU_TESS_COORD_TOO_LARGE";
+      case GLU_TESS_NEED_COMBINE_CALLBACK -> "GLU_TESS_NEED_COMBINE_CALLBACK";
+      case GLU_OUT_OF_MEMORY -> "GLU_OUT_OF_MEMORY";
+      default -> "UNKNOWN";
+      };
     }
 
     @Override

@@ -67,14 +67,11 @@ public class Slider extends ViewController<JSlider, BoundedNumberState<?>> {
     }
 
     public static Orientation valueOf(int swingConstant) {
-      switch (swingConstant) {
-      case SwingConstants.HORIZONTAL:
-        return HORIZONTAL;
-      case SwingConstants.VERTICAL:
-        return VERTICAL;
-      default:
-        return null;
-      }
+      return switch (swingConstant) {
+      case SwingConstants.HORIZONTAL -> HORIZONTAL;
+      case SwingConstants.VERTICAL -> VERTICAL;
+      default -> null;
+      };
     }
   }
 

@@ -569,7 +569,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
         loadProject(newProjectActivity(), new FileProjectLoader(original, uriProjectLoader.shouldMakeVrReady()));
       }
-    };
+    }
   }
 
   private File getNextBackup(LocalDateTime modifiedTime, File backupDir, boolean isMainProjectCorrupted, Set<String> unloadableFiles) {

@@ -61,20 +61,12 @@ public class Disc extends Shape {
   @Override
   protected AxisAlignedBox updateBoundingBox() {
     double d = outerRadius.getValue();
-    switch (axis.getValue()) {
-      case X -> {
-        return new AxisAlignedBox(new Point3(0, -d, -d), new Point3(0, d, d));
-      }
-      case Y -> {
-        return new AxisAlignedBox(new Point3(-d, 0, -d), new Point3(d, 0, d));
-      }
-      case Z -> {
-        return new AxisAlignedBox(new Point3(-d, -d, 0), new Point3(d, d, 0));
-      }
-      default -> {
-        return null;
-      }
-    }
+    return switch (axis.getValue()) {
+      case X -> new AxisAlignedBox(new Point3(0, -d, -d), new Point3(0, d, d));
+      case Y -> new AxisAlignedBox(new Point3(-d, 0, -d), new Point3(d, 0, d));
+      case Z -> new AxisAlignedBox(new Point3(-d, -d, 0), new Point3(d, d, 0));
+      default -> null;
+    };
   }
 
   public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>(this, Axis.Y) {
