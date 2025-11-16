@@ -287,7 +287,7 @@ public class Bone {
     for (Axis axis : axesList) {
       sb.append(axis.originalIndexInJoint);
       sb.append(": ");
-      sb.append(String.format("%.2f", axis.desiredAngleSpeed));
+      sb.append("%.2f".formatted(axis.desiredAngleSpeed));
       if (count < (axesList.size() - 1)) {
         sb.append(", ");
       }

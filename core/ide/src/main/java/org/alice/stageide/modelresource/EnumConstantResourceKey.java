@@ -114,7 +114,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), getLocalizedName(), params);
+    return formatter.getNewFormat().formatted(getLocalizedName(), params);
   }
 
   @Override

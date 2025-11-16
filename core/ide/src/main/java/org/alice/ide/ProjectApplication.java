@@ -186,7 +186,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public void handleVersionNotSupported(File file, VersionNotSupportedException vnse) {
-    Dialogs.showUnableToOpenFileDialog(file, String.format("%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)", getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
+    Dialogs.showUnableToOpenFileDialog(file, "%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)".formatted(getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
   }
 
   private UriProjectLoader uriProjectLoader;

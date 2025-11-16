@@ -155,17 +155,49 @@ public class HtmlProjectWriter implements ProjectIo.ProjectWriter {
     }
   }
 
-  private static final String cssStyle = ".alice-class {\nbackground: #D3D7F0;\nborder: 1px solid #999999;\nmargin:5px 0;}\n"
-      + ".alice-generated-svg {\ndisplay: inline-block;\n}\n"
-      + ".alice-class-header {\nfont-size: x-large;\n}\n"
-      + ".alice-code-header-detail {\nfont-style: italic;\n}\n"
-      + ".alice-method-name, .alice-code-header-detail, .alice-class-name, .alice-class-superType, .alice-assignment, .alice-field-name {\nmargin: 0 5px 0 0;\n}\n"
-      + ".alice-parameter-label {\nmargin: 0 5px 0 2px;\n}\n"
-      + ".alice-method-name {\nfont-size: large;\nfont-weight: bold;\n}\n"
-      + ".alice-method {\npadding: 10px;\n}\n"
-      + ".alice-listener-addition {\nborder: 1px solid #999999;\nmargin: 5px 5px 10px 20px;\nposition:relative;\n}\n"
-      + ".alice-listener-declaration {\nbackground: #ADA7D1;\npadding: 5px;\nmargin: 5px;\n}\n"
-      // This works in the html view, but does not get properly rendered into the pdf
-      + ".alice-disabled {\nheight: 100%;\nwidth: 100%;\ntop: 0;left: 0;\nposition: absolute;\nbackground: repeating-linear-gradient( 135deg, #d3d7f000, #D3D7F000 6px, #9396A5FF 6px, #9396A5FF 7px);}\n";
+  private static final String cssStyle = """
+      .alice-class {
+      background: #D3D7F0;
+      border: 1px solid #999999;
+      margin:5px 0;}
+      .alice-generated-svg {
+      display: inline-block;
+      }
+      .alice-class-header {
+      font-size: x-large;
+      }
+      .alice-code-header-detail {
+      font-style: italic;
+      }
+      .alice-method-name, .alice-code-header-detail, .alice-class-name, .alice-class-superType, .alice-assignment, .alice-field-name {
+      margin: 0 5px 0 0;
+      }
+      .alice-parameter-label {
+      margin: 0 5px 0 2px;
+      }
+      .alice-method-name {
+      font-size: large;
+      font-weight: bold;
+      }
+      .alice-method {
+      padding: 10px;
+      }
+      .alice-listener-addition {
+      border: 1px solid #999999;
+      margin: 5px 5px 10px 20px;
+      position:relative;
+      }
+      .alice-listener-declaration {
+      background: #ADA7D1;
+      padding: 5px;
+      margin: 5px;
+      }
+      .alice-disabled {
+      height: 100%;
+      width: 100%;
+      top: 0;left: 0;
+      position: absolute;
+      background: repeating-linear-gradient( 135deg, #d3d7f000, #D3D7F000 6px, #9396A5FF 6px, #9396A5FF 7px);}
+      """;
 }
 

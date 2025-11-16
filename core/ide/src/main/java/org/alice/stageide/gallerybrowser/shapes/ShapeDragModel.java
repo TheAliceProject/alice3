@@ -72,7 +72,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   @Override
   protected void localize() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
+    this.text = formatter.getNewFormat().formatted(findDefaultLocalizedText(), "");
   }
 
   @Override

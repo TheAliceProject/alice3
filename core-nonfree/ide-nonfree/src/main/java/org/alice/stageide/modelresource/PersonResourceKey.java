@@ -161,7 +161,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   @Override
   public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), getLocalizedName(), "…");
+    return formatter.getNewFormat().formatted(getLocalizedName(), "…");
   }
 
   @Override

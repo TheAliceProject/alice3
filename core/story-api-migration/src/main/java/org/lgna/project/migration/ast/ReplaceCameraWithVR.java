@@ -75,7 +75,7 @@ public class ReplaceCameraWithVR extends AstMigration {
     if ("camera".equals(field.getName())) {
       field.name.setValue("vrUser");
     }
-    Logger.outln(String.format("Migrated field `%s` type from SCamera to SVRUser", field.getName()));
+    Logger.outln("Migrated field `%s` type from SCamera to SVRUser".formatted(field.getName()));
   }
 
   private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property) {
@@ -109,7 +109,7 @@ public class ReplaceCameraWithVR extends AstMigration {
     invocation.method.setValue(vrUserMethod);
     replaceRequiredParamReferences(method, vrUserMethod, invocation);
     replaceKeyedParamReferences(method, vrUserMethod, invocation);
-    Logger.outln(String.format("Changed from SCamera.%s to SVRUser.%s", method.getName(), vrUserMethod.getName()));
+    Logger.outln("Changed from SCamera.%s to SVRUser.%s".formatted(method.getName(), vrUserMethod.getName()));
   }
 
   private boolean isMatchingMethod(MethodInvocation invocation, AbstractType<?, ?, ?> type, String methodName) {

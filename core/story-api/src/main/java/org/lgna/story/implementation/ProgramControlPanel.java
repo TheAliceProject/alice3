@@ -166,7 +166,7 @@ public class ProgramControlPanel extends JPanel {
   }
 
   private void updateLabel(String speedFormat) {
-    label.setText(String.format(speedFormat, boundedRangeModel.getValue()));
+    label.setText(speedFormat.formatted(boundedRangeModel.getValue()));
   }
 
   private final JLabel label = new JLabel();

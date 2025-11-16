@@ -262,7 +262,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
       }
     } else {
       Formatter formatter = FormatterState.getInstance().getValue();
-      this.text = String.format(formatter.getNewFormat(), typeName, "");
+      this.text = formatter.getNewFormat().formatted(typeName, "");
     }
 
     if (typeName != null) {

@@ -68,7 +68,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
     this.methodName = methodName;
     replacementMethod = JavaMethod.getInstance(newClass, methodName, parameterTypes);
     if (!newClass.isAssignableFrom(oldClass)) {
-      Logger.severe(String.format("Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.", oldClass.getSimpleName(), newClass.getSimpleName()));
+      Logger.severe("Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.".formatted(oldClass.getSimpleName(), newClass.getSimpleName()));
     }
   }
 
@@ -80,7 +80,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
         invocation.method.setValue(replacementMethod);
         replaceRequiredParamReferences(method, invocation);
         replaceKeyedParamReferences(method, invocation);
-        Logger.outln(String.format("Changed %s.%s call to %s.%s", oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
+        Logger.outln("Changed %s.%s call to %s.%s".formatted(oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
       }
     }
   }
