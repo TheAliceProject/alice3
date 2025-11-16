@@ -976,7 +976,8 @@ public abstract class DragAdapter {
   private Component lookingGlassComponent = null;
   private Component currentRolloverComponent = null;
   private Animator animator;
-  protected final/*private*/ InputState currentInputState = new InputState();
+  // TODO make currentInputState private
+  protected final InputState currentInputState = new InputState();
   private final InputState previousInputState = new InputState();
   private boolean isInStageChange = false;
   private double mouseWheelTimeoutTime = 0;
