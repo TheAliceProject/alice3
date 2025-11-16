@@ -121,10 +121,10 @@ public abstract class AbstractNode extends Element implements Node {
   public void firePropertyChanging(PropertyEvent e) {
     super.firePropertyChanging(e);
     InstanceProperty<?> property = e.getTypedSource();
-    if (property instanceof NodeProperty<?>) {
+    if (property instanceof NodeProperty<?> nodeProperty) {
       if (!(property instanceof DeclarationProperty<?> declarationProperty
           && declarationProperty.isReference())) {
-        AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
+        AbstractNode node = (AbstractNode) nodeProperty.getValue();
         if (node != null) {
           node.setParent(null);
         }
@@ -135,10 +135,10 @@ public abstract class AbstractNode extends Element implements Node {
   @Override
   public void firePropertyChanged(PropertyEvent e) {
     InstanceProperty<?> property = e.getTypedSource();
-    if (property instanceof NodeProperty<?>) {
+    if (property instanceof NodeProperty<?> nodeProperty) {
       if (!(property instanceof DeclarationProperty<?> declarationProperty
           && declarationProperty.isReference())) {
-        AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
+        AbstractNode node = (AbstractNode) nodeProperty.getValue();
         if (node != null) {
           node.setParent(this);
         }

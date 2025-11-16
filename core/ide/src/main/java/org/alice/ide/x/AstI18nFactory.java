@@ -355,11 +355,11 @@ public abstract class AstI18nFactory extends I18nFactory {
       }
     } else {
       rv = null;
-      if (property instanceof NodeProperty<?>) {
+      if (property instanceof NodeProperty<?> nodeProperty) {
         if (property instanceof ExpressionProperty expressionProperty) {
           rv = this.createExpressionPropertyPane(expressionProperty);
         } else {
-          rv = this.createGenericNodePropertyPane((NodeProperty<?>) property);
+          rv = this.createGenericNodePropertyPane(nodeProperty);
         }
       } else if (property instanceof ResourceProperty resourceProperty) {
         rv = this.createResourcePropertyPane(resourceProperty);
