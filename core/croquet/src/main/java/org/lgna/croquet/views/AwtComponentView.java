@@ -54,23 +54,8 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Locale;
 import java.util.Map;
 

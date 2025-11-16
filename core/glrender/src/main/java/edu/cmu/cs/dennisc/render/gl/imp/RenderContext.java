@@ -43,30 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
-import static com.jogamp.opengl.GL.GL_FLOAT;
-import static com.jogamp.opengl.GL.GL_NO_ERROR;
-import static com.jogamp.opengl.GL.GL_REPEAT;
-import static com.jogamp.opengl.GL.GL_SCISSOR_TEST;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
-import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_S;
-import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_T;
-import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
-import static com.jogamp.opengl.GL2.GL_ABGR_EXT;
-import static com.jogamp.opengl.GL2.GL_CLAMP;
-import static com.jogamp.opengl.GL2ES1.GL_FOG;
-import static com.jogamp.opengl.GL2ES1.GL_FOG_COLOR;
-import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
-import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_COLOR_MATERIAL;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.util.awt.ImageUtil;
 import edu.cmu.cs.dennisc.java.util.DStack;
@@ -90,6 +66,13 @@ import java.nio.FloatBuffer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2.GL_ABGR_EXT;
+import static com.jogamp.opengl.GL2.GL_CLAMP;
+import static com.jogamp.opengl.GL2ES1.*;
+import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.*;
 
 /**
  * @author Dennis Cosgrove

@@ -43,15 +43,15 @@
 
 package org.alice.netbeans.options;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.prefs.Preferences;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.prefs.Preferences;
 
 @OptionsPanelController.TopLevelRegistration(categoryName = "#OptionsCategory_Name_Alice3", iconBase = "org/alice/netbeans/options/aliceLogo32x32.png", keywords = "#OptionsCategory_Keywords_Alice3", keywordsCategory = "Alice3") @org.openide.util.NbBundle.Messages({"OptionsCategory_Name_Alice3=Alice", "OptionsCategory_Keywords_Alice3=alice"}) public final class Alice3OptionsPanelController extends OptionsPanelController {
   /*package-private*/ static final String COLLAPSE_IMPORTS_KEY = "collapseImports";

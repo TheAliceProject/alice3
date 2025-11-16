@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
-import org.alice.math.immutable.Angle;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.math.immutable.Angle;
 
 /**
  * @author Dennis Cosgrove

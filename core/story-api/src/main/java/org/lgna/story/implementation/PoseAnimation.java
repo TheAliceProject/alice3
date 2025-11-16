@@ -42,10 +42,10 @@
  */
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.UnitQuaternion;

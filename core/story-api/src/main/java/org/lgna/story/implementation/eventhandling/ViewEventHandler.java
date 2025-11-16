@@ -43,22 +43,17 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
-import org.lgna.story.event.EnterViewEvent;
-import org.lgna.story.event.ExitViewEvent;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewEvent;
-import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.*;
 import org.lgna.story.implementation.CameraImp;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.story.implementation.ModelImp;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Matt May

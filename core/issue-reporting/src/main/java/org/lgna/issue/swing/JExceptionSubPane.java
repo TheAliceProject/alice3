@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
 import edu.cmu.cs.dennisc.javax.swing.JOptionPaneUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
 
-import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**

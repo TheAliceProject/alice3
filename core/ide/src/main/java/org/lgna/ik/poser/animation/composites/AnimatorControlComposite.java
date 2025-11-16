@@ -42,10 +42,6 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.stageide.StoryApiConfigurationManager;
@@ -90,6 +86,10 @@ import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.StrikePose;
 import org.lgna.story.implementation.PoseUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May

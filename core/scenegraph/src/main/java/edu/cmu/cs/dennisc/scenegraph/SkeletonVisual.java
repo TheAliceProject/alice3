@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 import java.util.HashMap;
 import java.util.List;

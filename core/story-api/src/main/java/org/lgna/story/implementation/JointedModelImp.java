@@ -43,9 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
@@ -58,6 +55,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.alice.math.immutable.*;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
@@ -71,7 +69,8 @@ import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove

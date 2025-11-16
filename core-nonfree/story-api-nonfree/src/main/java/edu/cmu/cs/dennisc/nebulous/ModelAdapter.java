@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
-import org.alice.math.immutable.Matrix4x4;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
-import org.alice.math.immutable.Vector4;
+import org.alice.math.immutable.*;
 
 /**
  * @author Dennis Cosgrove

@@ -97,10 +97,13 @@ package org.alice.media.audio;
  * FloatSampleBuffer.java
  */
 
+import javax.sound.sampled.AudioFormat;
+/*
+ * FloatSampleBuffer.java
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.sound.sampled.AudioFormat;
 
 public class FloatSampleBuffer {
 

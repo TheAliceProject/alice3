@@ -42,12 +42,20 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
 import org.alice.ide.IDE;
 import org.alice.interact.InputState;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ForwardAndUpGuide;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Plane;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 import org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
@@ -63,17 +71,8 @@ import org.lgna.croquet.views.ViewController;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.EntityImp;
 
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.ForwardAndUpGuide;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Plane;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 /**
  * @author user

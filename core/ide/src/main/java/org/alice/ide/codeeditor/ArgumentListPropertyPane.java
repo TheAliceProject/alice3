@@ -47,17 +47,8 @@ import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.common.AbstractArgumentListPropertyPane;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.x.AstI18nFactory;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.JavaConstructorParameter;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaMethodParameter;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.croquet.views.*;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

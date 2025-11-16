@@ -42,24 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
-import java.util.ArrayList;
-
 import org.lgna.project.Version;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.DoubleLiteral;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LambdaExpression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 import org.lgna.story.SScene;
 import org.lgna.story.ast.EventListenerMethodUtilities;
 import org.lgna.story.event.MouseClickOnScreenEvent;
+
+import java.util.ArrayList;
 
 /**
  * @author Matt May

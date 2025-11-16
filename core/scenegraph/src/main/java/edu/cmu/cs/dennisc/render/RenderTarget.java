@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
-import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.math.immutable.FixedRectangle;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;

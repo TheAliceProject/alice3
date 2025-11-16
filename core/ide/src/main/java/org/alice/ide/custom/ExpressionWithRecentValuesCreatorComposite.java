@@ -43,7 +43,6 @@
 package org.alice.ide.custom;
 
 import org.alice.ide.custom.components.CustomExpressionCreatorView;
-
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 

@@ -51,6 +51,7 @@ import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.project.ProjectDocumentState;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.common.ComponentExecutor;
 import org.lgna.croquet.State;
 import org.lgna.croquet.event.ValueEvent;
@@ -61,8 +62,6 @@ import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
-
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;

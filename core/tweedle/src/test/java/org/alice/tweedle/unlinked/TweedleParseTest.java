@@ -1,12 +1,6 @@
 package org.alice.tweedle.unlinked;
 
-import org.alice.tweedle.TweedleClass;
-import org.alice.tweedle.TweedleEnum;
-import org.alice.tweedle.TweedleMethod;
-import org.alice.tweedle.TweedleNull;
-import org.alice.tweedle.TweedleStatement;
-import org.alice.tweedle.TweedleType;
-import org.alice.tweedle.TweedleTypes;
+import org.alice.tweedle.*;
 import org.alice.tweedle.ast.AdditionExpression;
 import org.alice.tweedle.ast.ReturnStatement;
 import org.junit.Test;

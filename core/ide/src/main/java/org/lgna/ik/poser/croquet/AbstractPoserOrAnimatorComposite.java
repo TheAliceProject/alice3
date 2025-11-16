@@ -42,11 +42,7 @@
  */
 package org.lgna.ik.poser.croquet;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.views.BorderPanel;
@@ -73,9 +69,12 @@ import org.lgna.story.event.PointOfViewEvent;
 import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
-
 import test.ik.croquet.SceneComposite;
-import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May

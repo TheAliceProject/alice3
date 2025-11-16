@@ -44,11 +44,7 @@
 package org.alice.ide.instancefactory;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

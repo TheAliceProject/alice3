@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Accessor;
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
+import org.xml.sax.Attributes;
 
 public class accessor extends State {
   protected Accessor theAccessor;

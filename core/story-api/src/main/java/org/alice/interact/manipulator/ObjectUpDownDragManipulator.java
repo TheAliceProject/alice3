@@ -47,7 +47,6 @@ import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
-
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;

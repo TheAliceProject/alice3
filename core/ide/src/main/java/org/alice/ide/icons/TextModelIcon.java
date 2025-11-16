@@ -42,13 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.icons;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.font.GlyphVector;
 
 /**

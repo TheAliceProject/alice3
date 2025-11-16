@@ -1,19 +1,13 @@
 package com.dddviewr.collada.geometry;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.dddviewr.collada.Base;
 import com.dddviewr.collada.Collada;
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.controller.Skin;
+
+import java.io.PrintStream;
+import java.util.*;
 
 public class Mesh extends Base {
   protected List<Source> sources = new ArrayList<Source>();

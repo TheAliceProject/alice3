@@ -71,19 +71,10 @@ import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipOutputStream;
 
 public class XmlProjectIo implements ProjectIo {

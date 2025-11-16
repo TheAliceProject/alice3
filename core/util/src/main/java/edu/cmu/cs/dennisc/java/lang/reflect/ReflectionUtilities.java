@@ -45,13 +45,7 @@ package edu.cmu.cs.dennisc.java.lang.reflect;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.LinkedList;
 import java.util.List;
 

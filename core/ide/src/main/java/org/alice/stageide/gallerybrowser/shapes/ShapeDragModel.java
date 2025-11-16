@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;

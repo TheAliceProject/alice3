@@ -44,9 +44,9 @@ package org.alice.ide.instancefactory.croquet.views.icons;
 
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
-import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.UserField;
 

@@ -47,16 +47,8 @@ import org.alice.ide.codeeditor.MethodHeaderPane;
 import org.alice.ide.codeeditor.ParametersPane;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.x.AstI18nFactory;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.GridPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AnonymousUserConstructor;
-import org.lgna.project.ast.AnonymousUserType;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.croquet.views.*;
+import org.lgna.project.ast.*;
 
 import javax.swing.*;
 import java.awt.AWTEvent;

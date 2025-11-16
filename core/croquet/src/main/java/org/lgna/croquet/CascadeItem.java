@@ -51,11 +51,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.util.UUID;
 
 /**

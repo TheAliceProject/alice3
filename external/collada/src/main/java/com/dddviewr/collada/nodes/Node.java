@@ -1,15 +1,11 @@
 package com.dddviewr.collada.nodes;
 
+import com.dddviewr.collada.Base;
+import com.dddviewr.collada.visualscene.*;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
-import com.dddviewr.collada.visualscene.BaseXform;
-import com.dddviewr.collada.visualscene.InstanceController;
-import com.dddviewr.collada.visualscene.InstanceGeometry;
-import com.dddviewr.collada.visualscene.InstanceNode;
-import com.dddviewr.collada.visualscene.Matrix;
 
 public class Node extends Base {
   protected String id;

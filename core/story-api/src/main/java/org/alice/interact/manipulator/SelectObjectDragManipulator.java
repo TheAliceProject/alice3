@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba

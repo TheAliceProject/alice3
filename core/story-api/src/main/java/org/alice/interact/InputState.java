@@ -42,22 +42,15 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.scenegraph.*;
+import org.alice.interact.handle.ManipulationHandle;
+
 import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.scenegraph.Scalable;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import org.alice.interact.handle.ManipulationHandle;
-
-import edu.cmu.cs.dennisc.render.PickResult;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 //import edu.cmu.cs.dennisc.scenegraph.Transformable;
 

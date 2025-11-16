@@ -64,13 +64,7 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.story.SCamera;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SGround;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.STurnable;
+import org.lgna.story.*;
 
 import java.util.List;
 import java.util.Map;

@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.materials.LibraryMaterials;
 import com.dddviewr.collada.materials.Material;
+import org.xml.sax.Attributes;
 
 public class material extends State {
   protected Material theMaterial;

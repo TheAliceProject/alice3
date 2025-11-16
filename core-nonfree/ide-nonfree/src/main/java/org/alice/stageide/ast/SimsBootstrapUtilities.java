@@ -45,22 +45,8 @@ package org.alice.stageide.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.stageide.StoryApiConfigurationManager;
-import org.lgna.project.ast.DoubleLiteral;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.story.Color;
-import org.lgna.story.Paint;
-import org.lgna.story.SGround;
-import org.lgna.story.SRoom;
-import org.lgna.story.SetCeilingPaint;
-import org.lgna.story.SetFloorPaint;
-import org.lgna.story.SetOpacity;
-import org.lgna.story.SetPaint;
-import org.lgna.story.SetWallPaint;
+import org.lgna.project.ast.*;
+import org.lgna.story.*;
 
 import java.util.ArrayList;
 

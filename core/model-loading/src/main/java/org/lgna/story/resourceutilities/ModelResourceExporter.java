@@ -43,38 +43,6 @@
 
 package org.lgna.story.resourceutilities;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.DataFormatException;
-import java.util.zip.ZipException;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
@@ -102,18 +70,28 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
 import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.ImplementationAndVisualType;
-import org.lgna.story.resources.JointArrayId;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.QuadrupedResource;
-import org.lgna.story.resources.SlithererResource;
-import org.lgna.story.resources.SwimmerResource;
-
+import org.lgna.story.resources.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
+import java.util.zip.ZipException;
 
 public class ModelResourceExporter {
 

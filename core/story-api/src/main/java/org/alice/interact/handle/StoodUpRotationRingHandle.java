@@ -43,11 +43,10 @@
 package org.alice.interact.handle;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import org.alice.interact.MovementDirection;
-
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.MovementDirection;
 import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 

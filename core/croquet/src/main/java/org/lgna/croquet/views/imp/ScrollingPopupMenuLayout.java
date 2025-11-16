@@ -48,14 +48,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.JPopupMenu;
 import javax.swing.SizeRequirements;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 

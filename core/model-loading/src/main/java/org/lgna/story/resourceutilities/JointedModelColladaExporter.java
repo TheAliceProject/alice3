@@ -42,32 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
@@ -92,6 +66,31 @@ import org.lgna.story.resourceutilities.exporterutils.collada.Image;
 import org.lgna.story.resourceutilities.exporterutils.collada.Mesh;
 import org.lgna.story.resourceutilities.exporterutils.collada.Skin.VertexWeights;
 import org.lgna.story.resourceutilities.exporterutils.collada.Source.TechniqueCommon;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 
 /**

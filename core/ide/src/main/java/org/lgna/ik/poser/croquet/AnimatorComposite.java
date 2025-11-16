@@ -42,8 +42,6 @@
  */
 package org.lgna.ik.poser.croquet;
 
-import java.util.UUID;
-
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
@@ -57,6 +55,8 @@ import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
+
+import java.util.UUID;
 
 /**
  * @author Matt May

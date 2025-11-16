@@ -1,10 +1,10 @@
 package com.dddviewr.collada.geometry;
 
+import com.dddviewr.collada.Base;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
 
 public class LibraryGeometries extends Base {
   protected List<Geometry> geometries = new ArrayList<Geometry>();

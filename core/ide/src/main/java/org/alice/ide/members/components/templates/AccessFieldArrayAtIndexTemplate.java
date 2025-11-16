@@ -46,11 +46,7 @@ import org.alice.ide.ast.EmptyExpression;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel;
 import org.alice.ide.templates.ExpressionTemplate;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

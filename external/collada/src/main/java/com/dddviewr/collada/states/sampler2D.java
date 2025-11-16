@@ -1,10 +1,9 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.Sampler2D;
+import org.xml.sax.Attributes;
 
 public class sampler2D extends State {
   protected Sampler2D theSampler2D;

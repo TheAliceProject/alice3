@@ -43,11 +43,10 @@
 
 package org.alice.ide.swing;
 
-import java.awt.Color;
+import edu.cmu.cs.dennisc.color.Color4f;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import edu.cmu.cs.dennisc.color.Color4f;
+import java.awt.Color;
 
 /*package-private*/class BasicTreeNode extends DefaultMutableTreeNode implements Comparable {
 

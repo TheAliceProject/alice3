@@ -42,12 +42,11 @@
  */
 package org.lgna.story.implementation;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.BipedPose;
 import org.lgna.story.BipedPoseBuilder;
 import org.lgna.story.FlyerPose;
@@ -63,16 +62,12 @@ import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.QuadrupedResource;
+import org.lgna.story.resources.*;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.UnitQuaternion;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Matt May

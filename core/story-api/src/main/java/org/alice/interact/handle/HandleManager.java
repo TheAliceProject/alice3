@@ -54,7 +54,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.math.immutable.Point3;
-
 import org.lgna.story.implementation.AxesImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ModelImp;

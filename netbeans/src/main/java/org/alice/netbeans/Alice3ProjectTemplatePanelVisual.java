@@ -45,21 +45,20 @@ package org.alice.netbeans;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
+import org.netbeans.spi.project.ui.support.ProjectChooser;
+import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
+import org.openide.filesystems.FileUtil;
 
-import java.io.File;
-import java.util.Objects;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-
-import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
-import org.netbeans.spi.project.ui.support.ProjectChooser;
-import org.openide.WizardDescriptor;
-import org.openide.WizardValidationException;
-import org.openide.filesystems.FileUtil;
+import java.io.File;
+import java.util.Objects;
 
 public class Alice3ProjectTemplatePanelVisual extends JPanel {
 

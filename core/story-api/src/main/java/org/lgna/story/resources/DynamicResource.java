@@ -15,11 +15,7 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class DynamicResource<I extends JointedModelImp, T extends SThing> implements ModelStructure<I, T> {
 

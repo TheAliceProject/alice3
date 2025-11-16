@@ -43,13 +43,6 @@
 
 package org.alice.ide.swing;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -57,6 +50,7 @@ import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
 
 public class BasicTreeNodeRenderer implements TreeCellRenderer {
   private static final Color SELECTED_BORDER_COLOR = Color.GREEN;

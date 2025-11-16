@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import java.awt.Point;
-
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -61,6 +59,8 @@ import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Point;
 
 /**
  * @author David Culyba

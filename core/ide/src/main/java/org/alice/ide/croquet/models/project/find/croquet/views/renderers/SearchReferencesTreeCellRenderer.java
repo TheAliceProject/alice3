@@ -42,18 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.Component;
 
 /**
  * @author Matt May

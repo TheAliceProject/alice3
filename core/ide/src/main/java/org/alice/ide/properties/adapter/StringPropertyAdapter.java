@@ -43,9 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.ide.croquet.models.StandardExpressionState;
 
 public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> {
 

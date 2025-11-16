@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.icons.IconFactoryManager;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;

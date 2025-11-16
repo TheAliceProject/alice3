@@ -43,6 +43,13 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.common.ComponentExecutor;
+import org.lgna.story.HeldKeyPolicy;
+import org.lgna.story.Key;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -50,19 +57,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
-
-import org.lgna.common.ComponentExecutor;
-import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.Key;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May

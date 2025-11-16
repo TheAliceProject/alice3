@@ -43,14 +43,7 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.DeclarationProperty;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.story.resources.ModelResource;
 

@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.ui.debug.components;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel;
-import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.history.ActivityNode;
+import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.tree.TreePath;

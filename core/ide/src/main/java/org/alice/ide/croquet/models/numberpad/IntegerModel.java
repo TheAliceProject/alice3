@@ -42,12 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.IntegerLiteral;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.TypeExpression;
+import org.lgna.project.ast.*;
 
 import java.util.UUID;
 

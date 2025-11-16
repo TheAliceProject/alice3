@@ -46,13 +46,7 @@ import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 import java.util.Deque;
 import java.util.Map;

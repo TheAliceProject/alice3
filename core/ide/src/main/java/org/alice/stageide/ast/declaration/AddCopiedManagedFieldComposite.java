@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.declaration.AddManagedFieldComposite;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.cascade.ExpressionCascadeContext;
 import org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CascadeBlankChild;

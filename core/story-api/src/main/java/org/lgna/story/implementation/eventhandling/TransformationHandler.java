@@ -42,17 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

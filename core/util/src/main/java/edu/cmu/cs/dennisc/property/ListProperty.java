@@ -43,11 +43,7 @@
 package edu.cmu.cs.dennisc.property;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

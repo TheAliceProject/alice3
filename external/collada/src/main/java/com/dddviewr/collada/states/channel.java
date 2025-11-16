@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.animation.Animation;
 import com.dddviewr.collada.animation.Channel;
+import org.xml.sax.Attributes;
 
 public class channel extends State {
   protected Channel theChannel;

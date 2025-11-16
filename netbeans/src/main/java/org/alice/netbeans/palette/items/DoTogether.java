@@ -43,11 +43,11 @@
 
 package org.alice.netbeans.palette.items;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
-
 import org.alice.netbeans.palette.items.views.DoTogetherCustomizer;
 import org.openide.text.ActiveEditorDrop;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 
 public class DoTogether implements ActiveEditorDrop {
 

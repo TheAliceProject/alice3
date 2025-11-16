@@ -42,11 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import javax.swing.Box;
-import javax.swing.JLabel;
-import javax.swing.Spring;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;

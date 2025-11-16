@@ -43,11 +43,11 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SMarker;
 

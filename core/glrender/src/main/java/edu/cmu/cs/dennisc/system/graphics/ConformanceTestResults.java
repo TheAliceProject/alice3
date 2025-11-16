@@ -43,20 +43,6 @@
 
 package edu.cmu.cs.dennisc.system.graphics;
 
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
-import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
-import static com.jogamp.opengl.GL.GL_EXTENSIONS;
-import static com.jogamp.opengl.GL.GL_LEQUAL;
-import static com.jogamp.opengl.GL.GL_RENDERER;
-import static com.jogamp.opengl.GL.GL_VENDOR;
-import static com.jogamp.opengl.GL.GL_VERSION;
-import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
-import static com.jogamp.opengl.GL2.GL_RENDER;
-import static com.jogamp.opengl.GL2.GL_SELECT;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.render.gl.imp.GetUtilities;
@@ -65,6 +51,11 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2.*;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove

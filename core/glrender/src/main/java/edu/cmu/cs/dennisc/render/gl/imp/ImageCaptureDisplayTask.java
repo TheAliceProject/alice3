@@ -61,9 +61,7 @@ import java.nio.FloatBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.jogamp.opengl.GL.GL_FLOAT;
-import static com.jogamp.opengl.GL.GL_NO_ERROR;
-import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
+import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.GL2.GL_ABGR_EXT;
 import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
 

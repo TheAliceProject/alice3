@@ -56,19 +56,7 @@ import org.lgna.story.implementation.QuadrupedImp;
 import org.lgna.story.implementation.SlithererImp;
 import org.lgna.story.implementation.SwimmerImp;
 import org.lgna.story.implementation.TransportImp;
-import org.lgna.story.resources.AircraftResource;
-import org.lgna.story.resources.AutomobileResource;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.FishResource;
-import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.MarineMammalResource;
-import org.lgna.story.resources.PropResource;
-import org.lgna.story.resources.QuadrupedResource;
-import org.lgna.story.resources.SlithererResource;
-import org.lgna.story.resources.SwimmerResource;
-import org.lgna.story.resources.TrainResource;
-import org.lgna.story.resources.TransportResource;
-import org.lgna.story.resources.WatercraftResource;
+import org.lgna.story.resources.*;
 
 public class ModelClassData extends BaseModelClassData {
   public final Class superClass;

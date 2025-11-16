@@ -44,14 +44,7 @@ package org.alice.ide.ast.export.type;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.typemanager.ResourceTypeUtilities;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Declaration;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 

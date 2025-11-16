@@ -53,8 +53,8 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.Point3;
 
-import java.awt.Rectangle;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 
 /**

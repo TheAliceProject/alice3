@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.java.util.Sets;
 import org.lgna.common.EachInTogetherRunnable;
 import org.lgna.common.Resource;
 import org.lgna.common.ThreadUtilities;
-import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.resource.ResourcesTypeWrapper;
 
 import java.lang.reflect.Modifier;

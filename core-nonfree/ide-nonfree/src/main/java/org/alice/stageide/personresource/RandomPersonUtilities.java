@@ -45,18 +45,7 @@ package org.alice.stageide.personresource;
 
 import org.lgna.common.RandomUtilities;
 import org.lgna.story.Color;
-import org.lgna.story.resources.sims2.BaseEyeColor;
-import org.lgna.story.resources.sims2.BaseFace;
-import org.lgna.story.resources.sims2.BaseSkinTone;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.Face;
-import org.lgna.story.resources.sims2.FullBodyOutfitManager;
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Hair;
-import org.lgna.story.resources.sims2.HairManager;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.Outfit;
-import org.lgna.story.resources.sims2.PersonResource;
+import org.lgna.story.resources.sims2.*;
 
 /**
  * @author Dennis Cosgrove

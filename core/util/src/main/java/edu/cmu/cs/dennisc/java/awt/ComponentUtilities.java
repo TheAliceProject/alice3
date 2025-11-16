@@ -49,11 +49,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 

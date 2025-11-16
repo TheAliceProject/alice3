@@ -46,6 +46,7 @@ import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.ast.declaration.AddManagedFieldComposite;
 import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.CustomItemState;
@@ -57,8 +58,6 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
-
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
 import org.lgna.story.SMarker;

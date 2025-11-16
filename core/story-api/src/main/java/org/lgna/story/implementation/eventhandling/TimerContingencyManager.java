@@ -42,33 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.List;
-
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
-import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.EndOcclusionEvent;
-import org.lgna.story.event.EnterProximityEvent;
-import org.lgna.story.event.EnterViewEvent;
-import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ExitViewEvent;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.ProximityEnterListener;
-import org.lgna.story.event.ProximityExitListener;
-import org.lgna.story.event.StartCollisionEvent;
-import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
-import org.lgna.story.event.WhileCollisionListener;
-import org.lgna.story.event.WhileInViewListener;
-import org.lgna.story.event.WhileOcclusionListener;
-import org.lgna.story.event.WhileProximityListener;
+import org.lgna.story.event.*;
 import org.lgna.story.implementation.SceneImp;
+
+import java.util.List;
 
 /**
  * @author Matt May

@@ -1,11 +1,6 @@
 package org.alice.tweedle.unlinked;
 
-import org.alice.tweedle.TweedleArrayType;
-import org.alice.tweedle.TweedleNull;
-import org.alice.tweedle.TweedlePrimitiveValue;
-import org.alice.tweedle.TweedleStatement;
-import org.alice.tweedle.TweedleTypes;
-import org.alice.tweedle.TweedleVoidType;
+import org.alice.tweedle.*;
 import org.alice.tweedle.ast.*;
 import org.junit.Test;
 

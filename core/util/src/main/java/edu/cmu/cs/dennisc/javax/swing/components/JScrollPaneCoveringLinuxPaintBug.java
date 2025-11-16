@@ -44,12 +44,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 
 import edu.cmu.cs.dennisc.javax.swing.plaf.SmallerFootprintScrollBarUI;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JViewport;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.BorderLayout;
 import java.awt.Color;

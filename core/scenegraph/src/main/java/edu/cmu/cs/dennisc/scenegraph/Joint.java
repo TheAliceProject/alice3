@@ -46,11 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.EulerAngles;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3f;
+import org.alice.math.immutable.*;
 
 import java.util.ArrayList;
 import java.util.List;

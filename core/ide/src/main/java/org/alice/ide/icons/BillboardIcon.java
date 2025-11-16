@@ -44,13 +44,7 @@ package org.alice.ide.icons;
 
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 /**

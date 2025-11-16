@@ -50,17 +50,7 @@ import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.views.AxisPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.AssignmentExpression;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

@@ -1,8 +1,8 @@
 package com.dddviewr.collada.geometry;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Base;
+
+import java.io.PrintStream;
 
 public class Geometry extends Base {
   protected String id;

@@ -57,9 +57,9 @@ import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.*;
 import org.lgna.project.ast.*;
 
 import javax.swing.*;

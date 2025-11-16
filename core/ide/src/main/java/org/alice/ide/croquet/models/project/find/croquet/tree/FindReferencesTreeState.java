@@ -42,11 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.tree;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.swing.Icon;
-
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.DeclarationSeachTreeNode;
@@ -59,6 +54,10 @@ import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
+
+import javax.swing.Icon;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May

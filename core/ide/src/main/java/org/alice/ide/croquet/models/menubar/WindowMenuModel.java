@@ -48,11 +48,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.IdeApp;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.perspectives.ProjectPerspective;
-import org.lgna.croquet.ItemState;
-import org.lgna.croquet.MenuModel;
-import org.lgna.croquet.SingleSelectListState;
-import org.lgna.croquet.StandardMenuItemPrepModel;
-import org.lgna.croquet.StaticMenuModel;
+import org.lgna.croquet.*;
 
 import java.util.List;
 import java.util.UUID;

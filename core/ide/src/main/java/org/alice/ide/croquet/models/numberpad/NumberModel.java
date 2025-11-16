@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.numberpad;
 import edu.cmu.cs.dennisc.javax.swing.event.PausableDocumentListener;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PrepModel;
-import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.history.EmptyPrepStep;
+import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.triggers.DocumentEventTrigger;
 import org.lgna.project.ast.Expression;
 

@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.BaseXform;
 import com.dddviewr.collada.visualscene.Rotate;
+import org.xml.sax.Attributes;
 
 public class rotate extends State {
   protected Rotate theRotate;

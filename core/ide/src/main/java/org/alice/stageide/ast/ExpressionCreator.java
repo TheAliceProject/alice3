@@ -44,6 +44,7 @@
 package org.alice.stageide.ast;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
@@ -66,8 +67,6 @@ import org.lgna.story.Size;
 import org.lgna.story.fontattributes.Attribute;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
-
-import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.resources.JointId;
 
 import java.lang.reflect.Field;

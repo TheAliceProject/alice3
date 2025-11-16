@@ -43,20 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_BACK;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_GREATER;
-import static com.jogamp.opengl.GL.GL_LINES;
-import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
-
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -83,6 +69,17 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Matrix4x4;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
 
 public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements PropertyListener, SkeletonVisualBoundingBoxTracker {
   public static class WeightedMeshControl {

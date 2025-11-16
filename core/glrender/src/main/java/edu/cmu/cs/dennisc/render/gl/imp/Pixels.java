@@ -51,12 +51,7 @@ import edu.cmu.cs.dennisc.texture.event.TextureListener;
 
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.nio.ByteBuffer;
 
 /**

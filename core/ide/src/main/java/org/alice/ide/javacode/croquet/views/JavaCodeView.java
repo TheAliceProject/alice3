@@ -61,11 +61,7 @@ import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
 import org.lgna.croquet.undo.event.HistoryListener;
 import org.lgna.croquet.undo.event.HistoryPushEvent;
 import org.lgna.croquet.views.HtmlView;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.JavaCodeGenerator;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserConstructor;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 import org.lgna.project.code.CodeFormatter;
 import org.lgna.story.ast.JavaCodeUtilities;
 

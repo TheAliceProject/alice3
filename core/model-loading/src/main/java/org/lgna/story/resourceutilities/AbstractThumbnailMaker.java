@@ -42,13 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.IOException;
-
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -70,6 +63,13 @@ import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.SceneImp;
+
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.IOException;
 
 /**
  * @author Dave Culyba

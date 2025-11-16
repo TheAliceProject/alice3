@@ -42,11 +42,7 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.*;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.debug.tree.core.ZTreeNode;

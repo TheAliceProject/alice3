@@ -49,13 +49,7 @@ import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.annotations.AddEventListenerTemplate;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

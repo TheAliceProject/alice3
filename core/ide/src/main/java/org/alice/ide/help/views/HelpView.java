@@ -44,12 +44,7 @@ package org.alice.ide.help.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.help.HelpComposite;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Hyperlink;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;

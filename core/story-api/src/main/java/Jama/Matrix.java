@@ -1,17 +1,13 @@
 package Jama;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.NumberFormat;
+import Jama.util.*;
+
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
-import java.io.StreamTokenizer;
 import java.util.Vector;
-
-import Jama.util.*;
 
 /**
  Jama = Java Matrix class.

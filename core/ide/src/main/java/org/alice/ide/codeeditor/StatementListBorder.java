@@ -49,17 +49,7 @@ import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 

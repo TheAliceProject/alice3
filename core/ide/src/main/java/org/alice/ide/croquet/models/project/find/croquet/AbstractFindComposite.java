@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet;
 
-import java.util.List;
-import java.util.UUID;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocument;
 import org.alice.ide.croquet.models.project.find.core.FindContentManager;
@@ -79,7 +77,8 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
-import edu.cmu.cs.dennisc.pattern.Criterion;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Search for code elements that match all terms in the search string.

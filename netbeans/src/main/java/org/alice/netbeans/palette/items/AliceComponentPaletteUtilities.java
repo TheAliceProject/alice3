@@ -43,25 +43,24 @@
 
 package org.alice.netbeans.palette.items;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
-
-import org.openide.text.IndentEngine;
-import org.openide.util.Exceptions;
-
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
 import org.netbeans.api.java.source.JavaSource;
 import org.netbeans.api.java.source.Task;
 import org.netbeans.api.java.source.TreeMaker;
 import org.netbeans.api.java.source.WorkingCopy;
+import org.openide.text.IndentEngine;
+import org.openide.util.Exceptions;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AliceComponentPaletteUtilities {
 

@@ -1,13 +1,13 @@
 package com.dddviewr.collada.controller;
 
+import com.dddviewr.collada.Base;
+import com.dddviewr.collada.Input;
+import com.dddviewr.collada.Source;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
-import com.dddviewr.collada.Input;
-import com.dddviewr.collada.Source;
 
 public class Skin extends Base {
   protected String source;

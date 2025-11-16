@@ -42,17 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite;
-import org.alice.ide.croquet.models.ui.debug.BreakProjectAddNullMethodOperation;
-import org.alice.ide.croquet.models.ui.debug.RaiseAnomalousSituationOperation;
-import org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation;
-import org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation;
-import org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation;
-import org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingManagedUserMethods;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods;
+import org.alice.ide.croquet.models.ui.debug.*;
+import org.alice.ide.croquet.models.ui.preferences.*;
 import org.alice.ide.javacode.croquet.JavaCodeFrameComposite;
 import org.alice.ide.testing.framesize.croquet.CycleFrameSizeOperation;
 import org.alice.stageide.raytrace.ExportToPovRayOperation;

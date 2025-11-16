@@ -45,12 +45,11 @@ package org.alice.ide.properties.uicontroller;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.math.immutable.Point3;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
-
-import org.alice.math.immutable.Point3;
 
 public class AdapterControllerUtilities {
   //TODO: base this lookup on a (type -> property controller) registration that happens in the IDE

@@ -48,12 +48,7 @@ import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
+import java.awt.*;
 
 class StickyLayout implements LayoutManager2 {
   public StickyLayout(int vGap) {

@@ -43,13 +43,9 @@
 
 package org.alice.interact.manipulator.scenegraph;
 
-import java.util.List;
-
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.interact.manipulator.SnapUtilities;
-
-import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -62,8 +58,11 @@ import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.interact.manipulator.SnapUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Point3;
+
+import java.util.List;
 
 /**
  * @author David Culyba

@@ -43,11 +43,7 @@
 package org.alice.ide.ast.export;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.UserConstructor;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.Collection;
 import java.util.Collections;

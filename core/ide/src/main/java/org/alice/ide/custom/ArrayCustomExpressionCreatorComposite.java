@@ -44,7 +44,6 @@ package org.alice.ide.custom;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.custom.components.ArrayCustomExpressionCreatorView;

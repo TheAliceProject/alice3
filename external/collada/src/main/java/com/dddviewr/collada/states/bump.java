@@ -1,13 +1,12 @@
 package com.dddviewr.collada.states;
 
-import java.lang.reflect.Method;
-
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.Effect;
 import com.dddviewr.collada.effects.EffectAttribute;
+import org.xml.sax.Attributes;
+
+import java.lang.reflect.Method;
 
 public class bump extends State {
   protected EffectAttribute attrib;

@@ -42,15 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.typemanager;
 
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Declaration;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 

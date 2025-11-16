@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import java.awt.event.KeyEvent;
-
 import edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author David Culyba

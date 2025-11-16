@@ -46,7 +46,6 @@ import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn;
-
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;

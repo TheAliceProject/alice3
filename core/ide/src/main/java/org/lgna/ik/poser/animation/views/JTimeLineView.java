@@ -42,24 +42,7 @@
  */
 package org.lgna.ik.poser.animation.views;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import javax.swing.JPanel;
-
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import org.lgna.croquet.Application;
@@ -67,7 +50,15 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 import org.lgna.ik.poser.animation.edits.CurrentTimeLineTimeChangeEdit;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * @author Matt May

@@ -56,7 +56,6 @@ import org.alice.interact.DragAdapter;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.manipulator.scenegraph.SnapLine;
 import org.alice.interact.manipulator.scenegraph.SnapSphere;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;

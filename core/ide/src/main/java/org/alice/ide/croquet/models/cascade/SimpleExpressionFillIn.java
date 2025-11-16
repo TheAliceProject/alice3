@@ -48,11 +48,7 @@ import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.story.SThing;
 
 import javax.swing.Icon;

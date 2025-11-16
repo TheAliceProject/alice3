@@ -43,11 +43,7 @@
 
 package org.alice.ide.x;
 
-import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.ast.EmptyExpression;
-import org.alice.ide.ast.IdeExpression;
-import org.alice.ide.ast.PreviousValueExpression;
-import org.alice.ide.ast.SelectedInstanceFactoryExpression;
+import org.alice.ide.ast.*;
 import org.alice.ide.common.EmptyExpressionPane;
 import org.alice.ide.common.PreviousValueExpressionPane;
 import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;

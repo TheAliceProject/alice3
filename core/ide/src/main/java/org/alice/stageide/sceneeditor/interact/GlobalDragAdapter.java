@@ -43,72 +43,26 @@
 
 package org.alice.stageide.sceneeditor.interact;
 
-import java.awt.event.MouseEvent;
-
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
-import org.alice.interact.InteractionGroup;
-import org.alice.interact.ModifierMask;
+import org.alice.interact.*;
 import org.alice.interact.ModifierMask.ModifierKey;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementKey;
-import org.alice.interact.MovementType;
-import org.alice.interact.PickHint;
-import org.alice.interact.condition.AndInputCondition;
-import org.alice.interact.condition.DoubleClickedObjectCondition;
-import org.alice.interact.condition.DragAndDropCondition;
-import org.alice.interact.condition.InputCondition;
-import org.alice.interact.condition.InvertedSelectedObjectCondition;
-import org.alice.interact.condition.KeyPressCondition;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseCondition;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.MousePressCondition;
-import org.alice.interact.condition.MouseWheelCondition;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.condition.PickCondition;
-import org.alice.interact.condition.SelectedObjectCondition;
+import org.alice.interact.condition.*;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
-import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.HandleStyle;
-import org.alice.interact.handle.JointRotationRingHandle;
-import org.alice.interact.handle.LinearScaleHandle;
-import org.alice.interact.handle.LinearTranslateHandle;
-import org.alice.interact.handle.ManipulationAxes;
-import org.alice.interact.handle.RotationRingHandle;
-import org.alice.interact.handle.StoodUpRotationRingHandle;
-import org.alice.interact.manipulator.AbstractManipulator;
-import org.alice.interact.manipulator.CameraRotateKeyManipulator;
-import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
-import org.alice.interact.manipulator.ClickAdapterManipulator;
-import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
-import org.alice.interact.manipulator.LinearDragManipulator;
-import org.alice.interact.manipulator.ManipulatorClickAdapter;
-import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
-import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.interact.manipulator.ObjectTranslateKeyManipulator;
-import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
-import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
-import org.alice.interact.manipulator.SelectObjectDragManipulator;
-import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.interact.handle.*;
+import org.alice.interact.manipulator.*;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
-import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.CopyObjectDragManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.GetAGoodLookAtManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.OmniDirectionalBoundingBoxManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.ResizeDragManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.ScaleDragManipulator;
-
-import edu.cmu.cs.dennisc.color.Color4f;
+import org.alice.stageide.sceneeditor.interact.manipulators.*;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.Application;
@@ -121,6 +75,8 @@ import org.lgna.story.SJoint;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.JointImp;
+
+import java.awt.event.MouseEvent;
 
 /**
  * @author David Culyba

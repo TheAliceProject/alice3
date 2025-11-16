@@ -54,11 +54,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

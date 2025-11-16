@@ -44,8 +44,8 @@
 package org.alice.stageide.custom;
 
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import edu.cmu.cs.dennisc.media.javafx.Player;
 import edu.cmu.cs.dennisc.media.javafx.MediaFactory;
+import edu.cmu.cs.dennisc.media.javafx.Player;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView;
 import org.lgna.common.Resource;

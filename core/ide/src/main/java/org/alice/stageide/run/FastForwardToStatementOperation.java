@@ -47,13 +47,7 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
-import org.lgna.project.virtualmachine.events.CountLoopIterationEvent;
-import org.lgna.project.virtualmachine.events.EachInTogetherItemEvent;
-import org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent;
-import org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent;
-import org.lgna.project.virtualmachine.events.StatementExecutionEvent;
-import org.lgna.project.virtualmachine.events.VirtualMachineListener;
-import org.lgna.project.virtualmachine.events.WhileLoopIterationEvent;
+import org.lgna.project.virtualmachine.events.*;
 import org.lgna.story.SProgram;
 
 import java.util.UUID;

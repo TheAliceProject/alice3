@@ -43,17 +43,7 @@
 
 package org.alice.ide.instancefactory;
 
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

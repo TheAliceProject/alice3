@@ -42,24 +42,18 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.ArrayList;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.ik.poser.PoseAstUtilities;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.DoubleLiteral;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Pose;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
+import java.util.ArrayList;
 
 /**
  * @author Matt May

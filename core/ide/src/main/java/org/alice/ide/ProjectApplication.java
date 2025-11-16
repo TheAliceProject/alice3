@@ -82,13 +82,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles;
 import static org.alice.ide.ProjectFileUtilities.BACKUP_AUTO;

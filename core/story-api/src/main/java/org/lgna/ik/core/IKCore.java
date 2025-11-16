@@ -42,10 +42,8 @@
  */
 package org.lgna.ik.core;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
@@ -58,8 +56,9 @@ import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import org.alice.math.immutable.Point3;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

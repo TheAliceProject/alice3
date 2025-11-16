@@ -42,26 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static com.jogamp.opengl.GL.GL_BLEND;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
-import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
-import static com.jogamp.opengl.GL.GL_LINES;
-import static com.jogamp.opengl.GL.GL_LINE_LOOP;
-import static com.jogamp.opengl.GL.GL_LINE_STRIP;
-import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_RGBA;
-import static com.jogamp.opengl.GL.GL_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
-import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
-import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
-import static com.jogamp.opengl.GL2.GL_POLYGON;
-import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
-import static com.jogamp.opengl.GL2GL3.GL_FILL;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLException;
@@ -79,21 +59,7 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.CustomTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -108,6 +74,15 @@ import java.nio.DoubleBuffer;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
+import static com.jogamp.opengl.GL2.GL_POLYGON;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
+import static com.jogamp.opengl.GL2GL3.GL_FILL;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove

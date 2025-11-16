@@ -42,20 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet.views;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsMethodFrequencyTabComposite;
@@ -78,8 +66,14 @@ import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.util.Maps;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

@@ -42,20 +42,15 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
+import org.lgna.story.event.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SThing;
-import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.CollisionEvent;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.StartCollisionEvent;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May

@@ -45,22 +45,11 @@ package org.alice.ide.common;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.StaticAnalysisUtilities;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import javax.swing.Icon;
 import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 

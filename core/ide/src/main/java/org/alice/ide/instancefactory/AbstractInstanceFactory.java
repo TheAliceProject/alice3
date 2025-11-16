@@ -48,11 +48,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

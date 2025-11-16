@@ -43,12 +43,7 @@
 package org.lgna.croquet.imp.dialog;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.Group;
-import org.lgna.croquet.Initializer;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.OperationOwningComposite;
-import org.lgna.croquet.OwnedByCompositeOperation;
-import org.lgna.croquet.OwnedByCompositeOperationSubKey;
+import org.lgna.croquet.*;
 
 import java.util.Map;
 

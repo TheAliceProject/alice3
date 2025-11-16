@@ -45,12 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.ForwardAndUpGuide;
-import org.alice.math.immutable.Matrix4x4;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.*;
 
 /**
  * @author Dennis Cosgrove

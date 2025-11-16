@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.swing;
 
-import org.alice.interact.handle.ManipulationHandle3D;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -51,6 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix3x3;
 

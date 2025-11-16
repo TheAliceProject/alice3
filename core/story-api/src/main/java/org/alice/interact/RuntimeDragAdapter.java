@@ -42,22 +42,17 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.alice.interact.ModifierMask.ModifierKey;
-import org.alice.interact.condition.AndInputCondition;
-import org.alice.interact.condition.InputCondition;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.PickCondition;
-import org.alice.interact.condition.TargetModelCondition;
+import org.alice.interact.condition.*;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.lgna.story.SModel;
 import org.lgna.story.Visual;
+
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -43,21 +43,20 @@
 
 package org.lgna.ik.core.solver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
-import org.lgna.ik.core.solver.Bone.Axis;
-
 import org.alice.math.immutable.Vector3;
+import org.lgna.ik.core.solver.Bone.Axis;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove

@@ -43,23 +43,17 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import java.awt.event.MouseEvent;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
-import org.lgna.story.event.MouseClickEvent;
-import org.lgna.story.event.MouseClickEventImp;
-import org.lgna.story.event.MouseClickOnObjectEvent;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenEvent;
-import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.*;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import java.awt.event.MouseEvent;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Matt May

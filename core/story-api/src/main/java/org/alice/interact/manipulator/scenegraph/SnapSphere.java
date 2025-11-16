@@ -43,8 +43,6 @@
 package org.alice.interact.manipulator.scenegraph;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
@@ -53,6 +51,8 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author David Culyba

@@ -44,7 +44,6 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
 import org.lgna.croquet.history.MenuItemSelectStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Menu;

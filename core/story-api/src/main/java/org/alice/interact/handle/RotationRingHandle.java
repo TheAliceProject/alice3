@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import java.awt.Color;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
@@ -58,6 +56,8 @@ import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Color;
 
 /**
  * @author David Culyba

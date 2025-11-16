@@ -49,13 +49,7 @@ import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**

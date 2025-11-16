@@ -42,25 +42,23 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.time.Year;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.lgna.project.ProjectVersion;
-
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
+import org.lgna.project.ProjectVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import java.time.Year;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author dculyba

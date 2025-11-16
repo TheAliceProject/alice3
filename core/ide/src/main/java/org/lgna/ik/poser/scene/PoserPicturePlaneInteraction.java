@@ -42,17 +42,15 @@
  */
 package org.lgna.ik.poser.scene;
 
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.Point;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.handle.ManipulationHandle3D;
-
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Sphere;
@@ -65,12 +63,11 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
 import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * @author Matt May

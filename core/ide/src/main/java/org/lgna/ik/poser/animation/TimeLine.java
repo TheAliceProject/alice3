@@ -42,11 +42,9 @@
  */
 package org.lgna.ik.poser.animation;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
@@ -54,9 +52,10 @@ import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.math.immutable.UnitQuaternion;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

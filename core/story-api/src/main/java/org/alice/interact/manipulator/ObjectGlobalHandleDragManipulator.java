@@ -43,14 +43,13 @@
 package org.alice.interact.manipulator;
 
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba

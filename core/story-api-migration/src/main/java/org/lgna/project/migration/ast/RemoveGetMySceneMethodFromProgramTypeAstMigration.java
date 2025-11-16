@@ -46,12 +46,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.Version;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 import org.lgna.project.migration.AstMigration;
 import org.lgna.project.migration.MigrationManager;
 

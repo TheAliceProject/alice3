@@ -46,13 +46,9 @@ package edu.cmu.cs.dennisc.scenegraph;
 import edu.cmu.cs.dennisc.glyph.GlyphVector;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Matrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
+import org.alice.math.immutable.*;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;

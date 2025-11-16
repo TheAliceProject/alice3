@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_POLYGON_OFFSET_FILL;
-import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
-
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -60,6 +57,9 @@ import org.alice.math.immutable.Vector3;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.jogamp.opengl.GL.GL_POLYGON_OFFSET_FILL;
+import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 
 /**
  * @author Dennis Cosgrove

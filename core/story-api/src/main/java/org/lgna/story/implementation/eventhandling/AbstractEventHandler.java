@@ -42,17 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Matt May

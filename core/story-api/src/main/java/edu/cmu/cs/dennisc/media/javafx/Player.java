@@ -2,11 +2,10 @@ package edu.cmu.cs.dennisc.media.javafx;
 
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import org.lgna.common.resources.AudioResource;
-
+import javafx.beans.value.ChangeListener;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import javafx.beans.value.ChangeListener;
+import org.lgna.common.resources.AudioResource;
 
 public class Player extends edu.cmu.cs.dennisc.media.Player {
   private final MediaPlayer player;

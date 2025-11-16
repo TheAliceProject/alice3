@@ -51,11 +51,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Lazy;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.annotations.ClassTemplate;
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
-import org.lgna.project.annotations.Visibility;
+import org.lgna.project.annotations.*;
 import org.lgna.project.reflect.ClassInfoManager;
 import org.lgna.project.reflect.MethodInfo;
 

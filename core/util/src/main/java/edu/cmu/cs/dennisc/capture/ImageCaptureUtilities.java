@@ -48,23 +48,8 @@ import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Robot;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**

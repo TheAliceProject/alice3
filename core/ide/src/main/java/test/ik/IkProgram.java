@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
 import org.lgna.croquet.State;
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
@@ -72,15 +73,7 @@ import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointId;
-
-import org.alice.math.immutable.Point3;
-import test.ik.croquet.AnchorJointIdState;
-import test.ik.croquet.BonesState;
-import test.ik.croquet.EndJointIdState;
-import test.ik.croquet.IkSplitComposite;
-import test.ik.croquet.InfoState;
-import test.ik.croquet.IsAngularEnabledState;
-import test.ik.croquet.IsLinearEnabledState;
+import test.ik.croquet.*;
 
 import java.util.HashMap;
 import java.util.Map;

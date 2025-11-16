@@ -44,11 +44,7 @@ package org.lgna.story.implementation.sims2;
 
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Dimension3;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.UnitQuaternion;
+import org.alice.math.immutable.*;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;

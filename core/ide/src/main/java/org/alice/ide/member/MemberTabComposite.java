@@ -47,7 +47,6 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.views.MemberTabView;
 import org.alice.stageide.member.AddListenerProceduresComposite;
-
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -61,8 +60,8 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
 import java.util.stream.Collectors;

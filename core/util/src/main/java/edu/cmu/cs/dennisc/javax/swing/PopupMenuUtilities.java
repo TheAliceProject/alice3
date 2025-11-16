@@ -42,13 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.Component;

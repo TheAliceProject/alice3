@@ -44,16 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import org.alice.interact.debug.DebugSphere;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Angle;
-import org.alice.math.immutable.AngleInRadians;
-import org.alice.math.immutable.AxisRotation;
-import org.alice.math.immutable.ForwardAndUpGuide;
-import org.alice.math.immutable.Orientation;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Tuple3;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.*;
 
 /**
  * @author Dennis Cosgrove

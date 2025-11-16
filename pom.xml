@@ -528,6 +528,16 @@
           <artifactId>checksum-maven-plugin</artifactId>
           <version>1.11</version>
         </plugin>
+        <plugin>
+          <groupId>org.openrewrite.maven</groupId>
+          <artifactId>rewrite-maven-plugin</artifactId>
+          <version>6.23.0</version>
+          <configuration>
+            <activeRecipes>
+              <recipe>org.openrewrite.java.OrderImports</recipe>
+            </activeRecipes>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 

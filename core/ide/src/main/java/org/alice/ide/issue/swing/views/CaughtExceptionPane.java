@@ -56,14 +56,7 @@ import org.alice.ide.issue.UserProgramRunningStateUtilities;
 import org.alice.ide.issue.swing.CheckForNewAliceVersionAction;
 import org.lgna.project.ProjectVersion;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 

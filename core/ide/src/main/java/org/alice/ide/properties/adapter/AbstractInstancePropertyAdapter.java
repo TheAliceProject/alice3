@@ -42,10 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.StandardExpressionState;
-
-import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 /**
  * @author dculyba

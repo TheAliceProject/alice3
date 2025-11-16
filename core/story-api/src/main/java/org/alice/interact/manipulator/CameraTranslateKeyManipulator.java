@@ -42,11 +42,10 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.MovementKey;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba

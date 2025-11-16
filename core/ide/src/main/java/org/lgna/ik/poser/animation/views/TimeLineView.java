@@ -42,19 +42,6 @@
  */
 package org.lgna.ik.poser.animation.views;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.AbstractButton;
-import javax.swing.JPanel;
-
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.views.Panel;
@@ -62,6 +49,14 @@ import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 import org.lgna.story.Pose;
+
+import javax.swing.AbstractButton;
+import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

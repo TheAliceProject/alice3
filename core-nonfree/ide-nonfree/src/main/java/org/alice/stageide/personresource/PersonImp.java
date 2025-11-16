@@ -52,15 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.SingleVisualModelImp;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.Face;
-import org.lgna.story.resources.sims2.FullBodyOutfit;
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Hair;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.Outfit;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resources.sims2.TopAndBottomOutfit;
+import org.lgna.story.resources.sims2.*;
 
 import java.awt.Color;
 import java.util.Map;

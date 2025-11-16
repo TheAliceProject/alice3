@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import java.lang.reflect.Method;
-
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
+import org.xml.sax.Attributes;
+
+import java.lang.reflect.Method;
 
 public class source extends State {
   protected Source theSource;

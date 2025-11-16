@@ -1,12 +1,11 @@
 package com.dddviewr.collada;
 
-import java.util.Stack;
-
+import com.dddviewr.collada.states.COLLADA;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.dddviewr.collada.states.COLLADA;
+import java.util.Stack;
 
 public class StateManager extends DefaultHandler {
   protected Stack<State> states = new Stack<State>();

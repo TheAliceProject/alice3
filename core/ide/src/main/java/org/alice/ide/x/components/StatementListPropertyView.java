@@ -65,16 +65,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.BoxLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**

@@ -43,12 +43,8 @@
 
 package org.lgna.story.resourceutilities;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -57,6 +53,10 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
   @Override

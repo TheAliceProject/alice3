@@ -51,13 +51,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

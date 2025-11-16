@@ -1,16 +1,12 @@
 package org.lgna.story.resourceutilities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.SSwimmer;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+
+import java.util.*;
 
 public class PipelineNamingUtilities {
 

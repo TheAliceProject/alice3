@@ -42,18 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core.astcrawler;
 
-import java.util.List;
-
-import org.alice.ide.croquet.models.project.find.core.SearchResult;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.MethodInvocation;
-
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.lgna.project.ast.*;
+
+import java.util.List;
 
 /**
  * @author Matt May

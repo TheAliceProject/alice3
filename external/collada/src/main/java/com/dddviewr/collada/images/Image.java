@@ -1,8 +1,8 @@
 package com.dddviewr.collada.images;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Base;
+
+import java.io.PrintStream;
 
 public class Image extends Base {
   protected String id;

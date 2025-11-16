@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.images.Image;
 import com.dddviewr.collada.images.LibraryImages;
+import org.xml.sax.Attributes;
 
 public class image extends State {
   protected Image theImage;

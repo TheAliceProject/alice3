@@ -43,19 +43,14 @@
 
 package org.alice.ide.swing;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
+
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
-import edu.cmu.cs.dennisc.scenegraph.Component;
 
 public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 

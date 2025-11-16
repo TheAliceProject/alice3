@@ -44,14 +44,7 @@ package org.lgna.project.migration;
 
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
-import org.lgna.project.migration.ast.CompoundMigration;
-import org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle;
-import org.lgna.project.migration.ast.EventAstMigration;
-import org.lgna.project.migration.ast.MethodMovedToSuperclass;
-import org.lgna.project.migration.ast.MouseClickAstMigration;
-import org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration;
-import org.lgna.project.migration.ast.ReplaceTypeWithResourcedForm;
-import org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration;
+import org.lgna.project.migration.ast.*;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
 import org.lgna.story.Say;

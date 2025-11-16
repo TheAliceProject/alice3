@@ -43,12 +43,7 @@
 
 package org.alice.stageide.ast;
 
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.JavaConstructorParameter;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.*;
 import org.lgna.story.resources.sims2.BottomPiece;
 import org.lgna.story.resources.sims2.Outfit;
 import org.lgna.story.resources.sims2.TopAndBottomOutfit;

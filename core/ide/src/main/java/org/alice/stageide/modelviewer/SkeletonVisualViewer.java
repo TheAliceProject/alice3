@@ -1,11 +1,11 @@
 package org.alice.stageide.modelviewer;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 import org.alice.interact.DragAdapter;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
 
 public class SkeletonVisualViewer extends Viewer {

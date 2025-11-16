@@ -43,15 +43,7 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.nativewindow.CapabilitiesImmutable;
-import com.jogamp.opengl.DefaultGLCapabilitiesChooser;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLCapabilitiesImmutable;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLDrawable;
-import com.jogamp.opengl.GLDrawableFactory;
-import com.jogamp.opengl.GLOffscreenAutoDrawable;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.awt.GLJPanel;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;

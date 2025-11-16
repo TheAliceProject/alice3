@@ -1,15 +1,10 @@
 package edu.cmu.cs.dennisc.jira.rest;
 
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+import net.rcarz.jiraclient.*;
+
 import java.net.URI;
 import java.util.Collections;
-
-import edu.cmu.cs.dennisc.jira.JIRAReport;
-import net.rcarz.jiraclient.BasicCredentials;
-import net.rcarz.jiraclient.Field;
-import net.rcarz.jiraclient.Issue;
-import net.rcarz.jiraclient.JiraClient;
-import net.rcarz.jiraclient.JiraException;
-import net.rcarz.jiraclient.Version;
 
 public class RestUtilities {
   // TODO Align this account with our server so it works and move the values out the code base.

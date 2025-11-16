@@ -42,13 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.alice.ide.IDE;
@@ -58,9 +52,14 @@ import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.story.SProgram;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
   private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();

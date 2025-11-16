@@ -1,8 +1,8 @@
 package edu.cmu.cs.dennisc.math;
 
+import org.alice.math.immutable.Point2;
 import org.junit.Before;
 import org.junit.Test;
-import org.alice.math.immutable.Point2;
 
 import java.util.List;
 

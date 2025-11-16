@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
-import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
@@ -59,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.ExponentialFog;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
-
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInDegrees;
 import org.lgna.story.Color;

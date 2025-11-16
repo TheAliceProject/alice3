@@ -8,10 +8,10 @@ import org.alice.math.immutable.UnitQuaternion;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
-import org.lgna.project.code.IdentifiableTweedleNode;
-import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.InstantiableTweedleNode;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 
 import java.lang.reflect.Field;

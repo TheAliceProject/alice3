@@ -42,12 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLOffscreenAutoDrawable;
+import com.jogamp.opengl.*;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 

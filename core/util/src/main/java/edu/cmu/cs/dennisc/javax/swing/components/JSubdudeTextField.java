@@ -49,30 +49,10 @@ import edu.cmu.cs.dennisc.java.util.Arrays;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.DefaultButtonModel;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.DocumentListener;
-import java.awt.AWTEvent;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 
 /**

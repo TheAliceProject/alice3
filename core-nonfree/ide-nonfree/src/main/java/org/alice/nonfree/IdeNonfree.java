@@ -42,14 +42,13 @@
  *******************************************************************************/
 package org.alice.nonfree;
 
-import java.util.List;
-import java.util.Map;
-
 import edu.cmu.cs.dennisc.eula.EULAUtilities;
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.nebulous.License;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.declaration.GalleryPersonResourceFillIn;
+import org.alice.ide.icons.SimsIconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.SimsStoryApiConfigurationManager;
@@ -64,7 +63,6 @@ import org.alice.stageide.cascade.SimsExpressionCascadeManager;
 import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.PersonResourceKeyUriIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.ResourceKeyUriIteratingOperation;
-import org.alice.ide.icons.SimsIconFactoryManager;
 import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.PersonResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
@@ -92,9 +90,10 @@ import org.lgna.story.SRoom;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.resources.ModelResource;
-
-import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import org.lgna.story.resources.sims2.PersonResource;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kyle J. Harms

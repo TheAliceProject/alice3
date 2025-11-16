@@ -42,15 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import edu.cmu.cs.dennisc.nebulous.Manager;
+
+import javax.swing.JOptionPane;
 import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.Preferences;
-
-import edu.cmu.cs.dennisc.nebulous.Manager;
-
-import javax.swing.JOptionPane;
 
 public enum NebulousStorytellingResources {
   INSTANCE;

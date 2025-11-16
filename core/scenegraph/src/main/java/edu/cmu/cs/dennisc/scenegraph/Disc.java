@@ -44,10 +44,10 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.DoubleProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
 
 /**
