@@ -61,7 +61,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
@@ -460,7 +460,7 @@ public enum StorytellingResources {
 
   private ModelManifest manifestFor(File modelFile) {
     try {
-      String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+      String fileContent = new String(Files.readAllBytes(Path.of(modelFile.toURI())));
       ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
       modelManifest.setRootFile(modelFile.getParentFile());
       return modelManifest;

@@ -208,7 +208,7 @@ public class Collada extends Base {
     if (reader == null) {
       try {
         SAXParserFactory factory;
-        factory = (SAXParserFactory) Class.forName("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").newInstance();
+        factory = (SAXParserFactory) Class.forName("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").getDeclaredConstructor().newInstance();
         //factory = SAXParserFactory.newInstance();
         Log.log("SAXParserFactory: " + factory);
         //factory.setNamespaceAware(true);

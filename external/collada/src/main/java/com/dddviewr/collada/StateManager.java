@@ -54,7 +54,7 @@ public class StateManager extends DefaultHandler {
     State result = null;
     try {
       Class<?> theClass = Class.forName("com.dddviewr.collada.states." + name);
-      result = (State) theClass.newInstance();
+      result = (State) theClass.getDeclaredConstructor().newInstance();
     } catch (ClassNotFoundException e) {
       try {
         Class<?> theClass = Class.forName("com.dddviewr.collada.states." + name + "State");

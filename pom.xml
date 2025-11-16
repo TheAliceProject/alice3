@@ -92,7 +92,7 @@
     <commons.discovery.version>0.5</commons.discovery.version>
     <openhtml.version>1.0.0</openhtml.version>
     <javax.activation.version>1.2.0</javax.activation.version>
-    <jaxb.api.version>2.2.3</jaxb.api.version>
+    <jakarta.api.version>2.3.3</jakarta.api.version>
     <install4j.version>10.0.6</install4j.version>
 
     <javafx.version>21.0.7</javafx.version>
@@ -235,9 +235,9 @@
       </dependency>
       <!-- Third Party Libraries from maven-->
       <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
-        <version>${jaxb.api.version}</version>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${jakarta.api.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -472,13 +472,12 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.14.0</version>
           <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
             <encoding>UTF-8</encoding>
             <includes>
               <include>**/*.java</include>
             </includes>
             <fork>true</fork>
+            <release>${java.version}</release>
           </configuration>
         </plugin>
         <plugin>
@@ -533,10 +532,18 @@
           <artifactId>rewrite-maven-plugin</artifactId>
           <version>6.23.0</version>
           <configuration>
+            <exportDatatables>true</exportDatatables>
             <activeRecipes>
-              <recipe>org.openrewrite.java.OrderImports</recipe>
+              <recipe>org.openrewrite.java.migrate.Java8toJava11</recipe>
             </activeRecipes>
           </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.openrewrite.recipe</groupId>
+              <artifactId>rewrite-migrate-java</artifactId>
+              <version>3.21.2</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>

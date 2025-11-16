@@ -8,6 +8,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  Jama = Java Matrix class.
@@ -879,7 +880,7 @@ public class Matrix implements Cloneable, Serializable {
     double[][] X = A.getArray();
     for (int i = 0; i < m; i++) {
       for (int j = 0; j < n; j++) {
-        X[i][j] = Math.random();
+        X[i][j] = ThreadLocalRandom.current().nextDouble();
       }
     }
     return A;
