@@ -1051,5 +1051,5 @@ public class Matrix implements Cloneable, Serializable {
     }
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }
