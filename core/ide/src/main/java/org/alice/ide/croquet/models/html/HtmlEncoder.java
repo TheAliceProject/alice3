@@ -290,11 +290,11 @@ public class HtmlEncoder implements AstProcessor {
         appendLambdaArguments(addListenerCall);
       });
       ArrayList<SimpleArgument> args = addListenerCall.requiredArguments.getValue();
-      if (!args.isEmpty() && "listener".equals(args.get(0).parameter.getValue().getName()) && args.get(0).expression.getValue() instanceof LambdaExpression) {
-        Lambda lambda = ((LambdaExpression) args.get(0).expression.getValue()).value.getValue();
+      if (!args.isEmpty() && "listener".equals(args.getFirst().parameter.getValue().getName()) && args.getFirst().expression.getValue() instanceof LambdaExpression) {
+        Lambda lambda = ((LambdaExpression) args.getFirst().expression.getValue()).value.getValue();
         if (lambda instanceof UserLambda userLambda) {
-          List<? extends AbstractMethod> listenerTypeMethods = args.get(0).parameter.getValue().getValueType().getDeclaredMethods();
-          AbstractMethod first = listenerTypeMethods.get(0);
+          List<? extends AbstractMethod> listenerTypeMethods = args.getFirst().parameter.getValue().getValueType().getDeclaredMethods();
+          AbstractMethod first = listenerTypeMethods.getFirst();
 
           pushDiv("alice-listener-declaration", () -> {
             appendLambdaMethodHeader(first.getName());

@@ -659,7 +659,7 @@ public class JointedModelColladaImporter {
     int vertexCount = vertexData.length / 3;
     float[] uvData = geometry.getMesh().getTexCoordData();
     int uvCount = uvData.length / 2;
-    Triangles tris = (Triangles) geometry.getMesh().getPrimitives().get(0);
+    Triangles tris = (Triangles) geometry.getMesh().getPrimitives().getFirst();
     int triCount = tris.getCount();
 
     System.out.println("Tris:  " + triCount + ", normals: " + normalCount + ", vertices: " + vertexCount + ", uvs: " + uvCount);

@@ -1349,7 +1349,7 @@ public class ModelResourceExporter {
 
           //If the array is one in the "hide all the elements of this array" list, then declare it as an arrayId rather than an array of joint ids
           if (this.arraysToHideElementsOf.contains(fullArrayName) || this.arraysToHideElementsOf.contains(arrayEntry.getKey())) {
-            String firstEntry = arrayElements.get(0);
+            String firstEntry = arrayElements.getFirst();
             String parentString = "null";
             for (Tuple2<String, String> entry : trimmedSkeleton) {
               if (entry.getA().equals(firstEntry)) {
@@ -1663,7 +1663,7 @@ public class ModelResourceExporter {
     if (this.subResources.size() == 0) {
       System.err.println("NO SUB RESOURCES ON " + this.resourceName);
     }
-    ModelSubResourceExporter firstSubResource = this.subResources.get(0);
+    ModelSubResourceExporter firstSubResource = this.subResources.getFirst();
     String firstThumbName = AliceResourceUtilities.getThumbnailResourceFileName(firstSubResource.getModelName(), firstSubResource.getTextureName());
     String classThumbName = AliceResourceUtilities.getThumbnailResourceFileName(this.getClassName(), null);
     File firstThumbFile = new File(getThumbnailPath(root, firstThumbName));

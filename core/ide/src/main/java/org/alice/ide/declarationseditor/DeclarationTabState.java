@@ -104,7 +104,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
 
           public void addDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
             if (declarationComposite instanceof TypeComposite) {
-              this.list.add(0, declarationComposite);
+              this.list.addFirst(declarationComposite);
             } else {
               this.list.add(declarationComposite);
             }

@@ -482,7 +482,7 @@ public class AstUtilities {
   public static <M extends AbstractMethod> M getSingleAbstractMethod(AbstractType<?, M, ?> type) {
     List<M> methods = type.getDeclaredMethods();
     assert methods.size() == 1 : type;
-    M singleAbstractMethod = methods.get(0);
+    M singleAbstractMethod = methods.getFirst();
     assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
     return singleAbstractMethod;
   }

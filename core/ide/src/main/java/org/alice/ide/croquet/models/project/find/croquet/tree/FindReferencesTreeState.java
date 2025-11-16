@@ -168,7 +168,7 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
   public void moveSelectedDownOne() {
     SearchTreeNode selected = this.getValue();
     if (selected.getParent() == root) {
-      this.setValueTransactionlessly(selected.getChildren().get(0));
+      this.setValueTransactionlessly(selected.getChildren().getFirst());
     } else {
       if (selected.getLocationAmongstSiblings() < (selected.getParent().getChildren().size() - 1)) {
         this.setValueTransactionlessly(selected.getYoungerSibling());
@@ -191,7 +191,7 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
   }
 
   public SearchTreeNode getTopValue() {
-    return root.getChildren().get(0);
+    return root.getChildren().getFirst();
   }
 
   public TwoDimensionalTreeCoordinate getSelectedCoordinates() {

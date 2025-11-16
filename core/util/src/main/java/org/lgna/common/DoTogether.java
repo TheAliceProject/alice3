@@ -98,7 +98,7 @@ import java.util.concurrent.CyclicBarrier;
       synchronized (runtimeExceptions) {
         if (!runtimeExceptions.isEmpty()) {
           //todo:
-          throw runtimeExceptions.get(0);
+          throw runtimeExceptions.getFirst();
         }
       }
     }

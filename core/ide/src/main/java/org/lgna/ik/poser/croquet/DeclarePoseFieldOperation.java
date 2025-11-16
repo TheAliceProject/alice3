@@ -80,7 +80,7 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
     case 0:
       return PoseExpressionCreatorComposite.getInstance(this.declaringType).getValueCreator();
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         Expression expression = (Expression) prevSubStep.getProducedValue();
         AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance(this.declaringType);

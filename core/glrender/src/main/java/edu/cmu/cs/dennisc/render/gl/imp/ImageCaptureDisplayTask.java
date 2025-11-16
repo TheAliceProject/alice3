@@ -161,7 +161,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
           }
           if (errors != null) {
             GLU glu = new GLU();
-            String description = glu.gluErrorString(errors.get(0));
+            String description = glu.gluErrorString(errors.getFirst());
             Logger.severe("unable to capture back buffer:", description);
           }
         }

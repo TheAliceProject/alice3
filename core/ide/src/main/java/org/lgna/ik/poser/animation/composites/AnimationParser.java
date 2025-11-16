@@ -77,7 +77,7 @@ public class AnimationParser implements Crawler {
       if (i < (dataList.size() - 1)) {
         second = styleList.get(i + 1);
       }
-      dataList.get(0).setStyle(KeyFrameStyles.getKeyFrameStyleFromTwoAnimationStyles(styleList.get(i), second));
+      dataList.getFirst().setStyle(KeyFrameStyles.getKeyFrameStyleFromTwoAnimationStyles(styleList.get(i), second));
     }
     return dataList;
   }

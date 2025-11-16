@@ -152,10 +152,10 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
         if (cls.isEnum()) {
           arguments[0] = cls.getEnumConstants()[0];
         } else {
-          arguments[0] = resourceList.get(0);
+          arguments[0] = resourceList.getFirst();
         }
       } else {
-        arguments[0] = resourceList.get(0);
+        arguments[0] = resourceList.getFirst();
       }
       break;
     case 2:

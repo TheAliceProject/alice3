@@ -50,7 +50,7 @@ public class ConvexPolygonTest {
     poly.includePoint(p3);
     List<Point2> vertices = poly.getVertices();
     assertEquals(3, vertices.size());
-    assertEquals(vertices.get(0), p1);
+    assertEquals(vertices.getFirst(), p1);
     assertEquals(vertices.get(1), p2);
     assertEquals(vertices.get(2), p3);
   }
@@ -62,7 +62,7 @@ public class ConvexPolygonTest {
     poly.includePoint(p2);
     List<Point2> vertices = poly.getVertices();
     assertEquals(3, vertices.size());
-    assertEquals(vertices.get(0), p1);
+    assertEquals(vertices.getFirst(), p1);
     assertEquals(vertices.get(1), p2);
     assertEquals(vertices.get(2), p3);
   }
@@ -152,7 +152,7 @@ public class ConvexPolygonTest {
     if (verts1.size() != verts2.size()) {
       return false;
     }
-    int offset = verts2.indexOf(verts1.get(0));
+    int offset = verts2.indexOf(verts1.getFirst());
     for (int i = 0; i < verts1.size(); i++) {
       if (!verts2.get((i + offset) % verts2.size()).equals(verts1.get(i))) {
         return false;

@@ -110,7 +110,7 @@ public class DeclarationCompositeHistory {
           }
         }
         this.index = 0;
-        this.history.add(0, declarationComposite);
+        this.history.addFirst(declarationComposite);
         this.update();
       }
     }

@@ -169,7 +169,7 @@ public class TypeManager {
       if (super.accept(userType)) {
         AbstractConstructor constructor = userType.getDeclaredConstructor(this.parameterType);
         if (constructor != null) {
-          AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+          AbstractParameter parameter0 = constructor.getRequiredParameters().getFirst();
           return parameter0.getValueType() == this.parameterType;
         } else {
           return false;

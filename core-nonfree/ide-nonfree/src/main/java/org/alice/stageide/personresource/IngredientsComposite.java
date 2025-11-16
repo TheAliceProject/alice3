@@ -262,7 +262,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
       if (index != -1) {
         this.hairColorNames.remove(index);
       }
-      this.hairColorNames.add(0, hairColorName);
+      this.hairColorNames.addFirst(hairColorName);
     }
   }
 
@@ -278,7 +278,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
       }
       List<HairColorNameHairCombo> hairColorNameHairCombos = hairHatStyle.getHairColorNameHairCombos();
       if (hairColorNameHairCombos.size() > 0) {
-        HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.get(0);
+        HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.getFirst();
         if (hairColorNameHairCombo != null) {
           return hairColorNameHairCombo.getHair();
         }

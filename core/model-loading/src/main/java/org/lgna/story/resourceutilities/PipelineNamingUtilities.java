@@ -267,19 +267,19 @@ public class PipelineNamingUtilities {
       }
     }
     if (hasRight) {
-      nameParts.add(0, "RIGHT");
+      nameParts.addFirst("RIGHT");
     } else if (hasLeft) {
-      nameParts.add(0, "LEFT");
+      nameParts.addFirst("LEFT");
     }
     if (hasTop) {
-      nameParts.add(0, "TOP");
+      nameParts.addFirst("TOP");
     } else if (hasBottom) {
-      nameParts.add(0, "BOTTOM");
+      nameParts.addFirst("BOTTOM");
     }
     if (hasFront) {
-      nameParts.add(0, "FRONT");
+      nameParts.addFirst("FRONT");
     } else if (hasBack) {
-      nameParts.add(0, "BACK");
+      nameParts.addFirst("BACK");
     }
     return getEnumNameForNameParts(nameParts);
   }

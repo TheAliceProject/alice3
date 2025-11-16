@@ -70,7 +70,7 @@ public class ResourceTypeUtilities {
     final int CONSTRUCTOR_COUNT = constructors.size();
     switch (CONSTRUCTOR_COUNT) {
     case 1:
-      NamedUserConstructor constructor0 = constructors.get(0);
+      NamedUserConstructor constructor0 = constructors.getFirst();
       List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
       final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
       switch (REQUIRED_PARAMETER_COUNT) {
@@ -91,7 +91,7 @@ public class ResourceTypeUtilities {
           return null;
         }
       case 1:
-        AbstractParameter parameter0 = requiredParameters.get(0);
+        AbstractParameter parameter0 = requiredParameters.getFirst();
         return parameter0.getValueType();
       default:
         return null;

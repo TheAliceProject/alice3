@@ -103,7 +103,7 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThre
     case 0:
       return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter(this.lifeStage);
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         InstanceCreation instanceCreation = (InstanceCreation) prevSubStep.getProducedValue();
         AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();

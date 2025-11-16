@@ -52,5 +52,5 @@ public interface Paint {
 
     default Texture getTextureIfPresent() {
         return null;
-    };
+    }
 }

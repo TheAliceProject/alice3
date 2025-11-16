@@ -101,7 +101,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
       }
       return personResourceComposite.getRandomPersonExpressionValueConverter(lifeStage);
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         Object value = prevSubStep.getProducedValue();
         if (value instanceof InstanceCreation instanceCreation) {

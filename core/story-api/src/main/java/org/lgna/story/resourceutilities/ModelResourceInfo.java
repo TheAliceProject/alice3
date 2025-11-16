@@ -212,7 +212,7 @@ public class ModelResourceInfo {
     List<Element> bboxNodeList = getImmediateChildElementsByTagName(modelElement, "BoundingBox");
     this.boundingBox = bboxNodeList.isEmpty()
         ? AxisAlignedBox.Empty
-        : getBoundingBoxFromXML(bboxNodeList.get(0));
+        : getBoundingBoxFromXML(bboxNodeList.getFirst());
     this.modelName = modelElement.getAttribute("name");
     this.creator = modelElement.getAttribute("creator");
     int creationYearTemp = -1;

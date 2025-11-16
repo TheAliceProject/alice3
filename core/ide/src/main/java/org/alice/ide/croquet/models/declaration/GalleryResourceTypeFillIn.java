@@ -101,7 +101,7 @@ public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBla
         if (field.isStatic()) {
           if (field instanceof JavaField argumentField) {
             NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(this.ancestorType, argumentField);
-            NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+            NamedUserConstructor constructor = userType.getDeclaredConstructors().getFirst();
             Expression[] argumentExpressions;
             if (constructor.getRequiredParameters().size() == 1) {
               argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};

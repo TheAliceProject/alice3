@@ -292,7 +292,7 @@ public class SpringUtilities {
     assert componentRows != null;
     int rowCount = componentRows.size();
     assert rowCount > 0;
-    int columnCount = componentRows.get(0).length;
+    int columnCount = componentRows.getFirst().length;
     for (Component[] componentRow : componentRows) {
       assert componentRow.length == columnCount;
     }

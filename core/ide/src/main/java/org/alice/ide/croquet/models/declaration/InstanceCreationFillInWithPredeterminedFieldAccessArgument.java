@@ -70,7 +70,7 @@ public final class InstanceCreationFillInWithPredeterminedFieldAccessArgument ex
 
   private static InstanceCreation createInstanceCreation(AbstractConstructor constructor, AbstractField field) {
     InstanceCreation rv = new InstanceCreation(constructor);
-    rv.requiredArguments.add(new SimpleArgument(constructor.getRequiredParameters().get(0), new FieldAccess(new TypeExpression(field.getDeclaringType()), field)));
+    rv.requiredArguments.add(new SimpleArgument(constructor.getRequiredParameters().getFirst(), new FieldAccess(new TypeExpression(field.getDeclaringType()), field)));
     return rv;
   }
 

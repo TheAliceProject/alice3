@@ -283,7 +283,7 @@ class Decoder {
         assert nodeList.getLength() == 1;
         Element xmlSetter = (Element) nodeList.item(0);
         Setter setter = (Setter) decode(xmlSetter, map);
-        rv = setter.getRequiredParameters().get(0);
+        rv = setter.getRequiredParameters().getFirst();
       } else if (clsName.equals(JavaField.class.getName())) {
         rv = JavaField.getInstance(decodeField(xmlElement, "field"));
       } else if (clsName.equals(AnonymousUserConstructor.class.getName())) {

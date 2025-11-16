@@ -129,7 +129,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     JavaType abstractionType = getAbstractionTypeForResourceType(JavaType.getInstance(this.enumConstant.getClass()));
     if (abstractionType != null) {
       NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(abstractionType, argumentField, typeCache);
-      NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+      NamedUserConstructor constructor = userType.getDeclaredConstructors().getFirst();
       Expression[] argumentExpressions;
       if (constructor.getRequiredParameters().size() == 1) {
         argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};

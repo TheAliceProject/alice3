@@ -89,7 +89,7 @@ public class PickParameters {
     if (this.pickResults.isEmpty()) {
       rv = new PickResult(this.sgCamera);
     } else {
-      rv = this.pickResults.get(0);
+      rv = this.pickResults.getFirst();
     }
     return rv;
   }

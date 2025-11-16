@@ -521,7 +521,7 @@ public class Encoder extends SourceCodeGenerator {
         final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
         if (requiredArgs.size() == 1) {
           appendString("$DecimalNumber.from");
-          Expression arg = requiredArgs.get(0).expression.getValue();
+          Expression arg = requiredArgs.getFirst().expression.getValue();
           parenthesize(() -> appendArg("wholeNumber", () -> arg.process(this)));
           return;
         }

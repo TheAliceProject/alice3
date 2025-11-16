@@ -236,7 +236,7 @@ public class RenderContext extends Context {
           }
         }
         if (errors != null) {
-          String description = glu.gluErrorString(errors.get(0));
+          String description = glu.gluErrorString(errors.getFirst());
           Logger.severe("unable to capture back buffer:", description);
         }
       }

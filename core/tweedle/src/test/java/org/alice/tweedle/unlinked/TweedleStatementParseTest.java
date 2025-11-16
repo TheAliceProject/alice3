@@ -232,7 +232,7 @@ public class TweedleStatementParseTest {
   @Test
   public void aDoInOrdersFirstStatementShouldBeDoInOrder() {
     DoInOrder tested = (DoInOrder) parseStatement("doInOrder { doInOrder {} return; }");
-    assertTrue("The block's first statement should be a DoInorder.", tested.getStatements().get(0) instanceof DoInOrder);
+    assertTrue("The block's first statement should be a DoInorder.", tested.getStatements().getFirst() instanceof DoInOrder);
   }
 
   @Test
@@ -274,7 +274,7 @@ public class TweedleStatementParseTest {
   @Test
   public void aDoTogethersFirstStatementShouldBeDoInOrder() {
     DoTogether tested = (DoTogether) parseStatement("doTogether { doInOrder {} return; }");
-    assertTrue("The block's first statement should be a DoInorder.", tested.getStatements().get(0) instanceof DoInOrder);
+    assertTrue("The block's first statement should be a DoInorder.", tested.getStatements().getFirst() instanceof DoInOrder);
   }
 
   @Test
@@ -400,7 +400,7 @@ public class TweedleStatementParseTest {
   @Test
   public void nestedDoInOrdersInnerOneShouldBeEnabled() {
     DoInOrder tested = (DoInOrder) parseStatement("doInOrder { doInOrder {} }");
-    assertTrue("The inner doInOrder should be enabled.", tested.getStatements().get(0).isEnabled());
+    assertTrue("The inner doInOrder should be enabled.", tested.getStatements().getFirst().isEnabled());
   }
 
   @Test
@@ -412,7 +412,7 @@ public class TweedleStatementParseTest {
   @Test
   public void disabledNestedDoInOrdersInnerOneShouldBeEnabled() {
     DoInOrder tested = (DoInOrder) parseStatement("*< doInOrder { doInOrder {} } >*");
-    assertTrue("The inner doInOrder should be enabled.", tested.getStatements().get(0).isEnabled());
+    assertTrue("The inner doInOrder should be enabled.", tested.getStatements().getFirst().isEnabled());
   }
 
   @Test
@@ -424,7 +424,7 @@ public class TweedleStatementParseTest {
   @Test
   public void disabledInnerDoInOrdersInnerOneShouldBeDisabled() {
     DoInOrder tested = (DoInOrder) parseStatement("doInOrder { *< doInOrder {} >* }");
-    assertFalse("The inner doInOrder should be disabled.", tested.getStatements().get(0).isEnabled());
+    assertFalse("The inner doInOrder should be disabled.", tested.getStatements().getFirst().isEnabled());
   }
 
   @Test

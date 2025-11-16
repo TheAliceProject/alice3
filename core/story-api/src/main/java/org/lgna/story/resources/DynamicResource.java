@@ -156,8 +156,8 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     }
     if (manifestBBox != null) {
       return AxisAlignedBox.createAxisAlignedBox(
-          manifestBBox.min.get(0), manifestBBox.min.get(1), manifestBBox.min.get(2),
-          manifestBBox.max.get(0), manifestBBox.max.get(1), manifestBBox.max.get(2));
+          manifestBBox.min.getFirst(), manifestBBox.min.get(1), manifestBBox.min.get(2),
+          manifestBBox.max.getFirst(), manifestBBox.max.get(1), manifestBBox.max.get(2));
     }
     return AxisAlignedBox.NaN;
   }

@@ -713,9 +713,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     PREPEND {
       @Override
       public List<JointImp> add(List<JointImp> rv, JointImp joint, List<Bone.Direction> directions, Bone.Direction direction) {
-        rv.add(0, joint);
+        rv.addFirst(joint);
         if (directions != null) {
-          directions.add(0, direction);
+          directions.addFirst(direction);
         }
         return rv;
       }

@@ -63,10 +63,10 @@ public class SimsExpressionCreator extends ExpressionCreator {
         BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
 
         JavaType type = JavaType.getInstance(outfit.getClass());
-        JavaConstructor constructor = type.getDeclaredConstructors().get(0);
+        JavaConstructor constructor = type.getDeclaredConstructors().getFirst();
         List<JavaConstructorParameter> parameters = constructor.getRequiredParameters();
         if (parameters.size() == 2) {
-          if (parameters.get(0).getValueType().isAssignableFrom(topPiece.getClass())) {
+          if (parameters.getFirst().getValueType().isAssignableFrom(topPiece.getClass())) {
             if (parameters.get(1).getValueType().isAssignableFrom(bottomPiece.getClass())) {
               Expression topExpression = this.createExpression(topPiece);
               Expression bottomExpression = this.createExpression(bottomPiece);

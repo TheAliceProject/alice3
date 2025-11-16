@@ -96,7 +96,7 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
     if (personResourceInstanceCreation != null) {
       NamedUserType type = TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation(personResourceInstanceCreation);
 
-      return AstUtilities.createInstanceCreation(type.getDeclaredConstructors().get(0), personResourceInstanceCreation);
+      return AstUtilities.createInstanceCreation(type.getDeclaredConstructors().getFirst(), personResourceInstanceCreation);
     } else {
       return null;
     }

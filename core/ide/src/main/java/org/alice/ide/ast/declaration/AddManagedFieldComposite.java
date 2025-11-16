@@ -190,7 +190,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
     @Override
     public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
-      AbstractParameter parameter = this.setter.getRequiredParameters().get(0);
+      AbstractParameter parameter = this.setter.getRequiredParameters().getFirst();
       AbstractType<?, ?, ?> valueType = parameter.getValueType();
       ValueDetails<?> valueDetails = parameter.getDetails();
 

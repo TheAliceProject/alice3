@@ -90,7 +90,7 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
     case 0:
       return new FileDialogValueCreator(null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION);
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         File file = (File) prevSubStep.getProducedValue();
         try {

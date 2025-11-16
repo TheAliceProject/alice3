@@ -259,7 +259,7 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
       int indexMax = Math.max(indexA, indexB);
       List<E> subList = this.subList(indexMin, indexMax + 1);
       final int N = subList.size();
-      E eMin = subList.get(0);
+      E eMin = subList.getFirst();
       E eMax = subList.get(N - 1);
       subList.set(0, eMax);
       subList.set(N - 1, eMin);
@@ -279,7 +279,7 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
         this.set(prevIndex, subList);
       } else {
         List<E> subList = this.subListCopy(nextIndex, (prevIndex - 1) + ONE_TO_EXCLUDE);
-        subList.add(0, element);
+        subList.addFirst(element);
         this.set(nextIndex, subList);
       }
     }

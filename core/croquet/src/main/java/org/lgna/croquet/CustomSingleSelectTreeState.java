@@ -89,13 +89,13 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
         while (n != root) {
           T parent = CustomSingleSelectTreeState.this.getParent(n);
           if (parent != null) {
-            collection.add(0, n);
+            collection.addFirst(n);
             n = parent;
           } else {
             break;
           }
         }
-        collection.add(0, root);
+        collection.addFirst(root);
       }
       return collection.toArray();
     }

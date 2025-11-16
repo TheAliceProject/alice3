@@ -121,7 +121,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
     } else {
       duration = 0.0;
     }
-    methodInvocation.requiredArguments.add(new SimpleArgument(javaMethod.getRequiredParameters().get(0), new DoubleLiteral(duration)));
+    methodInvocation.requiredArguments.add(new SimpleArgument(javaMethod.getRequiredParameters().getFirst(), new DoubleLiteral(duration)));
     methodInvocation.method.setValue(EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD);
   }
 }

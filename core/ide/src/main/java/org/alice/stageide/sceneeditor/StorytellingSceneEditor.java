@@ -834,8 +834,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         continue;
       }
       ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
-      if (args.size() == 1 && args.get(0).expression.getValue() instanceof NullLiteral) {
-        args.get(0).expression.setValue(new ThisExpression());
+      if (args.size() == 1 && args.getFirst().expression.getValue() instanceof NullLiteral) {
+        args.getFirst().expression.setValue(new ThisExpression());
       }
     }
   }
@@ -962,7 +962,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       blockStatements.add(body.body.getValue());
     }
     while (!blockStatements.isEmpty()) {
-      BlockStatement bs = blockStatements.remove(0);
+      BlockStatement bs = blockStatements.removeFirst();
       Statement setVehicleStatement = null;
       Statement setPositionStatement = null;
       Statement setOrientationStatement = null;
@@ -1065,7 +1065,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private boolean doesSetVehicleImplyVehicle(MethodInvocation setVehicleCall, UserField vehicle) {
     ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
     if (args.size() == 1 && setVehicleCall.expression.getValue() instanceof FieldAccess) {
-      Expression vehicleExpr = args.get(0).expression.getValue();
+      Expression vehicleExpr = args.getFirst().expression.getValue();
       return isDirectRider(vehicle, vehicleExpr) || isJointRider(vehicle, vehicleExpr);
     }
     return false;

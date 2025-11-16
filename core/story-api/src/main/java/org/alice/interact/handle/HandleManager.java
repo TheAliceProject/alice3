@@ -197,7 +197,7 @@ public class HandleManager implements ManipulationListener {
     if (this.handles.size() == 0) {
       return null;
     } else {
-      AbstractTransformable selected = this.handles.get(0).getManipulatedObject();
+      AbstractTransformable selected = this.handles.getFirst().getManipulatedObject();
       for (ManipulationHandle handle : this.handles) {
         if ((handle.getManipulatedObject() != selected) && !(handle instanceof ManipulationHandle2D)) {
           PrintUtilities.println("Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected);

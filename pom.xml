@@ -534,7 +534,7 @@
           <configuration>
             <exportDatatables>true</exportDatatables>
             <activeRecipes>
-              <recipe>org.openrewrite.java.migrate.UpgradeToJava17</recipe>
+              <recipe>org.openrewrite.java.migrate.UpgradeToJava21</recipe>
             </activeRecipes>
           </configuration>
           <dependencies>

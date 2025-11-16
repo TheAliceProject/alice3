@@ -147,7 +147,7 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
             searchResults.stencilHighlightForReference((Expression) nextValue.getValue());
           }
         } else {
-          IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite(DeclarationComposite.getInstance(((Expression) nextValue.getChildren().get(0).getValue()).getFirstAncestorAssignableTo(UserMethod.class)));
+          IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite(DeclarationComposite.getInstance(((Expression) nextValue.getChildren().getFirst().getValue()).getFirstAncestorAssignableTo(UserMethod.class)));
           IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
         }
       }

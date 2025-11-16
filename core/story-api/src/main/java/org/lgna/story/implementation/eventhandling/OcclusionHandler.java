@@ -64,8 +64,8 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
 
   public void addOcclusionEventListener(Object occlusionEventListener, List<SModel> groupA, List<SModel> groupB, MultipleEventPolicy policy) {
     startTrackingListener(occlusionEventListener, groupA, groupB, policy);
-    if ((groupA.size() > 0) && (groupA.get(0) != null) && (camera == null)) {
-      camera = groupA.get(0).getImplementation().getScene().findFirstCamera();
+    if ((groupA.size() > 0) && (groupA.getFirst() != null) && (camera == null)) {
+      camera = groupA.getFirst().getImplementation().getScene().findFirstCamera();
       camera.getSgComposite().addAbsoluteTransformationListener(this);
     }
   }

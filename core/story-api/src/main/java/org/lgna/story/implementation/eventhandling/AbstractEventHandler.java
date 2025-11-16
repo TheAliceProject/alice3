@@ -109,7 +109,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
     CopyOnWriteArrayList<E> internalQueue = new CopyOnWriteArrayList<>(queue);
     queue.clear();
     while (internalQueue.size() > 0) {
-      fire(listener, internalQueue.remove(0));
+      fire(listener, internalQueue.removeFirst());
     }
     fireDequeue(listener);
   }

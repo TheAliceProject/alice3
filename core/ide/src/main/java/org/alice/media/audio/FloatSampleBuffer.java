@@ -191,7 +191,7 @@ public class FloatSampleBuffer {
     if (!lazy) {
       // remove hidden channels
       while (channels.size() > channelCount) {
-        channels.remove(channels.size() - 1);
+        channels.removeLast();
       }
     }
   }

@@ -1196,7 +1196,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     ModelResourceInfo modelInfo = AliceResourceUtilities.getModelResourceInfo(modelResource.getClass(), modelResource.toString());
     SkeletonVisual sgSkeletonVisual = loadAliceModel(modelResource);
     ModelManifest modelManifest = modelInfo.createModelManifest();
-    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);
+    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.getFirst(), modelManifest.description.name);
     return exportAliceModelToDir(exporter, rootDir);
   }
 }
