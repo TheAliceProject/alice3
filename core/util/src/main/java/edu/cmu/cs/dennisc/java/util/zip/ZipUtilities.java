@@ -90,8 +90,8 @@ public class ZipUtilities {
 
   public static Map<String, byte[]> extract(InputStream is, Collection<String> entryNameFilter) throws IOException {
     ZipInputStream zis;
-    if (is instanceof ZipInputStream) {
-      zis = (ZipInputStream) is;
+    if (is instanceof ZipInputStream stream) {
+      zis = stream;
     } else {
       zis = new ZipInputStream(is);
     }

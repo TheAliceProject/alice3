@@ -65,20 +65,17 @@ public class FindCrawler implements Crawler {
 
   @Override
   public void visit(Crawlable crawlable) {
-    if (crawlable instanceof MethodInvocation) {
-      MethodInvocation methodInv = (MethodInvocation) crawlable;
+    if (crawlable instanceof MethodInvocation methodInv) {
       SearchResult checkFind = checkFind(methodInv.method.getValue());
       if (referenceIsValid(methodInv, checkFind)) {
         checkFind.addReference(methodInv);
       }
-    } else if (crawlable instanceof FieldAccess) {
-      FieldAccess fieldAccess = (FieldAccess) crawlable;
+    } else if (crawlable instanceof FieldAccess fieldAccess) {
       SearchResult checkFind = checkFind(fieldAccess.field.getValue());
       if (referenceIsValid(fieldAccess, checkFind)) {
         checkFind.addReference(fieldAccess);
       }
-    } else if (crawlable instanceof LocalAccess) {
-      LocalAccess localAccess = (LocalAccess) crawlable;
+    } else if (crawlable instanceof LocalAccess localAccess) {
       SearchResult checkFind = checkFind(localAccess.local.getValue());
       if (referenceIsValid(localAccess, checkFind)) {
         checkFind.addReference(localAccess);

@@ -235,14 +235,14 @@ public class DragStep extends PrepStep<DragModel> {
       if (dropOperation != null) {
         SwingComponentView<?> component = this.currentDropReceptor.getViewController();
         ViewController<?, ?> viewController;
-        if (component instanceof ViewController<?, ?>) {
-          viewController = (ViewController<?, ?>) component;
+        if (component instanceof ViewController<?, ?> controller) {
+          viewController = controller;
         } else {
           viewController = null;
         }
         try {
-          if (dropOperation instanceof JDropProxy.Hider) {
-            dropProxyHider = (JDropProxy.Hider) dropOperation;
+          if (dropOperation instanceof JDropProxy.Hider hider) {
+            dropProxyHider = hider;
             dropProxyHider.setDragSource(this.getDragSource());
           } else {
             Logger.outln("drop proxy hider:", dropOperation.getClass());

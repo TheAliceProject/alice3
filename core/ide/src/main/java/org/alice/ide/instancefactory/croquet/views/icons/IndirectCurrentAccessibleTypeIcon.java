@@ -72,8 +72,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
     if (instanceFactory != null) {
       IconFactory rv = null;
-      if (instanceFactory instanceof ThisFieldAccessFactory) {
-        ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+      if (instanceFactory instanceof ThisFieldAccessFactory thisFieldAccessFactory) {
         UserField field = thisFieldAccessFactory.getField();
         rv = IconFactoryManager.getDynamicIconFactoryForField(field);
       }

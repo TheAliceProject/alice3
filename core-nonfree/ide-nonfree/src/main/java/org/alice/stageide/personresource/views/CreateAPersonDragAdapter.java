@@ -122,8 +122,8 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin, cameraMax);
     for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
       AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
-      if (manipulator instanceof CameraTranslateKeyManipulator) {
-        ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds);
+      if (manipulator instanceof CameraTranslateKeyManipulator keyManipulator) {
+        keyManipulator.setBounds(cameraBounds);
       }
     }
   }

@@ -94,14 +94,14 @@ public abstract class I18nFactory {
   protected abstract SwingComponentView<?> createComponent(MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner);
 
   private SwingComponentView<?> createComponent(Chunk chunk, InstancePropertyOwner owner) {
-    if (chunk instanceof TextChunk) {
-      return createComponent((TextChunk) chunk, owner);
-    } else if (chunk instanceof PropertyChunk) {
-      return createComponent((PropertyChunk) chunk, owner);
-    } else if (chunk instanceof MethodInvocationChunk) {
-      return createComponent((MethodInvocationChunk) chunk, owner);
-    } else if (chunk instanceof GetsChunk) {
-      return createComponent((GetsChunk) chunk, owner);
+    if (chunk instanceof TextChunk textChunk) {
+      return createComponent(textChunk, owner);
+    } else if (chunk instanceof PropertyChunk propertyChunk) {
+      return createComponent(propertyChunk, owner);
+    } else if (chunk instanceof MethodInvocationChunk invocationChunk) {
+      return createComponent(invocationChunk, owner);
+    } else if (chunk instanceof GetsChunk getsChunk) {
+      return createComponent(getsChunk, owner);
     } else {
       return new Label("unhandled: " + chunk.toString());
     }
@@ -198,8 +198,7 @@ public abstract class I18nFactory {
     SwingComponentView<?> rv;
     if (owner != null) {
       String value;
-      if (owner instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) owner;
+      if (owner instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
         String text = formatter.getNameForDeclaration(method);
         if (text.contains("</expression/>")) {

@@ -64,8 +64,7 @@ public class InputEventTrigger extends ComponentEventTrigger<InputEvent> {
   @Override
   protected Point getPoint() {
     InputEvent inputEvent = this.getEvent();
-    if (inputEvent instanceof MouseEvent) {
-      MouseEvent mouseEvent = (MouseEvent) inputEvent;
+    if (inputEvent instanceof MouseEvent mouseEvent) {
       return mouseEvent.getPoint();
     } else {
       return null;

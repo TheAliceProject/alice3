@@ -96,8 +96,8 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
         checkForOcclusions(model);
       }
     } else {
-      if (changedThing instanceof SModel) {
-        checkForOcclusions((SModel) changedThing);
+      if (changedThing instanceof SModel model) {
+        checkForOcclusions(model);
       }
     }
   }
@@ -132,11 +132,9 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
 
   @Override
   protected void fire(Object listener, OcclusionEvent event) {
-    if (listener instanceof OcclusionStartListener) {
-      OcclusionStartListener start = (OcclusionStartListener) listener;
+    if (listener instanceof OcclusionStartListener start) {
       start.occlusionStarted((StartOcclusionEvent) event);
-    } else if (listener instanceof OcclusionEndListener) {
-      OcclusionEndListener start = (OcclusionEndListener) listener;
+    } else if (listener instanceof OcclusionEndListener start) {
       start.occlusionEnded((EndOcclusionEvent) event);
     }
   }

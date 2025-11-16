@@ -146,8 +146,7 @@ public class JSubdudeTextField extends JSuggestiveTextField {
   private final AWTEventListener globalListener = new AWTEventListener() {
     @Override
     public void eventDispatched(AWTEvent e) {
-      if (e instanceof MouseEvent) {
-        MouseEvent mouseEvent = (MouseEvent) e;
+      if (e instanceof MouseEvent mouseEvent) {
         if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
           if (mouseEvent.getComponent() == JSubdudeTextField.this) {
             //pass

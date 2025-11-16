@@ -145,8 +145,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
   @Override
   protected void initializeToPreviousExpression(Expression expression) {
     List<Expression> items = Lists.newLinkedList();
-    if (expression instanceof ArrayInstanceCreation) {
-      ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation) expression;
+    if (expression instanceof ArrayInstanceCreation arrayInstanceCreation) {
       if (this.arrayType.isAssignableFrom(arrayInstanceCreation.getType())) {
         for (Expression itemExpression : arrayInstanceCreation.expressions) {
           items.add(IDE.getActiveInstance().createCopy(itemExpression));

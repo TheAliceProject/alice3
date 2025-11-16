@@ -59,8 +59,7 @@ import java.util.List;
 public class ComponentUtilities {
   public static void makeStandOut(Component component) {
     assert component != null;
-    if (component instanceof JComponent) {
-      JComponent jComponent = (JComponent) component;
+    if (component instanceof JComponent jComponent) {
       jComponent.setBorder(BorderFactory.createLineBorder(Color.RED, 4));
       jComponent.setOpaque(true);
     }
@@ -129,8 +128,8 @@ public class ComponentUtilities {
       rv = (E) component;
     } else {
       if (isChildACandidate) {
-        if (component instanceof Container) {
-          for (Component componentI : ((Container) component).getComponents()) {
+        if (component instanceof Container container) {
+          for (Component componentI : container.getComponents()) {
             rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
                     componentI, cls, criteria);
             if (rv != null) {
@@ -150,8 +149,8 @@ public class ComponentUtilities {
       list.add((E) component);
     }
 
-    if (isChildACandidate && component instanceof Container) {
-      for (Component componentI : ((Container) component).getComponents()) {
+    if (isChildACandidate && component instanceof Container container) {
+      for (Component componentI : container.getComponents()) {
         updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
                 list, componentI, cls, criteria);
       }
@@ -197,8 +196,7 @@ public class ComponentUtilities {
 
   public static void doLayoutTree(Component c) {
     //c.doLayout();
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         doLayoutTree(component);
       }
@@ -207,8 +205,7 @@ public class ComponentUtilities {
   }
 
   public static void setSizeToPreferredSizeTree(Component c) {
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         setSizeToPreferredSizeTree(component);
       }
@@ -218,8 +215,7 @@ public class ComponentUtilities {
 
   public static void invalidateTree(Component c) {
     c.invalidate();
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         invalidateTree(component);
       }
@@ -228,8 +224,7 @@ public class ComponentUtilities {
 
   public static void validateTree(Component c) {
     c.validate();
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         validateTree(component);
       }
@@ -237,12 +232,10 @@ public class ComponentUtilities {
   }
 
   public static void revalidateTree(Component c) {
-    if (c instanceof JComponent) {
-      JComponent jc = (JComponent) c;
+    if (c instanceof JComponent jc) {
       jc.revalidate();
     }
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         revalidateTree(component);
       }
@@ -251,8 +244,8 @@ public class ComponentUtilities {
 
   public static JFrame getRootJFrame(Component c) {
     Component root = SwingUtilities.getRoot(c);
-    if (root instanceof JFrame) {
-      return (JFrame) root;
+    if (root instanceof JFrame frame) {
+      return frame;
     } else {
       return null;
     }

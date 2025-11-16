@@ -63,8 +63,8 @@ import java.util.List;
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
   public static int[] getLiterals(ValueDetails<?> details) {
-    if (details instanceof IntegerValueDetails) {
-      return ((IntegerValueDetails) details).getLiterals();
+    if (details instanceof IntegerValueDetails valueDetails) {
+      return valueDetails.getLiterals();
     } else {
       return new int[] {0, 1, 2, 3};
     }

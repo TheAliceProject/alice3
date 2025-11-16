@@ -70,11 +70,9 @@ public abstract class PersonResourceFillerInner extends ExpressionFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     CascadeFillIn<InstanceCreation, Void> fillIn = null;
-    if (prevExpression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) prevExpression;
+    if (prevExpression instanceof InstanceCreation instanceCreation) {
       AbstractType<?, ?, ?> type = instanceCreation.getType();
-      if (type instanceof JavaType) {
-        JavaType javaType = (JavaType) type;
+      if (type instanceof JavaType javaType) {
         if (javaType.isAssignableTo(PersonResource.class)) {
           fillIn = PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
 

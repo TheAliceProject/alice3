@@ -207,8 +207,8 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
   public boolean doStartManipulator(InputState startInput) {
     if (startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
       AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
-      if (clickedHandle instanceof LinearDragHandle) {
-        this.linearHandle = (LinearDragHandle) clickedHandle;
+      if (clickedHandle instanceof LinearDragHandle handle) {
+        this.linearHandle = handle;
         this.setManipulatedTransformable(this.linearHandle.getManipulatedObject());
         this.initializeEventMessages();
         this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().transform(this.linearHandle.getDragAxis());

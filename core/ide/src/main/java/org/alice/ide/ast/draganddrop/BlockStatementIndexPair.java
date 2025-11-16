@@ -115,8 +115,7 @@ public final class BlockStatementIndexPair implements DropSite {
     if (o == this) {
       return true;
     }
-    if (o instanceof BlockStatementIndexPair) {
-      BlockStatementIndexPair bsip = (BlockStatementIndexPair) o;
+    if (o instanceof BlockStatementIndexPair bsip) {
       return Objects.equals(this.blockStatement, bsip.blockStatement) && (this.index == bsip.index);
     } else {
       return false;

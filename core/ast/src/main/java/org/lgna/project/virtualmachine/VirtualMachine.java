@@ -215,8 +215,7 @@ public abstract class VirtualMachine {
     assert componentCls != null;
     Object rv = Array.newInstance(componentCls, lengths);
     for (int i = 0; i < values.length; i++) {
-      if (values[i] instanceof UserInstance) {
-        UserInstance userValue = (UserInstance) values[i];
+      if (values[i] instanceof UserInstance userValue) {
         values[i] = userValue.getJavaInstance();
       }
       Array.set(rv, i, values[i]);
@@ -226,10 +225,10 @@ public abstract class VirtualMachine {
 
   protected Object createArrayInstance(AbstractType<?, ?, ?> type, int[] lengths, Object... values) {
     assert type != null;
-    if (type instanceof UserArrayType) {
-      return this.createUserArrayInstance((UserArrayType) type, lengths, values);
-    } else if (type instanceof JavaType) {
-      return this.createJavaArrayInstance((JavaType) type, lengths, values);
+    if (type instanceof UserArrayType arrayType) {
+      return this.createUserArrayInstance(arrayType, lengths, values);
+    } else if (type instanceof JavaType javaType) {
+      return this.createJavaArrayInstance(javaType, lengths, values);
     } else {
       throw new RuntimeException();
     }
@@ -239,8 +238,8 @@ public abstract class VirtualMachine {
     assert argument != null;
     Expression expression = argument.expression.getValue();
     assert expression != null;
-    if (expression instanceof LambdaExpression) {
-      return this.EPIC_HACK_evaluateLambdaExpression((LambdaExpression) expression, argument);
+    if (expression instanceof LambdaExpression lambdaExpression) {
+      return this.EPIC_HACK_evaluateLambdaExpression(lambdaExpression, argument);
     } else {
       return this.evaluate(expression);
     }
@@ -315,8 +314,7 @@ public abstract class VirtualMachine {
 
   protected Integer getArrayLength(Object array) {
     if (array != null) {
-      if (array instanceof UserArrayInstance) {
-        UserArrayInstance userArrayInstance = (UserArrayInstance) array;
+      if (array instanceof UserArrayInstance userArrayInstance) {
         return userArrayInstance.getLength();
       } else {
         return Array.getLength(array);
@@ -356,10 +354,10 @@ public abstract class VirtualMachine {
   public Object get(AbstractField field, Object instance) {
     assert field != null;
     assert (instance != null) || field.isStatic() : field;
-    if (field instanceof UserField) {
-      return this.getUserField((UserField) field, instance);
-    } else if (field instanceof JavaField) {
-      return this.getFieldDeclaredInJavaWithField((JavaField) field, instance);
+    if (field instanceof UserField userField) {
+      return this.getUserField(userField, instance);
+    } else if (field instanceof JavaField javaField) {
+      return this.getFieldDeclaredInJavaWithField(javaField, instance);
     } else {
       throw new RuntimeException();
     }
@@ -367,10 +365,10 @@ public abstract class VirtualMachine {
 
   public void set(AbstractField field, Object instance, Object value) {
     assert field != null;
-    if (field instanceof UserField) {
-      this.setUserField((UserField) field, instance, value);
-    } else if (field instanceof JavaField) {
-      this.setFieldDeclaredInJavaWithField((JavaField) field, instance, value);
+    if (field instanceof UserField userField) {
+      this.setUserField(userField, instance, value);
+    } else if (field instanceof JavaField javaField) {
+      this.setFieldDeclaredInJavaWithField(javaField, instance, value);
     } else {
       throw new RuntimeException();
     }
@@ -391,8 +389,7 @@ public abstract class VirtualMachine {
   public Object getItemAtIndex(AbstractType<?, ?, ?> arrayType, Object array, Integer index) {
     assert arrayType != null;
     assert arrayType.isArray();
-    if (array instanceof UserArrayInstance) {
-      UserArrayInstance userArrayInstance = (UserArrayInstance) array;
+    if (array instanceof UserArrayInstance userArrayInstance) {
       this.checkIndex(index, userArrayInstance.getLength());
       return userArrayInstance.get(index);
     } else {
@@ -405,8 +402,7 @@ public abstract class VirtualMachine {
     value = UserInstance.getJavaInstanceIfNecessary(value);
     assert arrayType != null;
     assert arrayType.isArray() : arrayType;
-    if (array instanceof UserArrayInstance) {
-      UserArrayInstance userArrayInstance = (UserArrayInstance) array;
+    if (array instanceof UserArrayInstance userArrayInstance) {
       this.checkIndex(index, userArrayInstance.getLength());
       userArrayInstance.set(index, value);
     } else {
@@ -496,8 +492,7 @@ public abstract class VirtualMachine {
       throw new RuntimeException(ReflectionUtilities.getDetail(instance, mthd, arguments), illegalAccessException);
     } catch (InvocationTargetException ite) {
       Throwable throwable = ite.getTargetException();
-      if (throwable instanceof RuntimeException) {
-        RuntimeException re = (RuntimeException) throwable;
+      if (throwable instanceof RuntimeException re) {
         throw re;
       } else {
         throw new RuntimeException(ReflectionUtilities.getDetail(instance, mthd, arguments), throwable);
@@ -520,14 +515,11 @@ public abstract class VirtualMachine {
     Expression rightHandExpression = assignmentExpression.rightHandSide.getValue();
     Object rightHandValue = this.evaluate(rightHandExpression);
     if (assignmentExpression.operator.getValue() == AssignmentExpression.Operator.ASSIGN) {
-      if (leftHandExpression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) leftHandExpression;
+      if (leftHandExpression instanceof FieldAccess fieldAccess) {
         this.set(fieldAccess.field.getValue(), this.evaluate(fieldAccess.expression.getValue()), rightHandValue);
-      } else if (leftHandExpression instanceof LocalAccess) {
-        LocalAccess localAccess = (LocalAccess) leftHandExpression;
+      } else if (leftHandExpression instanceof LocalAccess localAccess) {
         this.setLocal(localAccess.local.getValue(), rightHandValue);
-      } else if (leftHandExpression instanceof ArrayAccess) {
-        ArrayAccess arrayAccess = (ArrayAccess) leftHandExpression;
+      } else if (leftHandExpression instanceof ArrayAccess arrayAccess) {
         this.setItemAtIndex(arrayAccess.arrayType.getValue(), this.evaluate(arrayAccess.array.getValue()), this.evaluateInt(arrayAccess.index.getValue(), "array index is null"), rightHandValue);
       } else {
         PrintUtilities.println("todo: evaluateActual", assignmentExpression.leftHandSide.getValue(), rightHandValue);
@@ -726,12 +718,10 @@ public abstract class VirtualMachine {
     Lambda lambda = lambdaExpression.value.getValue();
 
     AbstractType<?, ?, ?> type = argument.parameter.getValue().getValueType();
-    if (type instanceof JavaType) {
+    if (type instanceof JavaType javaType) {
 
       UserInstance thisInstance = this.getThis();
       assert thisInstance != null;
-
-      JavaType javaType = (JavaType) type;
       Class<?> interfaceCls = javaType.getClassReflectionProxy().getReification();
       Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get(interfaceCls);
       assert adapterCls != null : interfaceCls;
@@ -740,8 +730,7 @@ public abstract class VirtualMachine {
         @Override
         public void invokeEntryPoint(Lambda lambda, AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments) {
           assert thisInstance != null;
-          if (lambda instanceof UserLambda) {
-            UserLambda userLambda = (UserLambda) lambda;
+          if (lambda instanceof UserLambda userLambda) {
             Map<AbstractParameter, Object> map = Maps.newHashMap();
             for (int i = 0; i < arguments.length; i++) {
               map.put(userLambda.requiredParameters.get(i), arguments[i]);
@@ -776,60 +765,60 @@ public abstract class VirtualMachine {
   protected Object evaluate(Expression expression) {
     if (expression != null) {
       Object rv;
-      if (expression instanceof AssignmentExpression) {
-        rv = this.evaluateAssignmentExpression((AssignmentExpression) expression);
-      } else if (expression instanceof BooleanLiteral) {
-        rv = this.evaluateBooleanLiteral((BooleanLiteral) expression);
-      } else if (expression instanceof InstanceCreation) {
-        rv = ((InstanceCreation) expression).evaluate(this);
-      } else if (expression instanceof ArrayInstanceCreation) {
-        rv = this.evaluateArrayInstanceCreation((ArrayInstanceCreation) expression);
-      } else if (expression instanceof ArrayLength) {
-        rv = this.evaluateArrayLength((ArrayLength) expression);
-      } else if (expression instanceof ArrayAccess) {
-        rv = this.evaluateArrayAccess((ArrayAccess) expression);
-      } else if (expression instanceof FieldAccess) {
-        rv = this.evaluateFieldAccess((FieldAccess) expression);
-      } else if (expression instanceof LocalAccess) {
-        rv = this.evaluateLocalAccess((LocalAccess) expression);
-      } else if (expression instanceof ArithmeticInfixExpression) {
-        rv = this.evaluateArithmeticInfixExpression((ArithmeticInfixExpression) expression);
-      } else if (expression instanceof BitwiseInfixExpression) {
-        rv = this.evaluateBitwiseInfixExpression((BitwiseInfixExpression) expression);
-      } else if (expression instanceof ConditionalInfixExpression) {
-        rv = this.evaluateConditionalInfixExpression((ConditionalInfixExpression) expression);
-      } else if (expression instanceof RelationalInfixExpression) {
-        rv = this.evaluateRelationalInfixExpression((RelationalInfixExpression) expression);
-      } else if (expression instanceof ShiftInfixExpression) {
-        rv = this.evaluateShiftInfixExpression((ShiftInfixExpression) expression);
-      } else if (expression instanceof LogicalComplement) {
-        rv = this.evaluateLogicalComplement((LogicalComplement) expression);
-      } else if (expression instanceof MethodInvocation) {
-        rv = this.evaluateMethodInvocation((MethodInvocation) expression);
-      } else if (expression instanceof NullLiteral) {
-        rv = this.evaluateNullLiteral((NullLiteral) expression);
-      } else if (expression instanceof StringConcatenation) {
-        rv = this.evaluateStringConcatenation((StringConcatenation) expression);
-      } else if (expression instanceof DoubleLiteral) {
-        rv = this.evaluateDoubleLiteral((DoubleLiteral) expression);
-      } else if (expression instanceof FloatLiteral) {
-        rv = this.evaluateFloatLiteral((FloatLiteral) expression);
-      } else if (expression instanceof IntegerLiteral) {
-        rv = this.evaluateIntegerLiteral((IntegerLiteral) expression);
-      } else if (expression instanceof ParameterAccess) {
-        rv = this.evaluateParameterAccess((ParameterAccess) expression);
-      } else if (expression instanceof StringLiteral) {
-        rv = this.evaluateStringLiteral((StringLiteral) expression);
-      } else if (expression instanceof ThisExpression) {
-        rv = this.evaluateThisExpression((ThisExpression) expression);
-      } else if (expression instanceof TypeExpression) {
-        rv = this.evaluateTypeExpression((TypeExpression) expression);
-      } else if (expression instanceof TypeLiteral) {
-        rv = this.evaluateTypeLiteral((TypeLiteral) expression);
-      } else if (expression instanceof ResourceExpression) {
-        rv = this.evaluateResourceExpression((ResourceExpression) expression);
-      } else if (expression instanceof LambdaExpression) {
-        rv = this.evaluateLambdaExpression((LambdaExpression) expression);
+      if (expression instanceof AssignmentExpression assignmentExpression) {
+        rv = this.evaluateAssignmentExpression(assignmentExpression);
+      } else if (expression instanceof BooleanLiteral literal6) {
+        rv = this.evaluateBooleanLiteral(literal6);
+      } else if (expression instanceof InstanceCreation creation1) {
+        rv = creation1.evaluate(this);
+      } else if (expression instanceof ArrayInstanceCreation creation) {
+        rv = this.evaluateArrayInstanceCreation(creation);
+      } else if (expression instanceof ArrayLength length) {
+        rv = this.evaluateArrayLength(length);
+      } else if (expression instanceof ArrayAccess access3) {
+        rv = this.evaluateArrayAccess(access3);
+      } else if (expression instanceof FieldAccess access2) {
+        rv = this.evaluateFieldAccess(access2);
+      } else if (expression instanceof LocalAccess access1) {
+        rv = this.evaluateLocalAccess(access1);
+      } else if (expression instanceof ArithmeticInfixExpression infixExpression4) {
+        rv = this.evaluateArithmeticInfixExpression(infixExpression4);
+      } else if (expression instanceof BitwiseInfixExpression infixExpression3) {
+        rv = this.evaluateBitwiseInfixExpression(infixExpression3);
+      } else if (expression instanceof ConditionalInfixExpression infixExpression2) {
+        rv = this.evaluateConditionalInfixExpression(infixExpression2);
+      } else if (expression instanceof RelationalInfixExpression infixExpression1) {
+        rv = this.evaluateRelationalInfixExpression(infixExpression1);
+      } else if (expression instanceof ShiftInfixExpression infixExpression) {
+        rv = this.evaluateShiftInfixExpression(infixExpression);
+      } else if (expression instanceof LogicalComplement complement) {
+        rv = this.evaluateLogicalComplement(complement);
+      } else if (expression instanceof MethodInvocation invocation) {
+        rv = this.evaluateMethodInvocation(invocation);
+      } else if (expression instanceof NullLiteral literal5) {
+        rv = this.evaluateNullLiteral(literal5);
+      } else if (expression instanceof StringConcatenation concatenation) {
+        rv = this.evaluateStringConcatenation(concatenation);
+      } else if (expression instanceof DoubleLiteral literal4) {
+        rv = this.evaluateDoubleLiteral(literal4);
+      } else if (expression instanceof FloatLiteral literal3) {
+        rv = this.evaluateFloatLiteral(literal3);
+      } else if (expression instanceof IntegerLiteral literal2) {
+        rv = this.evaluateIntegerLiteral(literal2);
+      } else if (expression instanceof ParameterAccess access) {
+        rv = this.evaluateParameterAccess(access);
+      } else if (expression instanceof StringLiteral literal1) {
+        rv = this.evaluateStringLiteral(literal1);
+      } else if (expression instanceof ThisExpression thisExpression) {
+        rv = this.evaluateThisExpression(thisExpression);
+      } else if (expression instanceof TypeExpression typeExpression) {
+        rv = this.evaluateTypeExpression(typeExpression);
+      } else if (expression instanceof TypeLiteral literal) {
+        rv = this.evaluateTypeLiteral(literal);
+      } else if (expression instanceof ResourceExpression resourceExpression) {
+        rv = this.evaluateResourceExpression(resourceExpression);
+      } else if (expression instanceof LambdaExpression lambdaExpression) {
+        rv = this.evaluateLambdaExpression(lambdaExpression);
       } else {
         throw new RuntimeException(expression.getClass().getName());
       }
@@ -856,8 +845,7 @@ public abstract class VirtualMachine {
     //}
     Object value = this.evaluate(expression);
     if (cls.isArray()) {
-      if (value instanceof UserArrayInstance) {
-        UserArrayInstance userArrayInstance = (UserArrayInstance) value;
+      if (value instanceof UserArrayInstance userArrayInstance) {
         //todo
         value = userArrayInstance.getValues();
       }
@@ -868,8 +856,8 @@ public abstract class VirtualMachine {
   private boolean evaluateBoolean(Expression expression, String nullExceptionMessage) {
     Object value = this.evaluate(expression);
     this.checkNotNull(value, nullExceptionMessage);
-    if (value instanceof Boolean) {
-      return (Boolean) value;
+    if (value instanceof Boolean boolean1) {
+      return boolean1;
     } else {
       throw new LgnaVmClassCastException(this, Boolean.class, value.getClass());
     }
@@ -878,8 +866,8 @@ public abstract class VirtualMachine {
   private int evaluateInt(Expression expression, String nullExceptionMessage) {
     Object value = this.evaluate(expression);
     this.checkNotNull(value, nullExceptionMessage);
-    if (value instanceof Integer) {
-      return (Integer) value;
+    if (value instanceof Integer integer) {
+      return integer;
     } else {
       throw new LgnaVmClassCastException(this, Integer.class, value.getClass());
     }
@@ -1167,34 +1155,34 @@ public abstract class VirtualMachine {
       }
 
       try {
-        if (statement instanceof BlockStatement) {
-          this.executeBlockStatement((BlockStatement) statement, listeners);
-        } else if (statement instanceof ConditionalStatement) {
-          this.executeConditionalStatement((ConditionalStatement) statement, listeners);
-        } else if (statement instanceof Comment) {
-          this.executeComment((Comment) statement, listeners);
-        } else if (statement instanceof CountLoop) {
-          this.executeCountLoop((CountLoop) statement, listeners);
-        } else if (statement instanceof DoTogether) {
-          this.executeDoTogether((DoTogether) statement, listeners);
-        } else if (statement instanceof DoInOrder) {
-          this.executeDoInOrder((DoInOrder) statement, listeners);
-        } else if (statement instanceof ExpressionStatement) {
-          this.executeExpressionStatement((ExpressionStatement) statement, listeners);
-        } else if (statement instanceof ForEachInArrayLoop) {
-          this.executeForEachInArrayLoop((ForEachInArrayLoop) statement, listeners);
-        } else if (statement instanceof ForEachInIterableLoop) {
-          this.executeForEachInIterableLoop((ForEachInIterableLoop) statement, listeners);
-        } else if (statement instanceof EachInArrayTogether) {
-          this.executeEachInArrayTogether((EachInArrayTogether) statement, listeners);
-        } else if (statement instanceof EachInIterableTogether) {
-          this.executeEachInIterableTogether((EachInIterableTogether) statement, listeners);
-        } else if (statement instanceof WhileLoop) {
-          this.executeWhileLoop((WhileLoop) statement, listeners);
-        } else if (statement instanceof LocalDeclarationStatement) {
-          this.executeLocalDeclarationStatement((LocalDeclarationStatement) statement, listeners);
-        } else if (statement instanceof ReturnStatement) {
-          this.executeReturnStatement((ReturnStatement) statement, listeners);
+        if (statement instanceof BlockStatement blockStatement) {
+          this.executeBlockStatement(blockStatement, listeners);
+        } else if (statement instanceof ConditionalStatement conditionalStatement) {
+          this.executeConditionalStatement(conditionalStatement, listeners);
+        } else if (statement instanceof Comment comment) {
+          this.executeComment(comment, listeners);
+        } else if (statement instanceof CountLoop loop3) {
+          this.executeCountLoop(loop3, listeners);
+        } else if (statement instanceof DoTogether together2) {
+          this.executeDoTogether(together2, listeners);
+        } else if (statement instanceof DoInOrder order) {
+          this.executeDoInOrder(order, listeners);
+        } else if (statement instanceof ExpressionStatement expressionStatement) {
+          this.executeExpressionStatement(expressionStatement, listeners);
+        } else if (statement instanceof ForEachInArrayLoop loop2) {
+          this.executeForEachInArrayLoop(loop2, listeners);
+        } else if (statement instanceof ForEachInIterableLoop loop1) {
+          this.executeForEachInIterableLoop(loop1, listeners);
+        } else if (statement instanceof EachInArrayTogether together1) {
+          this.executeEachInArrayTogether(together1, listeners);
+        } else if (statement instanceof EachInIterableTogether together) {
+          this.executeEachInIterableTogether(together, listeners);
+        } else if (statement instanceof WhileLoop loop) {
+          this.executeWhileLoop(loop, listeners);
+        } else if (statement instanceof LocalDeclarationStatement declarationStatement) {
+          this.executeLocalDeclarationStatement(declarationStatement, listeners);
+        } else if (statement instanceof ReturnStatement returnStatement) {
+          this.executeReturnStatement(returnStatement, listeners);
           // note: does not return.  throws ReturnException.
         } else {
           throw new RuntimeException();

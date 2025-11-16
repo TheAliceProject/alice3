@@ -66,8 +66,7 @@ public final class OwnedByCompositeOperationSubKey {
     if (this == obj) {
       return true;
     }
-    if (obj instanceof OwnedByCompositeOperationSubKey) {
-      OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey) obj;
+    if (obj instanceof OwnedByCompositeOperationSubKey other) {
       return Objects.equals(this.composite, other.composite) && Objects.equals(this.text, other.text);
     }
     return false;

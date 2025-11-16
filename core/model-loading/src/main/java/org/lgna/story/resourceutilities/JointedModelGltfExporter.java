@@ -329,8 +329,8 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     jointIndices.put(node.getName(), nodeIndex);
 
     for (Component c : joint.getComponents()) {
-      if (c instanceof Joint) {
-        int childIndex = addNodeForJoint((Joint) c, gltf, jointIndices);
+      if (c instanceof Joint joint1) {
+        int childIndex = addNodeForJoint(joint1, gltf, jointIndices);
         node.addChildren(childIndex);
       }
     }
@@ -362,8 +362,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     List<Mesh> meshes = new ArrayList<>();
 
     for (Geometry g : visual.geometries.getValue()) {
-      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-        edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
+      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
         MeshPrimitive[] meshPrimitives = createMeshPrimitives(sgMesh, bufferStructureBuilder);
         addMeshes(meshes, sgMesh.getName(), meshPrimitives);
       }

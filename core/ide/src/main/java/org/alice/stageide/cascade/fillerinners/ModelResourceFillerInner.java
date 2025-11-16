@@ -65,8 +65,7 @@ public class ModelResourceFillerInner extends ExpressionFillerInner {
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    if (details instanceof PublicStaticFieldValueDetails) {
-      PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails) details;
+    if (details instanceof PublicStaticFieldValueDetails publicStaticFieldValueDetails) {
       Field[] flds = publicStaticFieldValueDetails.getFlds();
       for (Field fld : flds) {
         items.add(StaticFieldAccessFillIn.getInstance(fld));

@@ -47,7 +47,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   @Override
   public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
+    return formatter.getNewFormat().formatted(dynamicResource.getModelClassName(), "");
   }
 
   @Override
@@ -108,7 +108,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 
   @Override
   public boolean equals(Object o) {
-    return this == o || o instanceof DynamicResourceKey && dynamicResource == ((DynamicResourceKey) o).dynamicResource;
+    return this == o || o instanceof DynamicResourceKey drk && dynamicResource == drk.dynamicResource;
   }
 
   @Override

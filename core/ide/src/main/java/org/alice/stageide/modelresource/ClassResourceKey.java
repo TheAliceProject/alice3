@@ -183,8 +183,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
     if (this == o) {
       return true;
     }
-    if (o instanceof ClassResourceKey) {
-      ClassResourceKey other = (ClassResourceKey) o;
+    if (o instanceof ClassResourceKey other) {
       return this.cls.equals(other.cls);
     } else {
       return false;

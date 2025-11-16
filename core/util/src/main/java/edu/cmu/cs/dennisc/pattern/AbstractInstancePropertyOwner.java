@@ -206,8 +206,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     if ((this == other) || super.equals(other)) {
       return true;
     } else {
-      if (other instanceof AbstractInstancePropertyOwner) {
-        AbstractInstancePropertyOwner otherDIPO = (AbstractInstancePropertyOwner) other;
+      if (other instanceof AbstractInstancePropertyOwner otherDIPO) {
         int propertyCount = 0;
         for (InstanceProperty thisProperty : this.getProperties()) {
           String propertyName = thisProperty.getName();
@@ -216,8 +215,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
             if (otherProperty != null) {
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
-              if (thisValue instanceof AbstractInstancePropertyOwner) {
-                if (!((AbstractInstancePropertyOwner) thisValue).isEquivalentTo(otherValue)) {
+              if (thisValue instanceof AbstractInstancePropertyOwner owner) {
+                if (!owner.isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {

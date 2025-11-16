@@ -57,8 +57,7 @@ public final class TypeSummary {
 
   private static void addHierarchyClassNames(List<String> hierarchyClassNames, AbstractType<?, ?, ?> type) {
     if (type != null) {
-      if (type instanceof JavaType) {
-        JavaType javaType = (JavaType) type;
+      if (type instanceof JavaType javaType) {
         hierarchyClassNames.add(javaType.getClassReflectionProxy().getReification().getName());
       } else {
         hierarchyClassNames.add(type.getName());
@@ -85,11 +84,9 @@ public final class TypeSummary {
     addHierarchyClassNames(this.hierarchyClassNames, type.getSuperType());
 
     Declaration declaration = ResourceTypeUtilities.getResourceFieldOrType(type);
-    if (declaration instanceof JavaType) {
-      JavaType resourceType = (JavaType) declaration;
+    if (declaration instanceof JavaType resourceType) {
       this.resourceInfo = new ResourceInfo(resourceType.getClassReflectionProxy().getName(), null);
-    } else if (declaration instanceof JavaField) {
-      JavaField resourceField = (JavaField) declaration;
+    } else if (declaration instanceof JavaField resourceField) {
       this.resourceInfo = new ResourceInfo(resourceField.getDeclaringType().getClassReflectionProxy().getName(), resourceField.getName());
     } else {
       this.resourceInfo = null;

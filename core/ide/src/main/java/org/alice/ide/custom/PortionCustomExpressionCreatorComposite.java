@@ -95,8 +95,7 @@ public class PortionCustomExpressionCreatorComposite extends ExpressionWithRecen
 
   @Override
   protected void initializeToPreviousExpression(Expression expression) {
-    if (expression instanceof DoubleLiteral) {
-      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+    if (expression instanceof DoubleLiteral doubleLiteral) {
       double value = doubleLiteral.value.getValue();
       if (Double.isFinite(value)) {
         BigDecimal decimal = new BigDecimal(value, new MathContext(BigDecimal.ROUND_HALF_DOWN));

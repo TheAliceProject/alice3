@@ -290,13 +290,11 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   private static boolean isInclusionDesired(AbstractMember member) {
-    if (member instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) member;
+    if (member instanceof AbstractMethod method) {
       if (method.isStatic()) {
         return false;
       }
-    } else if (member instanceof AbstractField) {
-      AbstractField field = (AbstractField) member;
+    } else if (member instanceof AbstractField field) {
       if (field.isStatic()) {
         return false;
       }

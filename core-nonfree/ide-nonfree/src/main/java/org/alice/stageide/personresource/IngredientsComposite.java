@@ -621,10 +621,10 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
         outfit = previousPersonResource.getOutfit();
       }
     }
-    if (outfit instanceof FullBodyOutfit) {
-      fullBodyOutfit = (FullBodyOutfit) outfit;
-    } else if (outfit instanceof TopAndBottomOutfit<?, ?>) {
-      topAndBottomOutfit = (TopAndBottomOutfit<?, ?>) outfit;
+    if (outfit instanceof FullBodyOutfit bodyOutfit) {
+      fullBodyOutfit = bodyOutfit;
+    } else if (outfit instanceof TopAndBottomOutfit<?, ?> bottomOutfit) {
+      topAndBottomOutfit = bottomOutfit;
     }
     updateFullBodyOutfit(lifeStage, gender, fullBodyOutfit);
     updateTopAndBottomOutfit(lifeStage, gender, topAndBottomOutfit);

@@ -73,8 +73,8 @@ public class RunIcon implements Icon {
 
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (c instanceof AbstractButton) {
-      ButtonModel buttonModel = ((AbstractButton) c).getModel();
+    if (c instanceof AbstractButton button) {
+      ButtonModel buttonModel = button.getModel();
       Graphics2D g2 = (Graphics2D) g;
       Color prevColor = g2.getColor();
       Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);

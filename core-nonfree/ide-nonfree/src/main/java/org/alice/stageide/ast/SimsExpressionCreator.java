@@ -58,8 +58,7 @@ public class SimsExpressionCreator extends ExpressionCreator {
 
   private Expression createOutfitExpression(Outfit outfit) throws CannotCreateExpressionException {
     if (outfit != null) {
-      if (outfit instanceof TopAndBottomOutfit<?, ?>) {
-        TopAndBottomOutfit<?, ?> topAndBottomOutfit = (TopAndBottomOutfit<?, ?>) outfit;
+      if (outfit instanceof TopAndBottomOutfit<?, ?> topAndBottomOutfit) {
         TopPiece topPiece = topAndBottomOutfit.getTopPiece();
         BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
 
@@ -90,8 +89,8 @@ public class SimsExpressionCreator extends ExpressionCreator {
 
   @Override
   protected Expression createCustomExpression(Object value) throws CannotCreateExpressionException {
-    if (value instanceof TopAndBottomOutfit<?, ?>) {
-      return this.createOutfitExpression((TopAndBottomOutfit<?, ?>) value);
+    if (value instanceof TopAndBottomOutfit<?, ?> outfit) {
+      return this.createOutfitExpression(outfit);
     } else {
       return super.createCustomExpression(value);
     }

@@ -114,16 +114,15 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
   private Pose<? extends SJointedModel> getPose(AbstractMethod method, Expression[] argumentExpressions) {
     if (argumentExpressions.length > 0) {
-      if (argumentExpressions[0] instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) argumentExpressions[0];
+      if (argumentExpressions[0] instanceof FieldAccess fieldAccess) {
         JavaField poseField = (JavaField) fieldAccess.field.getValue();
         if (poseField.isStatic()) {
           Field fld = poseField.getFieldReflectionProxy().getReification();
           try {
             Object o = fld.get(null);
             if (o != null) {
-              if (o instanceof Pose<?>) {
-                return (Pose<?>) o;
+              if (o instanceof Pose<?> pose1) {
+                return pose1;
               }
             }
           } catch (IllegalAccessException iae) {
@@ -144,8 +143,7 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 
   @Override
   protected void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof SJointedModel) {
-      SJointedModel jointedModel = (SJointedModel) instance;
+    if (instance instanceof SJointedModel jointedModel) {
       JointedModelImp<?, ?> jointedModelImp = jointedModel.getImplementation();
       Iterable<JointImp> joints = jointedModelImp.getJoints();
       List<JointUndoRunnable> list = Lists.newLinkedList();

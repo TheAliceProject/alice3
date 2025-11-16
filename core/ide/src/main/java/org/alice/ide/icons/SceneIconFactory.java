@@ -70,8 +70,7 @@ public class SceneIconFactory extends ResolutionIndependentIconFactory {
 
   public void markAllIconsDirty() {
     for (Icon icon : this.getMapValues()) {
-      if (icon instanceof SceneIcon) {
-        SceneIcon sceneIcon = (SceneIcon) icon;
+      if (icon instanceof SceneIcon sceneIcon) {
         sceneIcon.markDirty();
       }
     }

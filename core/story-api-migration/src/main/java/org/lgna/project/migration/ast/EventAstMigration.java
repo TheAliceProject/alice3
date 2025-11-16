@@ -63,8 +63,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
   @Override
   protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
-    if (method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) method;
+    if (method instanceof JavaMethod javaMethod) {
       JavaMethod replacementMethod = null;
       if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
         String methodName = method.getName();
@@ -109,8 +108,8 @@ public class EventAstMigration extends MethodInvocationAstMigration {
     JavaKeyedArgument argToRemove = null;
     for (JavaKeyedArgument arg : keyedParameter) {
       Expression value = ((MethodInvocation) arg.expression.getValue()).requiredArguments.get(0).expression.getValue();
-      if (value instanceof DoubleLiteral) {
-        duration = ((DoubleLiteral) value).value.getValue();
+      if (value instanceof DoubleLiteral literal) {
+        duration = literal.value.getValue();
         argToRemove = arg;
         break;
       } else {

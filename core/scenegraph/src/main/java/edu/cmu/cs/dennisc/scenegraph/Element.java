@@ -106,8 +106,8 @@ public abstract class Element extends AbstractInstancePropertyOwner {
     rv.setName(this.getName());
     for (InstanceProperty<?> property : this.getProperties()) {
       Object value;
-      if (property instanceof CopyableInstanceProperty<?>) {
-        value = ((CopyableInstanceProperty<?>) property).getCopy();
+      if (property instanceof CopyableInstanceProperty<?> instanceProperty) {
+        value = instanceProperty.getCopy();
       } else {
         value = property.getValue();
       }

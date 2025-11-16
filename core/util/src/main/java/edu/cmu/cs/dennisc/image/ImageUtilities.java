@@ -156,8 +156,8 @@ public class ImageUtilities {
 
   public static BufferedImage read(String codecName, InputStream inputStream) throws IOException {
     BufferedInputStream bufferedInputStream;
-    if (inputStream instanceof BufferedInputStream) {
-      bufferedInputStream = (BufferedInputStream) inputStream;
+    if (inputStream instanceof BufferedInputStream stream) {
+      bufferedInputStream = stream;
     } else {
       bufferedInputStream = new BufferedInputStream(inputStream);
     }
@@ -256,8 +256,7 @@ public class ImageUtilities {
 
     if (codecName.equals(JPEG_CODEC_NAME)) {
       BufferedImage bufferedImageBGR = null;
-      if (image instanceof BufferedImage) {
-        BufferedImage bufferedImage = (BufferedImage) image;
+      if (image instanceof BufferedImage bufferedImage) {
         if (bufferedImage.getType() == BufferedImage.TYPE_3BYTE_BGR) {
           bufferedImageBGR = bufferedImage;
         }
@@ -274,8 +273,8 @@ public class ImageUtilities {
 
       image = bufferedImageBGR;
     }
-    if (image instanceof RenderedImage) {
-      renderedImage = (RenderedImage) image;
+    if (image instanceof RenderedImage renderedImage1) {
+      renderedImage = renderedImage1;
     } else {
       int[] pixels = ImageUtilities.getPixels(image, width, height);
       BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

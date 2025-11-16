@@ -79,17 +79,17 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   protected void addDescendant(GlrComponent<?> glrDescendant) {
-    if (glrDescendant instanceof GlrGhost) {
+    if (glrDescendant instanceof GlrGhost ghost) {
       synchronized (this.glrGhostDescendants) {
-        this.glrGhostDescendants.add((GlrGhost) glrDescendant);
+        this.glrGhostDescendants.add(ghost);
       }
-    } else if (glrDescendant instanceof GlrVisual<?>) {
+    } else if (glrDescendant instanceof GlrVisual<?> visual) {
       synchronized (this.glrVisualDescendants) {
-        this.glrVisualDescendants.add((GlrVisual<?>) glrDescendant);
+        this.glrVisualDescendants.add(visual);
       }
-      if (glrDescendant instanceof GlrPlanarReflector) {
+      if (glrDescendant instanceof GlrPlanarReflector reflector) {
         synchronized (this.glrPlanarReflectorDescendants) {
-          this.glrPlanarReflectorDescendants.add((GlrPlanarReflector) glrDescendant);
+          this.glrPlanarReflectorDescendants.add(reflector);
         }
       }
     }

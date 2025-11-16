@@ -149,14 +149,11 @@ public class JavaCodeView extends HtmlView {
     JavaCodeGenerator javaCodeGenerator = javaCodeGeneratorBuilder.build();
     //org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
     String code;
-    if (this.declaration instanceof UserMethod) {
-      UserMethod method = (UserMethod) this.declaration;
+    if (this.declaration instanceof UserMethod method) {
       code = method.generateCode(javaCodeGenerator);
-    } else if (this.declaration instanceof UserConstructor) {
-      UserConstructor constructor = (UserConstructor) this.declaration;
+    } else if (this.declaration instanceof UserConstructor constructor) {
       code = constructor.generateCode(javaCodeGenerator);
-    } else if (this.declaration instanceof NamedUserType) {
-      NamedUserType type = (NamedUserType) this.declaration;
+    } else if (this.declaration instanceof NamedUserType type) {
       code = type.generateCode(javaCodeGenerator);
     } else {
       code = null;

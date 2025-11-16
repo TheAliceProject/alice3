@@ -66,16 +66,16 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
     if (this.camera != null) {
       setManipulatedTransformable(this.camera.getMovableParent());
     }
-    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator)) {
-      ((CameraInformedManipulator) this.activeManipulator).setCamera(camera);
+    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator manipulator)) {
+      manipulator.setCamera(camera);
     }
 
   }
 
   @Override
   public void setDesiredCameraView(CameraView cameraView) {
-    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator)) {
-      ((CameraInformedManipulator) this.activeManipulator).setDesiredCameraView(cameraView);
+    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator manipulator)) {
+      manipulator.setDesiredCameraView(cameraView);
     } else {
       //pass
     }
@@ -83,8 +83,8 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
   @Override
   public CameraView getDesiredCameraView() {
-    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator)) {
-      return ((CameraInformedManipulator) this.activeManipulator).getDesiredCameraView();
+    if ((this.activeManipulator != null) && (this.activeManipulator instanceof CameraInformedManipulator manipulator)) {
+      return manipulator.getDesiredCameraView();
     } else {
       return CameraView.PICK_CAMERA;
     }
@@ -98,8 +98,8 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
   @Override
   public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
     this.onscreenRenderTarget = onscreenRenderTarget;
-    if (this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator) {
-      ((OnscreenPicturePlaneInformedManipulator) this.activeManipulator).setOnscreenRenderTarget(onscreenRenderTarget);
+    if (this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator manipulator) {
+      manipulator.setOnscreenRenderTarget(onscreenRenderTarget);
     }
   }
 
@@ -179,12 +179,10 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
   protected void setManipulatorStartState(AbstractManipulator manipulator) {
     manipulator.setDragAdapter(this.dragAdapter);
-    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator) {
-      OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator) manipulator;
+    if (manipulator instanceof OnscreenPicturePlaneInformedManipulator lookingGlassManipulator) {
       this.dragAdapter.setLookingGlassOnManipulator(lookingGlassManipulator);
     }
-    if (manipulator instanceof CameraInformedManipulator) {
-      CameraInformedManipulator cameraInformed = (CameraInformedManipulator) manipulator;
+    if (manipulator instanceof CameraInformedManipulator cameraInformed) {
       this.dragAdapter.setCameraOnManipulator(cameraInformed);
     }
   }

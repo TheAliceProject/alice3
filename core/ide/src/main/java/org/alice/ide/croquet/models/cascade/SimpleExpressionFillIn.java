@@ -80,11 +80,9 @@ import java.util.UUID;
   @Override
   protected Icon getLeadingIcon(ItemNode<? super E, Void> step) {
     if (this.isLeadingIconDesired) {
-      if (this.transientValue instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) this.transientValue;
+      if (this.transientValue instanceof FieldAccess fieldAccess) {
         AbstractField field = fieldAccess.field.getValue();
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
+        if (field instanceof UserField userField) {
           AbstractType<?, ?, ?> type = userField.getValueType();
           if (type != null) {
             if (type.isAssignableTo(SThing.class)) {

@@ -64,8 +64,7 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
   @Override
   public BlockStatementIndexPair getBlockStatementIndexPair() {
     InstancePropertyOwner owner = this.expressionProperty.getOwner();
-    if (owner instanceof Node) {
-      Node node = (Node) owner;
+    if (owner instanceof Node node) {
       Statement statement = node.getFirstAncestorAssignableTo(Statement.class, true);
       if (statement != null) {
         if (statement instanceof ConstructorInvocationStatement) {
@@ -73,8 +72,7 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
           return null;
         } else {
           Node parent = statement.getParent();
-          if (parent instanceof BlockStatement) {
-            BlockStatement blockStatement = (BlockStatement) parent;
+          if (parent instanceof BlockStatement blockStatement) {
             int index = blockStatement.statements.indexOf(statement);
             return new BlockStatementIndexPair(blockStatement, index);
           }

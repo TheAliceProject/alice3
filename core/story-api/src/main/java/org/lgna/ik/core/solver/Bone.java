@@ -131,8 +131,7 @@ public class Bone {
       if (o == this) {
         return true;
       }
-      if (o instanceof Axis) {
-        Axis ua = (Axis) o;
+      if (o instanceof Axis ua) {
         return (this.originalIndexInJoint == ua.originalIndexInJoint) && Objects.equals(this.bone.getA(), ua.bone.getA());
       } else {
         return false;

@@ -63,8 +63,7 @@ public class UnderscoreFieldAccessAstMigration extends FieldAccessAstMigration {
   @Override
   protected void migrate(FieldAccess fieldAccess) {
     AbstractField field = fieldAccess.field.getValue();
-    if (field instanceof JavaField) {
-      JavaField javaField = (JavaField) field;
+    if (field instanceof JavaField javaField) {
       FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
       Field reification = fieldReflectionProxy.getReification();
       if (reification == null) {

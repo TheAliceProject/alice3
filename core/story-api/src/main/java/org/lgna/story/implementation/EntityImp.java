@@ -760,8 +760,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
       @Override
       public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
         EntityImp imp = EntityImp.getInstance(sgJoint);
-        if (imp instanceof JointImp) {
-          JointImp jointImp = (JointImp) imp;
+        if (imp instanceof JointImp jointImp) {
           return jointImp.getScaledOriginalTransformation();
         } else {
           return AffineMatrix4x4.IDENTITY;

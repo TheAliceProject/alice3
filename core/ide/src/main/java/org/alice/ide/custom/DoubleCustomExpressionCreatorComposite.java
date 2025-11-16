@@ -71,8 +71,7 @@ public final class DoubleCustomExpressionCreatorComposite extends NumberCustomEx
   @Override
   protected String getTextForPreviousExpression(Expression expression) {
     String text;
-    if (expression instanceof DoubleLiteral) {
-      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+    if (expression instanceof DoubleLiteral doubleLiteral) {
       text = DoubleUtilities.formatInCurrentDefaultLocale(doubleLiteral.value.getValue());
     } else {
       text = "";

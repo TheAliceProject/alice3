@@ -136,8 +136,8 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 
   public MenuItemSelectStep findFirstMenuSelectStep() {
     for (PrepStep step : prepSteps) {
-      if (step instanceof MenuItemSelectStep) {
-        return (MenuItemSelectStep) step;
+      if (step instanceof MenuItemSelectStep selectStep) {
+        return selectStep;
       }
     }
     return null;
@@ -147,8 +147,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
     ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator(this.prepSteps.size());
     while (iterator.hasPrevious()) {
       PrepStep<?> prepStep = iterator.previous();
-      if (prepStep instanceof MenuItemSelectStep) {
-        MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep) prepStep;
+      if (prepStep instanceof MenuItemSelectStep prevMenuItemSelectStep) {
         if (menuSelection.isPrevious(prevMenuItemSelectStep.getMenuSelection())) {
           break;
         } else {

@@ -58,12 +58,12 @@ import org.lgna.project.ast.ExpressionProperty;
 public abstract class IdeAstI18nFactory extends AstI18nFactory {
   @Override
   protected SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression) {
-    if (ideExpression instanceof EmptyExpression) {
-      return new EmptyExpressionPane((EmptyExpression) ideExpression);
-    } else if (ideExpression instanceof PreviousValueExpression) {
-      return new PreviousValueExpressionPane(this, (PreviousValueExpression) ideExpression);
-    } else if (ideExpression instanceof CurrentThisExpression) {
-      return new ThisExpressionLikeView(this, (CurrentThisExpression) ideExpression);
+    if (ideExpression instanceof EmptyExpression expression2) {
+      return new EmptyExpressionPane(expression2);
+    } else if (ideExpression instanceof PreviousValueExpression expression1) {
+      return new PreviousValueExpressionPane(this, expression1);
+    } else if (ideExpression instanceof CurrentThisExpression expression) {
+      return new ThisExpressionLikeView(this, expression);
     } else if (ideExpression instanceof SelectedInstanceFactoryExpression) {
       //rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
       return new SelectedInstanceFactoryExpressionPanel(this);

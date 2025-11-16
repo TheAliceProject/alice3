@@ -127,11 +127,9 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
         return null;
       }
     } else {
-      if (code instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) code;
+      if (code instanceof UserMethod userMethod) {
         return new MethodHeaderPane(this, userMethod, false);
-      } else if (code instanceof NamedUserConstructor) {
-        NamedUserConstructor userConstructor = (NamedUserConstructor) code;
+      } else if (code instanceof NamedUserConstructor userConstructor) {
         return new ConstructorHeaderPane(userConstructor, false);
       } else {
         throw new RuntimeException();

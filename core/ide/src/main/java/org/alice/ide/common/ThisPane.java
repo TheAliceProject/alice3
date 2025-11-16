@@ -90,10 +90,10 @@ public class ThisPane extends AccessiblePane {
 
   private void updateBasedOnFocusedDeclaration(AbstractDeclaration declaration) {
     if (declaration != null) {
-      if (declaration instanceof AbstractMember) {
-        this.type = ((AbstractMember) declaration).getDeclaringType();
-      } else if (declaration instanceof AbstractType<?, ?, ?>) {
-        this.type = (AbstractType<?, ?, ?>) declaration;
+      if (declaration instanceof AbstractMember member) {
+        this.type = member.getDeclaringType();
+      } else if (declaration instanceof AbstractType<?, ?, ?> abstractType) {
+        this.type = abstractType;
       } else {
         this.type = null;
       }

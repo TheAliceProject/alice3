@@ -96,8 +96,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
       SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
       SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement(this.camera);
 
-      if ((cameraAbstraction instanceof SCamera) && (this.camera instanceof SymmetricPerspectiveCamera) && (toLookAtEntity != cameraAbstraction)) {
-        SCamera storytellingCamera = (SCamera) cameraAbstraction;
+      if ((cameraAbstraction instanceof SCamera storytellingCamera) && (this.camera instanceof SymmetricPerspectiveCamera) && (toLookAtEntity != cameraAbstraction)) {
 
         if (GetAGoodLookAtActionOperation.IsValidOperation(storytellingCamera, toLookAtEntity)) {
 
@@ -107,8 +106,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
           if (activityCount > 0) {
             UserActivity lastActivity = projectUserActivity.getChildActivities().get(activityCount - 1);
             Edit lastEdit = lastActivity.getEdit();
-            if (lastEdit instanceof GetAGoodLookAtEdit) {
-              GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit) lastEdit;
+            if (lastEdit instanceof GetAGoodLookAtEdit edit) {
               if ((edit.getCamera() == storytellingCamera) && (edit.getTarget() == toLookAtEntity)) {
                 IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
                 return;

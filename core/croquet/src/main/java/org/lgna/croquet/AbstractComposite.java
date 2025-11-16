@@ -103,8 +103,7 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
       if (o == this) {
         return true;
       }
-      if (o instanceof Key) {
-        Key key = (Key) o;
+      if (o instanceof Key key) {
         return Objects.equals(this.composite, key.composite) && Objects.equals(this.localizationKey, key.localizationKey);
       } else {
         return false;

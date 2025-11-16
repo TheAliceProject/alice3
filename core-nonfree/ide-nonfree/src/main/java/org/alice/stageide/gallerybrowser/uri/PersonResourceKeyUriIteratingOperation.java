@@ -104,8 +104,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
       UserActivity prevSubStep = finishedSteps.get(0);
       if (prevSubStep.getProducedValue() != null) {
         Object value = prevSubStep.getProducedValue();
-        if (value instanceof InstanceCreation) {
-          InstanceCreation instanceCreation = (InstanceCreation) value;
+        if (value instanceof InstanceCreation instanceCreation) {
           AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
           addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation(instanceCreation);
           return addPersonResourceManagedFieldComposite.getLaunchOperation();

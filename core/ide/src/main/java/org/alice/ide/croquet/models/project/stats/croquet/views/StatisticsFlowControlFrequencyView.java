@@ -201,8 +201,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 
     private void setCell(int col, int row, int count) {
       AwtComponentView component = getCell(col, row);
-      if (component instanceof BarLabel) {
-        BarLabel label = (BarLabel) component;
+      if (component instanceof BarLabel label) {
         label.setCount(count);
       }
     }
@@ -230,8 +229,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
         rv.setForegroundColor(Color.WHITE);
       }
       if (!value.equals(StatisticsFlowControlFrequencyComposite.root)) {
-        if (value instanceof UserMethod) {
-          UserMethod userMethod = (UserMethod) value;
+        if (value instanceof UserMethod userMethod) {
           rv.setText(getFormattedName(userMethod));
           return rv.getAwtComponent();
         }

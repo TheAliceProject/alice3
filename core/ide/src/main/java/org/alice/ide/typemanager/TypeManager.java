@@ -198,8 +198,7 @@ public class TypeManager {
           if (constructorInvocationStatement instanceof SuperConstructorInvocationStatement) {
             if (constructorInvocationStatement.requiredArguments.size() == 1) {
               Expression argumentExpression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-              if (argumentExpression instanceof FieldAccess) {
-                FieldAccess fieldAccess = (FieldAccess) argumentExpression;
+              if (argumentExpression instanceof FieldAccess fieldAccess) {
                 return fieldAccess.field.getValue() == this.superArgumentField;
               }
             }
@@ -343,8 +342,7 @@ public class TypeManager {
       }
     }
     NamedUserType rv = createTypeFor(superType, name, new AbstractType[] {argumentTypes[i]}, expressions);
-    if (argumentTypes[i] instanceof JavaType) {
-      JavaType javaArgumentTypeI = (JavaType) argumentTypes[i];
+    if (argumentTypes[i] instanceof JavaType javaArgumentTypeI) {
       Class<?> cls = javaArgumentTypeI.getClassReflectionProxy().getReification();
       if (ReflectionUtilities.isFinal(cls)) {
         boolean isSetResourceMethodDesired;
@@ -384,8 +382,7 @@ public class TypeManager {
 
   public static JavaField getEnumConstantFieldIfOneAndOnly(AbstractType<?, ?, ?> type) {
     JavaField rv = null;
-    if (type instanceof JavaType) {
-      JavaType javaType = (JavaType) type;
+    if (type instanceof JavaType javaType) {
       if (type.isAssignableTo(Enum.class)) {
         Class<Enum<?>> cls = (Class<Enum<?>>) javaType.getClassReflectionProxy().getReification();
         Enum<?>[] constants = cls.getEnumConstants();

@@ -58,14 +58,11 @@ public class PopupMenuUtilities {
   public static void showModal(JPopupMenu popupMenu, Component invoker, Point pt) {
     Component root = SwingUtilities.getRoot(invoker);
     final JLayeredPane layeredPane;
-    if (root instanceof JFrame) {
-      JFrame window = (JFrame) root;
+    if (root instanceof JFrame window) {
       layeredPane = window.getLayeredPane();
-    } else if (root instanceof JDialog) {
-      JDialog window = (JDialog) root;
+    } else if (root instanceof JDialog window) {
       layeredPane = window.getLayeredPane();
-    } else if (root instanceof JWindow) {
-      JWindow window = (JWindow) root;
+    } else if (root instanceof JWindow window) {
       layeredPane = window.getLayeredPane();
     } else {
       layeredPane = null;

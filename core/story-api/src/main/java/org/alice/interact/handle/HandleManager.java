@@ -151,12 +151,10 @@ public class HandleManager implements ManipulationListener {
     } else if (handle instanceof RotationRingHandle) {
       boolean doJointsMatch = objectPickHint.intersects(PickHint.PickType.JOINT.pickHint()) == handle.isMemberOf(HandleSet.HandleGroup.JOINT);
       return doJointsMatch && objectPickHint.intersects(PickHint.PickType.TURNABLE.pickHint());
-    } else if (handle instanceof LinearScaleHandle) {
-      LinearScaleHandle scaleHandle = (LinearScaleHandle) handle;
+    } else if (handle instanceof LinearScaleHandle scaleHandle) {
       if (objectPickHint.intersects(PickHint.PickType.RESIZABLE.pickHint())) {
         EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject(selectedObject);
-        if (entityImp instanceof ModelImp) {
-          ModelImp modelImp = (ModelImp) entityImp;
+        if (entityImp instanceof ModelImp modelImp) {
           Resizer[] resizers = modelImp.getResizers();
           for (Resizer r : resizers) {
             if (r == scaleHandle.getResizer()) {

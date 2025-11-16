@@ -136,8 +136,8 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
   }
 
   public void setSelectedField(AbstractField field) {
-    if ((field instanceof UserField) && field.getValueType().isAssignableTo(SMovableTurnable.class)) {
-      this.selectedField = (UserField) field;
+    if ((field instanceof UserField userField) && field.getValueType().isAssignableTo(SMovableTurnable.class)) {
+      this.selectedField = userField;
     } else {
       this.selectedField = null;
     }

@@ -173,8 +173,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
       DragComponent dragSource = dragStep.getDragSource();
       dragSource.hideDragProxy();
       GalleryDragModel galleryDragModel = null;
-      if (dragModel instanceof GalleryDragModel) {
-        galleryDragModel = (GalleryDragModel) dragModel;
+      if (dragModel instanceof GalleryDragModel model) {
+        galleryDragModel = model;
       }
 
       //We don't need special planes for the orthographic camera

@@ -110,11 +110,9 @@ public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> 
   public void setupAffectors(RenderContext rc) {
     synchronized (this.glrChildren) {
       for (GlrComponent<?> glrChild : this.glrChildren) {
-        if (glrChild instanceof GlrComposite<?>) {
-          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+        if (glrChild instanceof GlrComposite<?> glrComposite) {
           glrComposite.setupAffectors(rc);
-        } else if (glrChild instanceof GlrAffector<?>) {
-          GlrAffector<?> glrAffector = (GlrAffector<?>) glrChild;
+        } else if (glrChild instanceof GlrAffector<?> glrAffector) {
           glrAffector.setupAffectors(rc);
         }
       }
@@ -124,11 +122,9 @@ public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> 
   public void renderGhost(RenderContext rc, GlrGhost root) {
     synchronized (this.glrChildren) {
       for (GlrComponent<?> glrChild : this.glrChildren) {
-        if (glrChild instanceof GlrComposite<?>) {
-          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+        if (glrChild instanceof GlrComposite<?> glrComposite) {
           glrComposite.renderGhost(rc, root);
-        } else if (glrChild instanceof GlrRenderContributor) {
-          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+        } else if (glrChild instanceof GlrRenderContributor glrRenderContributor) {
           glrRenderContributor.renderGhost(rc, root);
         }
       }
@@ -138,11 +134,9 @@ public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> 
   public void renderOpaque(RenderContext rc) {
     synchronized (this.glrChildren) {
       for (GlrComponent<?> glrChild : this.glrChildren) {
-        if (glrChild instanceof GlrComposite<?>) {
-          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+        if (glrChild instanceof GlrComposite<?> glrComposite) {
           glrComposite.renderOpaque(rc);
-        } else if (glrChild instanceof GlrRenderContributor) {
-          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+        } else if (glrChild instanceof GlrRenderContributor glrRenderContributor) {
           glrRenderContributor.renderOpaque(rc);
         }
       }
@@ -152,11 +146,9 @@ public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> 
   public void pick(PickContext pc, PickParameters pickParameters) {
     synchronized (this.glrChildren) {
       for (GlrComponent<?> glrChild : this.glrChildren) {
-        if (glrChild instanceof GlrComposite<?>) {
-          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+        if (glrChild instanceof GlrComposite<?> glrComposite) {
           glrComposite.pick(pc, pickParameters);
-        } else if (glrChild instanceof GlrRenderContributor) {
-          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+        } else if (glrChild instanceof GlrRenderContributor glrRenderContributor) {
           glrRenderContributor.pick(pc, pickParameters);
         }
       }

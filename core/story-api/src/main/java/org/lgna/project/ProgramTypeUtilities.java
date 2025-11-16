@@ -115,13 +115,11 @@ public class ProgramTypeUtilities {
 
       @Override
       public void visit(Crawlable crawlable) {
-        if (crawlable instanceof MethodInvocation) {
-          MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+        if (crawlable instanceof MethodInvocation methodInvocation) {
           if (methodInvocation.method.getValue() == code) {
             this.list.add(methodInvocation.requiredArguments);
           }
-        } else if (crawlable instanceof InstanceCreation) {
-          InstanceCreation instanceCreation = (InstanceCreation) crawlable;
+        } else if (crawlable instanceof InstanceCreation instanceCreation) {
           if (instanceCreation.constructor.getValue() == code) {
             this.list.add(instanceCreation.requiredArguments);
           }
@@ -143,8 +141,7 @@ public class ProgramTypeUtilities {
     Crawler crawler = new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
-        if (crawlable instanceof Node) {
-          Node node = (Node) crawlable;
+        if (crawlable instanceof Node node) {
           if (id.equals(node.getId())) {
             buffer[0] = node;
           }
@@ -169,8 +166,8 @@ public class ProgramTypeUtilities {
     if (rv == null) {
       rv = DefaultNode.createSafeInstance(type, NamedUserType.class);
       AbstractType<?, ?, ?> superType = type.getSuperType();
-      if (superType instanceof NamedUserType) {
-        DefaultNode<NamedUserType> superNode = getNode((NamedUserType) superType, root);
+      if (superType instanceof NamedUserType userType) {
+        DefaultNode<NamedUserType> superNode = getNode(userType, root);
         superNode.addChild(rv);
       } else {
         root.addChild(rv);

@@ -65,8 +65,7 @@ public class InfixExpressionView extends AbstractExpressionView<InfixExpression>
     Page page = new Page(formatter.getInfixExpressionText(infixExpression));
     SwingComponentView<?> component = factory.createComponent(page, infixExpression);
     for (Component child : component.getAwtComponent().getComponents()) {
-      if (child instanceof JLabel) {
-        JLabel label = (JLabel) child;
+      if (child instanceof JLabel label) {
         String text = label.getText();
         //todo: remove this terrible hack
         // (this "terrible hack" changes the size of the math functions in dropdowns)

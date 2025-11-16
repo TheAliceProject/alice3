@@ -112,8 +112,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
 
   private void handleDeclarationChanged(AbstractDeclaration prevValue, AbstractDeclaration nextValue) {
     if (this.ignoreCount == 0) {
-      if (nextValue instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) nextValue;
+      if (nextValue instanceof AbstractMethod method) {
         if (method.isStatic()) {
           this.setValueTransactionlessly(null);
           return;
@@ -149,8 +148,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     if (edit instanceof StateEdit) {
       StateEdit<InstanceFactory> stateEdit = (StateEdit<InstanceFactory>) edit;
       InstanceFactory nextValue = stateEdit.getNextValue();
-      if (nextValue instanceof ThisFieldAccessMethodInvocationFactory) {
-        ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (ThisFieldAccessMethodInvocationFactory) nextValue;
+      if (nextValue instanceof ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory) {
         UserField field = thisFieldAccessMethodInvocationFactory.getField();
         IDE ide = IDE.getActiveInstance();
         ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
@@ -170,8 +168,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
     AbstractDeclaration declaration = DeclarationMeta.getDeclaration();
     boolean isStaticMethod;
-    if (declaration instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) declaration;
+    if (declaration instanceof AbstractMethod method) {
       isStaticMethod = method.isStatic();
     } else {
       isStaticMethod = false;
@@ -181,8 +178,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     if (!isStaticMethod) {
       blankChildren.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ThisInstanceFactory.getInstance()), apiConfigurationManager.getInstanceFactorySubMenuForThis(type)));
     }
-    if (type instanceof NamedUserType) {
-      NamedUserType namedUserType = (NamedUserType) type;
+    if (type instanceof NamedUserType namedUserType) {
       if (!isStaticMethod) {
         List<UserField> fields = namedUserType.getDeclaredFields();
         List<UserField> filteredFields = Lists.newLinkedList();
@@ -210,13 +206,12 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
       }
 
       AbstractCode code = ide.getDocumentFrame().getFocusedCode();
-      if (code instanceof UserCode) {
+      if (code instanceof UserCode userCode) {
 
         List<CascadeBlankChild> parameters = Lists.newLinkedList();
         List<CascadeBlankChild> locals = Lists.newLinkedList();
         boolean containsVariable = false;
         boolean containsConstant = false;
-        UserCode userCode = (UserCode) code;
         for (UserParameter parameter : userCode.getRequiredParamtersProperty()) {
           if (apiConfigurationManager.isInstanceFactoryDesiredForType(parameter.getValueType())) {
             parameters.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ParameterAccessFactory.getInstance(parameter)), apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess(parameter)));
@@ -261,24 +256,19 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
           this.parametersVariablesConstantsSeparator.setMenuItemText(sb.toString());
         }
 
-        if (userCode instanceof UserMethod) {
-          UserMethod userMethod = (UserMethod) userCode;
+        if (userCode instanceof UserMethod userMethod) {
           if (StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals(userMethod.getName())) {
             for (Statement statement : userMethod.body.getValue().statements) {
-              if (statement instanceof ExpressionStatement) {
-                ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+              if (statement instanceof ExpressionStatement expressionStatement) {
                 Expression expression = expressionStatement.expression.getValue();
-                if (expression instanceof MethodInvocation) {
-                  MethodInvocation methodInvocation = (MethodInvocation) expression;
+                if (expression instanceof MethodInvocation methodInvocation) {
                   List<CascadeBlankChild> methodInvocationBlankChildren = Lists.newLinkedList();
 
                   for (SimpleArgument argument : methodInvocation.requiredArguments) {
                     Expression argumentExpression = argument.expression.getValue();
-                    if (argumentExpression instanceof LambdaExpression) {
-                      LambdaExpression lambdaExpression = (LambdaExpression) argumentExpression;
+                    if (argumentExpression instanceof LambdaExpression lambdaExpression) {
                       Lambda lambda = lambdaExpression.value.getValue();
-                      if (lambda instanceof UserLambda) {
-                        UserLambda userLambda = (UserLambda) lambda;
+                      if (lambda instanceof UserLambda userLambda) {
                         for (UserParameter parameter : userLambda.getRequiredParameters()) {
                           AbstractType<?, ?, ?> parameterType = parameter.getValueType();
                           for (AbstractMethod parameterMethod : AstUtilities.getAllMethods(parameterType)) {

@@ -351,8 +351,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         Logger.throwable(iae, jointField);
       }
     }
-    if (resource instanceof DynamicResource) {
-      allJointIds.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
+    if (resource instanceof DynamicResource dynamicResource) {
+      allJointIds.addAll(Arrays.asList(dynamicResource.getModelSpecificJoints()));
     }
     //Handle joint arrays
     for (JointArrayId arrayId : this.getJointArrayIds()) {
@@ -630,8 +630,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
     for (Visual sgVisual : this.getSgVisuals()) {
-      if (sgVisual instanceof SkeletonVisual) {
-        rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans, ignoreJointOrientations);
+      if (sgVisual instanceof SkeletonVisual visual) {
+        rv.addSkeletonVisual(visual, trans, ignoreJointOrientations);
       } else {
         rv.add(sgVisual, trans);
       }

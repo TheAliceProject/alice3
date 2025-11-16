@@ -155,8 +155,7 @@ class StickyLayout implements LayoutManager2 {
       if (this.mainComponent != null) {
         this.mainComponent.setSize(width, this.mainComponent.getHeight());
         Dimension d = this.mainComponent.getPreferredSize();
-        if (this.mainComponent instanceof JScrollPane) {
-          JScrollPane jScrollPane = (JScrollPane) this.mainComponent;
+        if (this.mainComponent instanceof JScrollPane jScrollPane) {
           if (d.width > (right - left)) {
             d.height += jScrollPane.getHorizontalScrollBar().getPreferredSize().height;
           }

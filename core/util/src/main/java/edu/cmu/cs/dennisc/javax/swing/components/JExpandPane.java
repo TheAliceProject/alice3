@@ -146,8 +146,7 @@ public abstract class JExpandPane extends AbstractButton {
     this.revalidate();
     this.repaint();
     Component root = SwingUtilities.getRoot(this);
-    if (root instanceof Window) {
-      Window window = (Window) root;
+    if (root instanceof Window window) {
       window.pack();
     }
   }

@@ -102,8 +102,7 @@ public class AddParameterView extends DeclarationView<UserParameter> {
     this.warningPanel.setVisible(N > 0);
     if (this.warningPanel.isVisible()) {
       String codeText;
-      if (code instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) code;
+      if (code instanceof AbstractMethod method) {
         if (method.isProcedure()) {
           codeText = "procedure";
         } else {

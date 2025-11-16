@@ -55,8 +55,8 @@ public class TimerFrequency implements AddTimeListener.Detail {
 
   public static TimerFrequency getValue(Detail[] details) {
     for (Detail detail : details) {
-      if (detail instanceof TimerFrequency) {
-        return (TimerFrequency) detail;
+      if (detail instanceof TimerFrequency timerFrequency) {
+        return timerFrequency;
       }
     }
     return ASAP;

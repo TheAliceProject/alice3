@@ -184,11 +184,11 @@ public class PickUtilities {
       SThing entity = getEntityFromPickedObject(pickedObject);
       returnHint = getPickHintForEntity(entity);
 
-      if (pickedObject instanceof Composite) {
+      if (pickedObject instanceof Composite composite) {
         AbstractCamera camera = null;
-        for (Component c : ((Composite) pickedObject).getComponents()) {
-          if (c instanceof AbstractCamera) {
-            camera = (AbstractCamera) c;
+        for (Component c : composite.getComponents()) {
+          if (c instanceof AbstractCamera abstractCamera) {
+            camera = abstractCamera;
           }
         }
         if (camera != null) {

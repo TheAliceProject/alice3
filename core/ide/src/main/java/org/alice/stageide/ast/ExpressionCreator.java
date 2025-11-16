@@ -161,8 +161,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createImagePaintExpression(ImagePaint imagePaint) throws CannotCreateExpressionException {
     if (imagePaint != null) {
-      if (imagePaint instanceof Enum<?>) {
-        return this.createEnumExpression((Enum<?>) imagePaint);
+      if (imagePaint instanceof Enum<?> enum1) {
+        return this.createEnumExpression(enum1);
       } else {
         throw new CannotCreateExpressionException(imagePaint);
       }
@@ -173,14 +173,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
   private Expression createPaintExpression(Paint paint) throws CannotCreateExpressionException {
     if (paint != null) {
-      if (paint instanceof Color) {
-        Color color = (Color) paint;
+      if (paint instanceof Color color) {
         return createColorExpression(color);
-      } else if (paint instanceof ImagePaint) {
-        ImagePaint imagePaint = (ImagePaint) paint;
+      } else if (paint instanceof ImagePaint imagePaint) {
         return this.createImagePaintExpression(imagePaint);
-      } else if (paint instanceof ImageSource) {
-        ImageSource imageSource = (ImageSource) paint;
+      } else if (paint instanceof ImageSource imageSource) {
         return this.createImageSourceExpression(imageSource);
       } else {
         throw new CannotCreateExpressionException(paint);
@@ -239,22 +236,22 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
   @Override
   protected Expression createCustomExpression(Object value) throws CannotCreateExpressionException {
 
-    if (value instanceof Position) {
-      return this.createPositionExpression((Position) value);
-    } else if (value instanceof Orientation) {
-      return this.createOrientationExpression((Orientation) value);
-    } else if (value instanceof Scale) {
-      return this.createScaleExpression((Scale) value);
-    } else if (value instanceof Size) {
-      return this.createSizeExpression((Size) value);
-    } else if (value instanceof Paint) {
-      return this.createPaintExpression((Paint) value);
-    } else if (value instanceof Font) {
-      return this.createFontExpression((Font) value);
-    } else if (value instanceof Pose<?>) {
-      return this.createPoseExpression((Pose<?>) value);
-    } else if (value instanceof JointId) {
-      return this.createJointIdExpression((JointId) value);
+    if (value instanceof Position position) {
+      return this.createPositionExpression(position);
+    } else if (value instanceof Orientation orientation) {
+      return this.createOrientationExpression(orientation);
+    } else if (value instanceof Scale scale) {
+      return this.createScaleExpression(scale);
+    } else if (value instanceof Size size) {
+      return this.createSizeExpression(size);
+    } else if (value instanceof Paint paint) {
+      return this.createPaintExpression(paint);
+    } else if (value instanceof Font font) {
+      return this.createFontExpression(font);
+    } else if (value instanceof Pose<?> pose) {
+      return this.createPoseExpression(pose);
+    } else if (value instanceof JointId id) {
+      return this.createJointIdExpression(id);
     } else {
       throw new CannotCreateExpressionException(value);
     }

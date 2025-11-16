@@ -121,9 +121,9 @@ public class PersonImp extends SingleVisualModelImp {
     } else {
       if (lifeStage.getGenderedHairInterfaceClass(gender).isAssignableFrom(hair.getClass())) {
         if ((outfit instanceof FullBodyOutfit && lifeStage.getGenderedFullBodyOutfitInterfaceClass(gender).isAssignableFrom(outfit.getClass()))
-            || outfit instanceof TopAndBottomOutfit<?, ?>
-              && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getTopPiece().getClass())
-              && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getBottomPiece().getClass())) {
+            || outfit instanceof TopAndBottomOutfit<?, ?> bottomOutfit
+              && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(bottomOutfit.getTopPiece().getClass())
+              && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(bottomOutfit.getBottomPiece().getClass())) {
           nebPerson.synchronizedSetAll(gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face);
         } else {
           Logger.severe(outfit, lifeStage, gender);

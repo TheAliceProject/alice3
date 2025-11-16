@@ -108,11 +108,11 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
     RtFillIn rv = null;
     RtItem[] children = this.getItemChildrenAndComboOffsets().rtItems;
     for (RtItem child : children) {
-      if (child instanceof RtFillIn) {
+      if (child instanceof RtFillIn in) {
         if (rv != null) {
           return null;
         } else {
-          rv = (RtFillIn) child;
+          rv = in;
         }
       } else if (child instanceof RtCancel) {
         return null;
@@ -147,20 +147,16 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
         for (int i = 0; i < N; i++) {
           CascadeItem item = blankChild.getItemAt(i);
           RtItem rtItem;
-          if (item instanceof AbstractCascadeMenuModel) {
-            AbstractCascadeMenuModel menu = (AbstractCascadeMenuModel) item;
+          if (item instanceof AbstractCascadeMenuModel menu) {
             rtItem = new RtMenu(menu, blankChild, i);
-          } else if (item instanceof CascadeFillIn) {
-            CascadeFillIn fillIn = (CascadeFillIn) item;
+          } else if (item instanceof CascadeFillIn fillIn) {
             rtItem = new RtFillIn(fillIn, blankChild, i);
             //        } else if( item instanceof CascadeRoot ) {
             //          CascadeRoot root = (CascadeRoot)item;
             //          rtItem = new RtRoot( root );
-          } else if (item instanceof CascadeSeparator) {
-            CascadeSeparator separator = (CascadeSeparator) item;
+          } else if (item instanceof CascadeSeparator separator) {
             rtItem = new RtSeparator(separator, blankChild, i);
-          } else if (item instanceof CascadeCancel) {
-            CascadeCancel cancel = (CascadeCancel) item;
+          } else if (item instanceof CascadeCancel cancel) {
             rtItem = new RtCancel(cancel, blankChild, i);
           } else {
             rtItem = null;
@@ -197,8 +193,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
   public void setSelectedFillIn(RtItem<B, ?, ?, ?> item) {
     this.rtSelectedFillIn = item;
     RtNode parent = this.getParent();
-    if (parent instanceof RtFillIn<?, ?>) {
-      RtFillIn<?, ?> parentFillIn = (RtFillIn<?, ?>) parent;
+    if (parent instanceof RtFillIn<?, ?> parentFillIn) {
       for (RtBlank blank : parentFillIn.getBlankChildren()) {
         if (blank.rtSelectedFillIn == null) {
           return;

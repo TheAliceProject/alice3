@@ -103,16 +103,13 @@ public class ShiftDragStatementUtilities {
   public static boolean isCandidateForEnvelop(DragModel dragModel) {
     if (dragModel instanceof PotentiallyEnvelopingStatementTemplateDragModel) {
       return true;
-    } else if (dragModel instanceof StatementDragModel) {
+    } else if (dragModel instanceof StatementDragModel statementDragModel) {
       final boolean IS_READY_FOR_PRIME_TIME = false;
       if (IS_READY_FOR_PRIME_TIME) {
-        StatementDragModel statementDragModel = (StatementDragModel) dragModel;
         Statement statement = statementDragModel.getStatement();
-        if (statement instanceof AbstractStatementWithBody) {
-          AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody) statement;
+        if (statement instanceof AbstractStatementWithBody statementWithBody) {
           return statementWithBody.body.getValue().statements.size() == 0;
-        } else if (statement instanceof ConditionalStatement) {
-          ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
+        } else if (statement instanceof ConditionalStatement conditionalStatement) {
           if (conditionalStatement.elseBody.getValue().statements.isEmpty()) {
             for (BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs) {
               if (!booleanExpressionBodyPair.body.getValue().statements.isEmpty()) {

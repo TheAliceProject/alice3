@@ -129,8 +129,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
     @Override
     public boolean isCardAccountedForInPreferredSizeCalculation(Composite<?> card) {
-      if (card instanceof WizardPageComposite) {
-        WizardPageComposite page = (WizardPageComposite) card;
+      if (card instanceof WizardPageComposite page) {
         return page.isAccountedForInPreferredSizeCalculation();
       } else {
         return super.isCardAccountedForInPreferredSizeCalculation(card);
@@ -159,8 +158,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       this.listSelectionModel.clearSelection();
     }
     String text;
-    if (card instanceof WizardPageComposite) {
-      WizardPageComposite wizardPageComposite = (WizardPageComposite) card;
+    if (card instanceof WizardPageComposite wizardPageComposite) {
       text = wizardPageComposite.getName();
     } else {
       text = null;
@@ -314,8 +312,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   @Override
   protected final Status getStatusPreRejectorCheck() {
     Composite<?> page = this.cardComposite.getShowingCard();
-    if (page instanceof WizardPageComposite) {
-      return ((WizardPageComposite) page).getPageStatus();
+    if (page instanceof WizardPageComposite composite) {
+      return composite.getPageStatus();
     } else {
       Logger.todo(this, page);
       //todo
@@ -388,8 +386,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   @Override
   protected void handlePreShowDialog(Dialog dialog) {
     for (Composite<?> subComposite : this.cardComposite.getCards()) {
-      if (subComposite instanceof WizardPageComposite<?, ?>) {
-        WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>) subComposite;
+      if (subComposite instanceof WizardPageComposite<?, ?> wizardPage) {
         wizardPage.handlePreShowDialog();
       }
     }
@@ -400,8 +397,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   protected void handlePostHideDialog() {
     super.handlePostHideDialog();
     for (Composite<?> subComposite : this.cardComposite.getCards()) {
-      if (subComposite instanceof WizardPageComposite<?, ?>) {
-        WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>) subComposite;
+      if (subComposite instanceof WizardPageComposite<?, ?> wizardPage) {
         wizardPage.handlePostHideDialog();
       }
     }

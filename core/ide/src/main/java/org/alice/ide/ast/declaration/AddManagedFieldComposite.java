@@ -221,8 +221,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
   protected EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv) {
     AffineMatrix4x4 initialTransform = null;
     DropSite dropSite = userActivity.findDropSite();
-    if (dropSite instanceof SceneDropSite) {
-      SceneDropSite sceneDropSite = (SceneDropSite) dropSite;
+    if (dropSite instanceof SceneDropSite sceneDropSite) {
       initialTransform = sceneDropSite.getTransform();
     } else {
       AbstractType<?, ?, ?> type = field.getValueType();

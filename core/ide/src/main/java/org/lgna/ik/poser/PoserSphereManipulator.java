@@ -91,8 +91,7 @@ public class PoserSphereManipulator {
       boolean rv = super.doStartManipulator(startInput);
       if (manipulatedTransformable != null) {
         SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
-        if (abstractionFromSgElement instanceof JointSelectionSphere) {
-          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+        if (abstractionFromSgElement instanceof JointSelectionSphere sphere) {
           fireStart(sphere);
         }
       }
@@ -112,8 +111,7 @@ public class PoserSphereManipulator {
       boolean rv = super.doStartManipulator(startInput);
       if (manipulatedTransformable != null) {
         SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
-        if (abstractionFromSgElement instanceof JointSelectionSphere) {
-          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+        if (abstractionFromSgElement instanceof JointSelectionSphere sphere) {
           fireStart(sphere);
         }
       }

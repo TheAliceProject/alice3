@@ -56,11 +56,9 @@ public class ResourceTypeUtilities {
 
   public static JavaType getResourceType(NamedUserType type) {
     Declaration declaration = getResourceFieldOrType(type);
-    if (declaration instanceof JavaType) {
-      JavaType resourceType = (JavaType) declaration;
+    if (declaration instanceof JavaType resourceType) {
       return resourceType;
-    } else if (declaration instanceof JavaField) {
-      JavaField resourceField = (JavaField) declaration;
+    } else if (declaration instanceof JavaField resourceField) {
       return resourceField.getDeclaringType();
     } else {
       return null;
@@ -84,8 +82,7 @@ public class ResourceTypeUtilities {
           return null;
         case 1:
           Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-          if (expression instanceof FieldAccess) {
-            FieldAccess fieldAccess = (FieldAccess) expression;
+          if (expression instanceof FieldAccess fieldAccess) {
             return fieldAccess.field.getValue();
           } else {
             return null;

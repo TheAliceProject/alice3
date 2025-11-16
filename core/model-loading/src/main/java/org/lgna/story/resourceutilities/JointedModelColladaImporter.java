@@ -162,8 +162,8 @@ public class JointedModelColladaImporter {
     AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.IDENTITY;
     for (int i = 0; i < node.getXforms().size(); i++) {
       BaseXform xform = node.getXforms().get(i);
-      if (xform instanceof Matrix) {
-        aliceMatrix = colladaMatrixToAliceMatrix((Matrix) xform);
+      if (xform instanceof Matrix matrix) {
+        aliceMatrix = colladaMatrixToAliceMatrix(matrix);
       } else if (xform instanceof Translate translate) {
         // TODO orient to Alice
         aliceMatrix = aliceMatrix.withTranslation(new Point3(translate.getX(), translate.getY(), translate.getZ()));
@@ -335,9 +335,9 @@ public class JointedModelColladaImporter {
     //Find the triangle data and use it to set the index data
     Triangles tris = null;
     for (Primitives p : geometry.getMesh().getPrimitives()) {
-      if (p instanceof Triangles) {
+      if (p instanceof Triangles triangles) {
         if (tris == null) {
-          tris = (Triangles) p;
+          tris = triangles;
         } else {
           modelLoadingLogger.log(Level.WARNING, "Converting mesh '" + geometry.getName() + "': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
         }
@@ -357,8 +357,8 @@ public class JointedModelColladaImporter {
     // TODO Stop using the index as the ID.
     sgMesh.textureId.setValue(getMaterialIndex(tris.getMaterial(), colladaModel));
 
-    if (sgMesh instanceof WeightedMesh) {
-      recordWeights((WeightedMesh) sgMesh, meshController, doubleVertexData);
+    if (sgMesh instanceof WeightedMesh mesh) {
+      recordWeights(mesh, meshController, doubleVertexData);
     }
     return sgMesh;
   }
@@ -415,11 +415,11 @@ public class JointedModelColladaImporter {
       image.getWidth(null);
       image.getHeight(null);
 
-      if (image instanceof BufferedImage) {
+      if (image instanceof BufferedImage bufferedImage1) {
         int imageWidth = image.getWidth(null);
         int[] tmpData = new int[imageWidth];
         int row = 0;
-        BufferedImage bufferedImage = ((BufferedImage) image);
+        BufferedImage bufferedImage = bufferedImage1;
         for (int y = image.getHeight(null) - 1; y >= 0; y--) {
           bufferedImage.getRGB(0, (flipImage ? row++ : y), imageWidth, 1, tmpData, 0, imageWidth);
           tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
@@ -600,8 +600,7 @@ public class JointedModelColladaImporter {
     List<WeightedMesh> aliceWeightedMeshes = new ArrayList<WeightedMesh>();
     //Loop through the meshes and divide them into lists of regular meshes and weighted meshes
     for (Mesh mesh : aliceMeshes) {
-      if (mesh instanceof WeightedMesh) {
-        WeightedMesh weightedMesh = (WeightedMesh) mesh;
+      if (mesh instanceof WeightedMesh weightedMesh) {
         //Link the weighted mesh to the skeleton
         weightedMesh.skeleton.setValue(aliceSkeleton);
         aliceWeightedMeshes.add(weightedMesh);
@@ -675,8 +674,8 @@ public class JointedModelColladaImporter {
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
-      if (comp instanceof Joint) {
-        printJoints((Joint) comp, indent + "  ");
+      if (comp instanceof Joint joint) {
+        printJoints(joint, indent + "  ");
       }
     }
   }

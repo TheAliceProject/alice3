@@ -116,8 +116,7 @@ public class KeyCustomExpressionCreatorComposite extends CustomExpressionCreator
   @Override
   protected void initializeToPreviousExpression(Expression expression) {
     org.lgna.story.Key key = null;
-    if (expression instanceof FieldAccess) {
-      FieldAccess fieldAccess = (FieldAccess) expression;
+    if (expression instanceof FieldAccess fieldAccess) {
       AbstractType<?, ?, ?> type = fieldAccess.getType();
       if (type == JavaType.getInstance(org.lgna.story.Key.class)) {
         AbstractField field = fieldAccess.field.getValue();

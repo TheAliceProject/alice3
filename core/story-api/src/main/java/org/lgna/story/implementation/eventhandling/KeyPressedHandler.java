@@ -102,14 +102,11 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
   @Override
   protected void fire(Object listener, KeyEvent event) {
-    if (listener instanceof ArrowKeyPressListener) {
-      ArrowKeyPressListener arrowListener = (ArrowKeyPressListener) listener;
+    if (listener instanceof ArrowKeyPressListener arrowListener) {
       arrowListener.arrowKeyPressed(new ArrowKeyEvent(event));
-    } else if (listener instanceof NumberKeyPressListener) {
-      NumberKeyPressListener numberListener = (NumberKeyPressListener) listener;
+    } else if (listener instanceof NumberKeyPressListener numberListener) {
       numberListener.numberKeyPressed(new NumberKeyEvent(event));
-    } else if (listener instanceof KeyPressListener) {
-      KeyPressListener keyListener = (KeyPressListener) listener;
+    } else if (listener instanceof KeyPressListener keyListener) {
       keyListener.keyPressed(event);
     }
   }

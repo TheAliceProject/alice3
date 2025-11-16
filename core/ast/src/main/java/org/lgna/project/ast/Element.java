@@ -205,8 +205,7 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
     if ((this == other) || super.equals(other)) {
       return true;
     } else {
-      if (other instanceof Element) {
-        Element otherDIPO = (Element) other;
+      if (other instanceof Element otherDIPO) {
         int propertyCount = 0;
         for (InstanceProperty thisProperty : this.getProperties()) {
           String propertyName = thisProperty.getName();
@@ -215,8 +214,8 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
             if (otherProperty != null) {
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
-              if (thisValue instanceof Element) {
-                if (!((Element) thisValue).isEquivalentTo(otherValue)) {
+              if (thisValue instanceof Element element) {
+                if (!element.isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {

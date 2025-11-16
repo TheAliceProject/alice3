@@ -81,9 +81,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    if (isTop && (prevExpression instanceof ConditionalInfixExpression)) {
-      // previous conditional
-      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) prevExpression;
+    if (isTop && (prevExpression instanceof ConditionalInfixExpression conditionalInfixExpression)) {
       for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
         if (operator != conditionalInfixExpression.operator.getValue()) {
           items.add(ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance(operator));

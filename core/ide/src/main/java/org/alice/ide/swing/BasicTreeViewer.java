@@ -281,8 +281,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
                                                                  0) // ipadY
     );
     this.virtualParentHashCode = -1;
-    if (node instanceof SceneGraphTreeNode) {
-      SceneGraphTreeNode sgNode = (SceneGraphTreeNode) node;
+    if (node instanceof SceneGraphTreeNode sgNode) {
       String positionString = "NO POSITION";
       if (sgNode.absoluteTransform != null) {
         positionString = String.format("[%.3f, %.3f, %.3f]", sgNode.absoluteTransform.translation().x(), sgNode.absoluteTransform.translation().y(), sgNode.absoluteTransform.translation().z());
@@ -472,8 +471,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
   public void valueChanged(TreeSelectionEvent e) {
     if (e.getNewLeadSelectionPath() != null) {
       Object selectedObject = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (selectedObject instanceof BasicTreeNode) {
-        BasicTreeNode sgNode = (BasicTreeNode) selectedObject;
+      if (selectedObject instanceof BasicTreeNode sgNode) {
         setData(sgNode);
         this.tree.scrollPathToVisible(e.getNewLeadSelectionPath());
         if (this.listenToSelection && (this.parentPanel != null) && this.parentPanel.shouldMirrorSelection()) {

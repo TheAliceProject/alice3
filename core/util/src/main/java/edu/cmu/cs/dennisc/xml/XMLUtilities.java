@@ -162,10 +162,10 @@ public class XMLUtilities {
     NodeList children = e.getChildNodes();
     for (int i = children.getLength() - 1; i >= 0; i--) {
       Node child = children.item(i);
-      if ((child instanceof Text) && (((Text) child).getData().trim().length() == 0)) {
+      if ((child instanceof Text text) && (text.getData().trim().length() == 0)) {
         e.removeChild(child);
-      } else if (child instanceof Element) {
-        removeWhitespaceNodes((Element) child);
+      } else if (child instanceof Element element) {
+        removeWhitespaceNodes(element);
       }
     }
   }
@@ -201,8 +201,7 @@ public class XMLUtilities {
     final int N = nodeList.getLength();
     for (int i = 0; i < N; i++) {
       Node node = nodeList.item(i);
-      if (node instanceof Element) {
-        Element element = (Element) node;
+      if (node instanceof Element element) {
         if (tagName.equals(element.getTagName())) {
           rv.add(element);
         }
@@ -216,8 +215,7 @@ public class XMLUtilities {
     final int N = nodeList.getLength();
     for (int i = 0; i < N; i++) {
       Node node = nodeList.item(i);
-      if (node instanceof Element) {
-        Element element = (Element) node;
+      if (node instanceof Element element) {
         if (tagName.equals(element.getTagName())) {
           return element;
         }

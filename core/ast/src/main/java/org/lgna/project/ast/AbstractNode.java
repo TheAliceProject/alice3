@@ -122,8 +122,8 @@ public abstract class AbstractNode extends Element implements Node {
     super.firePropertyChanging(e);
     InstanceProperty<?> property = e.getTypedSource();
     if (property instanceof NodeProperty<?>) {
-      if (!(property instanceof DeclarationProperty<?>
-          && ((DeclarationProperty<?>) property).isReference())) {
+      if (!(property instanceof DeclarationProperty<?> declarationProperty
+          && declarationProperty.isReference())) {
         AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
         if (node != null) {
           node.setParent(null);
@@ -136,8 +136,8 @@ public abstract class AbstractNode extends Element implements Node {
   public void firePropertyChanged(PropertyEvent e) {
     InstanceProperty<?> property = e.getTypedSource();
     if (property instanceof NodeProperty<?>) {
-      if (!(property instanceof DeclarationProperty<?>
-          && ((DeclarationProperty<?>) property).isReference())) {
+      if (!(property instanceof DeclarationProperty<?> declarationProperty
+          && declarationProperty.isReference())) {
         AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
         if (node != null) {
           node.setParent(this);
@@ -151,11 +151,10 @@ public abstract class AbstractNode extends Element implements Node {
   public void fireClearing(ClearListPropertyEvent e) {
     super.fireClearing(e);
     ListProperty<?> listProperty = (ListProperty<?>) e.getSource();
-    if (listProperty instanceof NodeListProperty<?>) {
-      NodeListProperty<?> nodeListProperty = (NodeListProperty<?>) listProperty;
+    if (listProperty instanceof NodeListProperty<?> nodeListProperty) {
       for (Node node : nodeListProperty) {
-        if (node instanceof AbstractNode) {
-          ((AbstractNode) node).setParent(null);
+        if (node instanceof AbstractNode abstractNode) {
+          abstractNode.setParent(null);
         }
       }
     }
@@ -168,8 +167,8 @@ public abstract class AbstractNode extends Element implements Node {
     if (listProperty instanceof NodeListProperty<?>) {
       //NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
       for (Object o : e.getElements()) {
-        if (o instanceof AbstractNode) {
-          ((AbstractNode) o).setParent(null);
+        if (o instanceof AbstractNode node) {
+          node.setParent(null);
         }
       }
     }
@@ -182,8 +181,8 @@ public abstract class AbstractNode extends Element implements Node {
     if (listProperty instanceof NodeListProperty<?>) {
       //NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
       for (Object o : e.getElements()) {
-        if (o instanceof AbstractNode) {
-          ((AbstractNode) o).setParent(null);
+        if (o instanceof AbstractNode node) {
+          node.setParent(null);
         }
       }
     }
@@ -195,8 +194,8 @@ public abstract class AbstractNode extends Element implements Node {
     if (listProperty instanceof NodeListProperty<?>) {
       //NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
       for (Object o : e.getElements()) {
-        if (o instanceof AbstractNode) {
-          ((AbstractNode) o).setParent(this);
+        if (o instanceof AbstractNode node) {
+          node.setParent(this);
         }
       }
     }
@@ -210,8 +209,8 @@ public abstract class AbstractNode extends Element implements Node {
     if (listProperty instanceof NodeListProperty<?>) {
       //NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
       for (Object o : e.getElements()) {
-        if (o instanceof AbstractNode) {
-          ((AbstractNode) o).setParent(null);
+        if (o instanceof AbstractNode node) {
+          node.setParent(null);
         }
       }
     }
@@ -223,8 +222,8 @@ public abstract class AbstractNode extends Element implements Node {
     if (listProperty instanceof NodeListProperty<?>) {
       //NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
       for (Object o : e.getElements()) {
-        if (o instanceof AbstractNode) {
-          ((AbstractNode) o).setParent(this);
+        if (o instanceof AbstractNode node) {
+          node.setParent(this);
         }
       }
     }
@@ -232,11 +231,9 @@ public abstract class AbstractNode extends Element implements Node {
   }
 
   private static void acceptIfCrawlable(Crawler crawler, Set<Crawlable> visited, Object value, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter) {
-    if (value instanceof AbstractNode) {
-      AbstractNode node = (AbstractNode) value;
+    if (value instanceof AbstractNode node) {
       if (declarationFilter != null) {
-        if (node instanceof Declaration) {
-          Declaration declaration = (Declaration) node;
+        if (node instanceof Declaration declaration) {
           if (!declarationFilter.accept(declaration)) {
             Logger.errln("skipping", declaration);
             return;
@@ -244,8 +241,7 @@ public abstract class AbstractNode extends Element implements Node {
         }
       }
       node.accept(crawler, visited, crawlPolicy, declarationFilter);
-    } else if (value instanceof Crawlable) {
-      Crawlable crawlable = (Crawlable) value;
+    } else if (value instanceof Crawlable crawlable) {
       crawlable.accept(crawler, visited);
     }
   }
@@ -263,8 +259,7 @@ public abstract class AbstractNode extends Element implements Node {
       // Look through this nodes properties to see if any have anything to crawl
       for (InstanceProperty<?> property : this.getProperties()) {
         // Check if this is a reference
-        if (property instanceof DeclarationProperty<?>) {
-          DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>) property;
+        if (property instanceof DeclarationProperty<?> declarationProperty) {
           if (declarationProperty.isReference() && !crawlPolicy.isReferenceTunneledInto()) {
             if (crawlPolicy.isReferenceIncluded()) {
               Declaration declaration = declarationProperty.getValue();
@@ -278,13 +273,11 @@ public abstract class AbstractNode extends Element implements Node {
         }
 
         Object value = property.getValue();
-        if (value instanceof Iterable<?>) {
-          Iterable<?> iterable = (Iterable<?>) value;
+        if (value instanceof Iterable<?> iterable) {
           for (Object item : iterable) {
             acceptIfCrawlable(crawler, visited, item, crawlPolicy, declarationFilter);
           }
-        } else if (value instanceof Object[]) {
-          Object[] array = (Object[]) value;
+        } else if (value instanceof Object[] array) {
           for (Object item : array) {
             acceptIfCrawlable(crawler, visited, item, crawlPolicy, declarationFilter);
           }
@@ -308,15 +301,15 @@ public abstract class AbstractNode extends Element implements Node {
     nodes.add(this);
     for (InstanceProperty<?> property : this.getProperties()) {
       Object value = property.getValue();
-      if (value instanceof AbstractNode) {
+      if (value instanceof AbstractNode node1) {
         if (!nodes.contains(value)) {
-          ((AbstractNode) value).fillInDeclarationSet(rv, nodes);
+          node1.fillInDeclarationSet(rv, nodes);
         }
-      } else if (value instanceof Iterable<?>) {
-        for (Object item : (Iterable<?>) value) {
-          if (item instanceof AbstractNode) {
+      } else if (value instanceof Iterable<?> iterable) {
+        for (Object item : iterable) {
+          if (item instanceof AbstractNode node) {
             if (!nodes.contains(item)) {
-              ((AbstractNode) item).fillInDeclarationSet(rv, nodes);
+              node.fillInDeclarationSet(rv, nodes);
             }
           }
         }
@@ -341,14 +334,14 @@ public abstract class AbstractNode extends Element implements Node {
         }
       }
       Object value = property.getValue();
-      if (value instanceof AbstractNode) {
+      if (value instanceof AbstractNode node1) {
         if (!nodes.contains(value)) {
-          ((AbstractNode) value).removeDeclarationsThatNeedToBeCopied(rv, nodes);
+          node1.removeDeclarationsThatNeedToBeCopied(rv, nodes);
         }
-      } else if (value instanceof Iterable<?>) {
-        for (Object item : (Iterable<?>) value) {
-          if (item instanceof AbstractNode && !nodes.contains(item)) {
-            ((AbstractNode) item).removeDeclarationsThatNeedToBeCopied(rv, nodes);
+      } else if (value instanceof Iterable<?> iterable) {
+        for (Object item : iterable) {
+          if (item instanceof AbstractNode node && !nodes.contains(item)) {
+            node.removeDeclarationsThatNeedToBeCopied(rv, nodes);
           }
         }
       }
@@ -361,8 +354,8 @@ public abstract class AbstractNode extends Element implements Node {
   }
 
   public static void safeAppendRepr(AstLocalizer localizer, Node node) {
-    if (node instanceof AbstractNode) {
-      ((AbstractNode) node).appendRepr(localizer);
+    if (node instanceof AbstractNode abstractNode) {
+      abstractNode.appendRepr(localizer);
     } else {
       if (node != null) {
         localizer.appendText(node.getRepr());

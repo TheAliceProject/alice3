@@ -63,8 +63,7 @@ public class AsSeenBy implements
   /* package-private */
   static SThing getValue(Object[] details, SThing defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof AsSeenBy) {
-        AsSeenBy asSeenBy = (AsSeenBy) detail;
+      if (detail instanceof AsSeenBy asSeenBy) {
         return asSeenBy.value;
       }
     }

@@ -65,12 +65,11 @@ public class UIManagerUtilities {
 
   private static void scaleFontIfApplicable(UIDefaults uiDefaults, Map.Entry<Object, Object> entry, double scale) {
     Object value = entry.getValue();
-    if (value instanceof UIDefaults.ActiveValue) {
-      UIDefaults.ActiveValue activeValue = (UIDefaults.ActiveValue) value;
+    if (value instanceof UIDefaults.ActiveValue activeValue) {
       value = activeValue.createValue(uiDefaults);
     }
-    if (value instanceof FontUIResource) {
-      scaleFontIfApplicable(uiDefaults, entry.getKey(), (FontUIResource) value, scale);
+    if (value instanceof FontUIResource resource) {
+      scaleFontIfApplicable(uiDefaults, entry.getKey(), resource, scale);
     }
   }
 
@@ -97,8 +96,7 @@ public class UIManagerUtilities {
   public static int getDefaultFontSize() {
     UIDefaults uiDefaults = UIManager.getDefaults();
     Object value = uiDefaults.get("defaultFont");
-    if (value instanceof FontUIResource) {
-      FontUIResource fontUIResource = (FontUIResource) value;
+    if (value instanceof FontUIResource fontUIResource) {
       return fontUIResource.getSize();
     } else {
       //todo?

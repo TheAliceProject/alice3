@@ -66,8 +66,7 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
         AbstractParameter parameter = argument.parameter.getValue();
         if (parameter != null) {
           Code code = parameter.getCode();
-          if (code instanceof JavaMethod) {
-            JavaMethod javaMethod = (JavaMethod) code;
+          if (code instanceof JavaMethod javaMethod) {
             if (javaMethod.isAnnotationPresent(AddEventListenerTemplate.class)) {
               AbstractType<?, ?, ?> parameterType = parameter.getValueType();
               if (parameterType != null) {

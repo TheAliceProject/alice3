@@ -132,11 +132,9 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
 
   @Override
   protected void fire(Object listener, CollisionEvent event) {
-    if (listener instanceof CollisionStartListener) {
-      CollisionStartListener startCollisionEvent = (CollisionStartListener) listener;
+    if (listener instanceof CollisionStartListener startCollisionEvent) {
       startCollisionEvent.collisionStarted((StartCollisionEvent) event);
-    } else if (listener instanceof CollisionEndListener) {
-      CollisionEndListener endCollisionEvent = (CollisionEndListener) listener;
+    } else if (listener instanceof CollisionEndListener endCollisionEvent) {
       endCollisionEvent.collisionEnded((EndCollisionEvent) event);
     }
   }

@@ -188,11 +188,9 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
       JComboBox jComboBox = ComboBox.this.getAwtComponent();
       if (jComboBox.isPopupVisible()) {
         Accessible accessible = jComboBox.getUI().getAccessibleChild(jComboBox, 0);
-        if (accessible instanceof JPopupMenu) {
-          JPopupMenu jPopupMenu = (JPopupMenu) accessible;
+        if (accessible instanceof JPopupMenu jPopupMenu) {
           Component component = jPopupMenu.getComponent(0);
-          if (component instanceof JScrollPane) {
-            JScrollPane scrollPane = (JScrollPane) component;
+          if (component instanceof JScrollPane scrollPane) {
             JViewport viewport = scrollPane.getViewport();
             return viewport.getView();
           }

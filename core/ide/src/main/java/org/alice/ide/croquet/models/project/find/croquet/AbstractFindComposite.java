@@ -171,9 +171,9 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
       if (searchResultsState.getValue() != null) {
         AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
         AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo(AbstractMethod.class);
-        if (searchObject instanceof AbstractMethod) {
-          AbstractType<?, ?, ?> declaringType = ((AbstractMethod) searchObject).getDeclaringType();
-          IDE.getActiveInstance().getMethodInvocations((AbstractMethod) searchObject);
+        if (searchObject instanceof AbstractMethod method) {
+          AbstractType<?, ?, ?> declaringType = method.getDeclaringType();
+          IDE.getActiveInstance().getMethodInvocations(method);
         }
       }
       return null;

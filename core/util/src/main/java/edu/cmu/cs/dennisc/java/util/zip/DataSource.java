@@ -51,8 +51,8 @@ import java.io.OutputStream;
 public abstract class DataSource {
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof DataSource) {
-      return this.getName().equals(((DataSource) obj).getName());
+    if (obj instanceof DataSource source) {
+      return this.getName().equals(source.getName());
     }
     return super.equals(obj);
   }

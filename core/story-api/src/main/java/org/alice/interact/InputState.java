@@ -210,8 +210,8 @@ public class InputState {
     } else {
       this.setClickPickTransformable(null);
     }
-    if (picked instanceof ManipulationHandle) {
-      this.clickHandle = (ManipulationHandle) picked;
+    if (picked instanceof ManipulationHandle handle) {
+      this.clickHandle = handle;
     } else {
       this.clickHandle = null;
     }
@@ -258,8 +258,7 @@ public class InputState {
     this.rolloverPickResult = rolloverPickResult;
     AbstractTransformable picked = this.getRolloverPickedTransformable(true);
     boolean validPick = true;
-    if (picked instanceof ManipulationHandle) {
-      ManipulationHandle handle = (ManipulationHandle) picked;
+    if (picked instanceof ManipulationHandle handle) {
       if (!handle.isPickable()) {
         validPick = false;
       }
@@ -270,8 +269,8 @@ public class InputState {
     } else {
       this.setRolloverPickTransformable(null);
     }
-    if (validPick && (picked instanceof ManipulationHandle)) {
-      this.rolloverHandle = (ManipulationHandle) picked;
+    if (validPick && (picked instanceof ManipulationHandle handle)) {
+      this.rolloverHandle = handle;
     } else {
       this.rolloverHandle = null;
     }
@@ -308,14 +307,14 @@ public class InputState {
         if (sgParent instanceof Scalable) {
           sgParent = sgParent.getParent();
         }
-        if (sgParent instanceof Transformable) {
+        if (sgParent instanceof Transformable transformable1) {
           if (getFirstClass) {
             Component firstClassComponent = PickUtilities.getFirstClassFromComponent(sgParent);
-            if (firstClassComponent instanceof AbstractTransformable) {
-              return (AbstractTransformable) firstClassComponent;
+            if (firstClassComponent instanceof AbstractTransformable transformable) {
+              return transformable;
             }
           } else {
-            return (Transformable) sgParent;
+            return transformable1;
           }
         }
       }

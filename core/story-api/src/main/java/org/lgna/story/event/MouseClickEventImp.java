@@ -103,8 +103,8 @@ public class MouseClickEventImp {
           PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
           if (pickResult != null) {
             SThing e = PickUtilities.getEntityFromPickedObject(pickResult.getVisual());
-            if (e instanceof SModel) {
-              this.modelAtMouseLocation = (SModel) e;
+            if (e instanceof SModel model) {
+              this.modelAtMouseLocation = model;
             }
           }
         }

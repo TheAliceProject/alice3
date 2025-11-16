@@ -304,11 +304,11 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private static ResourceReference resourceReference(Resource resource) {
-      if (resource instanceof AudioResource) {
-        return new AudioReference((AudioResource) resource);
+      if (resource instanceof AudioResource audioResource) {
+        return new AudioReference(audioResource);
       }
-      if (resource instanceof ImageResource) {
-        return new ImageReference((ImageResource) resource);
+      if (resource instanceof ImageResource imageResource) {
+        return new ImageReference(imageResource);
       }
       throw new RuntimeException("Resource of unexpected type " + resource);
     }

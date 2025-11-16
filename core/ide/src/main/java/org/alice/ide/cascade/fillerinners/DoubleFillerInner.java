@@ -67,8 +67,8 @@ import java.util.List;
  */
 public class DoubleFillerInner extends AbstractNumberFillerInner {
   public static double[] getLiterals(ValueDetails<?> details) {
-    if (details instanceof NumberValueDetails) {
-      return ((NumberValueDetails) details).getLiterals();
+    if (details instanceof NumberValueDetails valueDetails) {
+      return valueDetails.getLiterals();
     } else {
       return new double[] {0, 0.25, 0.5, 1.0, 2.0, 10.0};
     }

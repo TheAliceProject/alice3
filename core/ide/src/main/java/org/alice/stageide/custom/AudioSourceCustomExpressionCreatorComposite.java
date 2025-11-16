@@ -291,35 +291,31 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
     double startTime = 0.0;
     double stopTime = Double.NaN;
 
-    if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    if (expression instanceof InstanceCreation instanceCreation) {
       int n = instanceCreation.requiredArguments.size();
       if (n > 0) {
         Expression expression0 = getArgumentExpressionAt(instanceCreation, 0);
-        if (expression0 instanceof ResourceExpression) {
-          resourceExpression = (ResourceExpression) expression0;
+        if (expression0 instanceof ResourceExpression resourceExpression1) {
+          resourceExpression = resourceExpression1;
           Resource resource = resourceExpression.resource.getValue();
-          if (resource instanceof AudioResource) {
-            audioResource = (AudioResource) resource;
+          if (resource instanceof AudioResource audioResource1) {
+            audioResource = audioResource1;
           }
           if (n > 1) {
             if (n > 2) {
               if (n > 3) {
                 Expression expression3 = getArgumentExpressionAt(instanceCreation, 3);
-                if (expression3 instanceof DoubleLiteral) {
-                  DoubleLiteral stopTimeLiteral = (DoubleLiteral) expression3;
+                if (expression3 instanceof DoubleLiteral stopTimeLiteral) {
                   stopTime = stopTimeLiteral.value.getValue();
                 }
               }
               Expression expression2 = getArgumentExpressionAt(instanceCreation, 2);
-              if (expression2 instanceof DoubleLiteral) {
-                DoubleLiteral startTimeLiteral = (DoubleLiteral) expression2;
+              if (expression2 instanceof DoubleLiteral startTimeLiteral) {
                 startTime = startTimeLiteral.value.getValue();
               }
             }
             Expression expression1 = getArgumentExpressionAt(instanceCreation, 1);
-            if (expression1 instanceof DoubleLiteral) {
-              DoubleLiteral volumeLevelLiteral = (DoubleLiteral) expression1;
+            if (expression1 instanceof DoubleLiteral volumeLevelLiteral) {
               volumeLevel = volumeLevelLiteral.value.getValue();
             }
           }

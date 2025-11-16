@@ -108,9 +108,9 @@ public abstract class Formatter {
     String className = key.getLocalizedName();
     if (key.getType().isEnum()) {
       String params = key.isLeaf() ? "" : "␣";
-      return String.format(getNewFormat(), className, params);
+      return getNewFormat().formatted(className, params);
     } else {
-      return String.format(getClassesFormat(), className);
+      return getClassesFormat().formatted(className);
     }
   }
 

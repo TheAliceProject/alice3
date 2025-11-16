@@ -273,8 +273,8 @@ public class SetUpMethodGenerator {
   }
 
   public static Expression getExpressionOfThingInScene(SThing value, UserInstance sceneInstance) {
-    if (value instanceof SJoint) {
-      return getGetterExpressionForJoint((SJoint) value, sceneInstance);
+    if (value instanceof SJoint joint) {
+      return getGetterExpressionForJoint(joint, sceneInstance);
     }
     if (value instanceof SVRHand || value instanceof SVRHeadset) {
       return getGetterExpressionForDevice(value, sceneInstance);
@@ -301,8 +301,8 @@ public class SetUpMethodGenerator {
       for (AbstractMethod jointGetter : jti.getJointGetters()) {
         Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(entityField), jointGetter)});
         for (Object o : values) {
-          if (o instanceof SJoint) {
-            JointImp gottenJoint = ((SJoint) o).getImplementation();
+          if (o instanceof SJoint joint) {
+            JointImp gottenJoint = joint.getImplementation();
             if (gottenJoint.getJointId() == jointId) {
               return jointGetter;
             }
@@ -346,8 +346,8 @@ public class SetUpMethodGenerator {
             Method gttr = getter.getMethodReflectionProxy().getReification();
             Object value = ReflectionUtilities.invoke(instance, gttr);
             try {
-              Expression expression = value instanceof SThing
-                  ? getExpressionOfThingInScene((SThing) value, sceneInstance)
+              Expression expression = value instanceof SThing st
+                  ? getExpressionOfThingInScene(st, sceneInstance)
                   : getExpressionCreator().createExpression(value);
               statements.add(AstUtilities.createMethodInvocationStatement(SetUpMethodGenerator.createInstanceExpression(isThis, field), setter, expression));
             } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
@@ -359,16 +359,14 @@ public class SetUpMethodGenerator {
             }
           }
         }
-        if (instance instanceof STurnable) {
-          STurnable turnable = (STurnable) instance;
+        if (instance instanceof STurnable turnable) {
           Orientation orientation = turnable.getOrientationRelativeToVehicle();
           try {
             statements.add(createOrientationStatement(isThis, field, orientation));
           } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
             throw new RuntimeException(ccee);
           }
-          if (turnable instanceof SMovableTurnable) {
-            SMovableTurnable movableTurnable = (SMovableTurnable) turnable;
+          if (turnable instanceof SMovableTurnable movableTurnable) {
             Position position = movableTurnable.getPositionRelativeToVehicle();
             try {
               statements.add(createPositionStatement(isThis, field, position));
@@ -376,8 +374,7 @@ public class SetUpMethodGenerator {
               throw new RuntimeException(ccee);
             }
           }
-          if (turnable instanceof SVRUser && field != null) {
-            SVRUser vrUser = (SVRUser) turnable;
+          if (turnable instanceof SVRUser vrUser && field != null) {
             Position headPosition = vrUser.getHeadset().getPositionRelativeToVehicle();
             Orientation headOrientation = vrUser.getHeadset().getOrientationRelativeToVehicle();
             Position leftHandPosition = vrUser.getLeftHand().getPositionRelativeToVehicle();
@@ -405,8 +402,7 @@ public class SetUpMethodGenerator {
             }
           }
         }
-        if (instance instanceof Resizable) {
-          Resizable resizable = (Resizable) instance;
+        if (instance instanceof Resizable resizable) {
           if (instance instanceof SBox) {
             try {
               statements.add(createStatement(Resizable.class, "setSize", new Class<?>[] {Size.class, SetSize.Detail[].class}, createInstanceExpression(isThis, field), getExpressionCreator().createExpression(resizable.getSize())));
@@ -446,8 +442,7 @@ public class SetUpMethodGenerator {
                 values = new Object[0];
               }
               for (Object o : values) {
-                if (o instanceof SJoint) {
-                  SJoint jointEntity = (SJoint) o;
+                if (o instanceof SJoint jointEntity) {
                   JointImp gottenJoint = jointEntity.getImplementation();
                   if (captureFullState || gottenJoint.isReoriented()) {
                     try {
@@ -474,8 +469,7 @@ public class SetUpMethodGenerator {
           }
         }
 
-        if (instance instanceof SMarker) {
-          SMarker marker = (SMarker) instance;
+        if (instance instanceof SMarker marker) {
           Statement colorIdStatement = createSetColorIdStatement(field, marker.getColorId());
           if (colorIdStatement != null) {
             statements.add(colorIdStatement);
@@ -489,8 +483,7 @@ public class SetUpMethodGenerator {
 
   public static void fillInAutomaticSetUpMethod(StatementListProperty bodyStatementsProperty, boolean isThis, AbstractField field, Object instance, UserInstance sceneInstance, boolean getFullState) {
     if (instance != null) {
-      if (instance instanceof SThing) {
-        SThing entity = (SThing) instance;
+      if (instance instanceof SThing entity) {
         entity.setName(field.getName());
       }
 

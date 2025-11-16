@@ -203,8 +203,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   public boolean doStartManipulator(InputState startInput) {
     if (startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
       AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
-      if (clickedHandle instanceof RotationRingHandle) {
-        this.initManipulator((RotationRingHandle) clickedHandle, startInput);
+      if (clickedHandle instanceof RotationRingHandle handle) {
+        this.initManipulator(handle, startInput);
         return true;
       }
     }

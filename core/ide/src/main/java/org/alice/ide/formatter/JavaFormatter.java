@@ -140,14 +140,11 @@ public class JavaFormatter extends Formatter {
   @Override
   public String getInfixExpressionText(InfixExpression<?> infixExpression) {
     String rv;
-    if (infixExpression instanceof ArithmeticInfixExpression) {
-      ArithmeticInfixExpression arithmeticInfixExpression = (ArithmeticInfixExpression) infixExpression;
+    if (infixExpression instanceof ArithmeticInfixExpression arithmeticInfixExpression) {
       rv = arithmeticOperatorMap.get(arithmeticInfixExpression.operator.getValue());
-    } else if (infixExpression instanceof ConditionalInfixExpression) {
-      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) infixExpression;
+    } else if (infixExpression instanceof ConditionalInfixExpression conditionalInfixExpression) {
       rv = conditionalOperatorMap.get(conditionalInfixExpression.operator.getValue());
-    } else if (infixExpression instanceof RelationalInfixExpression) {
-      RelationalInfixExpression relationalInfixExpression = (RelationalInfixExpression) infixExpression;
+    } else if (infixExpression instanceof RelationalInfixExpression relationalInfixExpression) {
       rv = relationalOperatorMap.get(relationalInfixExpression.operator.getValue());
     } else {
       rv = null;

@@ -183,8 +183,8 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     node.getLookatOrMatrixOrRotate().add(matrix);
 
     for (Component c : joint.getComponents()) {
-      if (c instanceof Joint) {
-        Node childNode = createNodeForJoint((Joint) c);
+      if (c instanceof Joint joint1) {
+        Node childNode = createNodeForJoint(joint1);
         node.getNode().add(childNode);
       }
     }
@@ -680,8 +680,8 @@ public class JointedModelColladaExporter implements JointedModelExporter {
   private void initializeMeshNameMap() {
     meshNameMap.clear();
     for (edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue()) {
-      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-        addMeshToNameMap((edu.cmu.cs.dennisc.scenegraph.Mesh) g);
+      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh mesh) {
+        addMeshToNameMap(mesh);
       }
     }
     for (WeightedMesh wm : visual.weightedMeshes.getValue()) {
@@ -935,8 +935,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     LibraryGeometries lg = factory.createLibraryGeometries();
     //Grab the static geometry and add them to the scene
     for (edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue()) {
-      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-        edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
+      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
         addGeometriesForMesh(lg.getGeometry(), sgMesh);
         addVisualSceneNodesForMesh(visualScene.getNode(), sgMesh);
       }

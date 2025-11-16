@@ -140,8 +140,7 @@ public class MergeUtilities {
 
   private static boolean isAcceptableType(AbstractType<?, ?, ?> declaringType, List<NamedUserType> types) {
     if (declaringType != null) {
-      if (declaringType instanceof NamedUserType) {
-        NamedUserType namedUserType = (NamedUserType) declaringType;
+      if (declaringType instanceof NamedUserType namedUserType) {
         return types.contains(namedUserType);
       } else {
         return true;

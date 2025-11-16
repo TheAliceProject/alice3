@@ -59,8 +59,8 @@ import java.util.UUID;
 public class WindowMenuModel extends StaticMenuModel {
   private static List<StandardMenuItemPrepModel> createModels(ItemState<ProjectPerspective> perspectiveState) {
     List<StandardMenuItemPrepModel> rv = Lists.newLinkedList();
-    if (perspectiveState instanceof SingleSelectListState) {
-      rv.add(((SingleSelectListState) perspectiveState).getMenuModel());
+    if (perspectiveState instanceof SingleSelectListState state) {
+      rv.add(state.getMenuModel());
       rv.add(MenuModel.SEPARATOR);
     }
     rv.add(IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel());

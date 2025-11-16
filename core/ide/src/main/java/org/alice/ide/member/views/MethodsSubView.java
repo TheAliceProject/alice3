@@ -82,8 +82,7 @@ public class MethodsSubView<C extends MethodsSubComposite> extends PageAxisPanel
     for (AbstractMethod method : composite.getMethods()) {
       DragComponent<?> dragComponent = TemplateFactory.getMethodInvocationTemplate(method);
       SwingComponentView<?> component;
-      if (method instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) method;
+      if (method instanceof UserMethod userMethod) {
         DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
         Operation operation = tabState.getItemSelectionOperationForMethod(method);
         Hyperlink hyperlink = operation.createHyperlink();

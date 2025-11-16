@@ -63,8 +63,8 @@ public final class DependentEdit<M extends CompletionModel> extends AbstractEdit
 
   private ResponsibleModel getResponsibleModel() {
     CompletionModel model = getModel();
-    if (model instanceof ResponsibleModel) {
-      return (ResponsibleModel) model;
+    if (model instanceof ResponsibleModel responsibleModel) {
+      return responsibleModel;
     } else {
       throw new RuntimeException();
     }

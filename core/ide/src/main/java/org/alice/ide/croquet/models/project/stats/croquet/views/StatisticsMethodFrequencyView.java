@@ -115,8 +115,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
         rv.setForegroundColor(Color.WHITE);
       }
       if (!value.equals(StatisticsMethodFrequencyTabComposite.root)) {
-        if (value instanceof AbstractMethod) {
-          AbstractMethod userMethod = (AbstractMethod) value;
+        if (value instanceof AbstractMethod userMethod) {
           rv.setText(getFormattedName(userMethod));
           return rv.getAwtComponent();
         }
@@ -289,16 +288,14 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 
     private void setCell(int col, int row, int count) {
       AwtComponentView component = getCell(col, row);
-      if (component instanceof BarLabel) {
-        BarLabel label = (BarLabel) component;
+      if (component instanceof BarLabel label) {
         label.setCount(count);
       }
     }
 
     private void setCell(int col, int row, String name) {
       AwtComponentView component = getCell(col, row);
-      if (component instanceof Label) {
-        Label label = (Label) component;
+      if (component instanceof Label label) {
         label.setText(name);
       }
     }

@@ -109,8 +109,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
       if (DeclarationMeta.getDeclaration() == getCode()) {
         if (dragModel instanceof AbstractStatementDragModel) {
           return true;
-        } else if (dragModel instanceof AbstractExpressionDragModel) {
-          AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel) dragModel;
+        } else if (dragModel instanceof AbstractExpressionDragModel expressionDragModel) {
           return expressionDragModel.isPotentialStatementCreator();
         } else {
           return false;
@@ -327,8 +326,8 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
             ? CopyFromClipboardOperation.getInstance(dropSite)
             : PasteFromClipboardOperation.getInstance(dropSite);
       }
-      if (dragModel instanceof StatementDragModel) {
-        return statementDropped((StatementDragModel) dragModel, eSource, dropSite);
+      if (dragModel instanceof StatementDragModel model) {
+        return statementDropped(model, eSource, dropSite);
       }
       if (dragModel instanceof AbstractExpressionDragModel) {
         return dragModel.getDropOperation(step, dropSite);

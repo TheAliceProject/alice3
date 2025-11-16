@@ -75,20 +75,20 @@ public class SimsBootstrapUtilities extends BootstrapUtilities {
     Expression ceilingPaintExpression = null;
 
     try {
-      if (floorAppearance instanceof SRoom.FloorAppearance) {
-        floorPaintExpression = createFieldAccess((SRoom.FloorAppearance) floorAppearance);
+      if (floorAppearance instanceof SRoom.FloorAppearance appearance) {
+        floorPaintExpression = createFieldAccess(appearance);
       } else {
         floorPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(floorAppearance);
       }
 
-      if (wallAppearance instanceof SRoom.WallAppearance) {
-        wallPaintExpression = createFieldAccess((SRoom.WallAppearance) wallAppearance);
+      if (wallAppearance instanceof SRoom.WallAppearance appearance) {
+        wallPaintExpression = createFieldAccess(appearance);
       } else {
         wallPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(wallAppearance);
       }
 
-      if (ceilingAppearance instanceof SRoom.CeilingAppearance) {
-        ceilingPaintExpression = createFieldAccess((SRoom.CeilingAppearance) ceilingAppearance);
+      if (ceilingAppearance instanceof SRoom.CeilingAppearance appearance) {
+        ceilingPaintExpression = createFieldAccess(appearance);
       } else {
         ceilingPaintExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(ceilingAppearance);
       }

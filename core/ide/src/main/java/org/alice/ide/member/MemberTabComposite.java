@@ -87,13 +87,11 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   public static MethodsSubComposite SEPARATOR = null;
 
   protected static boolean isInclusionDesired(AbstractMember member) {
-    if (member instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) member;
+    if (member instanceof AbstractMethod method) {
       if (method.isStatic()) {
         return false;
       }
-    } else if (member instanceof AbstractField) {
-      AbstractField field = (AbstractField) member;
+    } else if (member instanceof AbstractField field) {
       if (field.isStatic()) {
         return false;
       }
@@ -231,8 +229,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     if (instanceFactory != null) {
       AbstractType<?, ?, ?> type = instanceFactory.getValueType();
       while (type != null) {
-        if (type instanceof NamedUserType) {
-          NamedUserType namedUserType = (NamedUserType) type;
+        if (type instanceof NamedUserType namedUserType) {
           UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
           subComposites.add(userMethodsSubComposite);
         } else if (type instanceof JavaType) {
@@ -264,8 +261,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   protected List<? extends AbstractMethod> getAcceptableMethodsForType(AbstractType<?, ?, ?> type) {
     List<AbstractMethod> methods = new LinkedList<>();
 
-    if (type instanceof NamedUserType) {
-      NamedUserType namedUserType = (NamedUserType) type;
+    if (type instanceof NamedUserType namedUserType) {
 
       UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
       for (AbstractMethod method : userMethodsSubComposite.getMethods()) {

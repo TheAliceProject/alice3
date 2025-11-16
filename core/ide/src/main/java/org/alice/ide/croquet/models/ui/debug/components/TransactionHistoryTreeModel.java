@@ -75,8 +75,7 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 
   @Override
   public int getChildCount(Object parent) {
-    if (parent instanceof UserActivity) {
-      UserActivity activity = (UserActivity) parent;
+    if (parent instanceof UserActivity activity) {
       return activity.getChildStepCount();
     }
     return 0;
@@ -84,8 +83,7 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 
   @Override
   public Object getChild(Object parent, int index) {
-    if (parent instanceof UserActivity) {
-      UserActivity activity = (UserActivity) parent;
+    if (parent instanceof UserActivity activity) {
       return activity.getChildAt(index);
     } else {
       throw new IndexOutOfBoundsException();
@@ -94,10 +92,9 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 
   @Override
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof UserActivity) {
-      UserActivity transaction = (UserActivity) parent;
-      if (child instanceof PrepStep<?>) {
-        return transaction.getIndexOfPrepStep((PrepStep<?>) child);
+    if (parent instanceof UserActivity transaction) {
+      if (child instanceof PrepStep<?> step) {
+        return transaction.getIndexOfPrepStep(step);
       } else {
         return -1;
       }

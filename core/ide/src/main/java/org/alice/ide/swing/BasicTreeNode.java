@@ -66,8 +66,8 @@ import java.awt.Color;
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof BasicTreeNode) {
-      return this.hashCode == ((BasicTreeNode) obj).hashCode;
+    if (obj instanceof BasicTreeNode node) {
+      return this.hashCode == node.hashCode;
     }
     return super.equals(obj);
   }
@@ -164,8 +164,7 @@ import java.awt.Color;
 
   @Override
   public int compareTo(Object o) {
-    if (o instanceof BasicTreeNode) {
-      BasicTreeNode other = (BasicTreeNode) o;
+    if (o instanceof BasicTreeNode other) {
       if (this.hashCode < other.hashCode) {
         return -1;
       } else if (this.hashCode == other.hashCode) {

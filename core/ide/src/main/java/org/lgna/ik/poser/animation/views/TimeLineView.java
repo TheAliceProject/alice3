@@ -206,8 +206,7 @@ class TimeLineLayout implements LayoutManager {
   public void layoutContainer(Container parent) {
     assert parent instanceof JTimeLineView;
     for (Component child : parent.getComponents()) {
-      if (child instanceof TimeLinePoseMarker) {
-        TimeLinePoseMarker jMarker = (TimeLinePoseMarker) child;
+      if (child instanceof TimeLinePoseMarker jMarker) {
         double time = jMarker.getKeyFrameData().getEventTime();
         int x = calculateLeftXForJTimeLinePoseMarker(parent, time / composite.getTimeLine().getEndTime());
         child.setLocation(x, 0);

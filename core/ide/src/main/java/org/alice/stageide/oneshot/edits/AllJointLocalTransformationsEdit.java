@@ -88,8 +88,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
   @Override
   protected void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof SJointedModel) {
-      SJointedModel jointedModel = (SJointedModel) instance;
+    if (instance instanceof SJointedModel jointedModel) {
       JointedModelImp<?, ?> jointedModelImp = jointedModel.getImplementation();
       Iterable<JointImp> joints = jointedModelImp.getJoints();
       List<JointUndoRunnable> list = Lists.newLinkedList();

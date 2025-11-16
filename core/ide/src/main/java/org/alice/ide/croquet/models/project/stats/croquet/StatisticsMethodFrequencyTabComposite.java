@@ -218,8 +218,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 
     @Override
     public void visit(Crawlable crawlable) {
-      if (crawlable instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+      if (crawlable instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
         List<MethodInvocation> list = this.mapMethodToInvocations.get(method);
         if (list != null) {

@@ -196,8 +196,8 @@ public class ModelResourceInfo {
     NodeList children = node.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
       Node child = children.item(i);
-      if ((child instanceof Element) && child.getNodeName().equals(tagName)) {
-        elements.add((Element) child);
+      if ((child instanceof Element element) && child.getNodeName().equals(tagName)) {
+        elements.add(element);
       }
     }
     return elements;

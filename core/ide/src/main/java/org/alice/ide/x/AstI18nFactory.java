@@ -114,36 +114,30 @@ public abstract class AstI18nFactory extends I18nFactory {
   protected SwingComponentView<?> createComponent(MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner) {
     String methodName = methodInvocationChunk.getMethodName();
     SwingComponentView<?> rv;
-    if ((owner instanceof AbstractDeclaration) && methodName.equals("getName")) {
-      AbstractDeclaration declaration = (AbstractDeclaration) owner;
+    if ((owner instanceof AbstractDeclaration declaration) && methodName.equals("getName")) {
       DeclarationNameLabel label = new DeclarationNameLabel(declaration);
-      if (declaration instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) declaration;
+      if (declaration instanceof AbstractMethod method) {
         label.setBorder(Theme.BLOCK_BORDER);
         label.scaleFont(this.getDeclarationNameFontScale());
         label.changeFont(TextWeight.BOLD);
         label.setForegroundColor(UIManager.getColor("Alice.Block.foreground"));
       }
       rv = label;
-    } else if ((owner instanceof SimpleArgument) && methodName.equals("getParameterNameText")) {
-      SimpleArgument argument = (SimpleArgument) owner;
+    } else if ((owner instanceof SimpleArgument argument) && methodName.equals("getParameterNameText")) {
       rv = new DeclarationNameLabel(argument.parameter.getValue());
-    } else if ((owner instanceof AbstractConstructor) && methodName.equals("getDeclaringType")) {
-      AbstractConstructor constructor = (AbstractConstructor) owner;
+    } else if ((owner instanceof AbstractConstructor constructor) && methodName.equals("getDeclaringType")) {
       rv = this.createTypeComponent(constructor.getDeclaringType());
-    } else if ((owner instanceof UserMethod) && methodName.equals("getReturnType")) {
-      UserMethod method = (UserMethod) owner;
+    } else if ((owner instanceof UserMethod method) && methodName.equals("getReturnType")) {
       rv = this.createTypeComponent(method.getReturnType());
-    } else if ((owner instanceof UserCode) && methodName.equals("getParameters")) {
-      UserCode code = (UserCode) owner;
+    } else if ((owner instanceof UserCode code) && methodName.equals("getParameters")) {
       rv = new ParametersPane(this, code);
     } else {
       Method mthd = ReflectionUtilities.getMethod(owner.getClass(), methodName);
       Object o = ReflectionUtilities.invoke(owner, mthd);
       String s;
       if (o != null) {
-        if (o instanceof AbstractType<?, ?, ?>) {
-          s = ((AbstractType<?, ?, ?>) o).getName();
+        if (o instanceof AbstractType<?, ?, ?> type) {
+          s = type.getName();
         } else {
           s = o.toString();
         }
@@ -165,8 +159,7 @@ public abstract class AstI18nFactory extends I18nFactory {
   }
 
   public SwingComponentView<?> createArgumentPane(AbstractArgument argument, SwingComponentView<?> prefixPane) {
-    if (argument instanceof SimpleArgument) {
-      SimpleArgument simpleArgument = (SimpleArgument) argument;
+    if (argument instanceof SimpleArgument simpleArgument) {
       ExpressionProperty expressionProperty = simpleArgument.expression;
       SwingComponentView<?> rv = new ExpressionPropertyView(this, expressionProperty);
       if (this.isDropDownDesiredFor(expressionProperty)) {
@@ -175,8 +168,7 @@ public abstract class AstI18nFactory extends I18nFactory {
         rv = expressionPropertyDropDownPane;
       }
       return rv;
-    } else if (argument instanceof JavaKeyedArgument) {
-      JavaKeyedArgument keyedArgument = (JavaKeyedArgument) argument;
+    } else if (argument instanceof JavaKeyedArgument keyedArgument) {
       return new KeyedArgumentView(this, keyedArgument);
     } else {
       throw new RuntimeException("todo: " + argument);
@@ -185,8 +177,8 @@ public abstract class AstI18nFactory extends I18nFactory {
 
   protected SwingComponentView<?> createInstanceCreationPane(InstanceCreation instanceCreation) {
     AbstractConstructor constructor = instanceCreation.constructor.getValue();
-    if (constructor instanceof AnonymousUserConstructor) {
-      return new AnonymousConstructorPane(this, (AnonymousUserConstructor) constructor);
+    if (constructor instanceof AnonymousUserConstructor userConstructor) {
+      return new AnonymousConstructorPane(this, userConstructor);
     } else {
       return new InstanceCreationView(this, instanceCreation);
     }
@@ -253,10 +245,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 
   public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
     AbstractStatementPane rv;
-    if (statement instanceof ExpressionStatement) {
-      rv = new ExpressionStatementPane(dragModel, this, (ExpressionStatement) statement, statementListProperty);
-    } else if (statement instanceof Comment) {
-      rv = new CommentPane(dragModel, this, (Comment) statement, statementListProperty);
+    if (statement instanceof ExpressionStatement expressionStatement) {
+      rv = new ExpressionStatementPane(dragModel, this, expressionStatement, statementListProperty);
+    } else if (statement instanceof Comment comment) {
+      rv = new CommentPane(dragModel, this, comment, statementListProperty);
     } else {
       rv = new DefaultStatementPane(dragModel, this, statement, statementListProperty);
     }
@@ -270,26 +262,22 @@ public abstract class AstI18nFactory extends I18nFactory {
   protected abstract SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression);
 
   public SwingComponentView<?> createExpressionPane(Expression expression) {
-    if (expression instanceof IdeExpression) {
-      IdeExpression ideExpression = (IdeExpression) expression;
+    if (expression instanceof IdeExpression ideExpression) {
       return this.createIdeExpressionPane(ideExpression);
     } else {
       SwingComponentView<?> rv = null;
       if (expression instanceof InfixExpression) {
         rv = new InfixExpressionView(this, (InfixExpression<? extends Enum<?>>) expression);
-      } else if (expression instanceof AssignmentExpression) {
-        rv = new AssignmentExpressionPane(this, (AssignmentExpression) expression);
-      } else if (expression instanceof FieldAccess) {
-        rv = this.createFieldAccessPane((FieldAccess) expression);
-      } else if (expression instanceof TypeExpression) {
+      } else if (expression instanceof AssignmentExpression assignmentExpression) {
+        rv = new AssignmentExpressionPane(this, assignmentExpression);
+      } else if (expression instanceof FieldAccess access) {
+        rv = this.createFieldAccessPane(access);
+      } else if (expression instanceof TypeExpression typeExpression) {
         if (FormatterState.getInstance().getValue().isTypeExpressionDesired()) {
-          TypeExpression typeExpression = (TypeExpression) expression;
           Node parent = typeExpression.getParent();
-          if (parent instanceof MethodInvocation) {
-            MethodInvocation methodInvocation = (MethodInvocation) parent;
+          if (parent instanceof MethodInvocation methodInvocation) {
             Node grandparent = methodInvocation.getParent();
-            if (grandparent instanceof JavaKeyedArgument) {
-              JavaKeyedArgument javaKeyedArgument = (JavaKeyedArgument) grandparent;
+            if (grandparent instanceof JavaKeyedArgument javaKeyedArgument) {
               AbstractType<?, ?, ?> type = AstUtilities.getKeywordFactoryType(javaKeyedArgument);
               if (type != null) {
                 rv = new Label(type.getName() + ".");
@@ -304,16 +292,15 @@ public abstract class AstI18nFactory extends I18nFactory {
         } else {
           rv = new Label();
         }
-      } else if (expression instanceof InstanceCreation) {
-        rv = this.createInstanceCreationPane((InstanceCreation) expression);
+      } else if (expression instanceof InstanceCreation creation) {
+        rv = this.createInstanceCreationPane(creation);
         //        } else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
         //          rv = this.createComponent( expression );
       } else {
         SwingComponentView<?> component = null;
         if (expression != null) {
           Node parent = expression.getParent();
-          if (parent instanceof MethodInvocation) {
-            MethodInvocation methodInvocation = (MethodInvocation) parent;
+          if (parent instanceof MethodInvocation methodInvocation) {
             if (expression == methodInvocation.expression.getValue()) {
               AbstractType<?, ?, ?> type = StoryApiConfigurationManager.getInstance().getBuildMethodPoseBuilderType(methodInvocation);
               if (type != null) {
@@ -369,23 +356,23 @@ public abstract class AstI18nFactory extends I18nFactory {
     } else {
       rv = null;
       if (property instanceof NodeProperty<?>) {
-        if (property instanceof ExpressionProperty) {
-          rv = this.createExpressionPropertyPane((ExpressionProperty) property);
+        if (property instanceof ExpressionProperty expressionProperty) {
+          rv = this.createExpressionPropertyPane(expressionProperty);
         } else {
           rv = this.createGenericNodePropertyPane((NodeProperty<?>) property);
         }
-      } else if (property instanceof ResourceProperty) {
-        rv = this.createResourcePropertyPane((ResourceProperty) property);
+      } else if (property instanceof ResourceProperty resourceProperty) {
+        rv = this.createResourcePropertyPane(resourceProperty);
       } else if (property instanceof ListProperty<?>) {
         if (property instanceof NodeListProperty<?>) {
-          if (property instanceof StatementListProperty) {
-            rv = this.createStatementListPropertyPane((StatementListProperty) property);
-          } else if (property instanceof SimpleArgumentListProperty) {
-            rv = this.createSimpleArgumentListPropertyPane((SimpleArgumentListProperty) property);
-          } else if (property instanceof KeyedArgumentListProperty) {
-            rv = this.createKeyedArgumentListPropertyPane((KeyedArgumentListProperty) property);
-          } else if (property instanceof ExpressionListProperty) {
-            rv = this.createExpressionListPropertyPane((ExpressionListProperty) property);
+          if (property instanceof StatementListProperty listProperty3) {
+            rv = this.createStatementListPropertyPane(listProperty3);
+          } else if (property instanceof SimpleArgumentListProperty listProperty2) {
+            rv = this.createSimpleArgumentListPropertyPane(listProperty2);
+          } else if (property instanceof KeyedArgumentListProperty listProperty1) {
+            rv = this.createKeyedArgumentListPropertyPane(listProperty1);
+          } else if (property instanceof ExpressionListProperty listProperty) {
+            rv = this.createExpressionListPropertyPane(listProperty);
           } else {
             rv = this.createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
           }

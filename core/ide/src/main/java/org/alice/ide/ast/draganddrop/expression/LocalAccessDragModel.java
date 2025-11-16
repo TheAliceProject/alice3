@@ -91,8 +91,8 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 
   @Override
   public final Triggerable getDropOperation(DragStep step, DropSite dropSite) {
-    if (dropSite instanceof BlockStatementIndexPair) {
-      return LocalStatementCascade.getInstance(this.local, (BlockStatementIndexPair) dropSite);
+    if (dropSite instanceof BlockStatementIndexPair pair) {
+      return LocalStatementCascade.getInstance(this.local, pair);
     }
     return super.getDropOperation(step, dropSite);
   }

@@ -470,7 +470,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.0</version>
+          <version>3.14.1</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <includes>
@@ -534,7 +534,7 @@
           <configuration>
             <exportDatatables>true</exportDatatables>
             <activeRecipes>
-              <recipe>org.openrewrite.java.migrate.Java8toJava11</recipe>
+              <recipe>org.openrewrite.java.migrate.UpgradeToJava17</recipe>
             </activeRecipes>
           </configuration>
           <dependencies>
@@ -562,7 +562,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>checkstyle</id>

@@ -58,8 +58,7 @@ public class AlongAxisOffset implements
 
   private static double getValue(Object[] details, double defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof AlongAxisOffset) {
-        AlongAxisOffset duration = (AlongAxisOffset) detail;
+      if (detail instanceof AlongAxisOffset duration) {
         return duration.value;
       }
     }

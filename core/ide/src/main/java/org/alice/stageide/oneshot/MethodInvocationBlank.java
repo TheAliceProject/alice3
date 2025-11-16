@@ -134,18 +134,15 @@ public class MethodInvocationBlank extends CascadeBlank<MethodInvocationEditFact
       //Grab the java method invocation (strikePose) inside the pose animation and add it to the methodInvocations list
       List<AbstractMethod> declaredMethods = AstUtilities.getAllMethods(instanceFactoryValueType);
       for (AbstractMethod method : declaredMethods) {
-        if (method instanceof UserMethod) {
-          UserMethod userMethod = (UserMethod) method;
+        if (method instanceof UserMethod userMethod) {
           //Pose animations are GENERATED and have no return value
           if ((userMethod.managementLevel.getValue() == ManagementLevel.GENERATED) && (userMethod.getReturnType() == JavaType.VOID_TYPE)) {
             //UserMethod pose animations contain a single JavaMethod in their body called "strikePose"
             //Grab the first statement in the body and check to see if it's actually a pose call
             Statement poseStatement = userMethod.body.getValue().statements.get(0);
-            if (poseStatement instanceof ExpressionStatement) {
-              ExpressionStatement expressionStatement = (ExpressionStatement) poseStatement;
+            if (poseStatement instanceof ExpressionStatement expressionStatement) {
               Expression expression = expressionStatement.expression.getValue();
-              if (expression instanceof MethodInvocation) {
-                MethodInvocation poseInvocation = (MethodInvocation) expression;
+              if (expression instanceof MethodInvocation poseInvocation) {
                 if ("strikePose".equals(poseInvocation.method.getValue().getName())) {
                   if (poseInvocation.method.getValue() instanceof JavaMethod) {
                     List<SimpleArgument> arguments = poseInvocation.requiredArguments.getValue();

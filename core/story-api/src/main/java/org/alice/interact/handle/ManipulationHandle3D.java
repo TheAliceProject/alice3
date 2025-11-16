@@ -92,7 +92,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
         return false;
       }
       Object bonusData = c.getBonusDataFor(PickHint.PICK_HINT_KEY);
-      if ((bonusData instanceof PickHint) && ((PickHint) bonusData).intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
+      if ((bonusData instanceof PickHint hint) && hint.intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
         return true;
       } else {
         return isHandle(c.getParent());
@@ -209,8 +209,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   private Scalable getScalable(AbstractTransformable object) {
     Scalable scalable = null;
-    if (object instanceof Scalable) {
-      scalable = (Scalable) object;
+    if (object instanceof Scalable scalable1) {
+      scalable = scalable1;
     } else if (object != null) {
       scalable = object.getBonusDataFor(Scalable.KEY);
     }
@@ -271,8 +271,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   public void updateCameraRelativeOpacity() {
     if (ManipulationHandle3D.this.dragAdapter != null) {
       AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
-      if (activeCamera instanceof SymmetricPerspectiveCamera) {
-        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation();
+      if (activeCamera instanceof SymmetricPerspectiveCamera camera) {
+        Point3 cameraLocation = camera.getAbsoluteTransformation().translation();
         ManipulationHandle3D.this.setCameraPosition(cameraLocation);
       }
     }
@@ -575,8 +575,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
       return null;
     }
     Composite parent = this.getParent();
-    if (parent instanceof AbstractTransformable) {
-      return (AbstractTransformable) parent;
+    if (parent instanceof AbstractTransformable transformable) {
+      return transformable;
     }
     if (parent != null) {
       Logger.severe("Unknown parent type for handle: " + parent);

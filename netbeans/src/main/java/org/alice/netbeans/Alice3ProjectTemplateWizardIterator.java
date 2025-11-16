@@ -176,8 +176,7 @@ import java.util.zip.ZipInputStream;
         // chooser to appear in the list of steps.
         steps[i] = c.getName();
       }
-      if (c instanceof JComponent) { // assume Swing components
-        JComponent jc = (JComponent) c;
+      if (c instanceof JComponent jc) {
         // Step #.
         // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
         jc.putClientProperty("WizardPanel_contentSelectedIndex", i);

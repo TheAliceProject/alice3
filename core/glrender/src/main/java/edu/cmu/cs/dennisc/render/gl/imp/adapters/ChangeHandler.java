@@ -96,26 +96,24 @@ public class ChangeHandler {
   }
 
   private static void handleEvent(Event<?> event) {
-    if (event instanceof PropertyEvent) {
-      PropertyEvent propertyEvent = (PropertyEvent) event;
+    if (event instanceof PropertyEvent propertyEvent) {
       GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
-    } else if (event instanceof ReleaseEvent) {
-      GlrObject.handleReleased((ReleaseEvent) event);
-    } else if (event instanceof AbsoluteTransformationEvent) {
-      AbsoluteTransformationEvent absoluteTransformationEvent = (AbsoluteTransformationEvent) event;
+    } else if (event instanceof ReleaseEvent releaseEvent) {
+      GlrObject.handleReleased(releaseEvent);
+    } else if (event instanceof AbsoluteTransformationEvent absoluteTransformationEvent) {
       GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
-    } else if (event instanceof HierarchyEvent) {
-      GlrComponent.handleHierarchyChanged((HierarchyEvent) event);
-    } else if (event instanceof ComponentAddedEvent) {
-      GlrComposite.handleComponentAdded((ComponentAddedEvent) event);
-    } else if (event instanceof ComponentRemovedEvent) {
-      GlrComposite.handleComponentRemoved((ComponentRemovedEvent) event);
-    } else if (event instanceof GraphicAddedEvent) {
-      GlrLayer.handleGraphicAdded((GraphicAddedEvent) event);
-    } else if (event instanceof GraphicRemovedEvent) {
-      GlrLayer.handleGraphicRemoved((GraphicRemovedEvent) event);
-    } else if (event instanceof TextureEvent) {
-      GlrTexture.handleTextureChanged((TextureEvent) event);
+    } else if (event instanceof HierarchyEvent hierarchyEvent) {
+      GlrComponent.handleHierarchyChanged(hierarchyEvent);
+    } else if (event instanceof ComponentAddedEvent addedEvent1) {
+      GlrComposite.handleComponentAdded(addedEvent1);
+    } else if (event instanceof ComponentRemovedEvent removedEvent1) {
+      GlrComposite.handleComponentRemoved(removedEvent1);
+    } else if (event instanceof GraphicAddedEvent addedEvent) {
+      GlrLayer.handleGraphicAdded(addedEvent);
+    } else if (event instanceof GraphicRemovedEvent removedEvent) {
+      GlrLayer.handleGraphicRemoved(removedEvent);
+    } else if (event instanceof TextureEvent textureEvent) {
+      GlrTexture.handleTextureChanged(textureEvent);
     } else {
       Logger.warning("UNHANDLED EVENT:", event);
     }
@@ -148,38 +146,38 @@ public class ChangeHandler {
   /*package-private*/
   static void addListeners(Releasable element) {
     element.addReleaseListener(releaseListener);
-    if (element instanceof Element) {
-      ((Element) element).addPropertyListener(propertyListener);
-      if (element instanceof Component) {
-        ((Component) element).addAbsoluteTransformationListener(absoluteTransformationListener);
-        ((Component) element).addHierarchyListener(hierarchyListener);
-        if (element instanceof Composite) {
-          ((Composite) element).addChildrenListener(componentsListener);
+    if (element instanceof Element element1) {
+      element1.addPropertyListener(propertyListener);
+      if (element instanceof Component component) {
+        component.addAbsoluteTransformationListener(absoluteTransformationListener);
+        component.addHierarchyListener(hierarchyListener);
+        if (element instanceof Composite composite) {
+          composite.addChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer) {
-        ((Layer) element).addGraphicsListener(graphicsListener);
+      } else if (element instanceof Layer layer) {
+        layer.addGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture) {
-      ((Texture) element).addTextureListener(textureListener);
+    } else if (element instanceof Texture texture) {
+      texture.addTextureListener(textureListener);
     }
   }
 
   /*package-private*/
   static void removeListeners(Releasable element) {
     element.removeReleaseListener(releaseListener);
-    if (element instanceof Element) {
-      ((Element) element).removePropertyListener(propertyListener);
-      if (element instanceof Component) {
-        ((Component) element).removeAbsoluteTransformationListener(absoluteTransformationListener);
-        ((Component) element).removeHierarchyListener(hierarchyListener);
-        if (element instanceof Composite) {
-          ((Composite) element).removeChildrenListener(componentsListener);
+    if (element instanceof Element element1) {
+      element1.removePropertyListener(propertyListener);
+      if (element instanceof Component component) {
+        component.removeAbsoluteTransformationListener(absoluteTransformationListener);
+        component.removeHierarchyListener(hierarchyListener);
+        if (element instanceof Composite composite) {
+          composite.removeChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer) {
-        ((Layer) element).removeGraphicsListener(graphicsListener);
+      } else if (element instanceof Layer layer) {
+        layer.removeGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture) {
-      ((Texture) element).removeTextureListener(textureListener);
+    } else if (element instanceof Texture texture) {
+      texture.removeTextureListener(textureListener);
     }
   }
 

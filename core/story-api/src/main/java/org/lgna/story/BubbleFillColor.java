@@ -56,8 +56,7 @@ public class BubbleFillColor implements Say.Detail, Think.Detail {
   /* package-private */
   static Color getValue(Object[] details, Color defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof BubbleFillColor) {
-        BubbleFillColor bubbleFillColor = (BubbleFillColor) detail;
+      if (detail instanceof BubbleFillColor bubbleFillColor) {
         return bubbleFillColor.value;
       }
     }

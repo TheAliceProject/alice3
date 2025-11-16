@@ -80,11 +80,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
     AbstractType<?, ?, ?> type;
     AbstractCode code;
     AbstractDeclaration declaration = IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
-    if (declaration instanceof AbstractType<?, ?, ?>) {
-      type = (AbstractType<?, ?, ?>) declaration;
+    if (declaration instanceof AbstractType<?, ?, ?> abstractType) {
+      type = abstractType;
       code = null;
-    } else if (declaration instanceof AbstractCode) {
-      code = (AbstractCode) declaration;
+    } else if (declaration instanceof AbstractCode abstractCode) {
+      code = abstractCode;
       type = code.getDeclaringType();
     } else {
       code = null;

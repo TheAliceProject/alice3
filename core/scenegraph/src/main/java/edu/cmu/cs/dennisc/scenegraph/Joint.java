@@ -64,16 +64,15 @@ public class Joint extends Transformable implements ModelJoint {
     if (c == null) {
       return null;
     }
-    if (c instanceof Joint) {
-      Joint j = (Joint) c;
+    if (c instanceof Joint j) {
       if (j.jointID.getValue().equals(jointID)) {
         return j;
       }
     }
     for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponentAt(i);
-      if (comp instanceof Composite) {
-        Joint foundJoint = getJoint((Composite) comp, jointID);
+      if (comp instanceof Composite composite) {
+        Joint foundJoint = getJoint(composite, jointID);
         if (foundJoint != null) {
           return foundJoint;
         }
@@ -92,8 +91,8 @@ public class Joint extends Transformable implements ModelJoint {
     }
     for (int i = 0; i < getComponentCount(); i++) {
       Component comp = getComponentAt(i);
-      if (comp instanceof Joint) {
-        ((Joint) comp).scale(scale);
+      if (comp instanceof Joint joint) {
+        joint.scale(scale);
       }
     }
   }
@@ -106,16 +105,15 @@ public class Joint extends Transformable implements ModelJoint {
     if (c == null) {
       return;
     }
-    if (c instanceof Joint) {
-      Joint j = (Joint) c;
+    if (c instanceof Joint j) {
       if (j.jointID.getValue().startsWith(nameKey)) {
         joints.add(j);
       }
     }
     for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponentAt(i);
-      if (comp instanceof Composite) {
-        getJoints((Composite) comp, nameKey, joints);
+      if (comp instanceof Composite composite) {
+        getJoints(composite, nameKey, joints);
       }
     }
   }
@@ -166,9 +164,9 @@ public class Joint extends Transformable implements ModelJoint {
     if (cumulative) {
       for (int i = 0; i < c.getComponentCount(); i++) {
         Component comp = c.getComponentAt(i);
-        if (comp instanceof Composite) {
+        if (comp instanceof Composite composite) {
           AffineMatrix4x4 childTransform = transform.times(((AbstractTransformable) comp).getLocalTransformation());
-          AxisAlignedBox childAabb = getBoundingBox((Composite) comp, childTransform, cumulative);
+          AxisAlignedBox childAabb = getBoundingBox(composite, childTransform, cumulative);
           if (childAabb != null && !childAabb.isNaN()) {
             bounds = bounds.union(childAabb);
           }
@@ -211,8 +209,8 @@ public class Joint extends Transformable implements ModelJoint {
   public void visitJoints(Consumer<Joint> op) {
     op.accept(this);
     for (Component c : getComponents()) {
-      if (c instanceof Joint) {
-        ((Joint) c).visitJoints(op);
+      if (c instanceof Joint joint) {
+        joint.visitJoints(op);
       }
     }
   }

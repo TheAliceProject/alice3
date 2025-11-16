@@ -67,8 +67,7 @@ import org.lgna.project.migration.MigrationManager;
     node.crawl(new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
-        if (crawlable instanceof MethodInvocation) {
-          MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+        if (crawlable instanceof MethodInvocation methodInvocation) {
           MethodInvocationAstMigration.this.migrate(methodInvocation);
         }
       }

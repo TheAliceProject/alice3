@@ -123,8 +123,8 @@ public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
   private void captureTree() {
     if (this.root != null) {
       BasicTreeNode newRoot = null;
-      if (this.root instanceof Component) {
-        newRoot = SceneGraphTreeNode.createSceneGraphTreeStructure((Component) this.root);
+      if (this.root instanceof Component component) {
+        newRoot = SceneGraphTreeNode.createSceneGraphTreeStructure(component);
       }
       //      else if (this.root instanceof CompositeAdapter<?>)
       //      {

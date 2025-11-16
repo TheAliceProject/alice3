@@ -189,14 +189,11 @@ public class ImageCaptureUtilities {
       Image heavyweight = captureHeavyweight(awtComponent, null);
       g.drawImage(heavyweight, 0, 0, awtComponent);
 
-      if (awtComponent instanceof JFrame) {
-        JFrame jFrame = (JFrame) awtComponent;
+      if (awtComponent instanceof JFrame jFrame) {
         lightweightComponent = jFrame.getRootPane();
-      } else if (awtComponent instanceof JDialog) {
-        JDialog jDialog = (JDialog) awtComponent;
+      } else if (awtComponent instanceof JDialog jDialog) {
         lightweightComponent = jDialog.getRootPane();
-      } else if (awtComponent instanceof JWindow) {
-        JWindow jWindow = (JWindow) awtComponent;
+      } else if (awtComponent instanceof JWindow jWindow) {
         lightweightComponent = jWindow.getRootPane();
       } else {
         lightweightComponent = null;

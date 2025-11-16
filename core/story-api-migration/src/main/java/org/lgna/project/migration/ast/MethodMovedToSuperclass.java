@@ -74,8 +74,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
 
   @Override
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof MethodInvocation) {
-      MethodInvocation invocation = (MethodInvocation) node;
+    if (node instanceof MethodInvocation invocation) {
       AbstractMethod method = invocation.method.getValue();
       if (isOldMethod(method)) {
         invocation.method.setValue(replacementMethod);
@@ -102,8 +101,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
   private void replaceParamReferences(AbstractMethod oldMethod, ArrayList<? extends AbstractArgument> args, Function<JavaMethodParameter, AbstractParameter> filter) {
     for (AbstractArgument argument : args) {
       AbstractParameter param = argument.parameter.getValue();
-      if (param instanceof JavaMethodParameter) {
-        JavaMethodParameter javaParam = (JavaMethodParameter) param;
+      if (param instanceof JavaMethodParameter javaParam) {
         if (oldMethod == javaParam.getCode()) {
           argument.parameter.setValue(filter.apply(javaParam));
         }

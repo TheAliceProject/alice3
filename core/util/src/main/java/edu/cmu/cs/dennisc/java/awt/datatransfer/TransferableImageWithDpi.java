@@ -88,8 +88,8 @@ public class TransferableImageWithDpi implements Transferable {
   }
 
   private RenderedImage getRenderedImage() {
-    if (image instanceof RenderedImage) {
-      return (RenderedImage) image;
+    if (image instanceof RenderedImage renderedImage) {
+      return renderedImage;
     } else {
       int width = ImageUtilities.getWidth(image);
       int height = ImageUtilities.getHeight(image);

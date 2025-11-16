@@ -67,8 +67,7 @@ public enum BubblePosition implements Say.Detail, Think.Detail {
 
   private static BubblePosition getValue(Object[] details, BubblePosition defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof BubblePosition) {
-        BubblePosition textPosition = (BubblePosition) detail;
+      if (detail instanceof BubblePosition textPosition) {
         return textPosition;
       }
     }

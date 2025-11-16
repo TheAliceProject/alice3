@@ -165,12 +165,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
   @Override
   public void setManipulatedObject(AbstractTransformable manipulatedObject) {
     if (this.manipulatedObject != manipulatedObject) {
-      if (this.manipulatedObject instanceof Transformable) {
-        ((Transformable) this.manipulatedObject).localTransformation.removePropertyListener(this);
+      if (this.manipulatedObject instanceof Transformable transformable) {
+        transformable.localTransformation.removePropertyListener(this);
       }
       super.setManipulatedObject(manipulatedObject);
-      if (this.manipulatedObject instanceof Transformable) {
-        ((Transformable) this.manipulatedObject).localTransformation.addPropertyListener(this);
+      if (this.manipulatedObject instanceof Transformable transformable) {
+        transformable.localTransformation.addPropertyListener(this);
       }
     }
   }

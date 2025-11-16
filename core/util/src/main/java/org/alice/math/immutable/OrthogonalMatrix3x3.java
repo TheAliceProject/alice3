@@ -81,8 +81,8 @@ public record OrthogonalMatrix3x3(Vector3 right, Vector3 up, Vector3 backward)
         new Vector3((t * x * x) + c, (t * x * y) + (s * z), (t * x * z) - (s * y)),
         new Vector3((t * x * y) - (s * z), (t * y * y) + c, (t * y * z) + (s * x)),
         new Vector3((t * x * z) + (s * y), (t * y * z) - (s * x), (t * z * z) + c)));
-    if (result instanceof OrthogonalMatrix3x3) {
-      return (OrthogonalMatrix3x3) result;
+    if (result instanceof OrthogonalMatrix3x3 matrix3x3) {
+      return matrix3x3;
     }
     throw new ArithmeticException("Problem creating an orthogonal matrix from " + result);
   }

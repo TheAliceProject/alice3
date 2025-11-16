@@ -289,8 +289,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
   private static Button lookupButton(JButton jButton) {
     AwtComponentView<?> component = AwtComponentView.lookup(jButton);
-    if (component instanceof Button) {
-      Button button = (Button) component;
+    if (component instanceof Button button) {
       return button;
     } else {
       return null;

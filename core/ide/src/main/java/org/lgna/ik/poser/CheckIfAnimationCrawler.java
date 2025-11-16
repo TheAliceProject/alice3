@@ -68,8 +68,7 @@ public class CheckIfAnimationCrawler implements Crawler {
 
   @Override
   public void visit(Crawlable crawlable) {
-    if (crawlable instanceof MethodInvocation) {
-      MethodInvocation methodInv = (MethodInvocation) crawlable;
+    if (crawlable instanceof MethodInvocation methodInv) {
       if (PoseAstUtilities.isStrikePoseMethod(methodInv.method.getValue())) {
         containsStrikePose = true;
       } else {

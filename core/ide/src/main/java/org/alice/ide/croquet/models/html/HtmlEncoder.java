@@ -269,10 +269,10 @@ public class HtmlEncoder implements AstProcessor {
   private void splitUpListeners(UserMethod initializeEventListeners) {
     ArrayList<Statement> listeners = initializeEventListeners.body.getValue().statements.getValue();
     for (Statement listener : listeners) {
-      if (listener instanceof ExpressionStatement) {
-        Expression exp = ((ExpressionStatement) listener).expression.getValue();
-        if (exp instanceof MethodInvocation) {
-          addListener((MethodInvocation) exp, !listener.isEnabled.getValue());
+      if (listener instanceof ExpressionStatement statement) {
+        Expression exp = statement.expression.getValue();
+        if (exp instanceof MethodInvocation invocation) {
+          addListener(invocation, !listener.isEnabled.getValue());
         }
       }
     }
@@ -292,8 +292,7 @@ public class HtmlEncoder implements AstProcessor {
       ArrayList<SimpleArgument> args = addListenerCall.requiredArguments.getValue();
       if (!args.isEmpty() && "listener".equals(args.get(0).parameter.getValue().getName()) && args.get(0).expression.getValue() instanceof LambdaExpression) {
         Lambda lambda = ((LambdaExpression) args.get(0).expression.getValue()).value.getValue();
-        if (lambda instanceof UserLambda) {
-          UserLambda userLambda = (UserLambda) lambda;
+        if (lambda instanceof UserLambda userLambda) {
           List<? extends AbstractMethod> listenerTypeMethods = args.get(0).parameter.getValue().getValueType().getDeclaredMethods();
           AbstractMethod first = listenerTypeMethods.get(0);
 

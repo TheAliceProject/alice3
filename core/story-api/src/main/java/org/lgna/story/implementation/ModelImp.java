@@ -110,8 +110,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
           sgAppearance.diffuseColor.setValue(color4f);
         }
-        if (sgAppearance instanceof TexturedAppearance) {
-          TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
+        if (sgAppearance instanceof TexturedAppearance sgTexturedAppearance) {
           if (!Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
             sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
             textureChanged();

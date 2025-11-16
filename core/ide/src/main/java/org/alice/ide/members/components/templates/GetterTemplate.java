@@ -59,8 +59,7 @@ public class GetterTemplate extends ExpressionTemplate {
   protected GetterTemplate(AbstractField field) {
     super(FieldAccessDragModel.getInstance(field));
     this.field = field;
-    if (this.field instanceof UserField) {
-      UserField userField = (UserField) this.field;
+    if (this.field instanceof UserField userField) {
       this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
     }
   }

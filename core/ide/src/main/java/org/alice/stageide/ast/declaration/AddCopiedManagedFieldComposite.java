@@ -91,8 +91,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
   }
 
   private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer(Expression expression) {
-    if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    if (expression instanceof InstanceCreation instanceCreation) {
       return instanceCreation.constructor.getValue().getDeclaringType();
     } else {
       return null;
@@ -118,8 +117,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
   protected EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv) {
     AffineMatrix4x4 initialTransform = null;
     DropSite dropSite = userActivity.findDropSite();
-    if (dropSite instanceof SceneDropSite) {
-      SceneDropSite sceneDropSite = (SceneDropSite) dropSite;
+    if (dropSite instanceof SceneDropSite sceneDropSite) {
       initialTransform = sceneDropSite.getTransform();
     } else {
       AbstractType<?, ?, ?> type = field.getValueType();
@@ -226,8 +224,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
     @Override
     public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
       Expression initializer = getInitializer();
-      if (initializer instanceof InstanceCreation) {
-        InstanceCreation instanceCreation = (InstanceCreation) initializer;
+      if (initializer instanceof InstanceCreation instanceCreation) {
         AbstractConstructor constructor = instanceCreation.constructor.getValue();
         blankChildren.add(InstanceCreationFillInWithGalleryResourceParameter.getInstance(constructor));
         blankChildren.add(CascadeLineSeparator.getInstance());

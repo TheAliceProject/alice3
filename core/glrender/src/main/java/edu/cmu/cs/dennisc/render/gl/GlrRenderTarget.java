@@ -259,8 +259,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   private  double getNear(AbstractCamera sgCamera) {
-    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera) {
-      return ((AbstractNearPlaneAndFarPlaneCamera) sgCamera).nearClippingPlaneDistance.getValue();
+    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera camera) {
+      return camera.nearClippingPlaneDistance.getValue();
     } else {
       //todo?
       return Double.NaN;
@@ -268,8 +268,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   private  double getFar(AbstractCamera sgCamera) {
-    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera) {
-      return ((AbstractNearPlaneAndFarPlaneCamera) sgCamera).farClippingPlaneDistance.getValue();
+    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera camera) {
+      return camera.farClippingPlaneDistance.getValue();
     } else {
       //todo?
       return Double.NaN;

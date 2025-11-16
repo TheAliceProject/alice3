@@ -181,8 +181,7 @@ public class AliceResourceUtilities {
   // The problem was observed specifically with the Baby Penguin model.
   private static void correctDimensions(TexturedAppearance ta) {
     Texture texture = ta.diffuseColorTexture.getValue();
-    if (texture instanceof BufferedImageTexture) {
-      BufferedImageTexture buffTexture = (BufferedImageTexture) texture;
+    if (texture instanceof BufferedImageTexture buffTexture) {
       buffTexture.setBufferedImage(ImageUtilities.stretchToPowersOfTwo(buffTexture.getBufferedImage()));
     }
   }
@@ -496,8 +495,8 @@ public class AliceResourceUtilities {
   }
 
   public static URL getTextureURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI textureURI = ((DynamicResource) resource).getTextureURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI textureURI = dynamicResource.getTextureURI();
       if (textureURI == null) {
         return null;
       }
@@ -516,8 +515,8 @@ public class AliceResourceUtilities {
   }
 
   private static URL getVisualURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI visualURI = ((DynamicResource) resource).getVisualURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI visualURI = dynamicResource.getVisualURI();
       if (visualURI == null) {
         return null;
       }

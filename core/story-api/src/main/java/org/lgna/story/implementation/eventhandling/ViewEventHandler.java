@@ -116,11 +116,9 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 
   @Override
   protected void fire(Object listener, ViewEvent event) {
-    if (listener instanceof ViewEnterListener) {
-      ViewEnterListener intoViewEL = (ViewEnterListener) listener;
+    if (listener instanceof ViewEnterListener intoViewEL) {
       intoViewEL.viewEntered((EnterViewEvent) event);
-    } else if (listener instanceof ViewExitListener) {
-      ViewExitListener outOfViewEL = (ViewExitListener) listener;
+    } else if (listener instanceof ViewExitListener outOfViewEL) {
       outOfViewEL.viewExited((ExitViewEvent) event);
     }
   }

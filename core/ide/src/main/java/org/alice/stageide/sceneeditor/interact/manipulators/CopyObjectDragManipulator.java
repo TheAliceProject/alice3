@@ -172,8 +172,8 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
             DropReceptor dropReceptor = ((StorytellingSceneEditor) IDE.getActiveInstance().getSceneEditor()).getDropReceptor();
             SwingComponentView<?> component = dropReceptor.getViewController();
             ViewController<?, ?> viewController;
-            if (component instanceof ViewController<?, ?>) {
-              viewController = (ViewController<?, ?>) component;
+            if (component instanceof ViewController<?, ?> controller) {
+              viewController = controller;
             } else {
               viewController = null;
             }

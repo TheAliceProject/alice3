@@ -130,8 +130,7 @@ public abstract class MemberTabView extends MigPanel {
             view.getTitle().setInert(true);
           }
           view.setBackgroundColor(this.getBackgroundColor());
-          if (subComposite instanceof UserMethodsSubComposite) {
-            UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite) subComposite;
+          if (subComposite instanceof UserMethodsSubComposite userMethodsSubComposite) {
             view.getTitle().setSuppressed(!userMethodsSubComposite.isRelevant());
           }
           scrollPaneView.addComponent(view, "wrap");

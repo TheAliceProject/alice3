@@ -113,15 +113,13 @@ public class ModelPart implements BinaryEncodableAndDecodable {
     rv.children = Lists.newLinkedList();
 
     for (Component component : parent.getComponents()) {
-      if (component instanceof Visual) {
-        Visual visual = (Visual) component;
+      if (component instanceof Visual visual) {
         Appearance front = visual.frontFacingAppearance.getValue();
-        if (front instanceof TexturedAppearance) {
-          TexturedAppearance singleAppearance = (TexturedAppearance) front;
+        if (front instanceof TexturedAppearance singleAppearance) {
           Texture texture = singleAppearance.diffuseColorTexture.getValue();
           if (texture != null) {
-            if (texture instanceof BufferedImageTexture) {
-              rv.texture = (BufferedImageTexture) texture;
+            if (texture instanceof BufferedImageTexture imageTexture) {
+              rv.texture = imageTexture;
               textures.add(rv.texture);
             } else {
               assert false;
@@ -152,8 +150,7 @@ public class ModelPart implements BinaryEncodableAndDecodable {
         } else {
           Logger.warning("no geometry for ", rv.name);
         }
-      } else if (component instanceof Transformable) {
-        Transformable transformable = (Transformable) component;
+      } else if (component instanceof Transformable transformable) {
         rv.children.add(newInstance(transformable, geometries, textures));
       }
     }

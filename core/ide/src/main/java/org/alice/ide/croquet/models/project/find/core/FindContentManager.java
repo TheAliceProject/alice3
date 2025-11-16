@@ -124,8 +124,8 @@ public class FindContentManager {
       objectList.add(new SearchResult(parameter));
     }
     for (Statement statement : blockStatement.statements) {
-      if (statement instanceof LocalDeclarationStatement) {
-        UserLocal local = ((LocalDeclarationStatement) statement).local.getValue();
+      if (statement instanceof LocalDeclarationStatement declarationStatement) {
+        UserLocal local = declarationStatement.local.getValue();
         assert !checkContains(local);
         objectList.add(new SearchResult(local));
       }

@@ -110,8 +110,7 @@ public class PlusIcon extends ShapeIcon {
   @Override
   protected final void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
     ButtonModel buttonModel;
-    if (c instanceof AbstractButton) {
-      AbstractButton button = (AbstractButton) c;
+    if (c instanceof AbstractButton button) {
       buttonModel = button.getModel();
     } else {
       buttonModel = null;

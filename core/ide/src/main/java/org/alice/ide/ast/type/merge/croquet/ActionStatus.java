@@ -174,8 +174,7 @@ public enum ActionStatus {
   public abstract String getDescriptionText(Member member);
 
   private static String getSingularMemberClassText(Member member) {
-    if (member instanceof UserMethod) {
-      UserMethod method = (UserMethod) member;
+    if (member instanceof UserMethod method) {
       if (method.isProcedure()) {
         return "procedure";
       } else {
@@ -187,8 +186,7 @@ public enum ActionStatus {
   }
 
   private static String getPluralMemberClassText(Member member) {
-    if (member instanceof UserMethod) {
-      UserMethod method = (UserMethod) member;
+    if (member instanceof UserMethod method) {
       if (method.isProcedure()) {
         return "procedures";
       } else {

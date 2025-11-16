@@ -454,18 +454,18 @@ public abstract class DragAdapter {
       this.fireSelecting(new SelectionEvent(this, selected));
       if (this.selectedCameraMarker != null) {
         this.selectedCameraMarker.opacity.setValue(.3f);
-        if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp) {
-          ((PerspectiveCameraMarkerImp) this.selectedCameraMarker).setDetailedViewShowing(false);
+        if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp imp) {
+          imp.setDetailedViewShowing(false);
         }
       }
       this.selectedCameraMarker = selected;
       if (this.selectedCameraMarker != null) {
         this.selectedCameraMarker.opacity.setValue(1f);
-        if (this.hasSceneEditor() && (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp)) {
+        if (this.hasSceneEditor() && (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp imp)) {
           //TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
           //          boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
           //          if (!isNewSelectedActiveCameraMarker) {
-          ((PerspectiveCameraMarkerImp) this.selectedCameraMarker).setDetailedViewShowing(true);
+          imp.setDetailedViewShowing(true);
           //}
         }
       }
@@ -505,10 +505,10 @@ public abstract class DragAdapter {
           }
         }
       }
-      if (selected instanceof ObjectMarkerImp) {
-        setSelectedObjectMarker((ObjectMarkerImp) selected);
-      } else if (selected instanceof CameraMarkerImp) {
-        setSelectedCameraMarker((CameraMarkerImp) selected);
+      if (selected instanceof ObjectMarkerImp imp1) {
+        setSelectedObjectMarker(imp1);
+      } else if (selected instanceof CameraMarkerImp imp) {
+        setSelectedCameraMarker(imp);
       } else {
         setSelectedSceneObjectImplementation(selected);
       }
@@ -630,8 +630,8 @@ public abstract class DragAdapter {
     if (c == null) {
       return null;
     }
-    if (c instanceof ManipulationHandle) {
-      return (ManipulationHandle) c;
+    if (c instanceof ManipulationHandle handle) {
+      return handle;
     } else {
       return getHandleForComponent(c.getParent());
     }

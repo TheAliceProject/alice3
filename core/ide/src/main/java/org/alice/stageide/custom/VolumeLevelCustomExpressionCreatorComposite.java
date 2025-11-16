@@ -110,8 +110,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends ExpressionWithR
   @Override
   protected void initializeToPreviousExpression(Expression expression) {
     double actualVolume;
-    if (expression instanceof DoubleLiteral) {
-      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+    if (expression instanceof DoubleLiteral doubleLiteral) {
       actualVolume = doubleLiteral.value.getValue();
     } else {
       actualVolume = Double.NaN;

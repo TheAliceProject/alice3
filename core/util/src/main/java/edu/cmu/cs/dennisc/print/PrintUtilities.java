@@ -194,8 +194,7 @@ public abstract class PrintUtilities {
     }
     for (Object value : values) {
       if (value != null) {
-        if (value instanceof Printable) {
-          Printable printable = (Printable) value;
+        if (value instanceof Printable printable) {
           try {
             printable.append(rv, s_decimalFormat, isSingleLine == false);
           } catch (IOException ioe) {
@@ -214,8 +213,7 @@ public abstract class PrintUtilities {
             Object[] args = {rv, value};
             ReflectionUtilities.invoke(null, method, args);
           } else {
-            if (value instanceof Object[]) {
-              Object[] array = (Object[]) value;
+            if (value instanceof Object[] array) {
               rv.append(array.getClass().getComponentType().getName());
               rv.append("[]: ");
               rv.append("length=");

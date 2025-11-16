@@ -67,14 +67,14 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
 
   @Override
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof UserField) {
-      migrateField((UserField) node, manager);
+    if (node instanceof UserField field) {
+      migrateField(field, manager);
     }
-    if (node instanceof UserLocal) {
-      migrateType(((UserLocal) node).valueType, manager);
+    if (node instanceof UserLocal local) {
+      migrateType(local.valueType, manager);
     }
-    if (node instanceof UserParameter) {
-      migrateType(((UserParameter) node).valueType, manager);
+    if (node instanceof UserParameter parameter) {
+      migrateType(parameter.valueType, manager);
     }
   }
 
@@ -84,8 +84,8 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
       return;
     }
     AbstractType<?, ?, ?> superType = oldFieldType.getSuperType();
-    if (superType instanceof NamedUserType) {
-      manager.cacheType((NamedUserType) superType);
+    if (superType instanceof NamedUserType type) {
+      manager.cacheType(type);
     }
     InstanceCreation instantiation = manager.createInstanceCreation(newResource);
     field.valueType.setValue(instantiation.getType());

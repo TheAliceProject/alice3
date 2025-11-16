@@ -36,8 +36,8 @@ public class AliceModelLoader {
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
-      if (comp instanceof Joint) {
-        printJoints((Joint) comp, indent + "  ");
+      if (comp instanceof Joint joint) {
+        printJoints(joint, indent + "  ");
       }
     }
   }
@@ -117,8 +117,7 @@ public class AliceModelLoader {
       sv.skeleton.getValue().localTransformation.setValue(rootTransform);
     }
     for (Geometry g : sv.geometries.getValue()) {
-      if (g instanceof Mesh) {
-        Mesh mesh = (Mesh) g;
+      if (g instanceof Mesh mesh) {
         DoubleBuffer xyzs = mesh.vertexBuffer.getValue();
         double[] new_xyzs = new double[xyzs.capacity()];
         final int N = xyzs.limit();
@@ -248,8 +247,8 @@ public class AliceModelLoader {
     if (joint != null) {
       jointIDs.add(joint.jointID.getValue());
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint) {
-          buildJointIDsList((Joint) c, jointIDs);
+        if (c instanceof Joint joint1) {
+          buildJointIDsList(joint1, jointIDs);
         }
       }
     }
@@ -263,8 +262,8 @@ public class AliceModelLoader {
         joint.jointID.setValue(aliceName);
       }
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint) {
-          renameJoints((Joint) c, idToNameMap);
+        if (c instanceof Joint joint1) {
+          renameJoints(joint1, idToNameMap);
         }
       }
     }
@@ -304,8 +303,8 @@ public class AliceModelLoader {
       }
       jointAndParentList.add(Tuple2.createInstance(jointName, parentName));
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint) {
-          makeJointAndParentListFromSkeleton((Joint) c, jointAndParentList);
+        if (c instanceof Joint joint1) {
+          makeJointAndParentListFromSkeleton(joint1, jointAndParentList);
         }
       }
     }

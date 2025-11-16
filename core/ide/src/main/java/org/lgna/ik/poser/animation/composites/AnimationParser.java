@@ -84,9 +84,7 @@ public class AnimationParser implements Crawler {
 
   @Override
   public void visit(Crawlable crawlable) {
-    if (crawlable instanceof MethodInvocation) {
-
-      MethodInvocation methodInv = (MethodInvocation) crawlable;
+    if (crawlable instanceof MethodInvocation methodInv) {
       if (PoseAstUtilities.isStrikePoseMethod(methodInv.method.getValue())) {
         Pose pose = null;
         double duration = 0;
@@ -95,18 +93,18 @@ public class AnimationParser implements Crawler {
         list.add(methodInv.requiredArguments.get(0).expression.getValue());
         for (JavaKeyedArgument kArg : methodInv.keyedArguments) {
           Expression value = ((MethodInvocation) kArg.expression.getValue()).requiredArguments.get(0).expression.getValue();
-          if (value instanceof DoubleLiteral) {
-            duration = ((DoubleLiteral) value).value.getValue();
+          if (value instanceof DoubleLiteral literal) {
+            duration = literal.value.getValue();
           } else {
             list.add(kArg.expression.getValue());
           }
         }
         Object[] argArr = vm.ENTRY_POINT_evaluate(null, list.toArray(new Expression[0]));
         for (Object o : argArr) {
-          if (o instanceof Pose) {
-            pose = (Pose) o;
-          } else if (o instanceof AnimationStyle) {
-            style = (AnimationStyle) o;
+          if (o instanceof Pose pose1) {
+            pose = pose1;
+          } else if (o instanceof AnimationStyle animationStyle) {
+            style = animationStyle;
           } else {
             System.out.println("asfd: " + o.getClass());
           }

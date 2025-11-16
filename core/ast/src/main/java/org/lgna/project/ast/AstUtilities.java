@@ -107,8 +107,7 @@ public class AstUtilities {
 
   public static Expression getJavaKeyedArgumentSubArgument0Expression(JavaKeyedArgument argument) {
     Expression expresssion = argument.expression.getValue();
-    if (expresssion instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expresssion;
+    if (expresssion instanceof MethodInvocation methodInvocation) {
       if (methodInvocation.requiredArguments.size() > 0) {
         return methodInvocation.requiredArguments.get(0).expression.getValue();
       } else {
@@ -261,8 +260,8 @@ public class AstUtilities {
     final int N = parameters.size();
     for (int i = 0; i < (N - 1); i++) {
       AbstractArgument argument = prevMethodInvocation.requiredArguments.get(i);
-      if (argument instanceof SimpleArgument) {
-        rv.requiredArguments.add(new SimpleArgument(parameters.get(i), ((SimpleArgument) argument).expression.getValue()));
+      if (argument instanceof SimpleArgument simpleArgument) {
+        rv.requiredArguments.add(new SimpleArgument(parameters.get(i), simpleArgument.expression.getValue()));
       } else {
         throw new RuntimeException();
       }
@@ -275,8 +274,8 @@ public class AstUtilities {
     rv.expression.setValue(instanceExpression);
     int i = 0;
     for (AbstractArgument argument : rv.requiredArguments) {
-      if (argument instanceof SimpleArgument) {
-        ((SimpleArgument) argument).expression.setValue(argumentExpressions[i]);
+      if (argument instanceof SimpleArgument simpleArgument) {
+        simpleArgument.expression.setValue(argumentExpressions[i]);
       } else {
         throw new RuntimeException();
       }
@@ -518,14 +517,11 @@ public class AstUtilities {
   }
 
   public static boolean isAddEventListenerMethodInvocationStatement(Statement statement) {
-    if (statement instanceof ExpressionStatement) {
-      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+    if (statement instanceof ExpressionStatement expressionStatement) {
       Expression expression = expressionStatement.expression.getValue();
-      if (expression instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) expression;
+      if (expression instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
-        if (method instanceof JavaMethod) {
-          JavaMethod javaMethod = (JavaMethod) method;
+        if (method instanceof JavaMethod javaMethod) {
           return javaMethod.isAnnotationPresent(AddEventListenerTemplate.class);
         }
       }
@@ -585,8 +581,7 @@ public class AstUtilities {
     from.body.getValue().crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
     for (MethodInvocation methodInvocation : crawler.getList()) {
       AbstractMethod m = methodInvocation.method.getValue();
-      if (m instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) m;
+      if (m instanceof UserMethod userMethod) {
         if (!set.contains(userMethod)) {
           set.add(userMethod);
           addInvokedMethods(set, userMethod);
@@ -626,10 +621,9 @@ public class AstUtilities {
 
   public static AbstractType<?, ?, ?> getDeclaringTypeIfMemberOrTypeItselfIfType(AbstractDeclaration declaration) {
     if (declaration != null) {
-      if (declaration instanceof AbstractType) {
-        return (AbstractType<?, ?, ?>) declaration;
-      } else if (declaration instanceof AbstractMember) {
-        AbstractMember member = (AbstractMember) declaration;
+      if (declaration instanceof AbstractType<?, ?, ?> type) {
+        return type;
+      } else if (declaration instanceof AbstractMember member) {
         return member.getDeclaringType();
       } else {
         throw new UnsupportedOperationException();

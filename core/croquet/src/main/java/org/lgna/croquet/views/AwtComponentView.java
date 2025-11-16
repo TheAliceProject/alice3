@@ -96,8 +96,7 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
     if (awtComponent != null) {
       AwtComponentView<?> rv = AwtComponentView.map.get(awtComponent);
       if (rv == null) {
-        if (awtComponent instanceof Container) {
-          Container awtContainer = (Container) awtComponent;
+        if (awtComponent instanceof Container awtContainer) {
           rv = new InternalAwtContainerAdapter(awtContainer);
         } else {
           rv = new InternalAwtComponentAdapter(awtComponent);

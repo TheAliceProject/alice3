@@ -88,8 +88,8 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
       this.dragAdapter.triggerSgObjectSelection(startInput.getClickPickedTransformable(true));
     } else if (clickedObjectType.intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
       AbstractTransformable pickedHandle = startInput.getClickPickedTransformable(true);
-      if (pickedHandle instanceof RotationRingHandle) {
-        this.dragAdapter.triggerSgObjectSelection(((RotationRingHandle) pickedHandle).getManipulatedObject());
+      if (pickedHandle instanceof RotationRingHandle handle) {
+        this.dragAdapter.triggerSgObjectSelection(handle.getManipulatedObject());
       }
     } else if (clickedObjectType.intersects(PickHint.PickType.TWO_D_HANDLE.pickHint())) {
       //Do nothing since the 2D handles don't select anything right now

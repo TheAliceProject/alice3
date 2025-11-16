@@ -58,8 +58,8 @@ public abstract class JavaParameter extends AbstractParameter {
     this.annotations = annotations;
     if (this.annotations != null) {
       for (Annotation annotation : this.annotations) {
-        if (annotation instanceof ValueTemplate) {
-          this.setValueTemplate((ValueTemplate) annotation);
+        if (annotation instanceof ValueTemplate template) {
+          this.setValueTemplate(template);
         }
       }
     }
@@ -78,8 +78,7 @@ public abstract class JavaParameter extends AbstractParameter {
   @Override
   public boolean isVariableLength() {
     for (Annotation annotation : this.annotations) {
-      if (annotation instanceof ParameterAnnotation) {
-        ParameterAnnotation parameterAnnotation = (ParameterAnnotation) annotation;
+      if (annotation instanceof ParameterAnnotation parameterAnnotation) {
         return parameterAnnotation.isVariable();
       }
     }

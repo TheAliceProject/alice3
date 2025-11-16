@@ -79,8 +79,8 @@ public class TypeInfo extends DeclarationInfo<UserType<?>> {
 
   public TypeInfo getSuperTypeInfo() {
     AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
-    if (superType instanceof UserType<?>) {
-      return this.getProjectInfo().getInfoForType((UserType<?>) superType);
+    if (superType instanceof UserType<?> type) {
+      return this.getProjectInfo().getInfoForType(type);
     } else {
       return null;
     }

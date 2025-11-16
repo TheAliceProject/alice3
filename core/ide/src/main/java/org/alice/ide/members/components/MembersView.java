@@ -163,8 +163,7 @@ public class MembersView extends BorderPanel {
       DropSite dropSite = step.getCurrentPotentialDropSite();
       if (dropSite != null) {
         DragModel dragModel = step.getModel();
-        if (dragModel instanceof StatementDragModel) {
-          StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+        if (dragModel instanceof StatementDragModel statementDragModel) {
           Statement statement = statementDragModel.getStatement();
           return new DeleteStatementOperation(statement);
         } else {

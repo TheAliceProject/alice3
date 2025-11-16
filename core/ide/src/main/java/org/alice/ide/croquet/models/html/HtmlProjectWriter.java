@@ -89,8 +89,8 @@ public class HtmlProjectWriter implements ProjectIo.ProjectWriter {
   public void writeDeclaration(OutputStream os, AbstractDeclaration declaration) throws IOException {
     writeXml(os, declaration.getName(), (classDiv, coder) -> {
       classDiv.setAttribute("class", "alice-method");
-      if (declaration instanceof ProcessableNode) {
-        coder.encode((ProcessableNode) declaration, classDiv);
+      if (declaration instanceof ProcessableNode node) {
+        coder.encode(node, classDiv);
       }
     });
   }

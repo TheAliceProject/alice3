@@ -66,8 +66,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 
   @Override
   protected void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof STurnable) {
-      STurnable turnable = (STurnable) instance;
+    if (instance instanceof STurnable turnable) {
       this.transformable = turnable.getImplementation();
       this.m = this.transformable.getLocalTransformation();
     } else {

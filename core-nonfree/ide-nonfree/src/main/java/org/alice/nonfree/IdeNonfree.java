@@ -125,16 +125,16 @@ public class IdeNonfree extends NebulousIde {
   @Override
   public AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(JavaMethod setter, StandardExpressionState state, EntityImp entityImp) {
     if (setter.getName().equalsIgnoreCase("setWallPaint")) {
-      if (entityImp instanceof RoomImp) {
-        return new RoomWallPaintPropertyAdapter((RoomImp) entityImp, state);
+      if (entityImp instanceof RoomImp imp) {
+        return new RoomWallPaintPropertyAdapter(imp, state);
       }
     } else if (setter.getName().equalsIgnoreCase("setFloorPaint")) {
-      if (entityImp instanceof RoomImp) {
-        return new RoomFloorPaintPropertyAdapter((RoomImp) entityImp, state);
+      if (entityImp instanceof RoomImp imp) {
+        return new RoomFloorPaintPropertyAdapter(imp, state);
       }
     } else if (setter.getName().equalsIgnoreCase("setCeilingPaint")) {
-      if (entityImp instanceof RoomImp) {
-        return new RoomCeilingPaintPropertyAdapter((RoomImp) entityImp, state);
+      if (entityImp instanceof RoomImp imp) {
+        return new RoomCeilingPaintPropertyAdapter(imp, state);
       }
     }
     return null;
@@ -176,8 +176,7 @@ public class IdeNonfree extends NebulousIde {
 
   @Override
   public Triggerable getPersonResourceDropOperation(ResourceKey resourceKey) {
-    if (resourceKey instanceof PersonResourceKey) {
-      PersonResourceKey personResourceKey = (PersonResourceKey) resourceKey;
+    if (resourceKey instanceof PersonResourceKey personResourceKey) {
       return DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage(personResourceKey.getLifeStage());
       //todo
       //    if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {

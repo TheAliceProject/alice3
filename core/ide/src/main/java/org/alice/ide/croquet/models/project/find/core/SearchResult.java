@@ -92,8 +92,7 @@ public class SearchResult {
   }
 
   public Icon getIcon() {
-    if (this.declaration instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) this.declaration;
+    if (this.declaration instanceof AbstractMethod method) {
       if (method.isProcedure()) {
         return DeclarationTabState.getProcedureIcon();
       } else {

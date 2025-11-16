@@ -112,8 +112,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
         EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>) trigger;
         EventObject eventObject = eventObjectTrigger.getEvent();
         Object source = eventObject.getSource();
-        if (source instanceof Component) {
-          Component awtSource = (Component) source;
+        if (source instanceof Component awtSource) {
           window.setLocation(calculateLocationOnScreenForFocusWindow(awtSource, window));
         }
       } else {

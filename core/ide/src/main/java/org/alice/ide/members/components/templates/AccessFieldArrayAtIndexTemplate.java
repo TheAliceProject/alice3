@@ -57,8 +57,7 @@ import org.lgna.project.ast.*;
   public AccessFieldArrayAtIndexTemplate(AbstractField field) {
     super(FieldArrayAtIndexDragModel.getInstance(field));
     this.field = field;
-    if (this.field instanceof UserField) {
-      UserField userField = (UserField) this.field;
+    if (this.field instanceof UserField userField) {
       this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
     }
   }

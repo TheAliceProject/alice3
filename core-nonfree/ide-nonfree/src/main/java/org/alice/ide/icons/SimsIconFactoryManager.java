@@ -58,8 +58,7 @@ import java.awt.image.BufferedImage;
 public class SimsIconFactoryManager {
 
   public static IconFactory createIconFactory(ModelResource instance) {
-    if (instance instanceof PersonResource) {
-      PersonResource personResource = (PersonResource) instance;
+    if (instance instanceof PersonResource personResource) {
       try {
         SimsThumbnailMaker thumbnailMaker = SimsThumbnailMaker.getInstance();
         BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource(personResource);

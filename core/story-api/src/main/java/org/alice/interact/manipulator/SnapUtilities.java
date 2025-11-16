@@ -168,8 +168,8 @@ public class SnapUtilities {
     if (t != null) {
       for (int i = 0; i < t.getComponentCount(); i++) {
         Component c = t.getComponentAt(i);
-        if (c instanceof Visual) {
-          return (Visual) c;
+        if (c instanceof Visual visual) {
+          return visual;
         }
       }
       return null;

@@ -239,8 +239,7 @@ public class StageIDE extends IDE {
           return null;
         }
       } else if (declaringType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE) && valueType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE)) {
-        if (field instanceof JavaField) {
-          JavaField javaField = (JavaField) field;
+        if (field instanceof JavaField javaField) {
           try {
             ModelResource modelResource = (ModelResource) javaField.getFieldReflectionProxy().getReification().get(null);
             IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceInstance(modelResource);
@@ -297,8 +296,7 @@ public class StageIDE extends IDE {
           return false;
         } else {
           Node parent = expression.getParent();
-          if (parent instanceof FieldAccess) {
-            FieldAccess fieldAccess = (FieldAccess) parent;
+          if (parent instanceof FieldAccess fieldAccess) {
             AbstractField field = fieldAccess.field.getValue();
             assert field != null;
             AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
@@ -307,19 +305,16 @@ public class StageIDE extends IDE {
                 return false;
               }
             }
-          } else if (parent instanceof AbstractArgument) {
-            AbstractArgument argument = (AbstractArgument) parent;
+          } else if (parent instanceof AbstractArgument argument) {
             Node grandparent = argument.getParent();
-            if (grandparent instanceof InstanceCreation) {
-              InstanceCreation instanceCreation = (InstanceCreation) grandparent;
+            if (grandparent instanceof InstanceCreation instanceCreation) {
               AbstractConstructor constructor = instanceCreation.constructor.getValue();
               if (constructor != null) {
                 AbstractType<?, ?, ?> type = constructor.getDeclaringType();
                 return (COLOR_TYPE.isAssignableFrom(type) || NebulousIde.nonfree.isPersonResourceTypeAssingleFrom(type)) == false;
               }
             }
-          } else if (parent instanceof MethodInvocation) {
-            MethodInvocation methodInvocation = (MethodInvocation) parent;
+          } else if (parent instanceof MethodInvocation methodInvocation) {
             if (StoryApiConfigurationManager.getInstance().isBuildMethod(methodInvocation)) {
               return false;
             }

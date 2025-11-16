@@ -57,8 +57,7 @@ public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail, AddDe
 
   private static Visual[] getValue(Object[] details, Visual[] defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof SetOfVisuals) {
-        SetOfVisuals setOfVisuals = (SetOfVisuals) detail;
+      if (detail instanceof SetOfVisuals setOfVisuals) {
         return setOfVisuals.value;
       }
     }

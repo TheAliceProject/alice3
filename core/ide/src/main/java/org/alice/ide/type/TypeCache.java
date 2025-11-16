@@ -81,9 +81,7 @@ public class TypeCache {
           return new ExtendsTypeKey(superType);
         case 1:
           Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-          if (expression instanceof FieldAccess) {
-            //Cases like Alien() { super(AlienResource.DEFAULT); }
-            FieldAccess fieldAccess = (FieldAccess) expression;
+          if (expression instanceof FieldAccess fieldAccess) {
             return new ExtendsTypeWithSuperArgumentFieldKey(superType, fieldAccess.field.getValue());
           } else if (expression instanceof InstanceCreation) {
             //Cases like Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }

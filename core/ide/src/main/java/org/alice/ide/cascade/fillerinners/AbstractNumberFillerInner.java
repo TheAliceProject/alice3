@@ -71,8 +71,7 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     if (isTop && (prevExpression != null)) {
-      if (prevExpression instanceof ArithmeticInfixExpression) {
-        ArithmeticInfixExpression previousArithmeticInfixExpression = (ArithmeticInfixExpression) prevExpression;
+      if (prevExpression instanceof ArithmeticInfixExpression previousArithmeticInfixExpression) {
         ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
         for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS) {
           if (operator != prevOperator) {

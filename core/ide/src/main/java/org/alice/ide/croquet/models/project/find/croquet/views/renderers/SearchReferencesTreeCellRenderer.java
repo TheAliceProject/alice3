@@ -73,10 +73,10 @@ public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
       } else {
         Object astValue = node.getValue();
         String nameValue = "";
-        if (astValue instanceof UserMethod) {
-          nameValue = ((UserMethod) astValue).name.getValue();
-        } else if (astValue instanceof UserLambda) {
-          nameValue = ((UserLambda) astValue).getFirstAncestorAssignableTo(MethodInvocation.class).method.getValue().getName();
+        if (astValue instanceof UserMethod method) {
+          nameValue = method.name.getValue();
+        } else if (astValue instanceof UserLambda lambda) {
+          nameValue = lambda.getFirstAncestorAssignableTo(MethodInvocation.class).method.getValue().getName();
         } else {
           assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
         }

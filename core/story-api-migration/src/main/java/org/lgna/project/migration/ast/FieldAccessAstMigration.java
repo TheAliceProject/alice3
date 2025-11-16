@@ -67,8 +67,7 @@ import org.lgna.project.migration.MigrationManager;
     root.crawl(new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
-        if (crawlable instanceof FieldAccess) {
-          FieldAccess fieldAccess = (FieldAccess) crawlable;
+        if (crawlable instanceof FieldAccess fieldAccess) {
           FieldAccessAstMigration.this.migrate(fieldAccess);
         }
       }

@@ -126,14 +126,14 @@ public abstract class ExpressionCreator {
 
   public Expression createExpression(Object value) throws CannotCreateExpressionException {
     if (value != null) {
-      if (value instanceof Double) {
-        return this.createDoubleExpression((Double) value);
-      } else if (value instanceof Integer) {
-        return this.createIntegerExpression((Integer) value);
-      } else if (value instanceof String) {
-        return this.createStringExpression((String) value);
-      } else if (value instanceof Enum<?>) {
-        return this.createEnumExpression((Enum<?>) value);
+      if (value instanceof Double double1) {
+        return this.createDoubleExpression(double1);
+      } else if (value instanceof Integer integer) {
+        return this.createIntegerExpression(integer);
+      } else if (value instanceof String string) {
+        return this.createStringExpression(string);
+      } else if (value instanceof Enum<?> enum1) {
+        return this.createEnumExpression(enum1);
       } else {
         return this.createCustomExpression(value);
       }

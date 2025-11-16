@@ -77,10 +77,8 @@ public class QualityAssuranceUtilities {
     if (sgComponent == null) {
       return;
     }
-    if (sgComponent instanceof Composite) {
-      Composite sgComposite = (Composite) sgComponent;
-      if (sgComponent instanceof AbstractTransformable) {
-        AbstractTransformable sgTransformable = (AbstractTransformable) sgComponent;
+    if (sgComponent instanceof Composite sgComposite) {
+      if (sgComponent instanceof AbstractTransformable sgTransformable) {
         AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
         boolean isOrientationMendingRequired = isOrientationMendingRequired(lt);
         boolean isTranslationMendingRequired = isTranslationMendingRequired(lt);
@@ -91,14 +89,12 @@ public class QualityAssuranceUtilities {
       for (Component sgChild : sgComposite.getComponents()) {
         appendProblems(problems, sgChild);
       }
-    } else if (sgComponent instanceof Visual) {
-      Visual sgVisual = (Visual) sgComponent;
+    } else if (sgComponent instanceof Visual sgVisual) {
       Matrix3x3 scale = sgVisual.scale.getValue();
       if (scale.isNaN()) { //todo: check isZero()?
         problems.add(new BadScale(sgVisual));
       }
-      if (sgVisual instanceof SkeletonVisual) {
-        SkeletonVisual sgSkeletonVisual = (SkeletonVisual) sgVisual;
+      if (sgVisual instanceof SkeletonVisual sgSkeletonVisual) {
         appendProblems(problems, sgSkeletonVisual.skeleton.getValue());
       }
     }

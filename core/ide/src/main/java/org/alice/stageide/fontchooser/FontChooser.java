@@ -170,8 +170,8 @@ public class FontChooser extends JPanel {
 
     public SizeAttribute getSizeAttribute() {
       Object value = m_list.getSelectedValue();
-      if (value instanceof String) {
-        return new SizeValue(Float.valueOf((String) value));
+      if (value instanceof String string) {
+        return new SizeValue(Float.valueOf(string));
       } else {
         return null;
       }

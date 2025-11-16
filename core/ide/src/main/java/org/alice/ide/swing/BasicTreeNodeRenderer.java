@@ -121,8 +121,7 @@ public class BasicTreeNodeRenderer implements TreeCellRenderer {
 
   @Override
   public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    if (value instanceof BasicTreeNode) {
-      BasicTreeNode node = (BasicTreeNode) value;
+    if (value instanceof BasicTreeNode node) {
       this.nameLabel.setText(node.toString());
       this.nameLabel.setBorder(createBorder(selected));
       if (node.difference == BasicTreeNode.Difference.NEW_NODE) {

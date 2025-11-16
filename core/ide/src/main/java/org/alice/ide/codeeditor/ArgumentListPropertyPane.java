@@ -61,8 +61,7 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
   protected boolean isNameDesired(AbstractParameter parameter) {
     boolean rv;
     if (parameter.getName() != null) {
-      if (parameter instanceof JavaMethodParameter) {
-        JavaMethodParameter javaMethodParameter = (JavaMethodParameter) parameter;
+      if (parameter instanceof JavaMethodParameter javaMethodParameter) {
         JavaMethod javaMethod = javaMethodParameter.getCode();
         rv = javaMethod.isParameterInShortestChainedMethod(javaMethodParameter) == false;
       } else if (parameter instanceof JavaConstructorParameter) {

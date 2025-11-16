@@ -77,8 +77,8 @@ public class RuntimeDragAdapter extends DragAdapter {
     }
     moveAllObjects = targets.length == 0;
     for (Visual t : targets) {
-      if (t instanceof SModel) {
-        targetModels.add((SModel) t);
+      if (t instanceof SModel model) {
+        targetModels.add(model);
       } else {
         targetGround = true;
       }

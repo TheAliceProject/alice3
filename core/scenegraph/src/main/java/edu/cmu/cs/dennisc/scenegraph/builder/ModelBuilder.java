@@ -195,12 +195,10 @@ public class ModelBuilder {
         @Override
         public void write(OutputStream os) throws IOException {
           BinaryEncoder encoder = new OutputStreamBinaryEncoder(os);
-          if (geometry instanceof IndexedTriangleArray) {
-            IndexedTriangleArray ita = (IndexedTriangleArray) geometry;
+          if (geometry instanceof IndexedTriangleArray ita) {
             encoder.encode(ita.vertices.getValue());
             BufferUtilities.encodeNativeOptional(encoder, ita.polygonData.getValue());
-          } else if (geometry instanceof OldMesh) {
-            OldMesh mesh = (OldMesh) geometry;
+          } else if (geometry instanceof OldMesh mesh) {
             encoder.encode(mesh.xyzs.getValue());
             encoder.encode(mesh.ijks.getValue());
             encoder.encode(mesh.uvs.getValue());
@@ -271,8 +269,7 @@ public class ModelBuilder {
   }
 
   private static String getEntryPath(Texture texture) {
-    if (texture instanceof BufferedImageTexture) {
-      BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+    if (texture instanceof BufferedImageTexture bufferedImageTexture) {
       char c;
       if (bufferedImageTexture.isPotentiallyAlphaBlended()) {
         c = 't';

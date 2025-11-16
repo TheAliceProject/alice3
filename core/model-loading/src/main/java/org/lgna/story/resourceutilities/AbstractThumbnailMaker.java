@@ -276,8 +276,8 @@ public abstract class AbstractThumbnailMaker {
       Color.RGBtoHSB(colorKey.getRed(), colorKey.getGreen(), colorKey.getBlue(), chromaHSB);
       Raster imageData = rv.getRaster();
       WritableRaster writableData = null;
-      if (imageData instanceof WritableRaster) {
-        writableData = (WritableRaster) imageData;
+      if (imageData instanceof WritableRaster raster) {
+        writableData = raster;
         for (int x = 0; x < writableData.getWidth(); x++) {
           for (int y = 0; y < writableData.getHeight(); y++) {
             try {
@@ -316,8 +316,8 @@ public abstract class AbstractThumbnailMaker {
     } else {
       returnImage = rv;
     }
-    if (returnImage instanceof BufferedImage) {
-      return (BufferedImage) returnImage;
+    if (returnImage instanceof BufferedImage image) {
+      return image;
     } else if (returnImage != null) {
       return ImageUtilities.createBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
     } else {

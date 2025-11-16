@@ -59,8 +59,7 @@ import org.lgna.project.ast.UserField;
   public FieldArrayLengthTemplate(AbstractField field) {
     super(FieldArrayLengthDragModel.getInstance(field));
     this.field = field;
-    if (this.field instanceof UserField) {
-      UserField userField = (UserField) this.field;
+    if (this.field instanceof UserField userField) {
       this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
     }
   }

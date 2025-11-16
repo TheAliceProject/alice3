@@ -848,8 +848,8 @@ public class ModelResourceExporter {
         ModelClassData data = null;
         try {
           Object o = f.get(null);
-          if ((o != null) && (o instanceof ModelClassData)) {
-            data = (ModelClassData) o;
+          if ((o != null) && (o instanceof ModelClassData modelClassData)) {
+            data = modelClassData;
           }
         } catch (Exception e) {
         }
@@ -890,8 +890,8 @@ public class ModelResourceExporter {
         JointId fieldData = null;
         try {
           Object o = f.get(null);
-          if ((o != null) && (o instanceof JointId)) {
-            fieldData = (JointId) o;
+          if ((o != null) && (o instanceof JointId id)) {
+            fieldData = id;
           }
         } catch (Exception e) {
         }

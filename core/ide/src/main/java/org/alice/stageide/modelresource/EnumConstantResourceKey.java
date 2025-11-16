@@ -188,8 +188,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     if (this == o) {
       return true;
     }
-    if (o instanceof EnumConstantResourceKey) {
-      EnumConstantResourceKey other = (EnumConstantResourceKey) o;
+    if (o instanceof EnumConstantResourceKey other) {
       return this.enumConstant == other.enumConstant;
     } else {
       return false;

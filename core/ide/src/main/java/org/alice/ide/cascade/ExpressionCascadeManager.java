@@ -170,8 +170,7 @@ public abstract class ExpressionCascadeManager {
         index = blockStatement.statements.size();
       } else {
         Statement statementI = blockStatement.statements.get(index);
-        if (statementI instanceof LocalDeclarationStatement) {
-          LocalDeclarationStatement localDeclarationStatement = (LocalDeclarationStatement) statementI;
+        if (statementI instanceof LocalDeclarationStatement localDeclarationStatement) {
           rv.add(localDeclarationStatement.local.getValue());
         }
       }
@@ -184,23 +183,18 @@ public abstract class ExpressionCascadeManager {
     if (parent instanceof BooleanExpressionBodyPair) {
       parent = parent.getParent();
     }
-    if (parent instanceof Statement) {
-      Statement statementParent = (Statement) parent;
-      if (statementParent instanceof BlockStatement) {
-        BlockStatement blockStatementParent = (BlockStatement) statementParent;
+    if (parent instanceof Statement statementParent) {
+      if (statementParent instanceof BlockStatement blockStatementParent) {
         int index = blockStatementParent.statements.indexOf(statement);
         this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
-      } else if (statementParent instanceof CountLoop) {
-        CountLoop countLoopParent = (CountLoop) statementParent;
+      } else if (statementParent instanceof CountLoop countLoopParent) {
         boolean areCountLoopLocalsViewable = FormatterState.isJava();
         if (areCountLoopLocalsViewable) {
           rv.add(countLoopParent.variable.getValue());
         }
-      } else if (statementParent instanceof AbstractForEachLoop) {
-        AbstractForEachLoop forEachLoopParent = (AbstractForEachLoop) statementParent;
+      } else if (statementParent instanceof AbstractForEachLoop forEachLoopParent) {
         rv.add(forEachLoopParent.item.getValue());
-      } else if (statementParent instanceof AbstractEachInTogether) {
-        AbstractEachInTogether eachInTogetherParent = (AbstractEachInTogether) statementParent;
+      } else if (statementParent instanceof AbstractEachInTogether eachInTogetherParent) {
         rv.add(eachInTogetherParent.item.getValue());
       }
       updateAccessibleLocals(rv, statementParent);
@@ -231,22 +225,18 @@ public abstract class ExpressionCascadeManager {
     CascadeBlankChild blankChild;
     CascadeFillIn<? extends Expression, ?> expressionFillIn;
     if (this.isApplicableForFillIn(desiredType, expressionType)) {
-      if (expression instanceof ThisExpression) {
-        ThisExpression thisExpression = (ThisExpression) expression;
+      if (expression instanceof ThisExpression thisExpression) {
         expressionFillIn = ThisExpressionFillIn.getInstance();
-      } else if (expression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) expression;
+      } else if (expression instanceof FieldAccess fieldAccess) {
         Expression instanceExpression = fieldAccess.expression.getValue();
         if (instanceExpression instanceof ThisExpression) {
           expressionFillIn = ThisFieldAccessFillIn.getInstance(fieldAccess.field.getValue());
         } else {
           expressionFillIn = null;
         }
-      } else if (expression instanceof ParameterAccess) {
-        ParameterAccess parameterAccess = (ParameterAccess) expression;
+      } else if (expression instanceof ParameterAccess parameterAccess) {
         expressionFillIn = ParameterAccessFillIn.getInstance(parameterAccess.parameter.getValue());
-      } else if (expression instanceof LocalAccess) {
-        LocalAccess localAccess = (LocalAccess) expression;
+      } else if (expression instanceof LocalAccess localAccess) {
         expressionFillIn = LocalAccessFillIn.getInstance(localAccess.local.getValue());
       } else {
         expressionFillIn = null;
@@ -325,8 +315,7 @@ public abstract class ExpressionCascadeManager {
     }
 
     AbstractCode codeInFocus = IDE.getActiveInstance().getDocumentFrame().getFocusedCode();
-    if (codeInFocus instanceof UserCode) {
-      UserCode userCode = (UserCode) codeInFocus;
+    if (codeInFocus instanceof UserCode userCode) {
       for (UserParameter parameter : userCode.getRequiredParamtersProperty()) {
         AbstractType<?, ?, ?> parameterType = parameter.getValueType();
         if (this.isApplicableForFillInAndPossiblyPartFillIns(type, parameterType)) {

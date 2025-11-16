@@ -193,8 +193,8 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
   @Override
   public Color getColor() {
-    if (this.paint instanceof Color) {
-      return (Color) this.paint;
+    if (this.paint instanceof Color color) {
+      return color;
     } else {
       throw new RuntimeException("use getPaint()");
     }
@@ -503,8 +503,7 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
     assert referencedObject != null;
     TextRenderer glTextRenderer = referencedObject.getObject().getTextRenderer(this.font, this.renderContext.gl);
     glTextRenderer.beginRendering(this.width, this.height);
-    if (this.paint instanceof Color) {
-      Color color = (Color) this.paint;
+    if (this.paint instanceof Color color) {
       glTextRenderer.setColor(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
     } else {
       //todo?
@@ -680,8 +679,7 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
   public void draw(Shape s) {
     //boolean isLine = this.stroke.equals( DEFAULT_STROKE );
     boolean isLine;
-    if (this.stroke instanceof BasicStroke) {
-      BasicStroke basicStroke = (BasicStroke) this.stroke;
+    if (this.stroke instanceof BasicStroke basicStroke) {
       if (basicStroke.getDashArray() != null) {
         //todo
         this.renderContext.gl.glLineStipple(1, (short) 0x00FF);
@@ -786,8 +784,8 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
   }
 
   private void glSetPaint(Paint paint) {
-    if (paint instanceof Color) {
-      glSetColor((Color) paint);
+    if (paint instanceof Color color) {
+      glSetColor(color);
     } else {
       throw new RuntimeException("not implemented");
     }
@@ -800,8 +798,8 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
   @Override
   public void setPaint(Paint paint) {
-    if (paint instanceof Color) {
-      glSetColor((Color) paint);
+    if (paint instanceof Color color) {
+      glSetColor(color);
       this.paint = paint;
     } else {
       throw new RuntimeException("not implemented");
@@ -1075,21 +1073,13 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
       if (referencedObject != null) {
         this.forgottenImageGeneratorToPixelsMap.remove(imageGenerator);
       } else {
-        if (imageGenerator instanceof Texture) {
-          //          sgTexture.addReleaseListener( new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
-          //          public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-          //          }
-          //          public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-          //            forget( (edu.cmu.cs.dennisc.scenegraph.Texture)releaseEvent.getReleasableSource() );
-          //          };
-          //        } );
-          Texture texture = (Texture) imageGenerator;
+        if (imageGenerator instanceof Texture texture) {
 
-          if (texture instanceof CustomTexture) {
-            ((CustomTexture) texture).layoutIfNecessary(this);
+          if (texture instanceof CustomTexture customTexture) {
+            customTexture.layoutIfNecessary(this);
           }
 
-          Pixels pixels = new Pixels((Texture) imageGenerator);
+          Pixels pixels = new Pixels(texture);
           referencedObject = new ReferencedObject<Pixels>(pixels, 0);
 
         } else {
@@ -1197,8 +1187,7 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
   public void remember(Image image) {
     ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get(image);
     if (imageGenerator == null) {
-      if (image instanceof BufferedImage) {
-        BufferedImage bufferedImage = (BufferedImage) image;
+      if (image instanceof BufferedImage bufferedImage) {
         BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
         bufferedImageTexture.setBufferedImage(bufferedImage);
         bufferedImageTexture.setMipMappingDesired(false);

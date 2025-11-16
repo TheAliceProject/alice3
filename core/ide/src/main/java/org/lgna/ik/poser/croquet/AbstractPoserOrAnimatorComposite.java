@@ -147,8 +147,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
       UserParameter constructorParameter0 = userConstructor.requiredParameters.get(0);
       AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
       ArrayList<JointedModelResource> resourceList = FieldFinder.getInstance().getResourcesForType(type);
-      if (parameter0Type instanceof JavaType) {
-        JavaType javaType = (JavaType) parameter0Type;
+      if (parameter0Type instanceof JavaType javaType) {
         Class<?> cls = javaType.getClassReflectionProxy().getReification();
         if (cls.isEnum()) {
           arguments[0] = cls.getEnumConstants()[0];

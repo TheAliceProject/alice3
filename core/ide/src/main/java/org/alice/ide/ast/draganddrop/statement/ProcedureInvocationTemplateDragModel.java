@@ -82,8 +82,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 
   @Override
   public boolean isAddEventListenerLikeSubstance() {
-    if (this.method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) this.method;
+    if (this.method instanceof JavaMethod javaMethod) {
       return javaMethod.isAnnotationPresent(AddEventListenerTemplate.class);
     } else {
       return false;

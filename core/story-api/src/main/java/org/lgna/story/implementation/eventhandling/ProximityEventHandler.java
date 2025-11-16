@@ -120,11 +120,9 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
 
   @Override
   protected void fire(Object listener, ProximityEvent e) {
-    if (listener instanceof ProximityEnterListener) {
-      ProximityEnterListener enter = (ProximityEnterListener) listener;
+    if (listener instanceof ProximityEnterListener enter) {
       enter.proximityEntered((EnterProximityEvent) e);
-    } else if (listener instanceof ProximityExitListener) {
-      ProximityExitListener exit = (ProximityExitListener) listener;
+    } else if (listener instanceof ProximityExitListener exit) {
       exit.proximityExited((ExitProximityEvent) e);
     }
   }

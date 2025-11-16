@@ -57,11 +57,9 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
   @Override
   public final void uncaughtException(Thread thread, Throwable throwable) {
     throwable.printStackTrace();
-    if (throwable instanceof RuntimeException) {
-      RuntimeException runtimeException = (RuntimeException) throwable;
+    if (throwable instanceof RuntimeException runtimeException) {
       Throwable cause = runtimeException.getCause();
-      if (cause instanceof InvocationTargetException) {
-        InvocationTargetException invocationTargetException = (InvocationTargetException) cause;
+      if (cause instanceof InvocationTargetException invocationTargetException) {
         Throwable targetException = invocationTargetException.getTargetException();
         if (targetException instanceof LgnaRuntimeException) {
           throwable = targetException;
@@ -69,8 +67,7 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
       }
     }
     boolean isHandled;
-    if (throwable instanceof LgnaRuntimeException) {
-      LgnaRuntimeException lgnare = (LgnaRuntimeException) throwable;
+    if (throwable instanceof LgnaRuntimeException lgnare) {
       isHandled = this.handleLgnaRuntimeException(thread, lgnare);
     } else {
       isHandled = false;

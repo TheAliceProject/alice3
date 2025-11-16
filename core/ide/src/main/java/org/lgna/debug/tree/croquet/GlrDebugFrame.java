@@ -58,8 +58,7 @@ import java.util.UUID;
 public class GlrDebugFrame extends DebugFrame<GlrComponent<?>> {
   public static ZTreeNode.Builder<GlrComponent<?>> createBuilder(GlrComponent<?> glrComponent) {
     ZTreeNode.Builder<GlrComponent<?>> rv = new ZTreeNode.Builder<GlrComponent<?>>(glrComponent, glrComponent instanceof GlrLeaf<?>);
-    if (glrComponent instanceof GlrComposite<?>) {
-      GlrComposite<?> glrComposite = (GlrComposite<?>) glrComponent;
+    if (glrComponent instanceof GlrComposite<?> glrComposite) {
       for (GlrComponent<?> glrChild : glrComposite.accessChildren()) {
         rv.addChildBuilder(createBuilder(glrChild));
       }

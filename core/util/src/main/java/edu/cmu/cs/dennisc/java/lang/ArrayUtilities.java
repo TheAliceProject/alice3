@@ -117,12 +117,10 @@ public class ArrayUtilities {
   public static <E> void set(Collection<E> collection, E... array) {
     collection.clear();
     if (array != null) {
-      if (collection instanceof ArrayList<?>) {
-        ArrayList<?> arrayList = (ArrayList<?>) collection;
+      if (collection instanceof ArrayList<?> arrayList) {
         arrayList.ensureCapacity(array.length);
       }
-      if (collection instanceof Vector<?>) {
-        Vector<?> vector = (Vector<?>) collection;
+      if (collection instanceof Vector<?> vector) {
         vector.ensureCapacity(array.length);
       }
     }
@@ -171,22 +169,22 @@ public class ArrayUtilities {
 
   public static String toString(Object o) {
     if (o != null) {
-      if (o instanceof Object[]) {
-        return Arrays.toString((Object[]) o);
-      } else if (o instanceof byte[]) {
-        return Arrays.toString((byte[]) o);
-      } else if (o instanceof short[]) {
-        return Arrays.toString((short[]) o);
-      } else if (o instanceof char[]) {
-        return Arrays.toString((char[]) o);
-      } else if (o instanceof int[]) {
-        return Arrays.toString((int[]) o);
-      } else if (o instanceof long[]) {
-        return Arrays.toString((long[]) o);
-      } else if (o instanceof float[]) {
-        return Arrays.toString((float[]) o);
-      } else if (o instanceof double[]) {
-        return Arrays.toString((double[]) o);
+      if (o instanceof Object[] objects) {
+        return Arrays.toString(objects);
+      } else if (o instanceof byte[] bytes) {
+        return Arrays.toString(bytes);
+      } else if (o instanceof short[] shorts) {
+        return Arrays.toString(shorts);
+      } else if (o instanceof char[] chars) {
+        return Arrays.toString(chars);
+      } else if (o instanceof int[] ints) {
+        return Arrays.toString(ints);
+      } else if (o instanceof long[] longs) {
+        return Arrays.toString(longs);
+      } else if (o instanceof float[] floats) {
+        return Arrays.toString(floats);
+      } else if (o instanceof double[] doubles) {
+        return Arrays.toString(doubles);
       } else {
         return o.toString();
       }

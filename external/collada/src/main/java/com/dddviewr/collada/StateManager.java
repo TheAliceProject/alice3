@@ -33,8 +33,8 @@ public class StateManager extends DefaultHandler {
       current = createState(localName);
       pushState(current);
       current.init(localName, attributes, this);
-      if (current instanceof COLLADA) {
-        this.collada = ((COLLADA) current).getCollada();
+      if (current instanceof COLLADA collada) {
+        this.collada = collada.getCollada();
       }
     } else {
       current = (State) this.states.peek();

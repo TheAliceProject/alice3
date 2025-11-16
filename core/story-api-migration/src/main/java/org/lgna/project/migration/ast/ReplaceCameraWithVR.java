@@ -48,17 +48,17 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof UserField) {
-      migrateField((UserField) node);
+    if (node instanceof UserField field) {
+      migrateField(field);
     }
-    if (node instanceof UserLocal) {
-      migrateType(((UserLocal) node).valueType);
+    if (node instanceof UserLocal local) {
+      migrateType(local.valueType);
     }
-    if (node instanceof UserParameter) {
-      migrateType(((UserParameter) node).valueType);
+    if (node instanceof UserParameter parameter) {
+      migrateType(parameter.valueType);
     }
-    if (node instanceof MethodInvocation) {
-      migrateMethod((MethodInvocation) node, manager);
+    if (node instanceof MethodInvocation invocation) {
+      migrateMethod(invocation, manager);
     }
   }
 
@@ -176,8 +176,8 @@ public class ReplaceCameraWithVR extends AstMigration {
     Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
     if (orientationExp instanceof InstanceCreation creation) {
       final Object orientation = creation.evaluate(vm);
-      if (orientation instanceof Orientation) {
-        UnitQuaternion markerOrientation = getLeveledOrientation((Orientation) orientation);
+      if (orientation instanceof Orientation orientation1) {
+        UnitQuaternion markerOrientation = getLeveledOrientation(orientation1);
         replaceOrientationArgs(creation, markerOrientation);
         Logger.outln("Leveled orientation of CameraMarker");
       }

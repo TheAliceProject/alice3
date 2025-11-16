@@ -67,8 +67,7 @@ public final class LambdaExpression extends Expression {
   @Override
   public void process(AstProcessor processor) {
     Lambda lambda = this.value.getValue();
-    if (lambda instanceof UserLambda) {
-      UserLambda userLambda = (UserLambda) lambda;
+    if (lambda instanceof UserLambda userLambda) {
       userLambda.process(processor);
     }
   }

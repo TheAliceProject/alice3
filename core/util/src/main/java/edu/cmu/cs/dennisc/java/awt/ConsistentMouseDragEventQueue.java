@@ -166,8 +166,7 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
 
   @Override
   protected void dispatchEvent(AWTEvent e) {
-    if (e instanceof MouseWheelEvent) {
-      MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) e;
+    if (e instanceof MouseWheelEvent mouseWheelEvent) {
 
       Component source = mouseWheelEvent.getComponent();
       int id = mouseWheelEvent.getID();
@@ -194,8 +193,7 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
       // 1.5
       e = new MouseWheelEvent(source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation);
 
-    } else if (e instanceof MouseEvent) {
-      MouseEvent mouseEvent = (MouseEvent) e;
+    } else if (e instanceof MouseEvent mouseEvent) {
       int id = mouseEvent.getID();
       switch (id) {
         case MouseEvent.MOUSE_PRESSED, MouseEvent.MOUSE_DRAGGED ->

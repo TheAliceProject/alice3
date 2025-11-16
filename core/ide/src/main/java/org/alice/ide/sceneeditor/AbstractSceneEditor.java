@@ -306,8 +306,8 @@ public abstract class AbstractSceneEditor extends BorderPanel {
     UserField field = this.getActiveSceneField();
     if (field != null) {
       AbstractType<?, ?, ?> type = field.getValueType();
-      if (type instanceof NamedUserType) {
-        return (NamedUserType) type;
+      if (type instanceof NamedUserType userType) {
+        return userType;
       }
     }
     return null;

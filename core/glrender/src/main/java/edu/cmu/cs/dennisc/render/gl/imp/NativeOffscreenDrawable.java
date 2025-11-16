@@ -69,8 +69,7 @@ public final class NativeOffscreenDrawable extends OffscreenDrawable {
         throwable = t;
       }
       if (throwable != null) {
-        if (throwable instanceof NullPointerException) {
-          NullPointerException nullPointerException = (NullPointerException) throwable;
+        if (throwable instanceof NullPointerException nullPointerException) {
           Logger.info(nullPointerException);
         } else {
           Logger.throwable(throwable);

@@ -75,8 +75,7 @@ public class BillboardIcon extends ShapeIcon {
     Rectangle2D.Float innerShape = new Rectangle2D.Float(x + offset, y + offset, width - (offset * 2), h - (offset * 2));
 
     Paint innerFillPaint;
-    if (fillPaint instanceof Color) {
-      Color fillColor = (Color) fillPaint;
+    if (fillPaint instanceof Color fillColor) {
       innerFillPaint = new GradientPaint((float) innerShape.getMinX(), (float) innerShape.getMinY(), fillColor.brighter(), (float) innerShape.getCenterX(), (float) innerShape.getMaxY(), fillColor);
     } else {
       innerFillPaint = fillPaint;

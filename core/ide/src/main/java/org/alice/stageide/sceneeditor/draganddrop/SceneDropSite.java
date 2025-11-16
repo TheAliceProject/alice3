@@ -80,8 +80,7 @@ public final class SceneDropSite implements DropSite {
     if (o == this) {
       return true;
     }
-    if (o instanceof SceneDropSite) {
-      SceneDropSite sds = (SceneDropSite) o;
+    if (o instanceof SceneDropSite sds) {
       return Objects.equals(this.transform, sds.transform);
     } else {
       return false;

@@ -54,12 +54,12 @@ public class BoundingBoxUtilities {
     AxisAlignedBox boundingBox = null;
     if (sgTransformable != null) {
       EntityImp entityImp = EntityImp.getInstance(sgTransformable);
-      if (entityImp instanceof JointedModelImp<?, ?>) {
-        boundingBox = ((JointedModelImp<?, ?>) entityImp).getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
-      } else if (entityImp instanceof ModelImp) {
-        boundingBox = ((ModelImp) entityImp).getAxisAlignedMinimumBoundingBox();
-      } else if (entityImp instanceof JointImp) {
-        boundingBox = ((JointImp) entityImp).getAxisAlignedMinimumBoundingBox();
+      if (entityImp instanceof JointedModelImp<?, ?> imp2) {
+        boundingBox = imp2.getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
+      } else if (entityImp instanceof ModelImp imp1) {
+        boundingBox = imp1.getAxisAlignedMinimumBoundingBox();
+      } else if (entityImp instanceof JointImp imp) {
+        boundingBox = imp.getAxisAlignedMinimumBoundingBox();
       }
     }
     return boundingBox;

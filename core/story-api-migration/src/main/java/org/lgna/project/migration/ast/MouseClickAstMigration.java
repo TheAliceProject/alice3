@@ -59,8 +59,7 @@ public class MouseClickAstMigration extends MethodInvocationAstMigration {
   @Override
   protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
-    if (method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) method;
+    if (method instanceof JavaMethod javaMethod) {
       if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
         String methodName = javaMethod.getName();
         if (methodName.equals("addMouseClickOnScreenListener")) {

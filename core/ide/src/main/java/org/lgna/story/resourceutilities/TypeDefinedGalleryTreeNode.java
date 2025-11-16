@@ -100,9 +100,9 @@ public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 
   private TypeDefinedGalleryTreeNode getChildWithJavaType(AbstractType<?, ?, ?> type) {
     for (GalleryResourceTreeNode child : this.children) {
-      if (child instanceof TypeDefinedGalleryTreeNode) {
-        if ((((TypeDefinedGalleryTreeNode) child).resourceJavaType != null) && type.isAssignableFrom(((TypeDefinedGalleryTreeNode) child).resourceJavaType)) {
-          return (TypeDefinedGalleryTreeNode) child;
+      if (child instanceof TypeDefinedGalleryTreeNode node) {
+        if ((node.resourceJavaType != null) && type.isAssignableFrom(node.resourceJavaType)) {
+          return node;
         }
       }
     }
@@ -116,8 +116,8 @@ public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
     }
     if (this.getChildCount() > 0) {
       for (GalleryResourceTreeNode child : this.children) {
-        if (child instanceof TypeDefinedGalleryTreeNode) {
-          TypeDefinedGalleryTreeNode result = ((TypeDefinedGalleryTreeNode) child).getDescendantOfJavaType(type);
+        if (child instanceof TypeDefinedGalleryTreeNode node) {
+          TypeDefinedGalleryTreeNode result = node.getDescendantOfJavaType(type);
           if (result != null) {
             return result;
           }

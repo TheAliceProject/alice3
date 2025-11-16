@@ -342,8 +342,8 @@ public class JsonModelIo extends DataSourceIo {
     if (GENERATE_BACKFACES) {
       List<Geometry> backfaceMeshes = new LinkedList<>();
       for (Geometry g : sv.geometries.getValue()) {
-        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
-          backfaceMeshes.add(createFlippedMesh((Mesh) g));
+        if ((g instanceof Mesh mesh) && !mesh.cullBackfaces.getValue()) {
+          backfaceMeshes.add(createFlippedMesh(mesh));
         }
       }
       if (backfaceMeshes.size() > 0) {

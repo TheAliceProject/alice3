@@ -57,8 +57,7 @@ import java.util.UUID;
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
   private static AbstractType<?, ?, ?> getReturnType(BlockStatementIndexPair blockStatementIndexPair) {
     AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo(AbstractCode.class);
-    if (code instanceof UserMethod) {
-      UserMethod method = (UserMethod) code;
+    if (code instanceof UserMethod method) {
       if (method.isFunction()) {
         return method.returnType.getValue();
       }

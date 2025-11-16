@@ -104,8 +104,7 @@ public class TypeIcon implements Icon {
 
   private String getBonusText() {
     if (isIndentForDepthAndMemberCountTextDesired) {
-      if (this.type instanceof NamedUserType) {
-        NamedUserType userType = (NamedUserType) this.type;
+      if (this.type instanceof NamedUserType userType) {
         int count = 0;
         for (UserMethod method : userType.methods) {
           if (method.getManagementLevel() == ManagementLevel.NONE) {

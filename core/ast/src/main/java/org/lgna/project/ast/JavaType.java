@@ -113,8 +113,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
   /* package-private */
   static AbstractType<?, ?, ?> getWrapperTypeIfNecessary(AbstractType<?, ?, ?> type) {
-    if (type instanceof JavaType) {
-      JavaType javaType = (JavaType) type;
+    if (type instanceof JavaType javaType) {
       if (javaType.isPrimitive()) {
         JavaType wrapperType = mapPrimitiveToWrapper.get(javaType);
         if (wrapperType != null) {
@@ -432,8 +431,8 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
   @Override
   public boolean isEquivalentTo(Object other) {
-    if (other instanceof JavaType) {
-      return classReflectionProxy.equals(((JavaType) other).classReflectionProxy);
+    if (other instanceof JavaType type) {
+      return classReflectionProxy.equals(type.classReflectionProxy);
     } else {
       return false;
     }

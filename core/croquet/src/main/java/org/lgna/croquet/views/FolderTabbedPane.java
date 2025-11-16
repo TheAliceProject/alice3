@@ -612,8 +612,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
   @Override
   protected void addItem(E item, BooleanStateButton<?> button) {
     super.addItem(item, button);
-    if (button instanceof FolderTabbedPane.FolderTabTitle) {
-      FolderTabTitle title = (FolderTabTitle) button;
+    if (button instanceof FolderTabTitle title) {
       title.setCloseable(item.isCloseable());
     }
     this.titlesPanel.addComponent(button);

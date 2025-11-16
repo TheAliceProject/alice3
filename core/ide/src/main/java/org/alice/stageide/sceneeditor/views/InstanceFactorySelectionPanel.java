@@ -197,8 +197,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
             indexOfFirstComponentThatFails = i;
           }
         }
-        if (c instanceof AbstractButton) {
-          AbstractButton button = (AbstractButton) c;
+        if (c instanceof AbstractButton button) {
           if (button.isSelected()) {
             indexOfSelectedComponent = i;
           }

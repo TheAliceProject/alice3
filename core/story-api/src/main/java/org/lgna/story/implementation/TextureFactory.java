@@ -66,8 +66,7 @@ public final class TextureFactory {
     @Override
     public void contentChanged(ResourceContentEvent e) {
       Resource resource = e.getTypedSource();
-      if (resource instanceof ImageResource) {
-        ImageResource imageResource = (ImageResource) resource;
+      if (resource instanceof ImageResource imageResource) {
         BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
         if (bufferedImage != null) {
           Texture texture = TextureFactory.resourceToTextureMap.get(e.getTypedSource());
