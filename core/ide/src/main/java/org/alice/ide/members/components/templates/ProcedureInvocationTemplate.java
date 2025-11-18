@@ -65,13 +65,15 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
     }
   };
 
-  /* package-private */ProcedureInvocationTemplate(AbstractMethod method) {
+  public ProcedureInvocationTemplate(AbstractMethod method) {
     super(ProcedureInvocationTemplateDragModel.getInstance(method));
     this.method = method;
 
     if (this.method instanceof UserMethod) {
       this.setPopupPrepModel(MethodTemplateMenuModel.getInstance((UserMethod) this.method).getPopupPrepModel());
     }
+
+    handleDisplayable();
   }
 
   @Override

@@ -68,7 +68,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     super(model, isAlphaDesiredWhenOverDropReceptor);
   }
 
-  protected final boolean isKnurlDesired() {
+  protected boolean isKnurlDesired() {
     return this.getModel() != null;
   }
 
