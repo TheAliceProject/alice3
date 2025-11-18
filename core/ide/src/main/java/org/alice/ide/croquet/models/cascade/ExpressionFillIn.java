@@ -92,7 +92,8 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
     }
 
     JComponent expressionPane;
-    // to procedure block into our dropdown, make it look like a proper procedure block, but without the knurls
+    // to procedure block in our dropdowns, make it look like a proper procedure block, but without the knurls
+    // (Found in the 'Add Event Listener' dropdown on the initializeEventListeners tab)
     if (expression instanceof MethodInvocation invocation && invocation.method.getValue().isProcedure()) {
       ProcedureInvocationTemplate block = new ProcedureInvocationTemplate(invocation.method.getValue()) {
         @Override
