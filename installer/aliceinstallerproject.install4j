@@ -131,8 +131,8 @@
       <executable name="${compiler:sys.fullName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
-          <statusLine x="86" y="262" text="Loading…" />
-          <versionLine x="461" y="262" text="version ${compiler:sys.version}" />
+          <statusLine x="86" y="262" text="Loading…" fontColor="255,255,255" />
+          <versionLine x="461" y="262" text="version ${compiler:sys.version}" fontColor="255,255,255" />
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-da -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED">
