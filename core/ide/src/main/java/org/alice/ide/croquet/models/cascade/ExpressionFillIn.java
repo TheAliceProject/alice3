@@ -47,11 +47,13 @@ import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.javax.swing.LabelUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
 
 import javax.swing.*;
 import java.awt.Dimension;
@@ -88,7 +90,22 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
     } else {
       trailingLabel = null;
     }
-    JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
+
+    JComponent expressionPane;
+    // to procedure block in our dropdowns, make it look like a proper procedure block, but without the knurls
+    // (Found in the 'Add Event Listener' dropdown on the initializeEventListeners tab)
+    if (expression instanceof MethodInvocation invocation && invocation.method.getValue().isProcedure()) {
+      ProcedureInvocationTemplate block = new ProcedureInvocationTemplate(invocation.method.getValue()) {
+        @Override
+        public boolean isKnurlDesired() {
+          return false;
+        }
+      };
+      expressionPane = block.getAwtComponent();
+    } else {
+      expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
+    }
+
     if ((leadingIcon != null) || (trailingLabel != null)) {
       JLineAxisPane rv = new JLineAxisPane();
       if (leadingIcon != null) {
