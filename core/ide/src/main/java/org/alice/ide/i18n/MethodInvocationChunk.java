@@ -45,7 +45,7 @@ package org.alice.ide.i18n;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationChunk extends Chunk {
+public final class MethodInvocationChunk extends Chunk {
   private String methodName;
 
   public MethodInvocationChunk(String methodNamePlusParens) {

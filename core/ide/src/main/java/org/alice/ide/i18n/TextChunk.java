@@ -45,8 +45,8 @@ package org.alice.ide.i18n;
 /**
  * @author Dennis Cosgrove
  */
-public class TextChunk extends Chunk {
-  private String text;
+public final class TextChunk extends Chunk {
+  private final String text;
 
   public TextChunk(String text) {
     this.text = text;
