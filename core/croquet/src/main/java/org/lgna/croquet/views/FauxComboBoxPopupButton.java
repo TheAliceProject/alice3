@@ -45,9 +45,10 @@ package org.lgna.croquet.views;
 import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.croquet.PopupPrepModel;
 
-import javax.swing.Icon;
 import javax.swing.SwingConstants;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.util.Objects;
 
 /**
  * * this faux dropdown button is on the large object selecting dropdown in both the code and scene views.
@@ -60,56 +61,43 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepMod
 
   protected class JFauxComboBoxPopupButton extends JPopupButton {
     private static final int OUTER_PAD = 6;
-    Icon icon;
-    int iconSize = 11;
+    ArrowIcon icon;
 
     protected JFauxComboBoxPopupButton() {
       this.setHorizontalTextPosition(SwingConstants.LEADING);
-      icon = new ArrowIcon(iconSize, false);
+      icon = new ArrowIcon(calculateIconSize(), false);
     }
 
-    private int getIconSize() {
-      int prevSize = iconSize;
-      this.iconSize = this.getHeight() / 4;
-      if (prevSize != iconSize) {
-        icon = new ArrowIcon(iconSize, false);
+    private int calculateIconSize() {
+      int size = getHeight() / 2;
+      if (icon != null) {
+        icon.setSize(size);
       }
-      return iconSize;
-    }
-
-    private int getComboPad() {
-      return this.getHeight() / 8 + OUTER_PAD;
+      return size;
     }
 
     @Override
     public Insets getMargin() {
-      Insets rv = super.getMargin();
-      if (rv != null) {
-        ComponentOrientation componentOrientation = this.getComponentOrientation();
-        int increment = this.getIconSize() + this.getComboPad()  + TRAILING_PAD;
-        if (componentOrientation.isLeftToRight()) {
-          rv.right += increment;
-        } else {
-          rv.left += increment;
-        }
+      Insets insets = Objects.requireNonNullElse(super.getMargin(), new Insets(1, 2, 1, 2));
+
+      // add horizontal space for our dropdown arrow, on whatever side it will appear
+      int increment = calculateIconSize() + OUTER_PAD;
+      if (getComponentOrientation().isLeftToRight()) {
+        insets.right += increment;
+      } else {
+        insets.left += increment;
       }
-      return rv;
+      return insets;
     }
 
     @Override
     protected void paintBorder(Graphics g) {
       super.paintBorder(g);
-      final int y = (this.getHeight() - this.getIconSize()) / 2;
-
-      ComponentOrientation componentOrientation = this.getComponentOrientation();
-
-      int x;
-      if (componentOrientation.isLeftToRight()) {
-        Insets insets = this.getInsets();
-        x = this.getWidth() - insets.right - TRAILING_PAD + this.getComboPad();
-      } else {
-        x = TRAILING_PAD + this.getComboPad();
-      }
+      Insets insets = getInsets();
+      final int height = this.getHeight();
+      int iconSize = calculateIconSize();
+      final int y = insets.bottom + (height - insets.bottom - insets.top - iconSize) / 2;
+      final int x = getComponentOrientation().isLeftToRight() ? getWidth() - iconSize - OUTER_PAD : OUTER_PAD;
       icon.paintIcon(this, g, x, y);
     }
   }
