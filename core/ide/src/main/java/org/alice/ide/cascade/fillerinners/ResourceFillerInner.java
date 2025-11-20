@@ -73,7 +73,7 @@ public abstract class ResourceFillerInner<R extends Resource> extends Expression
     Project project = ide.getProject();
     if (project != null) {
       Set<Resource> resources = project.getResources();
-      if ((resources != null) && (resources.isEmpty() == false)) {
+      if ((resources != null) && !resources.isEmpty()) {
         synchronized (resources) {
           for (Resource resource : resources) {
             if (this.getType().isAssignableFrom(resource.getClass())) {

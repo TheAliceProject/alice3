@@ -109,7 +109,7 @@ public abstract class GlrTexture<T extends Texture> extends GlrObject<T> {
   @Override
   protected void handleReleased() {
     super.handleReleased();
-    if (this.renderContexts.size() > 0) {
+    if (!this.renderContexts.isEmpty()) {
       for (RenderContext rc : this.renderContexts) {
         rc.forgetTextureAdapter(this, true);
       }

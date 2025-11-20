@@ -228,19 +228,19 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
             locals.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(LocalAccessFactory.getInstance(local)), apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess(local)));
           }
         }
-        if ((parameters.size() > 0) || (locals.size() > 0)) {
+        if ((!parameters.isEmpty()) || (!locals.isEmpty())) {
           blankChildren.add(CascadeLineSeparator.getInstance());
           blankChildren.add(this.parametersVariablesConstantsSeparator);
           StringBuilder sb = new StringBuilder();
           NodeUtilities.safeAppendRepr(sb, code);
           sb.append(" ");
           String prefix = "";
-          if (parameters.size() > 0) {
+          if (!parameters.isEmpty()) {
             sb.append("parameters");
             blankChildren.addAll(parameters);
             prefix = ", ";
           }
-          if (locals.size() > 0) {
+          if (!locals.isEmpty()) {
             if (containsVariable) {
               sb.append(prefix);
               sb.append("variables");
@@ -282,7 +282,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
                     }
                   }
 
-                  if (methodInvocationBlankChildren.size() > 0) {
+                  if (!methodInvocationBlankChildren.isEmpty()) {
                     AbstractMethod method = methodInvocation.method.getValue();
                     blankChildren.add(MethodNameSeparator.getInstance(method));
                     blankChildren.addAll(methodInvocationBlankChildren);

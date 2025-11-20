@@ -119,13 +119,11 @@ public class MultilineText {
         }
       }
       this.aggregateSize = new Dimension(1, 1);
-      if (this.lines.size() > 0) {
-        for (Line line : this.lines) {
-          Rectangle2D rect = line.textLayout.getBounds();
-          double width = Math.max(aggregateSize.getWidth(), rect.getWidth());
-          double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
-          aggregateSize.setSize(width, height);
-        }
+      for (Line line : this.lines) {
+        Rectangle2D rect = line.textLayout.getBounds();
+        double width = Math.max(aggregateSize.getWidth(), rect.getWidth());
+        double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
+        aggregateSize.setSize(width, height);
       }
       this.fm = fm;
       this.wrapWidth = wrapWidth;

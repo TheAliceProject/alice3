@@ -122,7 +122,7 @@ public class RenderTargetImp {
   }
 
   public void clearSgCameras(GLAutoDrawable glAutoDrawable) {
-    if (this.sgCameras.size() > 0) {
+    if (!this.sgCameras.isEmpty()) {
       this.sgCameras.clear();
     }
     if (this.isListening()) {

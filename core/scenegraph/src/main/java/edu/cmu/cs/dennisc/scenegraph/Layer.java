@@ -83,7 +83,7 @@ public class Layer extends Element {
 
   /* package-private */void addGraphicAndFireListeners(Graphic graphic) {
     this.graphics.add(graphic);
-    if (this.graphicsListeners.size() > 0) {
+    if (!this.graphicsListeners.isEmpty()) {
       GraphicAddedEvent e = new GraphicAddedEvent(this, graphic);
       for (GraphicsListener l : this.graphicsListeners) {
         l.graphicAdded(e);
@@ -93,7 +93,7 @@ public class Layer extends Element {
 
   /* package-private */void removeGraphicAndFireListeners(Graphic graphic) {
     this.graphics.remove(graphic);
-    if (this.graphicsListeners.size() > 0) {
+    if (!this.graphicsListeners.isEmpty()) {
       GraphicRemovedEvent e = new GraphicRemovedEvent(this, graphic);
       for (GraphicsListener l : this.graphicsListeners) {
         l.graphicRemoved(e);

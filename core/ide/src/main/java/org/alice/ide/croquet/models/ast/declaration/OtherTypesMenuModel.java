@@ -85,15 +85,8 @@ public class OtherTypesMenuModel extends CascadeMenuModel<AbstractType> {
   }
 
   public boolean isEmpty() {
-    if (IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0) {
-      return false;
-    } else {
-      if (IS_SCENE_TYPE_DESIRED) {
-        return this.getSceneType() == null;
-      } else {
-        return true;
-      }
-    }
+    return IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().isEmpty()
+        && (!IS_SCENE_TYPE_DESIRED || getSceneType() == null);
   }
 
   @Override

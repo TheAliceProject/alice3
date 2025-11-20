@@ -126,10 +126,6 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
   }
 
   public boolean isRelevant() {
-    if (IsEmphasizingClassesState.getInstance().getValue()) {
-      return true;
-    } else {
-      return this.getMethods().size() > 0;
-    }
+    return IsEmphasizingClassesState.getInstance().getValue() || !this.getMethods().isEmpty();
   }
 }

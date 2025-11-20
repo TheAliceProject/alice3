@@ -95,7 +95,7 @@ public class CardPanel extends Panel {
       for (Composite<?> card : cards) {
         this.addComposite(card);
       }
-      if (cards.size() > 0) {
+      if (!cards.isEmpty()) {
         color = cards.getFirst().getView().getBackgroundColor();
       }
     }

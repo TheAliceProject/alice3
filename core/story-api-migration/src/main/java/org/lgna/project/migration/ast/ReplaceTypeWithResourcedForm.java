@@ -93,12 +93,7 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
   }
 
   private boolean constructorsTakeNoArguments(List<? extends AbstractConstructor> constructors) {
-    for (AbstractConstructor constructor : constructors) {
-      if (constructor.getRequiredParameters().size() > 0) {
-        return false;
-      }
-    }
-    return true;
+    return constructors.stream().allMatch(constructor -> constructor.getRequiredParameters().isEmpty());
   }
 
   private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property, MigrationManager manager) {

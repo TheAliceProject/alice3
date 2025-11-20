@@ -81,7 +81,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
     IDE ide = IDE.getActiveInstance();
     ProjectPerspective idePerspective = (ProjectPerspective) ide.getPerspective();
     List<DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors((IdeDragModel) potentialDragSource.getModel());
-    if (dropReceptors.size() > 0) {
+    if (!dropReceptors.isEmpty()) {
       this.holes = dropReceptors;
       this.potentialDragSource = potentialDragSource;
       this.window.getRootPane().getLayeredPane().getLayer(LAYER_ID).setComponent(this);

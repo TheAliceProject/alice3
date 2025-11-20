@@ -127,36 +127,37 @@ import java.util.zip.ZipInputStream;
           }
         }
       }
-      if (componentsToClose.size() > 0) {
-        // TODO I18n
-        String title = "Clean Slate?";
+      if (componentsToClose.isEmpty()) {
+        return;
+      }
+      // TODO I18n
+      String title = "Clean Slate?";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-        // TODO I18n
-        sb.append("<h1>Would you like to start with a clean slate?</h1>");
-        sb.append("<h1>Close the following tabs:</h1>");
-        sb.append("<ul>");
-        for (TopComponent topComponent : componentsToClose) {
-          sb.append("<li>");
-          sb.append(topComponent.getName());
-          sb.append("</li>");
-        }
-        sb.append("</ul>");
-        sb.append("</html>");
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html>");
+      // TODO I18n
+      sb.append("<h1>Would you like to start with a clean slate?</h1>");
+      sb.append("<h1>Close the following tabs:</h1>");
+      sb.append("<ul>");
+      for (TopComponent topComponent : componentsToClose) {
+        sb.append("<li>");
+        sb.append(topComponent.getName());
+        sb.append("</li>");
+      }
+      sb.append("</ul>");
+      sb.append("</html>");
 
-        String message = sb.toString();
-        int result = JOptionPane.showConfirmDialog(this.panels[0].getComponent(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (result == JOptionPane.YES_OPTION) {
-          SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-              for (TopComponent topComponent : componentsToClose) {
-                topComponent.close();
-              }
+      String message = sb.toString();
+      int result = JOptionPane.showConfirmDialog(this.panels[0].getComponent(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      if (result == JOptionPane.YES_OPTION) {
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            for (TopComponent topComponent : componentsToClose) {
+              topComponent.close();
             }
-          });
-        }
+          }
+        });
       }
     }
   }

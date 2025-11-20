@@ -797,7 +797,7 @@ public abstract class VirtualMachine {
       default -> throw new RuntimeException(expression.getClass().getName());
     };
     synchronized (virtualMachineListeners) {
-      if (virtualMachineListeners.size() > 0) {
+      if (!virtualMachineListeners.isEmpty()) {
         ExpressionEvaluationEvent expressionEvaluationEvent = new ExpressionEvaluationEvent(this, expression, rv);
         for (VirtualMachineListener virtualMachineListener : virtualMachineListeners) {
           virtualMachineListener.expressionEvaluated(expressionEvaluationEvent);
@@ -1111,7 +1111,7 @@ public abstract class VirtualMachine {
       StatementExecutionEvent statementEvent;
       VirtualMachineListener[] listeners;
       synchronized (this.virtualMachineListeners) {
-        if (this.virtualMachineListeners.size() > 0) {
+        if (!this.virtualMachineListeners.isEmpty()) {
           statementEvent = new StatementExecutionEvent(this, statement);
           listeners = ArrayUtilities.createArray(this.virtualMachineListeners, VirtualMachineListener.class);
         } else {

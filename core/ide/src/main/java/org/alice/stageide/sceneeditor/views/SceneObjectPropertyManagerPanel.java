@@ -349,7 +349,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
         LabelValueControllerPair fieldNamePair = null;
 
-        if (propertyAdapters.size() != 0) {
+        if (!propertyAdapters.isEmpty()) {
           int mainPropertyCount = 0;
           int extraPropertyCount = 0;
           //Add all the extra properties to the extra panel and find the name property adapter

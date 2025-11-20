@@ -307,35 +307,33 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   @Override
   public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
     String clsName = decodeString();
-    if (clsName.length() > 0) {
-      int reference = decodeInt();
-      E rv;
-      if (map.containsKey(reference)) {
-        rv = (E) map.get(reference);
-      } else {
-        rv = (E) ReflectionUtilities.newInstance(clsName);
-        map.put(reference, rv);
-        rv.decode(this, map);
-
-        //
-        //
-        //todo?
-        //
-        //
-        //        Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-        //        java.lang.reflect.Constructor< E > cnstrctr;
-        //        try {
-        //          cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
-        //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
-        //        } catch( NoSuchMethodException nsme ) {
-        //          cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-        //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-        //          rv.decode( this, map );
-        //        }
-      }
-      return rv;
-    } else {
+    if (clsName.isEmpty()) {
       return null;
+    }
+    int reference = decodeInt();
+    if (map.containsKey(reference)) {
+      return (E) map.get(reference);
+    } else {
+      E instance = (E) ReflectionUtilities.newInstance(clsName);
+      map.put(reference, instance);
+      instance.decode(this, map);
+      return instance;
+
+      //
+      //
+      //todo?
+      //
+      //
+      //        Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+      //        java.lang.reflect.Constructor< E > cnstrctr;
+      //        try {
+      //          cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
+      //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
+      //        } catch( NoSuchMethodException nsme ) {
+      //          cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+      //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+      //          rv.decode( this, map );
+      //        }
     }
   }
 

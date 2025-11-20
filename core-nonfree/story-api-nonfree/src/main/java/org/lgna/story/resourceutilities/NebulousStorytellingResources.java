@@ -138,11 +138,11 @@ public enum NebulousStorytellingResources {
     }
 
     List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
-    if (resourcePaths.size() == 0) {
+    if (resourcePaths.isEmpty()) {
       resourcePaths = findSimsBundles();
     }
     int loaded = loadSimsBundlesFromPaths(resourcePaths);
-    if ((loaded == 0) && (simsPathsLoaded.size() == 0)) {
+    if ((loaded == 0) && (simsPathsLoaded.isEmpty())) {
       //Clear previously cached info
       clearSimsResourceInfo();
       File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -159,11 +159,11 @@ public enum NebulousStorytellingResources {
         loaded = loadSimsBundlesFromPaths(resourcePaths);
       }
     }
-    if ((loaded == 0) && (simsPathsLoaded.size() == 0)) {
+    if ((loaded == 0) && (simsPathsLoaded.isEmpty())) {
       clearSimsResourceInfo();
       StringBuilder sb = new StringBuilder();
       sb.append("Cannot find The Sims (TM) 2 Art Assets.");
-      if ((resourcePaths == null) || (resourcePaths.size() == 0)) {
+      if ((resourcePaths == null) || (resourcePaths.isEmpty())) {
         sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
       } else {
         sb.append("\nSearched in ");

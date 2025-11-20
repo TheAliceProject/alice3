@@ -256,7 +256,7 @@ public abstract class IDE extends ProjectApplication {
       UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler(unacceptableFields);
       initializer.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
       List<FieldAccess> fieldAccesses = crawler.getList();
-      if (fieldAccesses.size() > 0) {
+      if (!fieldAccesses.isEmpty()) {
         fieldToMoveToTheEnd = field;
         accessesForFieldToMoveToTheEnd = fieldAccesses;
         break;

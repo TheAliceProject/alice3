@@ -191,7 +191,7 @@ public class GlrScene extends GlrComposite<Scene> {
       backgroundAdapter.setup(rc);
     }
 
-    if (this.glrPlanarReflectorDescendants.size() > 0) {
+    if (!this.glrPlanarReflectorDescendants.isEmpty()) {
       GlrPlanarReflector planarReflectorAdapter = this.glrPlanarReflectorDescendants.getFirst();
       if (planarReflectorAdapter.isFacing(cameraAdapter)) {
         rc.gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

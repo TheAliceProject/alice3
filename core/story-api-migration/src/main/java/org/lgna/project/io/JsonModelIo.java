@@ -346,7 +346,7 @@ public class JsonModelIo extends DataSourceIo {
           backfaceMeshes.add(createFlippedMesh(mesh));
         }
       }
-      if (backfaceMeshes.size() > 0) {
+      if (!backfaceMeshes.isEmpty()) {
         for (int i = 0; i < sv.geometries.getLength(); i++) {
           backfaceMeshes.add(i, sv.geometries.getValue()[i]);
         }
@@ -358,7 +358,7 @@ public class JsonModelIo extends DataSourceIo {
           backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
         }
       }
-      if (backfaceWeightedMeshes.size() > 0) {
+      if (!backfaceWeightedMeshes.isEmpty()) {
         for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
           backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
         }

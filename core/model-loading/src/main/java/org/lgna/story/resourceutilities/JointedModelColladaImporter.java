@@ -471,7 +471,7 @@ public class JointedModelColladaImporter {
         }
       }
     }
-    if (textureAppearances.size() == 0) {
+    if (textureAppearances.isEmpty()) {
       throw new ModelLoadingException("No supported materials found. Alice models must have a texture.");
     }
     return textureAppearances;
@@ -573,7 +573,7 @@ public class JointedModelColladaImporter {
 
     //Find and build meshes (both static and weighted) from the collada model
     List<Mesh> aliceMeshes = createAliceMeshesFromCollada(colladaModel);
-    if (aliceMeshes.size() == 0) {
+    if (aliceMeshes.isEmpty()) {
       throw new ModelLoadingException("Error processing model: No valid meshes found.");
     }
 

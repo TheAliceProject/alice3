@@ -70,7 +70,7 @@ public class Manager {
       Set<Model> set = mapIdToModels.get(id);
       if (set != null) {
         set.remove(model);
-        if (set.size() == 0) {
+        if (set.isEmpty()) {
           mapIdToModels.remove(id);
         }
       } else {

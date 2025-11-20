@@ -756,7 +756,7 @@ public class ModelResourceExporter {
     if (subResource.getBbox() != null) {
       resourceElement.appendChild(createBoundingBoxElement(doc, subResource.getBbox()));
     }
-    if (subResource.getTags().size() > 0) {
+    if (!subResource.getTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getTags()) {
         if ((parentMRE.tags == null) || !parentMRE.tags.contains(t)) {
@@ -768,7 +768,7 @@ public class ModelResourceExporter {
       }
     }
 
-    if (subResource.getGroupTags().size() > 0) {
+    if (!subResource.getGroupTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getGroupTags()) {
         if ((parentMRE.groupTags == null) || !parentMRE.groupTags.contains(t)) {
@@ -780,7 +780,7 @@ public class ModelResourceExporter {
       }
     }
 
-    if (subResource.getThemeTags().size() > 0) {
+    if (!subResource.getThemeTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getThemeTags()) {
         if ((parentMRE.themeTags == null) || !parentMRE.themeTags.contains(t)) {
@@ -1193,7 +1193,7 @@ public class ModelResourceExporter {
       sb.append("@Deprecated" + JavaCodeUtilities.LINE_RETURN);
     }
     sb.append("public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {" + JavaCodeUtilities.LINE_RETURN);
-    assert this.subResources.size() > 0;
+    assert !this.subResources.isEmpty();
     boolean isFirst = true;
     for (int i = 0; i < this.subResources.size(); i++) {
       ModelSubResourceExporter resource = this.subResources.get(i);
@@ -1267,7 +1267,7 @@ public class ModelResourceExporter {
       }
       //Handle pose code
       List<String> mandatoryPoseNames = getMandatoryPoseNames(classData.superClass);
-      if (!poseEntries.isEmpty() || (mandatoryPoseNames.size() != 0)) {
+      if (!poseEntries.isEmpty() || (!mandatoryPoseNames.isEmpty())) {
         for (String mandatoryPose : mandatoryPoseNames) {
           if (!poseEntries.containsKey(mandatoryPose)) {
             throw new DataFormatException("Missing pose definition for " + mandatoryPose + " on class " + classData.superClass);
@@ -1318,7 +1318,7 @@ public class ModelResourceExporter {
       //Handle array code
       List<String> mandatoryArrayNames = getMandatoryJointArrayNames(classData.superClass);
       List<String> declaredArrays = getAlreadyDeclaredJointArrayNames(classData.superClass);
-      if (!arrayEntries.isEmpty() || (mandatoryArrayNames.size() != 0)) {
+      if (!arrayEntries.isEmpty() || (!mandatoryArrayNames.isEmpty())) {
         //Loop through and remove any existing arrays from the mandatory array list
         // This should leave only the mandatory arrays that need an empty list defined
         for (Entry<String, List<String>> arrayEntry : arrayEntries.entrySet()) {
@@ -1660,7 +1660,7 @@ public class ModelResourceExporter {
         }
       }
     }
-    if (this.subResources.size() == 0) {
+    if (this.subResources.isEmpty()) {
       System.err.println("NO SUB RESOURCES ON " + this.resourceName);
     }
     ModelSubResourceExporter firstSubResource = this.subResources.getFirst();
@@ -1725,7 +1725,7 @@ public class ModelResourceExporter {
   }
 
   public void addForcedEnumNames(String resourceName, List<String> enumNames) {
-    if ((enumNames != null) && (enumNames.size() > 0)) {
+    if ((enumNames != null) && (!enumNames.isEmpty())) {
       if (resourceName == null) {
         this.forcedOverridingEnumNames.addAll(enumNames);
       } else {

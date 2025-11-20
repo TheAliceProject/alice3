@@ -173,7 +173,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
   public final String getTerseDescription() {
     StringBuilder sb = new StringBuilder();
     this.appendDescription(sb, DescriptionStyle.TERSE);
-    if (sb.length() == 0) {
+    if (sb.isEmpty()) {
       sb.append(ClassUtilities.getTrimmedClassName(this.getClass()));
     }
     return sb.toString();

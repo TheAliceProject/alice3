@@ -72,7 +72,7 @@ public class SearchTreeNode {
   }
 
   public boolean getIsLeaf() {
-    return this.children.size() == 0;
+    return this.children.isEmpty();
   }
 
   public boolean childrenContains(Object reference) {

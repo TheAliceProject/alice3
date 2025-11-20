@@ -210,7 +210,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 
         @Override
         public void run() {
-          if (keyFrames.size() > 0) {
+          if (!keyFrames.isEmpty()) {
             model.straightenOutJoints();
             stillRunning = true;
             timerThread.start();
@@ -321,6 +321,6 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
   }
 
   public boolean isEmpty() {
-    return tlComposite.getTimeLine().getKeyFrames().size() == 0;
+    return tlComposite.getTimeLine().getKeyFrames().isEmpty();
   }
 }

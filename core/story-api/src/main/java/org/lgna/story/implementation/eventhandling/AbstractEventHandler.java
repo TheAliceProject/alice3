@@ -103,12 +103,12 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
   }
 
   protected void fireDequeue(L listener) {
-    if (queue.size() == 0) {
+    if (queue.isEmpty()) {
       return;
     }
     CopyOnWriteArrayList<E> internalQueue = new CopyOnWriteArrayList<>(queue);
     queue.clear();
-    while (internalQueue.size() > 0) {
+    while (!internalQueue.isEmpty()) {
       fire(listener, internalQueue.removeFirst());
     }
     fireDequeue(listener);
@@ -131,7 +131,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
   protected void registerIsFiringMap(L eventListener, Visual[] targets) {
     isFiringMap.put(eventListener, new ConcurrentHashMap<>());
-    if ((targets != null) && (targets.length > 0)) {
+    if (targets != null) {
       for (Visual target : targets) {
         isFiringMap.get(eventListener).put(target, false);
       }

@@ -60,7 +60,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
 
     public ItemChildrenAndComboOffsetsPair(List<RtItem> baseRtItems, List<Integer> comboOffsets) {
       this.rtItems = ArrayUtilities.createArray(baseRtItems, RtItem.class);
-      if (comboOffsets.size() > 0) {
+      if (!comboOffsets.isEmpty()) {
         this.comboOffsets = comboOffsets;
       } else {
         this.comboOffsets = null;

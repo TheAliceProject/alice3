@@ -59,7 +59,7 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 
   public static synchronized ThisMethodInvocationFactory getInstance(AbstractMethod method) {
     assert method != null;
-    if (method.getRequiredParameters().size() == 0) {
+    if (method.getRequiredParameters().isEmpty()) {
       ThisMethodInvocationFactory rv = map.get(method);
       if (rv == null) {
         rv = new ThisMethodInvocationFactory(method);

@@ -98,7 +98,7 @@ public class RecentProjectsMenuModel extends MenuModel {
         models.add(OpenRecentProjectOperation.getInstance(proj.getUri()).getMenuItemPrepModel());
       }
     }
-    if (models.size() == 0) {
+    if (models.isEmpty()) {
       models.add(NoRecentUrisSeparatorModel.getInstance());
     }
     MenuItemContainerUtilities.setMenuElements(menuItemContainer, models);

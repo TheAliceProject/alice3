@@ -96,7 +96,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
           }
         }
       }
-      if (nonFinalUserFields.size() > 0) {
+      if (!nonFinalUserFields.isEmpty()) {
         rv.add(FieldsSeparatorModel.getInstance());
         for (UserField field : nonFinalUserFields) {
           rv.add(FieldAssignmentFillIn.getInstance(field));
@@ -114,7 +114,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
       }
     }
 
-    if (nonFinalLocals.size() > 0) {
+    if (!nonFinalLocals.isEmpty()) {
       rv.add(VariablesSeparatorModel.getInstance());
       for (UserLocal local : nonFinalLocals) {
         rv.add(LocalAssignmentFillIn.getInstance(local));
@@ -126,7 +126,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
     }
 
     //todo: check nonFinalUserFields and nonFinalLocals instead?
-    if (rv.size() == 0) {
+    if (rv.isEmpty()) {
       rv.add(NoVariablesOrFieldsAccessibleCancelFillIn.getInstance());
     }
 

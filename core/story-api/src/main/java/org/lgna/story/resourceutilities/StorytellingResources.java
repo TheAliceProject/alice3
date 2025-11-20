@@ -499,12 +499,12 @@ public enum StorytellingResources {
   List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
     if (this.installedAliceClassesLoaded == null) {
       List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
-      if (resourcePaths.size() == 0) {
+      if (resourcePaths.isEmpty()) {
         resourcePaths = findAliceResources();
       }
 
       this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
-      if (installedAliceClassesLoaded.size() == 0) {
+      if (installedAliceClassesLoaded.isEmpty()) {
         //Clear previously cached info
         clearAliceResourceInfo();
         File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -521,13 +521,13 @@ public enum StorytellingResources {
           this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
         }
       }
-      if (this.installedAliceClassesLoaded.size() == 0) {
+      if (this.installedAliceClassesLoaded.isEmpty()) {
         //No resources were found
         //Clear the cached data and display an error
         clearAliceResourceInfo();
         StringBuilder sb = new StringBuilder();
         sb.append("Cannot find the Alice gallery resources.");
-        if ((resourcePaths == null) || (resourcePaths.size() == 0)) {
+        if ((resourcePaths == null) || (resourcePaths.isEmpty())) {
           sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
         } else {
           sb.append("\nFailed to locate the resources in:");

@@ -180,11 +180,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
   }
 
   ResourceNode getFirstChild() {
-    if (this.children.size() > 0) {
-      return this.children.getFirst();
-    } else {
-      return null;
-    }
+    return children.isEmpty() ? null : children.getFirst();
   }
 
   public boolean isInstanceCreator() {

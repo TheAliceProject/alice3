@@ -103,21 +103,19 @@ public class MemberListData extends RefreshableListData<Member> {
 
   @Override
   protected List<Member> createValues() {
-    if ((this.allMembers != null) && (this.allMembers.size() > 0)) {
-      String filter = this.filterState.getValue();
-      if ((filter != null) && (filter.length() > 0)) {
-        List<Member> rv = Lists.newLinkedList();
-        for (Member member : this.allMembers) {
-          if (member.getName().contains(filter)) {
-            rv.add(member);
-          }
-        }
-        return rv;
-      } else {
-        return this.allMembers;
-      }
-    } else {
+    if (allMembers == null || allMembers.isEmpty()) {
       return Collections.emptyList();
     }
+    String filter = filterState.getValue();
+    if (filter == null || filter.isEmpty()) {
+      return allMembers;
+    }
+    List<Member> rv = Lists.newLinkedList();
+    for (Member member : allMembers) {
+      if (member.getName().contains(filter)) {
+        rv.add(member);
+      }
+    }
+    return rv;
   }
 }
