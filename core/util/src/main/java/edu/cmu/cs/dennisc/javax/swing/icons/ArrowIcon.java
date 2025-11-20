@@ -93,7 +93,7 @@ public class ArrowIcon implements Icon {
     ButtonModel buttonModel = getButtonModel(c);
 
     Heading heading = !rotateIfSelected || (buttonModel.isSelected() || buttonModel.isPressed()) ? Heading.SOUTH : Heading.EAST;
-    GeneralPath path = createPath(x, y, heading);
+    GeneralPath path = heading.asPath(x, y, size);
 
     Graphics2D g2 = (Graphics2D) g;
     Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -118,42 +118,36 @@ public class ArrowIcon implements Icon {
     return size;
   }
 
-  protected GeneralPath createPath(int x, int y, Heading heading) {
-    // top left corner
-    float x0 = x;
-    float y0 = y;
-
-    // bottom right corner
-    float x1 = (x + size) - 1;
-    float y1 = (y + size) - 1;
-
-    // center
-    float xC = (x0 + x1) * 0.5f;
-    float yC = (y0 + y1) * 0.5f;
-
-    GeneralPath rv = new GeneralPath();
-    return heading.addPoints(rv, x0, xC, x1, y0, yC, y1, size);
-  }
-
   protected enum Heading {
+    // our arrows are an obtuse angle, centered in the square as defined by size
     EAST() {
       @Override
-      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1, float size) {
-        rv.moveTo(x0 + size / 4, y0);
-        rv.lineTo(x1 - size / 4, yC);
-        rv.lineTo(x0 + size / 4, y1);
-        return rv;
+      public GeneralPath asPath(float x, float y, float size) {
+        final float quarter = (size - 1) / 4;
+        GeneralPath path = new GeneralPath();
+        // top left
+        path.moveTo(x + quarter, y);
+        // center point
+        path.lineTo(x + quarter * 3, y + quarter * 2);
+        // bottom left
+        path.lineTo(x + quarter, y + quarter * 4);
+        return path;
       }
     }, SOUTH() {
       @Override
-      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1, float size) {
-        rv.moveTo(x0, y0 + size / 4);
-        rv.lineTo(xC, y1 - size / 4);
-        rv.lineTo(x1, y0 + size / 4);
-        return rv;
+      public GeneralPath asPath(float x, float y, float size) {
+        final float quarter = (size - 1) / 4;
+        GeneralPath path = new GeneralPath();
+        // top left
+        path.moveTo(x, y + quarter);
+        // center point
+        path.lineTo(x + quarter * 2, y + quarter * 3);
+        // top right
+        path.lineTo(x + quarter * 4, y +  quarter);
+        return path;
       }
     };
 
-    protected abstract GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1, float size);
+    protected abstract GeneralPath asPath(float x, float y, float size);
   }
 }
