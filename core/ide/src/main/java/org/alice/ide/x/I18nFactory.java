@@ -50,7 +50,13 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
-import org.alice.ide.i18n.*;
+import org.alice.ide.i18n.Chunk;
+import org.alice.ide.i18n.GetsChunk;
+import org.alice.ide.i18n.Line;
+import org.alice.ide.i18n.MethodInvocationChunk;
+import org.alice.ide.i18n.Page;
+import org.alice.ide.i18n.PropertyChunk;
+import org.alice.ide.i18n.TextChunk;
 import org.lgna.croquet.views.*;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -69,42 +75,28 @@ public abstract class I18nFactory {
 
   protected abstract SwingComponentView<?> createPropertyComponent(InstanceProperty<?> property, int underscoreCount);
 
-  private SwingComponentView<?> createComponent(GetsChunk getsChunk, InstancePropertyOwner owner) {
-    return this.createGetsComponent(getsChunk.isTowardLeading());
-  }
-
-  private SwingComponentView<?> createComponent(TextChunk textChunk, InstancePropertyOwner owner) {
-    return new Label(textChunk.getText());
-  }
-
   private SwingComponentView<?> createComponent(PropertyChunk propertyChunk, InstancePropertyOwner owner) {
     int underscoreCount = propertyChunk.getUnderscoreCount();
     String propertyName = propertyChunk.getPropertyName();
     InstanceProperty<?> property = owner.getPropertyNamed(propertyName);
     if (property != null) {
       return createPropertyComponent(property, underscoreCount);
-    } else {
-      Logger.severe(propertyName, owner);
-      Label rv = new Label("TODO: " + propertyName);
-      rv.setBackgroundColor(UIManager.getColor("Alice.Alert.color"));
-      return rv;
     }
+    Logger.severe(propertyName, owner);
+    Label label = new Label("TODO: " + propertyName);
+    label.setBackgroundColor(UIManager.getColor("Alice.Alert.color"));
+    return label;
   }
 
   protected abstract SwingComponentView<?> createComponent(MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner);
 
   private SwingComponentView<?> createComponent(Chunk chunk, InstancePropertyOwner owner) {
-    if (chunk instanceof TextChunk textChunk) {
-      return createComponent(textChunk, owner);
-    } else if (chunk instanceof PropertyChunk propertyChunk) {
-      return createComponent(propertyChunk, owner);
-    } else if (chunk instanceof MethodInvocationChunk invocationChunk) {
-      return createComponent(invocationChunk, owner);
-    } else if (chunk instanceof GetsChunk getsChunk) {
-      return createComponent(getsChunk, owner);
-    } else {
-      return new Label("unhandled: " + chunk.toString());
-    }
+    return switch (chunk) {
+      case TextChunk textChunk -> new Label(textChunk.getText());
+      case PropertyChunk propertyChunk -> createComponent(propertyChunk, owner);
+      case MethodInvocationChunk invocationChunk -> createComponent(invocationChunk, owner);
+      case GetsChunk getsChunk -> createGetsComponent(getsChunk.isTowardLeading());
+    };
   }
 
   private int getPixelsPerIndent() {

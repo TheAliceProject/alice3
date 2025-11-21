@@ -47,5 +47,6 @@ import edu.cmu.cs.dennisc.java.lang.AbstractObjectWithRevealingToString;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Chunk extends AbstractObjectWithRevealingToString {
+public abstract sealed class Chunk extends AbstractObjectWithRevealingToString
+    permits TextChunk, PropertyChunk, MethodInvocationChunk, GetsChunk {
 }

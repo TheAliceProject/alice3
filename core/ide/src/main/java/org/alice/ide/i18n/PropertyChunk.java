@@ -45,9 +45,9 @@ package org.alice.ide.i18n;
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyChunk extends Chunk {
-  private String propertyName;
-  private int underscoreCount;
+public final class PropertyChunk extends Chunk {
+  private final String propertyName;
+  private final int underscoreCount;
 
   public PropertyChunk(String propertyName) {
 
