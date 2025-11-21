@@ -30,7 +30,6 @@ import org.lgna.story.resources.JointedModelResource;
 import org.xml.sax.SAXException;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -407,36 +406,22 @@ public class JointedModelColladaImporter {
         } else {
           type = BufferedImage.TYPE_4BYTE_ABGR;
         }
-        tex = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+        tex = new BufferedImage(image.getWidth(), image.getHeight(), type);
       } catch (IllegalArgumentException e) {
         e.printStackTrace();
         return null;
       }
-      image.getWidth(null);
-      image.getHeight(null);
 
-      if (image instanceof BufferedImage bufferedImage1) {
-        int imageWidth = image.getWidth(null);
-        int[] tmpData = new int[imageWidth];
-        int row = 0;
-        BufferedImage bufferedImage = bufferedImage1;
-        for (int y = image.getHeight(null) - 1; y >= 0; y--) {
-          bufferedImage.getRGB(0, (flipImage ? row++ : y), imageWidth, 1, tmpData, 0, imageWidth);
-          tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
-        }
-      } else {
-        AffineTransform tx = null;
-        if (flipImage) {
-          tx = AffineTransform.getScaleInstance(1, -1);
-          tx.translate(0, -image.getHeight(null));
-        }
-        Graphics2D g = (Graphics2D) tex.getGraphics();
-        g.drawImage(image, tx, null);
-        g.dispose();
+      int imageWidth = image.getWidth();
+      int[] tmpData = new int[imageWidth];
+      int row = 0;
+      for (int y = image.getHeight() - 1; y >= 0; y--) {
+        image.getRGB(0, row++, imageWidth, 1, tmpData, 0, imageWidth);
+        tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
       }
 
     } else {
-      tex = (BufferedImage) image;
+      tex = image;
     }
     aliceTexture.setBufferedImage(tex);
     return aliceTexture;

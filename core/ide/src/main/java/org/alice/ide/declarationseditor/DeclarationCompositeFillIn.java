@@ -94,14 +94,10 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 
   @Override
   public String getMenuItemText() {
-    AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-    if (declaration instanceof AbstractType<?, ?, ?> type) {
-      return null;
-    } else if (declaration instanceof AbstractCode code) {
+    if (declarationComposite.getDeclaration() instanceof AbstractCode code) {
       return code.getName();
-    } else {
-      return null;
     }
+    return null;
   }
 
   @Override

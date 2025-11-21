@@ -402,7 +402,7 @@ public abstract class Model extends Geometry {
     mesh.textCoordBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newUVs));
     mesh.indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
     mesh.textureId.setValue(textureNamesToIds.get(meshTextureIds[0]));
-    if (mesh instanceof  WeightedMesh weightedMesh) {
+    if (mesh instanceof WeightedMesh weightedMesh) {
       WeightInfo weightInfo = createWeightInfo(meshId, resourceJointIds, newIndexToOldVertex, oldVertexIndexToNewIndex);
       weightedMesh.weightInfo.setValue(weightInfo);
     }

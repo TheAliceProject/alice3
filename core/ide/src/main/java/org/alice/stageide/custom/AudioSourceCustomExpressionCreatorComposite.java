@@ -58,7 +58,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -277,10 +276,9 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
 
   private static Expression getArgumentExpressionAt(InstanceCreation instanceCreation, int index) {
     assert instanceCreation.requiredArguments.size() >= index;
-    AbstractArgument arg = instanceCreation.requiredArguments.get(index);
+    SimpleArgument arg = instanceCreation.requiredArguments.get(index);
     assert arg != null;
-    assert arg instanceof SimpleArgument;
-    return ((SimpleArgument) arg).expression.getValue();
+    return arg.expression.getValue();
   }
 
   @Override
