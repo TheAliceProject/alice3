@@ -619,8 +619,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
     for (int i = 0; i < joint.getComponentCount(); i++) {
       Component comp = joint.getComponentAt(i);
-      if (comp instanceof Joint joint1) {
-        processWeightedMesh(joint1, absoluteLocalTransform, inverseScale);
+      if (comp instanceof Joint childJoint) {
+        processWeightedMesh(childJoint, absoluteLocalTransform, inverseScale);
       }
     }
   }

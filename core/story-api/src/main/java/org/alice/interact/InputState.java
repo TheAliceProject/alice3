@@ -307,14 +307,14 @@ public class InputState {
         if (sgParent instanceof Scalable) {
           sgParent = sgParent.getParent();
         }
-        if (sgParent instanceof Transformable transformable1) {
+        if (sgParent instanceof Transformable transformable) {
           if (getFirstClass) {
             Component firstClassComponent = PickUtilities.getFirstClassFromComponent(sgParent);
-            if (firstClassComponent instanceof AbstractTransformable transformable) {
-              return transformable;
+            if (firstClassComponent instanceof AbstractTransformable abstractTransformable) {
+              return abstractTransformable;
             }
           } else {
-            return transformable1;
+            return transformable;
           }
         }
       }

@@ -175,10 +175,10 @@ public class ReplaceCameraWithVR extends AstMigration {
   private void levelMarkerOrientation(MethodInvocation setOrientationCall) {
     Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
     if (orientationExp instanceof InstanceCreation creation) {
-      final Object orientation = creation.evaluate(vm);
-      if (orientation instanceof Orientation orientation1) {
-        UnitQuaternion markerOrientation = getLeveledOrientation(orientation1);
-        replaceOrientationArgs(creation, markerOrientation);
+      final Object instance = creation.evaluate(vm);
+      if (instance instanceof Orientation orientation) {
+        UnitQuaternion leveledOrientation = getLeveledOrientation(orientation);
+        replaceOrientationArgs(creation, leveledOrientation);
         Logger.outln("Leveled orientation of CameraMarker");
       }
     }

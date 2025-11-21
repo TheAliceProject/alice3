@@ -329,8 +329,8 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     jointIndices.put(node.getName(), nodeIndex);
 
     for (Component c : joint.getComponents()) {
-      if (c instanceof Joint joint1) {
-        int childIndex = addNodeForJoint(joint1, gltf, jointIndices);
+      if (c instanceof Joint childJoint) {
+        int childIndex = addNodeForJoint(childJoint, gltf, jointIndices);
         node.addChildren(childIndex);
       }
     }

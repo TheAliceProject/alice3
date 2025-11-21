@@ -247,8 +247,8 @@ public class AliceModelLoader {
     if (joint != null) {
       jointIDs.add(joint.jointID.getValue());
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint joint1) {
-          buildJointIDsList(joint1, jointIDs);
+        if (c instanceof Joint childJoint) {
+          buildJointIDsList(childJoint, jointIDs);
         }
       }
     }
@@ -262,8 +262,8 @@ public class AliceModelLoader {
         joint.jointID.setValue(aliceName);
       }
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint joint1) {
-          renameJoints(joint1, idToNameMap);
+        if (c instanceof Joint childJoint) {
+          renameJoints(childJoint, idToNameMap);
         }
       }
     }
@@ -303,8 +303,8 @@ public class AliceModelLoader {
       }
       jointAndParentList.add(Tuple2.createInstance(jointName, parentName));
       for (Component c : joint.getComponents()) {
-        if (c instanceof Joint joint1) {
-          makeJointAndParentListFromSkeleton(joint1, jointAndParentList);
+        if (c instanceof Joint childJoint) {
+          makeJointAndParentListFromSkeleton(childJoint, jointAndParentList);
         }
       }
     }

@@ -208,13 +208,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   }
 
   private Scalable getScalable(AbstractTransformable object) {
-    Scalable scalable = null;
-    if (object instanceof Scalable scalable1) {
-      scalable = scalable1;
-    } else if (object != null) {
-      scalable = object.getBonusDataFor(Scalable.KEY);
+    if (object instanceof Scalable scalable) {
+      return scalable;
     }
-    return scalable;
+    if (object != null) {
+      return object.getBonusDataFor(Scalable.KEY);
+    }
+    return null;
   }
 
   @Override

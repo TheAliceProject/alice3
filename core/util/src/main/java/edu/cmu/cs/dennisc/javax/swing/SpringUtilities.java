@@ -361,8 +361,8 @@ public class SpringUtilities {
   public static Component expandToBounds(Component rv, Container container, int xInset, int yInset) {
     LayoutManager layout = container.getLayout();
     SpringLayout springLayout;
-    if (layout instanceof SpringLayout springLayout1) {
-      springLayout = springLayout1;
+    if (layout instanceof SpringLayout matchingLayout) {
+      springLayout = matchingLayout;
     } else {
       springLayout = new SpringLayout();
       container.setLayout(springLayout);

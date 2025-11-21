@@ -273,8 +273,8 @@ public class ImageUtilities {
 
       image = bufferedImageBGR;
     }
-    if (image instanceof RenderedImage renderedImage1) {
-      renderedImage = renderedImage1;
+    if (image instanceof RenderedImage rendered) {
+      renderedImage = rendered;
     } else {
       int[] pixels = ImageUtilities.getPixels(image, width, height);
       BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

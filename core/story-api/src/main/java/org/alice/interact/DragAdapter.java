@@ -505,10 +505,10 @@ public abstract class DragAdapter {
           }
         }
       }
-      if (selected instanceof ObjectMarkerImp imp1) {
-        setSelectedObjectMarker(imp1);
-      } else if (selected instanceof CameraMarkerImp imp) {
-        setSelectedCameraMarker(imp);
+      if (selected instanceof ObjectMarkerImp objectMarker) {
+        setSelectedObjectMarker(objectMarker);
+      } else if (selected instanceof CameraMarkerImp cameraMarker) {
+        setSelectedCameraMarker(cameraMarker);
       } else {
         setSelectedSceneObjectImplementation(selected);
       }

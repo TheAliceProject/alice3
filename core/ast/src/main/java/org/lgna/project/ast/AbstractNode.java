@@ -301,15 +301,15 @@ public abstract class AbstractNode extends Element implements Node {
     nodes.add(this);
     for (InstanceProperty<?> property : this.getProperties()) {
       Object value = property.getValue();
-      if (value instanceof AbstractNode node1) {
+      if (value instanceof AbstractNode node) {
         if (!nodes.contains(value)) {
-          node1.fillInDeclarationSet(rv, nodes);
+          node.fillInDeclarationSet(rv, nodes);
         }
       } else if (value instanceof Iterable<?> iterable) {
         for (Object item : iterable) {
-          if (item instanceof AbstractNode node) {
+          if (item instanceof AbstractNode itemNode) {
             if (!nodes.contains(item)) {
-              node.fillInDeclarationSet(rv, nodes);
+              itemNode.fillInDeclarationSet(rv, nodes);
             }
           }
         }
@@ -334,14 +334,14 @@ public abstract class AbstractNode extends Element implements Node {
         }
       }
       Object value = property.getValue();
-      if (value instanceof AbstractNode node1) {
+      if (value instanceof AbstractNode node) {
         if (!nodes.contains(value)) {
-          node1.removeDeclarationsThatNeedToBeCopied(rv, nodes);
+          node.removeDeclarationsThatNeedToBeCopied(rv, nodes);
         }
       } else if (value instanceof Iterable<?> iterable) {
         for (Object item : iterable) {
-          if (item instanceof AbstractNode node && !nodes.contains(item)) {
-            node.removeDeclarationsThatNeedToBeCopied(rv, nodes);
+          if (item instanceof AbstractNode itemNode && !nodes.contains(item)) {
+            itemNode.removeDeclarationsThatNeedToBeCopied(rv, nodes);
           }
         }
       }

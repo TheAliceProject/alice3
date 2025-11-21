@@ -183,8 +183,8 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     node.getLookatOrMatrixOrRotate().add(matrix);
 
     for (Component c : joint.getComponents()) {
-      if (c instanceof Joint joint1) {
-        Node childNode = createNodeForJoint(joint1);
+      if (c instanceof Joint childJoint) {
+        Node childNode = createNodeForJoint(childJoint);
         node.getNode().add(childNode);
       }
     }

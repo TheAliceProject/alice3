@@ -295,11 +295,11 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
       int n = instanceCreation.requiredArguments.size();
       if (n > 0) {
         Expression expression0 = getArgumentExpressionAt(instanceCreation, 0);
-        if (expression0 instanceof ResourceExpression resourceExpression1) {
-          resourceExpression = resourceExpression1;
+        if (expression0 instanceof ResourceExpression resExp) {
+          resourceExpression = resExp;
           Resource resource = resourceExpression.resource.getValue();
-          if (resource instanceof AudioResource audioResource1) {
-            audioResource = audioResource1;
+          if (resource instanceof AudioResource audioRes) {
+            audioResource = audioRes;
           }
           if (n > 1) {
             if (n > 2) {

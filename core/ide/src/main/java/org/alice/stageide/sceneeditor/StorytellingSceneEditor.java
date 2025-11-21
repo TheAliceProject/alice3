@@ -967,12 +967,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       Statement setPositionStatement = null;
       Statement setOrientationStatement = null;
       for (Statement s : bs.statements.getValue()) {
-        if (s instanceof BlockStatement statement1) {
-          blockStatements.add(statement1);
+        if (s instanceof BlockStatement block) {
+          blockStatements.add(block);
         } else if (s instanceof AbstractStatementWithBody body) {
           blockStatements.add(body.body.getValue());
-        } else if (s instanceof ExpressionStatement statement) {
-          Expression expression = statement.expression.getValue();
+        } else if (s instanceof ExpressionStatement expressionStatement) {
+          Expression expression = expressionStatement.expression.getValue();
           if (expression instanceof MethodInvocation mi) {
             Method method = mi.method.getValue();
             //Look for the setVehicle, setOrientation, and setPositions for the field. Note that we need to make sure these calls are being called on the field and not the joints, hence the check for FieldAccess (joints are called off of getJoint and resolve as a MethodInvocation)

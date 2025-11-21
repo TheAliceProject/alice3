@@ -144,39 +144,39 @@ public class ChangeHandler {
   }
 
   /*package-private*/
-  static void addListeners(Releasable element) {
-    element.addReleaseListener(releaseListener);
-    if (element instanceof Element element1) {
-      element1.addPropertyListener(propertyListener);
-      if (element instanceof Component component) {
+  static void addListeners(Releasable releasable) {
+    releasable.addReleaseListener(releaseListener);
+    if (releasable instanceof Element element) {
+      element.addPropertyListener(propertyListener);
+      if (releasable instanceof Component component) {
         component.addAbsoluteTransformationListener(absoluteTransformationListener);
         component.addHierarchyListener(hierarchyListener);
-        if (element instanceof Composite composite) {
+        if (releasable instanceof Composite composite) {
           composite.addChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer layer) {
+      } else if (releasable instanceof Layer layer) {
         layer.addGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture texture) {
+    } else if (releasable instanceof Texture texture) {
       texture.addTextureListener(textureListener);
     }
   }
 
   /*package-private*/
-  static void removeListeners(Releasable element) {
-    element.removeReleaseListener(releaseListener);
-    if (element instanceof Element element1) {
-      element1.removePropertyListener(propertyListener);
-      if (element instanceof Component component) {
+  static void removeListeners(Releasable releasable) {
+    releasable.removeReleaseListener(releaseListener);
+    if (releasable instanceof Element element) {
+      element.removePropertyListener(propertyListener);
+      if (releasable instanceof Component component) {
         component.removeAbsoluteTransformationListener(absoluteTransformationListener);
         component.removeHierarchyListener(hierarchyListener);
-        if (element instanceof Composite composite) {
+        if (releasable instanceof Composite composite) {
           composite.removeChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer layer) {
+      } else if (releasable instanceof Layer layer) {
         layer.removeGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture texture) {
+    } else if (releasable instanceof Texture texture) {
       texture.removeTextureListener(textureListener);
     }
   }

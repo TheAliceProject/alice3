@@ -101,8 +101,8 @@ public class AnimationParser implements Crawler {
         }
         Object[] argArr = vm.ENTRY_POINT_evaluate(null, list.toArray(new Expression[0]));
         for (Object o : argArr) {
-          if (o instanceof Pose pose1) {
-            pose = pose1;
+          if (o instanceof Pose argPose) {
+            pose = argPose;
           } else if (o instanceof AnimationStyle animationStyle) {
             style = animationStyle;
           } else {

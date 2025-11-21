@@ -70,8 +70,8 @@ public class AdapterControllerUtilities {
       return new FloatPropertyController((AbstractPropertyAdapter<Float, ?>) propertyAdapter);
     } else if (Point3.class.isAssignableFrom(propertyType)) {
       return new Point3PropertyController((AbstractPropertyAdapter<Point3, ?>) propertyAdapter);
-    } else if (propertyAdapter instanceof MutableRiderVehicleAdapter adapter1) {
-      return new CompositePropertyController(adapter1);
+    } else if (propertyAdapter instanceof MutableRiderVehicleAdapter vehicleAdapter) {
+      return new CompositePropertyController(vehicleAdapter);
     } else if (propertyAdapter instanceof ModelSizeAdapter adapter) {
       return new ModelSizePropertyController(adapter);
     } else {
