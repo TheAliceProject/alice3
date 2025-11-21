@@ -65,7 +65,7 @@ public class FieldView extends MemberView {
       label.setToolTipText("managed by the scene editor");
       label.setForegroundColor(UIManager.getColor("Label.disabledForeground"));
       label.scaleFont(2.0f);
-      label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
+      label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
       this.addComponent(label);
     }
     this.addComponent(new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != ManagementLevel.MANAGED));
