@@ -59,33 +59,16 @@ import org.alice.math.immutable.Vector3;
  */
 public class LinearScaleHandle extends LinearDragHandle {
   public static LinearScaleHandle createFromResizer(Resizer resizer) {
-    LinearScaleHandle toReturn;
-    switch (resizer) {
-    case UNIFORM:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK, false, resizer);
-      break;
-    case X_AXIS:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true, resizer);
-      break;
-    case Y_AXIS:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true, resizer);
-      break;
-    case Z_AXIS:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true, resizer);
-      break;
-    case XY_PLANE:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK, false, resizer);
-      break;
-    case XZ_PLANE:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
-      break;
-    case YZ_PLANE:
-      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
-      break;
-    default:
-      toReturn = null;
-    }
-    return toReturn;
+    return switch (resizer) {
+    case UNIFORM -> new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK, false, resizer);
+    case X_AXIS -> new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true, resizer);
+    case Y_AXIS -> new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true, resizer);
+    case Z_AXIS -> new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true, resizer);
+    case XY_PLANE -> new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK, false, resizer);
+    case XZ_PLANE -> new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
+    case YZ_PLANE -> new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
+    default -> null;
+    };
   }
 
   public LinearScaleHandle(MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, Resizer resizer) {

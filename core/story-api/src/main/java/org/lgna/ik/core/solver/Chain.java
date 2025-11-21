@@ -43,21 +43,20 @@
 
 package org.lgna.ik.core.solver;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
-import org.lgna.ik.core.solver.Bone.Axis;
-
 import org.alice.math.immutable.Vector3;
+import org.lgna.ik.core.solver.Bone.Axis;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -106,7 +105,7 @@ public class Chain {
   //if this is not called, in linear motions, you will be moving the anchor of the last joint
   //this helps you move the tip of the finger
   public void setEndEffectorPosition(Point3 eePosition) {
-    JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+    JointImp eeJointImp = jointImps.getLast();
 
     //get the world eePosition local to eeJointImp
     AffineMatrix4x4 eeJointInverse = eeJointImp.getTransformation(AsSeenBy.SCENE).invert();
@@ -133,12 +132,12 @@ public class Chain {
   // these could be local or world. does it matter? it could only matter if you don't move the end effector target with the character.
   // so, these are world
   public Point3 getEndEffectorPosition() {
-    JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+    JointImp eeJointImp = jointImps.getLast();
     return eeJointImp.getTransformation(AsSeenBy.SCENE).transform(endEffectorLocalPosition);
   }
 
   public OrthogonalMatrix3x3 getEndEffectorOrientation() {
-    JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+    JointImp eeJointImp = jointImps.getLast();
     return eeJointImp.getTransformation(AsSeenBy.SCENE).orientation();
   }
 
@@ -192,7 +191,7 @@ public class Chain {
   }
 
   public JointImp getLastJointImp() {
-    return jointImps.get(jointImps.size() - 1);
+    return jointImps.getLast();
   }
 
   public Point3 getAnchorPosition() {

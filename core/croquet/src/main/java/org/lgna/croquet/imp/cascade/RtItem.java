@@ -162,17 +162,15 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
       RtItem<?, ?, ?, ?> rtItem = children[i];
       ViewController<?, ?> menuItem = rtItem.getMenuItem();
       if (menuItem != null) {
-        if (menuItem instanceof CascadeMenu) {
-          parent.addCascadeMenu((CascadeMenu) menuItem);
-        } else if (menuItem instanceof CascadeMenuItem) {
-          CascadeMenuItem cascadeMenuItem = (CascadeMenuItem) menuItem;
+        if (menuItem instanceof CascadeMenu menu) {
+          parent.addCascadeMenu(menu);
+        } else if (menuItem instanceof CascadeMenuItem cascadeMenuItem) {
           if (itemChildrenAndComboOffsetsPair.isComboOffset(i)) {
             i++;
             RtItem<?, ?, ?, ?> rtItem2 = children[i];
             ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
             if (menuItem2 != null) {
-              if (menuItem2 instanceof CascadeMenu) {
-                CascadeMenu cascadeMenu = (CascadeMenu) menuItem2;
+              if (menuItem2 instanceof CascadeMenu cascadeMenu) {
                 parent.addCascadeCombo(cascadeMenuItem, cascadeMenu);
               } else {
                 assert false : menuItem2;
@@ -247,10 +245,10 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
   private ViewController<?, ?> getMenuItem() {
     boolean isLast = this.isLast();
     if (this.menuItem != null && isLast) {
-      if (this.menuItem instanceof CascadeMenu) {
-        ((CascadeMenu) this.menuItem).getAwtComponent().removeMenuListener(this.menuListener);
-      } else if (this.menuItem instanceof CascadeMenuItem) {
-        ((CascadeMenuItem) this.menuItem).getAwtComponent().removeActionListener(this.actionListener);
+      if (this.menuItem instanceof CascadeMenu menu) {
+        menu.getAwtComponent().removeMenuListener(this.menuListener);
+      } else if (this.menuItem instanceof CascadeMenuItem item) {
+        item.getAwtComponent().removeActionListener(this.actionListener);
       } else {
         Logger.severe(this.menuItem);
       }

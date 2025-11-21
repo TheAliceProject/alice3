@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.alice.math.immutable.EulerAngles;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.UnitQuaternion;
-import org.alice.math.immutable.EulerAngles;
 
 /**
  * @author Dennis Cosgrove

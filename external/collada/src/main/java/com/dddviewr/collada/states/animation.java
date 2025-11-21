@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.animation.Animation;
 import com.dddviewr.collada.animation.LibraryAnimations;
+import org.xml.sax.Attributes;
 
 public class animation extends State {
   protected Animation theAnimation;

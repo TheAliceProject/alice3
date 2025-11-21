@@ -97,13 +97,12 @@ public class ExpressionStatementPane extends AbstractStatementPane {
     this.forgetAndRemoveAllComponents();
     final ExpressionStatement expressionStatement = (ExpressionStatement) getStatement();
     Expression expression = expressionStatement.expression.getValue();
-    if (expression instanceof AssignmentExpression) {
-      this.addComponent(new AssignmentExpressionPane(this.getFactory(), (AssignmentExpression) expression));
+    if (expression instanceof AssignmentExpression assignmentExpression) {
+      this.addComponent(new AssignmentExpressionPane(this.getFactory(), assignmentExpression));
     } else {
       SwingComponentView<?> expressionPane = this.getFactory().createComponent(expressionStatement.expression.getValue());
       this.addComponent(expressionPane);
-      if (expression instanceof MethodInvocation) {
-        final MethodInvocation methodInvocation = (MethodInvocation) expression;
+      if (expression instanceof MethodInvocation methodInvocation) {
         assert methodInvocation.getParent() == expressionStatement;
 
         if ((this.getFactory() == PreviewAstI18nFactory.getInstance()) || methodInvocation.isValid()) {

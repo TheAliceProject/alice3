@@ -44,19 +44,10 @@ package org.alice.stageide.cascade;
 
 import org.alice.stageide.cascade.fillerinners.HairFillerInner;
 import org.alice.stageide.cascade.fillerinners.OutfitFillerInner;
-import org.alice.stageide.personresource.cascade.AdultPersonResourceFillerInner;
-import org.alice.stageide.personresource.cascade.ChildPersonResourceFillerInner;
-import org.alice.stageide.personresource.cascade.ElderPersonResourceFillerInner;
-import org.alice.stageide.personresource.cascade.TeenPersonResourceFillerInner;
-import org.alice.stageide.personresource.cascade.ToddlerPersonResourceFillerInner;
+import org.alice.stageide.personresource.cascade.*;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.resources.sims2.BaseEyeColor;
-import org.lgna.story.resources.sims2.BaseFace;
-import org.lgna.story.resources.sims2.BaseSkinTone;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.Face;
-import org.lgna.story.resources.sims2.SkinTone;
+import org.lgna.story.resources.sims2.*;
 
 /**
  * @author Dennis Cosgrove

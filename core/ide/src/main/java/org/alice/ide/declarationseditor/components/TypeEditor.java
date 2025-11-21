@@ -193,8 +193,8 @@ public class TypeEditor extends BorderPanel {
     DeclarationComposite<?, ?> item = composite.getTabState().getValue();
     if (item != null) {
       SwingComponentView<?> component = this.tabbedPane.getMainComponentFor(item);
-      if (component instanceof CodeDeclarationView) {
-        return ((CodeDeclarationView) component).getCodePanelWithDropReceptor();
+      if (component instanceof CodeDeclarationView view) {
+        return view.getCodePanelWithDropReceptor();
       }
     }
     return null;

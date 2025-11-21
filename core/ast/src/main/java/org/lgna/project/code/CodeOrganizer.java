@@ -42,17 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-import org.lgna.project.ast.Getter;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.Setter;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author dculyba

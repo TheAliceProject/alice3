@@ -138,8 +138,7 @@ public final class JSubmitPane extends JPanel {
     @Override
     public void stateChanged(ChangeEvent e) {
       Object src = e.getSource();
-      if (src instanceof JToggleButton) {
-        JToggleButton button = (JToggleButton) src;
+      if (src instanceof JToggleButton button) {
         insightPane.setExpanded(button.isSelected());
         toggleButton.setText(button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT);
         ((Window) SwingUtilities.getRoot(button)).pack();

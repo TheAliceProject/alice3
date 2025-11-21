@@ -49,13 +49,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.io.IoUtilities;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SProp;
-import org.lgna.story.SQuadruped;
-import org.lgna.story.SShape;
-import org.lgna.story.SSwimmer;
-import org.lgna.story.SThing;
+import org.lgna.story.*;
 
 import java.util.Map;
 

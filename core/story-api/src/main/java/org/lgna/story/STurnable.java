@@ -44,8 +44,8 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;

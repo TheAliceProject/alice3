@@ -43,8 +43,6 @@
 
 package org.alice.stageide.properties.uicontroller;
 
-import java.awt.Color;
-
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
@@ -52,6 +50,7 @@ import org.lgna.story.SThing;
 
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
+import java.awt.Color;
 
 public class CompositePropertyController extends LabelBasedPropertyController<SThing> {
 

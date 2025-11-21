@@ -147,10 +147,9 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
   }
 
   public CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
-    if (this.resourceKey instanceof ClassResourceKey) {
-      ClassResourceKey classResourceKey = (ClassResourceKey) this.resourceKey;
+    if (this.resourceKey instanceof ClassResourceKey classResourceKey) {
       if (classResourceKey.isLeaf()) {
-        return this.children.get(0).getAddFieldBlankChild();
+        return this.children.getFirst().getAddFieldBlankChild();
       }
     }
     return this.blankChild;
@@ -182,7 +181,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 
   ResourceNode getFirstChild() {
     if (this.children.size() > 0) {
-      return this.children.get(0);
+      return this.children.getFirst();
     } else {
       return null;
     }
@@ -193,7 +192,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
   }
 
   private InstanceCreatorKey getInstanceCreatorKey() {
-    return (resourceKey instanceof InstanceCreatorKey) ? (InstanceCreatorKey) resourceKey : null;
+    return (resourceKey instanceof InstanceCreatorKey ick) ? ick : null;
   }
 
   @Override

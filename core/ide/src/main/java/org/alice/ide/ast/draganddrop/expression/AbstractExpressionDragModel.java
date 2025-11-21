@@ -67,8 +67,7 @@ public abstract class AbstractExpressionDragModel extends CodeDragModel {
 
   @Override
   public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
-    if (dropSite instanceof ExpressionPropertyDropSite) {
-      ExpressionPropertyDropSite expressionPropertyDropSite = (ExpressionPropertyDropSite) dropSite;
+    if (dropSite instanceof ExpressionPropertyDropSite expressionPropertyDropSite) {
       return this.getDropOperation(expressionPropertyDropSite.getExpressionProperty());
     } else if (dropSite instanceof BlockStatementIndexPair) {
       throw new AssertionError();

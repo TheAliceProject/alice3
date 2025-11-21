@@ -1,8 +1,7 @@
 package org.lgna.project;
 
-import org.junit.Test;
-
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 

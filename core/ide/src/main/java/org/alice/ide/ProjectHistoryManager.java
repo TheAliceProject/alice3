@@ -45,12 +45,12 @@ package org.alice.ide;
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
-import org.alice.ide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
@@ -79,8 +79,7 @@ public class ProjectHistoryManager {
     this.listener = new Listener() {
       @Override
       public void changed(ActivityEvent e) {
-        if (e instanceof EditCommittedEvent) {
-          EditCommittedEvent editCommittedEvent = (EditCommittedEvent) e;
+        if (e instanceof EditCommittedEvent editCommittedEvent) {
           ProjectHistoryManager.this.handleEditCommitted(editCommittedEvent.getEdit());
         }
       }
@@ -113,8 +112,7 @@ public class ProjectHistoryManager {
       return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
     }
 
-    if (edit instanceof StateEdit<?>) {
-      StateEdit<?> stateEdit = (StateEdit<?>) edit;
+    if (edit instanceof StateEdit<?> stateEdit) {
       if (stateEdit.getGroup() == IDE.PROJECT_GROUP) {
         return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
       }
@@ -152,8 +150,7 @@ public class ProjectHistoryManager {
       if (projectDocumentFrame != null) {
         final InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
         InstanceFactory instanceFactory = instanceFactoryState.getValue();
-        if (instanceFactory instanceof ThisFieldAccessFactory) {
-          final ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+        if (instanceFactory instanceof ThisFieldAccessFactory thisFieldAccessFactory) {
           if ((value & IS_ANIMATED) != 0) {
             new Thread() {
               @Override

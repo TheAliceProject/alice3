@@ -2,6 +2,7 @@ package Jama;
 
 import Jama.util.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** QR Decomposition.
@@ -220,5 +221,5 @@ public class QRDecomposition implements Serializable {
     return (new Matrix(X, n, nx).getMatrix(0, n - 1, 0, nx - 1));
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }

@@ -48,17 +48,17 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof UserField) {
-      migrateField((UserField) node);
+    if (node instanceof UserField field) {
+      migrateField(field);
     }
-    if (node instanceof UserLocal) {
-      migrateType(((UserLocal) node).valueType);
+    if (node instanceof UserLocal local) {
+      migrateType(local.valueType);
     }
-    if (node instanceof UserParameter) {
-      migrateType(((UserParameter) node).valueType);
+    if (node instanceof UserParameter parameter) {
+      migrateType(parameter.valueType);
     }
-    if (node instanceof MethodInvocation) {
-      migrateMethod((MethodInvocation) node, manager);
+    if (node instanceof MethodInvocation invocation) {
+      migrateMethod(invocation, manager);
     }
   }
 
@@ -75,7 +75,7 @@ public class ReplaceCameraWithVR extends AstMigration {
     if ("camera".equals(field.getName())) {
       field.name.setValue("vrUser");
     }
-    Logger.outln(String.format("Migrated field `%s` type from SCamera to SVRUser", field.getName()));
+    Logger.outln("Migrated field `%s` type from SCamera to SVRUser".formatted(field.getName()));
   }
 
   private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property) {
@@ -109,7 +109,7 @@ public class ReplaceCameraWithVR extends AstMigration {
     invocation.method.setValue(vrUserMethod);
     replaceRequiredParamReferences(method, vrUserMethod, invocation);
     replaceKeyedParamReferences(method, vrUserMethod, invocation);
-    Logger.outln(String.format("Changed from SCamera.%s to SVRUser.%s", method.getName(), vrUserMethod.getName()));
+    Logger.outln("Changed from SCamera.%s to SVRUser.%s".formatted(method.getName(), vrUserMethod.getName()));
   }
 
   private boolean isMatchingMethod(MethodInvocation invocation, AbstractType<?, ?, ?> type, String methodName) {
@@ -175,10 +175,10 @@ public class ReplaceCameraWithVR extends AstMigration {
   private void levelMarkerOrientation(MethodInvocation setOrientationCall) {
     Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
     if (orientationExp instanceof InstanceCreation creation) {
-      final Object orientation = creation.evaluate(vm);
-      if (orientation instanceof Orientation) {
-        UnitQuaternion markerOrientation = getLeveledOrientation((Orientation) orientation);
-        replaceOrientationArgs(creation, markerOrientation);
+      final Object instance = creation.evaluate(vm);
+      if (instance instanceof Orientation orientation) {
+        UnitQuaternion leveledOrientation = getLeveledOrientation(orientation);
+        replaceOrientationArgs(creation, leveledOrientation);
         Logger.outln("Leveled orientation of CameraMarker");
       }
     }

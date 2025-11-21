@@ -94,26 +94,18 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 
   @Override
   public String getMenuItemText() {
-    AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-    if (declaration instanceof AbstractType<?, ?, ?>) {
-      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
-      return null;
-    } else if (declaration instanceof AbstractCode) {
-      AbstractCode code = (AbstractCode) declaration;
+    if (declarationComposite.getDeclaration() instanceof AbstractCode code) {
       return code.getName();
-    } else {
-      return null;
     }
+    return null;
   }
 
   @Override
   public Icon getMenuItemIcon(ItemNode<? super DeclarationComposite, Void> node) {
     AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-    if (declaration instanceof AbstractType<?, ?, ?>) {
-      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+    if (declaration instanceof AbstractType<?, ?, ?> type) {
       return TypeIcon.getInstance(type);
-    } else if (declaration instanceof AbstractCode) {
-      AbstractCode code = (AbstractCode) declaration;
+    } else if (declaration instanceof AbstractCode code) {
       return TypeIcon.getInstance(code.getDeclaringType());
     } else {
       return null;

@@ -76,8 +76,7 @@ public class AddListenerProceduresComposite extends FilteredMethodsSubComposite 
       DeclarationTabState tabState = composite.getTabState();
       if (tabState != null) {
         DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
-        if (declarationComposite instanceof CodeComposite) {
-          CodeComposite codeComposite = (CodeComposite) declarationComposite;
+        if (declarationComposite instanceof CodeComposite codeComposite) {
           AbstractCode code = codeComposite.getDeclaration();
           if (code != null) {
             String name = code.getName();

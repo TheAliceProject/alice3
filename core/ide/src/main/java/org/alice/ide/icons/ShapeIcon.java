@@ -45,11 +45,7 @@ package org.alice.ide.icons;
 import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
 import org.lgna.croquet.icon.AbstractIcon;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Paint;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**

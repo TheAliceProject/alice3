@@ -47,11 +47,7 @@ import org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu;
 import org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu;
 import org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu;
 import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
-import org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn;
-import org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionRightOperandOnlyFillIn;
-import org.alice.ide.croquet.models.cascade.conditional.ReduceToLeftOperandInPreviousConditionalExpressionFillIn;
-import org.alice.ide.croquet.models.cascade.conditional.ReduceToRightOperandInPreviousConditionalExpressionFillIn;
-import org.alice.ide.croquet.models.cascade.conditional.ReplaceOperatorInPreviousConditionalExpressionFillIn;
+import org.alice.ide.croquet.models.cascade.conditional.*;
 import org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn;
 import org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn;
 import org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn;
@@ -85,11 +81,9 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
-    if (isTop && (prevExpression instanceof ConditionalInfixExpression)) {
-      // previous conditional
-      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) prevExpression;
+    if (isTop && (prevExpression instanceof ConditionalInfixExpression previousConditional)) {
       for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
-        if (operator != conditionalInfixExpression.operator.getValue()) {
+        if (operator != previousConditional.operator.getValue()) {
           items.add(ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance(operator));
         }
       }

@@ -45,18 +45,7 @@ package org.alice.ide.controlflow;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel;
-import org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
-import org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.*;
 import org.alice.ide.controlflow.components.ControlFlowPanel;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.SimpleComposite;
@@ -116,8 +105,7 @@ public class ControlFlowComposite extends SimpleComposite<ControlFlowPanel> {
     super.initialize();
 
     Collections.addAll(this.models, DoInOrderTemplateDragModel.getInstance(), null, CountLoopTemplateDragModel.getInstance(), WhileLoopTemplateDragModel.getInstance(), ForEachInArrayLoopTemplateDragModel.getInstance(), null, ConditionalStatementTemplateDragModel.getInstance(), null, DoTogetherTemplateDragModel.getInstance(), EachInArrayTogetherTemplateDragModel.getInstance(), null, DeclareLocalDragModel.getInstance(), AssignmentTemplateDragModel.getInstance(), null, CommentTemplateDragModel.getInstance());
-    if (code instanceof UserMethod) {
-      UserMethod method = (UserMethod) code;
+    if (code instanceof UserMethod method) {
       if (method.getReturnType() != JavaType.VOID_TYPE) {
         this.models.add(null);
         this.models.add(ReturnStatementTemplateDragModel.getInstance(method));

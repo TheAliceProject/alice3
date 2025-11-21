@@ -43,12 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import com.jogamp.opengl.DefaultGLCapabilitiesChooser;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
@@ -65,8 +60,8 @@ import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 
-import java.awt.Rectangle;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;

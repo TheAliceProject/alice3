@@ -44,13 +44,7 @@ package org.alice.ide.icons;
 
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -81,8 +75,7 @@ public class BillboardIcon extends ShapeIcon {
     Rectangle2D.Float innerShape = new Rectangle2D.Float(x + offset, y + offset, width - (offset * 2), h - (offset * 2));
 
     Paint innerFillPaint;
-    if (fillPaint instanceof Color) {
-      Color fillColor = (Color) fillPaint;
+    if (fillPaint instanceof Color fillColor) {
       innerFillPaint = new GradientPaint((float) innerShape.getMinX(), (float) innerShape.getMinY(), fillColor.brighter(), (float) innerShape.getCenterX(), (float) innerShape.getMaxY(), fillColor);
     } else {
       innerFillPaint = fillPaint;

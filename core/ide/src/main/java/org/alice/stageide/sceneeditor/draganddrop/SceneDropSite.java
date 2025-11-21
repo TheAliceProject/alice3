@@ -45,8 +45,8 @@ package org.alice.stageide.sceneeditor.draganddrop;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Objects;
-import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.ide.IDE;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
 
@@ -80,8 +80,7 @@ public final class SceneDropSite implements DropSite {
     if (o == this) {
       return true;
     }
-    if (o instanceof SceneDropSite) {
-      SceneDropSite sds = (SceneDropSite) o;
+    if (o instanceof SceneDropSite sds) {
       return Objects.equals(this.transform, sds.transform);
     } else {
       return false;

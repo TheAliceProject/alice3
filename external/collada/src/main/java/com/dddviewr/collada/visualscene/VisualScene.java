@@ -1,11 +1,11 @@
 package com.dddviewr.collada.visualscene;
 
+import com.dddviewr.collada.Base;
+import com.dddviewr.collada.nodes.Node;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
-import com.dddviewr.collada.nodes.Node;
 
 public class VisualScene extends Base {
   protected String id;

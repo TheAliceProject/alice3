@@ -43,12 +43,7 @@
 package org.alice.ide.declarationseditor.components;
 
 import org.alice.ide.clipboard.Clipboard;
-import org.alice.ide.declarationseditor.BackwardCascade;
-import org.alice.ide.declarationseditor.BackwardForwardComposite;
-import org.alice.ide.declarationseditor.BackwardOperation;
-import org.alice.ide.declarationseditor.DeclarationCompositeHistory;
-import org.alice.ide.declarationseditor.ForwardCascade;
-import org.alice.ide.declarationseditor.ForwardOperation;
+import org.alice.ide.declarationseditor.*;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Button;

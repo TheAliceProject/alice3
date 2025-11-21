@@ -49,30 +49,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectStack;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.ConstructorBlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SuperConstructorInvocationStatement;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.TypeExpression;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 import org.lgna.story.SBiped;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.resources.JointedModelResource;
@@ -192,7 +169,7 @@ public class TypeManager {
       if (super.accept(userType)) {
         AbstractConstructor constructor = userType.getDeclaredConstructor(this.parameterType);
         if (constructor != null) {
-          AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+          AbstractParameter parameter0 = constructor.getRequiredParameters().getFirst();
           return parameter0.getValueType() == this.parameterType;
         } else {
           return false;
@@ -221,8 +198,7 @@ public class TypeManager {
           if (constructorInvocationStatement instanceof SuperConstructorInvocationStatement) {
             if (constructorInvocationStatement.requiredArguments.size() == 1) {
               Expression argumentExpression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-              if (argumentExpression instanceof FieldAccess) {
-                FieldAccess fieldAccess = (FieldAccess) argumentExpression;
+              if (argumentExpression instanceof FieldAccess fieldAccess) {
                 return fieldAccess.field.getValue() == this.superArgumentField;
               }
             }
@@ -366,8 +342,7 @@ public class TypeManager {
       }
     }
     NamedUserType rv = createTypeFor(superType, name, new AbstractType[] {argumentTypes[i]}, expressions);
-    if (argumentTypes[i] instanceof JavaType) {
-      JavaType javaArgumentTypeI = (JavaType) argumentTypes[i];
+    if (argumentTypes[i] instanceof JavaType javaArgumentTypeI) {
       Class<?> cls = javaArgumentTypeI.getClassReflectionProxy().getReification();
       if (ReflectionUtilities.isFinal(cls)) {
         boolean isSetResourceMethodDesired;
@@ -407,8 +382,7 @@ public class TypeManager {
 
   public static JavaField getEnumConstantFieldIfOneAndOnly(AbstractType<?, ?, ?> type) {
     JavaField rv = null;
-    if (type instanceof JavaType) {
-      JavaType javaType = (JavaType) type;
+    if (type instanceof JavaType javaType) {
       if (type.isAssignableTo(Enum.class)) {
         Class<Enum<?>> cls = (Class<Enum<?>>) javaType.getClassReflectionProxy().getReification();
         Enum<?>[] constants = cls.getEnumConstants();

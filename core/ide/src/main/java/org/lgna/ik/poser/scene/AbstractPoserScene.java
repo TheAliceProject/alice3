@@ -42,14 +42,12 @@
  */
 package org.lgna.ik.poser.scene;
 
-import java.awt.event.MouseEvent;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.PoserAnimatorDragAdapter;
 import org.alice.interact.handle.HandleStyle;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.core.IKCore;
@@ -70,9 +68,10 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.math.immutable.AffineMatrix4x4;
+import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

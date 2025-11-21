@@ -43,15 +43,11 @@
 
 package org.alice.stageide.ast.sort;
 
-import java.util.Map;
-
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.Paint;
-import org.lgna.story.SRoom;
-import org.lgna.story.SetCeilingPaint;
-import org.lgna.story.SetFloorPaint;
-import org.lgna.story.SetWallPaint;
+import org.lgna.story.*;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove

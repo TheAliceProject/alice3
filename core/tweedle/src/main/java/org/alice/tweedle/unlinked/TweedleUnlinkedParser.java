@@ -336,7 +336,7 @@ public class TweedleUnlinkedParser {
           return binaryExpression(LogicalOrExpression::new, TweedleTypes.BOOLEAN, context);
         case "<-":
           List<TweedleExpression> expressions = getTypedExpressions(context, null);
-          return new AssignmentExpression(expressions.get(0), expressions.get(1));
+          return new AssignmentExpression(expressions.getFirst(), expressions.get(1));
         default:
           throw new RuntimeException("No such operation as " + operation.getText());
         }
@@ -448,12 +448,12 @@ public class TweedleUnlinkedParser {
     }
 
     private TweedleExpression getFirstExpression(TweedlePrimitiveType type, TweedleParser.ExpressionContext context) {
-      return getTypedExpressions(context, type).get(0);
+      return getTypedExpressions(context, type).getFirst();
     }
 
     private TweedleExpression binaryExpression(BinaryConstructor constructor, TweedlePrimitiveType type, TweedleParser.ExpressionContext context) {
       List<TweedleExpression> expressions = getTypedExpressions(context, type);
-      return constructor.newBinExp(expressions.get(0), expressions.get(1));
+      return constructor.newBinExp(expressions.getFirst(), expressions.get(1));
     }
 
     private List<TweedleExpression> getTypedExpressions(TweedleParser.ExpressionContext context, TweedleType type) {

@@ -43,11 +43,7 @@
 
 package org.alice.ide.x;
 
-import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.ast.EmptyExpression;
-import org.alice.ide.ast.IdeExpression;
-import org.alice.ide.ast.PreviousValueExpression;
-import org.alice.ide.ast.SelectedInstanceFactoryExpression;
+import org.alice.ide.ast.*;
 import org.alice.ide.common.EmptyExpressionPane;
 import org.alice.ide.common.PreviousValueExpressionPane;
 import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;
@@ -62,18 +58,13 @@ import org.lgna.project.ast.ExpressionProperty;
 public abstract class IdeAstI18nFactory extends AstI18nFactory {
   @Override
   protected SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression) {
-    if (ideExpression instanceof EmptyExpression) {
-      return new EmptyExpressionPane((EmptyExpression) ideExpression);
-    } else if (ideExpression instanceof PreviousValueExpression) {
-      return new PreviousValueExpressionPane(this, (PreviousValueExpression) ideExpression);
-    } else if (ideExpression instanceof CurrentThisExpression) {
-      return new ThisExpressionLikeView(this, (CurrentThisExpression) ideExpression);
-    } else if (ideExpression instanceof SelectedInstanceFactoryExpression) {
-      //rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
-      return new SelectedInstanceFactoryExpressionPanel(this);
-    } else {
-      throw new RuntimeException(ideExpression.toString());
-    }
+    return switch (ideExpression) {
+      case EmptyExpression empty -> new EmptyExpressionPane(empty);
+      case PreviousValueExpression previous -> new PreviousValueExpressionPane(this, previous);
+      case CurrentThisExpression currentThis -> new ThisExpressionLikeView(this, currentThis);
+      case SelectedInstanceFactoryExpression ignored -> new SelectedInstanceFactoryExpressionPanel(this);
+      default -> throw new RuntimeException(ideExpression.toString());
+    };
   }
 
   @Override

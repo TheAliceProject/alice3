@@ -57,11 +57,9 @@ import java.util.Map;
  */
 public class UserInstance {
   public static Object getJavaInstanceIfNecessary(Object instance) {
-    if (instance instanceof UserInstance) {
-      UserInstance userInstance = (UserInstance) instance;
+    if (instance instanceof UserInstance userInstance) {
       return userInstance.getJavaInstance();
-    } else if (instance instanceof UserArrayInstance) {
-      UserArrayInstance userArrayInstance = (UserArrayInstance) instance;
+    } else if (instance instanceof UserArrayInstance userArrayInstance) {
       int length = userArrayInstance.getLength();
       UserArrayType type = userArrayInstance.getType();
       AbstractType<?, ?, ?> componentType = type.getComponentType();

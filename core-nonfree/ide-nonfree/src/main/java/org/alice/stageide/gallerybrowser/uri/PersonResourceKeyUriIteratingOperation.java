@@ -48,12 +48,7 @@ import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
-import org.lgna.story.resources.sims2.AdultPersonResource;
-import org.lgna.story.resources.sims2.ChildPersonResource;
-import org.lgna.story.resources.sims2.ElderPersonResource;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.TeenPersonResource;
-import org.lgna.story.resources.sims2.ToddlerPersonResource;
+import org.lgna.story.resources.sims2.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -106,11 +101,10 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
       }
       return personResourceComposite.getRandomPersonExpressionValueConverter(lifeStage);
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         Object value = prevSubStep.getProducedValue();
-        if (value instanceof InstanceCreation) {
-          InstanceCreation instanceCreation = (InstanceCreation) value;
+        if (value instanceof InstanceCreation instanceCreation) {
           AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
           addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation(instanceCreation);
           return addPersonResourceManagedFieldComposite.getLaunchOperation();

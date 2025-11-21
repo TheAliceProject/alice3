@@ -43,15 +43,15 @@
 
 package org.alice.ide.properties.adapter;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.stageide.StageIDE;
 import org.lgna.project.ast.Expression;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public abstract class AbstractPropertyAdapter<P, O> {
   public interface ValueChangeObserver<P> {

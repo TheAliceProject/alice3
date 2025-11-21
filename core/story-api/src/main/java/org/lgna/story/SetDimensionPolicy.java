@@ -67,8 +67,7 @@ public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, Set
 
   private static SetDimensionPolicy getValue(Object[] details, SetDimensionPolicy defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof SetDimensionPolicy) {
-        SetDimensionPolicy policy = (SetDimensionPolicy) detail;
+      if (detail instanceof SetDimensionPolicy policy) {
         return policy;
       }
     }

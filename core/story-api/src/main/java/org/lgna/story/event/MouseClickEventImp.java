@@ -42,11 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.PickUtilities;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -56,8 +55,8 @@ import org.lgna.story.SThing;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Dennis Cosgrove
@@ -104,8 +103,8 @@ public class MouseClickEventImp {
           PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
           if (pickResult != null) {
             SThing e = PickUtilities.getEntityFromPickedObject(pickResult.getVisual());
-            if (e instanceof SModel) {
-              this.modelAtMouseLocation = (SModel) e;
+            if (e instanceof SModel model) {
+              this.modelAtMouseLocation = model;
             }
           }
         }

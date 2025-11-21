@@ -48,13 +48,7 @@ import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3f;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author Dennis Cosgrove

@@ -46,12 +46,7 @@ import org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView;
 import org.alice.ide.ast.declaration.views.EditFieldView;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
-import org.lgna.project.ast.StaticAnalysisUtilities;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.UUID;
 

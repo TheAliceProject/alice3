@@ -121,8 +121,7 @@ public final class Color4f implements BinaryEncodableAndDecodable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Color4f) {
-      Color4f other = (Color4f) obj;
+    if (obj instanceof Color4f other) {
       return (this.red == other.red) && (this.green == other.green) && (this.blue == other.blue) && (this.alpha == other.alpha);
     } else {
       return false;

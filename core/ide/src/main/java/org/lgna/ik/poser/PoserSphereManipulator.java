@@ -42,8 +42,7 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.interact.InputState;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
@@ -52,7 +51,7 @@ import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.List;
 
 /**
  * @author Matt May
@@ -92,8 +91,7 @@ public class PoserSphereManipulator {
       boolean rv = super.doStartManipulator(startInput);
       if (manipulatedTransformable != null) {
         SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
-        if (abstractionFromSgElement instanceof JointSelectionSphere) {
-          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+        if (abstractionFromSgElement instanceof JointSelectionSphere sphere) {
           fireStart(sphere);
         }
       }
@@ -113,8 +111,7 @@ public class PoserSphereManipulator {
       boolean rv = super.doStartManipulator(startInput);
       if (manipulatedTransformable != null) {
         SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement(manipulatedTransformable);
-        if (abstractionFromSgElement instanceof JointSelectionSphere) {
-          JointSelectionSphere sphere = (JointSelectionSphere) abstractionFromSgElement;
+        if (abstractionFromSgElement instanceof JointSelectionSphere sphere) {
           fireStart(sphere);
         }
       }

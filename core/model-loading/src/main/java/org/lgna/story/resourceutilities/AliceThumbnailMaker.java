@@ -42,12 +42,12 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dave Culyba

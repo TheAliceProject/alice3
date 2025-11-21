@@ -53,22 +53,12 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
-import edu.cmu.cs.dennisc.scenegraph.OldMesh;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipOutputStream;
@@ -205,12 +195,10 @@ public class ModelBuilder {
         @Override
         public void write(OutputStream os) throws IOException {
           BinaryEncoder encoder = new OutputStreamBinaryEncoder(os);
-          if (geometry instanceof IndexedTriangleArray) {
-            IndexedTriangleArray ita = (IndexedTriangleArray) geometry;
+          if (geometry instanceof IndexedTriangleArray ita) {
             encoder.encode(ita.vertices.getValue());
             BufferUtilities.encodeNativeOptional(encoder, ita.polygonData.getValue());
-          } else if (geometry instanceof OldMesh) {
-            OldMesh mesh = (OldMesh) geometry;
+          } else if (geometry instanceof OldMesh mesh) {
             encoder.encode(mesh.xyzs.getValue());
             encoder.encode(mesh.ijks.getValue());
             encoder.encode(mesh.uvs.getValue());
@@ -281,8 +269,7 @@ public class ModelBuilder {
   }
 
   private static String getEntryPath(Texture texture) {
-    if (texture instanceof BufferedImageTexture) {
-      BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+    if (texture instanceof BufferedImageTexture bufferedImageTexture) {
       char c;
       if (bufferedImageTexture.isPotentiallyAlphaBlended()) {
         c = 't';

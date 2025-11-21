@@ -42,26 +42,18 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.ProjectStack;
 import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.resources.DynamicBipedResource;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Matt May

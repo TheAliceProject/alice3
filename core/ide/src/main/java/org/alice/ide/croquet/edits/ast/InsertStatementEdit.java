@@ -135,11 +135,9 @@ public class InsertStatementEdit<M extends InsertStatementCompletionModel> exten
   }
 
   private static BlockStatement getDst(Statement statement) {
-    if (statement instanceof AbstractStatementWithBody) {
-      AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody) statement;
+    if (statement instanceof AbstractStatementWithBody statementWithBody) {
       return statementWithBody.body.getValue();
-    } else if (statement instanceof ConditionalStatement) {
-      ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
+    } else if (statement instanceof ConditionalStatement conditionalStatement) {
       return conditionalStatement.booleanExpressionBodyPairs.get(0).body.getValue();
     } else {
       return null;

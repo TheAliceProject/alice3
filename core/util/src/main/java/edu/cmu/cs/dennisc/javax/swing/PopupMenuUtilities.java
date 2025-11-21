@@ -42,13 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.Component;
@@ -64,14 +58,11 @@ public class PopupMenuUtilities {
   public static void showModal(JPopupMenu popupMenu, Component invoker, Point pt) {
     Component root = SwingUtilities.getRoot(invoker);
     final JLayeredPane layeredPane;
-    if (root instanceof JFrame) {
-      JFrame window = (JFrame) root;
+    if (root instanceof JFrame window) {
       layeredPane = window.getLayeredPane();
-    } else if (root instanceof JDialog) {
-      JDialog window = (JDialog) root;
+    } else if (root instanceof JDialog window) {
       layeredPane = window.getLayeredPane();
-    } else if (root instanceof JWindow) {
-      JWindow window = (JWindow) root;
+    } else if (root instanceof JWindow window) {
       layeredPane = window.getLayeredPane();
     } else {
       layeredPane = null;

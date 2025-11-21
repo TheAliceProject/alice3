@@ -84,8 +84,7 @@ public abstract class DifferentSignatureHelpComposite<M extends Member> extends 
 
     String kindOfMemberText;
     M member = differentSignature.getImportHub().getMember();
-    if (member instanceof UserMethod) {
-      UserMethod method = (UserMethod) member;
+    if (member instanceof UserMethod method) {
       kindOfMemberText = method.isProcedure() ? "procedure" : "function";
     } else {
       kindOfMemberText = "property";

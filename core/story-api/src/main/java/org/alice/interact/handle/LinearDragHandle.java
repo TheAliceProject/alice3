@@ -42,11 +42,6 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import java.awt.Color;
-
-import org.alice.interact.MovementType;
-import org.alice.interact.condition.MovementDescription;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
@@ -55,12 +50,16 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.MovementType;
+import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Vector3;
 import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
+
+import java.awt.Color;
 
 /**
  * @author David Culyba
@@ -166,12 +165,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
   @Override
   public void setManipulatedObject(AbstractTransformable manipulatedObject) {
     if (this.manipulatedObject != manipulatedObject) {
-      if (this.manipulatedObject instanceof Transformable) {
-        ((Transformable) this.manipulatedObject).localTransformation.removePropertyListener(this);
+      if (this.manipulatedObject instanceof Transformable transformable) {
+        transformable.localTransformation.removePropertyListener(this);
       }
       super.setManipulatedObject(manipulatedObject);
-      if (this.manipulatedObject instanceof Transformable) {
-        ((Transformable) this.manipulatedObject).localTransformation.addPropertyListener(this);
+      if (this.manipulatedObject instanceof Transformable transformable) {
+        transformable.localTransformation.addPropertyListener(this);
       }
     }
   }

@@ -151,10 +151,10 @@ public class TypeMenu extends MenuModel {
     }
 
     if (procedureModels.size() > 0) {
-      procedureModels.add(0, ProceduresSeparator.getInstance());
+      procedureModels.addFirst(ProceduresSeparator.getInstance());
     }
     if (functionModels.size() > 0) {
-      functionModels.add(0, FunctionsSeparator.getInstance());
+      functionModels.addFirst(FunctionsSeparator.getInstance());
     }
 
     procedureModels.add(AddProcedureComposite.getInstance(this.type).getLaunchOperation().getMenuItemPrepModel());

@@ -70,8 +70,7 @@ public class JointMethodUtilities {
           if (method.getName().startsWith(GETTER_PREFIX)) {
             if (method instanceof JavaMethod) {
               return true; //isNotAnnotatedOtherwise
-            } else if (method instanceof UserMethod) {
-              UserMethod userMethod = (UserMethod) method;
+            } else if (method instanceof UserMethod userMethod) {
               return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
             } else {
               //throw new AssertionError();
@@ -91,8 +90,7 @@ public class JointMethodUtilities {
           if (method.getName().startsWith(GETTER_PREFIX)) {
             if (method instanceof JavaMethod) {
               return true; //isNotAnnotatedOtherwise
-            } else if (method instanceof UserMethod) {
-              UserMethod userMethod = (UserMethod) method;
+            } else if (method instanceof UserMethod userMethod) {
               return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
             } else {
               //throw new AssertionError();
@@ -107,8 +105,8 @@ public class JointMethodUtilities {
 
   public static int getJointArrayLength(AbstractMethod method) {
     if (isJointArrayGetter(method)) {
-      if (method instanceof JavaMethod) {
-        Method mthd = ((JavaMethod) method).getMethodReflectionProxy().getReification();
+      if (method instanceof JavaMethod javaMethod) {
+        Method mthd = javaMethod.getMethodReflectionProxy().getReification();
         if (mthd != null) {
           if (mthd.isAnnotationPresent(ArrayTemplate.class)) {
             ArrayTemplate arrayTemplate = mthd.getAnnotation(ArrayTemplate.class);

@@ -79,8 +79,7 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
   }
 
   private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer(Expression expression) {
-    if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    if (expression instanceof InstanceCreation instanceCreation) {
       return instanceCreation.constructor.getValue().getDeclaringType();
     } else {
       return null;
@@ -97,7 +96,7 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
     if (personResourceInstanceCreation != null) {
       NamedUserType type = TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation(personResourceInstanceCreation);
 
-      return AstUtilities.createInstanceCreation(type.getDeclaredConstructors().get(0), personResourceInstanceCreation);
+      return AstUtilities.createInstanceCreation(type.getDeclaredConstructors().getFirst(), personResourceInstanceCreation);
     } else {
       return null;
     }
@@ -135,8 +134,7 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
     public Expression getPreviousExpression() {
       //todo: investigate
       Expression initializer = getInitializer();
-      if (initializer instanceof InstanceCreation) {
-        InstanceCreation instanceCreation = (InstanceCreation) initializer;
+      if (initializer instanceof InstanceCreation instanceCreation) {
         if (instanceCreation.requiredArguments.size() == 1) {
           return instanceCreation.requiredArguments.get(0).expression.getValue();
         }

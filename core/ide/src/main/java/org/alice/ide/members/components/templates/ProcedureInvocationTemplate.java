@@ -69,8 +69,8 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
     super(ProcedureInvocationTemplateDragModel.getInstance(method));
     this.method = method;
 
-    if (this.method instanceof UserMethod) {
-      this.setPopupPrepModel(MethodTemplateMenuModel.getInstance((UserMethod) this.method).getPopupPrepModel());
+    if (this.method instanceof UserMethod userMethod) {
+      this.setPopupPrepModel(MethodTemplateMenuModel.getInstance(userMethod).getPopupPrepModel());
     }
 
     handleDisplayable();
@@ -79,16 +79,16 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.method instanceof UserMethod) {
-      ((UserMethod) this.method).requiredParameters.addListPropertyListener(this.parameterAdapter);
+    if (this.method instanceof UserMethod userMethod) {
+      userMethod.requiredParameters.addListPropertyListener(this.parameterAdapter);
       this.refresh();
     }
   }
 
   @Override
   protected void handleUndisplayable() {
-    if (this.method instanceof UserMethod) {
-      ((UserMethod) this.method).requiredParameters.removeListPropertyListener(this.parameterAdapter);
+    if (this.method instanceof UserMethod userMethod) {
+      userMethod.requiredParameters.removeListPropertyListener(this.parameterAdapter);
     }
     super.handleUndisplayable();
   }

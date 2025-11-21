@@ -232,7 +232,7 @@ public class ProjectFileUtilities {
   }
 
   private File backupFile(String type, Path backupDir) {
-    String fileName = String.format("%s%s.%s", type, LocalDateTime.now().format(ORDER_FORMAT), PROJECT_EXTENSION);
+    String fileName = "%s%s.%s".formatted(type, LocalDateTime.now().format(ORDER_FORMAT), PROJECT_EXTENSION);
     return backupDir.resolve(fileName).toFile();
   }
 

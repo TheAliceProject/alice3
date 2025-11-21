@@ -55,16 +55,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Layer;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
-import edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener;
-import edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener;
-import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
+import edu.cmu.cs.dennisc.scenegraph.event.*;
 import edu.cmu.cs.dennisc.texture.Texture;
 import edu.cmu.cs.dennisc.texture.event.TextureEvent;
 import edu.cmu.cs.dennisc.texture.event.TextureListener;
@@ -105,28 +96,18 @@ public class ChangeHandler {
   }
 
   private static void handleEvent(Event<?> event) {
-    if (event instanceof PropertyEvent) {
-      PropertyEvent propertyEvent = (PropertyEvent) event;
-      GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
-    } else if (event instanceof ReleaseEvent) {
-      GlrObject.handleReleased((ReleaseEvent) event);
-    } else if (event instanceof AbsoluteTransformationEvent) {
-      AbsoluteTransformationEvent absoluteTransformationEvent = (AbsoluteTransformationEvent) event;
-      GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
-    } else if (event instanceof HierarchyEvent) {
-      GlrComponent.handleHierarchyChanged((HierarchyEvent) event);
-    } else if (event instanceof ComponentAddedEvent) {
-      GlrComposite.handleComponentAdded((ComponentAddedEvent) event);
-    } else if (event instanceof ComponentRemovedEvent) {
-      GlrComposite.handleComponentRemoved((ComponentRemovedEvent) event);
-    } else if (event instanceof GraphicAddedEvent) {
-      GlrLayer.handleGraphicAdded((GraphicAddedEvent) event);
-    } else if (event instanceof GraphicRemovedEvent) {
-      GlrLayer.handleGraphicRemoved((GraphicRemovedEvent) event);
-    } else if (event instanceof TextureEvent) {
-      GlrTexture.handleTextureChanged((TextureEvent) event);
-    } else {
-      Logger.warning("UNHANDLED EVENT:", event);
+    switch (event) {
+      case PropertyEvent propertyEvent -> GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
+      case ReleaseEvent releaseEvent -> GlrObject.handleReleased(releaseEvent);
+      case AbsoluteTransformationEvent absoluteTransformationEvent ->
+          GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
+      case HierarchyEvent hierarchyEvent -> GlrComponent.handleHierarchyChanged(hierarchyEvent);
+      case ComponentAddedEvent componentAdded -> GlrComposite.handleComponentAdded(componentAdded);
+      case ComponentRemovedEvent componentRemoved -> GlrComposite.handleComponentRemoved(componentRemoved);
+      case GraphicAddedEvent graphicAdded -> GlrLayer.handleGraphicAdded(graphicAdded);
+      case GraphicRemovedEvent graphicRemoved -> GlrLayer.handleGraphicRemoved(graphicRemoved);
+      case TextureEvent textureEvent -> GlrTexture.handleTextureChanged(textureEvent);
+      case null, default -> Logger.warning("UNHANDLED EVENT:", event);
     }
   }
 
@@ -155,40 +136,40 @@ public class ChangeHandler {
   }
 
   /*package-private*/
-  static void addListeners(Releasable element) {
-    element.addReleaseListener(releaseListener);
-    if (element instanceof Element) {
-      ((Element) element).addPropertyListener(propertyListener);
-      if (element instanceof Component) {
-        ((Component) element).addAbsoluteTransformationListener(absoluteTransformationListener);
-        ((Component) element).addHierarchyListener(hierarchyListener);
-        if (element instanceof Composite) {
-          ((Composite) element).addChildrenListener(componentsListener);
+  static void addListeners(Releasable releasable) {
+    releasable.addReleaseListener(releaseListener);
+    if (releasable instanceof Element element) {
+      element.addPropertyListener(propertyListener);
+      if (releasable instanceof Component component) {
+        component.addAbsoluteTransformationListener(absoluteTransformationListener);
+        component.addHierarchyListener(hierarchyListener);
+        if (releasable instanceof Composite composite) {
+          composite.addChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer) {
-        ((Layer) element).addGraphicsListener(graphicsListener);
+      } else if (releasable instanceof Layer layer) {
+        layer.addGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture) {
-      ((Texture) element).addTextureListener(textureListener);
+    } else if (releasable instanceof Texture texture) {
+      texture.addTextureListener(textureListener);
     }
   }
 
   /*package-private*/
-  static void removeListeners(Releasable element) {
-    element.removeReleaseListener(releaseListener);
-    if (element instanceof Element) {
-      ((Element) element).removePropertyListener(propertyListener);
-      if (element instanceof Component) {
-        ((Component) element).removeAbsoluteTransformationListener(absoluteTransformationListener);
-        ((Component) element).removeHierarchyListener(hierarchyListener);
-        if (element instanceof Composite) {
-          ((Composite) element).removeChildrenListener(componentsListener);
+  static void removeListeners(Releasable releasable) {
+    releasable.removeReleaseListener(releaseListener);
+    if (releasable instanceof Element element) {
+      element.removePropertyListener(propertyListener);
+      if (releasable instanceof Component component) {
+        component.removeAbsoluteTransformationListener(absoluteTransformationListener);
+        component.removeHierarchyListener(hierarchyListener);
+        if (releasable instanceof Composite composite) {
+          composite.removeChildrenListener(componentsListener);
         }
-      } else if (element instanceof Layer) {
-        ((Layer) element).removeGraphicsListener(graphicsListener);
+      } else if (releasable instanceof Layer layer) {
+        layer.removeGraphicsListener(graphicsListener);
       }
-    } else if (element instanceof Texture) {
-      ((Texture) element).removeTextureListener(textureListener);
+    } else if (releasable instanceof Texture texture) {
+      texture.removeTextureListener(textureListener);
     }
   }
 

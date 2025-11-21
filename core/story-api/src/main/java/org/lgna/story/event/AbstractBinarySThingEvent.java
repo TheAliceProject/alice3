@@ -60,11 +60,11 @@ public class AbstractBinarySThingEvent extends AbstractEvent {
     this.a = a;
     this.b = b;
     movables = new SMovableTurnable[2];
-    if (a instanceof SMovableTurnable) {
-      movables[0] = (SMovableTurnable) a;
+    if (a instanceof SMovableTurnable turnable) {
+      movables[0] = turnable;
     }
-    if (b instanceof SMovableTurnable) {
-      movables[1] = (SMovableTurnable) b;
+    if (b instanceof SMovableTurnable turnable) {
+      movables[1] = turnable;
     }
   }
 

@@ -174,7 +174,7 @@ public class HairUtilities {
       Logger.outln(hairColorName);
     }
     Collections.sort(list);
-    list.add(0, null);
+    list.addFirst(null);
     Logger.outln(list);
   }
 }

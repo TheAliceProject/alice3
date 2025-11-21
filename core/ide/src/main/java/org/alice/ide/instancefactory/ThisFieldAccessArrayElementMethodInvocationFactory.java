@@ -43,15 +43,7 @@
 package org.alice.ide.instancefactory;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.IntegerLiteral;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 /**
  * @author dculyba

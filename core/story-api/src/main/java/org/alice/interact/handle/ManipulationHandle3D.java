@@ -92,7 +92,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
         return false;
       }
       Object bonusData = c.getBonusDataFor(PickHint.PICK_HINT_KEY);
-      if ((bonusData instanceof PickHint) && ((PickHint) bonusData).intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
+      if ((bonusData instanceof PickHint hint) && hint.intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
         return true;
       } else {
         return isHandle(c.getParent());
@@ -208,13 +208,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   }
 
   private Scalable getScalable(AbstractTransformable object) {
-    Scalable scalable = null;
-    if (object instanceof Scalable) {
-      scalable = (Scalable) object;
-    } else if (object != null) {
-      scalable = object.getBonusDataFor(Scalable.KEY);
+    if (object instanceof Scalable scalable) {
+      return scalable;
     }
-    return scalable;
+    if (object != null) {
+      return object.getBonusDataFor(Scalable.KEY);
+    }
+    return null;
   }
 
   @Override
@@ -271,8 +271,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
   public void updateCameraRelativeOpacity() {
     if (ManipulationHandle3D.this.dragAdapter != null) {
       AbstractCamera activeCamera = ManipulationHandle3D.this.dragAdapter.getActiveCamera();
-      if (activeCamera instanceof SymmetricPerspectiveCamera) {
-        Point3 cameraLocation = ((SymmetricPerspectiveCamera) activeCamera).getAbsoluteTransformation().translation();
+      if (activeCamera instanceof SymmetricPerspectiveCamera camera) {
+        Point3 cameraLocation = camera.getAbsoluteTransformation().translation();
         ManipulationHandle3D.this.setCameraPosition(cameraLocation);
       }
     }
@@ -433,20 +433,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected Color4f getDesiredColor(HandleRenderState renderState) {
     Color4f baseColor = this.getBaseColor();
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return baseColor;
-    case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-      return baseColor;
-    case VISIBLE_AND_ACTIVE:
-      return baseColor;
-    case VISIBLE_AND_ROLLOVER:
-      return baseColor;
-    case JUST_VISIBLE:
-      return baseColor;
-    default:
-      return baseColor;
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> baseColor;
+    case VISIBLE_BUT_SIBLING_IS_ACTIVE -> baseColor;
+    case VISIBLE_AND_ACTIVE -> baseColor;
+    case VISIBLE_AND_ROLLOVER -> baseColor;
+    case JUST_VISIBLE -> baseColor;
+    default -> baseColor;
+    };
   }
 
   @Override
@@ -476,20 +470,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
   protected double getDesiredOpacity(HandleRenderState renderState) {
     //    PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" camera opacity: "+this.cameraRelativeOpacity);
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return 0.0d;
-    case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-      return .5d * this.cameraRelativeOpacity;
-    case VISIBLE_AND_ACTIVE:
-      return 1.0d * this.cameraRelativeOpacity;
-    case VISIBLE_AND_ROLLOVER:
-      return .75d * this.cameraRelativeOpacity;
-    case JUST_VISIBLE:
-      return .6d * this.cameraRelativeOpacity;
-    default:
-      return 0.0d;
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> 0.0d;
+    case VISIBLE_BUT_SIBLING_IS_ACTIVE -> .5d * this.cameraRelativeOpacity;
+    case VISIBLE_AND_ACTIVE -> 1.0d * this.cameraRelativeOpacity;
+    case VISIBLE_AND_ROLLOVER -> .75d * this.cameraRelativeOpacity;
+    case JUST_VISIBLE -> .6d * this.cameraRelativeOpacity;
+    default -> 0.0d;
+    };
   }
 
   public AffineMatrix4x4 getTransformationForAxis(Vector3 axis) {
@@ -575,8 +563,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
       return null;
     }
     Composite parent = this.getParent();
-    if (parent instanceof AbstractTransformable) {
-      return (AbstractTransformable) parent;
+    if (parent instanceof AbstractTransformable transformable) {
+      return transformable;
     }
     if (parent != null) {
       Logger.severe("Unknown parent type for handle: " + parent);

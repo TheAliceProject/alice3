@@ -90,11 +90,9 @@ public class EventsContentPanel extends CodePanelWithDropReceptor {
 
     @Override
     protected AwtComponentView<?> createComponent(Statement statement) {
-      if (statement instanceof ExpressionStatement) {
-        ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+      if (statement instanceof ExpressionStatement expressionStatement) {
         Expression expression = expressionStatement.expression.getValue();
-        if (expression instanceof MethodInvocation) {
-          MethodInvocation methodInvocation = (MethodInvocation) expression;
+        if (expression instanceof MethodInvocation methodInvocation) {
           AddEventListenerStatementPanel statementPanel = new AddEventListenerStatementPanel(expressionStatement);
           statementPanel.addComponent(new EventListenerComponent(methodInvocation));
           return statementPanel;

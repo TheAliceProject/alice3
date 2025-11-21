@@ -70,8 +70,7 @@ public final class HairClsHatNameCombo {
     if (this == obj) {
       return true;
     }
-    if (obj instanceof HairClsHatNameCombo) {
-      HairClsHatNameCombo other = (HairClsHatNameCombo) obj;
+    if (obj instanceof HairClsHatNameCombo other) {
       if (this.hairCls.equals(other.hairCls)) {
         if (this.hatName != null) {
           if (other.hatName != null) {

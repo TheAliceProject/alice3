@@ -55,7 +55,6 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.event.MenuKeyEvent;
 import javax.swing.event.MenuKeyListener;
-
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;

@@ -42,15 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.typemanager;
 
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Declaration;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 
@@ -64,11 +56,9 @@ public class ResourceTypeUtilities {
 
   public static JavaType getResourceType(NamedUserType type) {
     Declaration declaration = getResourceFieldOrType(type);
-    if (declaration instanceof JavaType) {
-      JavaType resourceType = (JavaType) declaration;
+    if (declaration instanceof JavaType resourceType) {
       return resourceType;
-    } else if (declaration instanceof JavaField) {
-      JavaField resourceField = (JavaField) declaration;
+    } else if (declaration instanceof JavaField resourceField) {
       return resourceField.getDeclaringType();
     } else {
       return null;
@@ -80,7 +70,7 @@ public class ResourceTypeUtilities {
     final int CONSTRUCTOR_COUNT = constructors.size();
     switch (CONSTRUCTOR_COUNT) {
     case 1:
-      NamedUserConstructor constructor0 = constructors.get(0);
+      NamedUserConstructor constructor0 = constructors.getFirst();
       List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
       final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
       switch (REQUIRED_PARAMETER_COUNT) {
@@ -92,8 +82,7 @@ public class ResourceTypeUtilities {
           return null;
         case 1:
           Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-          if (expression instanceof FieldAccess) {
-            FieldAccess fieldAccess = (FieldAccess) expression;
+          if (expression instanceof FieldAccess fieldAccess) {
             return fieldAccess.field.getValue();
           } else {
             return null;
@@ -102,7 +91,7 @@ public class ResourceTypeUtilities {
           return null;
         }
       case 1:
-        AbstractParameter parameter0 = requiredParameters.get(0);
+        AbstractParameter parameter0 = requiredParameters.getFirst();
         return parameter0.getValueType();
       default:
         return null;

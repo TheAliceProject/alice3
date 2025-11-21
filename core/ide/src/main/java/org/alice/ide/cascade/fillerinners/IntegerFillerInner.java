@@ -48,14 +48,12 @@ import org.alice.ide.croquet.models.cascade.integer.RealToIntegerCascadeMenu;
 import org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn;
 import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.IntegerCustomExpressionCreatorComposite;
-
+import org.apache.commons.lang.ArrayUtils;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.IntegerValueDetails;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
-
-import org.apache.commons.lang.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,8 +63,8 @@ import java.util.List;
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
   public static int[] getLiterals(ValueDetails<?> details) {
-    if (details instanceof IntegerValueDetails) {
-      return ((IntegerValueDetails) details).getLiterals();
+    if (details instanceof IntegerValueDetails valueDetails) {
+      return valueDetails.getLiterals();
     } else {
       return new int[] {0, 1, 2, 3};
     }

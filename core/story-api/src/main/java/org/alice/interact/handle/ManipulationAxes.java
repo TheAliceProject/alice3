@@ -114,12 +114,10 @@ public class ManipulationAxes extends ManipulationHandle3D {
 
   @Override
   protected double getDesiredOpacity(HandleRenderState renderState) {
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return 0.0d;
-    default:
-      return 0.6d * this.cameraRelativeOpacity;
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> 0.0d;
+    default -> 0.6d * this.cameraRelativeOpacity;
+    };
   }
 
   @Override

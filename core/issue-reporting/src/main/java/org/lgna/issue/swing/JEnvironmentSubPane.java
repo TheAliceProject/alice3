@@ -46,13 +46,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemProperty;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
 
-import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.List;

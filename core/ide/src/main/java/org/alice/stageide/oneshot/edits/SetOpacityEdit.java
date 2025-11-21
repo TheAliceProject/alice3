@@ -63,8 +63,7 @@ public class SetOpacityEdit extends MethodInvocationEdit {
 
   @Override
   protected void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof SThing) {
-      SThing thing = (SThing) instance;
+    if (instance instanceof SThing thing) {
       this.modelImp = thing.getImplementation();
       this.value = this.modelImp.opacity.getValue();
     } else {

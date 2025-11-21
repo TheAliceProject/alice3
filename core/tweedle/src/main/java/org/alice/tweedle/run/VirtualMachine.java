@@ -42,12 +42,8 @@
  *******************************************************************************/
 package org.alice.tweedle.run;
 
+import org.alice.tweedle.*;
 import org.alice.tweedle.ast.TweedleExpression;
-import org.alice.tweedle.TweedleField;
-import org.alice.tweedle.TweedleStatement;
-import org.alice.tweedle.TweedleClass;
-import org.alice.tweedle.TweedleMethod;
-import org.alice.tweedle.TweedleValue;
 
 public abstract class VirtualMachine {
 /*  public abstract LgnaStackTraceElement[] getStackTrace( Thread thread );

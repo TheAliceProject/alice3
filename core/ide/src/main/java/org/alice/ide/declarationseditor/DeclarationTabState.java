@@ -104,7 +104,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
 
           public void addDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
             if (declarationComposite instanceof TypeComposite) {
-              this.list.add(0, declarationComposite);
+              this.list.addFirst(declarationComposite);
             } else {
               this.list.add(declarationComposite);
             }
@@ -207,8 +207,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
     } else {
       rv.setSmallIcon(FUNCTION_ICON);
     }
-    if (method instanceof UserMethod) {
-      UserMethod userMethod = (UserMethod) method;
+    if (method instanceof UserMethod userMethod) {
       userMethod.name.addPropertyListener(e -> rv.setName((String) e.getValue()));
       //todo: release?
     }
@@ -222,10 +221,10 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   }
 
   public Operation getItemSelectionOperationForCode(AbstractCode code) {
-    if (code instanceof AbstractMethod) {
-      return this.getItemSelectionOperationForMethod((AbstractMethod) code);
-    } else if (code instanceof AbstractConstructor) {
-      return this.getItemSelectionOperationForConstructor((AbstractConstructor) code);
+    if (code instanceof AbstractMethod method) {
+      return this.getItemSelectionOperationForMethod(method);
+    } else if (code instanceof AbstractConstructor constructor) {
+      return this.getItemSelectionOperationForConstructor(constructor);
     } else {
       return null;
     }
@@ -233,8 +232,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
 
   private void handleAstChangeThatCouldBeOfInterest() {
     DeclarationComposite<?, ?> declarationComposite = this.getValue();
-    if (declarationComposite instanceof CodeComposite) {
-      CodeComposite codeComposite = (CodeComposite) declarationComposite;
+    if (declarationComposite instanceof CodeComposite codeComposite) {
       codeComposite.handleAstChangeThatCouldBeOfInterest();
     }
   }
@@ -244,8 +242,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
     for (DeclarationComposite<?, ?> composite : this) {
       if (composite != null) {
         AbstractDeclaration declaration = composite.getDeclaration();
-        if (declaration instanceof UserCode) {
-          UserCode code = (UserCode) declaration;
+        if (declaration instanceof UserCode code) {
           UserType<?> declaringType = code.getDeclaringType();
           if (declaringType == null) {
             orphans.add(composite);

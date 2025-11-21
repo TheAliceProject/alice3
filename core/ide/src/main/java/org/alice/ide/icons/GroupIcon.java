@@ -185,8 +185,7 @@ public class GroupIcon extends ShapeIcon {
           int x = (int) (this.getX(i) * width);
           int y = (int) (this.getY(i) * height);
 
-          if (icon instanceof ImageIcon) {
-            ImageIcon imageIcon = (ImageIcon) icon;
+          if (icon instanceof ImageIcon imageIcon) {
             int imageWidth = imageIcon.getIconWidth();
             int imageHeight = imageIcon.getIconHeight();
 

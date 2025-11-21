@@ -56,8 +56,7 @@ public class TextColor implements Say.Detail, Think.Detail {
   /* package-private */
   static Color getValue(Object[] details, Color defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof TextColor) {
-        TextColor textColor = (TextColor) detail;
+      if (detail instanceof TextColor textColor) {
         return textColor.value;
       }
     }

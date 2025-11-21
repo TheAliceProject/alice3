@@ -79,8 +79,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
     if (this.labelText == null) {
       Class<?> cls;
       DragModel model = this.getModel();
-      if (model instanceof ExpressionStatementTemplateDragModel) {
-        ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (ExpressionStatementTemplateDragModel) model;
+      if (model instanceof ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel) {
         cls = expressionStatementTemplateDragModel.getExpressionCls();
       } else {
         cls = this.getStatementCls();

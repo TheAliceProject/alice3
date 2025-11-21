@@ -42,9 +42,10 @@
  *******************************************************************************/
 package org.alice.nonfree;
 
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
@@ -67,10 +68,8 @@ import org.lgna.story.Paint;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.resources.ModelResource;
 
-import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
-import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kyle J. Harms

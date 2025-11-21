@@ -84,7 +84,7 @@ public class JointedTypeInfo {
     while (JOINTED_MODEL_TYPE.isAssignableFrom(t)) {
       JointedTypeInfo jointedTypeInfo = getDeclarationInstance(t);
       if (jointedTypeInfo != null) {
-        rv.add(0, jointedTypeInfo);
+        rv.addFirst(jointedTypeInfo);
       }
       t = t.getSuperType();
     }

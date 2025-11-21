@@ -42,16 +42,15 @@
  */
 package org.lgna.ik.poser.scene;
 
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.SFlyer;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

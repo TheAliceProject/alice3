@@ -42,11 +42,9 @@
  */
 package org.lgna.ik.poser.animation;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
@@ -54,9 +52,10 @@ import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.math.immutable.UnitQuaternion;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May
@@ -78,8 +77,8 @@ public class TimeLine {
       datas.add(keyFrameData);
       fireKeyFrameAdded(keyFrameData);
       checkAddingJoints(keyFrameData);
-    } else if (datas.get(0).getEventTime() > keyFrameData.getEventTime()) {
-      datas.add(0, keyFrameData);
+    } else if (datas.getFirst().getEventTime() > keyFrameData.getEventTime()) {
+      datas.addFirst(keyFrameData);
       fireKeyFrameAdded(keyFrameData);
       checkAddingJoints(keyFrameData);
     } else {
@@ -149,7 +148,7 @@ public class TimeLine {
 
   public void setEndTime(double endTime) {
     if (endTime > 0) {
-      if ((datas.size() == 0) || (endTime > datas.get(datas.size() - 1).getEventTime())) {
+      if ((datas.size() == 0) || (endTime > datas.getLast().getEventTime())) {
         this.endTime = endTime;
         fireEndTimeChanged(endTime);
         if (this.endTime < currentTime) {
@@ -288,7 +287,7 @@ public class TimeLine {
 
   public void refresh() {
     while (!datas.isEmpty()) {
-      removeKeyFrameData(datas.get(0));
+      removeKeyFrameData(datas.getFirst());
     }
     setCurrentTime(0);
     setEndTime(10);

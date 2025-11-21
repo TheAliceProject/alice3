@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.geometry.Geometry;
 import com.dddviewr.collada.geometry.Mesh;
+import org.xml.sax.Attributes;
 
 public class mesh extends State {
   protected Mesh theMesh;

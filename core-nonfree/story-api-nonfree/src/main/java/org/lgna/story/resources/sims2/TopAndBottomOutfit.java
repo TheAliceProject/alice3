@@ -72,8 +72,7 @@ public abstract class TopAndBottomOutfit<T extends TopPiece, B extends BottomPie
     if (this == obj) {
       return true;
     }
-    if (obj instanceof TopAndBottomOutfit) {
-      TopAndBottomOutfit<?, ?> other = (TopAndBottomOutfit<?, ?>) obj;
+    if (obj instanceof TopAndBottomOutfit<?, ?> other) {
       return this.topPiece.equals(other.topPiece) && this.bottomPiece.equals(other.bottomPiece);
     }
     return false;

@@ -76,10 +76,10 @@ public class FindResourcesPanel extends JPanel {
     private final java.awt.FileDialog awtFileDialog;
 
     public AwtFileDialog(Component root, String title, int mode) {
-      if (root instanceof Frame) {
-        awtFileDialog = new java.awt.FileDialog((Frame) root, title, mode);
-      } else if (root instanceof Dialog) {
-        awtFileDialog = new java.awt.FileDialog((Dialog) root, title, mode);
+      if (root instanceof Frame frame) {
+        awtFileDialog = new java.awt.FileDialog(frame, title, mode);
+      } else if (root instanceof Dialog dialog) {
+        awtFileDialog = new java.awt.FileDialog(dialog, title, mode);
       } else {
         awtFileDialog = new java.awt.FileDialog((Dialog) null, title, mode);
       }

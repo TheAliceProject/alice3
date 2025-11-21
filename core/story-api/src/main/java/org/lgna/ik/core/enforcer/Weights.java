@@ -1,9 +1,9 @@
 package org.lgna.ik.core.enforcer;
 
+import org.lgna.story.resources.JointId;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.lgna.story.resources.JointId;
 
 public class Weights {
 

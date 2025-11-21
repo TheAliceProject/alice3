@@ -45,14 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph.io;
 
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author Dennis Cosgrove

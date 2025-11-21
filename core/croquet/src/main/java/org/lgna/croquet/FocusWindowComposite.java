@@ -56,11 +56,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+import java.awt.event.*;
 import java.util.EventObject;
 import java.util.UUID;
 
@@ -116,8 +112,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
         EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>) trigger;
         EventObject eventObject = eventObjectTrigger.getEvent();
         Object source = eventObject.getSource();
-        if (source instanceof Component) {
-          Component awtSource = (Component) source;
+        if (source instanceof Component awtSource) {
           window.setLocation(calculateLocationOnScreenForFocusWindow(awtSource, window));
         }
       } else {

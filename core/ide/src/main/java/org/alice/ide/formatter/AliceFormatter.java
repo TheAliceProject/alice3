@@ -125,8 +125,7 @@ public class AliceFormatter extends Formatter {
   public String getHeaderTextForCode(UserCode code) {
     StringBuilder sb = new StringBuilder();
     sb.append("declare ");
-    if (code instanceof UserMethod) {
-      UserMethod method = (UserMethod) code;
+    if (code instanceof UserMethod method) {
       if (method.isProcedure()) {
         sb.append("procedure ");
       } else {

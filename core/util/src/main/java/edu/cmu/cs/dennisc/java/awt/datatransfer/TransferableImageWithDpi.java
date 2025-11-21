@@ -53,11 +53,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 
 /**
@@ -92,8 +88,8 @@ public class TransferableImageWithDpi implements Transferable {
   }
 
   private RenderedImage getRenderedImage() {
-    if (image instanceof RenderedImage) {
-      return (RenderedImage) image;
+    if (image instanceof RenderedImage renderedImage) {
+      return renderedImage;
     } else {
       int width = ImageUtilities.getWidth(image);
       int height = ImageUtilities.getHeight(image);

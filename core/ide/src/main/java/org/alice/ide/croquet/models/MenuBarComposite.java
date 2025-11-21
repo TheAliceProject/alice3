@@ -45,11 +45,7 @@ package org.alice.ide.croquet.models;
 
 import org.alice.ide.IdeApp;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.ide.croquet.models.menubar.EditMenuModel;
-import org.alice.ide.croquet.models.menubar.FileMenuModel;
-import org.alice.ide.croquet.models.menubar.ProjectMenuModel;
-import org.alice.ide.croquet.models.menubar.RunMenuModel;
-import org.alice.ide.croquet.models.menubar.WindowMenuModel;
+import org.alice.ide.croquet.models.menubar.*;
 
 import java.util.UUID;
 

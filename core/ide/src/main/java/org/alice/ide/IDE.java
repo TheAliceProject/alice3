@@ -453,7 +453,7 @@ public abstract class IDE extends ProjectApplication {
   @Override
   protected void handleOpenFiles(List<File> files) {
     if (files != null && !files.isEmpty()) {
-      File file = files.get(0);
+      File file = files.getFirst();
       if (file.exists()) {
         UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
         new OpenProjectFromOsOperation(file).fire(activity);

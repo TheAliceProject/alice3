@@ -48,12 +48,7 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.member.MethodsSubComposite;
 import org.alice.ide.members.components.templates.TemplateFactory;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.DragComponent;
-import org.lgna.croquet.views.Hyperlink;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserMethod;
 
@@ -87,8 +82,7 @@ public class MethodsSubView<C extends MethodsSubComposite> extends PageAxisPanel
     for (AbstractMethod method : composite.getMethods()) {
       DragComponent<?> dragComponent = TemplateFactory.getMethodInvocationTemplate(method);
       SwingComponentView<?> component;
-      if (method instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) method;
+      if (method instanceof UserMethod userMethod) {
         DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
         Operation operation = tabState.getItemSelectionOperationForMethod(method);
         Hyperlink hyperlink = operation.createHyperlink();

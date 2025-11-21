@@ -1,12 +1,11 @@
 package com.dddviewr.collada;
 
-import java.util.Stack;
-
+import com.dddviewr.collada.states.COLLADA;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.dddviewr.collada.states.COLLADA;
+import java.util.Stack;
 
 public class StateManager extends DefaultHandler {
   protected Stack<State> states = new Stack<State>();
@@ -34,8 +33,8 @@ public class StateManager extends DefaultHandler {
       current = createState(localName);
       pushState(current);
       current.init(localName, attributes, this);
-      if (current instanceof COLLADA) {
-        this.collada = ((COLLADA) current).getCollada();
+      if (current instanceof COLLADA collada) {
+        this.collada = collada.getCollada();
       }
     } else {
       current = (State) this.states.peek();
@@ -55,7 +54,7 @@ public class StateManager extends DefaultHandler {
     State result = null;
     try {
       Class<?> theClass = Class.forName("com.dddviewr.collada.states." + name);
-      result = (State) theClass.newInstance();
+      result = (State) theClass.getDeclaredConstructor().newInstance();
     } catch (ClassNotFoundException e) {
       try {
         Class<?> theClass = Class.forName("com.dddviewr.collada.states." + name + "State");

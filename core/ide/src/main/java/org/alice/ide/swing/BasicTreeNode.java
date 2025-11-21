@@ -43,11 +43,10 @@
 
 package org.alice.ide.swing;
 
-import java.awt.Color;
+import edu.cmu.cs.dennisc.color.Color4f;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import edu.cmu.cs.dennisc.color.Color4f;
+import java.awt.Color;
 
 /*package-private*/class BasicTreeNode extends DefaultMutableTreeNode implements Comparable {
 
@@ -67,8 +66,8 @@ import edu.cmu.cs.dennisc.color.Color4f;
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof BasicTreeNode) {
-      return this.hashCode == ((BasicTreeNode) obj).hashCode;
+    if (obj instanceof BasicTreeNode node) {
+      return this.hashCode == node.hashCode;
     }
     return super.equals(obj);
   }
@@ -165,8 +164,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 
   @Override
   public int compareTo(Object o) {
-    if (o instanceof BasicTreeNode) {
-      BasicTreeNode other = (BasicTreeNode) o;
+    if (o instanceof BasicTreeNode other) {
       if (this.hashCode < other.hashCode) {
         return -1;
       } else if (this.hashCode == other.hashCode) {

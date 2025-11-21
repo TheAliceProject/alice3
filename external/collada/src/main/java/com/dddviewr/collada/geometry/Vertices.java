@@ -1,11 +1,11 @@
 package com.dddviewr.collada.geometry;
 
+import com.dddviewr.collada.Base;
+import com.dddviewr.collada.Input;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
-import com.dddviewr.collada.Input;
 
 public class Vertices extends Base {
   protected String id;

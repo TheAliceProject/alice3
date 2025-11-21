@@ -47,11 +47,7 @@ import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
 import org.alice.ide.croquet.models.ast.cascade.AbstractArgumentCascade;
 import org.alice.ide.x.croquet.edits.SceneEditorUpdatingExpressionPropertyEdit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionProperty;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.story.resources.ModelResource;
 
 import java.util.Map;

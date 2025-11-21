@@ -43,8 +43,6 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Color;
-
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -61,6 +59,8 @@ import org.alice.math.immutable.Vector3;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
 import org.lgna.croquet.Application;
+
+import java.awt.Color;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator {
   private static final Color IN = Color.RED;

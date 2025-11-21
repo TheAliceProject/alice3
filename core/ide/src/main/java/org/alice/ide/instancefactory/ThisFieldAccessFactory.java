@@ -49,11 +49,7 @@ import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 import java.util.Map;
 

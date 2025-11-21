@@ -48,14 +48,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.JPopupMenu;
 import javax.swing.SizeRequirements;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -252,8 +245,7 @@ class ScrollingPopupMenuLayout implements LayoutManager2 {
     Dimension rv = actualPreferredLayoutSize(target);
     GraphicsConfiguration graphicsConfiguration = target.getGraphicsConfiguration();
     if (graphicsConfiguration == null) {
-      if (target instanceof JPopupMenu) {
-        JPopupMenu jPopupMenu = (JPopupMenu) target;
+      if (target instanceof JPopupMenu jPopupMenu) {
         Component invoker = jPopupMenu.getInvoker();
         if (invoker != null) {
           graphicsConfiguration = invoker.getGraphicsConfiguration();
@@ -355,13 +347,11 @@ class ScrollingPopupMenuLayout implements LayoutManager2 {
         index0 = firstIndex;
       }
 
-      if (pageStartComponent instanceof JScrollMenuItem) {
-        JScrollMenuItem pageStartScrollMenuItem = (JScrollMenuItem) pageStartComponent;
+      if (pageStartComponent instanceof JScrollMenuItem pageStartScrollMenuItem) {
         pageStartScrollMenuItem.setCount(firstIndex);
         addChildWidthRequirement(pageStartComponent, lastIndex);
       }
-      if (pageEndComponent instanceof JScrollMenuItem) {
-        JScrollMenuItem pageEndScrollMenuItem = (JScrollMenuItem) pageEndComponent;
+      if (pageEndComponent instanceof JScrollMenuItem pageEndScrollMenuItem) {
         pageEndScrollMenuItem.setCount(N - 1 - lastIndex);
         addChildWidthRequirement(pageStartComponent, lastIndex + 1);
       }

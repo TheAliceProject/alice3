@@ -136,8 +136,7 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     //    component.handleUndisplayable();
     //  }
     if (isReleaseDesired) {
-      if (component instanceof AwtContainerView<?>) {
-        AwtContainerView<?> container = (AwtContainerView<?>) component;
+      if (component instanceof AwtContainerView<?> container) {
         container.internalRemoveAllComponents(true);
       }
       component.release();

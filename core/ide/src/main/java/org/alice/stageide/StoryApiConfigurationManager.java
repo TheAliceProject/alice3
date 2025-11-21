@@ -406,8 +406,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance(SJointedModel.class);
 
   private static String getFieldMethodNameHint(AbstractField field) {
-    if (field instanceof JavaField) {
-      Field fld = ((JavaField) field).getFieldReflectionProxy().getReification();
+    if (field instanceof JavaField javaField) {
+      Field fld = javaField.getFieldReflectionProxy().getReification();
       if (fld != null) {
         if (fld.isAnnotationPresent(FieldTemplate.class)) {
           FieldTemplate propertyFieldTemplate = fld.getAnnotation(FieldTemplate.class);
@@ -523,8 +523,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       if (constructorParameterType != ancestorType.getFirstParameterType()) {
         if (inferredResourceType != null) {
           addMethodsToType(rv, inferredResourceType);
-        } else if (firstArgument instanceof DynamicResource) {
-          addMethodsToType(rv, (DynamicResource) firstArgument);
+        } else if (firstArgument instanceof DynamicResource resource) {
+          addMethodsToType(rv, resource);
         } else {
           Logger.severe("Failed to augment type " + rv + ". Unable to find model resource type.");
         }

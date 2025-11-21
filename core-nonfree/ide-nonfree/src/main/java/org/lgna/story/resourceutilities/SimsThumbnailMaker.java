@@ -42,11 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
@@ -58,6 +53,11 @@ import org.lgna.story.implementation.sims2.NebulousVisualData;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.LifeStage;
 import org.lgna.story.resources.sims2.PersonResource;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dave Culyba

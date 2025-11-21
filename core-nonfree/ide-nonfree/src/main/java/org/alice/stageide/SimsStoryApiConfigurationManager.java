@@ -79,7 +79,7 @@ public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManag
   public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
     List<AbstractDeclaration> rv = super.getGalleryResourceChildrenFor(type);
     if (type == BIPED_RESOURCE_TYPE) {
-      rv.add(0, PERSON_RESOURCE_TYPE);
+      rv.addFirst(PERSON_RESOURCE_TYPE);
     }
     return rv;
   }

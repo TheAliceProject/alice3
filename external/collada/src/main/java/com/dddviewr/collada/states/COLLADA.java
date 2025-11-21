@@ -1,10 +1,9 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Collada;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
+import org.xml.sax.Attributes;
 
 public class COLLADA extends State {
   protected Collada collada = new Collada();

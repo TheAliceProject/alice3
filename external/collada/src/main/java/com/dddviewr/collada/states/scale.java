@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.Scale;
+import org.xml.sax.Attributes;
 
 public class scale extends State {
   protected Scale theScale;

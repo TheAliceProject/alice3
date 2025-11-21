@@ -24,7 +24,7 @@ public class TweedleTypeReference extends TweedleType implements InvocableMethod
 
   @Override
   public boolean equals(Object obj) {
-    return obj instanceof TweedleTypeReference && this.getName().equals(((TweedleTypeReference) obj).getName());
+    return obj instanceof TweedleTypeReference ttr && this.getName().equals(ttr.getName());
   }
 
   @Override

@@ -43,14 +43,6 @@
 
 package org.alice.stageide.openprojectpane.models;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.UUID;
-
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.project.codecs.ProjectSnapshotCodec;
 import org.alice.ide.projecturi.ProjectSnapshot;
@@ -64,6 +56,9 @@ import org.lgna.story.Paint;
 import org.lgna.story.SGround;
 
 import javax.swing.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove

@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_TRIANGLES;
-
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
+
+import static com.jogamp.opengl.GL.GL_TRIANGLES;
 
 /**
  * @author Dennis Cosgrove

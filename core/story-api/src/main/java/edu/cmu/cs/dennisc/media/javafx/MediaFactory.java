@@ -1,10 +1,9 @@
 package edu.cmu.cs.dennisc.media.javafx;
 
-import org.lgna.common.resources.AudioResource;
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
+import org.lgna.common.resources.AudioResource;
 
 import java.io.File;
 import java.io.FileOutputStream;

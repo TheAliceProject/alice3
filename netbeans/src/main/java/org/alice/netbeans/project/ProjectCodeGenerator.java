@@ -46,15 +46,6 @@ package org.alice.netbeans.project;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Collection;
-import java.util.List;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
-
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.JavaCodeGenerator;
@@ -74,6 +65,14 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.text.NbDocument;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove

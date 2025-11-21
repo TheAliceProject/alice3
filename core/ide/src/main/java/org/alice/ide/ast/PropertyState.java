@@ -69,7 +69,7 @@ public abstract class PropertyState extends StandardExpressionState {
   }
 
   private JavaMethodParameter getParameter0() {
-    return (JavaMethodParameter) this.setter.getRequiredParameters().get(0);
+    return (JavaMethodParameter) this.setter.getRequiredParameters().getFirst();
   }
 
   @Override

@@ -44,11 +44,7 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Version;
-import org.lgna.project.ast.AbstractArgument;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.*;
 import org.lgna.story.SScene;
 import org.lgna.story.ast.EventListenerMethodUtilities;
 
@@ -63,8 +59,7 @@ public class MouseClickAstMigration extends MethodInvocationAstMigration {
   @Override
   protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
-    if (method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) method;
+    if (method instanceof JavaMethod javaMethod) {
       if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
         String methodName = javaMethod.getName();
         if (methodName.equals("addMouseClickOnScreenListener")) {

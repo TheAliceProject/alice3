@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.CameraMarker;
@@ -64,9 +65,7 @@ import org.lgna.story.STurnable;
 import org.lgna.story.SVRUser;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import java.util.List;
 
 /**
  * @author dculyba
@@ -185,11 +184,11 @@ public class PickUtilities {
       SThing entity = getEntityFromPickedObject(pickedObject);
       returnHint = getPickHintForEntity(entity);
 
-      if (pickedObject instanceof Composite) {
+      if (pickedObject instanceof Composite composite) {
         AbstractCamera camera = null;
-        for (Component c : ((Composite) pickedObject).getComponents()) {
-          if (c instanceof AbstractCamera) {
-            camera = (AbstractCamera) c;
+        for (Component c : composite.getComponents()) {
+          if (c instanceof AbstractCamera abstractCamera) {
+            camera = abstractCamera;
           }
         }
         if (camera != null) {

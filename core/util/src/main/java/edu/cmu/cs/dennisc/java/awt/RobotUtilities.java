@@ -45,13 +45,7 @@ package edu.cmu.cs.dennisc.java.awt;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

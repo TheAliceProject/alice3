@@ -74,13 +74,10 @@ public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUri
   @Override
   protected Triggerable getNext(List<UserActivity> finishedSteps) {
     EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey) this.resourceKey;
-    switch (finishedSteps.size()) {
-    case 0:
-      return this.getAddResourceKeyManagedFieldCompositeOperation(enumConstantResourceKey);
-    case 1:
-      return this.getMergeTypeOperation();
-    default:
-      return null;
-    }
+    return switch (finishedSteps.size()) {
+    case 0 -> this.getAddResourceKeyManagedFieldCompositeOperation(enumConstantResourceKey);
+    case 1 -> this.getMergeTypeOperation();
+    default -> null;
+    };
   }
 }

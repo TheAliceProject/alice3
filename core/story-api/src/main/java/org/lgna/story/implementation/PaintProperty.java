@@ -69,8 +69,8 @@ public abstract class PaintProperty extends Property<Paint> {
 
   @Override
   protected Paint interpolate(Paint a, Paint b, double portion) {
-    if (a instanceof Color && b instanceof Color) {
-        return ((Color) a).interpolateTo((Color) b, portion);
+    if (a instanceof Color colorA && b instanceof Color colorB) {
+        return colorA.interpolateTo(colorB, portion);
     }
     return b;
   }

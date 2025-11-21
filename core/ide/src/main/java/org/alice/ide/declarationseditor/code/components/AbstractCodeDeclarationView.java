@@ -111,8 +111,7 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
 
   @Override
   public void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
-    if (dragModel instanceof CodeDragModel) {
-      CodeDragModel codeDragModel = (CodeDragModel) dragModel;
+    if (dragModel instanceof CodeDragModel codeDragModel) {
       final AbstractType<?, ?, ?> type = codeDragModel.getType();
       if (type != JavaType.VOID_TYPE) {
         var list = HierarchyUtilities.findAllMatches(

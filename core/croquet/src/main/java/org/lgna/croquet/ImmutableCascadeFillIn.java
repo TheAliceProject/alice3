@@ -59,9 +59,9 @@ public abstract class ImmutableCascadeFillIn<F, B> extends CascadeFillIn<F, B> {
     this.blanks = Collections.unmodifiableList(Lists.newArrayList(blanks));
   }
 
-  //todo: make final
+  //TODO make final
   @Override
-  public/* final */List<CascadeBlank<B>> getBlanks() {
+  public List<CascadeBlank<B>> getBlanks() {
     return this.blanks;
   }
 }

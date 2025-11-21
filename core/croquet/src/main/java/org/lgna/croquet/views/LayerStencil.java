@@ -46,11 +46,7 @@ package org.lgna.croquet.views;
 import edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities;
 
 import javax.swing.JPanel;
-import java.awt.AWTEvent;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

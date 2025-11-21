@@ -50,12 +50,7 @@ import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
 import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
 import net.miginfocom.swing.MigLayout;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.Dimension;
 

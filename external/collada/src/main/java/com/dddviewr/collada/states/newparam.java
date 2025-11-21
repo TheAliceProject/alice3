@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.Effect;
 import com.dddviewr.collada.effects.NewParam;
+import org.xml.sax.Attributes;
 
 public class newparam extends State {
   protected NewParam theNewParam;

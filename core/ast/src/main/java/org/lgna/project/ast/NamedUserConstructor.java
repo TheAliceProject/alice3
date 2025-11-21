@@ -128,10 +128,10 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
     SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
     if (arguments.size() > 0) {
       Expression expression = arguments.get(0).expression.getValue();
-      if (expression instanceof FieldAccess) {
-        return instantiateFieldAccess((FieldAccess) expression);
-      } else if (expression instanceof InstanceCreation) {
-        return ((InstanceCreation) expression).instantiateDynamicResource();
+      if (expression instanceof FieldAccess access) {
+        return instantiateFieldAccess(access);
+      } else if (expression instanceof InstanceCreation creation) {
+        return creation.instantiateDynamicResource();
       }
     }
     return null;

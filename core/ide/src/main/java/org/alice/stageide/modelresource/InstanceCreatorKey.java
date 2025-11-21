@@ -64,7 +64,7 @@ public abstract class InstanceCreatorKey extends ResourceKey {
       mapResourceTypeToAbstractionType = Maps.newHashMap();
       Collection<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
       for (JavaType abstractionType : abstractionTypes) {
-        JavaType resourceType = (JavaType) abstractionType.getDeclaredConstructors().get(0).getRequiredParameters().get(0).getValueType();
+        JavaType resourceType = (JavaType) abstractionType.getDeclaredConstructors().getFirst().getRequiredParameters().getFirst().getValueType();
         mapResourceTypeToAbstractionType.put(resourceType, abstractionType);
       }
     }

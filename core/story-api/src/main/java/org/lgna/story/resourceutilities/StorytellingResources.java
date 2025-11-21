@@ -42,6 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.nonfree.NebulousStoryApi;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -51,23 +61,11 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.nonfree.NebulousStoryApi;
-import org.alice.tweedle.file.ManifestEncoderDecoder;
-import org.alice.tweedle.file.ModelManifest;
-import org.lgna.story.implementation.StoryApiDirectoryUtilities;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.lgna.story.resources.ModelResource;
-
-import javax.swing.JOptionPane;
 
 public enum StorytellingResources {
   INSTANCE;
@@ -462,7 +460,7 @@ public enum StorytellingResources {
 
   private ModelManifest manifestFor(File modelFile) {
     try {
-      String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+      String fileContent = new String(Files.readAllBytes(Path.of(modelFile.toURI())));
       ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
       modelManifest.setRootFile(modelFile.getParentFile());
       return modelManifest;

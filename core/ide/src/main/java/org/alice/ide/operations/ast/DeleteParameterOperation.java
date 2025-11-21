@@ -49,12 +49,7 @@ import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.edits.ast.DeleteParameterEdit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 import java.util.UUID;

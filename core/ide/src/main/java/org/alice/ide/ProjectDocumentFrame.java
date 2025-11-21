@@ -264,8 +264,8 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   public AbstractCode getFocusedCode() {
     AbstractDeclaration declaration = this.getMetaDeclarationFauxState().getValue();
-    if (declaration instanceof AbstractCode) {
-      return (AbstractCode) declaration;
+    if (declaration instanceof AbstractCode code) {
+      return code;
     } else {
       return null;
     }

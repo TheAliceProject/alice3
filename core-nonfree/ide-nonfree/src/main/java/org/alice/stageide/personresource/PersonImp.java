@@ -52,15 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.math.immutable.Dimension3;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.SingleVisualModelImp;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.Face;
-import org.lgna.story.resources.sims2.FullBodyOutfit;
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Hair;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.Outfit;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resources.sims2.TopAndBottomOutfit;
+import org.lgna.story.resources.sims2.*;
 
 import java.awt.Color;
 import java.util.Map;
@@ -129,9 +121,9 @@ public class PersonImp extends SingleVisualModelImp {
     } else {
       if (lifeStage.getGenderedHairInterfaceClass(gender).isAssignableFrom(hair.getClass())) {
         if ((outfit instanceof FullBodyOutfit && lifeStage.getGenderedFullBodyOutfitInterfaceClass(gender).isAssignableFrom(outfit.getClass()))
-            || outfit instanceof TopAndBottomOutfit<?, ?>
-              && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getTopPiece().getClass())
-              && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getBottomPiece().getClass())) {
+            || outfit instanceof TopAndBottomOutfit<?, ?> bottomOutfit
+              && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(bottomOutfit.getTopPiece().getClass())
+              && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(bottomOutfit.getBottomPiece().getClass())) {
           nebPerson.synchronizedSetAll(gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face);
         } else {
           Logger.severe(outfit, lifeStage, gender);

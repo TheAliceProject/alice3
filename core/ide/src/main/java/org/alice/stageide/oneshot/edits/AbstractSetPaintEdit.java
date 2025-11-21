@@ -67,8 +67,7 @@ public abstract class AbstractSetPaintEdit<I extends ModelImp> extends MethodInv
 
   @Override
   protected final void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof SThing) {
-      SThing thing = (SThing) instance;
+    if (instance instanceof SThing thing) {
       this.modelImp = thing.getImplementation();
       this.value = this.getPaintProperty(this.modelImp).getValue();
     } else {

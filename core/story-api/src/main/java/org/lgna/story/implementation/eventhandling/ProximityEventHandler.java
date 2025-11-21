@@ -42,20 +42,15 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
+import org.lgna.story.event.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SThing;
-import org.lgna.story.event.EnterProximityEvent;
-import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ProximityEnterListener;
-import org.lgna.story.event.ProximityEvent;
-import org.lgna.story.event.ProximityExitListener;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -125,11 +120,9 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
 
   @Override
   protected void fire(Object listener, ProximityEvent e) {
-    if (listener instanceof ProximityEnterListener) {
-      ProximityEnterListener enter = (ProximityEnterListener) listener;
+    if (listener instanceof ProximityEnterListener enter) {
       enter.proximityEntered((EnterProximityEvent) e);
-    } else if (listener instanceof ProximityExitListener) {
-      ProximityExitListener exit = (ProximityExitListener) listener;
+    } else if (listener instanceof ProximityExitListener exit) {
       exit.proximityExited((ExitProximityEvent) e);
     }
   }

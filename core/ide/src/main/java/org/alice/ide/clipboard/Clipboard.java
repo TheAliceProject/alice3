@@ -107,8 +107,7 @@ public enum Clipboard {
     @Override
     public boolean isAddEventListenerLikeSubstance() {
       Node node = Clipboard.SINGLETON.peek();
-      if (node instanceof Statement) {
-        Statement statement = (Statement) node;
+      if (node instanceof Statement statement) {
         return AstUtilities.isAddEventListenerMethodInvocationStatement(statement);
       } else {
         return false;
@@ -118,8 +117,7 @@ public enum Clipboard {
     @Override
     public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
       DragModel dragModel = step.getModel();
-      if (dragModel instanceof StatementDragModel) {
-        StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+      if (dragModel instanceof StatementDragModel statementDragModel) {
         Statement statement = statementDragModel.getStatement();
         boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown(step.getLatestMouseEvent());
         if (isCopy) {

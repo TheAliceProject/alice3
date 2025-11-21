@@ -126,10 +126,10 @@ public class MoveToImageIcon implements Icon {
 
   public static Icon desaturate(Icon source) {
     BufferedImage imgSrc = null;
-    if (source instanceof ImageIcon) {
-      Image image = ((ImageIcon) source).getImage();
-      if (image instanceof BufferedImage) {
-        imgSrc = (BufferedImage) image;
+    if (source instanceof ImageIcon icon) {
+      Image image = icon.getImage();
+      if (image instanceof BufferedImage bufferedImage) {
+        imgSrc = bufferedImage;
       }
     }
     if ((imgSrc == null) && (source != null)) {

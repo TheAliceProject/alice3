@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2ES3.GL_QUADS;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
@@ -55,6 +53,8 @@ import org.alice.math.immutable.Ray;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jogamp.opengl.GL2ES3.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove

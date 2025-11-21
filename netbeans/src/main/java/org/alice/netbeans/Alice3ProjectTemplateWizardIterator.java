@@ -45,27 +45,6 @@ package org.alice.netbeans;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
-import java.awt.Component;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeListener;
-
 import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.alice.netbeans.project.ProjectCodeGenerator;
 import org.lgna.project.migration.ast.MigrationException;
@@ -85,6 +64,26 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
+import java.awt.Component;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 // TODO define position attribute
 @TemplateRegistration(folder = "Project/Standard", displayName = "Java Project from Existing Alice Project", description = "Alice3ProjectTemplateDescription.html", iconBase = "org/alice/netbeans/aliceIcon.png", content = "ProjectTemplate.zip") public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.ProgressInstantiatingIterator {
@@ -177,8 +176,7 @@ import org.xml.sax.InputSource;
         // chooser to appear in the list of steps.
         steps[i] = c.getName();
       }
-      if (c instanceof JComponent) { // assume Swing components
-        JComponent jc = (JComponent) c;
+      if (c instanceof JComponent jc) {
         // Step #.
         // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
         jc.putClientProperty("WizardPanel_contentSelectedIndex", i);

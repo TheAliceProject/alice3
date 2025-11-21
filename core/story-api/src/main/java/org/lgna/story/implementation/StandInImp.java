@@ -43,11 +43,11 @@
 
 package org.lgna.story.implementation;
 
-import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.pattern.Reusable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.lgna.story.SThing;
 
 /**

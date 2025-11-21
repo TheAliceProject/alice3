@@ -43,19 +43,18 @@
 
 package org.alice.interact.manipulator;
 
-import java.awt.Point;
-
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Point;
 
 public class CameraMoveDragManipulator extends CameraManipulator implements OnscreenPicturePlaneInformedManipulator {
   private static final double PIXEL_DISTANCE_FACTOR = 200.0d;

@@ -115,8 +115,7 @@ public class SaveOverPane extends MigPanel {
       this.nextDetailsLabel.setText(getResolutionText(nextImage));
       super.handleCompositePreActivation();
       AbstractWindow<?> window = this.getRoot();
-      if (window instanceof Dialog) {
-        Dialog dialog = (Dialog) window;
+      if (window instanceof Dialog dialog) {
         dialog.setTitle("Save Over " + file);
         dialog.pack();
       }

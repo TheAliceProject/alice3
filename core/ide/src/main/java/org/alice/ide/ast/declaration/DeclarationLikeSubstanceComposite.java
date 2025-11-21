@@ -274,8 +274,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
     @Override
     public CascadeFillIn getFillInFor(Expression value) {
       //todo
-      if (value instanceof ArrayInstanceCreation) {
-        ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation) value;
+      if (value instanceof ArrayInstanceCreation arrayInstanceCreation) {
         return ArrayCustomExpressionCreatorComposite.getInstance(arrayInstanceCreation.getType()).getValueCreator().getFillIn();
       } else {
         return null;

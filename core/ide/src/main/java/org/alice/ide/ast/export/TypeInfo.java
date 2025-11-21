@@ -43,11 +43,7 @@
 package org.alice.ide.ast.export;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.UserConstructor;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -83,8 +79,8 @@ public class TypeInfo extends DeclarationInfo<UserType<?>> {
 
   public TypeInfo getSuperTypeInfo() {
     AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
-    if (superType instanceof UserType<?>) {
-      return this.getProjectInfo().getInfoForType((UserType<?>) superType);
+    if (superType instanceof UserType<?> type) {
+      return this.getProjectInfo().getInfoForType(type);
     } else {
       return null;
     }

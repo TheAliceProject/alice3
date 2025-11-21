@@ -42,11 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.AsynchronousPicker;
-import edu.cmu.cs.dennisc.render.PickAllObserver;
-import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
-import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
-import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
+import edu.cmu.cs.dennisc.render.*;
 
 import java.awt.Point;
 

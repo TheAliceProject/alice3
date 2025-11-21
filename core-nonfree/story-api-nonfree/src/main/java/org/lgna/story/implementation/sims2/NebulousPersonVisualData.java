@@ -46,14 +46,7 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.nebulous.Person;
 import org.lgna.story.Color;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.Face;
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Hair;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.Outfit;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resources.sims2.SkinTone;
+import org.lgna.story.resources.sims2.*;
 
 /**
  * @author Dennis Cosgrove

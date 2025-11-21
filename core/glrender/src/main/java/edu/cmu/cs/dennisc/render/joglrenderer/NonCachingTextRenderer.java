@@ -690,8 +690,8 @@ public class NonCachingTextRenderer extends TextRenderer {
   private void draw3D_ROBUST(final CharSequence str, final float x, final float y, final float z,
                              final float scaleFactor) {
     String curStr;
-    if (str instanceof String) {
-      curStr = (String) str;
+    if (str instanceof String string) {
+      curStr = string;
     } else {
       curStr = str.toString();
     }

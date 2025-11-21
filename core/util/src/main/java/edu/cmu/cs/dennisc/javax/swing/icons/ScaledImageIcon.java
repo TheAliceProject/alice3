@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import javax.swing.Icon;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

@@ -45,11 +45,7 @@ package edu.cmu.cs.dennisc.javax.imageio;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.w3c.dom.NodeList;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;

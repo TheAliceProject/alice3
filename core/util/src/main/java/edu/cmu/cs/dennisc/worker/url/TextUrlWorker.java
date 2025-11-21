@@ -83,9 +83,9 @@ public abstract class TextUrlWorker extends Worker<String> {
         inputStream.close();
       }
     } finally {
-      if (urlConnection instanceof HttpURLConnection) {
+      if (urlConnection instanceof HttpURLConnection connection) {
         //todo?
-        ((HttpURLConnection) urlConnection).disconnect();
+        connection.disconnect();
       }
     }
   }

@@ -51,12 +51,7 @@ import org.alice.ide.resource.manager.ResourceSingleSelectTableRowState;
 import org.lgna.common.Resource;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.MouseEventTrigger;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.GridPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Table;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;

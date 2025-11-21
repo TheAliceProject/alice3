@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.java.util.Sets;
 import org.lgna.common.EachInTogetherRunnable;
 import org.lgna.common.Resource;
 import org.lgna.common.ThreadUtilities;
-import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.resource.ResourcesTypeWrapper;
 
 import java.lang.reflect.Modifier;
@@ -257,8 +257,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
 
   @Override
   public void processTypeName(AbstractType<?, ?, ?> type) {
-    if (type instanceof JavaType) {
-      JavaType javaType = (JavaType) type;
+    if (type instanceof JavaType javaType) {
       if (!javaType.isPrimitive()) {
         JavaPackage javaPackage = javaType.getPackage();
         if (javaPackage != null) {
@@ -279,8 +278,8 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
 
   @Override
   protected void appendTargetAndMethodName(Expression target, AbstractMethod method) {
-    if (method instanceof JavaMethod && method.isStatic() && staticMethodsMarkedForImport.contains(method)) {
-      methodsToImportStatic.add((JavaMethod) method);
+    if (method instanceof JavaMethod javaMethod && method.isStatic() && staticMethodsMarkedForImport.contains(method)) {
+      methodsToImportStatic.add(javaMethod);
       appendString(method.getName());
     } else {
       super.appendTargetAndMethodName(target, method);
@@ -337,8 +336,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   @Override
   public void processKeyedArgument(JavaKeyedArgument arg) {
     Expression expressionValue = arg.expression.getValue();
-    if (expressionValue instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expressionValue;
+    if (expressionValue instanceof MethodInvocation methodInvocation) {
       AbstractMethod method = methodInvocation.method.getValue();
       AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType(arg);
       if (factoryType != null) {
@@ -457,8 +455,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       } else {
         appendString("new Runnable(){public void run(){");
       }
-      if (statement instanceof DoInOrder) {
-        DoInOrder doInOrder = (DoInOrder) statement;
+      if (statement instanceof DoInOrder doInOrder) {
         BlockStatement blockStatement = doInOrder.body.getValue();
         for (Statement subStatement : blockStatement.statements) {
           appendStatement(subStatement);
@@ -508,8 +505,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       appendString("}");
     }
     Expression arrayOrIterableExpression = eachInTogether.getArrayOrIterableProperty().getValue();
-    if (arrayOrIterableExpression instanceof ArrayInstanceCreation) {
-      ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation) arrayOrIterableExpression;
+    if (arrayOrIterableExpression instanceof ArrayInstanceCreation arrayInstanceCreation) {
       for (Expression variableLengthExpression : arrayInstanceCreation.expressions) {
         appendString(",");
         processExpression(variableLengthExpression);

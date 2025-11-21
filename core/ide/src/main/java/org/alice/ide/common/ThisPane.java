@@ -51,11 +51,7 @@ import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.PaintUtilities;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractMember;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.*;
 
 import java.awt.Graphics2D;
 
@@ -94,10 +90,10 @@ public class ThisPane extends AccessiblePane {
 
   private void updateBasedOnFocusedDeclaration(AbstractDeclaration declaration) {
     if (declaration != null) {
-      if (declaration instanceof AbstractMember) {
-        this.type = ((AbstractMember) declaration).getDeclaringType();
-      } else if (declaration instanceof AbstractType<?, ?, ?>) {
-        this.type = (AbstractType<?, ?, ?>) declaration;
+      if (declaration instanceof AbstractMember member) {
+        this.type = member.getDeclaringType();
+      } else if (declaration instanceof AbstractType<?, ?, ?> abstractType) {
+        this.type = abstractType;
       } else {
         this.type = null;
       }

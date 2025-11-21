@@ -144,8 +144,7 @@ public class RecentProjectsMenuModel extends MenuModel {
         @Override
         public AwtComponentView<?> getMenuComponent(int i) {
           MenuElement menuElement = jPopupMenu.getSubElements()[i];
-          if (menuElement instanceof Component) {
-            Component awtComponent = (Component) menuElement;
+          if (menuElement instanceof Component awtComponent) {
             return AwtComponentView.lookup(awtComponent);
           } else {
             return null;

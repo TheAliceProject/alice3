@@ -44,20 +44,9 @@
 package org.alice.ide.custom.components;
 
 import edu.cmu.cs.dennisc.java.awt.FontUtilities;
-import org.alice.ide.croquet.models.numberpad.BackspaceOperation;
-import org.alice.ide.croquet.models.numberpad.DecimalPointOperation;
-import org.alice.ide.croquet.models.numberpad.NumberModel;
-import org.alice.ide.croquet.models.numberpad.NumeralOperation;
-import org.alice.ide.croquet.models.numberpad.PlusMinusOperation;
+import org.alice.ide.croquet.models.numberpad.*;
 import org.alice.ide.custom.NumberCustomExpressionCreatorComposite;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.GridBagPanel;
-import org.lgna.croquet.views.HierarchyUtilities;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.SwingAdapter;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;

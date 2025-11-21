@@ -45,12 +45,11 @@ package org.alice.ide.properties.uicontroller;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.math.immutable.Point3;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
-
-import org.alice.math.immutable.Point3;
 
 public class AdapterControllerUtilities {
   //TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
@@ -71,10 +70,10 @@ public class AdapterControllerUtilities {
       return new FloatPropertyController((AbstractPropertyAdapter<Float, ?>) propertyAdapter);
     } else if (Point3.class.isAssignableFrom(propertyType)) {
       return new Point3PropertyController((AbstractPropertyAdapter<Point3, ?>) propertyAdapter);
-    } else if (propertyAdapter instanceof MutableRiderVehicleAdapter) {
-      return new CompositePropertyController((MutableRiderVehicleAdapter) propertyAdapter);
-    } else if (propertyAdapter instanceof ModelSizeAdapter) {
-      return new ModelSizePropertyController((ModelSizeAdapter) propertyAdapter);
+    } else if (propertyAdapter instanceof MutableRiderVehicleAdapter vehicleAdapter) {
+      return new CompositePropertyController(vehicleAdapter);
+    } else if (propertyAdapter instanceof ModelSizeAdapter adapter) {
+      return new ModelSizePropertyController(adapter);
     } else {
       return new BlankPropertyController(propertyAdapter);
     }

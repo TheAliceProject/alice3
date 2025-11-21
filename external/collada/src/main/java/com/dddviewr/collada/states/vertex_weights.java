@@ -1,13 +1,12 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.Vcount;
 import com.dddviewr.collada.controller.Skin;
 import com.dddviewr.collada.controller.VertexWeights;
+import org.xml.sax.Attributes;
 
 public class vertex_weights extends State {
   protected VertexWeights vertexWeights;

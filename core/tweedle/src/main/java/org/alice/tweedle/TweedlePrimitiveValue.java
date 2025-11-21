@@ -20,7 +20,7 @@ public class TweedlePrimitiveValue<T> extends TweedleValue {
 
   @Override
   public boolean equals(Object obj) {
-    return super.equals(obj) || obj instanceof TweedlePrimitiveValue && value.equals(((TweedlePrimitiveValue) obj).value) && type.equals(((TweedlePrimitiveValue) obj).type);
+    return super.equals(obj) || obj instanceof TweedlePrimitiveValue tpv && value.equals(tpv.value) && type.equals(tpv.type);
   }
 
   @Override

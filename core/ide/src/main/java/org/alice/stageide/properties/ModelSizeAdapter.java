@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
-
 import org.alice.math.immutable.Dimension3;
 import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.ModelImp;

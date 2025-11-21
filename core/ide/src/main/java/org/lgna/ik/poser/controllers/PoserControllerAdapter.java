@@ -130,17 +130,12 @@ public class PoserControllerAdapter {
   };
 
   public JointId getAnchorJointID(Limb limb, JointImp joint) {
-    switch (limb) {
-    case LEFT_ARM:
-      return leftArmAnchorJointID;
-    case LEFT_LEG:
-      return leftLegAnchorJointID;
-    case RIGHT_ARM:
-      return rightArmAnchorJointID;
-    case RIGHT_LEG:
-      return rightLegAnchorJointID;
-    }
-    return null;
+    return switch (limb) {
+    case LEFT_ARM -> leftArmAnchorJointID;
+    case LEFT_LEG -> leftLegAnchorJointID;
+    case RIGHT_ARM -> rightArmAnchorJointID;
+    case RIGHT_LEG -> rightLegAnchorJointID;
+    };
   }
 
   public void updateSphere(Limb limb, JointSelectionSphere sphere) {

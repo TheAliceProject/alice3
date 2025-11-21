@@ -90,8 +90,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
     if (selectedType != null) {
       List<UserField> nonFinalUserFields = Lists.newLinkedList();
       for (AbstractField field : selectedType.getDeclaredFields()) {
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
+        if (field instanceof UserField userField) {
           if (!userField.isFinal()) {
             nonFinalUserFields.add(userField);
           }

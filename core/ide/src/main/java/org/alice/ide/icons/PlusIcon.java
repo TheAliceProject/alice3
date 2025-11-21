@@ -44,11 +44,7 @@ package org.alice.ide.icons;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Paint;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
@@ -114,8 +110,7 @@ public class PlusIcon extends ShapeIcon {
   @Override
   protected final void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
     ButtonModel buttonModel;
-    if (c instanceof AbstractButton) {
-      AbstractButton button = (AbstractButton) c;
+    if (c instanceof AbstractButton button) {
       buttonModel = button.getModel();
     } else {
       buttonModel = null;

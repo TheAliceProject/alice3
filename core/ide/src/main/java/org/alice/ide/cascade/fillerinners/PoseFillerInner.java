@@ -42,8 +42,6 @@
  */
 package org.alice.ide.cascade.fillerinners;
 
-import java.util.List;
-
 import org.alice.ide.IDE;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.CascadeBlankChild;
@@ -53,6 +51,8 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.Pose;
+
+import java.util.List;
 
 /**
  * @author Matt May

@@ -48,11 +48,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove
@@ -84,11 +80,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
     AbstractType<?, ?, ?> type;
     AbstractCode code;
     AbstractDeclaration declaration = IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue();
-    if (declaration instanceof AbstractType<?, ?, ?>) {
-      type = (AbstractType<?, ?, ?>) declaration;
+    if (declaration instanceof AbstractType<?, ?, ?> abstractType) {
+      type = abstractType;
       code = null;
-    } else if (declaration instanceof AbstractCode) {
-      code = (AbstractCode) declaration;
+    } else if (declaration instanceof AbstractCode abstractCode) {
+      code = abstractCode;
       type = code.getDeclaringType();
     } else {
       code = null;

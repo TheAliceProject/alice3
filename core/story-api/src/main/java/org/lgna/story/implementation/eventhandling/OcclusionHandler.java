@@ -43,22 +43,17 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
+import org.lgna.story.SThing;
+import org.lgna.story.event.*;
+import org.lgna.story.implementation.CameraImp;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SModel;
-import org.lgna.story.SThing;
-import org.lgna.story.event.EndOcclusionEvent;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionEvent;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.implementation.CameraImp;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -69,8 +64,8 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
 
   public void addOcclusionEventListener(Object occlusionEventListener, List<SModel> groupA, List<SModel> groupB, MultipleEventPolicy policy) {
     startTrackingListener(occlusionEventListener, groupA, groupB, policy);
-    if ((groupA.size() > 0) && (groupA.get(0) != null) && (camera == null)) {
-      camera = groupA.get(0).getImplementation().getScene().findFirstCamera();
+    if ((groupA.size() > 0) && (groupA.getFirst() != null) && (camera == null)) {
+      camera = groupA.getFirst().getImplementation().getScene().findFirstCamera();
       camera.getSgComposite().addAbsoluteTransformationListener(this);
     }
   }
@@ -101,8 +96,8 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
         checkForOcclusions(model);
       }
     } else {
-      if (changedThing instanceof SModel) {
-        checkForOcclusions((SModel) changedThing);
+      if (changedThing instanceof SModel model) {
+        checkForOcclusions(model);
       }
     }
   }
@@ -137,11 +132,9 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
 
   @Override
   protected void fire(Object listener, OcclusionEvent event) {
-    if (listener instanceof OcclusionStartListener) {
-      OcclusionStartListener start = (OcclusionStartListener) listener;
+    if (listener instanceof OcclusionStartListener start) {
       start.occlusionStarted((StartOcclusionEvent) event);
-    } else if (listener instanceof OcclusionEndListener) {
-      OcclusionEndListener start = (OcclusionEndListener) listener;
+    } else if (listener instanceof OcclusionEndListener start) {
       start.occlusionEnded((EndOcclusionEvent) event);
     }
   }

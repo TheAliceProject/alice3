@@ -44,35 +44,7 @@ package org.alice.ide.ast;
 
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArithmeticInfixExpression;
-import org.lgna.project.ast.AssignmentExpression;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.ConditionalInfixExpression;
-import org.lgna.project.ast.ConditionalStatement;
-import org.lgna.project.ast.CountLoop;
-import org.lgna.project.ast.EachInArrayTogether;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ForEachInArrayLoop;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.LogicalComplement;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.RelationalInfixExpression;
-import org.lgna.project.ast.ReturnStatement;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.StringConcatenation;
-import org.lgna.project.ast.TypeExpression;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
-import org.lgna.project.ast.WhileLoop;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove

@@ -50,11 +50,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,8 +58,7 @@ import java.util.List;
  * @author Dennis Cosgrove
  * @deprecated This is only used by the IK program, and should be revisited if we ever resurrect that project.
  */
-@Deprecated
-public abstract class DragAdapter implements MouseListener, MouseMotionListener, KeyListener {
+@Deprecated public abstract class DragAdapter implements MouseListener, MouseMotionListener, KeyListener {
   private Animator m_animator;
   private UndoRedoManager m_undoRedoManager = null;
   private Component m_awtComponent = null;

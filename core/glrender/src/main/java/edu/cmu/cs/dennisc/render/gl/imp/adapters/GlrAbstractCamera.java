@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.Graphics2D;
 import edu.cmu.cs.dennisc.render.RenderTarget;
@@ -55,6 +53,8 @@ import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Ray;
 
 import java.awt.Rectangle;
+
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove

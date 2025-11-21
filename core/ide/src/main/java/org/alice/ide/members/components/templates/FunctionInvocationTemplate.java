@@ -68,8 +68,7 @@ public class FunctionInvocationTemplate extends ExpressionTemplate {
   public FunctionInvocationTemplate(AbstractMethod method) {
     super(FunctionInvocationDragModel.getInstance(method));
     this.method = method;
-    if (method instanceof UserMethod) {
-      UserMethod userMethod = (UserMethod) method;
+    if (method instanceof UserMethod userMethod) {
       this.setPopupPrepModel(new MethodPopupMenuModel(userMethod).getPopupPrepModel());
     }
   }
@@ -82,16 +81,16 @@ public class FunctionInvocationTemplate extends ExpressionTemplate {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.method instanceof UserMethod) {
+    if (this.method instanceof UserMethod userMethod) {
       this.refresh();
-      ((UserMethod) this.method).requiredParameters.addListPropertyListener(this.parameterAdapter);
+      userMethod.requiredParameters.addListPropertyListener(this.parameterAdapter);
     }
   }
 
   @Override
   protected void handleUndisplayable() {
-    if (this.method instanceof UserMethod) {
-      ((UserMethod) this.method).requiredParameters.removeListPropertyListener(this.parameterAdapter);
+    if (this.method instanceof UserMethod userMethod) {
+      userMethod.requiredParameters.removeListPropertyListener(this.parameterAdapter);
     }
     super.handleUndisplayable();
   }

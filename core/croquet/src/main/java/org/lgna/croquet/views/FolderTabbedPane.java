@@ -191,6 +191,11 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
       }
     }
 
+    @Override
+    public <F extends TabComposite<?>> void updateFor(F item) {
+      setCloseable(item.isCloseable());
+    }
+
     public void setCloseable(boolean isCloseable) {
       if (this.closeButton != null) {
         if (isCloseable == (this.closeButton.getParent() == null)) {
@@ -612,10 +617,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
   @Override
   protected void addItem(E item, BooleanStateButton<?> button) {
     super.addItem(item, button);
-    if (button instanceof FolderTabbedPane.FolderTabTitle) {
-      FolderTabTitle title = (FolderTabTitle) button;
-      title.setCloseable(item.isCloseable());
-    }
+    button.updateFor(item);
     this.titlesPanel.addComponent(button);
   }
 

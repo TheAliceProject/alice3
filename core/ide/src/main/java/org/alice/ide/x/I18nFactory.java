@@ -190,8 +190,7 @@ public abstract class I18nFactory {
     SwingComponentView<?> rv;
     if (owner != null) {
       String value;
-      if (owner instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) owner;
+      if (owner instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
         String text = formatter.getNameForDeclaration(method);
         if (text.contains("</expression/>")) {

@@ -212,8 +212,7 @@ public class ActionStatusIcon extends AbstractIcon {
   protected void paintIcon(Component c, Graphics2D g2) {
     ActionStatus actionStatus = this.memberHub.getActionStatus();
     ButtonModel buttonModel;
-    if (c instanceof AbstractButton) {
-      AbstractButton button = (AbstractButton) c;
+    if (c instanceof AbstractButton button) {
       buttonModel = button.getModel();
     } else {
       buttonModel = null;

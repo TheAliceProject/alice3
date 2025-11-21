@@ -67,8 +67,7 @@ public class StoryApiNonfree extends NebulousStoryApi {
 
   @Override
   public void setMipMappingDesiredOnNebulousTexture(Texture texture) {
-    if (texture instanceof NebulousTexture) {
-      NebulousTexture nebulousTexture = (NebulousTexture) texture;
+    if (texture instanceof NebulousTexture nebulousTexture) {
       nebulousTexture.setMipMappingDesired(true);
     }
   }

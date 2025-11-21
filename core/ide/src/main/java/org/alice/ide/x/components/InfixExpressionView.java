@@ -44,7 +44,6 @@
 package org.alice.ide.x.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
-import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.i18n.Page;
@@ -54,40 +53,28 @@ import org.lgna.project.ast.InfixExpression;
 
 import javax.swing.JLabel;
 import java.awt.Component;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Dennis Cosgrove
  */
 public class InfixExpressionView extends AbstractExpressionView<InfixExpression> {
+  private final Set<String> scaledExpressions = Stream.of(
+      " + ", " - ", " * ", " / ",
+      " < ", " > ", " ≤ ", " ≥ ", " ≠ ",
+      " >= ", " <= ", " == ", " != "
+  ).collect(Collectors.toUnmodifiableSet());
+
   public InfixExpressionView(AstI18nFactory factory, InfixExpression<? extends Enum<?>> infixExpression) {
     super(factory, infixExpression);
     Formatter formatter = FormatterState.getInstance().getValue();
     Page page = new Page(formatter.getInfixExpressionText(infixExpression));
     SwingComponentView<?> component = factory.createComponent(page, infixExpression);
     for (Component child : component.getAwtComponent().getComponents()) {
-      if (child instanceof JLabel) {
-        JLabel label = (JLabel) child;
-        String text = label.getText();
-        //todo: remove this terrible hack
-        // (this "terrible hack" changes the size of the math functions in dropdowns)
-        boolean isScaleDesired = false;
-        if (text.length() == 3) {
-          char c0 = text.charAt(0);
-          char c1 = text.charAt(1);
-          char c2 = text.charAt(2);
-          if ((c0 == ' ') && (c2 == ' ')) {
-            if (!Character.isLetterOrDigit(c1)) {
-              isScaleDesired = true;
-            }
-          }
-        } else if (text.length() == 4) {
-          isScaleDesired = " >= ".equals(text) || " <= ".equals(text) || " == ".equals(text);
-        }
-        FontUtilities.setFontToDerivedFont(label, TextWeight.BOLD);
-        if (isScaleDesired) {
-          FontUtilities.setFontToScaledFont(label, 1.5f);
-        }
-        //label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
+      if (child instanceof JLabel label && scaledExpressions.contains(label.getText())) {
+        FontUtilities.setFontToScaledFont(label, 1.5f);
       }
     }
     this.addComponent(component);

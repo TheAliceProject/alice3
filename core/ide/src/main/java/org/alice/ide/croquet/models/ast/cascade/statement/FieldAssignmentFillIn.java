@@ -47,12 +47,7 @@ import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.croquet.models.cascade.ExpressionBlank;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.project.ast.AssignmentExpression;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 import java.util.Map;
 import java.util.UUID;

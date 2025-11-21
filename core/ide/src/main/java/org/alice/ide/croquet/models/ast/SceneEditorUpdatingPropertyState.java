@@ -104,7 +104,7 @@ public class SceneEditorUpdatingPropertyState extends PropertyState {
       } else {
         e = new FieldAccess(field);
       }
-      AbstractParameter parameter = this.getSetter().getRequiredParameters().get(0);
+      AbstractParameter parameter = this.getSetter().getRequiredParameters().getFirst();
       SimpleArgument argument = new SimpleArgument(parameter, nextValue);
       MethodInvocation methodInvocation = new MethodInvocation(e, this.getSetter(), argument);
       Statement s = new ExpressionStatement(methodInvocation);

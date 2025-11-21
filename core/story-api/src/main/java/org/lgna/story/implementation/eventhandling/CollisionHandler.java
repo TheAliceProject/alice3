@@ -42,20 +42,15 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
+import org.lgna.story.event.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SThing;
-import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.CollisionEvent;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.StartCollisionEvent;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -137,11 +132,9 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
 
   @Override
   protected void fire(Object listener, CollisionEvent event) {
-    if (listener instanceof CollisionStartListener) {
-      CollisionStartListener startCollisionEvent = (CollisionStartListener) listener;
+    if (listener instanceof CollisionStartListener startCollisionEvent) {
       startCollisionEvent.collisionStarted((StartCollisionEvent) event);
-    } else if (listener instanceof CollisionEndListener) {
-      CollisionEndListener endCollisionEvent = (CollisionEndListener) listener;
+    } else if (listener instanceof CollisionEndListener endCollisionEvent) {
       endCollisionEvent.collisionEnded((EndCollisionEvent) event);
     }
   }

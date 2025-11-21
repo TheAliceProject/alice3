@@ -43,16 +43,16 @@
 
 package org.alice.netbeans;
 
-import java.awt.Component;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.Component;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Panel just asking for basic info.

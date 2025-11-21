@@ -1,26 +1,25 @@
 package org.lgna.ik.core.enforcer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import org.alice.math.immutable.AxisRotation;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
-import org.alice.math.immutable.AxisRotation;
-
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.solver.Bone;
-import org.lgna.ik.core.solver.Chain;
 import org.lgna.ik.core.solver.Bone.Axis;
+import org.lgna.ik.core.solver.Chain;
 import org.lgna.ik.core.solver.Solver;
 import org.lgna.ik.core.solver.Solver.JacobianAndInverse;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class JointedModelIkEnforcer extends IkEnforcer {
 

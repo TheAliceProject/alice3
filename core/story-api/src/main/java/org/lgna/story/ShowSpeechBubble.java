@@ -56,8 +56,7 @@ public class ShowSpeechBubble implements SayOutLoud.Detail {
   /* package-private */
   static boolean getValue(Object[] details, boolean defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof ShowSpeechBubble) {
-        ShowSpeechBubble showSpeechBubble = (ShowSpeechBubble) detail;
+      if (detail instanceof ShowSpeechBubble showSpeechBubble) {
         return showSpeechBubble.value;
       }
     }

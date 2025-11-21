@@ -68,8 +68,7 @@ public class GlrPivotFigure extends GlrAdornment<PivotFigure> {
       Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
       synchronized (glrChildren) {
         for (GlrComponent<?> glrChild : glrChildren) {
-          if (glrChild instanceof GlrTransformable<?>) {
-            GlrTransformable<?> glrTransformable = (GlrTransformable<?>) glrChild;
+          if (glrChild instanceof GlrTransformable<?> glrTransformable) {
             DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
             gl.glBegin(GL_LINES);
             try {

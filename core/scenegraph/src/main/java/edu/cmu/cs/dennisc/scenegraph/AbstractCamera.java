@@ -73,6 +73,6 @@ public abstract class AbstractCamera extends Leaf {
     if (parent != null && "VRHeadset.sgComposite".equals(parent.getName())) {
       parent = parent.getParent();
     }
-    return parent instanceof AbstractTransformable ? (AbstractTransformable) parent : null;
+    return parent instanceof AbstractTransformable at ? at : null;
   }
 }

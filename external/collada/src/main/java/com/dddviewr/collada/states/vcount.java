@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import java.lang.reflect.Method;
-
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.Vcount;
+import org.xml.sax.Attributes;
+
+import java.lang.reflect.Method;
 
 public class vcount extends State {
   protected Vcount theVcount;

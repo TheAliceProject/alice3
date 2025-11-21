@@ -43,32 +43,30 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Point;
-
-import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
-import org.alice.interact.InputState;
-import org.alice.interact.handle.HandleSet;
-import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
-import org.alice.interact.manipulator.TargetManipulator;
-import org.alice.math.immutable.ClippedZPlane;
-import org.lgna.croquet.DragModel;
-import org.lgna.croquet.history.DragStep;
-import org.lgna.croquet.views.DragComponent;
-
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
-
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.interact.InputState;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
+import org.alice.interact.manipulator.TargetManipulator;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.ForwardAndUpGuide;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.DragComponent;
+
+import java.awt.Point;
 
 public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragManipulator implements TargetManipulator {
 
@@ -175,8 +173,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
       DragComponent dragSource = dragStep.getDragSource();
       dragSource.hideDragProxy();
       GalleryDragModel galleryDragModel = null;
-      if (dragModel instanceof GalleryDragModel) {
-        galleryDragModel = (GalleryDragModel) dragModel;
+      if (dragModel instanceof GalleryDragModel model) {
+        galleryDragModel = model;
       }
 
       //We don't need special planes for the orthographic camera

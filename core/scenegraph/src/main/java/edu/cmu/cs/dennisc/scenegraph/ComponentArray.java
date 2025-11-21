@@ -43,8 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dennis Cosgrove

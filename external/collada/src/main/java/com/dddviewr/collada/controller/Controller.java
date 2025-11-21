@@ -1,8 +1,8 @@
 package com.dddviewr.collada.controller;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Base;
+
+import java.io.PrintStream;
 
 public class Controller extends Base {
   protected String id;

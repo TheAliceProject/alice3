@@ -43,15 +43,15 @@
 
 package org.alice.netbeans.palette.items.views;
 
-import java.awt.Dialog;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.text.JTextComponent;
-
 import org.alice.netbeans.palette.items.DoTogether;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+
+import javax.swing.SpinnerNumberModel;
+import javax.swing.text.JTextComponent;
+import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DoTogetherCustomizer extends javax.swing.JPanel {
 

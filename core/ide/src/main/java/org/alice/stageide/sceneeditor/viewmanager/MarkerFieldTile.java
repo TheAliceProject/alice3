@@ -43,8 +43,6 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import javax.swing.BorderFactory;
-
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
@@ -55,6 +53,7 @@ import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.MarkerImp;
 
+import javax.swing.BorderFactory;
 import java.awt.Color;
 
 public class MarkerFieldTile extends LineAxisPanel {

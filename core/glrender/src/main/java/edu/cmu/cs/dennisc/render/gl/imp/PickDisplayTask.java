@@ -57,7 +57,6 @@ import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 
-
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.ByteBuffer;

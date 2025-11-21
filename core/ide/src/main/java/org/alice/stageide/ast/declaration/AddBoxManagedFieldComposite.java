@@ -46,11 +46,7 @@ import org.alice.stageide.gallerybrowser.shapes.BoxDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.project.ast.Expression;
-import org.lgna.story.SBox;
-import org.lgna.story.SModel;
-import org.lgna.story.SetDepth;
-import org.lgna.story.SetHeight;
-import org.lgna.story.SetWidth;
+import org.lgna.story.*;
 
 import java.util.UUID;
 

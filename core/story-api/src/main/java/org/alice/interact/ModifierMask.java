@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.alice.interact;
 
-import java.awt.event.KeyEvent;
-
 import edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author David Culyba
@@ -124,14 +124,11 @@ public final class ModifierMask {
   }
 
   public boolean test(InputState state) {
-    switch (this.testType) {
-    case ANY_MAY_BE_VALID:
-      return anyValid(state);
-    case ALL_MUST_BE_VALID:
-      return allValid(state);
-    default:
-      return false;
-    }
+    return switch (this.testType) {
+    case ANY_MAY_BE_VALID -> anyValid(state);
+    case ALL_MUST_BE_VALID -> allValid(state);
+    default -> false;
+    };
   }
 
   private final ModifierKey[] keys;

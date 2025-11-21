@@ -42,12 +42,12 @@
  */
 package org.lgna.ik.poser.croquet.views;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
 
 /**
  * @author Matt May

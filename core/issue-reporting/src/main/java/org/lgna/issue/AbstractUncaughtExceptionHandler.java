@@ -64,16 +64,14 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
       try {
         Throwable cause = throwable.getCause();
         Throwable originalThrowableOrTarget;
-        if (cause instanceof InvocationTargetException) {
-          InvocationTargetException invocationTargetException = (InvocationTargetException) cause;
+        if (cause instanceof InvocationTargetException invocationTargetException) {
           originalThrowableOrTarget = invocationTargetException.getTargetException();
         } else {
           originalThrowableOrTarget = throwable;
         }
 
         boolean isHandled = false;
-        if (originalThrowableOrTarget instanceof LgnaRuntimeException) {
-          LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException) originalThrowableOrTarget;
+        if (originalThrowableOrTarget instanceof LgnaRuntimeException lgnaRuntimeException) {
           isHandled = this.handleUncaughtLgnaRuntimeException(thread, throwable, lgnaRuntimeException);
         }
         if (!isHandled) {

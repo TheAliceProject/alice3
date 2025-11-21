@@ -45,11 +45,7 @@ package org.alice.ide.croquet.models.menubar;
 import org.alice.ide.IdeApp;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.locale.LocaleState;
-import org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
-import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
+import org.alice.ide.croquet.models.ui.preferences.*;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.PredeterminedMenuModel;
 

@@ -53,15 +53,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 
 import javax.swing.JPanel;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.TexturePaint;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**

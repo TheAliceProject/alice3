@@ -64,11 +64,7 @@ import org.lgna.story.implementation.ProgramImp;
 
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.UUID;
 

@@ -51,11 +51,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.util.UUID;
 
 /**
@@ -113,16 +109,14 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 
   //todo:
   private static void setBoxLayoutComponentOrientationTree(Component c, ComponentOrientation componentOrientation) {
-    if (c instanceof JPanel) {
-      JPanel jPanel = (JPanel) c;
+    if (c instanceof JPanel jPanel) {
       LayoutManager layoutManager = jPanel.getLayout();
       if (layoutManager instanceof BoxLayout) {
         //javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
         c.setComponentOrientation(componentOrientation);
       }
     }
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         setBoxLayoutComponentOrientationTree(component, componentOrientation);
       }

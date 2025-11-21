@@ -43,12 +43,12 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BoxUtilities;
+
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> {
   protected static final String BLANK_STRING = "NO VALUE";

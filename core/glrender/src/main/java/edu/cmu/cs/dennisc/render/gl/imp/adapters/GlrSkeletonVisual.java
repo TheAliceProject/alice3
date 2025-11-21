@@ -43,20 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_BACK;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_GREATER;
-import static com.jogamp.opengl.GL.GL_LINES;
-import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
-
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -83,6 +69,17 @@ import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Matrix4x4;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
 
 public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements PropertyListener, SkeletonVisualBoundingBoxTracker {
   public static class WeightedMeshControl {
@@ -372,8 +369,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
 
     Matrix4x4 oTransformationPost = oTransformationPre;
-    if (currentNode instanceof Transformable) {
-      oTransformationPost = oTransformationPre.times(((Transformable) currentNode).localTransformation.getValue());
+    if (currentNode instanceof Transformable transformable) {
+      oTransformationPost = oTransformationPre.times(transformable.localTransformation.getValue());
 
       if ((currentNode instanceof Joint)) {
         rc.gl.glPushMatrix();
@@ -408,8 +405,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
     for (int i = 0; i < currentNode.getComponentCount(); i++) {
       Component comp = currentNode.getComponentAt(i);
-      if (comp instanceof Composite) {
-        Composite jointChild = (Composite) comp;
+      if (comp instanceof Composite jointChild) {
         renderJoint(rc, jointChild, oTransformationPost);
       }
     }
@@ -557,11 +553,11 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     if (c == null) {
       return;
     }
-    if (c instanceof Joint) {
+    if (c instanceof Joint joint) {
       if (shouldListen) {
-        ((Joint) c).localTransformation.addPropertyListener(this);
+        joint.localTransformation.addPropertyListener(this);
       } else {
-        ((Joint) c).localTransformation.removePropertyListener(this);
+        joint.localTransformation.removePropertyListener(this);
       }
     }
     for (int i = 0; i < c.getComponentCount(); i++) {
@@ -623,8 +619,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
     for (int i = 0; i < joint.getComponentCount(); i++) {
       Component comp = joint.getComponentAt(i);
-      if (comp instanceof Joint) {
-        processWeightedMesh((Joint) comp, absoluteLocalTransform, inverseScale);
+      if (comp instanceof Joint childJoint) {
+        processWeightedMesh(childJoint, absoluteLocalTransform, inverseScale);
       }
     }
   }
@@ -660,8 +656,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       for (TexturedAppearance ta : this.owner.textures.getValue()) {
         List<GlrMesh<?>> meshAdapters = Lists.newLinkedList();
         for (GlrGeometry<?> adapter : this.glrGeometries) {
-          if (adapter instanceof GlrMesh<?>) {
-            GlrMesh<?> ma = (GlrMesh<?>) adapter;
+          if (adapter instanceof GlrMesh<?> ma) {
             if (ma.owner.textureId.getValue() == ta.textureId.getValue()) {
               meshAdapters.add(ma);
             }

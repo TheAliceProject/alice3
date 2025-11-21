@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.*;
 
 /**
  * @author Dennis Cosgrove

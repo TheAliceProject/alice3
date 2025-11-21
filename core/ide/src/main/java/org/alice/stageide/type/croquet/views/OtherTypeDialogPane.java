@@ -49,14 +49,7 @@ import org.alice.stageide.type.croquet.TypeNode;
 import org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.FolderTabbedPane;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.Tree;
-import org.lgna.croquet.views.VerticalAlignment;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;

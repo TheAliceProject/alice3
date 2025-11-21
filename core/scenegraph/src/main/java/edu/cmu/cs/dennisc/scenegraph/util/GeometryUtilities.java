@@ -177,8 +177,7 @@ public class GeometryUtilities {
           if (this == o) {
             return true;
           } else {
-            if (o instanceof Triangle) {
-              Triangle other = (Triangle) o;
+            if (o instanceof Triangle other) {
               return (this.a == other.a) && (this.b == other.b) && (this.c == other.c);
             } else {
               return false;

@@ -113,8 +113,7 @@ public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty,
     if (nextResource != null) {
       sb.append("<html>");
       sb.append(nextResource.getName());
-      if (nextResource instanceof AudioResource) {
-        AudioResource audioResource = (AudioResource) nextResource;
+      if (nextResource instanceof AudioResource audioResource) {
         double duration = audioResource.getDuration();
         if (!Double.isNaN(duration)) {
           sb.append("<font color=\"gray\">");
@@ -123,8 +122,7 @@ public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty,
           sb.append("</i>");
           sb.append("</font>");
         }
-      } else if (nextResource instanceof ImageResource) {
-        ImageResource imageResource = (ImageResource) nextResource;
+      } else if (nextResource instanceof ImageResource imageResource) {
         int width = imageResource.getWidth();
         int height = imageResource.getHeight();
         if ((width >= 0) && (height >= 0)) {

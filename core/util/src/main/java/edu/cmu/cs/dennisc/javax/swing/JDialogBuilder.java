@@ -73,10 +73,10 @@ public class JDialogBuilder {
     JDialog rv;
     if (this.owner != null) {
       Component root = SwingUtilities.getRoot(this.owner);
-      if (root instanceof Frame) {
-        rv = new JDialog((Frame) root);
-      } else if (root instanceof Dialog) {
-        rv = new JDialog((Dialog) root);
+      if (root instanceof Frame frame) {
+        rv = new JDialog(frame);
+      } else if (root instanceof Dialog dialog) {
+        rv = new JDialog(dialog);
       } else {
         Logger.warning("owner's root is not Frame or Dialog", this.owner, root);
         rv = new JDialog();

@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import java.awt.Point;
-
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
@@ -62,6 +60,8 @@ import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Point;
 
 /**
  * @author David Culyba
@@ -207,8 +207,8 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
   public boolean doStartManipulator(InputState startInput) {
     if (startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
       AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
-      if (clickedHandle instanceof LinearDragHandle) {
-        this.linearHandle = (LinearDragHandle) clickedHandle;
+      if (clickedHandle instanceof LinearDragHandle handle) {
+        this.linearHandle = handle;
         this.setManipulatedTransformable(this.linearHandle.getManipulatedObject());
         this.initializeEventMessages();
         this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().transform(this.linearHandle.getDragAxis());

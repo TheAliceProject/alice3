@@ -44,6 +44,9 @@
 package edu.cmu.cs.dennisc.image;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
+import com.sun.media.jai.codec.ImageCodec;
+import com.sun.media.jai.codec.ImageDecoder;
+import com.sun.media.jai.codec.SeekableStream;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -55,29 +58,13 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ImageObserver;
-import java.awt.image.PixelGrabber;
-import java.awt.image.RenderedImage;
-import java.awt.image.WritableRaster;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.awt.image.*;
+import java.io.*;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import com.sun.media.jai.codec.SeekableStream;
-import com.sun.media.jai.codec.ImageDecoder;
-import com.sun.media.jai.codec.ImageCodec;
 
 /**
  * @author Dennis Cosgrove
@@ -169,8 +156,8 @@ public class ImageUtilities {
 
   public static BufferedImage read(String codecName, InputStream inputStream) throws IOException {
     BufferedInputStream bufferedInputStream;
-    if (inputStream instanceof BufferedInputStream) {
-      bufferedInputStream = (BufferedInputStream) inputStream;
+    if (inputStream instanceof BufferedInputStream stream) {
+      bufferedInputStream = stream;
     } else {
       bufferedInputStream = new BufferedInputStream(inputStream);
     }
@@ -269,8 +256,7 @@ public class ImageUtilities {
 
     if (codecName.equals(JPEG_CODEC_NAME)) {
       BufferedImage bufferedImageBGR = null;
-      if (image instanceof BufferedImage) {
-        BufferedImage bufferedImage = (BufferedImage) image;
+      if (image instanceof BufferedImage bufferedImage) {
         if (bufferedImage.getType() == BufferedImage.TYPE_3BYTE_BGR) {
           bufferedImageBGR = bufferedImage;
         }
@@ -287,8 +273,8 @@ public class ImageUtilities {
 
       image = bufferedImageBGR;
     }
-    if (image instanceof RenderedImage) {
-      renderedImage = (RenderedImage) image;
+    if (image instanceof RenderedImage rendered) {
+      renderedImage = rendered;
     } else {
       int[] pixels = ImageUtilities.getPixels(image, width, height);
       BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

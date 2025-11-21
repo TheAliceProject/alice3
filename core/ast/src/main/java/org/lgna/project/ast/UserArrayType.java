@@ -133,8 +133,8 @@ public class UserArrayType extends AbstractType {
   public AbstractType<?, ?, ?> getSuperType() {
     Logger.todo("the super type of a java array is Object");
     AbstractType<?, ?, ?> leafSuperType = this.leafType.getSuperType();
-    if (leafSuperType instanceof UserType<?>) {
-      return UserArrayType.getInstance(((UserType<?>) leafSuperType), this.dimensionCount);
+    if (leafSuperType instanceof UserType<?> type) {
+      return UserArrayType.getInstance(type, this.dimensionCount);
     } else {
       assert leafSuperType instanceof JavaType;
       Class<?> leafSuperCls = ((JavaType) leafSuperType).getClassReflectionProxy().getReification();

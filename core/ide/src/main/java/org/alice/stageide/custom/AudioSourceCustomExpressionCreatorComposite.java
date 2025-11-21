@@ -44,8 +44,8 @@
 package org.alice.stageide.custom;
 
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import edu.cmu.cs.dennisc.media.javafx.Player;
 import edu.cmu.cs.dennisc.media.javafx.MediaFactory;
+import edu.cmu.cs.dennisc.media.javafx.Player;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView;
 import org.lgna.common.Resource;
@@ -58,7 +58,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -277,10 +276,9 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
 
   private static Expression getArgumentExpressionAt(InstanceCreation instanceCreation, int index) {
     assert instanceCreation.requiredArguments.size() >= index;
-    AbstractArgument arg = instanceCreation.requiredArguments.get(index);
+    SimpleArgument arg = instanceCreation.requiredArguments.get(index);
     assert arg != null;
-    assert arg instanceof SimpleArgument;
-    return ((SimpleArgument) arg).expression.getValue();
+    return arg.expression.getValue();
   }
 
   @Override
@@ -291,35 +289,31 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
     double startTime = 0.0;
     double stopTime = Double.NaN;
 
-    if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    if (expression instanceof InstanceCreation instanceCreation) {
       int n = instanceCreation.requiredArguments.size();
       if (n > 0) {
         Expression expression0 = getArgumentExpressionAt(instanceCreation, 0);
-        if (expression0 instanceof ResourceExpression) {
-          resourceExpression = (ResourceExpression) expression0;
+        if (expression0 instanceof ResourceExpression resExp) {
+          resourceExpression = resExp;
           Resource resource = resourceExpression.resource.getValue();
-          if (resource instanceof AudioResource) {
-            audioResource = (AudioResource) resource;
+          if (resource instanceof AudioResource audioRes) {
+            audioResource = audioRes;
           }
           if (n > 1) {
             if (n > 2) {
               if (n > 3) {
                 Expression expression3 = getArgumentExpressionAt(instanceCreation, 3);
-                if (expression3 instanceof DoubleLiteral) {
-                  DoubleLiteral stopTimeLiteral = (DoubleLiteral) expression3;
+                if (expression3 instanceof DoubleLiteral stopTimeLiteral) {
                   stopTime = stopTimeLiteral.value.getValue();
                 }
               }
               Expression expression2 = getArgumentExpressionAt(instanceCreation, 2);
-              if (expression2 instanceof DoubleLiteral) {
-                DoubleLiteral startTimeLiteral = (DoubleLiteral) expression2;
+              if (expression2 instanceof DoubleLiteral startTimeLiteral) {
                 startTime = startTimeLiteral.value.getValue();
               }
             }
             Expression expression1 = getArgumentExpressionAt(instanceCreation, 1);
-            if (expression1 instanceof DoubleLiteral) {
-              DoubleLiteral volumeLevelLiteral = (DoubleLiteral) expression1;
+            if (expression1 instanceof DoubleLiteral volumeLevelLiteral) {
               volumeLevel = volumeLevelLiteral.value.getValue();
             }
           }

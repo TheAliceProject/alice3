@@ -95,7 +95,7 @@ public class ThreadUtilities {
       synchronized (runtimeExceptions) {
         if (!runtimeExceptions.isEmpty()) {
           //todo:
-          throw runtimeExceptions.get(0);
+          throw runtimeExceptions.getFirst();
         }
       }
     }

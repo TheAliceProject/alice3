@@ -78,6 +78,6 @@ public class JointedModelTypeSeparator extends CascadeLabelSeparator {
   @Override
   protected String findDefaultLocalizedText() {
     String jointsFormat = ResourceBundleUtilities.getStringForKey("JointsFormat", "org.alice.stageide.joint.croquet");
-    return String.format(jointsFormat, FormatterState.getInstance().getValue().getNameForDeclaration(type));
+    return jointsFormat.formatted(FormatterState.getInstance().getValue().getNameForDeclaration(type));
   }
 }

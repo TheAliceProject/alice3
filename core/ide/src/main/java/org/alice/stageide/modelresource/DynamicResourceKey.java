@@ -1,11 +1,11 @@
 package org.alice.stageide.modelresource;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
-import org.alice.ide.typemanager.TypeManager;
-import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
 import org.alice.ide.icons.IconFactoryManager;
+import org.alice.ide.typemanager.TypeManager;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
@@ -47,7 +47,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   @Override
   public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
+    return formatter.getNewFormat().formatted(dynamicResource.getModelClassName(), "");
   }
 
   @Override
@@ -108,7 +108,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 
   @Override
   public boolean equals(Object o) {
-    return this == o || o instanceof DynamicResourceKey && dynamicResource == ((DynamicResourceKey) o).dynamicResource;
+    return this == o || o instanceof DynamicResourceKey drk && dynamicResource == drk.dynamicResource;
   }
 
   @Override

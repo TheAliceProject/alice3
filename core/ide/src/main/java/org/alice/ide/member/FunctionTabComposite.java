@@ -47,18 +47,12 @@ import org.alice.ide.croquet.codecs.StringCodec;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.views.FunctionTabView;
-
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove

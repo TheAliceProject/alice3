@@ -42,16 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.modelviewer;
 
-import org.alice.interact.DragAdapter;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementKey;
-import org.alice.interact.MovementType;
-import org.alice.interact.PickHint;
-import org.alice.interact.condition.KeyPressCondition;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.condition.PickCondition;
+import org.alice.interact.*;
+import org.alice.interact.condition.*;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitKeyManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;

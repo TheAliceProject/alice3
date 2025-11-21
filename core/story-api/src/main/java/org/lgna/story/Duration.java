@@ -84,8 +84,7 @@ public class Duration implements
 
   private static double getValue(Object[] details, double defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof Duration) {
-        Duration duration = (Duration) detail;
+      if (detail instanceof Duration duration) {
         return duration.value;
       }
     }

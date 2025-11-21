@@ -79,8 +79,7 @@ public class CameraFieldAndMarker {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof CameraFieldAndMarker) {
-      CameraFieldAndMarker other = (CameraFieldAndMarker) obj;
+    if (obj instanceof CameraFieldAndMarker other) {
       if (other.field == this.field) {
         return true;
       }

@@ -1,5 +1,6 @@
 package Jama;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** Cholesky Decomposition.
@@ -196,7 +197,7 @@ public class CholeskyDecomposition implements Serializable {
     return new Matrix(X, n, nx);
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 
 }
 

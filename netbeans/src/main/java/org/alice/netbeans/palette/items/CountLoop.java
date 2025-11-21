@@ -43,9 +43,9 @@
 
 package org.alice.netbeans.palette.items;
 
-import javax.swing.text.JTextComponent;
-
 import org.alice.netbeans.palette.items.views.CountLoopCustomizer;
+
+import javax.swing.text.JTextComponent;
 
 /**
  * @author Dennis Cosgrove

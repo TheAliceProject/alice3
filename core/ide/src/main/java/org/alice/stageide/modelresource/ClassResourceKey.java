@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.icons.IconFactoryManager;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
@@ -183,8 +183,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
     if (this == o) {
       return true;
     }
-    if (o instanceof ClassResourceKey) {
-      ClassResourceKey other = (ClassResourceKey) o;
+    if (o instanceof ClassResourceKey other) {
       return this.cls.equals(other.cls);
     } else {
       return false;

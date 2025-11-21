@@ -45,8 +45,8 @@ package org.alice.stageide.oneshot.edits;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.lgna.common.ThreadUtilities;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
@@ -88,8 +88,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
   @Override
   protected void preserveUndoInfo(Object instance, boolean isDo) {
-    if (instance instanceof SJointedModel) {
-      SJointedModel jointedModel = (SJointedModel) instance;
+    if (instance instanceof SJointedModel jointedModel) {
       JointedModelImp<?, ?> jointedModelImp = jointedModel.getImplementation();
       Iterable<JointImp> joints = jointedModelImp.getJoints();
       List<JointUndoRunnable> list = Lists.newLinkedList();

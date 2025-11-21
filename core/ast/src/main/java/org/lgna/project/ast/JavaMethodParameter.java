@@ -111,8 +111,7 @@ public class JavaMethodParameter extends JavaParameter {
 
   @Override
   public boolean isEquivalentTo(Object other) {
-    if (other instanceof JavaMethodParameter) {
-      JavaMethodParameter otherJMP = (JavaMethodParameter) other;
+    if (other instanceof JavaMethodParameter otherJMP) {
       return this.method.equals(otherJMP.method) && (this.index == otherJMP.index) && Objects.equals(this.name, otherJMP.name) && this.valueType.equals(otherJMP.valueType);
     } else {
       return false;

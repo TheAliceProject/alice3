@@ -51,12 +51,7 @@ import edu.cmu.cs.dennisc.texture.event.TextureListener;
 
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.nio.ByteBuffer;
 
 /**
@@ -130,11 +125,9 @@ class Pixels implements TextureListener {
         gt.translate(0, bufferedImage.getHeight());
         gt.scale(1.0, -1.0);
         g.transform(gt);
-        if (m_texture instanceof BufferedImageTexture) {
-          BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) m_texture;
+        if (m_texture instanceof BufferedImageTexture bufferedImageTexture) {
           g.drawImage(bufferedImageTexture.getBufferedImage(), null, null);
-        } else if (m_texture instanceof CustomTexture) {
-          CustomTexture customTexture = (CustomTexture) m_texture;
+        } else if (m_texture instanceof CustomTexture customTexture) {
           customTexture.paint(g, bufferedImage.getWidth(), bufferedImage.getHeight());
         }
         g.dispose();

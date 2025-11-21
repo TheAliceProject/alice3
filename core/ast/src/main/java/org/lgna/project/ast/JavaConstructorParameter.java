@@ -107,8 +107,7 @@ public class JavaConstructorParameter extends JavaParameter {
 
   @Override
   public boolean isEquivalentTo(Object other) {
-    if (other instanceof JavaConstructorParameter) {
-      JavaConstructorParameter otherJCP = (JavaConstructorParameter) other;
+    if (other instanceof JavaConstructorParameter otherJCP) {
       return this.constructor.equals(otherJCP.constructor) && (this.index == otherJCP.index) && Objects.equals(this.name, otherJCP.name) && this.valueType.equals(otherJCP.valueType);
     } else {
       return false;

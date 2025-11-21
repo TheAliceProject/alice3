@@ -43,11 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_BACK;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_FRONT;
-import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -65,6 +60,8 @@ import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 
 import java.nio.DoubleBuffer;
+
+import static com.jogamp.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove

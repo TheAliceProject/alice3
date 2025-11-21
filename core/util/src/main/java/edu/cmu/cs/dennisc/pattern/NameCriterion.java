@@ -55,8 +55,7 @@ public abstract class NameCriterion implements Criterion {
   @Override
   public boolean accept(Object o) {
     boolean isAccepted;
-    if (o instanceof Nameable) {
-      Nameable nameable = (Nameable) o;
+    if (o instanceof Nameable nameable) {
       isAccepted = acceptName(nameable.getName());
     } else {
       isAccepted = false;

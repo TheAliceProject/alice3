@@ -78,9 +78,9 @@ public class SBillboard extends SModel {
   }
 
   private void setPaintProperty(PaintProperty paintProperty, Paint paint, double duration, AnimationStyle style) {
-    if (paint instanceof ImageSource) {
+    if (paint instanceof ImageSource source) {
       paintProperty.setValue(paint);
-      double newWidth = getHeight() * aspectRatio((ImageSource) paint);
+      double newWidth = getHeight() * aspectRatio(source);
       getImplementation().animateSetWidth(newWidth, false, false, duration, style.getInternal());
     } else {
       paintProperty.animateValue(paint, duration, style.getInternal());

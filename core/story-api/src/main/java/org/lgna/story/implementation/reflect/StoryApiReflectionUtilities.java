@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.implementation.reflect;
 
-import java.lang.reflect.Constructor;
-
 import org.lgna.story.SJointedModel;
 import org.lgna.story.resources.JointedModelResource;
+
+import java.lang.reflect.Constructor;
 
 /**
  * @author Dennis Cosgrove

@@ -66,8 +66,7 @@ public class FieldIconFactory extends AbstractIconFactory {
 
   public void markAllIconsDirty() {
     for (Icon icon : this.getMapValues()) {
-      if (icon instanceof FieldIcon) {
-        FieldIcon fieldIcon = (FieldIcon) icon;
+      if (icon instanceof FieldIcon fieldIcon) {
         fieldIcon.markDirty();
       }
     }

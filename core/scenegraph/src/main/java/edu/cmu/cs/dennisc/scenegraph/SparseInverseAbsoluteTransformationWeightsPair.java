@@ -43,13 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
   protected int[] indices;

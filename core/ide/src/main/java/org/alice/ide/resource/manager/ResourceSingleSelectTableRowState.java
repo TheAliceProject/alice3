@@ -99,30 +99,22 @@ class ResourceTableModel extends AbstractTableModel {
 
   @Override
   public String getColumnName(int columnIndex) {
-    switch (columnIndex) {
-    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
-      return findLocalizedText("isReferenced", "is referenced?");
-    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
-      return findLocalizedText("name", "name");
-    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
-      return findLocalizedText("type", "type");
-    default:
-      return null;
-    }
+    return switch (columnIndex) {
+    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX -> findLocalizedText("isReferenced", "is referenced?");
+    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX -> findLocalizedText("name", "name");
+    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX -> findLocalizedText("type", "type");
+    default -> null;
+    };
   }
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    switch (columnIndex) {
-    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
-      return this.referencedResources.contains(this.resources[rowIndex]);
-    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
-      return this.resources[rowIndex];
-    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
-      return this.resources[rowIndex].getClass();
-    default:
-      return null;
-    }
+    return switch (columnIndex) {
+    case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX -> this.referencedResources.contains(this.resources[rowIndex]);
+    case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX -> this.resources[rowIndex];
+    case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX -> this.resources[rowIndex].getClass();
+    default -> null;
+    };
   }
 
   public Resource[] getResources() {

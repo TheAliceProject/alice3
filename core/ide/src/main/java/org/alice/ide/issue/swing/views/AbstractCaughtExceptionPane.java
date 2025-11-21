@@ -53,15 +53,7 @@ import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
 import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
 import org.alice.ide.issue.SubmitReportUtilities;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;

@@ -126,8 +126,7 @@ import java.util.UUID;
       final Capsule prevCapsule;
       final Capsule nextCapsule;
       Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
-      if (resource instanceof ImageResource) {
-        ImageResource prevImageResource = (ImageResource) resource;
+      if (resource instanceof ImageResource prevImageResource) {
         ImageResource nextImageResource = ImageResourceImporter.getInstance().createValue("Replace Image");
         if (nextImageResource != null) {
           prevCapsule = new ImageCapsule(prevImageResource);
@@ -136,8 +135,7 @@ import java.util.UUID;
           prevCapsule = null;
           nextCapsule = null;
         }
-      } else if (resource instanceof AudioResource) {
-        AudioResource prevAudioResource = (AudioResource) resource;
+      } else if (resource instanceof AudioResource prevAudioResource) {
         AudioResource nextAudioResource = AudioResourceImporter.getInstance().createValue("Replace Audio");
         if (nextAudioResource != null) {
           prevCapsule = new AudioCapsule(prevAudioResource);

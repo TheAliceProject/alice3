@@ -56,8 +56,8 @@ public abstract class ListCellRenderer<E> extends DefaultListCellRenderer {
   @Override
   public final Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     Component rv = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    if (rv instanceof JLabel) {
-      getListCellRendererComponent((JLabel) rv, list, (E) value, index, isSelected, cellHasFocus);
+    if (rv instanceof JLabel label) {
+      getListCellRendererComponent(label, list, (E) value, index, isSelected, cellHasFocus);
     } else {
       //todo
     }

@@ -166,8 +166,8 @@ public abstract class AddFieldComposite extends FieldComposite {
     CustomItemState<Expression> initializerState = this.getInitializerState();
     if (initializerState != null) {
       Expression expression = initializerState.getValue();
-      if (expression instanceof InstanceCreation) {
-        return (InstanceCreation) expression;
+      if (expression instanceof InstanceCreation creation) {
+        return creation;
       }
     }
     return null;
