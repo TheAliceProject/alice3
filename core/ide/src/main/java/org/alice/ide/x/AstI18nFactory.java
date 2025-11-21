@@ -340,50 +340,43 @@ public abstract class AstI18nFactory extends I18nFactory {
     String propertyName = property.getName();
     //
 
-    SwingComponentView<?> rv;
     if (underscoreCount == 2) {
       if (LOCAL_PROPERTY_NAMES.contains(propertyName)) {
-        rv = this.createLocalDeclarationPane((UserLocal) property.getValue());
+        return createLocalDeclarationPane((UserLocal) property.getValue());
       } else {
-        rv = new Label("TODO: handle underscore count 2: " + propertyName);
-      }
-    } else if (underscoreCount == 1) {
-      if (LOCAL_PROPERTY_NAMES.contains(propertyName)) {
-        rv = this.createLocalPane((UserLocal) property.getValue());
-      } else {
-        rv = new Label("TODO: handle underscore count 1: " + propertyName);
-      }
-    } else {
-      rv = null;
-      if (property instanceof NodeProperty<?> nodeProperty) {
-        if (property instanceof ExpressionProperty expressionProperty) {
-          rv = this.createExpressionPropertyPane(expressionProperty);
-        } else {
-          rv = this.createGenericNodePropertyPane(nodeProperty);
-        }
-      } else if (property instanceof ResourceProperty resourceProperty) {
-        rv = this.createResourcePropertyPane(resourceProperty);
-      } else if (property instanceof ListProperty<?>) {
-        if (property instanceof NodeListProperty<?>) {
-          if (property instanceof StatementListProperty listProperty3) {
-            rv = this.createStatementListPropertyPane(listProperty3);
-          } else if (property instanceof SimpleArgumentListProperty listProperty2) {
-            rv = this.createSimpleArgumentListPropertyPane(listProperty2);
-          } else if (property instanceof KeyedArgumentListProperty listProperty1) {
-            rv = this.createKeyedArgumentListPropertyPane(listProperty1);
-          } else if (property instanceof ExpressionListProperty listProperty) {
-            rv = this.createExpressionListPropertyPane(listProperty);
-          } else {
-            rv = this.createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
-          }
-        } else {
-          rv = this.createGenericListPropertyPane((ListProperty<Object>) property);
-        }
-      } else {
-        rv = this.createGenericInstancePropertyPane(property);
+        return new Label("TODO: handle underscore count 2: " + propertyName);
       }
     }
-    assert rv != null : property;
-    return rv;
+    if (underscoreCount == 1) {
+      if (LOCAL_PROPERTY_NAMES.contains(propertyName)) {
+        return createLocalPane((UserLocal) property.getValue());
+      } else {
+        return new Label("TODO: handle underscore count 1: " + propertyName);
+      }
+    }
+    if (property instanceof NodeProperty<?> nodeProperty) {
+      if (property instanceof ExpressionProperty expressionProperty) {
+        return createExpressionPropertyPane(expressionProperty);
+      } else {
+        return createGenericNodePropertyPane(nodeProperty);
+      }
+    }
+    if (property instanceof ResourceProperty resourceProperty) {
+      return createResourcePropertyPane(resourceProperty);
+    }
+    if (property instanceof ListProperty<?>) {
+      if (property instanceof NodeListProperty<?>) {
+        return switch (property) {
+                case StatementListProperty stmtList -> createStatementListPropertyPane(stmtList);
+                case SimpleArgumentListProperty argList -> createSimpleArgumentListPropertyPane(argList);
+                case KeyedArgumentListProperty keyedArgList -> createKeyedArgumentListPropertyPane(keyedArgList);
+                case ExpressionListProperty listProperty -> createExpressionListPropertyPane(listProperty);
+                default -> createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
+              };
+      } else {
+        return createGenericListPropertyPane((ListProperty<Object>) property);
+      }
+    }
+    return createGenericInstancePropertyPane(property);
   }
 }

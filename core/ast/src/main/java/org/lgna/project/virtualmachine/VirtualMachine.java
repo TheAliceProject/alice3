@@ -763,77 +763,48 @@ public abstract class VirtualMachine {
   }
 
   protected Object evaluate(Expression expression) {
-    if (expression != null) {
-      Object rv;
-      if (expression instanceof AssignmentExpression assignmentExpression) {
-        rv = this.evaluateAssignmentExpression(assignmentExpression);
-      } else if (expression instanceof BooleanLiteral literal6) {
-        rv = this.evaluateBooleanLiteral(literal6);
-      } else if (expression instanceof InstanceCreation creation1) {
-        rv = creation1.evaluate(this);
-      } else if (expression instanceof ArrayInstanceCreation creation) {
-        rv = this.evaluateArrayInstanceCreation(creation);
-      } else if (expression instanceof ArrayLength length) {
-        rv = this.evaluateArrayLength(length);
-      } else if (expression instanceof ArrayAccess access3) {
-        rv = this.evaluateArrayAccess(access3);
-      } else if (expression instanceof FieldAccess access2) {
-        rv = this.evaluateFieldAccess(access2);
-      } else if (expression instanceof LocalAccess access1) {
-        rv = this.evaluateLocalAccess(access1);
-      } else if (expression instanceof ArithmeticInfixExpression infixExpression4) {
-        rv = this.evaluateArithmeticInfixExpression(infixExpression4);
-      } else if (expression instanceof BitwiseInfixExpression infixExpression3) {
-        rv = this.evaluateBitwiseInfixExpression(infixExpression3);
-      } else if (expression instanceof ConditionalInfixExpression infixExpression2) {
-        rv = this.evaluateConditionalInfixExpression(infixExpression2);
-      } else if (expression instanceof RelationalInfixExpression infixExpression1) {
-        rv = this.evaluateRelationalInfixExpression(infixExpression1);
-      } else if (expression instanceof ShiftInfixExpression infixExpression) {
-        rv = this.evaluateShiftInfixExpression(infixExpression);
-      } else if (expression instanceof LogicalComplement complement) {
-        rv = this.evaluateLogicalComplement(complement);
-      } else if (expression instanceof MethodInvocation invocation) {
-        rv = this.evaluateMethodInvocation(invocation);
-      } else if (expression instanceof NullLiteral literal5) {
-        rv = this.evaluateNullLiteral(literal5);
-      } else if (expression instanceof StringConcatenation concatenation) {
-        rv = this.evaluateStringConcatenation(concatenation);
-      } else if (expression instanceof DoubleLiteral literal4) {
-        rv = this.evaluateDoubleLiteral(literal4);
-      } else if (expression instanceof FloatLiteral literal3) {
-        rv = this.evaluateFloatLiteral(literal3);
-      } else if (expression instanceof IntegerLiteral literal2) {
-        rv = this.evaluateIntegerLiteral(literal2);
-      } else if (expression instanceof ParameterAccess access) {
-        rv = this.evaluateParameterAccess(access);
-      } else if (expression instanceof StringLiteral literal1) {
-        rv = this.evaluateStringLiteral(literal1);
-      } else if (expression instanceof ThisExpression thisExpression) {
-        rv = this.evaluateThisExpression(thisExpression);
-      } else if (expression instanceof TypeExpression typeExpression) {
-        rv = this.evaluateTypeExpression(typeExpression);
-      } else if (expression instanceof TypeLiteral literal) {
-        rv = this.evaluateTypeLiteral(literal);
-      } else if (expression instanceof ResourceExpression resourceExpression) {
-        rv = this.evaluateResourceExpression(resourceExpression);
-      } else if (expression instanceof LambdaExpression lambdaExpression) {
-        rv = this.evaluateLambdaExpression(lambdaExpression);
-      } else {
-        throw new RuntimeException(expression.getClass().getName());
-      }
-      synchronized (this.virtualMachineListeners) {
-        if (this.virtualMachineListeners.size() > 0) {
-          ExpressionEvaluationEvent expressionEvaluationEvent = new ExpressionEvaluationEvent(this, expression, rv);
-          for (VirtualMachineListener virtualMachineListener : this.virtualMachineListeners) {
-            virtualMachineListener.expressionEvaluated(expressionEvaluationEvent);
-          }
-        }
-      }
-      return rv;
-    } else {
+    if (expression == null) {
       throw new NullPointerException();
     }
+    Object rv = switch (expression) {
+      case AssignmentExpression assignmentExpression -> evaluateAssignmentExpression(assignmentExpression);
+      case BooleanLiteral bool -> evaluateBooleanLiteral(bool);
+      case InstanceCreation creation -> creation.evaluate(this);
+      case ArrayInstanceCreation arrayCreation -> evaluateArrayInstanceCreation(arrayCreation);
+      case ArrayLength length -> evaluateArrayLength(length);
+      case ArrayAccess array -> evaluateArrayAccess(array);
+      case FieldAccess field -> evaluateFieldAccess(field);
+      case LocalAccess local -> evaluateLocalAccess(local);
+      case ArithmeticInfixExpression math -> evaluateArithmeticInfixExpression(math);
+      case BitwiseInfixExpression bitwise -> evaluateBitwiseInfixExpression(bitwise);
+      case ConditionalInfixExpression conditional -> evaluateConditionalInfixExpression(conditional);
+      case RelationalInfixExpression relational -> evaluateRelationalInfixExpression(relational);
+      case ShiftInfixExpression infixExpression -> evaluateShiftInfixExpression(infixExpression);
+      case LogicalComplement complement -> evaluateLogicalComplement(complement);
+      case MethodInvocation invocation -> evaluateMethodInvocation(invocation);
+      case NullLiteral nullLiteral -> evaluateNullLiteral(nullLiteral);
+      case StringConcatenation concatenation -> evaluateStringConcatenation(concatenation);
+      case DoubleLiteral doubleLiteral -> evaluateDoubleLiteral(doubleLiteral);
+      case FloatLiteral floatLiteral -> evaluateFloatLiteral(floatLiteral);
+      case IntegerLiteral integerLiteral -> evaluateIntegerLiteral(integerLiteral);
+      case ParameterAccess access -> evaluateParameterAccess(access);
+      case StringLiteral stringLiteral -> evaluateStringLiteral(stringLiteral);
+      case ThisExpression thisExpression -> evaluateThisExpression(thisExpression);
+      case TypeExpression typeExpression -> evaluateTypeExpression(typeExpression);
+      case TypeLiteral typeLiteral -> evaluateTypeLiteral(typeLiteral);
+      case ResourceExpression resourceExpression -> evaluateResourceExpression(resourceExpression);
+      case LambdaExpression lambdaExpression -> evaluateLambdaExpression(lambdaExpression);
+      default -> throw new RuntimeException(expression.getClass().getName());
+    };
+    synchronized (virtualMachineListeners) {
+      if (virtualMachineListeners.size() > 0) {
+        ExpressionEvaluationEvent expressionEvaluationEvent = new ExpressionEvaluationEvent(this, expression, rv);
+        for (VirtualMachineListener virtualMachineListener : virtualMachineListeners) {
+          virtualMachineListener.expressionEvaluated(expressionEvaluationEvent);
+        }
+      }
+    }
+    return rv;
   }
 
   protected final <E> E evaluate(Expression expression, Class<E> cls) {
@@ -856,8 +827,8 @@ public abstract class VirtualMachine {
   private boolean evaluateBoolean(Expression expression, String nullExceptionMessage) {
     Object value = this.evaluate(expression);
     this.checkNotNull(value, nullExceptionMessage);
-    if (value instanceof Boolean boolean1) {
-      return boolean1;
+    if (value instanceof Boolean b) {
+      return b;
     } else {
       throw new LgnaVmClassCastException(this, Boolean.class, value.getClass());
     }
@@ -1155,37 +1126,26 @@ public abstract class VirtualMachine {
       }
 
       try {
-        if (statement instanceof BlockStatement blockStatement) {
-          this.executeBlockStatement(blockStatement, listeners);
-        } else if (statement instanceof ConditionalStatement conditionalStatement) {
-          this.executeConditionalStatement(conditionalStatement, listeners);
-        } else if (statement instanceof Comment comment) {
-          this.executeComment(comment, listeners);
-        } else if (statement instanceof CountLoop loop3) {
-          this.executeCountLoop(loop3, listeners);
-        } else if (statement instanceof DoTogether together2) {
-          this.executeDoTogether(together2, listeners);
-        } else if (statement instanceof DoInOrder order) {
-          this.executeDoInOrder(order, listeners);
-        } else if (statement instanceof ExpressionStatement expressionStatement) {
-          this.executeExpressionStatement(expressionStatement, listeners);
-        } else if (statement instanceof ForEachInArrayLoop loop2) {
-          this.executeForEachInArrayLoop(loop2, listeners);
-        } else if (statement instanceof ForEachInIterableLoop loop1) {
-          this.executeForEachInIterableLoop(loop1, listeners);
-        } else if (statement instanceof EachInArrayTogether together1) {
-          this.executeEachInArrayTogether(together1, listeners);
-        } else if (statement instanceof EachInIterableTogether together) {
-          this.executeEachInIterableTogether(together, listeners);
-        } else if (statement instanceof WhileLoop loop) {
-          this.executeWhileLoop(loop, listeners);
-        } else if (statement instanceof LocalDeclarationStatement declarationStatement) {
-          this.executeLocalDeclarationStatement(declarationStatement, listeners);
-        } else if (statement instanceof ReturnStatement returnStatement) {
-          this.executeReturnStatement(returnStatement, listeners);
+        switch (statement) {
+          case BlockStatement blockStatement -> executeBlockStatement(blockStatement, listeners);
+          case ConditionalStatement conditional -> executeConditionalStatement(conditional, listeners);
+          case Comment comment -> executeComment(comment, listeners);
+          case CountLoop countLoop -> executeCountLoop(countLoop, listeners);
+          case DoTogether doTogether -> executeDoTogether(doTogether, listeners);
+          case DoInOrder order -> executeDoInOrder(order, listeners);
+          case ExpressionStatement exp -> executeExpressionStatement(exp, listeners);
+          case ForEachInArrayLoop iterableArray -> executeForEachInArrayLoop(iterableArray, listeners);
+          case ForEachInIterableLoop iterableEach -> executeForEachInIterableLoop(iterableEach, listeners);
+          case EachInArrayTogether arrayTogether -> executeEachInArrayTogether(arrayTogether, listeners);
+          case EachInIterableTogether iterableTogetherTogether ->
+              executeEachInIterableTogether(iterableTogetherTogether, listeners);
+          case WhileLoop loop -> executeWhileLoop(loop, listeners);
+          case LocalDeclarationStatement declarationStatement ->
+              executeLocalDeclarationStatement(declarationStatement, listeners);
+          case ReturnStatement returnStatement -> executeReturnStatement(returnStatement, listeners);
+
           // note: does not return.  throws ReturnException.
-        } else {
-          throw new RuntimeException();
+          default -> throw new RuntimeException();
         }
       } finally {
         if ((statementEvent != null) && (listeners != null)) {

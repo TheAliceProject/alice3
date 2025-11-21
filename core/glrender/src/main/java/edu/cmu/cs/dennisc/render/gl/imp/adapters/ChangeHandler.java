@@ -96,26 +96,18 @@ public class ChangeHandler {
   }
 
   private static void handleEvent(Event<?> event) {
-    if (event instanceof PropertyEvent propertyEvent) {
-      GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
-    } else if (event instanceof ReleaseEvent releaseEvent) {
-      GlrObject.handleReleased(releaseEvent);
-    } else if (event instanceof AbsoluteTransformationEvent absoluteTransformationEvent) {
-      GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
-    } else if (event instanceof HierarchyEvent hierarchyEvent) {
-      GlrComponent.handleHierarchyChanged(hierarchyEvent);
-    } else if (event instanceof ComponentAddedEvent addedEvent1) {
-      GlrComposite.handleComponentAdded(addedEvent1);
-    } else if (event instanceof ComponentRemovedEvent removedEvent1) {
-      GlrComposite.handleComponentRemoved(removedEvent1);
-    } else if (event instanceof GraphicAddedEvent addedEvent) {
-      GlrLayer.handleGraphicAdded(addedEvent);
-    } else if (event instanceof GraphicRemovedEvent removedEvent) {
-      GlrLayer.handleGraphicRemoved(removedEvent);
-    } else if (event instanceof TextureEvent textureEvent) {
-      GlrTexture.handleTextureChanged(textureEvent);
-    } else {
-      Logger.warning("UNHANDLED EVENT:", event);
+    switch (event) {
+      case PropertyEvent propertyEvent -> GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
+      case ReleaseEvent releaseEvent -> GlrObject.handleReleased(releaseEvent);
+      case AbsoluteTransformationEvent absoluteTransformationEvent ->
+          GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
+      case HierarchyEvent hierarchyEvent -> GlrComponent.handleHierarchyChanged(hierarchyEvent);
+      case ComponentAddedEvent componentAdded -> GlrComposite.handleComponentAdded(componentAdded);
+      case ComponentRemovedEvent componentRemoved -> GlrComposite.handleComponentRemoved(componentRemoved);
+      case GraphicAddedEvent graphicAdded -> GlrLayer.handleGraphicAdded(graphicAdded);
+      case GraphicRemovedEvent graphicRemoved -> GlrLayer.handleGraphicRemoved(graphicRemoved);
+      case TextureEvent textureEvent -> GlrTexture.handleTextureChanged(textureEvent);
+      case null, default -> Logger.warning("UNHANDLED EVENT:", event);
     }
   }
 

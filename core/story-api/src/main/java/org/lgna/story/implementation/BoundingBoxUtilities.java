@@ -51,18 +51,15 @@ import org.lgna.story.STurnable;
 public class BoundingBoxUtilities {
 
   private static AxisAlignedBox getSGTransformableBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {
-    AxisAlignedBox boundingBox = null;
-    if (sgTransformable != null) {
-      EntityImp entityImp = EntityImp.getInstance(sgTransformable);
-      if (entityImp instanceof JointedModelImp<?, ?> imp2) {
-        boundingBox = imp2.getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
-      } else if (entityImp instanceof ModelImp imp1) {
-        boundingBox = imp1.getAxisAlignedMinimumBoundingBox();
-      } else if (entityImp instanceof JointImp imp) {
-        boundingBox = imp.getAxisAlignedMinimumBoundingBox();
-      }
+    if (sgTransformable == null) {
+      return null;
     }
-    return boundingBox;
+    return switch (EntityImp.getInstance(sgTransformable)) {
+      case JointedModelImp<?, ?> jointedModelImp -> jointedModelImp.getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
+      case ModelImp modelImp -> modelImp.getAxisAlignedMinimumBoundingBox();
+      case JointImp jointImp -> jointImp.getAxisAlignedMinimumBoundingBox();
+      case null, default -> null;
+    };
   }
 
   public static AxisAlignedBox getSGTransformableScaledBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {
