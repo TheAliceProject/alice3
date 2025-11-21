@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Disc;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -80,7 +81,7 @@ public class GlrDisc extends GlrShape<Disc> {
 
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, 0, 1, 0);
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, Point3.ORIGIN, Vector3.POSITIVE_Y_AXIS);
   }
 
   @Override

@@ -157,22 +157,13 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
     pickGeometry(pc, isSubElementRequired);
   }
 
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
-    Point3 position = new Point3(px, py, pz);
-    Vector3 direction = new Vector3(nx, ny, nz);
-    position = m.transform(position);
-    direction = m.transform(direction);
-    Plane plane = Plane.createInstance(position, direction);
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, Point3 position, Vector3 direction) {
+    Plane plane = Plane.createInstance(m.transform(position), m.transform(direction));
     if (plane.isNaN()) {
       return Point3.NaN;
-    } else {
-      double t = plane.intersect(ray);
-      return ray.getPointAlong(t);
     }
-  }
-
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, Point3 planePosition, Vector3 planeDirection) {
-    return getIntersectionInSourceFromPlaneInLocal(ray, m, planePosition.x(), planePosition.y(), planePosition.x(), planeDirection.x(), planeDirection.y(), planeDirection.z());
+    double t = plane.intersect(ray);
+    return ray.getPointAlong(t);
   }
 
   public abstract Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement);

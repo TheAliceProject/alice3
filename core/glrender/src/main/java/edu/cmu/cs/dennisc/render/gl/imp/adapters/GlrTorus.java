@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -63,19 +64,12 @@ public class GlrTorus extends GlrShape<Torus> {
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     //todo: solve for intersection with actual torus as opposed to just the plane
-    Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
-    double dirX = 0;
-    double dirY = 0;
-    double dirZ = 0;
-
-    if (coordinatePlane == Torus.CoordinatePlane.XY) {
-      dirZ = 1;
-    } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-      dirX = 1;
-    } else {
-      dirY = 1;
-    }
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, dirX, dirY, dirZ);
+    Vector3 axis = switch (owner.coordinatePlane.getValue()) {
+      case XY -> Vector3.POSITIVE_Z_AXIS;
+      case YZ -> Vector3.POSITIVE_X_AXIS;
+      case null, default -> Vector3.POSITIVE_Y_AXIS;
+    };
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, Point3.ORIGIN, axis);
   }
 
   @Override

@@ -262,8 +262,8 @@ public class GlrText extends GlrGeometry<Text> {
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
     Vector3 alignmentOffset = owner.getAlignmentOffset();
-    double zFront = alignmentOffset.z();
+    Point3 zFront = new Point3(0, 0, alignmentOffset.z());
     //todo: no reason to believe it hit the front
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, zFront, 0, 0, -1);
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, zFront, Vector3.NEGATIVE_Z_AXIS);
   }
 }
