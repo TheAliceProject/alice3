@@ -46,7 +46,6 @@ import org.lgna.croquet.PopupPrepModel;
 
 import javax.swing.Icon;
 import javax.swing.JToggleButton;
-import java.awt.Insets;
 
 /**
  * @author Dennis Cosgrove
@@ -60,17 +59,7 @@ public abstract class AbstractPopupButton<M extends PopupPrepModel> extends Abst
     this(model, null);
   }
 
-  protected static final int TRAILING_PAD = -2;
-
   protected class JPopupButton extends JToggleButton {
-    @Override
-    public Insets getMargin() {
-      Insets rv = super.getMargin();
-      if (rv != null) {
-        rv.right += TRAILING_PAD;
-      }
-      return rv;
-    }
 
     @Override
     public Icon getIcon() {

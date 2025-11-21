@@ -43,8 +43,8 @@
 package org.alice.ide.members.components.templates;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.DragComponent;
-import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 
 import java.util.Map;
@@ -57,18 +57,11 @@ public class TemplateFactory {
     throw new AssertionError();
   }
 
-  private static Map<AbstractMethod, DragComponent> mapMethodToProcedureInvocationTemplate = Maps.newHashMap();
-  private static Map<AbstractMethod, DragComponent> mapMethodToFunctionInvocationTemplate = Maps.newHashMap();
+  private static final Map<AbstractMethod, DragComponent<? extends DragModel>> mapMethodToProcedureInvocationTemplate = Maps.newHashMap();
+  private static final Map<AbstractMethod, DragComponent<? extends DragModel>> mapMethodToFunctionInvocationTemplate = Maps.newHashMap();
 
-  private static Map<AbstractField, DragComponent> mapMethodToAccessorTemplate = Maps.newHashMap();
-  private static Map<AbstractField, DragComponent> mapMethodToAccessArrayAtIndexTemplate = Maps.newHashMap();
-  private static Map<AbstractField, DragComponent> mapMethodToArrayLengthTemplate = Maps.newHashMap();
-
-  private static Map<AbstractField, DragComponent> mapMethodToMutatorTemplate = Maps.newHashMap();
-  private static Map<AbstractField, DragComponent> mapMethodToMutateArrayAtIndexTemplate = Maps.newHashMap();
-
-  public static DragComponent getProcedureInvocationTemplate(AbstractMethod method) {
-    DragComponent rv = mapMethodToProcedureInvocationTemplate.get(method);
+  private static DragComponent<? extends DragModel> getProcedureInvocationTemplate(AbstractMethod method) {
+    DragComponent<? extends DragModel> rv = mapMethodToProcedureInvocationTemplate.get(method);
     if (rv == null) {
       rv = new ProcedureInvocationTemplate(method);
       mapMethodToProcedureInvocationTemplate.put(method, rv);
@@ -76,8 +69,8 @@ public class TemplateFactory {
     return rv;
   }
 
-  public static DragComponent getFunctionInvocationTemplate(AbstractMethod method) {
-    DragComponent rv = mapMethodToFunctionInvocationTemplate.get(method);
+  private static DragComponent<? extends DragModel> getFunctionInvocationTemplate(AbstractMethod method) {
+    DragComponent<? extends DragModel> rv = mapMethodToFunctionInvocationTemplate.get(method);
     if (rv == null) {
       rv = new FunctionInvocationTemplate(method);
       mapMethodToFunctionInvocationTemplate.put(method, rv);
@@ -85,7 +78,7 @@ public class TemplateFactory {
     return rv;
   }
 
-  public static DragComponent getMethodInvocationTemplate(AbstractMethod method) {
+  public static DragComponent<?> getMethodInvocationTemplate(AbstractMethod method) {
     if (method.isProcedure()) {
       return getProcedureInvocationTemplate(method);
     } else {
@@ -93,36 +86,4 @@ public class TemplateFactory {
     }
   }
 
-  public static DragComponent getAccessorTemplate(AbstractField field) {
-    DragComponent rv = mapMethodToAccessorTemplate.get(field);
-    if (rv != null) {
-
-    } else {
-      rv = new GetterTemplate(field);
-      mapMethodToAccessorTemplate.put(field, rv);
-    }
-    return rv;
-  }
-
-  public static DragComponent getAccessArrayAtIndexTemplate(AbstractField field) {
-    DragComponent rv = mapMethodToAccessArrayAtIndexTemplate.get(field);
-    if (rv != null) {
-
-    } else {
-      rv = new AccessFieldArrayAtIndexTemplate(field);
-      mapMethodToAccessArrayAtIndexTemplate.put(field, rv);
-    }
-    return rv;
-  }
-
-  public static DragComponent getArrayLengthTemplate(AbstractField field) {
-    DragComponent rv = mapMethodToArrayLengthTemplate.get(field);
-    if (rv != null) {
-
-    } else {
-      rv = new FieldArrayLengthTemplate(field);
-      mapMethodToArrayLengthTemplate.put(field, rv);
-    }
-    return rv;
-  }
 }
