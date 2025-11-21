@@ -45,11 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.IDE;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionProperty;
-import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.*;
 
 import java.util.UUID;
 

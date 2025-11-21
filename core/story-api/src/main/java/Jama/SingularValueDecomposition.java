@@ -2,6 +2,7 @@ package Jama;
 
 import Jama.util.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** Singular Value Decomposition.
@@ -548,5 +549,5 @@ public class SingularValueDecomposition implements Serializable {
     return r;
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }

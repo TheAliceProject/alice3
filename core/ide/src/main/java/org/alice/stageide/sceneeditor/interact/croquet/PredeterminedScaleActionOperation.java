@@ -48,9 +48,8 @@ import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
-import org.lgna.croquet.Group;
-
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
+import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;

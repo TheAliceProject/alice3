@@ -42,21 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.views;
 
-import java.awt.ComponentOrientation;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.BorderFactory;
-import javax.swing.InputMap;
-import javax.swing.KeyStroke;
-import javax.swing.border.BevelBorder;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.tree.TreePath;
-
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
@@ -74,7 +61,18 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.TextField;
 import org.lgna.croquet.views.Tree;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
+import javax.swing.BorderFactory;
+import javax.swing.InputMap;
+import javax.swing.KeyStroke;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.TreePath;
+import java.awt.ComponentOrientation;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Matt May

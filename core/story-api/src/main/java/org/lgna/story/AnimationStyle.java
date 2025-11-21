@@ -91,8 +91,7 @@ public enum AnimationStyle implements
 
   private static AnimationStyle getValue(Object[] details, AnimationStyle defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof AnimationStyle) {
-        AnimationStyle animationStyle = (AnimationStyle) detail;
+      if (detail instanceof AnimationStyle animationStyle) {
         return animationStyle;
       }
     }

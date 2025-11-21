@@ -45,20 +45,8 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 
-import javax.swing.AbstractButton;
-import javax.swing.DefaultButtonModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Window;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -158,8 +146,7 @@ public abstract class JExpandPane extends AbstractButton {
     this.revalidate();
     this.repaint();
     Component root = SwingUtilities.getRoot(this);
-    if (root instanceof Window) {
-      Window window = (Window) root;
+    if (root instanceof Window window) {
       window.pack();
     }
   }

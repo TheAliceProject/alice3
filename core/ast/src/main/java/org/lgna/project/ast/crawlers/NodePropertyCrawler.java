@@ -55,8 +55,7 @@ public abstract class NodePropertyCrawler implements Crawler {
 
   @Override
   public final void visit(Crawlable crawlable) {
-    if (crawlable instanceof Node) {
-      Node node = (Node) crawlable;
+    if (crawlable instanceof Node node) {
       for (InstanceProperty<?> property : node.getProperties()) {
         this.visitNodeProperty(node, property);
       }

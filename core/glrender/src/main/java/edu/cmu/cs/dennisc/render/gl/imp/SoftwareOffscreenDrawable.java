@@ -43,11 +43,7 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import com.jogamp.nativewindow.AbstractGraphicsDevice;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLDrawable;
-import com.jogamp.opengl.GLException;
+import com.jogamp.opengl.*;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import jogamp.opengl.GLContextImpl;
 import jogamp.opengl.GLDrawableHelper;

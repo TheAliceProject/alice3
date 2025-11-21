@@ -48,33 +48,15 @@ import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.alice.ide.cascade.fillerinners.AudioResourceFillerInner;
-import org.alice.ide.cascade.fillerinners.BooleanFillerInner;
-import org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner;
-import org.alice.ide.cascade.fillerinners.DoubleFillerInner;
-import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
-import org.alice.ide.cascade.fillerinners.ImageResourceFillerInner;
-import org.alice.ide.cascade.fillerinners.IntegerFillerInner;
-import org.alice.ide.cascade.fillerinners.PoseFillerInner;
-import org.alice.ide.cascade.fillerinners.StringFillerInner;
-import org.alice.ide.croquet.models.cascade.LocalAccessFillIn;
-import org.alice.ide.croquet.models.cascade.ParameterAccessFillIn;
-import org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn;
-import org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn;
-import org.alice.ide.croquet.models.cascade.ThisExpressionFillIn;
-import org.alice.ide.croquet.models.cascade.ThisFieldAccessFillIn;
-import org.alice.ide.croquet.models.cascade.TypeExpressionCascadeMenu;
-import org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn;
-import org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn;
-import org.alice.ide.croquet.models.cascade.array.ArrayLengthSeparator;
-import org.alice.ide.croquet.models.cascade.array.LocalArrayLengthFillIn;
-import org.alice.ide.croquet.models.cascade.array.ParameterArrayLengthFillIn;
-import org.alice.ide.croquet.models.cascade.array.ThisFieldArrayLengthFillIn;
+import org.alice.ide.cascade.fillerinners.*;
+import org.alice.ide.croquet.models.cascade.*;
+import org.alice.ide.croquet.models.cascade.array.*;
 import org.alice.ide.croquet.models.cascade.literals.NullLiteralFillIn;
 import org.alice.ide.croquet.models.cascade.string.StringConcatinationLeftAndRightOperandsFillIn;
 import org.alice.ide.croquet.models.cascade.string.StringConcatinationRightOperandOnlyFillIn;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.custom.ArrayCustomExpressionCreatorComposite;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItemMenuCombo;
@@ -83,10 +65,7 @@ import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.*;
-
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.project.virtualmachine.VirtualMachine;
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -191,8 +170,7 @@ public abstract class ExpressionCascadeManager {
         index = blockStatement.statements.size();
       } else {
         Statement statementI = blockStatement.statements.get(index);
-        if (statementI instanceof LocalDeclarationStatement) {
-          LocalDeclarationStatement localDeclarationStatement = (LocalDeclarationStatement) statementI;
+        if (statementI instanceof LocalDeclarationStatement localDeclarationStatement) {
           rv.add(localDeclarationStatement.local.getValue());
         }
       }
@@ -205,23 +183,18 @@ public abstract class ExpressionCascadeManager {
     if (parent instanceof BooleanExpressionBodyPair) {
       parent = parent.getParent();
     }
-    if (parent instanceof Statement) {
-      Statement statementParent = (Statement) parent;
-      if (statementParent instanceof BlockStatement) {
-        BlockStatement blockStatementParent = (BlockStatement) statementParent;
+    if (parent instanceof Statement statementParent) {
+      if (statementParent instanceof BlockStatement blockStatementParent) {
         int index = blockStatementParent.statements.indexOf(statement);
         this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
-      } else if (statementParent instanceof CountLoop) {
-        CountLoop countLoopParent = (CountLoop) statementParent;
+      } else if (statementParent instanceof CountLoop countLoopParent) {
         boolean areCountLoopLocalsViewable = FormatterState.isJava();
         if (areCountLoopLocalsViewable) {
           rv.add(countLoopParent.variable.getValue());
         }
-      } else if (statementParent instanceof AbstractForEachLoop) {
-        AbstractForEachLoop forEachLoopParent = (AbstractForEachLoop) statementParent;
+      } else if (statementParent instanceof AbstractForEachLoop forEachLoopParent) {
         rv.add(forEachLoopParent.item.getValue());
-      } else if (statementParent instanceof AbstractEachInTogether) {
-        AbstractEachInTogether eachInTogetherParent = (AbstractEachInTogether) statementParent;
+      } else if (statementParent instanceof AbstractEachInTogether eachInTogetherParent) {
         rv.add(eachInTogetherParent.item.getValue());
       }
       updateAccessibleLocals(rv, statementParent);
@@ -252,22 +225,18 @@ public abstract class ExpressionCascadeManager {
     CascadeBlankChild blankChild;
     CascadeFillIn<? extends Expression, ?> expressionFillIn;
     if (this.isApplicableForFillIn(desiredType, expressionType)) {
-      if (expression instanceof ThisExpression) {
-        ThisExpression thisExpression = (ThisExpression) expression;
+      if (expression instanceof ThisExpression thisExpression) {
         expressionFillIn = ThisExpressionFillIn.getInstance();
-      } else if (expression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) expression;
+      } else if (expression instanceof FieldAccess fieldAccess) {
         Expression instanceExpression = fieldAccess.expression.getValue();
         if (instanceExpression instanceof ThisExpression) {
           expressionFillIn = ThisFieldAccessFillIn.getInstance(fieldAccess.field.getValue());
         } else {
           expressionFillIn = null;
         }
-      } else if (expression instanceof ParameterAccess) {
-        ParameterAccess parameterAccess = (ParameterAccess) expression;
+      } else if (expression instanceof ParameterAccess parameterAccess) {
         expressionFillIn = ParameterAccessFillIn.getInstance(parameterAccess.parameter.getValue());
-      } else if (expression instanceof LocalAccess) {
-        LocalAccess localAccess = (LocalAccess) expression;
+      } else if (expression instanceof LocalAccess localAccess) {
         expressionFillIn = LocalAccessFillIn.getInstance(localAccess.local.getValue());
       } else {
         expressionFillIn = null;
@@ -346,8 +315,7 @@ public abstract class ExpressionCascadeManager {
     }
 
     AbstractCode codeInFocus = IDE.getActiveInstance().getDocumentFrame().getFocusedCode();
-    if (codeInFocus instanceof UserCode) {
-      UserCode userCode = (UserCode) codeInFocus;
+    if (codeInFocus instanceof UserCode userCode) {
       for (UserParameter parameter : userCode.getRequiredParamtersProperty()) {
         AbstractType<?, ?, ?> parameterType = parameter.getValueType();
         if (this.isApplicableForFillInAndPossiblyPartFillIns(type, parameterType)) {

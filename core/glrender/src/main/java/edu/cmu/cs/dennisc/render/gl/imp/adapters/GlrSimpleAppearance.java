@@ -42,24 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_LEQUAL;
-import static com.jogamp.opengl.GL.GL_LESS;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
-import static com.jogamp.opengl.GL2GL3.GL_FILL;
-import static com.jogamp.opengl.GL2GL3.GL_LINE;
-import static com.jogamp.opengl.GL2GL3.GL_POINT;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT_AND_DIFFUSE;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.FillingStyle;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2GL3.*;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.*;
 
 public class GlrSimpleAppearance<T extends SimpleAppearance> extends GlrAppearance<T> {
   @Override

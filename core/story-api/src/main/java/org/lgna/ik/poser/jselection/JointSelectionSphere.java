@@ -42,15 +42,14 @@
  */
 package org.lgna.ik.poser.jselection;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.story.SSphere;
 import org.lgna.story.Size;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JointSelectionSphere extends SSphere {
 

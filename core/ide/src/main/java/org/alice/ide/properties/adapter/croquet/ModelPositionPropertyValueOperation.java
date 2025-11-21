@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter.croquet;
 
-import org.alice.math.immutable.Point3;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.math.immutable.Point3;
 
 import java.util.UUID;
 

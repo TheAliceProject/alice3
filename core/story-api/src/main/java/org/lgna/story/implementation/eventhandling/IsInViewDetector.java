@@ -43,15 +43,14 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import java.awt.Dimension;
-import java.awt.Point;
-
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector4;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 
-import org.alice.math.immutable.Point3;
+import java.awt.Dimension;
+import java.awt.Point;
 
 /**
  * @author Matt May

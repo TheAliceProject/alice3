@@ -102,8 +102,7 @@ public class AdapterFactory {
 
   private static void createNecessaryProxies(Releasable sgElement) {
     GlrObject<?> unused = getAdapterForElement(sgElement);
-    if (sgElement instanceof Composite) {
-      Composite sgComposite = (Composite) sgElement;
+    if (sgElement instanceof Composite sgComposite) {
       for (Component sgComponent : sgComposite.getComponents()) {
         createNecessaryProxies(sgComponent);
       }

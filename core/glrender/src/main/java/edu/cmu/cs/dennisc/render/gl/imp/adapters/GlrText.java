@@ -43,20 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
-import static com.jogamp.opengl.glu.GLU.GLU_OUT_OF_MEMORY;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_BEGIN;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_COMBINE;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_COORD_TOO_LARGE;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_END;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_ERROR;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_CONTOUR;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_POLYGON;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_CONTOUR;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_POLYGON;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_NEED_COMBINE_CALLBACK;
-import static com.jogamp.opengl.glu.GLU.GLU_TESS_VERTEX;
-
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUtessellator;
@@ -74,6 +60,9 @@ import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
 
 import java.util.List;
+
+import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
+import static com.jogamp.opengl.glu.GLU.*;
 
 /**
  * @author Dennis Cosgrove
@@ -115,24 +104,16 @@ public class GlrText extends GlrGeometry<Text> {
     }
 
     private String getErrorString(int error) {
-      switch (error) {
-      case GLU_TESS_MISSING_BEGIN_POLYGON:
-        return "GLU_TESS_MISSING_BEGIN_POLYGON";
-      case GLU_TESS_MISSING_END_POLYGON:
-        return "GLU_TESS_MISSING_END_POLYGON";
-      case GLU_TESS_MISSING_BEGIN_CONTOUR:
-        return "GLU_TESS_MISSING_BEGIN_CONTOUR";
-      case GLU_TESS_MISSING_END_CONTOUR:
-        return "GLU_TESS_MISSING_END_CONTOUR";
-      case GLU_TESS_COORD_TOO_LARGE:
-        return "GLU_TESS_COORD_TOO_LARGE";
-      case GLU_TESS_NEED_COMBINE_CALLBACK:
-        return "GLU_TESS_NEED_COMBINE_CALLBACK";
-      case GLU_OUT_OF_MEMORY:
-        return "GLU_OUT_OF_MEMORY";
-      default:
-        return "UNKNOWN";
-      }
+      return switch (error) {
+      case GLU_TESS_MISSING_BEGIN_POLYGON -> "GLU_TESS_MISSING_BEGIN_POLYGON";
+      case GLU_TESS_MISSING_END_POLYGON -> "GLU_TESS_MISSING_END_POLYGON";
+      case GLU_TESS_MISSING_BEGIN_CONTOUR -> "GLU_TESS_MISSING_BEGIN_CONTOUR";
+      case GLU_TESS_MISSING_END_CONTOUR -> "GLU_TESS_MISSING_END_CONTOUR";
+      case GLU_TESS_COORD_TOO_LARGE -> "GLU_TESS_COORD_TOO_LARGE";
+      case GLU_TESS_NEED_COMBINE_CALLBACK -> "GLU_TESS_NEED_COMBINE_CALLBACK";
+      case GLU_OUT_OF_MEMORY -> "GLU_OUT_OF_MEMORY";
+      default -> "UNKNOWN";
+      };
     }
 
     @Override

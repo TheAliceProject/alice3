@@ -96,14 +96,12 @@ public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBla
   protected InstanceCreation createValue(Expression[] expressions) {
     if (expressions.length == 1) {
       Expression expression = expressions[0];
-      if (expression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) expression;
+      if (expression instanceof FieldAccess fieldAccess) {
         AbstractField field = fieldAccess.field.getValue();
         if (field.isStatic()) {
-          if (field instanceof JavaField) {
-            JavaField argumentField = (JavaField) field;
+          if (field instanceof JavaField argumentField) {
             NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(this.ancestorType, argumentField);
-            NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+            NamedUserConstructor constructor = userType.getDeclaredConstructors().getFirst();
             Expression[] argumentExpressions;
             if (constructor.getRequiredParameters().size() == 1) {
               argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};

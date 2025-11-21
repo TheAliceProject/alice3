@@ -1,16 +1,15 @@
 package com.dddviewr.collada.states;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.Vcount;
 import com.dddviewr.collada.geometry.Mesh;
 import com.dddviewr.collada.geometry.PolyList;
+import org.xml.sax.Attributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class polygons extends State {
   protected PolyList thePolyList;

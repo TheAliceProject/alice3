@@ -163,8 +163,7 @@ class Decoder {
     Element xmlLeafTypeNode = XMLUtilities.getSingleChildElementByTagName(xmlLeafType, "node");
 
     Node xmlLeafTypeFirstChild = xmlLeafType.getFirstChild();
-    if (xmlLeafTypeFirstChild instanceof Element) {
-      Element xmlLeafTypeFirstChildElement = (Element) xmlLeafTypeFirstChild;
+    if (xmlLeafTypeFirstChild instanceof Element xmlLeafTypeFirstChildElement) {
       if (xmlLeafTypeFirstChildElement.hasAttribute(CodecConstants.UNIQUE_KEY_ATTRIBUTE)) {
         int arrayTypeUniqueKey = getUniqueKey(xmlElement);
         int leafTypeUniqueKey = getUniqueKey(xmlLeafTypeFirstChildElement);
@@ -256,8 +255,7 @@ class Decoder {
       } else if (clsName.equals(Getter.class.getName()) || clsName.equals(Setter.class.getName())) {
 
         Node xmlFirstChild = xmlElement.getFirstChild();
-        if (xmlFirstChild instanceof Element) {
-          Element xmlFirstChildElement = (Element) xmlFirstChild;
+        if (xmlFirstChild instanceof Element xmlFirstChildElement) {
           if (xmlFirstChildElement.hasAttribute(CodecConstants.UNIQUE_KEY_ATTRIBUTE)) {
             int getterOrSetterUniqueKey = getUniqueKey(xmlElement);
             int fieldUniqueKey = getUniqueKey(xmlFirstChildElement);
@@ -285,7 +283,7 @@ class Decoder {
         assert nodeList.getLength() == 1;
         Element xmlSetter = (Element) nodeList.item(0);
         Setter setter = (Setter) decode(xmlSetter, map);
-        rv = setter.getRequiredParameters().get(0);
+        rv = setter.getRequiredParameters().getFirst();
       } else if (clsName.equals(JavaField.class.getName())) {
         rv = JavaField.getInstance(decodeField(xmlElement, "field"));
       } else if (clsName.equals(AnonymousUserConstructor.class.getName())) {
@@ -335,8 +333,8 @@ class Decoder {
         rv = (AbstractNode) newInstance(xmlElement);
         assert rv != null;
       }
-      if (rv instanceof AbstractDeclaration) {
-        map.put(getUniqueKey(xmlElement), (AbstractDeclaration) rv);
+      if (rv instanceof AbstractDeclaration declaration) {
+        map.put(getUniqueKey(xmlElement), declaration);
       }
       decodeNode(rv, xmlElement, map);
       if (xmlElement.hasAttribute(CodecConstants.ID_ATTRIBUTE)) {
@@ -351,8 +349,7 @@ class Decoder {
         if (EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.containsKey(key)) {
           int leafTypeKey = EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.get(key);
           AbstractDeclaration leafDeclaration = map.get(leafTypeKey);
-          if (leafDeclaration instanceof UserType<?>) {
-            UserType<?> leafType = (UserType<?>) leafDeclaration;
+          if (leafDeclaration instanceof UserType<?> leafType) {
             Logger.outln(leafTypeKey, leafType);
             rv = leafType.getArrayType();
           } else {
@@ -361,15 +358,13 @@ class Decoder {
         } else if (EPIC_HACK_mapGetterKeyToFieldKey.containsKey(key)) {
           int fieldKey = EPIC_HACK_mapGetterKeyToFieldKey.get(key);
           AbstractDeclaration fieldDeclaration = map.get(fieldKey);
-          if (fieldDeclaration instanceof UserField) {
-            UserField userField = (UserField) fieldDeclaration;
+          if (fieldDeclaration instanceof UserField userField) {
             rv = userField.getGetter();
           }
         } else if (EPIC_HACK_mapSetterKeyToFieldKey.containsKey(key)) {
           int fieldKey = EPIC_HACK_mapSetterKeyToFieldKey.get(key);
           AbstractDeclaration fieldDeclaration = map.get(fieldKey);
-          if (fieldDeclaration instanceof UserField) {
-            UserField userField = (UserField) fieldDeclaration;
+          if (fieldDeclaration instanceof UserField userField) {
             rv = userField.getSetter();
           }
         } else {
@@ -391,8 +386,8 @@ class Decoder {
         InstanceProperty property = node.getPropertyNamed(propertyName);
         Object value = decodeValue((Element) xmlProperty.getFirstChild(), map);
         if (property != null) {
-          if (node instanceof NamedUserConstructor) {
-            value = convertPropertyValueIfNecessary((NamedUserConstructor) node, property, value);
+          if (node instanceof NamedUserConstructor constructor) {
+            value = convertPropertyValueIfNecessary(constructor, property, value);
           }
           property.setValue(value);
         } else {
@@ -407,8 +402,7 @@ class Decoder {
       return;
     }
 
-    if (node instanceof RelationalInfixExpression && propertyName.equals("expressionType")) {
-      RelationalInfixExpression rie = (RelationalInfixExpression) node;
+    if (node instanceof RelationalInfixExpression rie && propertyName.equals("expressionType")) {
       AbstractType<?, ?, ?> operand = value == JavaType.DOUBLE_OBJECT_TYPE ? JavaType.getInstance(Number.class) : (AbstractType<?, ?, ?>) value;
       rie.leftOperandType.setValue(operand);
       rie.rightOperandType.setValue(operand);
@@ -419,8 +413,7 @@ class Decoder {
   }
 
   private Object convertPropertyValueIfNecessary(NamedUserConstructor node, InstanceProperty property, Object value) {
-    if (property == node.body && value instanceof BlockStatement && !(value instanceof ConstructorBlockStatement)) {
-      BlockStatement prevBlockStatement = (BlockStatement) value;
+    if (property == node.body && value instanceof BlockStatement prevBlockStatement && !(value instanceof ConstructorBlockStatement)) {
       Statement[] buffer = new Statement[prevBlockStatement.statements.size()];
       ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement(new SuperConstructorInvocationStatement(), prevBlockStatement.statements.toArray(buffer));
       constructorBlockStatement.isEnabled.setValue(prevBlockStatement.isEnabled.getValue());

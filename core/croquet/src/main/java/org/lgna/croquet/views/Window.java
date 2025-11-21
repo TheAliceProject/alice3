@@ -59,8 +59,8 @@ public final class Window extends AbstractWindow<JWindow> {
       AbstractWindow<?> root = owner.getRoot();
       if (root != null) {
         java.awt.Window ownerWindow = root.getAwtComponent();
-        if (ownerWindow instanceof java.awt.Frame) {
-          rv = new JWindow((java.awt.Frame) ownerWindow);
+        if (ownerWindow instanceof java.awt.Frame frame) {
+          rv = new JWindow(frame);
         } else {
           rv = new JWindow(ownerWindow);
         }

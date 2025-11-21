@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.LibraryVisualScenes;
 import com.dddviewr.collada.visualscene.VisualScene;
+import org.xml.sax.Attributes;
 
 public class visual_scene extends State {
   protected VisualScene visualScene;

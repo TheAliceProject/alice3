@@ -66,8 +66,7 @@ public class ClosedTrashIcon implements Icon {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     origAlpha = 1.0f;
     Composite origComposite = g.getComposite();
-    if (origComposite instanceof AlphaComposite) {
-      AlphaComposite origAlphaComposite = (AlphaComposite) origComposite;
+    if (origComposite instanceof AlphaComposite origAlphaComposite) {
       if (origAlphaComposite.getRule() == AlphaComposite.SRC_OVER) {
         origAlpha = origAlphaComposite.getAlpha();
       }

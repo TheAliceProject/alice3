@@ -70,8 +70,7 @@ public final class IntegerCustomExpressionCreatorComposite extends NumberCustomE
   @Override
   protected String getTextForPreviousExpression(Expression expression) {
     String text;
-    if (expression instanceof IntegerLiteral) {
-      IntegerLiteral integerLiteral = (IntegerLiteral) expression;
+    if (expression instanceof IntegerLiteral integerLiteral) {
       text = Integer.toString(integerLiteral.value.getValue());
     } else {
       text = "";

@@ -91,8 +91,7 @@ public class ExpressionPropertyDropSite implements DropSite {
     if (o == this) {
       return true;
     }
-    if (o instanceof ExpressionPropertyDropSite) {
-      ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite) o;
+    if (o instanceof ExpressionPropertyDropSite epds) {
       return Objects.equals(this.expressionProperty, epds.expressionProperty);
     } else {
       return false;

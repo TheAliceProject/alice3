@@ -146,7 +146,7 @@ public class RecentProjectsListData extends AbstractMutableListData<ProjectSnaps
         if (this.values.contains(proj)) {
           this.values.remove(proj);
         }
-        this.values.add(0, proj);
+        this.values.addFirst(proj);
         while (this.values.size() > N) {
           this.values.remove(this.values.size() - 1);
         }

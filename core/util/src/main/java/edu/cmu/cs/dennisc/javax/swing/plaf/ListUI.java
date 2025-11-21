@@ -42,22 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
-import javax.swing.AbstractButton;
-import javax.swing.Box;
-import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;

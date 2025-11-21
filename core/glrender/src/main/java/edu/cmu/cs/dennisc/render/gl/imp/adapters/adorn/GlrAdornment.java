@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.*;
 import edu.cmu.cs.dennisc.scenegraph.adorn.Adornment;
 
 /**

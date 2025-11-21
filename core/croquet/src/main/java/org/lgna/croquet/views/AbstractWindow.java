@@ -55,13 +55,7 @@ import org.lgna.croquet.ToolBarComposite;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.WindowListener;
@@ -295,8 +289,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
   private static Button lookupButton(JButton jButton) {
     AwtComponentView<?> component = AwtComponentView.lookup(jButton);
-    if (component instanceof Button) {
-      Button button = (Button) component;
+    if (component instanceof Button button) {
       return button;
     } else {
       return null;

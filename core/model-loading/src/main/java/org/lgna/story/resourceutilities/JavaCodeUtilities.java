@@ -42,9 +42,9 @@
  */
 package org.lgna.story.resourceutilities;
 
-import java.io.File;
-
 import org.lgna.project.License;
+
+import java.io.File;
 
 /**
  * @author Alice Build

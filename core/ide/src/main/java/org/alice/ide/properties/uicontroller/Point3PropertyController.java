@@ -43,14 +43,9 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.croquet.ModelPositionPropertyValueOperation;
+import org.alice.math.immutable.Point3;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.views.BoxUtilities;
@@ -58,7 +53,11 @@ import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingAdapter;
 
-import org.alice.math.immutable.Point3;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3> {
 

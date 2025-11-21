@@ -71,7 +71,7 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
   @Override
   protected UriProjectLoader getUriProjectLoader(List<UserActivity> subSteps) {
     if (subSteps.size() > 0) {
-      return (UriProjectLoader) subSteps.get(subSteps.size() - 1).getProducedValue();
+      return (UriProjectLoader) subSteps.getLast().getProducedValue();
     } else {
       return null;
     }

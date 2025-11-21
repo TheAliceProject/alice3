@@ -181,8 +181,7 @@ public abstract class StringState extends State<String> {
   public void setTextForBlankCondition(String textForBlankCondition) {
     this.textForBlankCondition = textForBlankCondition;
     for (SwingComponentView<?> component : ComponentManager.getComponents(this)) {
-      if (component instanceof TextComponent<?>) {
-        TextComponent<?> textComponent = (TextComponent<?>) component;
+      if (component instanceof TextComponent<?> textComponent) {
         textComponent.updateTextForBlankCondition(this.textForBlankCondition);
       }
     }

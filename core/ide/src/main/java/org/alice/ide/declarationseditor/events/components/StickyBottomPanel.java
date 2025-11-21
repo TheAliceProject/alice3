@@ -48,12 +48,7 @@ import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.LayoutManager2;
+import java.awt.*;
 
 class StickyLayout implements LayoutManager2 {
   public StickyLayout(int vGap) {
@@ -160,8 +155,7 @@ class StickyLayout implements LayoutManager2 {
       if (this.mainComponent != null) {
         this.mainComponent.setSize(width, this.mainComponent.getHeight());
         Dimension d = this.mainComponent.getPreferredSize();
-        if (this.mainComponent instanceof JScrollPane) {
-          JScrollPane jScrollPane = (JScrollPane) this.mainComponent;
+        if (this.mainComponent instanceof JScrollPane jScrollPane) {
           if (d.width > (right - left)) {
             d.height += jScrollPane.getHorizontalScrollBar().getPreferredSize().height;
           }

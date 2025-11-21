@@ -44,11 +44,7 @@
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
 import javax.swing.Icon;
-import java.awt.AlphaComposite;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

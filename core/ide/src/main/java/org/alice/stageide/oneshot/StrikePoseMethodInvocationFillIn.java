@@ -43,8 +43,6 @@
 
 package org.alice.stageide.oneshot;
 
-import javax.swing.JComponent;
-
 import edu.cmu.cs.dennisc.map.MapToMapToMap;
 import org.alice.ide.ast.SelectedInstanceFactoryExpression;
 import org.alice.ide.croquet.models.cascade.ParameterBlank;
@@ -58,6 +56,7 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 
+import javax.swing.JComponent;
 import java.util.List;
 import java.util.UUID;
 

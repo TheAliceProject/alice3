@@ -76,8 +76,7 @@ public class HierarchyUtilities {
     }
 
     if (isChildACandidate) {
-      if (component instanceof AwtContainerView<?>) {
-        AwtContainerView<?> container = (AwtContainerView<?>) component;
+      if (component instanceof AwtContainerView<?> container) {
         for (AwtComponentView<?> componentI : container.getComponents()) {
           updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criteria);
         }

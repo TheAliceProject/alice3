@@ -43,14 +43,12 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_LINEAR;
-import static com.jogamp.opengl.GL2ES1.GL_FOG_END;
-import static com.jogamp.opengl.GL2ES1.GL_FOG_MODE;
-import static com.jogamp.opengl.GL2ES1.GL_FOG_START;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.LinearFog;
+
+import static com.jogamp.opengl.GL.GL_LINEAR;
+import static com.jogamp.opengl.GL2ES1.*;
 
 /**
  * @author Dennis Cosgrove

@@ -99,14 +99,13 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
           VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
 
           Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
-          if ((values.length == 1) && (values[0] instanceof Paint)) {
-            Paint paint = (Paint) values[0];
-            if (paint instanceof Color) {
-              g.setColor(((Color) paint).toAwtColor());
+          if ((values.length == 1) && (values[0] instanceof Paint paint)) {
+            if (paint instanceof Color color) {
+              g.setColor(color.toAwtColor());
               g.fillRect(0, 0, this.getWidth(), this.getHeight());
             } else {
-              if (paint instanceof ImageSource) {
-                paintImage(g, (ImageSource) paint);
+              if (paint instanceof ImageSource source) {
+                paintImage(g, source);
               }
             }
           }

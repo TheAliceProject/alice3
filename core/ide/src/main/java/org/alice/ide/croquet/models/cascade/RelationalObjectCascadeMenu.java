@@ -67,7 +67,7 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<Relationa
   @Override
   protected String findDefaultLocalizedText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(super.findDefaultLocalizedText(), formatter.getNameForDeclaration(type));
+    return super.findDefaultLocalizedText().formatted(formatter.getNameForDeclaration(type));
   }
 
   @Override

@@ -2,6 +2,7 @@ package Jama;
 
 import Jama.util.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** Eigenvalues and eigenvectors of a real matrix.
@@ -951,5 +952,5 @@ public class EigenvalueDecomposition implements Serializable {
     return X;
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }

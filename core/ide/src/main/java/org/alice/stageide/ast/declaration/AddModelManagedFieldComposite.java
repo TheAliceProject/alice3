@@ -47,11 +47,7 @@ import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.project.ast.Expression;
-import org.lgna.story.Color;
-import org.lgna.story.Paint;
-import org.lgna.story.SModel;
-import org.lgna.story.SetOpacity;
-import org.lgna.story.SetPaint;
+import org.lgna.story.*;
 
 import java.util.UUID;
 

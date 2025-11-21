@@ -43,11 +43,10 @@
 package org.alice.interact.handle;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import org.alice.interact.MovementDirection;
-
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.MovementDirection;
 import org.alice.interact.debug.DebugInteractUtilities;
 import org.alice.math.immutable.AffineMatrix4x4;
 
@@ -93,8 +92,8 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   @Override
   public void setManipulatedObject(AbstractTransformable manipulatedObject) {
     if (this.manipulatedObject != manipulatedObject) {
-      if (this.manipulatedObject instanceof Transformable) {
-        ((Transformable) this.manipulatedObject).localTransformation.removePropertyListener(this.propertyListener);
+      if (this.manipulatedObject instanceof Transformable transformable) {
+        transformable.localTransformation.removePropertyListener(this.propertyListener);
       }
       super.setManipulatedObject(manipulatedObject);
       if (this.manipulatedObject != null) {

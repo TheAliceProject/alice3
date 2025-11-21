@@ -42,12 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.LineArray;
-import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Vertex;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 
 /**
  * @author Dennis Cosgrove

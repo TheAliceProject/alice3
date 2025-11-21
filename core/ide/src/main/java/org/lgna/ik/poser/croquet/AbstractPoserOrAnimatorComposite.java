@@ -42,11 +42,7 @@
  */
 package org.lgna.ik.poser.croquet;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.views.BorderPanel;
@@ -73,9 +69,12 @@ import org.lgna.story.event.PointOfViewEvent;
 import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
-
 import test.ik.croquet.SceneComposite;
-import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May
@@ -148,16 +147,15 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
       UserParameter constructorParameter0 = userConstructor.requiredParameters.get(0);
       AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
       ArrayList<JointedModelResource> resourceList = FieldFinder.getInstance().getResourcesForType(type);
-      if (parameter0Type instanceof JavaType) {
-        JavaType javaType = (JavaType) parameter0Type;
+      if (parameter0Type instanceof JavaType javaType) {
         Class<?> cls = javaType.getClassReflectionProxy().getReification();
         if (cls.isEnum()) {
           arguments[0] = cls.getEnumConstants()[0];
         } else {
-          arguments[0] = resourceList.get(0);
+          arguments[0] = resourceList.getFirst();
         }
       } else {
-        arguments[0] = resourceList.get(0);
+        arguments[0] = resourceList.getFirst();
       }
       break;
     case 2:

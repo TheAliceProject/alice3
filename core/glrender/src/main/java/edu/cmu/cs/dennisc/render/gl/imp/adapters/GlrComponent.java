@@ -90,9 +90,9 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
   private void handleHierarchyChanged() {
     GlrScene glrScene;
     Composite sgRoot = owner.getRoot();
-    if (sgRoot instanceof Scene) {
+    if (sgRoot instanceof Scene scene) {
       //edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
-      glrScene = AdapterFactory.getAdapterFor((Scene) sgRoot);
+      glrScene = AdapterFactory.getAdapterFor(scene);
     } else {
       glrScene = null;
     }
@@ -111,8 +111,8 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
 
   public GlrScene getGlrScene() {
     Composite sgRoot = owner.getRoot();
-    if (sgRoot instanceof Scene) {
-      return AdapterFactory.getAdapterFor((Scene) sgRoot);
+    if (sgRoot instanceof Scene scene) {
+      return AdapterFactory.getAdapterFor(scene);
     } else {
       return null;
     }

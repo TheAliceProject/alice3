@@ -1,12 +1,12 @@
 package com.dddviewr.collada.animation;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dddviewr.collada.Base;
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.Source;
+
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Animation extends Base {
   protected String id;

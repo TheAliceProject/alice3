@@ -52,5 +52,9 @@
       <groupId>de.javagl</groupId>
       <artifactId>jgltf-model</artifactId>
     </dependency>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+    </dependency>
   </dependencies>
 </project>

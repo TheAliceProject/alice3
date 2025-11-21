@@ -1,8 +1,8 @@
 package edu.cmu.cs.dennisc.math;
 
+import org.alice.math.immutable.Point2;
 import org.junit.Before;
 import org.junit.Test;
-import org.alice.math.immutable.Point2;
 
 import java.util.List;
 
@@ -152,7 +152,7 @@ public class ConvexPolygonTest {
     if (verts1.size() != verts2.size()) {
       return false;
     }
-    int offset = verts2.indexOf(verts1.get(0));
+    int offset = verts2.indexOf(verts1.getFirst());
     for (int i = 0; i < verts1.size(); i++) {
       if (!verts2.get((i + offset) % verts2.size()).equals(verts1.get(i))) {
         return false;

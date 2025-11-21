@@ -62,8 +62,8 @@ public class CompleteControlFlowStatementTemplate extends StatementTemplate {
     super(dragModel, dragModel.getStatementCls());
     Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
     SwingComponentView<?> incompleteStatementPane;
-    if (incompleteStatement instanceof Comment) {
-      incompleteStatementPane = new CommentPane(null, TemplateAstI18nFactory.getInstance(), (Comment) incompleteStatement, null) {
+    if (incompleteStatement instanceof Comment comment) {
+      incompleteStatementPane = new CommentPane(null, TemplateAstI18nFactory.getInstance(), comment, null) {
         @Override
         protected void paintOutline(Graphics2D g2, Shape shape) {
         }

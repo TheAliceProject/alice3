@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2GL3.GL_QUADS;
-
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray;
+
+import static com.jogamp.opengl.GL2GL3.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove

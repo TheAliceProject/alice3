@@ -70,7 +70,7 @@ public abstract class SourceFillIn<T extends Resource> extends ExpressionFillInW
   private final InstanceCreation createValue() {
     JavaConstructor constructor = JavaConstructor.getInstance(this.sourceCls, this.resourceCls);
     ResourceExpression resourceExpression = new ResourceExpression(this.resourceCls, this.resource);
-    AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+    AbstractParameter parameter0 = constructor.getRequiredParameters().getFirst();
     SimpleArgument argument0 = new SimpleArgument(parameter0, resourceExpression);
     return new InstanceCreation(constructor, argument0);
   }

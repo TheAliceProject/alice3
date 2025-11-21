@@ -42,12 +42,11 @@
  */
 package org.lgna.ik.poser;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
-
-import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
 
 /**
  * @author Matt May
@@ -69,8 +68,7 @@ public class CheckIfAnimationCrawler implements Crawler {
 
   @Override
   public void visit(Crawlable crawlable) {
-    if (crawlable instanceof MethodInvocation) {
-      MethodInvocation methodInv = (MethodInvocation) crawlable;
+    if (crawlable instanceof MethodInvocation methodInv) {
       if (PoseAstUtilities.isStrikePoseMethod(methodInv.method.getValue())) {
         containsStrikePose = true;
       } else {

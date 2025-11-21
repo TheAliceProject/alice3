@@ -42,20 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Color;
-
-import org.alice.interact.InputState;
-import org.alice.interact.condition.ClickedObjectCondition;
-import org.alice.interact.event.ManipulationEvent;
-import org.alice.math.immutable.AngleInRadians;
-import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
-
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.InputState;
+import org.alice.interact.condition.ClickedObjectCondition;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
+import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
+
+import java.awt.Color;
 
 /**
  * @author David Culyba
@@ -127,8 +126,8 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
       this.initialTransform = this.manipulatedTransformable.getAbsoluteTransformation();
       this.standUpReference.setAxesOnlyToStandUp();
       this.initialMousePosition = new Vector2(startInput.getMouseLocation().x, startInput.getMouseLocation().y);
-      if (this.handle instanceof ImageBasedManipulationHandle2D) {
-        this.initialHandleColor = ((ImageBasedManipulationHandle2D) this.handle).getColor((int) this.initialMousePosition.x(), (int) this.initialMousePosition.y());
+      if (this.handle instanceof ImageBasedManipulationHandle2D handle2D) {
+        this.initialHandleColor = handle2D.getColor((int) this.initialMousePosition.x(), (int) this.initialMousePosition.y());
       }
       this.initialMoveFactor = this.getMovementVectorForColor(this.initialHandleColor);
       this.initialRotateFactor = this.getRotationVectorForColor(this.initialHandleColor);

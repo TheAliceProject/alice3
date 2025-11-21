@@ -51,13 +51,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -212,8 +206,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     if ((this == other) || super.equals(other)) {
       return true;
     } else {
-      if (other instanceof AbstractInstancePropertyOwner) {
-        AbstractInstancePropertyOwner otherDIPO = (AbstractInstancePropertyOwner) other;
+      if (other instanceof AbstractInstancePropertyOwner otherDIPO) {
         int propertyCount = 0;
         for (InstanceProperty thisProperty : this.getProperties()) {
           String propertyName = thisProperty.getName();
@@ -222,8 +215,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
             if (otherProperty != null) {
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
-              if (thisValue instanceof AbstractInstancePropertyOwner) {
-                if (!((AbstractInstancePropertyOwner) thisValue).isEquivalentTo(otherValue)) {
+              if (thisValue instanceof AbstractInstancePropertyOwner owner) {
+                if (!owner.isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {

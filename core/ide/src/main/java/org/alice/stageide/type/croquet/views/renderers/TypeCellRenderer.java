@@ -70,8 +70,7 @@ public class TypeCellRenderer extends TreeCellRenderer<TypeNode> {
         TreePath path = tree.getSelectionPath();
         if (path != null) {
           Object lastPathComponent = path.getLastPathComponent();
-          if (lastPathComponent instanceof TypeNode) {
-            TypeNode selectedTypeNode = (TypeNode) lastPathComponent;
+          if (lastPathComponent instanceof TypeNode selectedTypeNode) {
             if (value.getType().isAssignableFrom(selectedTypeNode.getType())) {
               this.isAssignableFrom = true;
             }

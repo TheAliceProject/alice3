@@ -52,21 +52,12 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.PopupMenuEventTrigger;
 
 import javax.accessibility.Accessible;
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.ItemListener;
@@ -197,11 +188,9 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
       JComboBox jComboBox = ComboBox.this.getAwtComponent();
       if (jComboBox.isPopupVisible()) {
         Accessible accessible = jComboBox.getUI().getAccessibleChild(jComboBox, 0);
-        if (accessible instanceof JPopupMenu) {
-          JPopupMenu jPopupMenu = (JPopupMenu) accessible;
+        if (accessible instanceof JPopupMenu jPopupMenu) {
           Component component = jPopupMenu.getComponent(0);
-          if (component instanceof JScrollPane) {
-            JScrollPane scrollPane = (JScrollPane) component;
+          if (component instanceof JScrollPane scrollPane) {
             JViewport viewport = scrollPane.getViewport();
             return viewport.getView();
           }

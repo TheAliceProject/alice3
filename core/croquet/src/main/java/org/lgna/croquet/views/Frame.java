@@ -45,11 +45,7 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.Container;
 
 /**

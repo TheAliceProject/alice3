@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.geometry.Geometry;
 import com.dddviewr.collada.geometry.LibraryGeometries;
+import org.xml.sax.Attributes;
 
 public class geometry extends State {
   protected Geometry geo;

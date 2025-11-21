@@ -165,5 +165,6 @@ public final class ZTreeNode<T> implements TreeNode {
   private final T value;
   private final List<ZTreeNode<T>> children;
   private final IsLeaf isLeaf;
-  private/*pseudo-final*/ ZTreeNode<T> parent;
+  /*pseudo-final*/
+  private ZTreeNode<T> parent;
 }

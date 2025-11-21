@@ -43,7 +43,6 @@
 package org.alice.interact;
 
 import org.alice.interact.handle.HandleSet;
-
 import org.alice.math.immutable.Vector3;
 
 /**

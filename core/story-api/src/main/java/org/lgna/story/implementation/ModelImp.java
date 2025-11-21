@@ -46,8 +46,8 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -110,8 +110,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
           sgAppearance.diffuseColor.setValue(color4f);
         }
-        if (sgAppearance instanceof TexturedAppearance) {
-          TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
+        if (sgAppearance instanceof TexturedAppearance sgTexturedAppearance) {
           if (!Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
             sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
             textureChanged();

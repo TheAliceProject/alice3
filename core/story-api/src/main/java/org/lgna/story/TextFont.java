@@ -59,8 +59,7 @@ public enum TextFont implements Say.Detail, Think.Detail {
   /* package-private */
   static Font getValue(Object[] details, String defaultName, int style, int size) {
     for (Object detail : details) {
-      if (detail instanceof TextFont) {
-        TextFont textFont = (TextFont) detail;
+      if (detail instanceof TextFont textFont) {
         return new Font(new java.awt.Font(textFont.value, style, size));
       }
     }

@@ -47,14 +47,7 @@ import org.alice.ide.ast.ExpressionCreator;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.NodeUtilities;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.story.Color;
 import org.lgna.story.SMarker;
 

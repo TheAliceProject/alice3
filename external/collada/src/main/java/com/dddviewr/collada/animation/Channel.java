@@ -1,8 +1,8 @@
 package com.dddviewr.collada.animation;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Base;
+
+import java.io.PrintStream;
 
 public class Channel extends Base {
   protected String source;

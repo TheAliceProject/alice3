@@ -44,13 +44,7 @@
 package org.alice.ide.name.validators;
 
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
   private final UserCode code;

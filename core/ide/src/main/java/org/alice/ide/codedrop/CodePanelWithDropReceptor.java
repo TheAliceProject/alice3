@@ -93,15 +93,7 @@ import org.lgna.project.ast.UserCode;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -117,8 +109,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
       if (DeclarationMeta.getDeclaration() == getCode()) {
         if (dragModel instanceof AbstractStatementDragModel) {
           return true;
-        } else if (dragModel instanceof AbstractExpressionDragModel) {
-          AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel) dragModel;
+        } else if (dragModel instanceof AbstractExpressionDragModel expressionDragModel) {
           return expressionDragModel.isPotentialStatementCreator();
         } else {
           return false;
@@ -335,8 +326,8 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
             ? CopyFromClipboardOperation.getInstance(dropSite)
             : PasteFromClipboardOperation.getInstance(dropSite);
       }
-      if (dragModel instanceof StatementDragModel) {
-        return statementDropped((StatementDragModel) dragModel, eSource, dropSite);
+      if (dragModel instanceof StatementDragModel model) {
+        return statementDropped(model, eSource, dropSite);
       }
       if (dragModel instanceof AbstractExpressionDragModel) {
         return dragModel.getDropOperation(step, dropSite);

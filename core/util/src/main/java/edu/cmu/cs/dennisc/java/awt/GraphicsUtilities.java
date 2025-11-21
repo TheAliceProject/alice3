@@ -106,8 +106,8 @@ public class GraphicsUtilities {
   }
 
   public static Image getImageForIcon(Icon icon) {
-    if (icon instanceof ImageIcon) {
-      return ((ImageIcon) icon).getImage();
+    if (icon instanceof ImageIcon imageIcon) {
+      return imageIcon.getImage();
     } else {
       int width = icon.getIconWidth();
       int height = icon.getIconHeight();

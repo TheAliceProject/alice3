@@ -8,10 +8,10 @@ import org.alice.math.immutable.UnitQuaternion;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
-import org.lgna.project.code.IdentifiableTweedleNode;
-import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.InstantiableTweedleNode;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 
 import java.lang.reflect.Field;
@@ -336,11 +336,11 @@ public class Encoder extends SourceCodeGenerator {
     for (Field field : fields) {
       try {
         Object value = field.get(resourceClass);
-        if (value instanceof InstantiableTweedleNode) {
+        if (value instanceof InstantiableTweedleNode node) {
           if (field.getType().getSimpleName().equals("JointId")) {
             newJoints.add(field.getName());
           }
-          appendStaticField(field, () -> ((InstantiableTweedleNode) value).encodeDefinition(this));
+          appendStaticField(field, () -> node.encodeDefinition(this));
         } else {
           if (value.getClass().isArray() && IdentifiableTweedleNode.class.isAssignableFrom(field.getType().getComponentType())) {
             Object[] values = (Object[]) value;
@@ -521,7 +521,7 @@ public class Encoder extends SourceCodeGenerator {
         final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
         if (requiredArgs.size() == 1) {
           appendString("$DecimalNumber.from");
-          Expression arg = requiredArgs.get(0).expression.getValue();
+          Expression arg = requiredArgs.getFirst().expression.getValue();
           parenthesize(() -> appendArg("wholeNumber", () -> arg.process(this)));
           return;
         }
@@ -530,8 +530,8 @@ public class Encoder extends SourceCodeGenerator {
         final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
         if (requiredArgs.size() == 2) {
           Expression variantNameExp = requiredArgs.get(1).expression.getValue();
-          if (variantNameExp instanceof StringLiteral) {
-            appendString(((StringLiteral) variantNameExp).value.getValue());
+          if (variantNameExp instanceof StringLiteral literal) {
+            appendString(literal.value.getValue());
             appendString("Resource.DEFAULT");
             return;
           }
@@ -544,8 +544,8 @@ public class Encoder extends SourceCodeGenerator {
 
   private String getDeclaringJavaClassName(InstanceCreation creation) {
     final AbstractConstructor constructor = creation.constructor.getValue();
-    if (constructor instanceof JavaConstructor) {
-      return ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getSimpleName();
+    if (constructor instanceof JavaConstructor javaConstructor) {
+      return javaConstructor.getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getSimpleName();
     }
     return null;
   }
@@ -648,8 +648,8 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private String getParameterLabel(AbstractParameter parameter) {
-    if (parameter instanceof JavaConstructorParameter) {
-      String className = ((JavaConstructorParameter) parameter).getCode().getDeclaringType().getName();
+    if (parameter instanceof JavaConstructorParameter constructorParameter) {
+      String className = constructorParameter.getCode().getDeclaringType().getName();
       Map<String, String> paramLabelMap = constructorsWithRelabeledParams.get(className);
       if (paramLabelMap != null) {
         final String newLabel = paramLabelMap.get(parameter.getName());
@@ -662,11 +662,11 @@ public class Encoder extends SourceCodeGenerator {
     if (null != label) {
       return methodParamsToRelabel.getOrDefault(label, label);
     }
-    if (parameter instanceof JavaMethodParameter) {
+    if (parameter instanceof JavaMethodParameter methodParameter) {
       final String methodName = parameter.getCode().getName();
       if (methodsMissingParameterNames.containsKey(methodName)) {
         String[] paramNames = methodsMissingParameterNames.get(methodName);
-        int i = parameterIndex((JavaMethodParameter) parameter);
+        int i = parameterIndex(methodParameter);
         return paramNames[i];
       }
     }
@@ -677,7 +677,7 @@ public class Encoder extends SourceCodeGenerator {
       }
     }
     final String paramType = parameter.getValueType().getName().toLowerCase();
-    final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
+    final String message = "Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.".formatted(parameter.getCode().toString(), paramType);
     //TODO I18n
     Dialogs.showError("Unlabeled parameter", message);
     Logger.errln(message);
@@ -781,8 +781,8 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private boolean targetIsMath(Expression target) {
-    if (target instanceof TypeExpression) {
-      AbstractType<?, ?, ?> innerType = ((TypeExpression) target).value.getValue();
+    if (target instanceof TypeExpression expression) {
+      AbstractType<?, ?, ?> innerType = expression.value.getValue();
       return innerType instanceof JavaType && "Math".equals(innerType.getName());
     }
     return false;

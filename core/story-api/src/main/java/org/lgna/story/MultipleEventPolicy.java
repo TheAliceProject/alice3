@@ -53,8 +53,7 @@ public enum MultipleEventPolicy implements AddMouseClickOnScreenListener.Detail,
   /* package-private */
   static MultipleEventPolicy getValue(Object[] details, MultipleEventPolicy defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof MultipleEventPolicy) {
-        MultipleEventPolicy eventPolicy = (MultipleEventPolicy) detail;
+      if (detail instanceof MultipleEventPolicy eventPolicy) {
         return eventPolicy;
       }
     }

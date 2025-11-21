@@ -50,25 +50,14 @@ import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
-import org.alice.ide.ast.export.type.FieldInfo;
-import org.alice.ide.ast.export.type.FunctionInfo;
-import org.alice.ide.ast.export.type.ResourceInfo;
-import org.alice.ide.ast.export.type.TypeSummary;
-import org.alice.ide.ast.export.type.TypeSummaryDataSource;
-import org.alice.ide.ast.export.type.TypeXmlUtitlities;
+import org.alice.ide.ast.export.type.*;
 import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.nonfree.NebulousIde;
-import org.alice.ide.icons.IconFactoryManager;
-import org.alice.stageide.modelresource.AddFieldCascade;
-import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.modelresource.EnumConstantResourceKey;
-import org.alice.stageide.modelresource.InstanceCreatorKey;
-import org.alice.stageide.modelresource.ResourceGalleryDragModel;
-import org.alice.stageide.modelresource.ResourceKey;
-import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.*;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
@@ -273,7 +262,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
       }
     } else {
       Formatter formatter = FormatterState.getInstance().getValue();
-      this.text = String.format(formatter.getNewFormat(), typeName, "");
+      this.text = formatter.getNewFormat().formatted(typeName, "");
     }
 
     if (typeName != null) {

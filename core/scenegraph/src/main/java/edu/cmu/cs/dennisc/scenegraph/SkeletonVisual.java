@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
 
 import java.util.HashMap;
 import java.util.List;
@@ -160,7 +160,7 @@ public class SkeletonVisual extends Visual {
     }
     if (this.geometries.getValue() != null) {
       for (Geometry g : this.geometries.getValue()) {
-        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
+        if ((g instanceof Mesh mesh) && !mesh.cullBackfaces.getValue()) {
           return true;
         }
       }
@@ -193,8 +193,8 @@ public class SkeletonVisual extends Visual {
   private void rotateMeshes(AffineMatrix4x4 rotation) {
     for (Geometry g : geometries.getValue()) {
       // making the same assumptions about meshes here as scaleMeshes
-      if (g instanceof Mesh) {
-        ((Mesh) g).transform(rotation);
+      if (g instanceof Mesh mesh) {
+        mesh.transform(rotation);
       }
     }
     for (WeightedMesh wm : weightedMeshes.getValue()) {
@@ -213,8 +213,8 @@ public class SkeletonVisual extends Visual {
     for (Geometry g : geometries.getValue()) {
       //The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
       //If we start to support things like cylinders and boxes, then this would need to be updated
-      if (g instanceof Mesh) {
-        ((Mesh) g).scale(scale);
+      if (g instanceof Mesh mesh) {
+        mesh.scale(scale);
       }
     }
     for (WeightedMesh wm : weightedMeshes.getValue()) {

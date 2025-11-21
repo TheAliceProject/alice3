@@ -82,13 +82,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles;
 import static org.alice.ide.ProjectFileUtilities.BACKUP_AUTO;
@@ -192,7 +186,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public void handleVersionNotSupported(File file, VersionNotSupportedException vnse) {
-    Dialogs.showUnableToOpenFileDialog(file, String.format("%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)", getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
+    Dialogs.showUnableToOpenFileDialog(file, "%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)".formatted(getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
   }
 
   private UriProjectLoader uriProjectLoader;
@@ -575,7 +569,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
         loadProject(newProjectActivity(), new FileProjectLoader(original, uriProjectLoader.shouldMakeVrReady()));
       }
-    };
+    }
   }
 
   private File getNextBackup(LocalDateTime modifiedTime, File backupDir, boolean isMainProjectCorrupted, Set<String> unloadableFiles) {

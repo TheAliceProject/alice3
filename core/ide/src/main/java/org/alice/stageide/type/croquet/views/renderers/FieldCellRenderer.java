@@ -49,7 +49,6 @@ import org.alice.ide.icons.CheckIconFactory;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.icon.EmptyIconFactory;
-
 import org.lgna.project.ast.UserField;
 
 import javax.swing.Icon;

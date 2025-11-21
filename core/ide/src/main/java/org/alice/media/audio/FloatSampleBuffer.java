@@ -97,10 +97,13 @@ package org.alice.media.audio;
  * FloatSampleBuffer.java
  */
 
+import javax.sound.sampled.AudioFormat;
+/*
+ * FloatSampleBuffer.java
+ */
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.sound.sampled.AudioFormat;
 
 public class FloatSampleBuffer {
 
@@ -188,7 +191,7 @@ public class FloatSampleBuffer {
     if (!lazy) {
       // remove hidden channels
       while (channels.size() > channelCount) {
-        channels.remove(channels.size() - 1);
+        channels.removeLast();
       }
     }
   }

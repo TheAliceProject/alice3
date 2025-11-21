@@ -56,8 +56,7 @@ public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detai
 
   private static boolean getValue(Object[] details, boolean defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof IsVolumePreserved) {
-        IsVolumePreserved isVolumePreserved = (IsVolumePreserved) detail;
+      if (detail instanceof IsVolumePreserved isVolumePreserved) {
         return isVolumePreserved.value;
       }
     }

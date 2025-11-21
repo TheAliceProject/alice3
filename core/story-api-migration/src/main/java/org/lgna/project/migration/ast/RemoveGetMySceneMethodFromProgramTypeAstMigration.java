@@ -46,12 +46,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.Version;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 import org.lgna.project.migration.AstMigration;
 import org.lgna.project.migration.MigrationManager;
 
@@ -65,8 +60,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
 
   @Override
   public void migrate(Node node, MigrationManager manager) {
-    if (node instanceof NamedUserType) {
-      NamedUserType type = (NamedUserType) node;
+    if (node instanceof NamedUserType type) {
       UserMethod mainMethod = type.getDeclaredMethod("main", String[].class);
       if (mainMethod != null) {
         final UserField mySceneField = type.getDeclaredField("myScene");
@@ -75,8 +69,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
           node.crawl(new Crawler() {
             @Override
             public void visit(Crawlable crawlable) {
-              if (crawlable instanceof MethodInvocation) {
-                MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+              if (crawlable instanceof MethodInvocation methodInvocation) {
                 if (methodInvocation.method.getValue() == getMySceneMethod) {
                   methodInvocation.method.setValue(mySceneField.getGetter());
                   Logger.outln("replacing", getMySceneMethod, "with", mySceneField.getGetter());

@@ -74,8 +74,8 @@ public enum SimpleListCellRenderer implements ListCellRenderer {
   @Override
   public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     String text;
-    if (value instanceof LocalizedResource) {
-      text = ((LocalizedResource) value).getLocalizedDisplayText();
+    if (value instanceof LocalizedResource resource) {
+      text = resource.getLocalizedDisplayText();
     } else {
       text = value.toString();
     }

@@ -47,15 +47,15 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.IDE;
+import org.alice.ide.RecycleBin;
 import org.alice.ide.ast.delete.DeleteStatementOperation;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
-import org.alice.ide.member.MemberOrControlFlowTabComposite;
-import org.alice.ide.members.MembersComposite;
-import org.alice.ide.RecycleBin;
 import org.alice.ide.icons.ClosedTrashIcon;
 import org.alice.ide.icons.OpenTrashIcon;
+import org.alice.ide.member.MemberOrControlFlowTabComposite;
+import org.alice.ide.members.MembersComposite;
 import org.lgna.croquet.*;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
@@ -163,8 +163,7 @@ public class MembersView extends BorderPanel {
       DropSite dropSite = step.getCurrentPotentialDropSite();
       if (dropSite != null) {
         DragModel dragModel = step.getModel();
-        if (dragModel instanceof StatementDragModel) {
-          StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+        if (dragModel instanceof StatementDragModel statementDragModel) {
           Statement statement = statementDragModel.getStatement();
           return new DeleteStatementOperation(statement);
         } else {

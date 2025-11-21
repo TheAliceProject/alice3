@@ -43,15 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_FLOAT;
-import static com.jogamp.opengl.GL.GL_SHORT;
-import static com.jogamp.opengl.GL.GL_TRIANGLES;
-import static com.jogamp.opengl.GL2GL3.GL_DOUBLE;
-import static com.jogamp.opengl.GL2GL3.GL_QUADS;
-import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
-import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
-import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
-
 import com.jogamp.opengl.GL2;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -65,6 +56,11 @@ import org.alice.math.immutable.Ray;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2GL3.GL_DOUBLE;
+import static com.jogamp.opengl.GL2GL3.GL_QUADS;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.*;
 
 /**
  * @author Dennis Cosgrove

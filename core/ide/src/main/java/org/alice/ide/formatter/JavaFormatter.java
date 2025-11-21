@@ -43,29 +43,7 @@
 package org.alice.ide.formatter;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.project.ast.ArithmeticInfixExpression;
-import org.lgna.project.ast.BooleanExpressionBodyPair;
-import org.lgna.project.ast.ConditionalInfixExpression;
-import org.lgna.project.ast.ConditionalStatement;
-import org.lgna.project.ast.CountLoop;
-import org.lgna.project.ast.DoInOrder;
-import org.lgna.project.ast.DoTogether;
-import org.lgna.project.ast.EachInArrayTogether;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ForEachInArrayLoop;
-import org.lgna.project.ast.InfixExpression;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.LambdaExpression;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.LogicalComplement;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.RelationalInfixExpression;
-import org.lgna.project.ast.TypeExpression;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.WhileLoop;
+import org.lgna.project.ast.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -162,14 +140,11 @@ public class JavaFormatter extends Formatter {
   @Override
   public String getInfixExpressionText(InfixExpression<?> infixExpression) {
     String rv;
-    if (infixExpression instanceof ArithmeticInfixExpression) {
-      ArithmeticInfixExpression arithmeticInfixExpression = (ArithmeticInfixExpression) infixExpression;
+    if (infixExpression instanceof ArithmeticInfixExpression arithmeticInfixExpression) {
       rv = arithmeticOperatorMap.get(arithmeticInfixExpression.operator.getValue());
-    } else if (infixExpression instanceof ConditionalInfixExpression) {
-      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) infixExpression;
+    } else if (infixExpression instanceof ConditionalInfixExpression conditionalInfixExpression) {
       rv = conditionalOperatorMap.get(conditionalInfixExpression.operator.getValue());
-    } else if (infixExpression instanceof RelationalInfixExpression) {
-      RelationalInfixExpression relationalInfixExpression = (RelationalInfixExpression) infixExpression;
+    } else if (infixExpression instanceof RelationalInfixExpression relationalInfixExpression) {
       rv = relationalOperatorMap.get(relationalInfixExpression.operator.getValue());
     } else {
       rv = null;

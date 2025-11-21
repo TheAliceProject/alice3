@@ -17,12 +17,12 @@ import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.*;
 import com.jogamp.common.nio.Buffers;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import org.alice.math.immutable.*;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
+import org.alice.math.immutable.*;
 import org.alice.math.immutable.AngleInDegrees;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.resources.ImplementationAndVisualType;
@@ -30,7 +30,6 @@ import org.lgna.story.resources.JointedModelResource;
 import org.xml.sax.SAXException;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -162,8 +161,8 @@ public class JointedModelColladaImporter {
     AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.IDENTITY;
     for (int i = 0; i < node.getXforms().size(); i++) {
       BaseXform xform = node.getXforms().get(i);
-      if (xform instanceof Matrix) {
-        aliceMatrix = colladaMatrixToAliceMatrix((Matrix) xform);
+      if (xform instanceof Matrix matrix) {
+        aliceMatrix = colladaMatrixToAliceMatrix(matrix);
       } else if (xform instanceof Translate translate) {
         // TODO orient to Alice
         aliceMatrix = aliceMatrix.withTranslation(new Point3(translate.getX(), translate.getY(), translate.getZ()));
@@ -335,9 +334,9 @@ public class JointedModelColladaImporter {
     //Find the triangle data and use it to set the index data
     Triangles tris = null;
     for (Primitives p : geometry.getMesh().getPrimitives()) {
-      if (p instanceof Triangles) {
+      if (p instanceof Triangles triangles) {
         if (tris == null) {
-          tris = (Triangles) p;
+          tris = triangles;
         } else {
           modelLoadingLogger.log(Level.WARNING, "Converting mesh '" + geometry.getName() + "': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
         }
@@ -357,8 +356,8 @@ public class JointedModelColladaImporter {
     // TODO Stop using the index as the ID.
     sgMesh.textureId.setValue(getMaterialIndex(tris.getMaterial(), colladaModel));
 
-    if (sgMesh instanceof WeightedMesh) {
-      recordWeights((WeightedMesh) sgMesh, meshController, doubleVertexData);
+    if (sgMesh instanceof WeightedMesh mesh) {
+      recordWeights(mesh, meshController, doubleVertexData);
     }
     return sgMesh;
   }
@@ -407,36 +406,22 @@ public class JointedModelColladaImporter {
         } else {
           type = BufferedImage.TYPE_4BYTE_ABGR;
         }
-        tex = new BufferedImage(image.getWidth(null), image.getHeight(null), type);
+        tex = new BufferedImage(image.getWidth(), image.getHeight(), type);
       } catch (IllegalArgumentException e) {
         e.printStackTrace();
         return null;
       }
-      image.getWidth(null);
-      image.getHeight(null);
 
-      if (image instanceof BufferedImage) {
-        int imageWidth = image.getWidth(null);
-        int[] tmpData = new int[imageWidth];
-        int row = 0;
-        BufferedImage bufferedImage = ((BufferedImage) image);
-        for (int y = image.getHeight(null) - 1; y >= 0; y--) {
-          bufferedImage.getRGB(0, (flipImage ? row++ : y), imageWidth, 1, tmpData, 0, imageWidth);
-          tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
-        }
-      } else {
-        AffineTransform tx = null;
-        if (flipImage) {
-          tx = AffineTransform.getScaleInstance(1, -1);
-          tx.translate(0, -image.getHeight(null));
-        }
-        Graphics2D g = (Graphics2D) tex.getGraphics();
-        g.drawImage(image, tx, null);
-        g.dispose();
+      int imageWidth = image.getWidth();
+      int[] tmpData = new int[imageWidth];
+      int row = 0;
+      for (int y = image.getHeight() - 1; y >= 0; y--) {
+        image.getRGB(0, row++, imageWidth, 1, tmpData, 0, imageWidth);
+        tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
       }
 
     } else {
-      tex = (BufferedImage) image;
+      tex = image;
     }
     aliceTexture.setBufferedImage(tex);
     return aliceTexture;
@@ -600,8 +585,7 @@ public class JointedModelColladaImporter {
     List<WeightedMesh> aliceWeightedMeshes = new ArrayList<WeightedMesh>();
     //Loop through the meshes and divide them into lists of regular meshes and weighted meshes
     for (Mesh mesh : aliceMeshes) {
-      if (mesh instanceof WeightedMesh) {
-        WeightedMesh weightedMesh = (WeightedMesh) mesh;
+      if (mesh instanceof WeightedMesh weightedMesh) {
         //Link the weighted mesh to the skeleton
         weightedMesh.skeleton.setValue(aliceSkeleton);
         aliceWeightedMeshes.add(weightedMesh);
@@ -660,7 +644,7 @@ public class JointedModelColladaImporter {
     int vertexCount = vertexData.length / 3;
     float[] uvData = geometry.getMesh().getTexCoordData();
     int uvCount = uvData.length / 2;
-    Triangles tris = (Triangles) geometry.getMesh().getPrimitives().get(0);
+    Triangles tris = (Triangles) geometry.getMesh().getPrimitives().getFirst();
     int triCount = tris.getCount();
 
     System.out.println("Tris:  " + triCount + ", normals: " + normalCount + ", vertices: " + vertexCount + ", uvs: " + uvCount);
@@ -675,8 +659,8 @@ public class JointedModelColladaImporter {
     System.out.println();
     for (int i = 0; i < j.getComponentCount(); i++) {
       Component comp = j.getComponentAt(i);
-      if (comp instanceof Joint) {
-        printJoints((Joint) comp, indent + "  ");
+      if (comp instanceof Joint joint) {
+        printJoints(joint, indent + "  ");
       }
     }
   }

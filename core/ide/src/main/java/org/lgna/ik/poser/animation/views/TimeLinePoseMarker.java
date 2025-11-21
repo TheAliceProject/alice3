@@ -42,6 +42,16 @@
  */
 package org.lgna.ik.poser.animation.views;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.ik.poser.animation.KeyFrameData;
+import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -53,21 +63,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
-
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonModel;
-import javax.swing.JComponent;
-import javax.swing.JToggleButton;
-import javax.swing.plaf.basic.BasicToggleButtonUI;
-
-import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.history.UserActivity;
-import org.lgna.ik.poser.animation.KeyFrameData;
-import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 
 
 class TimeLinePoseMarker extends JToggleButton {

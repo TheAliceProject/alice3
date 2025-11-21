@@ -15,7 +15,7 @@ public class TweedleArrayType extends TweedleType {
 
   @Override
   public boolean willAcceptValueOfType(TweedleType type) {
-    return this == type || ((type instanceof TweedleArrayType) && (valueType == null || valueType.willAcceptValueOfType(((TweedleArrayType) type).valueType)));
+    return this == type || ((type instanceof TweedleArrayType tat) && (valueType == null || valueType.willAcceptValueOfType(tat.valueType)));
   }
 
   public TweedleType getValueType() {

@@ -60,8 +60,7 @@ public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
   public ReferencesToFieldPreventingDeletionPane(ReferencesToFieldPreventingDeletionDialog composite) {
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(composite.getField());
     Icon icon = iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE);
-    if (icon instanceof TrimmedIcon) {
-      TrimmedIcon trimmedIcon = (TrimmedIcon) icon;
+    if (icon instanceof TrimmedIcon trimmedIcon) {
       icon = trimmedIcon.getImageIcon();
     }
     AbstractLabel descriptionLabel = composite.getAppropriateDescriptionText().createLabel();

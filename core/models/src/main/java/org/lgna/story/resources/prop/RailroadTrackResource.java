@@ -28,11 +28,7 @@ import org.lgna.project.annotations.Visibility;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.implementation.BasicJointedModelImp;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.ImplementationAndVisualType;
-import org.lgna.story.resources.JointArrayId;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.PropResource;
+import org.lgna.story.resources.*;
 
 public enum RailroadTrackResource implements PropResource {
   STRAIGHT_TRESTLE, SLIGHT_CURVE_TRESTLE, RIGHT_CURVE_TRESTLE, SLIGHT_CURVE_TRESTLE_MIRROR, RIGHT_CURVE_TRESTLE_MIRROR;

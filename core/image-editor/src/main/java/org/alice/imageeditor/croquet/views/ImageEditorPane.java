@@ -72,8 +72,7 @@ public class ImageEditorPane extends MigPanel {
         public void run() {
           ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
           Component editorComponent = editor.getEditorComponent();
-          if (editorComponent instanceof JTextComponent) {
-            JTextComponent jTextComponent = (JTextComponent) editorComponent;
+          if (editorComponent instanceof JTextComponent jTextComponent) {
             String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
             String path = jTextComponent.getText();
             if (path.startsWith(rootDirectoryPath)) {
@@ -213,8 +212,7 @@ public class ImageEditorPane extends MigPanel {
     this.jPathLabel.setText(nextPath);
     if (nextPath != null) {
       Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
-      if (awtEditorComponent instanceof JTextField) {
-        JTextField jTextField = (JTextField) awtEditorComponent;
+      if (awtEditorComponent instanceof JTextField jTextField) {
         boolean isEqual = jTextField.getText().contentEquals(nextPath);
         boolean isShowing = false == (isEqual || ImageEditorFrame.INVALID_PATH_NOT_A_DIRECTORY.contentEquals(nextPath) || ImageEditorFrame.INVALID_PATH_EMPTY_SUB_PATH.contentEquals(nextPath));
         this.jPathLabel.setShowing(isShowing);

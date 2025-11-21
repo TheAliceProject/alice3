@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 import org.alice.ide.croquet.models.help.views.AbstractIssueView;
 import org.alice.ide.croquet.models.information.RestartRequiredOperation;
 import org.alice.ide.issue.croquet.AnomalousSituationComposite;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.VerticalAlignment;
+import org.lgna.croquet.views.*;
 
 import javax.swing.Icon;
 

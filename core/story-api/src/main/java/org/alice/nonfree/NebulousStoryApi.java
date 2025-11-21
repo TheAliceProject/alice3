@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.alice.nonfree;
 
-import edu.cmu.cs.dennisc.texture.Texture;
-import org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory;
-import org.lgna.story.resources.JointedModelResource;
-
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.texture.Texture;
+import org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory;
+import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Kyle J. Harms

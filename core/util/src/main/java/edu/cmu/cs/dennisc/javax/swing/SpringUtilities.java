@@ -42,11 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import javax.swing.Box;
-import javax.swing.JLabel;
-import javax.swing.Spring;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -296,7 +292,7 @@ public class SpringUtilities {
     assert componentRows != null;
     int rowCount = componentRows.size();
     assert rowCount > 0;
-    int columnCount = componentRows.get(0).length;
+    int columnCount = componentRows.getFirst().length;
     for (Component[] componentRow : componentRows) {
       assert componentRow.length == columnCount;
     }
@@ -365,8 +361,8 @@ public class SpringUtilities {
   public static Component expandToBounds(Component rv, Container container, int xInset, int yInset) {
     LayoutManager layout = container.getLayout();
     SpringLayout springLayout;
-    if (layout instanceof SpringLayout) {
-      springLayout = (SpringLayout) layout;
+    if (layout instanceof SpringLayout matchingLayout) {
+      springLayout = matchingLayout;
     } else {
       springLayout = new SpringLayout();
       container.setLayout(springLayout);

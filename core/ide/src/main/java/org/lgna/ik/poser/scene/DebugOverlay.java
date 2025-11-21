@@ -42,16 +42,12 @@
  */
 package org.lgna.ik.poser.scene;
 
+import edu.cmu.cs.dennisc.render.event.*;
+
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.Point;
-
-import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
-import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Matt May

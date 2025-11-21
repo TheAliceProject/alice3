@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
@@ -72,7 +72,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
   @Override
   protected void localize() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
+    this.text = formatter.getNewFormat().formatted(findDefaultLocalizedText(), "");
   }
 
   @Override

@@ -87,17 +87,11 @@ public class ParametersPane extends AbstractListPropertyPane<NodeListProperty<Us
       this.addComponent(new Label("( "));
     } else {
       int n = this.getProperty().size();
-      String text;
-      switch (n) {
-      case 0:
-        text = null;
-        break;
-      case 1:
-        text = " " + localize("withParameter") + ": ";
-        break;
-      default:
-        text = " " + localize("withParameters") + ": ";
-      }
+      String text = switch (n) {
+      case 0 -> null;
+      case 1 -> " " + localize("withParameter") + ": ";
+      default -> " " + localize("withParameters") + ": ";
+      };
       if (text != null) {
         this.addComponent(new Label(text, TextPosture.OBLIQUE, TextWeight.LIGHT));
       }

@@ -81,8 +81,7 @@ public class ResourceRenamePanel extends RenamePanel {
     this.centerPanel.forgetAndRemoveAllComponents();
     Component awtComponent;
     String constraint;
-    if (resource instanceof ImageResource) {
-      ImageResource imageResource = (ImageResource) resource;
+    if (resource instanceof ImageResource imageResource) {
       BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
       imageView.setImage(bufferedImage);
       awtComponent = imageView.getAwtComponent();

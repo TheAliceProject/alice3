@@ -43,17 +43,6 @@
 
 package org.lgna.story.implementation.alice;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
@@ -85,6 +74,17 @@ import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
 /**
@@ -181,8 +181,7 @@ public class AliceResourceUtilities {
   // The problem was observed specifically with the Baby Penguin model.
   private static void correctDimensions(TexturedAppearance ta) {
     Texture texture = ta.diffuseColorTexture.getValue();
-    if (texture instanceof BufferedImageTexture) {
-      BufferedImageTexture buffTexture = (BufferedImageTexture) texture;
+    if (texture instanceof BufferedImageTexture buffTexture) {
       buffTexture.setBufferedImage(ImageUtilities.stretchToPowersOfTwo(buffTexture.getBufferedImage()));
     }
   }
@@ -496,8 +495,8 @@ public class AliceResourceUtilities {
   }
 
   public static URL getTextureURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI textureURI = ((DynamicResource) resource).getTextureURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI textureURI = dynamicResource.getTextureURI();
       if (textureURI == null) {
         return null;
       }
@@ -516,8 +515,8 @@ public class AliceResourceUtilities {
   }
 
   private static URL getVisualURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI visualURI = ((DynamicResource) resource).getVisualURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI visualURI = dynamicResource.getVisualURI();
       if (visualURI == null) {
         return null;
       }

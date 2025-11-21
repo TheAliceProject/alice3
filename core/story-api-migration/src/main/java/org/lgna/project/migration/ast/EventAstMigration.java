@@ -42,24 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
-import java.util.ArrayList;
-
 import org.lgna.project.Version;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.DoubleLiteral;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LambdaExpression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 import org.lgna.story.SScene;
 import org.lgna.story.ast.EventListenerMethodUtilities;
 import org.lgna.story.event.MouseClickOnScreenEvent;
+
+import java.util.ArrayList;
 
 /**
  * @author Matt May
@@ -74,8 +63,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
   @Override
   protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
-    if (method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) method;
+    if (method instanceof JavaMethod javaMethod) {
       JavaMethod replacementMethod = null;
       if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
         String methodName = method.getName();
@@ -120,8 +108,8 @@ public class EventAstMigration extends MethodInvocationAstMigration {
     JavaKeyedArgument argToRemove = null;
     for (JavaKeyedArgument arg : keyedParameter) {
       Expression value = ((MethodInvocation) arg.expression.getValue()).requiredArguments.get(0).expression.getValue();
-      if (value instanceof DoubleLiteral) {
-        duration = ((DoubleLiteral) value).value.getValue();
+      if (value instanceof DoubleLiteral literal) {
+        duration = literal.value.getValue();
         argToRemove = arg;
         break;
       } else {
@@ -133,7 +121,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
     } else {
       duration = 0.0;
     }
-    methodInvocation.requiredArguments.add(new SimpleArgument(javaMethod.getRequiredParameters().get(0), new DoubleLiteral(duration)));
+    methodInvocation.requiredArguments.add(new SimpleArgument(javaMethod.getRequiredParameters().getFirst(), new DoubleLiteral(duration)));
     methodInvocation.method.setValue(EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD);
   }
 }

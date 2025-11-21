@@ -80,6 +80,6 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
   protected abstract List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<T> blankNode);
 
   private InternalBlank<T> getInternalBlank() {
-    return this.blanks.get(0);
+    return this.blanks.getFirst();
   }
 }

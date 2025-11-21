@@ -71,8 +71,7 @@ public abstract class ToolBarView extends MigPanel {
       nextConstraints = "";
     } else {
       SwingComponentView<?> component;
-      if (element instanceof Operation) {
-        Operation operation = (Operation) element;
+      if (element instanceof Operation operation) {
         Button button = operation.createButton();
         if (operation.isToolBarTextClobbered()) {
           button.setToolTipText(operation.getImp().getName());
@@ -80,15 +79,12 @@ public abstract class ToolBarView extends MigPanel {
         }
         button.tightenUpMargin();
         component = button;
-      } else if (element instanceof SingleSelectListState<?, ?>) {
-        SingleSelectListState<?, ?> listSelectionState = (SingleSelectListState<?, ?>) element;
+      } else if (element instanceof SingleSelectListState<?, ?> listSelectionState) {
         ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBoxWithItemCodecListCellRenderer();
         component = comboBox;
-      } else if (element instanceof Composite<?>) {
-        Composite<?> subComposite = (Composite<?>) element;
+      } else if (element instanceof Composite<?> subComposite) {
         component = subComposite.getView();
-      } else if (element instanceof PlainStringValue) {
-        PlainStringValue stringValue = (PlainStringValue) element;
+      } else if (element instanceof PlainStringValue stringValue) {
         component = stringValue.createLabel();
       } else {
         Logger.severe(element);

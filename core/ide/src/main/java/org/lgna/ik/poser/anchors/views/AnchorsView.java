@@ -52,11 +52,7 @@ import org.lgna.ik.poser.anchors.events.AnchorEvent;
 import org.lgna.ik.poser.anchors.events.AnchorListener;
 
 import javax.swing.JComponent;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 

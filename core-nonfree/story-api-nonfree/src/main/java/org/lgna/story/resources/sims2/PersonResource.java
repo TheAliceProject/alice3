@@ -85,8 +85,8 @@ public abstract class PersonResource implements BipedResource {
 
   private static Color getClosestColor(SkinTone skinTone) {
     BaseSkinTone baseSkinTone;
-    if (skinTone instanceof BaseSkinTone) {
-      baseSkinTone = (BaseSkinTone) skinTone;
+    if (skinTone instanceof BaseSkinTone tone) {
+      baseSkinTone = tone;
     } else {
       baseSkinTone = BaseSkinTone.getRandom();
     }
@@ -168,8 +168,7 @@ public abstract class PersonResource implements BipedResource {
     if (this == obj) {
       return true;
     }
-    if (obj instanceof PersonResource) {
-      PersonResource other = (PersonResource) obj;
+    if (obj instanceof PersonResource other) {
       if (this.getClass() == other.getClass()) {
         if (Objects.equals(this.gender, other.gender)) {
           if (Objects.equals(this.skinTone, other.skinTone)) {

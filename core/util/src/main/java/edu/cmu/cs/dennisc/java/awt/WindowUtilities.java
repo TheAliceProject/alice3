@@ -43,11 +43,7 @@
 package edu.cmu.cs.dennisc.java.awt;
 
 import javax.swing.SwingUtilities;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove

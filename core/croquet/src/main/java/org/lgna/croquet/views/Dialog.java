@@ -105,10 +105,10 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
       AbstractWindow<?> root = owner.getRoot();
       if (root != null) {
         java.awt.Window ownerWindow = root.getAwtComponent();
-        if (ownerWindow instanceof java.awt.Frame) {
-          rv = new JDialog((java.awt.Frame) ownerWindow, isModal);
-        } else if (ownerWindow instanceof java.awt.Dialog) {
-          rv = new JDialog((java.awt.Dialog) ownerWindow, isModal);
+        if (ownerWindow instanceof java.awt.Frame frame) {
+          rv = new JDialog(frame, isModal);
+        } else if (ownerWindow instanceof java.awt.Dialog dialog) {
+          rv = new JDialog(dialog, isModal);
         } else {
           rv = null;
         }

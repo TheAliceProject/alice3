@@ -45,19 +45,10 @@ package org.lgna.croquet.views.imp;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 
-import javax.swing.AbstractAction;
-import javax.swing.ButtonModel;
-import javax.swing.JMenuItem;
-import javax.swing.Timer;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 

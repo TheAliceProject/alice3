@@ -106,8 +106,8 @@ public class ModelResourceCrawler implements Crawler {
     }
     if (DynamicResource.class.isAssignableFrom(resourceClass)) {
       Object dynamicInstance = resourceCreation.instantiateDynamicResource();
-      if (dynamicInstance instanceof DynamicResource) {
-        dynamicResources.add((DynamicResource) dynamicInstance);
+      if (dynamicInstance instanceof DynamicResource resource) {
+        dynamicResources.add(resource);
       }
     }
   }

@@ -45,12 +45,7 @@ package org.alice.ide.instancefactory;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.CurrentThisExpression;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 import java.util.Map;
 

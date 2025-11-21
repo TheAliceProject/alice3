@@ -42,12 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.event;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.condition.MovementDescription;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba

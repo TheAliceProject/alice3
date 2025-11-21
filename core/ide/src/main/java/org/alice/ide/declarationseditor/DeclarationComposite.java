@@ -62,10 +62,10 @@ import java.util.UUID;
 public abstract class DeclarationComposite<D extends AbstractDeclaration, V extends DeclarationView> extends AbstractTabComposite<V> {
   @Deprecated
   public static synchronized DeclarationComposite<?, ?> getInstance(AbstractDeclaration declaration) {
-    if (declaration instanceof AbstractCode) {
-      return CodeComposite.getInstance((AbstractCode) declaration);
-    } else if (declaration instanceof NamedUserType) {
-      return TypeComposite.getInstance((NamedUserType) declaration);
+    if (declaration instanceof AbstractCode code) {
+      return CodeComposite.getInstance(code);
+    } else if (declaration instanceof NamedUserType type) {
+      return TypeComposite.getInstance(type);
     } else {
       if (declaration != null) {
         throw new RuntimeException("todo " + declaration);

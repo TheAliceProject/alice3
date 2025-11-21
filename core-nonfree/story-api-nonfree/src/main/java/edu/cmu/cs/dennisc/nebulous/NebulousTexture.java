@@ -172,7 +172,7 @@ public class NebulousTexture extends Texture {
 
   public static BufferedImage createBufferedImageFromNebulousData(byte[] imageData, int width, int height, int bytesPerPixel) {
     if (bytesPerPixel < 3) {
-      throw new RuntimeException(String.format("Unexpected bytes per pixel %d", bytesPerPixel));
+      throw new RuntimeException("Unexpected bytes per pixel %d".formatted(bytesPerPixel));
     }
     final int imageType = bytesPerPixel == 3 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
     BufferedImage bufferedImage = new BufferedImage(width, height, imageType);

@@ -43,9 +43,18 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.ide.IDE;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AngleInDegrees;
 import org.alice.math.immutable.AxisAlignedBox;
@@ -55,13 +64,6 @@ import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
-import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.scenegraph.*;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveTransformableEdit;
@@ -72,9 +74,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.*;
 import org.lgna.story.implementation.*;
-
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 
 import java.util.Map;
 import java.util.Objects;

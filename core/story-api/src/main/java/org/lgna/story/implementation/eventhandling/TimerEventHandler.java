@@ -42,21 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.List;
-import java.util.Map;
-
-import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeEvent;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.WhileContingencyListener;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May

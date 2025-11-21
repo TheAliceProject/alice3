@@ -71,7 +71,7 @@ public class GroupIconFactory extends AbstractIconFactory {
   @Override
   public Dimension getDefaultSize(Dimension fallbackSize) {
     if (this.iconFactories.size() > 0) {
-      return this.iconFactories.get(0).getDefaultSize(fallbackSize);
+      return this.iconFactories.getFirst().getDefaultSize(fallbackSize);
     } else {
       return fallbackSize;
     }

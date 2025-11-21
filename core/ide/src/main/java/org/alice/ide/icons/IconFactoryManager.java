@@ -214,8 +214,8 @@ public class IconFactoryManager {
 
     @Override
     public IconFactory createIconFactory() {
-      if (instance instanceof ModelStructure) {
-        return getIconFactoryForModelStructure((ModelStructure<?, ?>) instance);
+      if (instance instanceof ModelStructure<?, ?> structure) {
+        return getIconFactoryForModelStructure(structure);
       } else {
         return NebulousIde.nonfree.createIconFactory(this.instance);
       }
@@ -272,9 +272,9 @@ public class IconFactoryManager {
         try {
           Object o = fld.get(null);
           if (o != null) {
-            if (o instanceof JointedModelResource) {
+            if (o instanceof JointedModelResource resource) {
               if (o.getClass().isEnum()) {
-                return new ResourceEnumConstant((JointedModelResource) o);
+                return new ResourceEnumConstant(resource);
               }
             }
           }

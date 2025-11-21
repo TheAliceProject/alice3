@@ -23,7 +23,7 @@ public class TweedleArray extends TweedleValue {
 
   @Override
   public boolean equals(Object obj) {
-    return super.equals(obj) || obj instanceof TweedleArray && values.equals(((TweedleArray) obj).values) && arrayType.equals(((TweedleArray) obj).arrayType);
+    return super.equals(obj) || obj instanceof TweedleArray ta && values.equals(ta.values) && arrayType.equals(ta.arrayType);
   }
 
   @Override

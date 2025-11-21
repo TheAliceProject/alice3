@@ -75,8 +75,7 @@ public final class VantagePoint {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof VantagePoint) {
-      VantagePoint other = (VantagePoint) obj;
+    if (obj instanceof VantagePoint other) {
       return this.internal.equals(other.internal);
     } else {
       return false;

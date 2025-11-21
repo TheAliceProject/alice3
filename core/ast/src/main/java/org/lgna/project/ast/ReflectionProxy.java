@@ -88,8 +88,7 @@ public abstract class ReflectionProxy<E> {
     if (this == o) {
       return true;
     } else {
-      if (o instanceof ReflectionProxy<?>) {
-        ReflectionProxy<?> other = (ReflectionProxy<?>) o;
+      if (o instanceof ReflectionProxy<?> other) {
         E e = this.getReification();
         if (e != null) {
           return e.equals(other.getReification());

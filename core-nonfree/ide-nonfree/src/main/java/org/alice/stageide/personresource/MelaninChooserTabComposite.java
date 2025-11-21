@@ -50,10 +50,7 @@ import org.lgna.croquet.views.ScrollPane;
 import java.awt.Color;
 import java.util.UUID;
 
-import static org.lgna.story.resources.sims2.BaseSkinTone.DARK;
-import static org.lgna.story.resources.sims2.BaseSkinTone.DARKER;
-import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHT;
-import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
+import static org.lgna.story.resources.sims2.BaseSkinTone.*;
 
 /**
  * @author Dennis Cosgrove

@@ -79,7 +79,7 @@ public class MoreCascade extends ImmutableCascade<Expression> {
     AbstractMethod method = methodInvocation.method.getValue();
     AbstractMethod nextMethod = (AbstractMethod) method.getNextLongerInChain();
     List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
-    return parameters.get(parameters.size() - 1);
+    return parameters.getLast();
   }
 
   private final MethodInvocation methodInvocation;

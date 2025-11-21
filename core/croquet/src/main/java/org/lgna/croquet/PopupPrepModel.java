@@ -118,12 +118,10 @@ public abstract class PopupPrepModel extends AbstractModel implements PrepModel,
 
   protected void prologue(Trigger trigger) {
     this.prevButtonModel = null;
-    if (trigger instanceof EventObjectTrigger) {
-      EventObjectTrigger<?> eventTrigger = (EventObjectTrigger<?>) trigger;
+    if (trigger instanceof EventObjectTrigger<?> eventTrigger) {
       EventObject e = eventTrigger.getEvent();
       Object source = e.getSource();
-      if (source instanceof AbstractButton) {
-        AbstractButton button = (AbstractButton) source;
+      if (source instanceof AbstractButton button) {
         this.prevButtonModel = button.getModel();
       }
     }

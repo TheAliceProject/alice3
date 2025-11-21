@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
-import java.nio.DoubleBuffer;
-
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable;
+
+import java.nio.DoubleBuffer;
 
 public class GlrNebulousJoint extends GlrAbstractTransformable<NebulousJoint> {
   private final double[] m_localTransformation = new double[16];

@@ -43,15 +43,7 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.nativewindow.CapabilitiesImmutable;
-import com.jogamp.opengl.DefaultGLCapabilitiesChooser;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLCapabilitiesImmutable;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLDrawable;
-import com.jogamp.opengl.GLDrawableFactory;
-import com.jogamp.opengl.GLOffscreenAutoDrawable;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.awt.GLJPanel;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
@@ -98,14 +90,12 @@ public class GlDrawableUtils {
       int rv = original;
       if ((0 <= rv) && (rv < available.size())) {
         CapabilitiesImmutable selected = available.get(rv);
-        if (selected instanceof GLCapabilitiesImmutable) {
-          GLCapabilitiesImmutable glSelected = (GLCapabilitiesImmutable) selected;
+        if (selected instanceof GLCapabilitiesImmutable glSelected) {
           int i = 0;
           int indexOfMax = -1;
           int max = -1;
           for (CapabilitiesImmutable c : available) {
-            if (c instanceof GLCapabilitiesImmutable) {
-              GLCapabilitiesImmutable glCandidate = (GLCapabilitiesImmutable) c;
+            if (c instanceof GLCapabilitiesImmutable glCandidate) {
               //edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "consider", i, glCandidate );
               if (glCandidate.getSampleBuffers()) {
                 if (areEquivalentIgnoringMultisample(glSelected, glCandidate)) {
@@ -216,8 +206,8 @@ public class GlDrawableUtils {
     int width = drawable.getSurfaceWidth();
     if (width == 0) {
       if (linuxDrawableSizes != null) {
-        if (drawable instanceof GLOffscreenAutoDrawable) {
-            Dimension size = linuxDrawableSizes.get((GLOffscreenAutoDrawable) drawable);
+        if (drawable instanceof GLOffscreenAutoDrawable autoDrawable) {
+            Dimension size = linuxDrawableSizes.get(autoDrawable);
           if (size != null) {
             width = size.width;
           }
@@ -232,8 +222,7 @@ public class GlDrawableUtils {
     int height = drawable.getSurfaceHeight();
     if (height == 0) {
       if (linuxDrawableSizes != null) {
-        if (drawable instanceof GLOffscreenAutoDrawable) {
-          GLOffscreenAutoDrawable glPixelBuffer = (GLOffscreenAutoDrawable) drawable;
+        if (drawable instanceof GLOffscreenAutoDrawable glPixelBuffer) {
           Dimension size = linuxDrawableSizes.get(glPixelBuffer);
           if (size != null) {
             height = size.height;
@@ -245,11 +234,9 @@ public class GlDrawableUtils {
   }
 
   public static int getGLJPanelHeight(GLDrawable drawable) {
-    if (drawable instanceof GLJPanel) {
-      GLJPanel glPanel = (GLJPanel) drawable;
+    if (drawable instanceof GLJPanel glPanel) {
       return glPanel.getHeight();
-    } else if (drawable instanceof GLCanvas) {
-      GLCanvas glCanvas = (GLCanvas) drawable;
+    } else if (drawable instanceof GLCanvas glCanvas) {
       return glCanvas.getHeight();
     } else {
       return getGlDrawableHeight(drawable);
@@ -257,11 +244,9 @@ public class GlDrawableUtils {
   }
 
   public static int getGLJPanelWidth(GLDrawable drawable) {
-    if (drawable instanceof GLJPanel) {
-      GLJPanel glPanel = (GLJPanel) drawable;
+    if (drawable instanceof GLJPanel glPanel) {
       return glPanel.getWidth();
-    } else if (drawable instanceof GLCanvas) {
-      GLCanvas glCanvas = (GLCanvas) drawable;
+    } else if (drawable instanceof GLCanvas glCanvas) {
       return glCanvas.getWidth();
     } else {
       return getGlDrawableWidth(drawable);

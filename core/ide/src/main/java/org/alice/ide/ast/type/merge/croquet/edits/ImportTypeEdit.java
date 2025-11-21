@@ -52,11 +52,7 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.Member;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import java.net.URI;
 import java.util.List;

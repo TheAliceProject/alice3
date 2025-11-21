@@ -56,11 +56,7 @@ import org.alice.ide.declarationseditor.TypeComposite;
 import org.alice.ide.typehierarchy.TypeHierarchyComposite;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.SwingAdapter;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.*;

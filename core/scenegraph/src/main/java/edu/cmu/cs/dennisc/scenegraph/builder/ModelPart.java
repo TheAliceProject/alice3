@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -56,7 +57,6 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix3x3;
 import org.alice.math.immutable.Point3;
@@ -113,15 +113,13 @@ public class ModelPart implements BinaryEncodableAndDecodable {
     rv.children = Lists.newLinkedList();
 
     for (Component component : parent.getComponents()) {
-      if (component instanceof Visual) {
-        Visual visual = (Visual) component;
+      if (component instanceof Visual visual) {
         Appearance front = visual.frontFacingAppearance.getValue();
-        if (front instanceof TexturedAppearance) {
-          TexturedAppearance singleAppearance = (TexturedAppearance) front;
+        if (front instanceof TexturedAppearance singleAppearance) {
           Texture texture = singleAppearance.diffuseColorTexture.getValue();
           if (texture != null) {
-            if (texture instanceof BufferedImageTexture) {
-              rv.texture = (BufferedImageTexture) texture;
+            if (texture instanceof BufferedImageTexture imageTexture) {
+              rv.texture = imageTexture;
               textures.add(rv.texture);
             } else {
               assert false;
@@ -152,8 +150,7 @@ public class ModelPart implements BinaryEncodableAndDecodable {
         } else {
           Logger.warning("no geometry for ", rv.name);
         }
-      } else if (component instanceof Transformable) {
-        Transformable transformable = (Transformable) component;
+      } else if (component instanceof Transformable transformable) {
         rv.children.add(newInstance(transformable, geometries, textures));
       }
     }

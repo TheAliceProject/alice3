@@ -60,12 +60,11 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraManipulator;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
-import org.alice.math.immutable.ClippedZPlane;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetOrthographicPicturePlaneActionOperation;
-
 import org.lgna.croquet.Application;
 import org.lgna.story.SCamera;
 

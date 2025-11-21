@@ -56,7 +56,6 @@ import org.alice.interact.DragAdapter;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.manipulator.scenegraph.SnapLine;
 import org.alice.interact.manipulator.scenegraph.SnapSphere;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
@@ -169,8 +168,8 @@ public class SnapUtilities {
     if (t != null) {
       for (int i = 0; i < t.getComponentCount(); i++) {
         Component c = t.getComponentAt(i);
-        if (c instanceof Visual) {
-          return (Visual) c;
+        if (c instanceof Visual visual) {
+          return visual;
         }
       }
       return null;

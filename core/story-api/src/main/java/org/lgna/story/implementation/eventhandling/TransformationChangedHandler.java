@@ -42,15 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.lgna.story.SThing;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.EntityImp;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import java.util.List;
 
 /**
  * @author Matt May

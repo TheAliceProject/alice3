@@ -61,8 +61,8 @@ import javax.swing.JTree;
 public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
   @Override
   protected JLabel updateListCellRendererComponent(JLabel rv, JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    if (value instanceof UserActivity) {
-      updateFromActivity(rv, (UserActivity) value);
+    if (value instanceof UserActivity activity) {
+      updateFromActivity(rv, activity);
     }
     return rv;
   }

@@ -47,13 +47,7 @@ import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.JPanel;
-import java.awt.AlphaComposite;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**

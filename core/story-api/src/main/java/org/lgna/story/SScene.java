@@ -45,32 +45,9 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.common.LgnaIllegalArgumentException;
-import org.lgna.project.annotations.AddEventListenerTemplate;
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
-import org.lgna.project.annotations.Visibility;
+import org.lgna.project.annotations.*;
 import org.lgna.story.annotation.PortionDetails;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.ProximityEnterListener;
-import org.lgna.story.event.ProximityExitListener;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
-import org.lgna.story.event.WhileCollisionListener;
-import org.lgna.story.event.WhileInViewListener;
-import org.lgna.story.event.WhileOcclusionListener;
-import org.lgna.story.event.WhileProximityListener;
+import org.lgna.story.event.*;
 import org.lgna.story.implementation.SceneImp;
 
 /**

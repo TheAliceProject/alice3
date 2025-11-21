@@ -55,8 +55,7 @@ public class TextScale implements Say.Detail, Think.Detail {
 
   private static double getValue(Object[] details, double defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof TextScale) {
-        TextScale textScale = (TextScale) detail;
+      if (detail instanceof TextScale textScale) {
         return textScale.value;
       }
     }

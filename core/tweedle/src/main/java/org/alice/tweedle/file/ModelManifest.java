@@ -83,8 +83,7 @@ public class ModelManifest extends Manifest {
 
     @Override
     public boolean equals(Object obj) {
-      if (obj instanceof Joint) {
-        Joint objJoint = (Joint) obj;
+      if (obj instanceof Joint objJoint) {
         return name.equals(objJoint.name) && (parent == null ? objJoint.parent == null : parent.equals(objJoint.parent));
       }
       return false;
@@ -151,16 +150,16 @@ public class ModelManifest extends Manifest {
 
   public AliceTextureReference getAliceTextureReference(String textureName) {
     ResourceReference resource = getResource(textureName);
-    if (resource instanceof AliceTextureReference) {
-      return (AliceTextureReference) resource;
+    if (resource instanceof AliceTextureReference reference) {
+      return reference;
     }
     return null;
   }
 
   public StructureReference getStructure(String structureName) {
     ResourceReference resource = getResource(structureName);
-    if (resource instanceof StructureReference) {
-      return (StructureReference) resource;
+    if (resource instanceof StructureReference reference) {
+      return reference;
     }
     return null;
   }

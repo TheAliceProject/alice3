@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
-
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+
+import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
 
 /**
  * @author Dennis Cosgrove

@@ -1,9 +1,9 @@
 package com.dddviewr.collada.effects;
 
+import com.dddviewr.collada.Base;
+
 import java.io.PrintStream;
 import java.util.Arrays;
-
-import com.dddviewr.collada.Base;
 
 public class EffectAttribute extends Base {
   protected String name;

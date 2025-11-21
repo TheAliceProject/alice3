@@ -43,13 +43,13 @@
 
 package org.alice.netbeans.palette.items.views;
 
-import java.awt.Color;
-import java.awt.Dialog;
-import javax.swing.text.JTextComponent;
-
 import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+
+import javax.swing.text.JTextComponent;
+import java.awt.Color;
+import java.awt.Dialog;
 
 public class CountLoopCustomizer extends javax.swing.JPanel {
 

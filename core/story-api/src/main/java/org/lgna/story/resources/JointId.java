@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.serialization.tweedle.Encoder;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.project.code.IdentifiableTweedleNode;
+import org.lgna.project.code.InstantiableTweedleNode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

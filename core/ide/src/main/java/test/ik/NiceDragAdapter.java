@@ -104,8 +104,8 @@ public class NiceDragAdapter extends OnscreenLookingGlassDragAdapter {
 
   protected Transformable lookupDragAcceptor(Visual sgVisual) {
     Composite sgParent = sgVisual.getParent();
-    if (sgParent instanceof Transformable) {
-      return (Transformable) sgParent;
+    if (sgParent instanceof Transformable transformable) {
+      return transformable;
     } else {
       return null;
     }

@@ -1,13 +1,12 @@
 package com.dddviewr.collada.states;
 
-import java.lang.reflect.Method;
-
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.EffectAttribute;
 import com.dddviewr.collada.effects.Texture;
+import org.xml.sax.Attributes;
+
+import java.lang.reflect.Method;
 
 public class texture extends State {
   protected Texture theTexture;

@@ -51,11 +51,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Lazy;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.annotations.ClassTemplate;
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
-import org.lgna.project.annotations.Visibility;
+import org.lgna.project.annotations.*;
 import org.lgna.project.reflect.ClassInfoManager;
 import org.lgna.project.reflect.MethodInfo;
 
@@ -117,8 +113,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
   /* package-private */
   static AbstractType<?, ?, ?> getWrapperTypeIfNecessary(AbstractType<?, ?, ?> type) {
-    if (type instanceof JavaType) {
-      JavaType javaType = (JavaType) type;
+    if (type instanceof JavaType javaType) {
       if (javaType.isPrimitive()) {
         JavaType wrapperType = mapPrimitiveToWrapper.get(javaType);
         if (wrapperType != null) {
@@ -436,8 +431,8 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
   @Override
   public boolean isEquivalentTo(Object other) {
-    if (other instanceof JavaType) {
-      return classReflectionProxy.equals(((JavaType) other).classReflectionProxy);
+    if (other instanceof JavaType type) {
+      return classReflectionProxy.equals(type.classReflectionProxy);
     } else {
       return false;
     }
@@ -540,7 +535,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
               if (valueTemplate != null) {
                 JavaMethod m = setter;
                 while (m != null) {
-                  JavaMethodParameter parameter0 = (JavaMethodParameter) m.getRequiredParameters().get(0);
+                  JavaMethodParameter parameter0 = (JavaMethodParameter) m.getRequiredParameters().getFirst();
                   parameter0.setValueTemplate(valueTemplate);
                   m = m.getNextShorterInChain();
                 }

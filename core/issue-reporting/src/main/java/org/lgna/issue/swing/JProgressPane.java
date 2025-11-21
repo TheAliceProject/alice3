@@ -46,12 +46,7 @@ import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
 import org.lgna.issue.IssueSubmissionProgressWorker;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.Document;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

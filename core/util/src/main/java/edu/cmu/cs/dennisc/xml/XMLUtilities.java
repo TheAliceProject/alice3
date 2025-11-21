@@ -43,11 +43,7 @@
 package edu.cmu.cs.dennisc.xml;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -56,12 +52,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -171,10 +162,10 @@ public class XMLUtilities {
     NodeList children = e.getChildNodes();
     for (int i = children.getLength() - 1; i >= 0; i--) {
       Node child = children.item(i);
-      if ((child instanceof Text) && (((Text) child).getData().trim().length() == 0)) {
+      if ((child instanceof Text text) && (text.getData().trim().length() == 0)) {
         e.removeChild(child);
-      } else if (child instanceof Element) {
-        removeWhitespaceNodes((Element) child);
+      } else if (child instanceof Element element) {
+        removeWhitespaceNodes(element);
       }
     }
   }
@@ -210,8 +201,7 @@ public class XMLUtilities {
     final int N = nodeList.getLength();
     for (int i = 0; i < N; i++) {
       Node node = nodeList.item(i);
-      if (node instanceof Element) {
-        Element element = (Element) node;
+      if (node instanceof Element element) {
         if (tagName.equals(element.getTagName())) {
           rv.add(element);
         }
@@ -225,8 +215,7 @@ public class XMLUtilities {
     final int N = nodeList.getLength();
     for (int i = 0; i < N; i++) {
       Node node = nodeList.item(i);
-      if (node instanceof Element) {
-        Element element = (Element) node;
+      if (node instanceof Element element) {
         if (tagName.equals(element.getTagName())) {
           return element;
         }

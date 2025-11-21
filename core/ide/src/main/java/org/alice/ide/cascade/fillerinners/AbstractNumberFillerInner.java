@@ -46,7 +46,6 @@ import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn;
 import org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn;
-
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;
@@ -72,8 +71,7 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
     if (isTop && (prevExpression != null)) {
-      if (prevExpression instanceof ArithmeticInfixExpression) {
-        ArithmeticInfixExpression previousArithmeticInfixExpression = (ArithmeticInfixExpression) prevExpression;
+      if (prevExpression instanceof ArithmeticInfixExpression previousArithmeticInfixExpression) {
         ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
         for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS) {
           if (operator != prevOperator) {

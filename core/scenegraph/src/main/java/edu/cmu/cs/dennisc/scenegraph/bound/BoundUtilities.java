@@ -42,9 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.bound;
 
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
-import edu.cmu.cs.dennisc.scenegraph.Vertex;
 
 import java.nio.DoubleBuffer;
 

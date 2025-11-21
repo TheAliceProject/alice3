@@ -42,17 +42,16 @@
  */
 package org.lgna.ik.poser.jselection;
 
-import java.util.List;
-import java.util.UUID;
-
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CustomItemStateWithInternalBlank;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.ItemDropDown;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May

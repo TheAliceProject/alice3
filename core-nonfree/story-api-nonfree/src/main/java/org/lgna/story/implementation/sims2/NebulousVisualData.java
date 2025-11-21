@@ -98,10 +98,10 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   }
 
   public void unload() {
-    if (this.nebModel instanceof Person) {
-      ((Person) this.nebModel).synchronizedUnload();
-    } else if (this.nebModel instanceof Thing) {
-      ((Thing) this.nebModel).synchronizedUnload();
+    if (this.nebModel instanceof Person person) {
+      person.synchronizedUnload();
+    } else if (this.nebModel instanceof Thing thing) {
+      thing.synchronizedUnload();
     }
   }
 

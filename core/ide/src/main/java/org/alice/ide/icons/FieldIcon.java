@@ -126,8 +126,8 @@ public class FieldIcon extends AsynchronousIcon {
       if (!USE_DYNAMICALLY_RENDERED_ICONS) {
         BufferedImage newIconImage = new BufferedImage(this.getIconWidthFallback(), this.getIconHeightFallback(), BufferedImage.TYPE_4BYTE_ABGR);
         Icon iconForImage = this.fallbackIcon;
-        if (this.fallbackIcon instanceof TrimmedIcon) {
-          iconForImage = ((TrimmedIcon) this.fallbackIcon).getImageIcon();
+        if (this.fallbackIcon instanceof TrimmedIcon icon) {
+          iconForImage = icon.getImageIcon();
         }
         Image iconImage = GraphicsUtilities.getImageForIcon(iconForImage);
         GraphicsUtilities.drawCenteredScaledToFitImage(iconImage, newIconImage);
@@ -155,14 +155,13 @@ public class FieldIcon extends AsynchronousIcon {
           final Scene sgScene = sceneImp.getSgComposite();
 
           final Visual sgVisual;
-          if (fieldImp instanceof SingleVisualModelImp) {
-            SingleVisualModelImp singleVisualModelImp = (SingleVisualModelImp) fieldImp;
+          if (fieldImp instanceof SingleVisualModelImp singleVisualModelImp) {
             sgVisual = singleVisualModelImp.getSgVisuals()[0];
           } else {
             Visual sgFoundVisual = null;
             for (Component sgComponent : sgTransformable.getComponents()) {
-              if (sgComponent instanceof Visual) {
-                sgFoundVisual = (Visual) sgComponent;
+              if (sgComponent instanceof Visual visual) {
+                sgFoundVisual = visual;
                 break;
               }
             }

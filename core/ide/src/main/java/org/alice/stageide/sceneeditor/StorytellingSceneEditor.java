@@ -353,8 +353,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       TransformableImp transImp = null;
       if (selectedEntity != null) {
         EntityImp imp = selectedEntity.getImplementation();
-        if (imp instanceof TransformableImp) {
-          transImp = (TransformableImp) imp;
+        if (imp instanceof TransformableImp transformableImp) {
+          transImp = transformableImp;
         }
       }
       this.globalDragAdapter.setSelectedImplementation(transImp);
@@ -367,8 +367,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       AbstractTransformableImp transImp = null;
       if (selectedEntity != null) {
         EntityImp imp = selectedEntity.getImplementation();
-        if (imp instanceof AbstractTransformableImp) {
-          transImp = (AbstractTransformableImp) imp;
+        if (imp instanceof AbstractTransformableImp transformableImp) {
+          transImp = transformableImp;
         }
       }
       this.globalDragAdapter.setSelectedImplementation(transImp);
@@ -377,11 +377,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private void setSelectedInstance(InstanceFactory instanceFactory) {
     Expression expression = instanceFactory != null ? instanceFactory.createExpression() : null;
-    if (expression instanceof FieldAccess) {
-      FieldAccess fa = (FieldAccess) expression;
+    if (expression instanceof FieldAccess fa) {
       AbstractField field = fa.field.getValue();
-      if (field instanceof UserField) {
-        UserField uf = (UserField) field;
+      if (field instanceof UserField uf) {
         setSelectedField(uf.getDeclaringType(), uf);
       }
     } else if (expression instanceof MethodInvocation) {
@@ -572,8 +570,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           this.setSelectedField(field.getDeclaringType(), field);
         }
       }
-      if (imp instanceof PerspectiveCameraMarkerImp) {
-        globalDragAdapter.setSelectedImplementation((PerspectiveCameraMarkerImp) imp);
+      if (imp instanceof PerspectiveCameraMarkerImp markerImp) {
+        globalDragAdapter.setSelectedImplementation(markerImp);
       }
     } else {
       UserField uf = getActiveSceneField();
@@ -819,8 +817,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           markerImp.setDisplayVisuals(true);
           markerImp.setShowing(true);
         }
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
+        if (field instanceof UserField userField) {
           if (userField.getManagementLevel() == ManagementLevel.MANAGED) {
             this.setInitialCodeStateForField(userField, getCurrentStateCodeForField(userField));
           }
@@ -837,17 +834,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         continue;
       }
       ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
-      if (args.size() == 1 && args.get(0).expression.getValue() instanceof NullLiteral) {
-        args.get(0).expression.setValue(new ThisExpression());
+      if (args.size() == 1 && args.getFirst().expression.getValue() instanceof NullLiteral) {
+        args.getFirst().expression.setValue(new ThisExpression());
       }
     }
   }
 
   private MethodInvocation asSetVehicleCall(Statement statement) {
-    if (statement instanceof ExpressionStatement) {
-      Expression expression = ((ExpressionStatement) statement).expression.getValue();
-      if (expression instanceof MethodInvocation) {
-        MethodInvocation mi = (MethodInvocation) expression;
+    if (statement instanceof ExpressionStatement expressionStatement) {
+      Expression expression = expressionStatement.expression.getValue();
+      if (expression instanceof MethodInvocation mi) {
         Method method = mi.method.getValue();
         if (method.getName().equalsIgnoreCase("setVehicle")) {
           return mi;
@@ -960,25 +956,24 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     //Remove the setVehicle and setTransform statements from the setup code, so we can replace them with custom ones based on the fieldToCopy's vehicle and the initial transform
     List<BlockStatement> blockStatements = new LinkedList<BlockStatement>();
-    if (stateCodeStatement instanceof BlockStatement) {
-      blockStatements.add((BlockStatement) stateCodeStatement);
-    } else if (stateCodeStatement instanceof AbstractStatementWithBody) {
-      blockStatements.add(((AbstractStatementWithBody) stateCodeStatement).body.getValue());
+    if (stateCodeStatement instanceof BlockStatement statement) {
+      blockStatements.add(statement);
+    } else if (stateCodeStatement instanceof AbstractStatementWithBody body) {
+      blockStatements.add(body.body.getValue());
     }
     while (!blockStatements.isEmpty()) {
-      BlockStatement bs = blockStatements.remove(0);
+      BlockStatement bs = blockStatements.removeFirst();
       Statement setVehicleStatement = null;
       Statement setPositionStatement = null;
       Statement setOrientationStatement = null;
       for (Statement s : bs.statements.getValue()) {
-        if (s instanceof BlockStatement) {
-          blockStatements.add((BlockStatement) s);
-        } else if (s instanceof AbstractStatementWithBody) {
-          blockStatements.add(((AbstractStatementWithBody) s).body.getValue());
-        } else if (s instanceof ExpressionStatement) {
-          Expression expression = ((ExpressionStatement) s).expression.getValue();
-          if (expression instanceof MethodInvocation) {
-            MethodInvocation mi = (MethodInvocation) expression;
+        if (s instanceof BlockStatement block) {
+          blockStatements.add(block);
+        } else if (s instanceof AbstractStatementWithBody body) {
+          blockStatements.add(body.body.getValue());
+        } else if (s instanceof ExpressionStatement expressionStatement) {
+          Expression expression = expressionStatement.expression.getValue();
+          if (expression instanceof MethodInvocation mi) {
             Method method = mi.method.getValue();
             //Look for the setVehicle, setOrientation, and setPositions for the field. Note that we need to make sure these calls are being called on the field and not the joints, hence the check for FieldAccess (joints are called off of getJoint and resolve as a MethodInvocation)
             if (method.getName().equalsIgnoreCase("setVehicle") && (mi.expression.getValue() instanceof FieldAccess)) {
@@ -1004,8 +999,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     Object toCopyInstance = this.getInstanceInJavaVMForField(fieldToCopy);
     AbstractField toCopyVehicleField = null;
-    if (toCopyInstance instanceof Rider) {
-      SThing vehicleInstance = ((Rider) toCopyInstance).getVehicle();
+    if (toCopyInstance instanceof Rider rider) {
+      SThing vehicleInstance = rider.getVehicle();
       toCopyVehicleField = this.getFieldForInstanceInJavaVM(vehicleInstance);
     }
     Statement[] initializeStatements = SetUpMethodGenerator.getSetupStatementsForField(false, newField, this.getActiveSceneInstance(), toCopyVehicleField, initialTransform);
@@ -1070,19 +1065,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private boolean doesSetVehicleImplyVehicle(MethodInvocation setVehicleCall, UserField vehicle) {
     ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
     if (args.size() == 1 && setVehicleCall.expression.getValue() instanceof FieldAccess) {
-      Expression vehicleExpr = args.get(0).expression.getValue();
+      Expression vehicleExpr = args.getFirst().expression.getValue();
       return isDirectRider(vehicle, vehicleExpr) || isJointRider(vehicle, vehicleExpr);
     }
     return false;
   }
 
   private boolean isDirectRider(UserField vehicle, Expression vehicleExpr) {
-    return vehicleExpr instanceof FieldAccess && ((FieldAccess) vehicleExpr).field.getValue() == vehicle;
+    return vehicleExpr instanceof FieldAccess fa && fa.field.getValue() == vehicle;
   }
 
   private boolean isJointRider(UserField vehicle, Expression vehicleExpr) {
-    if (vehicleExpr instanceof MethodInvocation) {
-      MethodInvocation vehicleMethod = (MethodInvocation) vehicleExpr;
+    if (vehicleExpr instanceof MethodInvocation vehicleMethod) {
       if (vehicleMethod.expression.getValue() instanceof FieldAccess) {
         FieldAccess target = (FieldAccess) vehicleMethod.expression.getValue();
         return target.field.getValue() == vehicle;
@@ -1105,8 +1099,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public Statement[] getUndoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders) {
     Object instance = this.getInstanceInJavaVMForField(field);
     AbstractField vehicleField = null;
-    if (instance instanceof Rider) {
-      SThing vehicleInstance = ((Rider) instance).getVehicle();
+    if (instance instanceof Rider rider) {
+      SThing vehicleInstance = rider.getVehicle();
       vehicleField = this.getFieldForInstanceInJavaVM(vehicleInstance);
     }
     Statement[] setupStatements = SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance(), false);
@@ -1233,8 +1227,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   public MarkerImp getMarkerForField(UserField field) {
     Object obj = this.getInstanceInJavaVMForField(field);
-    if (obj instanceof SMarker) {
-      return ((SMarker) obj).getImplementation();
+    if (obj instanceof SMarker marker) {
+      return marker.getImplementation();
     }
     return null;
   }

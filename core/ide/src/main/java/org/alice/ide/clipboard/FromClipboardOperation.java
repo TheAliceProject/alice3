@@ -67,8 +67,7 @@ public abstract class FromClipboardOperation extends StatementInsertOperation {
   protected final Edit createEdit(UserActivity userActivity) {
     Node node = Clipboard.SINGLETON.peek();
     //todo: recast if necessary
-    if (node instanceof Statement) {
-      Statement statement = (Statement) node;
+    if (node instanceof Statement statement) {
       return this.createEdit(userActivity, statement);
     } else {
       throw new CancelException();

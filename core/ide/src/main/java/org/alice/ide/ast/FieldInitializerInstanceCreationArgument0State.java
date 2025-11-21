@@ -94,7 +94,7 @@ public class FieldInitializerInstanceCreationArgument0State extends StandardExpr
   }
 
   private AbstractParameter getRequiredParameter0() {
-    return this.instanceCreation.constructor.getValue().getRequiredParameters().get(0);
+    return this.instanceCreation.constructor.getValue().getRequiredParameters().getFirst();
   }
 
   @Override

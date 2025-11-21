@@ -73,7 +73,7 @@ public abstract class SourceImportValueCreator<S, R extends Resource> extends Im
     IDE.getActiveInstance().getProject().addResource(importedValue);
     ResourceExpression resourceExpression = new ResourceExpression(this.resourceCls, importedValue);
     JavaConstructor constructor = JavaConstructor.getInstance(this.sourceCls, this.resourceCls);
-    AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+    AbstractParameter parameter0 = constructor.getRequiredParameters().getFirst();
     SimpleArgument argument0 = new SimpleArgument(parameter0, resourceExpression);
     return new InstanceCreation(constructor, argument0);
   }

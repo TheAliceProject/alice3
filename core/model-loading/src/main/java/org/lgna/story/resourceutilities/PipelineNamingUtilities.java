@@ -1,16 +1,12 @@
 package org.lgna.story.resourceutilities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.SSwimmer;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+
+import java.util.*;
 
 public class PipelineNamingUtilities {
 
@@ -271,19 +267,19 @@ public class PipelineNamingUtilities {
       }
     }
     if (hasRight) {
-      nameParts.add(0, "RIGHT");
+      nameParts.addFirst("RIGHT");
     } else if (hasLeft) {
-      nameParts.add(0, "LEFT");
+      nameParts.addFirst("LEFT");
     }
     if (hasTop) {
-      nameParts.add(0, "TOP");
+      nameParts.addFirst("TOP");
     } else if (hasBottom) {
-      nameParts.add(0, "BOTTOM");
+      nameParts.addFirst("BOTTOM");
     }
     if (hasFront) {
-      nameParts.add(0, "FRONT");
+      nameParts.addFirst("FRONT");
     } else if (hasBack) {
-      nameParts.add(0, "BACK");
+      nameParts.addFirst("BACK");
     }
     return getEnumNameForNameParts(nameParts);
   }

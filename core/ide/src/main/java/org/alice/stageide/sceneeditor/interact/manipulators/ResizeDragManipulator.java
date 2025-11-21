@@ -43,8 +43,6 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Point;
-
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
@@ -58,6 +56,8 @@ import org.lgna.croquet.Application;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.ModelImp;
+
+import java.awt.Point;
 
 public class ResizeDragManipulator extends AbstractManipulator {
   private static final double RESIZE_SCALE = .005;
