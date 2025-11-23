@@ -42,9 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
-
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -63,7 +62,7 @@ public class JOptionPaneUtilities {
     JTextArea textArea = new JTextArea(text);
     textArea.setEditable(false);
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    JOptionPane.showMessageDialog(owner, new JScrollPaneCoveringLinuxPaintBug(textArea) {
+    JOptionPane.showMessageDialog(owner, new JScrollPane(textArea) {
       @Override
       public Dimension getPreferredSize() {
         Dimension rv = super.getPreferredSize();

@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
-
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -122,19 +120,16 @@ public class ScrollPane extends SwingComponentView<JScrollPane> {
     }
   }
 
-  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-    return new JScrollPaneCoveringLinuxPaintBug() {
+  @Override
+  protected final JScrollPane createAwtComponent() {
+    JScrollPane rv = new JScrollPane() {
       @Override
       public Dimension getPreferredSize() {
         Dimension rv1 = super.getPreferredSize();
         return constrainPreferredSizeIfNecessary(rv1);
       }
     };
-  }
 
-  @Override
-  protected final JScrollPane createAwtComponent() {
-    JScrollPane rv = this.createJScrollPane();
     rv.setOpaque(true);
     rv.setBorder(null);
     rv.setLayout(new RightToLeftFixScrollPanelLayout());
