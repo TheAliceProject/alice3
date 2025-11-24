@@ -318,22 +318,6 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
       map.put(reference, instance);
       instance.decode(this, map);
       return instance;
-
-      //
-      //
-      //todo?
-      //
-      //
-      //        Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-      //        java.lang.reflect.Constructor< E > cnstrctr;
-      //        try {
-      //          cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
-      //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
-      //        } catch( NoSuchMethodException nsme ) {
-      //          cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-      //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-      //          rv.decode( this, map );
-      //        }
     }
   }
 

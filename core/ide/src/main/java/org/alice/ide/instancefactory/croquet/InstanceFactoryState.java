@@ -228,7 +228,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
             locals.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(LocalAccessFactory.getInstance(local)), apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess(local)));
           }
         }
-        if ((!parameters.isEmpty()) || (!locals.isEmpty())) {
+        if (!parameters.isEmpty() || !locals.isEmpty()) {
           blankChildren.add(CascadeLineSeparator.getInstance());
           blankChildren.add(this.parametersVariablesConstantsSeparator);
           StringBuilder sb = new StringBuilder();

@@ -142,7 +142,7 @@ public enum NebulousStorytellingResources {
       resourcePaths = findSimsBundles();
     }
     int loaded = loadSimsBundlesFromPaths(resourcePaths);
-    if ((loaded == 0) && (simsPathsLoaded.isEmpty())) {
+    if (loaded == 0 && simsPathsLoaded.isEmpty()) {
       //Clear previously cached info
       clearSimsResourceInfo();
       File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -159,23 +159,23 @@ public enum NebulousStorytellingResources {
         loaded = loadSimsBundlesFromPaths(resourcePaths);
       }
     }
-    if ((loaded == 0) && (simsPathsLoaded.isEmpty())) {
+    if (loaded == 0 && simsPathsLoaded.isEmpty()) {
       clearSimsResourceInfo();
       StringBuilder sb = new StringBuilder();
       sb.append("Cannot find The Sims (TM) 2 Art Assets.");
-      if ((resourcePaths == null) || (resourcePaths.isEmpty())) {
+      if (resourcePaths.isEmpty()) {
         sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
       } else {
         sb.append("\nSearched in ");
         String separator = "";
         for (File path : resourcePaths) {
-          sb.append(separator + "'" + path + "'");
-          if (separator.length() == 0) {
+          sb.append(separator).append("'").append(path).append("'");
+          if (separator.isEmpty()) {
             separator = ", ";
           }
         }
         String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
-        sb.append("\nVerify that " + phrase + " and verify that Alice is properly installed.");
+        sb.append("\nVerify that ").append(phrase).append(" and verify that Alice is properly installed.");
       }
       JOptionPane.showMessageDialog(null, sb.toString());
 
