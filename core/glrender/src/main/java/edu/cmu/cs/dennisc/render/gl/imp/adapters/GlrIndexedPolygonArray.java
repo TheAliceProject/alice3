@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -129,13 +130,15 @@ public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> exte
 
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
-    if (subElement != -1) {
-      int[] polygonData = owner.polygonData.getValueAsArray();
-      int index = subElement * indicesPerPolygon;
-      if ((0 <= index) && (index < polygonData.length)) {
-        Vertex v = accessVertexAt(polygonData[index]);
-        return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, v.position.x(), v.position.y(), v.position.z(), v.normal.x(), v.normal.y(), v.normal.z());
-      }
+    if (subElement == -1) {
+      return Point3.NaN;
+    }
+    int[] polygonData = owner.polygonData.getValueAsArray();
+    int index = subElement * indicesPerPolygon;
+    if ((0 <= index) && (index < polygonData.length)) {
+      Vertex v = accessVertexAt(polygonData[index]);
+      Vector3 normal = new Vector3(v.normal.x(), v.normal.y(), v.normal.z());
+      return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, v.position, normal);
     }
     return Point3.NaN;
   }

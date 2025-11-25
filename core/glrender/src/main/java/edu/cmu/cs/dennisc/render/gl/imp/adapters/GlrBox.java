@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Box;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector3;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,42 +150,38 @@ public class GlrBox extends GlrShape<Box> {
 
   @Override
   public Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement) {
-    double oX = 0;
-    double oY = 0;
-    double oZ = 0;
-    double dX = 0;
-    double dY = 0;
-    double dZ = 0;
+    Point3 position;
+    Vector3 direction;
     switch (subElement) {
       case 0 -> {
-        oX = this.xMin;
-        dX = -1;
+        position = new Point3(xMin, 0, 0);
+        direction = Vector3.NEGATIVE_X_AXIS;
       }
       case 1 -> {
-        oX = this.xMax;
-        dX = 1;
+        position = new Point3(xMax, 0, 0);
+        direction = Vector3.POSITIVE_X_AXIS;
       }
       case 2 -> {
-        oY = this.yMin;
-        dY = -1;
+        position = new Point3(0, yMin, 0);
+        direction = Vector3.NEGATIVE_Y_AXIS;
       }
       case 3 -> {
-        oY = this.yMax;
-        dY = 1;
+        position = new Point3(0, yMax, 0);
+        direction = Vector3.POSITIVE_Y_AXIS;
       }
       case 4 -> {
-        oZ = this.zMin;
-        dZ = -1;
+        position = new Point3(0, 0, zMin);
+        direction = Vector3.NEGATIVE_Z_AXIS;
       }
       case 5 -> {
-        oZ = this.zMax;
-        dZ = 1;
+        position = new Point3(0, 0, zMax);
+        direction = Vector3.POSITIVE_Z_AXIS;
       }
       default -> {
         return Point3.NaN;
       }
     }
-    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, oX, oY, oZ, dX, dY, dZ);
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, position, direction);
   }
 
   @Override

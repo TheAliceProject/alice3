@@ -131,45 +131,9 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       }
     }
 
-    Point3 cylinderPosition = new Point3(0, 0, 0);
-    Vector3 cylinderDirection = new Vector3(0, 0, 0);
-    Point3 cylinderTopPosition = new Point3(0, 0, 0);
-
-    switch (bottomToTopAxis) {
-      case POSITIVE_X -> {
-        cylinderPosition = new Point3(bottomValue, 0, 0);
-        cylinderDirection = new Vector3(1, 0, 0);
-        cylinderTopPosition = new Point3(topValue, 0, 0);
-      }
-      case POSITIVE_Y -> {
-        cylinderPosition = new Point3(0, bottomValue, 0);
-        cylinderDirection = new Vector3(0, 1, 0);
-        cylinderTopPosition = new Point3(0, topValue, 0);
-      }
-      case POSITIVE_Z -> {
-        cylinderPosition = new Point3(0, 0, bottomValue);
-        cylinderDirection = new Vector3(0, 0, 1);
-        cylinderTopPosition = new Point3(0, 0, topValue);
-      }
-      case NEGATIVE_X -> {
-        cylinderPosition = new Point3(-bottomValue, 0, 0);
-        cylinderDirection = new Vector3(-1, 0, 0);
-        cylinderTopPosition = new Point3(-topValue, 0, 0);
-      }
-      case NEGATIVE_Y -> {
-        cylinderPosition = new Point3(0, -bottomValue, 0);
-        cylinderDirection = new Vector3(0, -1, 0);
-        cylinderTopPosition = new Point3(0, -topValue, 0);
-      }
-      case NEGATIVE_Z -> {
-        cylinderPosition = new Point3(0, 0, -bottomValue);
-        cylinderDirection = new Vector3(0, 0, -1);
-        cylinderTopPosition = new Point3(0, 0, -topValue);
-      }
-      default ->
-        //todo?
-          throw new RuntimeException();
-    }
+    Vector3 cylinderDirection = bottomToTopAxis.getVector();
+    Point3 cylinderPosition = cylinderDirection.asPoint().times(bottomValue);
+    Point3 cylinderTopPosition = cylinderDirection.asPoint().times(topValue);
     double maxRadius = Math.max(this.bottomRadius, this.topRadius);
     cylinderPosition = m.transform(cylinderPosition);
     cylinderDirection = m.transform(cylinderDirection);
