@@ -66,8 +66,7 @@ public abstract class AbstractTabComposite<V extends CompositeView<?, ?>> extend
 
   @Override
   protected ScrollPane createScrollPaneIfDesired() {
-    ScrollPane rv = new ScrollPane();
-    return rv;
+    return new ScrollPane();
   }
 
   @Override

@@ -496,12 +496,7 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   }
 
   public void requestFocusLater() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        requestFocus();
-      }
-    });
+    SwingUtilities.invokeLater(this::requestFocus);
   }
 
   @Deprecated
