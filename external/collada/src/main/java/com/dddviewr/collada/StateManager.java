@@ -12,7 +12,7 @@ public class StateManager extends DefaultHandler {
   protected Collada collada;
 
   public void characters(char[] ch, int start, int length) throws SAXException {
-    if (!(this.states.isEmpty())) {
+    if (!this.states.isEmpty()) {
       ((State) this.states.peek()).characters(ch, start, length);
     }
   }

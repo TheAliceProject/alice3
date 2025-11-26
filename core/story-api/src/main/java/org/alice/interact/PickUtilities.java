@@ -163,7 +163,7 @@ public class PickUtilities {
         pickTypes.add(PickHint.PickType.JOINT);
       }
     }
-    if (pickTypes.size() == 0) {
+    if (pickTypes.isEmpty()) {
       return new PickHint();
     } else {
       return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));

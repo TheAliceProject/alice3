@@ -277,7 +277,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
         }
       }
       List<HairColorNameHairCombo> hairColorNameHairCombos = hairHatStyle.getHairColorNameHairCombos();
-      if (hairColorNameHairCombos.size() > 0) {
+      if (!hairColorNameHairCombos.isEmpty()) {
         HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.getFirst();
         if (hairColorNameHairCombo != null) {
           return hairColorNameHairCombo.getHair();

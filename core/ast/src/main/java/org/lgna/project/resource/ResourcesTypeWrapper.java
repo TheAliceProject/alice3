@@ -99,7 +99,7 @@ public class ResourcesTypeWrapper {
   }
 
   public ResourcesTypeWrapper(Set<Resource> resources) {
-    if ((resources != null) && (resources.size() > 0)) {
+    if (resources != null && !resources.isEmpty()) {
       this.type = new NamedUserType();
       this.type.name.setValue(getTypeName());
       this.type.superType.setValue(JavaType.OBJECT_TYPE);

@@ -141,7 +141,7 @@ public abstract class State<T> extends AbstractCompletionModel {
     for (ValueListener<T> valueListener : this.oldSchoolValueListeners) {
       valueListener.changed(this, prevValue, nextValue);
     }
-    if (this.newSchoolValueListeners.size() > 0) {
+    if (!this.newSchoolValueListeners.isEmpty()) {
       ValueEvent<T> e = ValueEvent.createInstance(prevValue, nextValue, isAdjusting);
       for (org.lgna.croquet.event.ValueListener<T> valueListener : this.newSchoolValueListeners) {
         valueListener.valueChanged(e);

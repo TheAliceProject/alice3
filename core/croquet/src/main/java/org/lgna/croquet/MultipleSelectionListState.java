@@ -191,7 +191,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   //  }
   //  }
   private void fireChanged(List<T> nextValue) {
-    if (this.newSchoolValueListeners.size() > 0) {
+    if (!this.newSchoolValueListeners.isEmpty()) {
       ValueEvent<List<T>> e = ValueEvent.createInstance(nextValue);
       for (ValueListener<List<T>> valueListener : this.newSchoolValueListeners) {
         valueListener.valueChanged(e);

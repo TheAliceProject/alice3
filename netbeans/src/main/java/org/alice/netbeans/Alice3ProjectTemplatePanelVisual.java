@@ -177,7 +177,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel {
       chooser.setDialogTitle("Select Project Location");
       chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       String path = this.projectLocationTextField.getText();
-      if (path.length() > 0) {
+      if (!path.isEmpty()) {
         File f = new File(path);
         if (f.exists()) {
           chooser.setSelectedFile(f);
@@ -221,7 +221,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel {
       chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       chooser.setCurrentDirectory(getMyProjectsDirectory());
       String path = this.aliceWorldLocationTextField.getText();
-      if (path.length() > 0) {
+      if (!path.isEmpty()) {
         File f = new File(path);
         if (f.exists()) {
           chooser.setSelectedFile(f);
@@ -280,7 +280,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel {
 
   boolean valid(WizardDescriptor wizardDescriptor) {
     String aliceFile = aliceWorldLocationTextField.getText().trim();
-    if (aliceFile.length() == 0) {
+    if (aliceFile.isEmpty()) {
       //this.aliceWorldLocationLabel.setForeground(Color.RED);
       // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Alice Project Location is not set yet.");
@@ -294,7 +294,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel {
       return false;
     }
 
-    if (projectNameTextField.getText().length() == 0) {
+    if (projectNameTextField.getText().isEmpty()) {
       // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_ERROR_MESSAGE:
       // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Name is not a valid folder name.");

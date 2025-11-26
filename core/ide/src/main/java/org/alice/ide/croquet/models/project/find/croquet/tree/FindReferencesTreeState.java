@@ -187,7 +187,7 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
   }
 
   public boolean isEmpty() {
-    return root.getChildren().size() > 0;
+    return !root.getChildren().isEmpty();
   }
 
   public SearchTreeNode getTopValue() {

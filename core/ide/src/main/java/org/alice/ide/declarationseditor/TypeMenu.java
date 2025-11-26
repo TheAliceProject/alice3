@@ -150,10 +150,10 @@ public class TypeMenu extends MenuModel {
       }
     }
 
-    if (procedureModels.size() > 0) {
+    if (!procedureModels.isEmpty()) {
       procedureModels.addFirst(ProceduresSeparator.getInstance());
     }
-    if (functionModels.size() > 0) {
+    if (!functionModels.isEmpty()) {
       functionModels.addFirst(FunctionsSeparator.getInstance());
     }
 
@@ -188,7 +188,7 @@ public class TypeMenu extends MenuModel {
 
     if (IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields(type)) {
       models.add(SEPARATOR);
-      if (managedFieldModels.size() > 0) {
+      if (!managedFieldModels.isEmpty()) {
         models.add(ManagedFieldsSeparator.getInstance());
         models.addAll(managedFieldModels);
       }
@@ -197,12 +197,11 @@ public class TypeMenu extends MenuModel {
     }
 
     models.add(SEPARATOR);
-    if ((unmanagedFieldModels.size() > 0) || (managedFieldModels.size() > 0)) {
-      if (managedFieldModels.size() > 0) {
-        models.add(UnmanagedFieldsSeparator.getInstance());
-      } else {
-        models.add(FieldsSeparator.getInstance());
-      }
+    if (!managedFieldModels.isEmpty()) {
+      models.add(UnmanagedFieldsSeparator.getInstance());
+      models.addAll(unmanagedFieldModels);
+    } else if (!unmanagedFieldModels.isEmpty()) {
+      models.add(FieldsSeparator.getInstance());
       models.addAll(unmanagedFieldModels);
     }
     models.add(AddUnmanagedFieldComposite.getInstance(type).getLaunchOperation().getMenuItemPrepModel());

@@ -148,7 +148,7 @@ public class Solver {
 
   public JacobianAndInverse prepareAndCalculateJacobianAndInverse() {
     prepareConstraints();
-    if (constraints.size() == 0) {
+    if (constraints.isEmpty()) {
       System.out.println("no constraints!");
       return null;
     }

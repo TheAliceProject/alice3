@@ -129,7 +129,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
     //Loop through a list of the joints and build new JointIds from them
     LinkedList<ModelManifest.Joint> jointsToProcess = new LinkedList<>(manifestJoints);
-    while (jointsToProcess.size() > 0) {
+    while (!jointsToProcess.isEmpty()) {
       ModelManifest.Joint currentJoint = jointsToProcess.pop();
       //If we already have a JointId for the parent or the parent is null, make a new JointId and add it to the newJoints list and the jointMap
       if (currentJoint.parent == null || jointMap.containsKey(currentJoint.parent)) {

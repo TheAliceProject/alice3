@@ -148,7 +148,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   @Override
   public void handlePreActivation() {
     List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists(code);
-    this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly(argumentLists.size() == 0);
+    this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly(argumentLists.isEmpty());
     super.handlePreActivation();
   }
 

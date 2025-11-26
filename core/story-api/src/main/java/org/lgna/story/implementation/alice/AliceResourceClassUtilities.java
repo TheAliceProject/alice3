@@ -165,7 +165,7 @@ public class AliceResourceClassUtilities {
       }
       sb.append(s.charAt(i));
     }
-    if (sb.length() > 0) {
+    if (!sb.isEmpty()) {
       split.add(sb.toString());
     }
     return split;
@@ -187,7 +187,7 @@ public class AliceResourceClassUtilities {
     for (String s : nameParts) {
       List<String> capitalSplit = splitOnCapitalsAndNumbers(s);
       for (String subS : capitalSplit) {
-        if (subS.length() > 0) {
+        if (!subS.isEmpty()) {
           strings.add(subS);
         }
       }

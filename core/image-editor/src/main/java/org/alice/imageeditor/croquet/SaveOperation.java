@@ -75,7 +75,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 
   @Override
   protected boolean hasNext(List<UserActivity> finishedSteps) {
-    if (finishedSteps.size() == 0) {
+    if (finishedSteps.isEmpty()) {
       this.file = this.owner.getFile();
       return this.file == null || this.file.exists();
     } else {

@@ -73,7 +73,7 @@ public class TimeLine {
   private KeyFrameData selectedKeyFrame;
 
   public void addKeyFrameData(KeyFrameData keyFrameData) {
-    if (datas.size() == 0) {
+    if (datas.isEmpty()) {
       datas.add(keyFrameData);
       fireKeyFrameAdded(keyFrameData);
       checkAddingJoints(keyFrameData);
@@ -148,7 +148,7 @@ public class TimeLine {
 
   public void setEndTime(double endTime) {
     if (endTime > 0) {
-      if ((datas.size() == 0) || (endTime > datas.getLast().getEventTime())) {
+      if ((datas.isEmpty()) || (endTime > datas.getLast().getEventTime())) {
         this.endTime = endTime;
         fireEndTimeChanged(endTime);
         if (this.endTime < currentTime) {

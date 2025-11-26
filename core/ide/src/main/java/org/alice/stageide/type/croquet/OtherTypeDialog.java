@@ -145,14 +145,12 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
     public void valueChanged(ValueEvent<List<UserField>> e) {
       List<UserField> fields = e.getNextValue();
       TypeNode sharedNode = null;
-      if (!fields.isEmpty()) {
-        for (UserField field : fields) {
-          TypeNode typeNode = typeNodeMap.get(field.getValueType());
-          if (sharedNode != null) {
-            sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
-          } else {
-            sharedNode = typeNode;
-          }
+      for (UserField field : fields) {
+        TypeNode typeNode = typeNodeMap.get(field.getValueType());
+        if (sharedNode != null) {
+          sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
+        } else {
+          sharedNode = typeNode;
         }
       }
       isInTheMidstOfLowestCommonAncestorSetting = true;

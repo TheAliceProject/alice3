@@ -62,20 +62,15 @@ public class JointedTypeInfo {
   private static Map<AbstractType<?, ?, ?>, JointedTypeInfo> map = Maps.newHashMap();
 
   public static JointedTypeInfo getDeclarationInstance(AbstractType<?, ?, ?> type) {
-    if (JOINTED_MODEL_TYPE.isAssignableFrom(type)) {
-      JointedTypeInfo rv = map.get(type);
-      if (rv == null) {
-        rv = new JointedTypeInfo(type);
-        JointedTypeInfo.map.put(type, rv);
-      }
-      if (rv.jointGetters.size() > 0) {
-        return rv;
-      } else {
-        return null;
-      }
-    } else {
+    if (!JOINTED_MODEL_TYPE.isAssignableFrom(type)) {
       return null;
     }
+    JointedTypeInfo rv = map.get(type);
+    if (rv == null) {
+      rv = new JointedTypeInfo(type);
+      JointedTypeInfo.map.put(type, rv);
+    }
+    return rv.jointGetters.isEmpty() ? null : rv;
   }
 
   public static List<JointedTypeInfo> getInstances(AbstractType<?, ?, ?> type) {
@@ -93,7 +88,7 @@ public class JointedTypeInfo {
 
   public static boolean isDeclarationJointed(AbstractType<?, ?, ?> type) {
     JointedTypeInfo info = getDeclarationInstance(type);
-    return (info != null) && (info.jointGetters.size() > 0);
+    return (info != null) && (!info.jointGetters.isEmpty());
   }
 
   public static boolean isJointed(AbstractType<?, ?, ?> type) {

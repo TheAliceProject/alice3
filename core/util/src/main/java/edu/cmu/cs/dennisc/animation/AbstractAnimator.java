@@ -120,10 +120,8 @@ public abstract class AbstractAnimator implements Animator {
           animated.applyAnimation();
         }
       }
-      if (!this.frameObservers.isEmpty()) {
-        for (FrameObserver frameObserver : this.frameObservers) {
-          frameObserver.update(tCurrent);
-        }
+      for (FrameObserver frameObserver : this.frameObservers) {
+        frameObserver.update(tCurrent);
       }
     }
 
@@ -203,10 +201,8 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   public void completeFrameObservers() {
-    if (this.frameObservers.size() > 0) {
-      for (FrameObserver frameObserver : this.frameObservers) {
-        frameObserver.complete();
-      }
+    for (FrameObserver frameObserver : this.frameObservers) {
+      frameObserver.complete();
     }
   }
 

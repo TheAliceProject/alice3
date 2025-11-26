@@ -55,7 +55,7 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class ZTreeNode<T> implements TreeNode {
-  private static enum IsLeaf {
+  private enum IsLeaf {
     TRUE, FALSE
   }
 
@@ -89,7 +89,7 @@ public final class ZTreeNode<T> implements TreeNode {
 
     //for pruning
     public boolean isEmpty() {
-      return this.childBuilders != null ? this.childBuilders.size() == 0 : true;
+      return childBuilders == null || childBuilders.isEmpty();
     }
 
     public ZTreeNode<T> build() {
@@ -149,7 +149,7 @@ public final class ZTreeNode<T> implements TreeNode {
 
   @Override
   public boolean getAllowsChildren() {
-    return this.isLeaf() == false;
+    return !this.isLeaf();
   }
 
   @Override

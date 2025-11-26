@@ -77,7 +77,7 @@ public class ArgumentListPropertyPane extends AbstractArgumentListPropertyPane {
     rv.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Alice.Block.foreground"), 1));
 
     String parameterName = FormatterState.getInstance().getValue().getNameForDeclaration(argument.parameter.getValue());
-    if ((parameterName != null) && (parameterName.length() > 0)) {
+    if ((parameterName != null) && !parameterName.isEmpty()) {
       Label l = new Label(parameterName + ": ", TextPosture.OBLIQUE, TextWeight.LIGHT);
       l.setBorder(Theme.BLOCK_BORDER);
       l.setForegroundColor(UIManager.getColor("Alice.Block.contrastForeground"));

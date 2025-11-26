@@ -199,7 +199,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
     public void appendDoStatements(EditCustomization editCustomization, UserField field, Expression expression) {
       MethodInvocation setterInvocation = SetUpMethodGenerator.createSetterInvocation(false, field, setter, expression);
-      if (setDimensionPolicyMethods.size() == 0) {
+      if (setDimensionPolicyMethods.isEmpty()) {
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setWidth", Number.class, SetWidth.Detail[].class));
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setHeight", Number.class, SetHeight.Detail[].class));
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setDepth", Number.class, SetDepth.Detail[].class));

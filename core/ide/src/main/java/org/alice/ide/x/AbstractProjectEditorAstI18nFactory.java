@@ -115,7 +115,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
     if (IS_FORMATTER_READY_FOR_PRIME_TIME) {
       Formatter formatter = FormatterState.getInstance().getValue();
       String headerText = formatter.getHeaderTextForCode(code);
-      if ((headerText != null) && (headerText.length() > 0)) {
+      if ((headerText != null) && !headerText.isEmpty()) {
         Page page = new Page(headerText);
         this.declarationNameFontScale = 1.8f;
         try {

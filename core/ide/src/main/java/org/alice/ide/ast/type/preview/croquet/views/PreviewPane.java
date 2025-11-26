@@ -75,17 +75,17 @@ public class PreviewPane extends MigPanel {
     MigPanel panel = new MigPanel(null, "fillx, insets 0");
 
     List<MemberHub<UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
-    if (procedureHubs.size() > 0) {
+    if (!procedureHubs.isEmpty()) {
       panel.addComponent(new MembersSubPane<UserMethod>("procedures", UIManager.getColor("Alice.Procedure.color"), procedureHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
-    if (functionHubs.size() > 0) {
+    if (!functionHubs.isEmpty()) {
       panel.addComponent(new MembersSubPane<UserMethod>("functions", UIManager.getColor("Alice.Function.color"), functionHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
-    if (fieldHubs.size() > 0) {
+    if (!fieldHubs.isEmpty()) {
       panel.addComponent(new MembersSubPane<UserField>("properties", UIManager.getColor("Alice.Field.color"), fieldHubs), "gap 8, grow, shrink, wrap");
     }
 

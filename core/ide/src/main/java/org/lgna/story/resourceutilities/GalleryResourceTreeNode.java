@@ -90,7 +90,7 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
 
   @Override
   public boolean isLeaf() {
-    return this.children.size() == 0;
+    return this.children.isEmpty();
   }
 
   @Override

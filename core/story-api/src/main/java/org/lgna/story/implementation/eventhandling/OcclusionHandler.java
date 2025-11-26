@@ -64,7 +64,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
 
   public void addOcclusionEventListener(Object occlusionEventListener, List<SModel> groupA, List<SModel> groupB, MultipleEventPolicy policy) {
     startTrackingListener(occlusionEventListener, groupA, groupB, policy);
-    if ((groupA.size() > 0) && (groupA.getFirst() != null) && (camera == null)) {
+    if (!groupA.isEmpty() && groupA.getFirst() != null && camera == null) {
       camera = groupA.getFirst().getImplementation().getScene().findFirstCamera();
       camera.getSgComposite().addAbsoluteTransformationListener(this);
     }
@@ -106,7 +106,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
     final Map<SModel, Set<Object>> thingsToOcclude = interactionListeners.get(changedModel);
     for (SModel model : thingsToOcclude.keySet()) {
       Set<Object> listeners = thingsToOcclude.get(model);
-      if ((listeners == null) || (listeners.size() == 0)) {
+      if (listeners == null || listeners.isEmpty()) {
         break;
       }
       boolean doTheseOcclude = AabbOcclusionDetector.doTheseOcclude(camera, changedModel, model);

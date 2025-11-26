@@ -87,7 +87,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
   @Override
   protected void handleReleased() {
     super.handleReleased();
-    if (this.renderContexts.size() > 0) {
+    if (!this.renderContexts.isEmpty()) {
       RenderContext[] renderContexts = new RenderContext[this.renderContexts.size()];
       this.renderContexts.toArray(renderContexts);
       for (RenderContext rc : renderContexts) {

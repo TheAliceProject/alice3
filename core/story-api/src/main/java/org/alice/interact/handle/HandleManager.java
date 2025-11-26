@@ -194,7 +194,7 @@ public class HandleManager implements ManipulationListener {
   }
 
   public AbstractTransformable getSelectedObject() {
-    if (this.handles.size() == 0) {
+    if (this.handles.isEmpty()) {
       return null;
     } else {
       AbstractTransformable selected = this.handles.getFirst().getManipulatedObject();

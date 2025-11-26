@@ -351,11 +351,9 @@ public abstract class ExpressionCascadeManager {
         }
       }
     }
-    if (arrayLengthFillIns != null) {
-      if (arrayLengthFillIns.size() > 0) {
-        blankChildren.add(ArrayLengthSeparator.getInstance());
-        blankChildren.addAll(arrayLengthFillIns);
-      }
+    if (arrayLengthFillIns != null && !arrayLengthFillIns.isEmpty()) {
+      blankChildren.add(ArrayLengthSeparator.getInstance());
+      blankChildren.addAll(arrayLengthFillIns);
     }
   }
 

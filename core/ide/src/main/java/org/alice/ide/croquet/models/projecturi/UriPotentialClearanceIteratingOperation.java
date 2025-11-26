@@ -67,7 +67,7 @@ public abstract class UriPotentialClearanceIteratingOperation extends PotentialC
     if (uriProjectPair != null) {
       ProjectApplication.getActiveInstance().loadProject(activity, uriProjectPair);
     }
-    if (subSteps.size() > 0) {
+    if (!subSteps.isEmpty()) {
       UriProjectLoader value = (UriProjectLoader) subSteps.getLast().getProducedValue();
       Logger.outln(value);
     }

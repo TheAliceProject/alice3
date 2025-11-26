@@ -153,7 +153,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           isSeparatorDesired = true;
         }
 
-        if (orphans.size() > 0) {
+        if (!orphans.isEmpty()) {
           nextItems.add(null);
           nextItems.addAll(orphans);
         }

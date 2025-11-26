@@ -279,7 +279,7 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   }
 
   private static Rectangle getRowBounds(List<Component> row) {
-    if (row.size() > 0) {
+    if (!row.isEmpty()) {
       Rectangle rv = null;
       for (Component awtComponent : row) {
         Rectangle bounds = awtComponent.getBounds();
