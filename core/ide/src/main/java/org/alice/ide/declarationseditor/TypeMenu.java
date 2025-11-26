@@ -197,12 +197,11 @@ public class TypeMenu extends MenuModel {
     }
 
     models.add(SEPARATOR);
-    if ((!unmanagedFieldModels.isEmpty()) || (!managedFieldModels.isEmpty())) {
-      if (!managedFieldModels.isEmpty()) {
-        models.add(UnmanagedFieldsSeparator.getInstance());
-      } else {
-        models.add(FieldsSeparator.getInstance());
-      }
+    if (!managedFieldModels.isEmpty()) {
+      models.add(UnmanagedFieldsSeparator.getInstance());
+      models.addAll(unmanagedFieldModels);
+    } else if (!unmanagedFieldModels.isEmpty()) {
+      models.add(FieldsSeparator.getInstance());
       models.addAll(unmanagedFieldModels);
     }
     models.add(AddUnmanagedFieldComposite.getInstance(type).getLaunchOperation().getMenuItemPrepModel());
