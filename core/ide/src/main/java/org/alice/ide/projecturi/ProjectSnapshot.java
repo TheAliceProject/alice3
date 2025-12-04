@@ -74,7 +74,7 @@ public class ProjectSnapshot {
   }
 
   public boolean hasValidUri() {
-    return uri != null && TemplateUriState.SCHEME.equals(uri.getScheme());
+    return uri != null && TemplateUriState.BLANK_SCHEME.equals(uri.getScheme());
   }
 
   public TemplateUriState.Template getUriFragment() {
@@ -91,8 +91,8 @@ public class ProjectSnapshot {
   @Override
   public boolean equals(Object obj) {
     return this == obj
-        || (obj instanceof ProjectSnapshot
-        && (uri == ((ProjectSnapshot) obj).uri || uri.equals(((ProjectSnapshot) obj).uri)));
+        || (obj instanceof ProjectSnapshot ps
+        && (uri == ps.uri || uri.equals(ps.uri)));
   }
 
   @Override

@@ -42,15 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddFunctionComposite;
 
+import javax.swing.UIManager;
+
 /**
+ * Popup window for creating a new function
  * @author Dennis Cosgrove
  */
 public class AddFunctionView extends AddMethodView {
   public AddFunctionView(AddFunctionComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.color"));
   }
 }

@@ -57,12 +57,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
   private static InitializingIfAbsentMap<UserType<?>, AddProcedureComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddProcedureComposite getInstance(UserType<?> declaringType) {
-    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddProcedureComposite>() {
-      @Override
-      public AddProcedureComposite initialize(UserType<?> declaringType) {
-        return new AddProcedureComposite(declaringType);
-      }
-    });
+    return map.get(declaringType, AddProcedureComposite::new);
   }
 
   private AddProcedureComposite(UserType<?> declaringType) {

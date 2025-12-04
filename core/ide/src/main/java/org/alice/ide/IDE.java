@@ -117,9 +117,7 @@ public abstract class IDE extends ProjectApplication {
   static {
     IDE.exceptionHandler = new DefaultExceptionHandler();
 
-    if (SystemUtilities.isPropertyTrue("org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired")) {
-      //pass
-    } else {
+    if (!SystemUtilities.isPropertyTrue("org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired")) {
       Thread.setDefaultUncaughtExceptionHandler(IDE.exceptionHandler);
     }
   }
@@ -161,7 +159,7 @@ public abstract class IDE extends ProjectApplication {
     String forcedLocaleString = System.getProperty("org.alice.ide.locale");
     Locale forcedLocale = null;
     if (forcedLocaleString != null) {
-      forcedLocale = new Locale(forcedLocaleString);
+      forcedLocale = Locale.of(forcedLocaleString);
     }
     if (forcedLocale != null) {
       Application.getActiveInstance().setLocale(forcedLocale);
@@ -258,7 +256,7 @@ public abstract class IDE extends ProjectApplication {
       UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler(unacceptableFields);
       initializer.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
       List<FieldAccess> fieldAccesses = crawler.getList();
-      if (fieldAccesses.size() > 0) {
+      if (!fieldAccesses.isEmpty()) {
         fieldToMoveToTheEnd = field;
         accessesForFieldToMoveToTheEnd = fieldAccesses;
         break;
@@ -440,6 +438,11 @@ public abstract class IDE extends ProjectApplication {
       this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened, false));
       projectFileToLoadOnWindowOpened = null;
     }
+
+    if (loadNewProjectBackup()) {
+      return;
+    }
+
     if (getUri() == null) {
       setPerspective(getDocumentFrame().getNoProjectPerspective());
       WindowEventTrigger.setOnUserActivity(activity, e);
@@ -450,7 +453,7 @@ public abstract class IDE extends ProjectApplication {
   @Override
   protected void handleOpenFiles(List<File> files) {
     if (files != null && !files.isEmpty()) {
-      File file = files.get(0);
+      File file = files.getFirst();
       if (file.exists()) {
         UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
         new OpenProjectFromOsOperation(file).fire(activity);

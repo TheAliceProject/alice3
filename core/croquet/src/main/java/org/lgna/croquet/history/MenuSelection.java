@@ -45,11 +45,7 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.MenuBarComposite;
-import org.lgna.croquet.MenuItemPrepModel;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.Operation;
+import org.lgna.croquet.*;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuBar;
@@ -81,8 +77,8 @@ public class MenuSelection {
   private static JMenuBar getJMenuBarOrigin(MenuElement[] menuElements) {
     if (menuElements.length > 0) {
       MenuElement menuElement0 = menuElements[0];
-      if (menuElement0 instanceof JMenuBar) {
-        return (JMenuBar) menuElement0;
+      if (menuElement0 instanceof JMenuBar bar) {
+        return bar;
       }
     }
     return null;
@@ -123,20 +119,18 @@ public class MenuSelection {
       final int N = selectedPath.length;
       for (int i = i0; i < N; i++) {
         MenuElement menuElementI = selectedPath[i];
-        if (menuElementI instanceof JMenuItem) {
-          JMenuItem jMenuItem = (JMenuItem) menuElementI;
+        if (menuElementI instanceof JMenuItem jMenuItem) {
           AwtComponentView<?> component = AwtComponentView.lookup(jMenuItem);
-          if (component instanceof ViewController<?, ?>) {
-            ViewController<?, ?> viewController = (ViewController<?, ?>) component;
+          if (component instanceof ViewController<?, ?> viewController) {
             Model model = viewController.getModel();
             if (model != null) {
               MenuItemPrepModel menuItemPrepModel;
-              if (model instanceof MenuItemPrepModel) {
-                menuItemPrepModel = (MenuItemPrepModel) model;
-              } else if (model instanceof Operation) {
-                menuItemPrepModel = ((Operation) model).getMenuItemPrepModel();
-              } else if (model instanceof BooleanState) {
-                menuItemPrepModel = ((BooleanState) model).getMenuItemPrepModel();
+              if (model instanceof MenuItemPrepModel prepModel) {
+                menuItemPrepModel = prepModel;
+              } else if (model instanceof Operation operation) {
+                menuItemPrepModel = operation.getMenuItemPrepModel();
+              } else if (model instanceof BooleanState state) {
+                menuItemPrepModel = state.getMenuItemPrepModel();
               } else {
                 throw new RuntimeException(model.toString());
               }

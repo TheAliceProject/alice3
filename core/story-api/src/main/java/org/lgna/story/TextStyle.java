@@ -61,8 +61,7 @@ public enum TextStyle implements Say.Detail, Think.Detail {
 
   private static TextStyle getValue(Object[] details, TextStyle defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof TextStyle) {
-        TextStyle TextStyle = (TextStyle) detail;
+      if (detail instanceof TextStyle TextStyle) {
         return TextStyle;
       }
     }

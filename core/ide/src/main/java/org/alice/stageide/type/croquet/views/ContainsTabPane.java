@@ -45,22 +45,13 @@ package org.alice.stageide.type.croquet.views;
 import org.alice.stageide.type.croquet.ContainsTab;
 import org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.List;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.TextField;
-import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.Member;
 
 import javax.swing.BorderFactory;
 import javax.swing.KeyStroke;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 /**
  * @author Dennis Cosgrove
@@ -118,7 +109,7 @@ public class ContainsTabPane extends MigPanel {
 
     this.listView = tab.getMemberListState().createList();
     this.listView.setCellRenderer(new MemberCellRenderer());
-    ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.listView);
+    ScrollPane listScrollPane = new ScrollPane(listView, ScrollPane.VerticalScrollbarPolicy.ALWAYS, null);
 
     this.addComponent(new Label("<html>Search for a procedure or function<br>whose class you would like to select.</html>"), "wrap");
     this.addComponent(this.filterTextField, "growx, wrap");

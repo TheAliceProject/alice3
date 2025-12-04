@@ -59,9 +59,7 @@ public class CurrentProjectAttachment implements Attachment {
   private byte[] bytes = null;
 
   private void createBytesIfNecessary() {
-    if (this.isCreateAttempted) {
-      //pass
-    } else {
+    if (!this.isCreateAttempted) {
       try {
         IDE ide = IDE.getActiveInstance();
         Project project = ide.getUpToDateProject();

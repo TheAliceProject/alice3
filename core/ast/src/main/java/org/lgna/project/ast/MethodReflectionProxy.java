@@ -59,9 +59,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
           if (candidateParameterTypes.length == (desiredParameterTypes.length + 1)) {
             java.lang.reflect.Method rv = mthd;
             for (int i = 0; i < desiredParameterTypes.length; i++) {
-              if (candidateParameterTypes[i].equals(desiredParameterTypes[i])) {
-                //pass
-              } else {
+              if (!candidateParameterTypes[i].equals(desiredParameterTypes[i])) {
                 rv = null;
               }
             }

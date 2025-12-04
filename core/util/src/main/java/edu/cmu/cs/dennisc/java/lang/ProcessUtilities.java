@@ -46,19 +46,13 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ProcessUtilities {
   public static int startAndDrainStandardOutAndStandardError(ProcessBuilder processBuilder, StringBuilder sb) throws ProcessStartException, IOException {
-    if (processBuilder.redirectErrorStream()) {
-      //pass
-    } else {
+    if (!processBuilder.redirectErrorStream()) {
       Logger.outln("NOTE: redirecting error stream", processBuilder);
       processBuilder.redirectErrorStream(true);
     }
@@ -77,33 +71,5 @@ public class ProcessUtilities {
       }
     }
     return process.exitValue();
-  }
-
-  public static int startAndDrainStandardOutAndStandardError(ProcessBuilder processBuilder) throws ProcessStartException, IOException {
-    return startAndDrainStandardOutAndStandardError(processBuilder, null);
-  }
-
-  private static int startAndWaitFor(ProcessBuilder processBuilder, DrainInputStreamThread.LineAppender outLineAppender, DrainInputStreamThread.LineAppender errLineAppender) throws IOException, InterruptedException {
-    Process process = processBuilder.start();
-    CyclicBarrier barrier = new CyclicBarrier(3);
-    DrainInputStreamThread outputHandler = new DrainInputStreamThread(process.getInputStream(), outLineAppender, barrier);
-    outputHandler.start();
-    DrainInputStreamThread errorHandler = new DrainInputStreamThread(process.getErrorStream(), errLineAppender, barrier);
-    errorHandler.start();
-    int rv = process.waitFor();
-    try {
-      barrier.await();
-    } catch (BrokenBarrierException bbe) {
-      throw new RuntimeException(bbe);
-    }
-    return rv;
-  }
-
-  public static int startAndWaitFor(ProcessBuilder processBuilder, PrintStream out, PrintStream err) throws IOException, InterruptedException {
-    return startAndWaitFor(processBuilder, out != null ? new DrainInputStreamThread.PrintStreamLineAppender(out) : null, err != null ? new DrainInputStreamThread.PrintStreamLineAppender(err) : null);
-  }
-
-  public static int startAndWaitFor(ProcessBuilder processBuilder, List<String> out, List<String> err) throws IOException, InterruptedException {
-    return startAndWaitFor(processBuilder, out != null ? new DrainInputStreamThread.StringListLineAppender(out) : null, err != null ? new DrainInputStreamThread.StringListLineAppender(err) : null);
   }
 }

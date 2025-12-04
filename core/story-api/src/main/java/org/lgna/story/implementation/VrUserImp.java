@@ -45,11 +45,11 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
-import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
-import org.lgna.story.SVRUser;
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+import org.lgna.story.SVRUser;
 
 public class VrUserImp extends TransformableImp {
 

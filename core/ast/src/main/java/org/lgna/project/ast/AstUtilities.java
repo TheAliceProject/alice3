@@ -59,7 +59,6 @@ import org.lgna.project.code.ProcessableNode;
 import org.w3c.dom.Document;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -108,8 +107,7 @@ public class AstUtilities {
 
   public static Expression getJavaKeyedArgumentSubArgument0Expression(JavaKeyedArgument argument) {
     Expression expresssion = argument.expression.getValue();
-    if (expresssion instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expresssion;
+    if (expresssion instanceof MethodInvocation methodInvocation) {
       if (methodInvocation.requiredArguments.size() > 0) {
         return methodInvocation.requiredArguments.get(0).expression.getValue();
       } else {
@@ -118,53 +116,6 @@ public class AstUtilities {
     } else {
       throw new RuntimeException();
     }
-  }
-
-  private static boolean isValidMethod(java.lang.reflect.Method mthd, AbstractType<?, ?, ?> valueType) {
-    int modifiers = mthd.getModifiers();
-    if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
-      return valueType.isAssignableFrom(mthd.getReturnType());
-    } else {
-      return false;
-    }
-  }
-
-  public static Iterable<JavaMethod> getKeyMethods(AbstractParameter parameter) {
-    List<JavaMethod> rv = Lists.newLinkedList();
-    AbstractType<?, ?, ?> valueType = parameter.getValueType().getComponentType();
-    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
-    if (keywordFactoryType != null) {
-      Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
-      for (java.lang.reflect.Method mthd : cls.getMethods()) {
-        if (isValidMethod(mthd, valueType)) {
-          JavaMethod keyMethod = JavaMethod.getInstance(mthd);
-          rv.add(keyMethod);
-        }
-      }
-    }
-    return rv;
-  }
-
-  public static Iterable<JavaMethod> getKeyMethods(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
-    return getKeyMethods(argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter());
-  }
-
-  public static boolean isKeyedArgumentListPropertyComplete(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
-    for (JavaMethod method : getKeyMethods(argumentListProperty)) {
-      boolean isFound = false;
-      for (JavaKeyedArgument argument : argumentListProperty) {
-        if (argument.getKeyMethod() == method) {
-          isFound = true;
-          break;
-        }
-      }
-      if (isFound) {
-        //pass
-      } else {
-        return false;
-      }
-    }
-    return true;
   }
 
   private static List<JavaMethod> updatePersistentPropertyGetters(List<JavaMethod> rv, JavaType javaType) {
@@ -194,9 +145,7 @@ public class AstUtilities {
     while (true) {
       if (javaType != null) {
         updatePersistentPropertyGetters(rv, javaType);
-        if (javaType.isFollowToSuperClassDesired()) {
-          //pass
-        } else {
+        if (!javaType.isFollowToSuperClassDesired()) {
           break;
         }
         javaType = javaType.getSuperType();
@@ -311,8 +260,8 @@ public class AstUtilities {
     final int N = parameters.size();
     for (int i = 0; i < (N - 1); i++) {
       AbstractArgument argument = prevMethodInvocation.requiredArguments.get(i);
-      if (argument instanceof SimpleArgument) {
-        rv.requiredArguments.add(new SimpleArgument(parameters.get(i), ((SimpleArgument) argument).expression.getValue()));
+      if (argument instanceof SimpleArgument simpleArgument) {
+        rv.requiredArguments.add(new SimpleArgument(parameters.get(i), simpleArgument.expression.getValue()));
       } else {
         throw new RuntimeException();
       }
@@ -325,8 +274,8 @@ public class AstUtilities {
     rv.expression.setValue(instanceExpression);
     int i = 0;
     for (AbstractArgument argument : rv.requiredArguments) {
-      if (argument instanceof SimpleArgument) {
-        ((SimpleArgument) argument).expression.setValue(argumentExpressions[i]);
+      if (argument instanceof SimpleArgument simpleArgument) {
+        simpleArgument.expression.setValue(argumentExpressions[i]);
       } else {
         throw new RuntimeException();
       }
@@ -533,7 +482,7 @@ public class AstUtilities {
   public static <M extends AbstractMethod> M getSingleAbstractMethod(AbstractType<?, M, ?> type) {
     List<M> methods = type.getDeclaredMethods();
     assert methods.size() == 1 : type;
-    M singleAbstractMethod = methods.get(0);
+    M singleAbstractMethod = methods.getFirst();
     assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
     return singleAbstractMethod;
   }
@@ -545,9 +494,7 @@ public class AstUtilities {
     for (int i = 0; i < dstRequiredParameters.length; i++) {
       AbstractParameter srcRequiredParameter = srcRequiredParameters.get(i);
       String name = srcRequiredParameter.getName();
-      if ((name != null) && (name.length() > 0)) {
-        //pass
-      } else {
+      if (name == null || name.isEmpty()) {
         name = "p" + i;
       }
       dstRequiredParameters[i] = new UserParameter(name, srcRequiredParameter.getValueType());
@@ -570,14 +517,11 @@ public class AstUtilities {
   }
 
   public static boolean isAddEventListenerMethodInvocationStatement(Statement statement) {
-    if (statement instanceof ExpressionStatement) {
-      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+    if (statement instanceof ExpressionStatement expressionStatement) {
       Expression expression = expressionStatement.expression.getValue();
-      if (expression instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) expression;
+      if (expression instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
-        if (method instanceof JavaMethod) {
-          JavaMethod javaMethod = (JavaMethod) method;
+        if (method instanceof JavaMethod javaMethod) {
           return javaMethod.isAnnotationPresent(AddEventListenerTemplate.class);
         }
       }
@@ -637,11 +581,8 @@ public class AstUtilities {
     from.body.getValue().crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
     for (MethodInvocation methodInvocation : crawler.getList()) {
       AbstractMethod m = methodInvocation.method.getValue();
-      if (m instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) m;
-        if (set.contains(userMethod)) {
-          //pass
-        } else {
+      if (m instanceof UserMethod userMethod) {
+        if (!set.contains(userMethod)) {
           set.add(userMethod);
           addInvokedMethods(set, userMethod);
         }
@@ -665,9 +606,7 @@ public class AstUtilities {
     for (int i = 0; i < N; i++) {
       SimpleArgument argumentI = methodInvocation.requiredArguments.get(i);
       AbstractParameter parameterI = requiredParameters.get(i);
-      if (argumentI.parameter.getValue() == parameterI) {
-        //pass
-      } else {
+      if (argumentI.parameter.getValue() != parameterI) {
         methodInvocation.requiredArguments.set(i, new SimpleArgument(parameterI, argumentI.expression.getValue()));
       }
     }
@@ -682,10 +621,9 @@ public class AstUtilities {
 
   public static AbstractType<?, ?, ?> getDeclaringTypeIfMemberOrTypeItselfIfType(AbstractDeclaration declaration) {
     if (declaration != null) {
-      if (declaration instanceof AbstractType) {
-        return (AbstractType<?, ?, ?>) declaration;
-      } else if (declaration instanceof AbstractMember) {
-        AbstractMember member = (AbstractMember) declaration;
+      if (declaration instanceof AbstractType<?, ?, ?> type) {
+        return type;
+      } else if (declaration instanceof AbstractMember member) {
         return member.getDeclaringType();
       } else {
         throw new UnsupportedOperationException();

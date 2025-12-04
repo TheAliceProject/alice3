@@ -42,12 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * @author Dennis Cosgrove
@@ -78,9 +73,7 @@ public class InputStreamUtilities {
       int n = is.available();
       if (buffer != null) {
         // handle the previous iteration
-        if (baos != null) {
-          //pass
-        } else {
+        if (baos == null) {
           // it is the second iteration
           if (n > 0) {
             // more than one buffer so we use a ByteArrayOutputStream

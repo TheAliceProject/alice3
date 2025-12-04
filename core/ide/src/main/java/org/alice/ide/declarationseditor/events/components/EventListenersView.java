@@ -42,11 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
 import org.alice.ide.declarationseditor.CodeComposite;
@@ -63,35 +59,19 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserMethod;
 
-import javax.swing.BorderFactory;
-import javax.swing.JScrollBar;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 public class EventListenersView extends AbstractCodeDeclarationView {
   public EventListenersView(CodeComposite composite) {
     super(composite, new EventsContentPanel((UserMethod) composite.getDeclaration()));
+    this.setBackgroundColor(UIManager.getColor("Alice.Event.color"));
     PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
     LineAxisPanel bottom = new LineAxisPanel(button);
     this.stickyBottomPanel = new StickyBottomPanel();
     this.stickyBottomPanel.setBottomView(bottom);
-    //    this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
-    //      public void stateChanged( javax.swing.event.ChangeEvent e ) {
-    //        Object src = e.getSource();
-    //        if( src instanceof java.awt.Component ) {
-    //          java.awt.Component awtComponent = (java.awt.Component)src;
-    //          if( awtComponent.isValid() ) {
-    //            //pass
-    //          } else {
-    //            stickyBottomPanel.revalidateAndRepaint();
-    //          }
-    //        }
-    //      }
-    //    } );
-
-    this.stickyBottomPanel.setBackgroundColor(this.getBackgroundColor());
     this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
-    this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-    this.scrollPane.setBackgroundColor(this.getBackgroundColor());
+    this.setBorder(BorderFactory.createEmptyBorder(14, 8, 4, 8));
     this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());
   }
 
@@ -130,14 +110,12 @@ public class EventListenersView extends AbstractCodeDeclarationView {
 
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
-    //
   }
 
   @Override
   protected void handleUndisplayable() {
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
-    //
 
     CodeComposite codeComposite = (CodeComposite) this.getComposite();
     UserCode userCode = (UserCode) codeComposite.getDeclaration();
@@ -153,9 +131,7 @@ public class EventListenersView extends AbstractCodeDeclarationView {
       this.scrollPane.setViewportView(null);
       this.stickyBottomPanel.setTopView(codePanel);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.stickyBottomPanel.removeComponent(codePanel);
       }
       this.scrollPane.setViewportView(codePanel);

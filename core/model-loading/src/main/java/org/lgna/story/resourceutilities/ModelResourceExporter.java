@@ -43,38 +43,6 @@
 
 package org.lgna.story.resourceutilities;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.jar.JarEntry;
-import java.util.jar.JarOutputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.DataFormatException;
-import java.util.zip.ZipException;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
@@ -102,18 +70,28 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
 import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.ImplementationAndVisualType;
-import org.lgna.story.resources.JointArrayId;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.QuadrupedResource;
-import org.lgna.story.resources.SlithererResource;
-import org.lgna.story.resources.SwimmerResource;
-
+import org.lgna.story.resources.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
+import java.util.zip.ZipException;
 
 public class ModelResourceExporter {
 
@@ -778,7 +756,7 @@ public class ModelResourceExporter {
     if (subResource.getBbox() != null) {
       resourceElement.appendChild(createBoundingBoxElement(doc, subResource.getBbox()));
     }
-    if (subResource.getTags().size() > 0) {
+    if (!subResource.getTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getTags()) {
         if ((parentMRE.tags == null) || !parentMRE.tags.contains(t)) {
@@ -790,7 +768,7 @@ public class ModelResourceExporter {
       }
     }
 
-    if (subResource.getGroupTags().size() > 0) {
+    if (!subResource.getGroupTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getGroupTags()) {
         if ((parentMRE.groupTags == null) || !parentMRE.groupTags.contains(t)) {
@@ -802,7 +780,7 @@ public class ModelResourceExporter {
       }
     }
 
-    if (subResource.getThemeTags().size() > 0) {
+    if (!subResource.getThemeTags().isEmpty()) {
       List<String> uniqueTags = new ArrayList<String>();
       for (String t : subResource.getThemeTags()) {
         if ((parentMRE.themeTags == null) || !parentMRE.themeTags.contains(t)) {
@@ -870,8 +848,8 @@ public class ModelResourceExporter {
         ModelClassData data = null;
         try {
           Object o = f.get(null);
-          if ((o != null) && (o instanceof ModelClassData)) {
-            data = (ModelClassData) o;
+          if ((o != null) && (o instanceof ModelClassData modelClassData)) {
+            data = modelClassData;
           }
         } catch (Exception e) {
         }
@@ -912,8 +890,8 @@ public class ModelResourceExporter {
         JointId fieldData = null;
         try {
           Object o = f.get(null);
-          if ((o != null) && (o instanceof JointId)) {
-            fieldData = (JointId) o;
+          if ((o != null) && (o instanceof JointId id)) {
+            fieldData = id;
           }
         } catch (Exception e) {
         }
@@ -1215,7 +1193,7 @@ public class ModelResourceExporter {
       sb.append("@Deprecated" + JavaCodeUtilities.LINE_RETURN);
     }
     sb.append("public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {" + JavaCodeUtilities.LINE_RETURN);
-    assert this.subResources.size() > 0;
+    assert !this.subResources.isEmpty();
     boolean isFirst = true;
     for (int i = 0; i < this.subResources.size(); i++) {
       ModelSubResourceExporter resource = this.subResources.get(i);
@@ -1289,7 +1267,7 @@ public class ModelResourceExporter {
       }
       //Handle pose code
       List<String> mandatoryPoseNames = getMandatoryPoseNames(classData.superClass);
-      if (!poseEntries.isEmpty() || (mandatoryPoseNames.size() != 0)) {
+      if (!poseEntries.isEmpty() || (!mandatoryPoseNames.isEmpty())) {
         for (String mandatoryPose : mandatoryPoseNames) {
           if (!poseEntries.containsKey(mandatoryPose)) {
             throw new DataFormatException("Missing pose definition for " + mandatoryPose + " on class " + classData.superClass);
@@ -1340,7 +1318,7 @@ public class ModelResourceExporter {
       //Handle array code
       List<String> mandatoryArrayNames = getMandatoryJointArrayNames(classData.superClass);
       List<String> declaredArrays = getAlreadyDeclaredJointArrayNames(classData.superClass);
-      if (!arrayEntries.isEmpty() || (mandatoryArrayNames.size() != 0)) {
+      if (!arrayEntries.isEmpty() || (!mandatoryArrayNames.isEmpty())) {
         //Loop through and remove any existing arrays from the mandatory array list
         // This should leave only the mandatory arrays that need an empty list defined
         for (Entry<String, List<String>> arrayEntry : arrayEntries.entrySet()) {
@@ -1371,7 +1349,7 @@ public class ModelResourceExporter {
 
           //If the array is one in the "hide all the elements of this array" list, then declare it as an arrayId rather than an array of joint ids
           if (this.arraysToHideElementsOf.contains(fullArrayName) || this.arraysToHideElementsOf.contains(arrayEntry.getKey())) {
-            String firstEntry = arrayElements.get(0);
+            String firstEntry = arrayElements.getFirst();
             String parentString = "null";
             for (Tuple2<String, String> entry : trimmedSkeleton) {
               if (entry.getA().equals(firstEntry)) {
@@ -1682,10 +1660,10 @@ public class ModelResourceExporter {
         }
       }
     }
-    if (this.subResources.size() == 0) {
+    if (this.subResources.isEmpty()) {
       System.err.println("NO SUB RESOURCES ON " + this.resourceName);
     }
-    ModelSubResourceExporter firstSubResource = this.subResources.get(0);
+    ModelSubResourceExporter firstSubResource = this.subResources.getFirst();
     String firstThumbName = AliceResourceUtilities.getThumbnailResourceFileName(firstSubResource.getModelName(), firstSubResource.getTextureName());
     String classThumbName = AliceResourceUtilities.getThumbnailResourceFileName(this.getClassName(), null);
     File firstThumbFile = new File(getThumbnailPath(root, firstThumbName));
@@ -1747,7 +1725,7 @@ public class ModelResourceExporter {
   }
 
   public void addForcedEnumNames(String resourceName, List<String> enumNames) {
-    if ((enumNames != null) && (enumNames.size() > 0)) {
+    if ((enumNames != null) && (!enumNames.isEmpty())) {
       if (resourceName == null) {
         this.forcedOverridingEnumNames.addAll(enumNames);
       } else {

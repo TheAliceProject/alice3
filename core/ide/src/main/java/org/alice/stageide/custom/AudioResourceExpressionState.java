@@ -83,11 +83,10 @@ public class AudioResourceExpressionState extends StandardExpressionState {
 
   public AudioResource getAudioResource() {
     Expression expression = this.getValue();
-    if (expression instanceof ResourceExpression) {
-      ResourceExpression resourceExpression = (ResourceExpression) expression;
+    if (expression instanceof ResourceExpression resourceExpression) {
       Resource resource = resourceExpression.resource.getValue();
-      if (resource instanceof AudioResource) {
-        return (AudioResource) resource;
+      if (resource instanceof AudioResource audioResource) {
+        return audioResource;
       } else {
         return null;
       }

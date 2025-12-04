@@ -62,7 +62,7 @@ public abstract class AbstractReleasable implements Releasable {
 
   @Override
   public final void release() {
-    if (this.releaseListeners.size() > 0) {
+    if (!this.releaseListeners.isEmpty()) {
       //perhaps overdone?
       ReleaseListener[] copyOfReleaseListeners = ArrayUtilities.createArray(this.releaseListeners, ReleaseListener.class);
 

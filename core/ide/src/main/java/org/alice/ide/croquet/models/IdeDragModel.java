@@ -66,8 +66,7 @@ public abstract class IdeDragModel extends AbstractModel implements DragModel {
   @Override
   public final List<? extends DropReceptor> createListOfPotentialDropReceptors() {
     Perspective perspective = IDE.getActiveInstance().getPerspective();
-    if (perspective instanceof ProjectPerspective) {
-      ProjectPerspective idePerspective = (ProjectPerspective) perspective;
+    if (perspective instanceof ProjectPerspective idePerspective) {
       return idePerspective.createListOfPotentialDropReceptors(this);
     } else {
       return Collections.emptyList();

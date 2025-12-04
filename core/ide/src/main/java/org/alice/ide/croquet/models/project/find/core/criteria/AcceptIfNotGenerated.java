@@ -42,10 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core.criteria;
 
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
-
-import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
  * @author Matt May

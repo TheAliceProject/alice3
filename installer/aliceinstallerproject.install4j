@@ -31,7 +31,7 @@
       </additionalLanguages>
     </languages>
     <variables>
-      <variable name="included_jre_version" value="17" />
+      <variable name="included_jre_version" value="21" />
     </variables>
     <codeSigning windowsEnabled="true" windowsPkcs12File="../../The Alice Project.p12" />
     <jreBundles jdkProviderId="Liberica" release="21/21.0.7+9">
@@ -49,7 +49,7 @@
       <mountPoint id="23" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.0.2.jar" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-9.1.0.jar" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" subDirectory="externalDependencies" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" />
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" subDirectory="distribution" />
@@ -131,8 +131,8 @@
       <executable name="${compiler:sys.fullName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
-          <statusLine x="86" y="262" text="Loading…" />
-          <versionLine x="461" y="262" text="version ${compiler:sys.version}" />
+          <statusLine x="86" y="262" text="Loading…" fontColor="255,255,255" />
+          <versionLine x="461" y="262" text="version ${compiler:sys.version}" fontColor="255,255,255" />
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-da -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED">

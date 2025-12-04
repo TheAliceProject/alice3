@@ -60,12 +60,8 @@ public class NumberProperty extends InstanceProperty<Number> {
   @Override
   public void setValue(Number value) {
     assert value != null : this;
-    if (value instanceof Float) {
-      assert (Float.isNaN((Float) value) == false) || this.isNaNAcceptable : this;
-    }
-    if (value instanceof Double) {
-      assert (Double.isNaN((Double) value) == false) || this.isNaNAcceptable : this;
-    }
+    assert !(value instanceof Float f) || !Float.isNaN(f) || this.isNaNAcceptable : this;
+    assert !(value instanceof Double d) || !Double.isNaN(d) || this.isNaNAcceptable : this;
     if (Objects.notEquals(value, this.getValue())) {
       super.setValue(value);
     }

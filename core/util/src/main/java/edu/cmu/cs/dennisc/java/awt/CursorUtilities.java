@@ -43,11 +43,7 @@
 package edu.cmu.cs.dennisc.java.awt;
 
 import javax.swing.RootPaneContainer;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.MemoryImageSource;
 import java.util.HashMap;
 import java.util.Map;

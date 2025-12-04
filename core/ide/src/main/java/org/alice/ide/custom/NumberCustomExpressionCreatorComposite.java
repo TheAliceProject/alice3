@@ -92,7 +92,7 @@ public abstract class NumberCustomExpressionCreatorComposite<T> extends Expressi
     String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
     if (text != null) {
       String errorFormat = findLocalizedText(text);
-      this.errorStatus.setText(String.format(errorFormat, numberModel.getTextField().getText()));
+      this.errorStatus.setText(errorFormat.formatted(numberModel.getTextField().getText()));
       return errorStatus;
     } else {
       return IS_GOOD_TO_GO_STATUS;

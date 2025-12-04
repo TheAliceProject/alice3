@@ -77,9 +77,7 @@ public abstract class CardBasedTabbedPane<E extends TabComposite<?>> extends Tab
 
   @Override
   protected void handleValueChanged(final E card) {
-    if (this.cardOwner.getShowingCard() == card) {
-      //pass
-    } else {
+    if (this.cardOwner.getShowingCard() != card) {
       if (this.cardOwner.getCards().contains(card)) {
         this.cardOwner.showCardRefrainingFromActivation(card);
         this.repaint();

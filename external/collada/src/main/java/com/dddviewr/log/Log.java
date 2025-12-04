@@ -26,7 +26,7 @@ public class Log {
       handler.log(msg);
     }
     while (msgs.size() > MAX_MSGS) {
-      msgs.remove(0);
+      msgs.removeFirst();
     }
   }
 

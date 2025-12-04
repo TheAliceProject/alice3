@@ -101,9 +101,7 @@ public abstract class JointedTypeMenuModel extends CascadeMenuModel<InstanceFact
             break;
           }
         }
-        if (isConsumed) {
-          //pass
-        } else {
+        if (!isConsumed) {
           blankChildren.add(fillIn);
         }
       } else {

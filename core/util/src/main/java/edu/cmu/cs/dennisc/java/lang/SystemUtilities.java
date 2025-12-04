@@ -119,8 +119,8 @@ public class SystemUtilities {
     for (Map.Entry<Object, Object> entry : systemProperties.entrySet()) {
       Object key = entry.getKey();
       Object value = entry.getValue();
-      if ((key instanceof String) && (value instanceof String)) {
-        rv.add(new SystemProperty((String) key, (String) value));
+      if ((key instanceof String keyString) && (value instanceof String valueString)) {
+        rv.add(new SystemProperty(keyString, valueString));
       } else {
         Logger.severe(key, value);
       }
@@ -223,10 +223,6 @@ public class SystemUtilities {
       //      edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( libName );
       System.loadLibrary(libraryName);
     }
-  }
-
-  public static boolean areIconsDisplayedInMenus() {
-    return true;
   }
 
   public static <E> E[] returnArray(Class<E> componentType, E... rv) {

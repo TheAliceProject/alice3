@@ -45,6 +45,7 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.DocumentFrame;
 
 import javax.swing.JMenuBar;
 import javax.swing.JRootPane;
@@ -104,10 +105,10 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
       AbstractWindow<?> root = owner.getRoot();
       if (root != null) {
         java.awt.Window ownerWindow = root.getAwtComponent();
-        if (ownerWindow instanceof java.awt.Frame) {
-          rv = new JDialog((java.awt.Frame) ownerWindow, isModal);
-        } else if (ownerWindow instanceof java.awt.Dialog) {
-          rv = new JDialog((java.awt.Dialog) ownerWindow, isModal);
+        if (ownerWindow instanceof java.awt.Frame frame) {
+          rv = new JDialog(frame, isModal);
+        } else if (ownerWindow instanceof java.awt.Dialog dialog) {
+          rv = new JDialog(dialog, isModal);
         } else {
           rv = null;
         }
@@ -216,14 +217,18 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 
   @Override
   public void setVisible(boolean isVisible) {
-    if (isVisible != this.isVisible()) {
-      if (isVisible) {
-        Application.getActiveInstance().getDocumentFrame().pushWindow(this);
-      } else {
-        assert this == Application.getActiveInstance().getDocumentFrame().popWindow();
-      }
-      super.setVisible(isVisible);
+    if (isVisible == this.isVisible()) {
+      // Nothing has changed.
+      return;
     }
+    DocumentFrame docFrame = Application.getActiveInstance().getDocumentFrame();
+    if (isVisible) {
+      docFrame.pushWindow(this);
+    } else {
+      assert this == docFrame.peekWindow();
+      docFrame.popWindow();
+    }
+    super.setVisible(isVisible);
   }
 
   @Override

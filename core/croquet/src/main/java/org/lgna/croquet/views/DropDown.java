@@ -43,22 +43,13 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import org.lgna.croquet.PopupPrepModel;
 import org.lgna.croquet.views.imp.DropDownButtonUI;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonModel;
 import javax.swing.JToggleButton;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
@@ -71,13 +62,14 @@ import java.awt.geom.GeneralPath;
 */
 
 public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
-  private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
-  private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
-  private static final Color ARROW_COLOR = ColorUtilities.createGray(191);
+  private static final int ARROW_WIDTH = 7;
+  private static final int ARROW_HEIGHT = 4;
+  private static final int BORDER_WIDTH = 2;
+  private static final int BORDER_HEIGHT = 1;
 
-  private SwingComponentView<?> prefixComponent;
+  private final SwingComponentView<?> prefixComponent;
   private SwingComponentView<?> mainComponent;
-  private SwingComponentView<?> postfixComponent;
+  private final SwingComponentView<?> postfixComponent;
 
   public DropDown(M model, SwingComponentView<?> prefixComponent, SwingComponentView<?> mainComponent, SwingComponentView<?> postfixComponent) {
     super(model);
@@ -91,17 +83,6 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
     this(model, null, null, null);
   }
 
-  public SwingComponentView<?> getPrefixComponent() {
-    return this.prefixComponent;
-  }
-
-  public void setPrefixComponent(SwingComponentView<?> prefixComponent) {
-    if (this.prefixComponent != prefixComponent) {
-      this.prefixComponent = prefixComponent;
-      //    this.revalidateAndRepaint();
-    }
-  }
-
   public SwingComponentView<?> getMainComponent() {
     return this.mainComponent;
   }
@@ -109,42 +90,12 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
   public void setMainComponent(SwingComponentView<?> mainComponent) {
     if (this.mainComponent != mainComponent) {
       this.mainComponent = mainComponent;
-      //    this.revalidateAndRepaint();
-    }
-  }
-
-  public SwingComponentView<?> getPostfixComponent() {
-    return this.postfixComponent;
-  }
-
-  public void setPostfixComponent(SwingComponentView<?> postfixComponent) {
-    if (this.postfixComponent != postfixComponent) {
-      this.postfixComponent = postfixComponent;
-      //    this.revalidateAndRepaint();
     }
   }
 
   protected boolean isInactiveFeedbackDesired() {
-    return true;
+    return false;
   }
-
-  protected int getAffordanceWidth() {
-    return DEFAULT_AFFORDANCE_WIDTH;
-  }
-
-  protected int getAffordanceHalfHeight() {
-    return DEFAULT_AFFORDANCE_HALF_HEIGHT;
-  }
-
-  //  @Override
-  //  public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
-  //  super.appendPrepStepsIfNecessary( transaction );
-  //  if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
-  //    //pass
-  //  } else {
-  //    org.lgna.croquet.history.PopupPrepStep.createAndAddToActivity( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-  //  }
-  //  }
 
   private final class JDropDownButton extends JToggleButton {
     public JDropDownButton() {
@@ -153,8 +104,7 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
 
     @Override
     public void updateUI() {
-      //this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
-      this.setUI(new DropDownButtonUI((javax.swing.AbstractButton) this));
+      this.setUI(new DropDownButtonUI(this));
     }
 
     @Override
@@ -173,99 +123,64 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
 
     @Override
     public void paint(Graphics g) {
-      int x = 0;
-      int y = 0;
+      Graphics2D g2 = (Graphics2D) g;
+      Paint prevPaint = g2.getPaint();
+
       int width = this.getWidth();
       int height = this.getHeight();
-      ButtonModel buttonModel = this.getModel();
-      Graphics2D g2 = (Graphics2D) g;
 
-      Paint prevPaint = g2.getPaint();
-      boolean isActive = buttonModel.isRollover() || buttonModel.isPressed();
-      if (isActive || DropDown.this.isInactiveFeedbackDesired()) {
-        if (isActive) {
-          if (buttonModel.isPressed()) {
-            // active
-            g2.setColor(ColorUtilities.createGray(127));
-          } else {
-            // hover
-            g2.setColor(ColorUtilities.createGray(220));
-          }
-        } else {
-          // this is the default look of the button
-          g2.setColor(this.getBackground());
-        }
-        g2.fillRect(x, y, width, height);
+      // semi-transparent white box for the background
+      boolean isActive = model.isRollover() || model.isPressed();
+      g2.setColor(new Color(255, 255, 255, isActive ? 128 : 64));
+      g2.fillRect(0, 0, width, height);
+
+      // an extra highlight
+      if (DropDown.this.isInactiveFeedbackDesired()) {
+        g2.setColor(Color.WHITE);
+        g2.drawLine(0, 0,  width, 0);
+        g2.drawLine(0, 0, 0,  height);
       }
 
+      // draw the contents
       super.paint(g);
 
-      int AFFORDANCE_WIDTH = getAffordanceWidth();
-      int AFFORDANCE_HALF_HEIGHT = getAffordanceHalfHeight();
+      // draw the little arrow
+      Color arrowColor = getArrowColor();
+      g2.setColor(arrowColor);
 
-      float x0 = (x + width) - 4 - AFFORDANCE_WIDTH;
-      float x1 = x0 + AFFORDANCE_WIDTH;
+      // get the arrow's x position from the rightmost side
+      float x0 = width - 1 - BORDER_WIDTH - ARROW_WIDTH;
+      float x1 = width - 1 - BORDER_WIDTH;
       float xC = (x0 + x1) / 2;
 
-      float yC = (y + height) / 2;
-      float y0 = yC - AFFORDANCE_HALF_HEIGHT;
-      float y1 = yC + AFFORDANCE_HALF_HEIGHT;
-
-      Color triangleFill;
-      Color triangleOutline;
-      if (isActive) {
-        triangleFill = Color.YELLOW;
-        triangleOutline = Color.BLACK;
-      } else {
-        triangleFill = ARROW_COLOR;
-        triangleOutline = null;
-      }
-
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      // center the arrow vertically, borders are equal, so they can be ignored
+      int y0 = height / 2 - ARROW_HEIGHT / 2;
+      int y1 = height / 2 + ARROW_HEIGHT / 2;
 
       GeneralPath path = new GeneralPath();
       path.moveTo(x0, y0);
       path.lineTo(xC, y1);
       path.lineTo(x1, y0);
-      path.closePath();
 
-      g2.setColor(triangleFill);
-      g2.fill(path);
-      if (triangleOutline != null) {
-        g2.setColor(triangleOutline);
-        g2.draw(path);
-      }
-
-      if (isActive) {
-        g2.setStroke(new BasicStroke(3.0f));
-        //      g2.setColor(java.awt.Color.BLUE);
-        //      g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
-        int xMax = (x + width) - 1;
-        int yMax = (y + height) - 1;
-        if (buttonModel.isPressed()) {
-          g2.setColor(Color.BLACK);
-        } else {
-          g2.setColor(Color.WHITE);
-        }
-        g2.drawLine(x, yMax, x, y);
-        g2.drawLine(x, y, xMax, y);
-        if (buttonModel.isPressed()) {
-          g2.setColor(Color.WHITE);
-        } else {
-          g2.setColor(Color.BLACK);
-        }
-        g2.drawLine(x, yMax, xMax, yMax);
-        g2.drawLine(xMax, yMax, xMax, y);
-      } else {
-        if (DropDown.this.isInactiveFeedbackDesired()) {
-          g2.setColor(Color.WHITE);
-          //g2.drawRect( x, y, width-1, height-1 );
-          g2.drawLine(x, y, x + width, y);
-          g2.drawLine(x, y, x, y + height);
-        }
-      }
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.draw(path);
 
       g2.setPaint(prevPaint);
+    }
+
+    private Color getArrowColor() {
+      // this is basically a ComboBox, so color it like one
+      Color arrowColor;
+      if (!model.isEnabled()) {
+        arrowColor = UIManager.getColor("ComboBox.buttonDisabledArrowColor");
+      } else if (model.isRollover() || model.isArmed()) {
+        arrowColor = UIManager.getColor("ComboBox.buttonHoverArrowColor");
+      } else if (model.isPressed() || model.isSelected()) {
+        arrowColor = UIManager.getColor("ComboBox.buttonPressedArrowColor");
+      } else {
+        arrowColor = UIManager.getColor("ComboBox.buttonArrowColor");
+      }
+      return arrowColor;
     }
   }
 
@@ -275,13 +190,11 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
     rv.setRolloverEnabled(true);
     rv.setOpaque(false);
     rv.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    //rv.setBackground(edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(230));
-    rv.setBackground(new Color(230, 230, 230, 127));
     rv.setFocusable(false);
-    rv.setBorder(BorderFactory.createEmptyBorder(1, 3, 1, 5 + getAffordanceWidth()));
+    // add extra room for the arrow that is just snuck in via paint(), also allow for a border around the arrow
+    rv.setBorder(BorderFactory.createEmptyBorder(BORDER_HEIGHT, BORDER_WIDTH, BORDER_HEIGHT, BORDER_WIDTH * 2 + ARROW_WIDTH));
+
     if ((this.prefixComponent != null) || (this.mainComponent != null) || (this.postfixComponent != null)) {
-      //    rv.setModel( new javax.swing.DefaultButtonModel() );
-      //rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
       rv.setLayout(new BorderLayout());
       if (this.prefixComponent != null) {
         rv.add(this.prefixComponent.getAwtComponent(), BorderLayout.LINE_START);

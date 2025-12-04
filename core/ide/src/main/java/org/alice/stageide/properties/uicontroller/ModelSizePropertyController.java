@@ -43,11 +43,6 @@
 
 package org.alice.stageide.properties.uicontroller;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
@@ -55,12 +50,7 @@ import org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
 import org.alice.math.immutable.Dimension3;
-import org.alice.stageide.properties.IsAllScaleLinkedState;
-import org.alice.stageide.properties.IsXYScaleLinkedState;
-import org.alice.stageide.properties.IsXZScaleLinkedState;
-import org.alice.stageide.properties.IsYZScaleLinkedState;
-import org.alice.stageide.properties.LinkScaleButton;
-import org.alice.stageide.properties.ModelSizeAdapter;
+import org.alice.stageide.properties.*;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.State;
@@ -75,8 +65,11 @@ import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
 
-
 import javax.swing.AbstractButton;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ModelSizePropertyController extends AbstractAdapterController<Dimension3> {
 

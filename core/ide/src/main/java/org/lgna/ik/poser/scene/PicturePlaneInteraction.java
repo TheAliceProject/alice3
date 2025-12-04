@@ -45,12 +45,12 @@ package org.lgna.ik.poser.scene;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector4;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Ray;
+import org.alice.math.immutable.Vector4;
 
 import java.awt.Component;
 import java.awt.Point;

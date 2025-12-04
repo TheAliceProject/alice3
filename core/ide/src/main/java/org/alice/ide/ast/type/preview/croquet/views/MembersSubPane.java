@@ -53,6 +53,7 @@ import java.awt.Color;
 import java.util.List;
 
 /**
+ * This is the subsections of the diff pane that appears when importing classes from a file
  * @author Dennis Cosgrove
  */
 public final class MembersSubPane<M extends Member> extends MigPanel {

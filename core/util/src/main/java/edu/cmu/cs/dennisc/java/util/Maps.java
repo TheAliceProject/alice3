@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.java.util;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,19 +68,6 @@ public class Maps {
 
   public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
     return new InitializingIfAbsentListHashMap<K, E>();
-  }
-
-  public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
-    return new InitializingIfAbsentMapHashMap<K, K2, E2>();
-  }
-
-  public static <A, B> HashMap<B, A> newInverseHashMap(Map<A, B> map) {
-    HashMap<B, A> rv = newHashMap();
-    for (A a : map.keySet()) {
-      B b = map.get(a);
-      rv.put(b, a);
-    }
-    return rv;
   }
 
   public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {

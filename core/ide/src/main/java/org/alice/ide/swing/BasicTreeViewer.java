@@ -43,31 +43,16 @@
 
 package org.alice.ide.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
   protected JPanel mainPanel;
@@ -270,7 +255,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
       );
       String colorString = "NO COLOR";
       if (node.color != null) {
-        colorString = String.format("%.2f, %.2f, %.2f, %.2f", node.color.red, node.color.green, node.color.blue, node.color.alpha);
+        colorString = "%.2f, %.2f, %.2f, %.2f".formatted(node.color.red, node.color.green, node.color.blue, node.color.alpha);
         Color backgroundColor = new Color((int) (node.color.red * 255), (int) (node.color.green * 255), (int) (node.color.blue * 255));
         this.colorLabel.setBackground(backgroundColor);
         this.colorLabel.setOpaque(true);
@@ -296,11 +281,10 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
                                                                  0) // ipadY
     );
     this.virtualParentHashCode = -1;
-    if (node instanceof SceneGraphTreeNode) {
-      SceneGraphTreeNode sgNode = (SceneGraphTreeNode) node;
+    if (node instanceof SceneGraphTreeNode sgNode) {
       String positionString = "NO POSITION";
       if (sgNode.absoluteTransform != null) {
-        positionString = String.format("[%.3f, %.3f, %.3f]", sgNode.absoluteTransform.translation().x(), sgNode.absoluteTransform.translation().y(), sgNode.absoluteTransform.translation().z());
+        positionString = "[%.3f, %.3f, %.3f]".formatted(sgNode.absoluteTransform.translation().x(), sgNode.absoluteTransform.translation().y(), sgNode.absoluteTransform.translation().z());
       }
       this.transformLabel.setText(positionString);
       if (sgNode.stackTrace != null) {
@@ -342,7 +326,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
         } else {
           this.isShowingLabel.setText("NOT SHOWING");
         }
-        String opacityString = String.format("%.2f", sgNode.opacity);
+        String opacityString = "%.2f".formatted(sgNode.opacity);
         this.opacityLabel.setText(opacityString);
       }
 
@@ -487,8 +471,7 @@ public class BasicTreeViewer extends JPanel implements TreeSelectionListener {
   public void valueChanged(TreeSelectionEvent e) {
     if (e.getNewLeadSelectionPath() != null) {
       Object selectedObject = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (selectedObject instanceof BasicTreeNode) {
-        BasicTreeNode sgNode = (BasicTreeNode) selectedObject;
+      if (selectedObject instanceof BasicTreeNode sgNode) {
         setData(sgNode);
         this.tree.scrollPathToVisible(e.getNewLeadSelectionPath());
         if (this.listenToSelection && (this.parentPanel != null) && this.parentPanel.shouldMirrorSelection()) {

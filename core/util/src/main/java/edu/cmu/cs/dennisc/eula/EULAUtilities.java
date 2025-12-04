@@ -70,9 +70,7 @@ public class EULAUtilities {
       if (alreadyClearedPreferences == null) {
         alreadyClearedPreferences = Lists.newLinkedList();
       }
-      if (alreadyClearedPreferences.contains(preferencesCls)) {
-        //pass
-      } else {
+      if (!alreadyClearedPreferences.contains(preferencesCls)) {
         alreadyClearedPreferences.add(preferencesCls);
         try {
           Logger.outln("clearing", userPreferences);
@@ -83,9 +81,7 @@ public class EULAUtilities {
       }
     }
     boolean isLicenseAccepted = userPreferences.getBoolean(preferencesKey, false);
-    if (isLicenseAccepted) {
-      //pass
-    } else {
+    if (!isLicenseAccepted) {
       JEulaPane eulaPane = new JEulaPane(license);
       Component owner = WindowStack.peek();
       //      if( owner.isVisible() ) {

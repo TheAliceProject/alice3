@@ -45,8 +45,8 @@ package org.alice.ide.i18n;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsChunk extends Chunk {
-  private boolean isTowardLeading;
+public final class GetsChunk extends Chunk {
+  private final boolean isTowardLeading;
 
   public GetsChunk(boolean isTowardLeading) {
     this.isTowardLeading = isTowardLeading;

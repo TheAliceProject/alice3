@@ -46,6 +46,8 @@ package org.lgna.project.ast;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,4 +68,14 @@ public abstract class AbstractConstructor extends AbstractCode {
   public Object instantiateFirstArgumentPassedToSuperConstructor() {
     return null;
   }
+
+  public AbstractType<?, ?, ?> getFirstParameterType() {
+      List<? extends AbstractParameter> requiredParameters = getRequiredParameters();
+      if (requiredParameters.isEmpty()) {
+        return null;
+      }
+      AbstractParameter parameter0 = requiredParameters.getFirst();
+      return parameter0.getValueType();
+  }
+
 }

@@ -47,19 +47,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.ProjectStack;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaCodeGenerator;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 import org.lgna.project.code.CodeGenerator;
 
 import java.util.Collection;
@@ -152,8 +140,7 @@ public class MergeUtilities {
 
   private static boolean isAcceptableType(AbstractType<?, ?, ?> declaringType, List<NamedUserType> types) {
     if (declaringType != null) {
-      if (declaringType instanceof NamedUserType) {
-        NamedUserType namedUserType = (NamedUserType) declaringType;
+      if (declaringType instanceof NamedUserType namedUserType) {
         return types.contains(namedUserType);
       } else {
         return true;
@@ -171,9 +158,7 @@ public class MergeUtilities {
     Map<AbstractMethod, AbstractMethod> map = Maps.newHashMap();
     for (MethodInvocation methodInvocation : crawler.getList()) {
       AbstractMethod method = methodInvocation.method.getValue();
-      if (isAcceptableType(method.getDeclaringType(), types)) {
-        //pass
-      } else {
+      if (!isAcceptableType(method.getDeclaringType(), types)) {
         AbstractMethod replacement;
         if (map.containsKey(method)) {
           replacement = map.get(method);
@@ -203,9 +188,7 @@ public class MergeUtilities {
     Map<AbstractField, AbstractField> map = Maps.newHashMap();
     for (FieldAccess fieldAccess : crawler.getList()) {
       AbstractField field = fieldAccess.field.getValue();
-      if (isAcceptableType(field.getDeclaringType(), types)) {
-        //pass
-      } else {
+      if (!isAcceptableType(field.getDeclaringType(), types)) {
         AbstractField replacement;
         if (map.containsKey(field)) {
           replacement = map.get(field);

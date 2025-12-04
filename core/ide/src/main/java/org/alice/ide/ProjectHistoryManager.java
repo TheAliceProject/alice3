@@ -45,6 +45,7 @@ package org.alice.ide;
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
@@ -56,8 +57,8 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.edits.StateEdit;
-import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.croquet.views.ComponentManager;
@@ -78,8 +79,7 @@ public class ProjectHistoryManager {
     this.listener = new Listener() {
       @Override
       public void changed(ActivityEvent e) {
-        if (e instanceof EditCommittedEvent) {
-          EditCommittedEvent editCommittedEvent = (EditCommittedEvent) e;
+        if (e instanceof EditCommittedEvent editCommittedEvent) {
           ProjectHistoryManager.this.handleEditCommitted(editCommittedEvent.getEdit());
         }
       }
@@ -112,8 +112,7 @@ public class ProjectHistoryManager {
       return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
     }
 
-    if (edit instanceof StateEdit<?>) {
-      StateEdit<?> stateEdit = (StateEdit<?>) edit;
+    if (edit instanceof StateEdit<?> stateEdit) {
       if (stateEdit.getGroup() == IDE.PROJECT_GROUP) {
         return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
       }
@@ -129,7 +128,7 @@ public class ProjectHistoryManager {
 
   private void markDirty(ProjectDocumentFrame projectDocumentFrame, ThisFieldAccessFactory thisFieldAccessFactory) {
     UserField userField = thisFieldAccessFactory.getField();
-    projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty(userField);
+    IconFactoryManager.markDynamicIconFactoryForFieldDirty(userField);
     InstanceFactoryFillIn.getInstance(thisFieldAccessFactory).markDirty();
     for (SwingComponentView<?> component : ComponentManager.getComponents(projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel())) {
       //note: rendering artifact for faux combo boxes when only invoking repaint.
@@ -151,8 +150,7 @@ public class ProjectHistoryManager {
       if (projectDocumentFrame != null) {
         final InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
         InstanceFactory instanceFactory = instanceFactoryState.getValue();
-        if (instanceFactory instanceof ThisFieldAccessFactory) {
-          final ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+        if (instanceFactory instanceof ThisFieldAccessFactory thisFieldAccessFactory) {
           if ((value & IS_ANIMATED) != 0) {
             new Thread() {
               @Override

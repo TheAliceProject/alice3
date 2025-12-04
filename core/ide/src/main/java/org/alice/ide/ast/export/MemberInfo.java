@@ -45,13 +45,7 @@ package org.alice.ide.ast.export;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.Member;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserConstructor;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 import java.util.Set;
@@ -68,25 +62,19 @@ public class MemberInfo<D extends Member> extends DeclarationInfo<D> {
 
     @Override
     public void visit(Crawlable crawlable) {
-      if (crawlable == MemberInfo.this.getDeclaration()) {
-        //pass
-      } else {
-        if (crawlable instanceof NamedUserType) {
-          NamedUserType type = (NamedUserType) crawlable;
+      if (crawlable != MemberInfo.this.getDeclaration()) {
+        if (crawlable instanceof NamedUserType type) {
           TypeInfo typeInfo = getProjectInfo().getInfoForType(type);
           this.typeInfos.add(typeInfo);
-        } else if (crawlable instanceof UserConstructor) {
-          UserConstructor constructor = (UserConstructor) crawlable;
+        } else if (crawlable instanceof UserConstructor constructor) {
           TypeInfo typeInfo = getProjectInfo().getInfoForType(constructor.getDeclaringType());
           ConstructorInfo constructorInfo = typeInfo.getInfoForConstructor(constructor);
           this.constructorInfos.add(constructorInfo);
-        } else if (crawlable instanceof UserMethod) {
-          UserMethod method = (UserMethod) crawlable;
+        } else if (crawlable instanceof UserMethod method) {
           TypeInfo typeInfo = getProjectInfo().getInfoForType(method.getDeclaringType());
           MethodInfo methodInfo = typeInfo.getInfoForMethod(method);
           this.methodInfos.add(methodInfo);
-        } else if (crawlable instanceof UserField) {
-          UserField field = (UserField) crawlable;
+        } else if (crawlable instanceof UserField field) {
           TypeInfo typeInfo = getProjectInfo().getInfoForType(field.getDeclaringType());
           FieldInfo fieldInfo = typeInfo.getInfoForField(field);
           this.fieldInfos.add(fieldInfo);

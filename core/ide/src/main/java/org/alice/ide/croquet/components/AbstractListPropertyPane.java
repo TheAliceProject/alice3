@@ -43,11 +43,7 @@
 package org.alice.ide.croquet.components;
 
 import edu.cmu.cs.dennisc.property.ListProperty;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Label;

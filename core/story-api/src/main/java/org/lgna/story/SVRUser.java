@@ -57,20 +57,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SVRUser extends SMovableTurnable implements MutableRider {
-  public static final Orientation DEFAULT_ORIENTATION = new Orientation();
+  public static final Orientation DEFAULT_ORIENTATION =
+      new Orientation(OrthogonalMatrix3x3.IDENTITY.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, SCamera.DEFAULT_CAMERA_FACING));
   public static final Position  DEFAULT_POSITION = new Position(0, 0, SCamera.DEFAULT_POSITION.getBackward());
   private static final double HAND_OFFSET = 0.2;
   private static final double HAND_HEIGHT = 0.65 * SCamera.DEFAULT_POSITION.getUp();
   public static final Position HEADSET_POSITION = new Position(0, SCamera.DEFAULT_POSITION.getUp(), 0);
-  public static final Orientation HEADSET_ORIENTATION = new Orientation();
+  public static final Orientation HEADSET_ORIENTATION =
+      new Orientation(OrthogonalMatrix3x3.IDENTITY.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, SCamera.DEFAULT_CAMERA_TILT));
   public static final Position LEFT_HAND_POSITION = new Position(-HAND_OFFSET, HAND_HEIGHT, 0);
   public static final Position RIGHT_HAND_POSITION = new Position(HAND_OFFSET, HAND_HEIGHT, 0);
-  static {
-    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.asMatrix3x3();
-    headMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_X_AXIS, SCamera.DEFAULT_CAMERA_TILT);
-    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.asMatrix3x3();
-    baseMatrix.applyRotationAboutArbitraryAxis(Vector3.POSITIVE_Y_AXIS, SCamera.DEFAULT_CAMERA_FACING);
-  }
 
   private final VrUserImp implementation = new VrUserImp("VRUser", this);
   private final SVRHeadset headset = new SVRHeadset("VRHeadset", this);

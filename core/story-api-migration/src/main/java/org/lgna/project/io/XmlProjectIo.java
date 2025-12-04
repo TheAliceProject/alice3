@@ -71,19 +71,10 @@ import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipOutputStream;
 
 public class XmlProjectIo implements ProjectIo {
@@ -312,35 +303,36 @@ public class XmlProjectIo implements ProjectIo {
     }
 
     private static void writeResources(ZipOutputStream zos, Set<Resource> resources) throws IOException {
-      if (!resources.isEmpty()) {
-        Document xmlDocument = XMLUtilities.createDocument();
-        Element xmlRootElement = xmlDocument.createElement("root");
-        xmlDocument.appendChild(xmlRootElement);
-        synchronized (resources) {
-          Set<String> usedEntryNames = new HashSet<>();
-          for (Resource resource : resources) {
-            Element xmlElement = xmlDocument.createElement(XML_RESOURCE_TAG_NAME);
-            resource.encodeAttributes(xmlElement);
-            UUID uuid = resource.getId();
-            assert uuid != null;
+      if (resources.isEmpty()) {
+        return;
+      }
+      Document xmlDocument = XMLUtilities.createDocument();
+      Element xmlRootElement = xmlDocument.createElement("root");
+      xmlDocument.appendChild(xmlRootElement);
+      synchronized (resources) {
+        Set<String> usedEntryNames = new HashSet<>();
+        for (Resource resource : resources) {
+          Element xmlElement = xmlDocument.createElement(XML_RESOURCE_TAG_NAME);
+          resource.encodeAttributes(xmlElement);
+          UUID uuid = resource.getId();
+          assert uuid != null;
 
-            xmlElement.setAttribute(XML_RESOURCE_CLASSNAME_ATTRIBUTE, resource.getClass().getName());
-            xmlElement.setAttribute(XML_RESOURCE_UUID_ATTRIBUTE, uuid.toString());
+          xmlElement.setAttribute(XML_RESOURCE_CLASSNAME_ATTRIBUTE, resource.getClass().getName());
+          xmlElement.setAttribute(XML_RESOURCE_UUID_ATTRIBUTE, uuid.toString());
 
-            String entryName = generateEntryName(resource, usedEntryNames);
-            usedEntryNames.add(entryName);
-            xmlElement.setAttribute(XML_RESOURCE_ENTRY_NAME_ATTRIBUTE, entryName);
-            xmlRootElement.appendChild(xmlElement);
-          }
+          String entryName = generateEntryName(resource, usedEntryNames);
+          usedEntryNames.add(entryName);
+          xmlElement.setAttribute(XML_RESOURCE_ENTRY_NAME_ATTRIBUTE, entryName);
+          xmlRootElement.appendChild(xmlElement);
         }
-        writeXML(xmlDocument, zos, RESOURCES_ENTRY_NAME);
-        synchronized (resources) {
-          Set<String> usedEntryNames = new HashSet<>();
-          for (Resource resource : resources) {
-            String entryName = generateEntryName(resource, usedEntryNames);
-            usedEntryNames.add(entryName);
-            ZipUtilities.write(zos, new ByteArrayDataSource(entryName, resource.getData()));
-          }
+      }
+      writeXML(xmlDocument, zos, RESOURCES_ENTRY_NAME);
+      synchronized (resources) {
+        Set<String> usedEntryNames = new HashSet<>();
+        for (Resource resource : resources) {
+          String entryName = generateEntryName(resource, usedEntryNames);
+          usedEntryNames.add(entryName);
+          ZipUtilities.write(zos, new ByteArrayDataSource(entryName, resource.getData()));
         }
       }
     }

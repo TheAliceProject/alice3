@@ -47,9 +47,7 @@ import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
-import org.alice.math.immutable.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -60,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.ExponentialFog;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
-
+import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInDegrees;
 import org.lgna.story.Color;
@@ -130,14 +128,6 @@ public class SceneImp extends EntityImp {
     this.eventManager.sceneActivated();
   }
 
-  public boolean isGlobalLightBrightnessAnimationDesired() {
-    return this.isGlobalLightBrightnessAnimationDesired;
-  }
-
-  public void setGlobalLightBrightnessAnimationDesired(boolean isGlobalLightBrightnessAnimationDesired) {
-    this.isGlobalLightBrightnessAnimationDesired = isGlobalLightBrightnessAnimationDesired;
-  }
-
   private void changeActiveStatus(ProgramImp programImp, boolean isActive, int activationCount) {
     double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
     program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
@@ -204,12 +194,10 @@ public class SceneImp extends EntityImp {
 
   public void setProgram(ProgramImp program) {
     if (this.program != program) {
-      if (program != null) {
-        this.eventManager.removeListenersFrom(program.getOnscreenRenderTarget());
+      if (this.program != null) {
+        this.eventManager.removeListenersFrom(this.program.getOnscreenRenderTarget());
       }
-      //handleOwnerChange( null );
       this.program = program;
-      //      handleOwnerChange( program );
       if (program != null) {
         this.eventManager.addListenersTo(program.getOnscreenRenderTarget());
       }
@@ -252,8 +240,7 @@ public class SceneImp extends EntityImp {
   public void addCamerasTo(ProgramImp program) {
     for (AbstractCamera sgCamera : VisitUtilities.getAll(this.sgScene, AbstractCamera.class)) {
       EntityImp entityImp = EntityImp.getInstance(sgCamera);
-      if (entityImp instanceof CameraImp) {
-        CameraImp cameraImp = (CameraImp) entityImp;
+      if (entityImp instanceof CameraImp cameraImp) {
         program.getOnscreenRenderTarget().addSgCamera(cameraImp.getSgCamera());
       }
     }
@@ -262,8 +249,7 @@ public class SceneImp extends EntityImp {
   public void removeCamerasFrom(ProgramImp program) {
     for (AbstractCamera sgCamera : VisitUtilities.getAll(this.sgScene, AbstractCamera.class)) {
       EntityImp entityImp = EntityImp.getInstance(sgCamera);
-      if (entityImp instanceof CameraImp) {
-        CameraImp cameraImp = (CameraImp) entityImp;
+      if (entityImp instanceof CameraImp cameraImp) {
         program.getOnscreenRenderTarget().removeSgCamera(cameraImp.getSgCamera());
       }
     }
@@ -272,10 +258,6 @@ public class SceneImp extends EntityImp {
   public CameraImp findFirstCamera() {
     AbstractCamera sgCamera = VisitUtilities.getFirst(this.sgScene, AbstractCamera.class);
     return (CameraImp) EntityImp.getInstance(sgCamera);
-  }
-
-  public float getGlobalBrightness() {
-    return this.sgScene.globalBrightness.getValue();
   }
 
   public void setGlobalBrightness(float globalBrightness) {
@@ -303,10 +285,6 @@ public class SceneImp extends EntityImp {
 
   public EventManager getEventManager() {
     return this.eventManager;
-  }
-
-  public EventScript getTranscript() {
-    return eventManager.getScript();
   }
 
   private ProgramImp program;

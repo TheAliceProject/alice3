@@ -63,8 +63,8 @@ public class MovementDescription {
 
   @Override
   public boolean equals(Object o) {
-    if (o instanceof MovementDescription) {
-      return (((MovementDescription) o).direction == this.direction) && (((MovementDescription) o).type == this.type);
+    if (o instanceof MovementDescription description) {
+      return (description.direction == this.direction) && (description.type == this.type);
     }
     return false;
   }

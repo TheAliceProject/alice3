@@ -42,33 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.icons;
 
-import org.alice.stageide.icons.ShapeIcon;
-
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * @author Dennis Cosgrove
+ * These are icons that show up on the scene tab and in the dropdown menu that shows up to the left of the scene tab
+ * * @author Dennis Cosgrove
  */
 public class TabIcon extends ShapeIcon {
   private static final Stroke STROKE = new BasicStroke(0.0f);
   private final Paint fillPaint;
-  private final Paint armedFillPaint;
   private final GeneralPath shape = new GeneralPath();
 
   public TabIcon(Dimension size, Color fillColor) {
     super(size);
     this.fillPaint = fillColor;
-    this.armedFillPaint = new GradientPaint(0, 0, Color.WHITE, 0, size.height, fillColor);
 
     float a = 0.1f;
     float b = 0.3f;
@@ -93,18 +83,15 @@ public class TabIcon extends ShapeIcon {
   @Override
   protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
     boolean isArmed;
-    if (c instanceof AbstractButton) {
-      AbstractButton button = (AbstractButton) c;
+    if (c instanceof AbstractButton button) {
       ButtonModel buttonModel = button.getModel();
       isArmed = buttonModel.isArmed();
     } else {
       isArmed = false;
     }
-    g2.setPaint(isArmed ? this.armedFillPaint : this.fillPaint);
+    g2.setPaint(this.fillPaint);
     g2.fill(shape);
-    if (isArmed) {
-      //pass
-    } else {
+    if (!isArmed) {
       Stroke prevStroke = g2.getStroke();
       g2.setStroke(STROKE);
       g2.setPaint(Color.DARK_GRAY);

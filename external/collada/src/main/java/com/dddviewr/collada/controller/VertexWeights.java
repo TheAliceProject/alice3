@@ -1,12 +1,12 @@
 package com.dddviewr.collada.controller;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dddviewr.collada.Base;
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.Vcount;
+
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VertexWeights extends Base {
   protected int count;

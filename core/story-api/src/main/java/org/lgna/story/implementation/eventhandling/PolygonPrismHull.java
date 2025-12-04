@@ -44,11 +44,7 @@
 package org.lgna.story.implementation.eventhandling;
 
 import edu.cmu.cs.dennisc.math.ConvexPolygon;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point2;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
+import org.alice.math.immutable.*;
 
 import java.util.ArrayList;
 import java.util.List;

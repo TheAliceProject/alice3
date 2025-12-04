@@ -43,17 +43,7 @@
 
 package org.alice.ide.instancefactory;
 
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove
@@ -67,13 +57,11 @@ public class InstanceFactoryUtilities {
     InstanceFactory rv;
     if (instanceExpression instanceof ThisExpression) {
       rv = ThisInstanceFactory.getInstance();
-    } else if (instanceExpression instanceof FieldAccess) {
-      FieldAccess fieldAccess = (FieldAccess) instanceExpression;
+    } else if (instanceExpression instanceof FieldAccess fieldAccess) {
       Expression fieldAccessExpression = fieldAccess.expression.getValue();
       AbstractField field = fieldAccess.field.getValue();
       if (fieldAccessExpression instanceof ThisExpression) {
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
+        if (field instanceof UserField userField) {
           rv = ThisFieldAccessFactory.getInstance(userField);
         } else {
           rv = null;
@@ -81,19 +69,16 @@ public class InstanceFactoryUtilities {
       } else {
         rv = null;
       }
-    } else if (instanceExpression instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) instanceExpression;
+    } else if (instanceExpression instanceof MethodInvocation methodInvocation) {
       Expression methodInvocationInstanceExpression = methodInvocation.expression.getValue();
       AbstractMethod method = methodInvocation.method.getValue();
       if (methodInvocationInstanceExpression instanceof ThisExpression) {
         rv = ThisMethodInvocationFactory.getInstance(method);
-      } else if (methodInvocationInstanceExpression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) methodInvocationInstanceExpression;
+      } else if (methodInvocationInstanceExpression instanceof FieldAccess fieldAccess) {
         Expression fieldAccessExpression = fieldAccess.expression.getValue();
         AbstractField field = fieldAccess.field.getValue();
         if (fieldAccessExpression instanceof ThisExpression) {
-          if (field instanceof UserField) {
-            UserField userField = (UserField) field;
+          if (field instanceof UserField userField) {
             rv = ThisFieldAccessMethodInvocationFactory.getInstance(userField, method);
           } else {
             rv = null;
@@ -101,14 +86,11 @@ public class InstanceFactoryUtilities {
         } else {
           rv = null;
         }
-      } else if (methodInvocationInstanceExpression instanceof LocalAccess) {
-        LocalAccess localAccess = (LocalAccess) methodInvocationInstanceExpression;
+      } else if (methodInvocationInstanceExpression instanceof LocalAccess localAccess) {
         rv = LocalAccessMethodInvocationFactory.getInstance(localAccess.local.getValue(), method);
-      } else if (methodInvocationInstanceExpression instanceof ParameterAccess) {
-        ParameterAccess parameterAccess = (ParameterAccess) methodInvocationInstanceExpression;
+      } else if (methodInvocationInstanceExpression instanceof ParameterAccess parameterAccess) {
         AbstractParameter parameter = parameterAccess.parameter.getValue();
-        if (parameter instanceof UserParameter) {
-          UserParameter userParameter = (UserParameter) parameter;
+        if (parameter instanceof UserParameter userParameter) {
           rv = ParameterAccessMethodInvocationFactory.getInstance(userParameter, method);
         } else {
           rv = null;
@@ -116,14 +98,11 @@ public class InstanceFactoryUtilities {
       } else {
         rv = null;
       }
-    } else if (instanceExpression instanceof LocalAccess) {
-      LocalAccess localAccess = (LocalAccess) instanceExpression;
+    } else if (instanceExpression instanceof LocalAccess localAccess) {
       rv = LocalAccessFactory.getInstance(localAccess.local.getValue());
-    } else if (instanceExpression instanceof ParameterAccess) {
-      ParameterAccess parameterAccess = (ParameterAccess) instanceExpression;
+    } else if (instanceExpression instanceof ParameterAccess parameterAccess) {
       AbstractParameter parameter = parameterAccess.parameter.getValue();
-      if (parameter instanceof UserParameter) {
-        UserParameter userParameter = (UserParameter) parameter;
+      if (parameter instanceof UserParameter userParameter) {
         rv = ParameterAccessFactory.getInstance(userParameter);
       } else {
         rv = null;

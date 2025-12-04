@@ -1,10 +1,6 @@
 package wrap;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Insets;
+import java.awt.*;
 
 // all credit goes to Rob Camick
 // http://tips4java.wordpress.com/2008/11/06/wrap-layout/

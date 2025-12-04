@@ -1,9 +1,9 @@
 package com.dddviewr.collada.geometry;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.Vcount;
+
+import java.io.PrintStream;
 
 public class PolyList extends Primitives {
   protected Vcount theVcount;

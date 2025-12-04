@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import org.alice.interact.MovementKey;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
 
 /**
@@ -58,7 +58,7 @@ public abstract class TranslateKeyManipulator extends KeyManipulator {
 
   @Override
   public String getUndoRedoDescription() {
-    return "Object Move";
+    return "TranslateKey - Object Move";
   }
 
   @Override

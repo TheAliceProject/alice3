@@ -43,9 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
@@ -58,6 +55,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.alice.math.immutable.*;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
@@ -71,7 +69,8 @@ import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
-import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove
@@ -352,8 +351,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         Logger.throwable(iae, jointField);
       }
     }
-    if (resource instanceof DynamicResource) {
-      allJointIds.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
+    if (resource instanceof DynamicResource dynamicResource) {
+      allJointIds.addAll(Arrays.asList(dynamicResource.getModelSpecificJoints()));
     }
     //Handle joint arrays
     for (JointArrayId arrayId : this.getJointArrayIds()) {
@@ -388,23 +387,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
     return this.jointArrayIds;
   }
-
-  //  private List<JointId> getMissingJoints() {
-  //    List<JointId> missingJoints = new ArrayList<JointId>();
-  //    List<JointId> jointsToCheck = new ArrayList<JointId>();
-  //    JointId[] rootIds = this.getRootJointImps();
-  //    Collections.addAll( jointsToCheck, rootIds );
-  //    while( !jointsToCheck.isEmpty() ) {
-  //      JointId joint = jointsToCheck.remove( 0 );
-  //      if( !this.hasJointImplementation( joint ) ) {
-  //        missingJoints.add( joint );
-  //      }
-  //      for( JointId child : joint.getChildren( this.getResource() ) ) {
-  //        jointsToCheck.add( child );
-  //      }
-  //    }
-  //    return missingJoints;
-  //  }
 
   public void setNewResource(JointedModelResource resource) {
     if (resource == this.getResource()) {
@@ -566,13 +548,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return this.factory.getOriginalJointTransformation(jointId);
   }
 
-  public SkeletonVisual getSgSkeletonVisual() {
-    if (this.getSgVisuals()[0] instanceof SkeletonVisual) {
-      return (SkeletonVisual) this.getSgVisuals()[0];
-    }
-    return null;
-  }
-
   @Override
   protected InstanceProperty[] getScaleProperties() {
     if (this.sgScalable != null) {
@@ -655,8 +630,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
     for (Visual sgVisual : this.getSgVisuals()) {
-      if (sgVisual instanceof SkeletonVisual) {
-        rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans, ignoreJointOrientations);
+      if (sgVisual instanceof SkeletonVisual visual) {
+        rv.addSkeletonVisual(visual, trans, ignoreJointOrientations);
       } else {
         rv.add(sgVisual, trans);
       }
@@ -670,10 +645,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   protected final JointImp createJointImplementation(JointId jointId) {
     return this.factory.createJointImplementation(this, jointId);
-  }
-
-  protected final boolean hasJointImplementation(JointId jointId) {
-    return this.factory.hasJointImplementation(this, jointId);
   }
 
   private JointedModelVisualization visualization;
@@ -742,9 +713,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     PREPEND {
       @Override
       public List<JointImp> add(List<JointImp> rv, JointImp joint, List<Bone.Direction> directions, Bone.Direction direction) {
-        rv.add(0, joint);
+        rv.addFirst(joint);
         if (directions != null) {
-          directions.add(0, direction);
+          directions.addFirst(direction);
         }
         return rv;
       }
@@ -964,14 +935,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       }
       perform(new StraightenOutJointsAnimation(duration, style));
     }
-  }
-
-  public void animateStraightenOutJoints(double duration) {
-    this.animateStraightenOutJoints(duration, DEFAULT_STYLE);
-  }
-
-  public void animateStraightenOutJoints() {
-    this.animateStraightenOutJoints(DEFAULT_DURATION);
   }
 
   public void strikePose(Pose<A> pose, double duration, Style style) {

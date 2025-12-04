@@ -108,9 +108,9 @@ public class TypeNode extends Node<AbstractType<?, ?, ?>> {
       typeNode.removeEmptyTypeNodes();
     }
     TypeNode superTypeNode = this.getParent();
-    if (this.fieldNodes.size() == 0 && superTypeNode != null) {
+    if (this.fieldNodes.isEmpty() && superTypeNode != null) {
       superTypeNode.typeNodes.remove(this);
-      if (this.typeNodes.size() > 0) {
+      if (!this.typeNodes.isEmpty()) {
         superTypeNode.typeNodes.addAll(this.typeNodes);
       }
     }

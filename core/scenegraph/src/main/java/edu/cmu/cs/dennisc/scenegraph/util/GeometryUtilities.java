@@ -83,9 +83,7 @@ public class GeometryUtilities {
       List<Vertex> sharedVertices = Lists.newLinkedList();
       final int N = vertices.length;
       for (int i = 0; i < N; i++) {
-        if (map.keySet().contains(i)) {
-          //pass
-        } else {
+        if (!map.keySet().contains(i)) {
           Vertex vI = vertices[i];
           //assert vI.equals( vI );
           int sharedIndex = sharedVertices.size();
@@ -179,8 +177,7 @@ public class GeometryUtilities {
           if (this == o) {
             return true;
           } else {
-            if (o instanceof Triangle) {
-              Triangle other = (Triangle) o;
+            if (o instanceof Triangle other) {
               return (this.a == other.a) && (this.b == other.b) && (this.c == other.c);
             } else {
               return false;
@@ -272,9 +269,7 @@ public class GeometryUtilities {
 
     boolean isRequiringTrimming = false;
     for (boolean isReferenced : isReferencedArray) {
-      if (isReferenced) {
-        //pass
-      } else {
+      if (!isReferenced) {
         isRequiringTrimming = true;
         break;
       }

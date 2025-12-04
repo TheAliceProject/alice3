@@ -43,8 +43,8 @@
 package org.alice.ide.ast.declaration;
 
 import org.alice.ide.Theme;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.typemanager.TypeManager;
-import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.views.Dialog;

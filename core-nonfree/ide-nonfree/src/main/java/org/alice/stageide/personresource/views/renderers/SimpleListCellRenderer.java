@@ -43,16 +43,10 @@
 package org.alice.stageide.personresource.views.renderers;
 
 import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
-import org.alice.stageide.personresource.views.IngredientsView;
 import org.lgna.story.resources.sims2.LocalizedResource;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 
 /**
@@ -80,19 +74,19 @@ public enum SimpleListCellRenderer implements ListCellRenderer {
   @Override
   public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     String text;
-    if (value instanceof LocalizedResource) {
-      text = ((LocalizedResource) value).getLocalizedDisplayText();
+    if (value instanceof LocalizedResource resource) {
+      text = resource.getLocalizedDisplayText();
     } else {
       text = value.toString();
     }
     this.label.setText(text);
     if (isSelected) {
-      this.label.setBackground(IngredientsView.SELECTED_COLOR);
-      this.label.setForeground(Color.BLACK);
+      this.label.setBackground(UIManager.getColor("List.selectionBackground"));
+      this.label.setForeground(UIManager.getColor("List.selectionForeground"));
       this.label.setOpaque(true);
     } else {
-      this.label.setBackground(IngredientsView.UNSELECTED_COLOR);
-      this.label.setForeground(list.isEnabled() ? Color.BLACK : Color.GRAY);
+      this.label.setBackground(UIManager.getColor("List.background"));
+      this.label.setForeground(list.isEnabled() ? UIManager.getColor("List.foreground") : UIManager.getColor("List.disabledForeground"));
       this.label.setOpaque(list.isEnabled());
     }
     return this.pane;

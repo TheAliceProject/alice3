@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.LibraryControllers;
+import org.xml.sax.Attributes;
 
 public class controller extends State {
   protected Controller theController;

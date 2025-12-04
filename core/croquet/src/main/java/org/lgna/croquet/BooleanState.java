@@ -50,19 +50,10 @@ import org.lgna.croquet.triggers.ItemEventTrigger;
 import org.lgna.croquet.views.CheckBox;
 import org.lgna.croquet.views.OperationButton;
 import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.PushButton;
 import org.lgna.croquet.views.RadioButton;
 import org.lgna.croquet.views.ToggleButton;
 
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import java.awt.LayoutManager;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -118,9 +109,7 @@ public abstract class BooleanState extends State<Boolean> {
   }
 
   protected void handleItemStateChanged(ItemEvent e) {
-    if (this.isItemStateChangedToBeIgnored) {
-      //pass
-    } else {
+    if (!this.isItemStateChangedToBeIgnored) {
       boolean nextValue = e.getStateChange() == ItemEvent.SELECTED;
       this.changeValueFromSwing(nextValue, ItemEventTrigger.createUserActivity(e));
     }
@@ -154,9 +143,7 @@ public abstract class BooleanState extends State<Boolean> {
   @Override
   protected void setSwingValue(Boolean nextValue) {
     ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
-    if (buttonModel.isSelected() == nextValue) {
-      //pass
-    } else {
+    if (buttonModel.isSelected() != nextValue) {
       this.isItemStateChangedToBeIgnored = true;
       try {
         buttonModel.setSelected(nextValue);
@@ -245,11 +232,6 @@ public abstract class BooleanState extends State<Boolean> {
 
   public ToggleButton createToggleButton() {
     return new ToggleButton(this);
-  }
-
-  @Deprecated
-  public PushButton createPushButton() {
-    return new PushButton(this);
   }
 
   public Operation getSetToTrueOperation() {
@@ -367,10 +349,5 @@ public abstract class BooleanState extends State<Boolean> {
 
   private boolean isItemStateChangedToBeIgnored = false;
 
-  private final ItemListener itemListener = new ItemListener() {
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-      BooleanState.this.handleItemStateChanged(e);
-    }
-  };
+  private final ItemListener itemListener = BooleanState.this::handleItemStateChanged;
 }

@@ -60,13 +60,6 @@ public abstract class AbstractMapToMap<A, B, V> {
     public V initialize(A a, B b);
   }
 
-  private final InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>> mapInitializer = new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
-    @Override
-    public InitializingIfAbsentMap<B, V> initialize(A key) {
-      return Maps.newInitializingIfAbsentHashMap();
-    }
-  };
-
   public V get(A a, B b) {
     Map<B, V> innerMap = this.outerMap.get(a);
     if (innerMap != null) {
@@ -77,22 +70,12 @@ public abstract class AbstractMapToMap<A, B, V> {
   }
 
   public final synchronized V getInitializingIfAbsent(final A a, B b, final Initializer<A, B, V> initializer) {
-    InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent(a, this.mapInitializer);
-    return innerMap.getInitializingIfAbsent(b, new InitializingIfAbsentMap.Initializer<B, V>() {
-      @Override
-      public V initialize(B key) {
-        return initializer.initialize(a, key);
-      }
-    });
+    InitializingIfAbsentMap<B, V> innerMap = this.outerMap.get(a, key -> Maps.newInitializingIfAbsentHashMap());
+    return innerMap.get(b, key -> initializer.initialize(a, key));
   }
 
   public final void put(A a, B b, V value) {
-    Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent(a, new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
-      @Override
-      public InitializingIfAbsentMap<B, V> initialize(A key) {
-        return Maps.newInitializingIfAbsentHashMap();
-      }
-    });
+    Map<B, V> innerMap = this.outerMap.get(a, key -> Maps.newInitializingIfAbsentHashMap());
     innerMap.put(b, value);
   }
 

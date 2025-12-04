@@ -47,33 +47,15 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
 import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
 /**
  * @author dculyba
+ * This is a dialog that shows up if for some reason we can't find the gallery directory that we install with alice
+ * On one hand, this looks extremely like a programmer bare bones debug panel, otoh, I suspect that it is very rarely seen
  *
  */
 public class FindResourcesPanel extends JPanel {
@@ -94,10 +76,10 @@ public class FindResourcesPanel extends JPanel {
     private final java.awt.FileDialog awtFileDialog;
 
     public AwtFileDialog(Component root, String title, int mode) {
-      if (root instanceof Frame) {
-        awtFileDialog = new java.awt.FileDialog((Frame) root, title, mode);
-      } else if (root instanceof Dialog) {
-        awtFileDialog = new java.awt.FileDialog((Dialog) root, title, mode);
+      if (root instanceof Frame frame) {
+        awtFileDialog = new java.awt.FileDialog(frame, title, mode);
+      } else if (root instanceof Dialog dialog) {
+        awtFileDialog = new java.awt.FileDialog(dialog, title, mode);
       } else {
         awtFileDialog = new java.awt.FileDialog((Dialog) null, title, mode);
       }
@@ -340,6 +322,7 @@ public class FindResourcesPanel extends JPanel {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 8, 4));
     buttonPanel.add(okayButton);
+    JButton cancelButton = new JButton(new CancelAction());
     buttonPanel.add(cancelButton);
     this.add(buttonPanel, new GridBagConstraints(0, //gridX
                                                  4, //gridY
@@ -373,11 +356,11 @@ public class FindResourcesPanel extends JPanel {
     String dirText = this.installDirectoryField.getText();
     this.galleryDir = StorytellingResources.getGalleryDirectory(new File(dirText));
     if (this.galleryDir != null) {
-      this.statusLabel.setForeground(Color.BLACK);
+      this.statusLabel.setForeground(UIManager.getColor("Label.foreground"));
       this.statusLabel.setText("Found gallery at '" + this.galleryDir.getAbsolutePath() + "'");
       this.okayButton.setEnabled(true);
     } else {
-      this.statusLabel.setForeground(Color.RED);
+      this.statusLabel.setForeground(UIManager.getColor("Alice.Alert.color"));
       this.statusLabel.setText("Cannot find gallery at '" + this.installDirectoryField.getText() + "'");
       this.okayButton.setEnabled(false);
     }

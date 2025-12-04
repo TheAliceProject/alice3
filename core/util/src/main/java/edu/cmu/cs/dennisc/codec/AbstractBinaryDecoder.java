@@ -45,27 +45,12 @@ package edu.cmu.cs.dennisc.codec;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Angle;
-import org.alice.math.immutable.AngleInRadians;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.EulerAngles;
-import org.alice.math.immutable.Matrix3x3;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
-import org.alice.math.immutable.Vector3f;
+import org.alice.math.immutable.*;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ShortBuffer;
+import java.nio.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -322,35 +307,17 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
   @Override
   public final <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable(Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
     String clsName = decodeString();
-    if (clsName.length() > 0) {
-      int reference = decodeInt();
-      E rv;
-      if (map.containsKey(reference)) {
-        rv = (E) map.get(reference);
-      } else {
-        rv = (E) ReflectionUtilities.newInstance(clsName);
-        map.put(reference, rv);
-        rv.decode(this, map);
-
-        //
-        //
-        //todo?
-        //
-        //
-        //        Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-        //        java.lang.reflect.Constructor< E > cnstrctr;
-        //        try {
-        //          cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
-        //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
-        //        } catch( NoSuchMethodException nsme ) {
-        //          cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-        //          rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-        //          rv.decode( this, map );
-        //        }
-      }
-      return rv;
-    } else {
+    if (clsName.isEmpty()) {
       return null;
+    }
+    int reference = decodeInt();
+    if (map.containsKey(reference)) {
+      return (E) map.get(reference);
+    } else {
+      E instance = (E) ReflectionUtilities.newInstance(clsName);
+      map.put(reference, instance);
+      instance.decode(this, map);
+      return instance;
     }
   }
 

@@ -50,4 +50,17 @@ public class SimpleArgumentListProperty extends ArgumentListProperty<SimpleArgum
   public SimpleArgumentListProperty(ArgumentOwner owner) {
     super(owner);
   }
+
+  // In the simple list, none of the parameters are optional
+  @Override
+  public boolean areAllOptionalArgumentsFilled() {
+    return true;
+  }
+
+  public JavaField getJavaField() {
+    if (!isEmpty() && (get(0).expression.getValue() instanceof FieldAccess fieldAccess)) {
+      return (JavaField) fieldAccess.field.getValue();
+    }
+    return null;
+  }
 }

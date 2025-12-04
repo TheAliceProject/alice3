@@ -80,8 +80,7 @@ public class CodeComposite extends DeclarationComposite<AbstractCode, AbstractCo
 
   private CodeComposite(AbstractCode code) {
     super(UUID.fromString("b8043e06-495b-4f24-9cfb-0e447d97cc7c"), code, AbstractCode.class);
-    if (code instanceof UserMethod) {
-      UserMethod method = (UserMethod) code;
+    if (code instanceof UserMethod method) {
       if (method.isFunction()) {
         this.userFunctionStatusComposite = new UserFunctionStatusComposite(method);
       } else {

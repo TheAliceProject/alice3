@@ -49,6 +49,7 @@ import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 
 /**
@@ -86,7 +87,7 @@ public abstract class ImmutableTextComponent<J extends JTextComponent> extends S
     component.setFocusable(false);
     component.setBorder(BorderFactory.createEmptyBorder());
     component.setFont(UIManager.getFont("Label.font"));
-    component.setAlignmentX(0.0f);
+    component.setAlignmentX(Component.LEFT_ALIGNMENT);
     String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
     component.setDisabledTextColor(UIManager.getColor(disabledColorKey));
   }

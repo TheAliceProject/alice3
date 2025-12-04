@@ -111,14 +111,8 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
     @Override
     public void valueChanged(ListSelectionEvent e) {
-      if (isInTheMidstOfSettingSwingValue) {
-        //pass
-      } else {
-        if (e.getValueIsAdjusting()) {
-          //pass
-        } else {
-          fireChanged(getValue());
-        }
+      if (!isInTheMidstOfSettingSwingValue && !e.getValueIsAdjusting()) {
+        fireChanged(getValue());
       }
     }
   };
@@ -182,9 +176,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   }
 
   public void removeNewSchoolValueListener(ValueListener<List<T>> valueListener) {
-    if (this.newSchoolValueListeners.contains(valueListener)) {
-      //pass
-    } else {
+    if (!this.newSchoolValueListeners.contains(valueListener)) {
       Logger.severe("listener not contained", this, valueListener);
     }
     this.newSchoolValueListeners.remove(valueListener);
@@ -199,7 +191,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
   //  }
   //  }
   private void fireChanged(List<T> nextValue) {
-    if (this.newSchoolValueListeners.size() > 0) {
+    if (!this.newSchoolValueListeners.isEmpty()) {
       ValueEvent<List<T>> e = ValueEvent.createInstance(nextValue);
       for (ValueListener<List<T>> valueListener : this.newSchoolValueListeners) {
         valueListener.valueChanged(e);

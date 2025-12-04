@@ -127,16 +127,12 @@ public abstract class SwingComponentView<J extends JComponent> extends AwtContai
     }
 
     public static Condition valueOf(int constant) {
-      switch (constant) {
-      case JComponent.WHEN_FOCUSED:
-        return WHEN_FOCUSED;
-      case JComponent.WHEN_IN_FOCUSED_WINDOW:
-        return WHEN_IN_FOCUSED_WINDOW;
-      case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
-        return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-      default:
-        return null;
-      }
+      return switch (constant) {
+      case JComponent.WHEN_FOCUSED -> WHEN_FOCUSED;
+      case JComponent.WHEN_IN_FOCUSED_WINDOW -> WHEN_IN_FOCUSED_WINDOW;
+      case JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT -> WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+      default -> null;
+      };
     }
   }
 

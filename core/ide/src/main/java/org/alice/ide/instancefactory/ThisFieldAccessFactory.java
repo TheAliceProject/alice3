@@ -46,14 +46,10 @@ package org.alice.ide.instancefactory;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 import java.util.Map;
 
@@ -122,7 +118,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 
     ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
     if (projectDocumentFrame != null) {
-      return projectDocumentFrame.getIconFactoryManager().getIconFactory(this.field, fallbackIconFactory);
+      return IconFactoryManager.getDynamicIconFactoryForField(this.field, fallbackIconFactory);
     } else {
       return fallbackIconFactory;
     }

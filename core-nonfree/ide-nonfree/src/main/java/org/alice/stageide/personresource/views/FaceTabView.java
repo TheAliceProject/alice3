@@ -63,12 +63,9 @@ import java.awt.Color;
 public class FaceTabView extends MigPanel {
   public FaceTabView(FaceTabComposite composite) {
     super(composite, "insets 2, fillx", "[right][left, grow, shrink]", "");
-    Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
-    this.setBackgroundColor(backgroundColor);
     this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
     List<BaseFace> faceList = new HorizontalWrapList<BaseFace>(composite.getBaseFaceState(), -1, FaceListCellRenderer.getInstance());
-    faceList.setBackgroundColor(IngredientsView.BACKGROUND_COLOR);
     this.addComponent(composite.getBaseFaceState().getSidekickLabel().createLabel(), "top");
     ScrollPane faceScrollPane = new ScrollPane(faceList);
     faceScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
@@ -90,7 +87,7 @@ public class FaceTabView extends MigPanel {
         itemSelectedState.setTextForBothTrueAndFalse("");
         itemSelectedState.setIconForBothTrueAndFalse(new ColorIcon(awtColor));
         ToggleButton toggleButton = itemSelectedState.createToggleButton();
-        toggleButton.tightenUpMargin(IngredientsView.COLOR_BUTTON_MARGIN);
+        toggleButton.setMinimumPreferredWidth(ColorIcon.DEFAULT_SIZE);
         this.addComponent(toggleButton, constraint);
         constraint = "";
       }

@@ -45,19 +45,11 @@ package org.alice.stageide.type.croquet;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.ProjectStack;
 import org.alice.stageide.type.croquet.data.SceneFieldListData;
 import org.alice.stageide.type.croquet.views.OtherTypeDialogPane;
+import org.lgna.croquet.*;
 import org.lgna.croquet.Element;
-import org.lgna.croquet.HtmlStringValue;
-import org.lgna.croquet.ImmutableDataTabState;
-import org.lgna.croquet.MultipleSelectionListState;
-import org.lgna.croquet.SingleSelectTreeState;
-import org.lgna.croquet.StringValue;
-import org.lgna.croquet.TabState;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -67,13 +59,7 @@ import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMember;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.io.IoUtilities;
 import org.lgna.story.SModel;
 import org.lgna.story.SThing;
@@ -159,14 +145,12 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
     public void valueChanged(ValueEvent<List<UserField>> e) {
       List<UserField> fields = e.getNextValue();
       TypeNode sharedNode = null;
-      if (!fields.isEmpty()) {
-        for (UserField field : fields) {
-          TypeNode typeNode = typeNodeMap.get(field.getValueType());
-          if (sharedNode != null) {
-            sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
-          } else {
-            sharedNode = typeNode;
-          }
+      for (UserField field : fields) {
+        TypeNode typeNode = typeNodeMap.get(field.getValueType());
+        if (sharedNode != null) {
+          sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
+        } else {
+          sharedNode = typeNode;
         }
       }
       isInTheMidstOfLowestCommonAncestorSetting = true;
@@ -183,7 +167,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(JavaType rootType) {
-    return this.mapTypeToValueCreator.getInitializingIfAbsent(rootType, ValueCreatorForRootFilterType::new);
+    return this.mapTypeToValueCreator.get(rootType, ValueCreatorForRootFilterType::new);
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(Class<? extends SThing> rootCls) {
@@ -304,13 +288,11 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   private static boolean isInclusionDesired(AbstractMember member) {
-    if (member instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) member;
+    if (member instanceof AbstractMethod method) {
       if (method.isStatic()) {
         return false;
       }
-    } else if (member instanceof AbstractField) {
-      AbstractField field = (AbstractField) member;
+    } else if (member instanceof AbstractField field) {
       if (field.isStatic()) {
         return false;
       }
@@ -436,10 +418,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
-
     new SimpleApplication();
-
     Project project = IoUtilities.readProject(args[0]);
     ProjectStack.pushProject(project);
     OtherTypeDialog.getInstance().getValueCreator(SModel.class).fire(NullTrigger.createUserActivity());

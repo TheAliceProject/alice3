@@ -43,23 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_ALWAYS;
-import static com.jogamp.opengl.GL.GL_BLEND;
-import static com.jogamp.opengl.GL.GL_CCW;
-import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
-import static com.jogamp.opengl.GL.GL_CW;
-import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
-import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
-import static com.jogamp.opengl.GL.GL_EQUAL;
-import static com.jogamp.opengl.GL.GL_KEEP;
-import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_REPLACE;
-import static com.jogamp.opengl.GL.GL_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_STENCIL_BUFFER_BIT;
-import static com.jogamp.opengl.GL.GL_STENCIL_TEST;
-import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
@@ -73,6 +56,10 @@ import org.alice.math.immutable.Point3;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove
@@ -92,17 +79,17 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   protected void addDescendant(GlrComponent<?> glrDescendant) {
-    if (glrDescendant instanceof GlrGhost) {
+    if (glrDescendant instanceof GlrGhost ghost) {
       synchronized (this.glrGhostDescendants) {
-        this.glrGhostDescendants.add((GlrGhost) glrDescendant);
+        this.glrGhostDescendants.add(ghost);
       }
-    } else if (glrDescendant instanceof GlrVisual<?>) {
+    } else if (glrDescendant instanceof GlrVisual<?> visual) {
       synchronized (this.glrVisualDescendants) {
-        this.glrVisualDescendants.add((GlrVisual<?>) glrDescendant);
+        this.glrVisualDescendants.add(visual);
       }
-      if (glrDescendant instanceof GlrPlanarReflector) {
+      if (glrDescendant instanceof GlrPlanarReflector reflector) {
         synchronized (this.glrPlanarReflectorDescendants) {
-          this.glrPlanarReflectorDescendants.add((GlrPlanarReflector) glrDescendant);
+          this.glrPlanarReflectorDescendants.add(reflector);
         }
       }
     }
@@ -204,8 +191,8 @@ public class GlrScene extends GlrComposite<Scene> {
       backgroundAdapter.setup(rc);
     }
 
-    if (this.glrPlanarReflectorDescendants.size() > 0) {
-      GlrPlanarReflector planarReflectorAdapter = this.glrPlanarReflectorDescendants.get(0);
+    if (!this.glrPlanarReflectorDescendants.isEmpty()) {
+      GlrPlanarReflector planarReflectorAdapter = this.glrPlanarReflectorDescendants.getFirst();
       if (planarReflectorAdapter.isFacing(cameraAdapter)) {
         rc.gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         rc.gl.glColorMask(false, false, false, false);

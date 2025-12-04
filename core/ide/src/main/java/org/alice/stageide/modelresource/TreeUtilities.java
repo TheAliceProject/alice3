@@ -126,8 +126,7 @@ public class TreeUtilities {
 
   private static ResourceNode createNode(GalleryResourceTreeNode source, ResourceKey key) {
     List<ResourceNode> childNodes = Lists.newLinkedList();
-    if (key instanceof ClassResourceKey) {
-      ClassResourceKey classResourceKey = (ClassResourceKey) key;
+    if (key instanceof ClassResourceKey classResourceKey) {
       if (classResourceKey.getModelResourceCls().equals(BipedResource.class)) {
         List<ResourceNode> emptyList = Collections.emptyList();
         NebulousIde.nonfree.addBipedResourceResourceNodes(childNodes, emptyList);
@@ -254,8 +253,7 @@ public class TreeUtilities {
       ResourceKey resourceKey = resourceNode.getResourceKey();
       //todo
       IconFactory iconFactory = resourceKey.getIconFactory();
-      if (iconFactory instanceof AbstractSingleSourceImageIconFactory) {
-        AbstractSingleSourceImageIconFactory imageIconFactory = (AbstractSingleSourceImageIconFactory) iconFactory;
+      if (iconFactory instanceof AbstractSingleSourceImageIconFactory imageIconFactory) {
         iconFactories.add(imageIconFactory);
       }
       if (iconFactories.size() == 5) {

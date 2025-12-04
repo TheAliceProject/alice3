@@ -48,9 +48,9 @@ import org.lgna.project.ast.Statement;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
-import java.awt.Paint;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -83,41 +83,19 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
     return this.statementCls;
   }
 
-  private static final int INSET = 1;
-
-  @Override
-  protected int getInsetTop() {
-    return StatementLikeSubstance.INSET;
-  }
-
   @Override
   protected int getDockInsetLeft() {
     return 1;
   }
 
   @Override
-  protected int getInternalInsetLeft() {
-    return StatementLikeSubstance.INSET + 2;
-  }
-
-  @Override
-  protected int getInsetBottom() {
-    return StatementLikeSubstance.INSET + 2;
-  }
-
-  @Override
-  protected int getInsetRight() {
-    return StatementLikeSubstance.INSET + 4;
-  }
-
-  @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    return ThemeUtilities.getActiveTheme().getPaintFor(this.statementCls, x, y, width, height);
+  public Color getBackgroundColor() {
+    return ThemeUtilities.getActiveTheme().getColorFor(this.statementCls);
   }
 
   @Override
   protected RoundRectangle2D.Float createShape(int x, int y, int width, int height) {
-    return new RoundRectangle2D.Float(x, y, width - 1, height - 1, 8, 8);
+    return new RoundRectangle2D.Float(x + 1, y + 1, width - 2, height - 2, 8, 8);
   }
 
   @Override
@@ -130,22 +108,4 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
     this.fillBounds(g2, x, y, width, height);
   }
 
-  //  @Override
-  //  protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-  //    return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
-  //  }
-
-  ////  //todo: remove
-  //  @Override
-  //  protected void paintBorder( java.awt.Graphics g ) {
-  //    super.paintBorder( g );
-  //    if( this.isKnurlDesired() ) {
-  //      this.getBorder().paintBorder( this, g, 0, 0, getWidth(), getHeight() );
-  //    }
-  ////    super.paintBorder( g );
-  ////    if( this.isKnurlDesired() ) {
-  ////      java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-  ////      edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, 3, 2, 8, getHeight()-2 );
-  ////    }
-  //  }
 }

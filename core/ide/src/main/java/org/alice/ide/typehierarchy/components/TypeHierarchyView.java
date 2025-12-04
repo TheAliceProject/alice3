@@ -50,27 +50,19 @@ import edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
 import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.declarationseditor.TypeComposite;
 import org.alice.ide.typehierarchy.TypeHierarchyComposite;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.SwingAdapter;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.NamedUserType;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -172,9 +164,7 @@ public class TypeHierarchyView extends BorderPanel {
     public void valueChanged(TreeSelectionEvent e) {
       TreePath treePath = jTree.getSelectionPath();
       if (treePath != null) {
-        if (isIgnoringChangesToTree) {
-          //pass
-        } else {
+        if (!isIgnoringChangesToTree) {
           Object last = treePath.getLastPathComponent();
           if (last instanceof Node) {
             Node<NamedUserType> node = (Node<NamedUserType>) last;
@@ -189,17 +179,14 @@ public class TypeHierarchyView extends BorderPanel {
 
   public TypeHierarchyView(TypeHierarchyComposite composite) {
     super(composite, 0, 4);
-    Color color = ThemeUtilities.getActiveTheme().getMutedTypeColor();
     this.jTree = new JTree(this.treeModel);
     this.jTree.setRootVisible(false);
     this.jTree.setCellRenderer(new NamedUserTypeTreeCellRenderer());
-    this.jTree.setBackground(color);
 
     SwingComponentView<?> viewportView = new SwingAdapter(this.jTree);
     ScrollPane scrollPane = new ScrollPane(viewportView);
     String hierarchyText = ResourceBundleUtilities.getStringForKey("typeHierarchy", getClass());
     Label label = new Label(hierarchyText, 1.2f, TextPosture.OBLIQUE, TextWeight.LIGHT);
-    this.setBackgroundColor(color);
     this.addPageStartComponent(label);
     this.addCenterComponent(scrollPane);
   }

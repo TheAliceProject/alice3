@@ -45,14 +45,7 @@ package edu.cmu.cs.dennisc.java.util.zip;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -97,8 +90,8 @@ public class ZipUtilities {
 
   public static Map<String, byte[]> extract(InputStream is, Collection<String> entryNameFilter) throws IOException {
     ZipInputStream zis;
-    if (is instanceof ZipInputStream) {
-      zis = (ZipInputStream) is;
+    if (is instanceof ZipInputStream stream) {
+      zis = stream;
     } else {
       zis = new ZipInputStream(is);
     }
@@ -193,9 +186,7 @@ public class ZipUtilities {
       pathPrefix += "/";
     }
     for (File file : files) {
-      if (file.isDirectory()) {
-        //pass
-      } else {
+      if (!file.isDirectory()) {
         String path = file.getAbsolutePath();
         assert path.startsWith(rootPath);
         String subPath = path.substring(rootPath.length() + 1, path.length() - file.getName().length());
@@ -224,9 +215,7 @@ public class ZipUtilities {
     File[] files = isRecursive ? FileUtilities.listDescendants(srcDirectory, filter) : FileUtilities.listFiles(srcDirectory, filter);
 
     for (File file : files) {
-      if (file.isDirectory()) {
-        //pass
-      } else {
+      if (!file.isDirectory()) {
         String path = file.getAbsolutePath();
         assert path.startsWith(rootPath);
         String subPath = path.substring(rootPath.length() + 1);

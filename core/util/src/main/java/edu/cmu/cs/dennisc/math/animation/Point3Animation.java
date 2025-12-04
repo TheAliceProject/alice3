@@ -43,8 +43,8 @@
 package edu.cmu.cs.dennisc.math.animation;
 
 import edu.cmu.cs.dennisc.animation.Style;
-import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+import org.alice.math.immutable.Point3;
 
 /**
  * @author Dennis Cosgrove

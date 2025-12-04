@@ -46,12 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.TypeExpression;
+import org.lgna.project.ast.*;
 
 import java.util.UUID;
 
@@ -75,7 +70,7 @@ public final class InstanceCreationFillInWithPredeterminedFieldAccessArgument ex
 
   private static InstanceCreation createInstanceCreation(AbstractConstructor constructor, AbstractField field) {
     InstanceCreation rv = new InstanceCreation(constructor);
-    rv.requiredArguments.add(new SimpleArgument(constructor.getRequiredParameters().get(0), new FieldAccess(new TypeExpression(field.getDeclaringType()), field)));
+    rv.requiredArguments.add(new SimpleArgument(constructor.getRequiredParameters().getFirst(), new FieldAccess(new TypeExpression(field.getDeclaringType()), field)));
     return rv;
   }
 

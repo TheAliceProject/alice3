@@ -1,8 +1,8 @@
 package com.dddviewr.collada.visualscene;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Base;
+
+import java.io.PrintStream;
 
 public class BaseXform extends Base {
   protected String sid;

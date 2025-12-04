@@ -42,18 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet.views;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFlowControlFrequencyComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
@@ -71,8 +61,12 @@ import org.lgna.croquet.views.List;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.*;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.util.Maps;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Matt May
@@ -207,8 +201,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 
     private void setCell(int col, int row, int count) {
       AwtComponentView component = getCell(col, row);
-      if (component instanceof BarLabel) {
-        BarLabel label = (BarLabel) component;
+      if (component instanceof BarLabel label) {
         label.setCount(count);
       }
     }
@@ -236,8 +229,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
         rv.setForegroundColor(Color.WHITE);
       }
       if (!value.equals(StatisticsFlowControlFrequencyComposite.root)) {
-        if (value instanceof UserMethod) {
-          UserMethod userMethod = (UserMethod) value;
+        if (value instanceof UserMethod userMethod) {
           rv.setText(getFormattedName(userMethod));
           return rv.getAwtComponent();
         }

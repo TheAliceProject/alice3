@@ -55,62 +55,34 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
-import org.alice.ide.iconfactory.IconFactoryManager;
-import org.alice.ide.icons.Icons;
+import org.alice.ide.icons.*;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.member.FilteredMethodsSubComposite;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
-import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
-import org.alice.stageide.iconfactory.StoryIconFactoryManager;
-import org.alice.stageide.icons.*;
-import org.alice.stageide.instancefactory.croquet.joint.all.LocalAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessMethodInvocationJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ThisFieldAccessJointedTypeMenuModel;
-import org.alice.stageide.instancefactory.croquet.joint.all.ThisJointedTypeMenuModel;
-import org.alice.stageide.member.AddListenerProceduresComposite;
-import org.alice.stageide.member.AppearanceFunctionsComposite;
-import org.alice.stageide.member.AppearanceProceduresComposite;
-import org.alice.stageide.member.AtmosphereFunctionsComposite;
-import org.alice.stageide.member.AtmosphereProceduresComposite;
-import org.alice.stageide.member.AudioProceduresComposite;
-import org.alice.stageide.member.FieldOfViewFunctionsComposite;
-import org.alice.stageide.member.FieldOfViewProceduresComposite;
-import org.alice.stageide.member.JointFunctionsComposite;
-import org.alice.stageide.member.OrientationProceduresComposite;
-import org.alice.stageide.member.PositionAndOrientationProceduresComposite;
-import org.alice.stageide.member.PositionProceduresComposite;
-import org.alice.stageide.member.PromptUserFunctionsComposite;
-import org.alice.stageide.member.SayThinkProceduresComposite;
-import org.alice.stageide.member.SizeFunctionsComposite;
-import org.alice.stageide.member.SizeProceduresComposite;
-import org.alice.stageide.member.TextProceduresComposite;
-import org.alice.stageide.member.TimingProceduresComposite;
-import org.alice.stageide.member.VehicleProceduresComposite;
+import org.alice.stageide.instancefactory.croquet.joint.all.*;
+import org.alice.stageide.member.*;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeMenuModel;
-import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.SVGIconFactory;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.*;
 import org.lgna.story.*;
-import org.lgna.story.resources.*;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.DynamicResource;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove
@@ -140,23 +112,23 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   public StoryApiConfigurationManager() {
     BeveledShapeForType.addRoundType(SThing.class);
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
+    IconFactoryManager.registerIconFactory(SSphere.class, SceneIconFactory.getInstance());
+    IconFactoryManager.registerIconFactory(SCylinder.class, new ShapeIconFactory(CylinderIcon::new));
+    IconFactoryManager.registerIconFactory(SCone.class, new ShapeIconFactory(ConeIcon::new));
+    IconFactoryManager.registerIconFactory(SDisc.class, new ShapeIconFactory(DiscIcon::new));
+    IconFactoryManager.registerIconFactory(SSphere.class, new ShapeIconFactory(SphereIcon::new));
+    IconFactoryManager.registerIconFactory(STorus.class, new ShapeIconFactory(TorusIcon::new));
+    IconFactoryManager.registerIconFactory(SAxes.class, new ShapeIconFactory(AxesIcon::new));
+    IconFactoryManager.registerIconFactory(STextModel.class, new ShapeIconFactory(TextModelIcon::new));
+    IconFactoryManager.registerIconFactory(SBillboard.class, new ShapeIconFactory(BillboardIcon::new));
+    IconFactoryManager.registerIconFactory(SBox.class, new ShapeIconFactory(BoxIcon::new));
+    IconFactoryManager.registerIconFactory(SGround.class, new ShapeIconFactory(GroundIcon::new));
 
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/256x256/Camera.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
-    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new ImageIconFactory(Icons.class.getResource("images/VRUser.png")));
+    IconFactoryManager.registerIconFactory(SJoint.class, new ShapeIconFactory(JointIcon::new));
+    IconFactoryManager.registerIconFactory(SCamera.class, new SVGIconFactory(Icons.class.getResource("images/Camera.svg")));
+    IconFactoryManager.registerIconFactory(SVRHand.class, new SVGIconFactory(Icons.class.getResource("images/LeftHand.svg")));
+    IconFactoryManager.registerIconFactory(SVRHeadset.class, new SVGIconFactory(Icons.class.getResource("images/VRHeadset.svg")));
+    IconFactoryManager.registerIconFactory(SVRUser.class, new SVGIconFactory(Icons.class.getResource("images/VRUser.svg")));
 
     this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), FieldOfViewProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 
@@ -192,11 +164,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
     private double getValue(AbstractType<?, ?, ?> type) {
       Double value = mapTypeToValue.get(type);
-      if (value != null) {
-        return value;
-      } else {
-        return DEFAULT_VALUE;
-      }
+      return Objects.requireNonNullElse(value, DEFAULT_VALUE);
     }
 
     @Override
@@ -217,13 +185,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  protected boolean isNamedUserTypesAcceptableForGallery(NamedUserType type) {
-    return type.isAssignableTo(SModel.class);
-  }
-
-  @Override
   protected boolean isNamedUserTypesAcceptableForSelection(NamedUserType type) {
-    return (type.isAssignableTo(SProgram.class) == false) || IsIncludingProgramType.getInstance().getValue();
+    return (!type.isAssignableTo(SProgram.class)) || IsIncludingProgramType.getInstance().getValue();
   }
 
   @Override
@@ -296,7 +259,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   private CascadeMenuModel<InstanceFactory> getCameraFieldsMenu(UserField cameraField) {
     if (cameraFieldsMenuModel == null) {
-      cameraFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
+      cameraFieldsMenuModel = new CascadeMenuModel<>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
           for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
@@ -310,7 +273,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   private CascadeMenuModel<InstanceFactory> getVrUserFieldsMenu(UserField vrField) {
     if (vrUserFieldsMenuModel == null) {
-      vrUserFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
+      vrUserFieldsMenuModel = new CascadeMenuModel<>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
           for (AbstractMethod method : SVRUser.getDeviceMethods(vrField.getValueType())) {
@@ -350,21 +313,6 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     } else {
       return null;
     }
-  }
-
-  @Override
-  public AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType) {
-    List<NamedUserType> types = TypeManager.getNamedUserTypesFromSuperTypes(StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes());
-    for (AbstractType<?, ?, ?> type : types) {
-      AbstractConstructor constructor = type.getDeclaredConstructors().get(0);
-      List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
-      if (parameters.size() == 1) {
-        if (parameters.get(0).getValueType().isAssignableFrom(argumentType)) {
-          return constructor;
-        }
-      }
-    }
-    return null;
   }
 
   private DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
@@ -418,18 +366,11 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  protected List<? super JavaType> addPrimeTimeJavaTypes(List<? super JavaType> rv) {
-    rv = super.addPrimeTimeJavaTypes(rv);
-    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
-    return rv;
-  }
-
-  @Override
   protected List<? super JavaType> addSecondaryJavaTypes(List<? super JavaType> rv) {
     super.addSecondaryJavaTypes(rv);
 
     rv.add(JavaType.getInstance(SJoint.class));
+    // the nulls added to the list become line breaks in dialogs where you can choose a type
     rv.add(null);
     if (StageIDE.getActiveInstance().getSceneEditor().isVrActive()) {
       rv.add(JavaType.getInstance(SVRHand.class));
@@ -465,13 +406,13 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance(SJointedModel.class);
 
   private static String getFieldMethodNameHint(AbstractField field) {
-    if (field instanceof JavaField) {
-      Field fld = ((JavaField) field).getFieldReflectionProxy().getReification();
+    if (field instanceof JavaField javaField) {
+      Field fld = javaField.getFieldReflectionProxy().getReification();
       if (fld != null) {
         if (fld.isAnnotationPresent(FieldTemplate.class)) {
           FieldTemplate propertyFieldTemplate = fld.getAnnotation(FieldTemplate.class);
           String methodNameHint = propertyFieldTemplate.methodNameHint();
-          if (methodNameHint.length() > 0) {
+          if (!methodNameHint.isEmpty()) {
             return methodNameHint;
           }
         }
@@ -570,20 +511,20 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       // public Alice(AliceResource resource) { super(resource); }
       // public Biped(BipedResource resource) { super(resource); }
       Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
-      AbstractType<?, ?, ?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type(constructor0);
+      AbstractType<?, ?, ?> constructorParameterType = constructor0.getFirstParameterType();
       AbstractType<?, ?, ?> inferredResourceType = constructorParameterType;
       if (inferredResourceType == null) {
-        JavaField field = ConstructorArgumentUtilities.getArgumentField(constructor0);
+        JavaField field = getArgumentField(constructor0);
         if (field != null) {
           inferredResourceType = field.getValueType();
         }
       }
       JavaType ancestorType = rv.getFirstEncounteredJavaType();
-      if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
+      if (constructorParameterType != ancestorType.getFirstParameterType()) {
         if (inferredResourceType != null) {
           addMethodsToType(rv, inferredResourceType);
-        } else if (firstArgument instanceof DynamicResource) {
-          addMethodsToType(rv, (DynamicResource) firstArgument);
+        } else if (firstArgument instanceof DynamicResource resource) {
+          addMethodsToType(rv, resource);
         } else {
           Logger.severe("Failed to augment type " + rv + ". Unable to find model resource type.");
         }
@@ -592,21 +533,29 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     return rv;
   }
 
+  private static JavaField getArgumentField(AbstractConstructor constructor0) {
+    if (!(constructor0 instanceof NamedUserConstructor namedUserConstructor)) {
+      return null;
+    }
+
+    ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+    SimpleArgumentListProperty args = constructorInvocationStatement.requiredArguments;
+    return args.getJavaField();
+  }
+
   @Override
   public boolean isExportTypeDesiredFor(NamedUserType type) {
     if (IsIncludingImportAndExportType.getValue()) {
-      return (type.isAssignableTo(SScene.class) == false) && (type.isAssignableTo(SProgram.class) == false);
+      return (!type.isAssignableTo(SScene.class)) && (!type.isAssignableTo(SProgram.class));
     } else {
       return false;
     }
   }
 
   private AbstractType<?, ?, ?> getSpecificPoseBuilderType(Expression expression) {
-    if (expression instanceof MethodInvocation) {
-      MethodInvocation methodInvocation = (MethodInvocation) expression;
+    if (expression instanceof MethodInvocation methodInvocation) {
       return getSpecificPoseBuilderType(methodInvocation.expression.getValue());
-    } else if (expression instanceof InstanceCreation) {
-      InstanceCreation instanceCreation = (InstanceCreation) expression;
+    } else if (expression instanceof InstanceCreation instanceCreation) {
       return instanceCreation.getType();
     } else {
       return null;
@@ -634,10 +583,5 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   public boolean isBuildMethod(MethodInvocation methodInvocation) {
     return getBuildMethodPoseBuilderType(methodInvocation, false) != null;
-  }
-
-  @Override
-  public IconFactoryManager createIconFactoryManager() {
-    return new StoryIconFactoryManager();
   }
 }

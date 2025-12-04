@@ -56,12 +56,7 @@ import org.lgna.project.ast.AbstractType;
 
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.util.List;
 
@@ -86,7 +81,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
     IDE ide = IDE.getActiveInstance();
     ProjectPerspective idePerspective = (ProjectPerspective) ide.getPerspective();
     List<DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors((IdeDragModel) potentialDragSource.getModel());
-    if (dropReceptors.size() > 0) {
+    if (!dropReceptors.isEmpty()) {
       this.holes = dropReceptors;
       this.potentialDragSource = potentialDragSource;
       this.window.getRootPane().getLayeredPane().getLayer(LAYER_ID).setComponent(this);

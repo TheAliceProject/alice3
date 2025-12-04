@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Source;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.Skin;
+import org.xml.sax.Attributes;
 
 public class skin extends State {
   protected Skin theSkin;

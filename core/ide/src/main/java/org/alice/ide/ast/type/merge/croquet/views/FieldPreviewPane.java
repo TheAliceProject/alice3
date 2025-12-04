@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.MemberHub;
 import org.lgna.project.ast.UserField;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -53,9 +53,7 @@ import org.lgna.project.ast.UserField;
 public class FieldPreviewPane extends MemberPreviewPane<UserField> {
   public FieldPreviewPane(MemberHub<UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired) {
     super(fieldHub, isAlphaDesiredWhenSelectionIsRequired);
-    UserField field = fieldHub.getMember();
-    Theme theme = ThemeUtilities.getActiveTheme();
     this.addComponent(new FieldHubDeclarationView(fieldHub), "wrap");
-    this.setBackgroundColor(theme.getFieldColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 }

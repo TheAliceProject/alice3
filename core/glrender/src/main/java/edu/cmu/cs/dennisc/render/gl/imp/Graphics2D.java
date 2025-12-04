@@ -42,26 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static com.jogamp.opengl.GL.GL_BLEND;
-import static com.jogamp.opengl.GL.GL_CULL_FACE;
-import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
-import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
-import static com.jogamp.opengl.GL.GL_LINES;
-import static com.jogamp.opengl.GL.GL_LINE_LOOP;
-import static com.jogamp.opengl.GL.GL_LINE_STRIP;
-import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_RGBA;
-import static com.jogamp.opengl.GL.GL_SRC_ALPHA;
-import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
-import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
-import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
-import static com.jogamp.opengl.GL2.GL_POLYGON;
-import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
-import static com.jogamp.opengl.GL2GL3.GL_FILL;
-import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLException;
@@ -79,21 +59,7 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.CustomTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -108,6 +74,15 @@ import java.nio.DoubleBuffer;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jogamp.opengl.GL.*;
+import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
+import static com.jogamp.opengl.GL2.GL_POLYGON;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
+import static com.jogamp.opengl.GL2GL3.GL_FILL;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove
@@ -191,34 +166,18 @@ import java.util.Map;
     this.renderContext.gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
 
-  private boolean isInTheMidstOfFinalization = false;
-
-  @Override
-  public void finalize() {
-    this.isInTheMidstOfFinalization = true;
-    try {
-      super.finalize();
-    } finally {
-      this.isInTheMidstOfFinalization = false;
-    }
-  }
-
   // java.awt.Graphics
 
   @Override
   public void dispose() {
-    if (this.isInTheMidstOfFinalization) {
-      //pass
-    } else {
+    if (isValid()) {
       this.renderContext.gl.glFlush();
-      if (isValid()) {
-        this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
-        this.renderContext.gl.glPopMatrix();
-        this.renderContext.gl.glMatrixMode(GL_PROJECTION);
-        this.renderContext.gl.glPopMatrix();
-        this.width = -1;
-        this.height = -1;
-      }
+      this.renderContext.gl.glMatrixMode(GL_MODELVIEW);
+      this.renderContext.gl.glPopMatrix();
+      this.renderContext.gl.glMatrixMode(GL_PROJECTION);
+      this.renderContext.gl.glPopMatrix();
+      this.width = -1;
+      this.height = -1;
     }
   }
 
@@ -234,8 +193,8 @@ import java.util.Map;
 
   @Override
   public Color getColor() {
-    if (this.paint instanceof Color) {
-      return (Color) this.paint;
+    if (this.paint instanceof Color color) {
+      return color;
     } else {
       throw new RuntimeException("use getPaint()");
     }
@@ -458,17 +417,13 @@ import java.util.Map;
   @Override
   public boolean drawImage(Image image, int x, int y, ImageObserver observer) {
     boolean isRemembered = isRemembered(image);
-    if (isRemembered) {
-      //pass
-    } else {
+    if (!isRemembered) {
       remember(image);
     }
     try {
       this.paint(this.imageToImageGeneratorMap.get(image), x, y, 1.0f);
     } finally {
-      if (isRemembered) {
-        //pass
-      } else {
+      if (!isRemembered) {
         forget(image);
       }
     }
@@ -548,8 +503,7 @@ import java.util.Map;
     assert referencedObject != null;
     TextRenderer glTextRenderer = referencedObject.getObject().getTextRenderer(this.font, this.renderContext.gl);
     glTextRenderer.beginRendering(this.width, this.height);
-    if (this.paint instanceof Color) {
-      Color color = (Color) this.paint;
+    if (this.paint instanceof Color color) {
       glTextRenderer.setColor(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
     } else {
       //todo?
@@ -725,8 +679,7 @@ import java.util.Map;
   public void draw(Shape s) {
     //boolean isLine = this.stroke.equals( DEFAULT_STROKE );
     boolean isLine;
-    if (this.stroke instanceof BasicStroke) {
-      BasicStroke basicStroke = (BasicStroke) this.stroke;
+    if (this.stroke instanceof BasicStroke basicStroke) {
       if (basicStroke.getDashArray() != null) {
         //todo
         this.renderContext.gl.glLineStipple(1, (short) 0x00FF);
@@ -831,8 +784,8 @@ import java.util.Map;
   }
 
   private void glSetPaint(Paint paint) {
-    if (paint instanceof Color) {
-      glSetColor((Color) paint);
+    if (paint instanceof Color color) {
+      glSetColor(color);
     } else {
       throw new RuntimeException("not implemented");
     }
@@ -845,8 +798,8 @@ import java.util.Map;
 
   @Override
   public void setPaint(Paint paint) {
-    if (paint instanceof Color) {
-      glSetColor((Color) paint);
+    if (paint instanceof Color color) {
+      glSetColor(color);
       this.paint = paint;
     } else {
       throw new RuntimeException("not implemented");
@@ -1084,9 +1037,7 @@ import java.util.Map;
     assert referencedObject != null;
     assert referencedObject.isReferenced();
     referencedObject.removeReference();
-    if (referencedObject.isReferenced()) {
-      //pass
-    } else {
+    if (!referencedObject.isReferenced()) {
       this.activeFontToTextRendererMap.remove(font);
       this.forgottenFontToTextRendererMap.put(font, referencedObject);
     }
@@ -1122,21 +1073,13 @@ import java.util.Map;
       if (referencedObject != null) {
         this.forgottenImageGeneratorToPixelsMap.remove(imageGenerator);
       } else {
-        if (imageGenerator instanceof Texture) {
-          //          sgTexture.addReleaseListener( new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
-          //          public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-          //          }
-          //          public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-          //            forget( (edu.cmu.cs.dennisc.scenegraph.Texture)releaseEvent.getReleasableSource() );
-          //          };
-          //        } );
-          Texture texture = (Texture) imageGenerator;
+        if (imageGenerator instanceof Texture texture) {
 
-          if (texture instanceof CustomTexture) {
-            ((CustomTexture) texture).layoutIfNecessary(this);
+          if (texture instanceof CustomTexture customTexture) {
+            customTexture.layoutIfNecessary(this);
           }
 
-          Pixels pixels = new Pixels((Texture) imageGenerator);
+          Pixels pixels = new Pixels(texture);
           referencedObject = new ReferencedObject<Pixels>(pixels, 0);
 
         } else {
@@ -1174,9 +1117,7 @@ import java.util.Map;
     assert referencedObject != null;
     assert referencedObject.isReferenced();
     referencedObject.removeReference();
-    if (referencedObject.isReferenced()) {
-      //pass
-    } else {
+    if (!referencedObject.isReferenced()) {
       this.activeImageGeneratorToPixelsMap.remove(imageGenerator);
       this.forgottenImageGeneratorToPixelsMap.put(imageGenerator, referencedObject);
     }
@@ -1246,8 +1187,7 @@ import java.util.Map;
   public void remember(Image image) {
     ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get(image);
     if (imageGenerator == null) {
-      if (image instanceof BufferedImage) {
-        BufferedImage bufferedImage = (BufferedImage) image;
+      if (image instanceof BufferedImage bufferedImage) {
         BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
         bufferedImageTexture.setBufferedImage(bufferedImage);
         bufferedImageTexture.setMipMappingDesired(false);

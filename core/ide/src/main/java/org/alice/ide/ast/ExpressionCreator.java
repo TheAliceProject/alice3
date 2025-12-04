@@ -125,20 +125,13 @@ public abstract class ExpressionCreator {
   protected abstract Expression createCustomExpression(Object value) throws CannotCreateExpressionException;
 
   public Expression createExpression(Object value) throws CannotCreateExpressionException {
-    if (value != null) {
-      if (value instanceof Double) {
-        return this.createDoubleExpression((Double) value);
-      } else if (value instanceof Integer) {
-        return this.createIntegerExpression((Integer) value);
-      } else if (value instanceof String) {
-        return this.createStringExpression((String) value);
-      } else if (value instanceof Enum<?>) {
-        return this.createEnumExpression((Enum<?>) value);
-      } else {
-        return this.createCustomExpression(value);
-      }
-    } else {
-      return new NullLiteral();
-    }
+    return switch (value) {
+      case Double d -> createDoubleExpression(d);
+      case Integer i -> createIntegerExpression(i);
+      case String s -> createStringExpression(s);
+      case Enum<?> e -> createEnumExpression(e);
+      case null -> new NullLiteral();
+      default -> createCustomExpression(value);
+    };
   }
 }

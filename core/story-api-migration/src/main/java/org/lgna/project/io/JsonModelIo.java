@@ -111,7 +111,7 @@ public class JsonModelIo extends DataSourceIo {
   private static ModelResourceInfo createModelResourceInfo(List<JointedModelResource> modelResources) {
     //Get the ModelResourceInfo from the first resource in the list.
     //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
-    ModelResource firstResource = modelResources.get(0);
+    ModelResource firstResource = modelResources.getFirst();
     ModelResourceInfo rootInfo = AliceResourceUtilities.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
     return copyResourceInfo(modelResources, rootInfo);
   }
@@ -313,7 +313,7 @@ public class JsonModelIo extends DataSourceIo {
         }
       }
       Logger.warning("Could not find matching visual for " + modelVariant.structure + ". Returning first skeleton visual in list.");
-      return skeletonVisuals.get(0);
+      return skeletonVisuals.getFirst();
     } else {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
       if (modelResource == null) {
@@ -342,11 +342,11 @@ public class JsonModelIo extends DataSourceIo {
     if (GENERATE_BACKFACES) {
       List<Geometry> backfaceMeshes = new LinkedList<>();
       for (Geometry g : sv.geometries.getValue()) {
-        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
-          backfaceMeshes.add(createFlippedMesh((Mesh) g));
+        if ((g instanceof Mesh mesh) && !mesh.cullBackfaces.getValue()) {
+          backfaceMeshes.add(createFlippedMesh(mesh));
         }
       }
-      if (backfaceMeshes.size() > 0) {
+      if (!backfaceMeshes.isEmpty()) {
         for (int i = 0; i < sv.geometries.getLength(); i++) {
           backfaceMeshes.add(i, sv.geometries.getValue()[i]);
         }
@@ -358,7 +358,7 @@ public class JsonModelIo extends DataSourceIo {
           backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
         }
       }
-      if (backfaceWeightedMeshes.size() > 0) {
+      if (!backfaceWeightedMeshes.isEmpty()) {
         for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
           backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
         }
@@ -468,9 +468,9 @@ public class JsonModelIo extends DataSourceIo {
 
     BufferedImage thumbnailImage;
     if (this.thumbnails != null) {
-      thumbnailImage = this.thumbnails.get(0);
+      thumbnailImage = this.thumbnails.getFirst();
     } else {
-      thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
+      thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.getFirst());
     }
     if (thumbnailImage != null) {
       String classIconName = getModelName() + "_cls.png";

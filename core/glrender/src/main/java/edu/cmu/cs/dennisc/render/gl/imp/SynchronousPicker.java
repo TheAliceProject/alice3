@@ -43,12 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import com.jogamp.opengl.DefaultGLCapabilitiesChooser;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLCapabilities;
-import com.jogamp.opengl.GLCapabilitiesChooser;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import edu.cmu.cs.dennisc.render.PickObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
@@ -57,6 +52,7 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.math.immutable.AffineMatrix4x4;
@@ -64,8 +60,8 @@ import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 
-import java.awt.Rectangle;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -73,6 +69,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove
@@ -122,19 +120,14 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 
     private synchronized OffscreenDrawable getOffscreenDrawable() {
       if (this.glOffscreenDrawable == null) {
-        this.glOffscreenDrawable = OffscreenDrawable.createInstance(new OffscreenDrawable.DisplayCallback() {
-          @Override
-          public void display(GL2 gl) {
-            sharedActualPicker.performPick(gl);
-          }
-        }, glRequestedCapabilities, glCapabilitiesChooser, glShareContext);
+        this.glOffscreenDrawable = OffscreenDrawable.createInstance(sharedActualPicker::performPick, glRequestedCapabilities, glCapabilitiesChooser, glShareContext);
       }
       return this.glOffscreenDrawable;
     }
 
     private void performPick(GL2 gl) {
-      this.pickContext.gl = gl;
-      ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary(gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof NativeOffscreenDrawable);
+      pickContext.gl = gl;
+      ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary(gl, GlDrawableUtils.canCreateGlPixelBuffer(), glOffscreenDrawable instanceof NativeOffscreenDrawable);
 
       ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 
@@ -147,20 +140,34 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
         AbstractCamera sgCamera = pickParameters.getSGCamera();
         GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
 
-        this.selectionAsIntBuffer.rewind();
-        this.pickContext.gl.glSelectBuffer(SELECTION_CAPACITY, this.selectionAsIntBuffer);
+        selectionAsIntBuffer.rewind();
+        pickContext.gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
 
-        this.pickContext.gl.glRenderMode(GL2.GL_SELECT);
-        this.pickContext.gl.glInitNames();
+        pickContext.gl.glRenderMode(GL2.GL_SELECT);
+        pickContext.gl.glInitNames();
 
         RenderTarget renderTarget = pickParameters.getRenderTarget();
         Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle(sgCamera);
-        this.pickContext.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
-        cameraAdapter.performPick(this.pickContext, pickParameters, actualViewport);
-        this.pickContext.gl.glFlush();
+        pickContext.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
 
-        this.selectionAsIntBuffer.rewind();
-        int length = this.pickContext.gl.glRenderMode(GL2.GL_RENDER);
+        GlrScene sceneAdapter = cameraAdapter.getGlrScene();
+        if (sceneAdapter != null) {
+          pickContext.gl.glMatrixMode(GL_PROJECTION);
+          pickContext.gl.glLoadIdentity();
+
+          // actualViewport.x & y are set > 0 when letterboxing
+          double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
+          double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) + actualViewport.y));
+          pickContext.gl.glTranslated(tx, ty, 0.0);
+          pickContext.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
+
+          cameraAdapter.setupProjection(pickContext, actualViewport);
+          pickContext.pickScene(cameraAdapter, sceneAdapter, pickParameters);
+        }
+        pickContext.gl.glFlush();
+
+        selectionAsIntBuffer.rewind();
+        int length = pickContext.gl.glRenderMode(GL2.GL_RENDER);
         //todo: investigate negative length
         //assert length >= 0;
 
@@ -168,7 +175,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
           SelectionBufferInfo[] selectionBufferInfos = new SelectionBufferInfo[length];
           int offset = 0;
           for (int i = 0; i < length; i++) {
-            selectionBufferInfos[i] = new SelectionBufferInfo(this.pickContext, this.selectionAsIntBuffer, offset);
+            selectionBufferInfos[i] = new SelectionBufferInfo(pickContext, selectionAsIntBuffer, offset);
             offset += 7;
           }
 
@@ -199,20 +206,12 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
           if (length > 1) {
             Comparator<SelectionBufferInfo> comparator;
             if (pickDetails.isPickFunctioningCorrectly()) {
-              comparator = new Comparator<SelectionBufferInfo>() {
-                @Override
-                public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-                  return Float.compare(sbi1.getZFront(), sbi2.getZFront());
-                }
-              };
+              comparator = (sbi1, sbi2) -> Float.compare(sbi1.getZFront(), sbi2.getZFront());
             } else {
-              comparator = new Comparator<SelectionBufferInfo>() {
-                @Override
-                public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-                  double z1 = -sbi1.getPointInSource().z();
-                  double z2 = -sbi2.getPointInSource().z();
-                  return Double.compare(z1, z2);
-                }
+              comparator = (sbi1, sbi2) -> {
+                double z1 = -sbi1.getPointInSource().z();
+                double z2 = -sbi2.getPointInSource().z();
+                return Double.compare(z1, z2);
               };
             }
             Arrays.sort(selectionBufferInfos, comparator);
@@ -265,7 +264,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
     }
   }
 
-  private static ActualPicker sharedActualPicker = new ActualPicker();
+  private static final ActualPicker sharedActualPicker = new ActualPicker();
 
   public SynchronousPicker(RenderTargetImp rtImp) {
     this.rtImp = rtImp;

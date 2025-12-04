@@ -45,10 +45,10 @@ package org.alice.ide.perspectives;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.RecycleBin;
 import org.alice.ide.clipboard.Clipboard;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.croquet.models.IdeDragModel;
-import org.alice.ide.recyclebin.RecycleBin;
 import org.lgna.croquet.AbstractPerspective;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.MenuBarComposite;

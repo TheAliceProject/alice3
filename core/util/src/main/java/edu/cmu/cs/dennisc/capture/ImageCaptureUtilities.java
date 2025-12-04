@@ -48,23 +48,8 @@ import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Robot;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**
@@ -159,9 +144,7 @@ public class ImageCaptureUtilities {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       AffineTransform prevTrans = g2.getTransform();
-      if (Double.isNaN(scale)) {
-        //pass
-      } else {
+      if (!Double.isNaN(scale)) {
         g2.scale(scale, scale);
       }
       if (bounds != null) {
@@ -195,9 +178,7 @@ public class ImageCaptureUtilities {
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     AffineTransform prevTrans = g2.getTransform();
-    if (Double.isNaN(scale)) {
-      //pass
-    } else {
+    if (!Double.isNaN(scale)) {
       g2.scale(scale, scale);
     }
 
@@ -208,14 +189,11 @@ public class ImageCaptureUtilities {
       Image heavyweight = captureHeavyweight(awtComponent, null);
       g.drawImage(heavyweight, 0, 0, awtComponent);
 
-      if (awtComponent instanceof JFrame) {
-        JFrame jFrame = (JFrame) awtComponent;
+      if (awtComponent instanceof JFrame jFrame) {
         lightweightComponent = jFrame.getRootPane();
-      } else if (awtComponent instanceof JDialog) {
-        JDialog jDialog = (JDialog) awtComponent;
+      } else if (awtComponent instanceof JDialog jDialog) {
         lightweightComponent = jDialog.getRootPane();
-      } else if (awtComponent instanceof JWindow) {
-        JWindow jWindow = (JWindow) awtComponent;
+      } else if (awtComponent instanceof JWindow jWindow) {
         lightweightComponent = jWindow.getRootPane();
       } else {
         lightweightComponent = null;

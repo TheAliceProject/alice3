@@ -45,30 +45,13 @@ package org.lgna.issue.swing;
 import edu.cmu.cs.dennisc.issue.Issue;
 import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.lgna.issue.ApplicationIssueConfiguration;
 
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonModel;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Shape;
-import java.awt.Window;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -116,18 +99,8 @@ public final class JSubmitPane extends JPanel {
     FontUtilities.setFontToDerivedFont(submitButton, TextWeight.BOLD);
     FontUtilities.setFontToScaledFont(submitButton, 1.6f);
 
-    this.toggleButton.setIcon(new AbstractArrowIcon(12) {
-      @Override
-      public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g;
-        AbstractButton button = (AbstractButton) c;
-        ButtonModel buttonModel = button.getModel();
-        Heading heading = buttonModel.isSelected() ? Heading.SOUTH : Heading.EAST;
-        Shape shape = this.createPath(x, y, heading);
-        g2.setPaint(Color.DARK_GRAY);
-        g2.fill(shape);
-      }
-    });
+    // TODO- verify that I didn't break this when I switched this to be a ArrowIcon while this code was disabled
+    this.toggleButton.setIcon(new ArrowIcon(12, true));
     this.toggleButton.setIconTextGap(12);
     this.toggleButton.setHorizontalTextPosition(SwingConstants.LEADING);
     this.toggleButton.setFocusable(false);
@@ -165,8 +138,7 @@ public final class JSubmitPane extends JPanel {
     @Override
     public void stateChanged(ChangeEvent e) {
       Object src = e.getSource();
-      if (src instanceof JToggleButton) {
-        JToggleButton button = (JToggleButton) src;
+      if (src instanceof JToggleButton button) {
         insightPane.setExpanded(button.isSelected());
         toggleButton.setText(button.isSelected() ? EXPANDED_TEXT : CONTRACTED_TEXT);
         ((Window) SwingUtilities.getRoot(button)).pack();

@@ -108,11 +108,8 @@ public class GlrCustomTexture extends GlrTexture<CustomTexture> {
 
     if (owner.isMipMappingDesired()) {
       Image image = this.textureRenderer.getImage();
-      if (image instanceof BufferedImage) {
-        BufferedImage bufferedImage = (BufferedImage) image;
-        if (owner.isPotentiallyAlphaBlended()) {
-          //pass
-        } else {
+      if (image instanceof BufferedImage bufferedImage) {
+        if (!owner.isPotentiallyAlphaBlended()) {
           try {
             return newTextureData(gl, bufferedImage, true);
           } catch (AssertionError ae) {

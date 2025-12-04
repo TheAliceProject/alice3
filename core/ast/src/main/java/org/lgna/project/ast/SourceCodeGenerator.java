@@ -44,15 +44,11 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.apache.commons.text.StringEscapeUtils;
-import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.code.PrecedentedOperation;
+import org.lgna.project.code.ProcessableNode;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public abstract class SourceCodeGenerator implements AstProcessor {
 

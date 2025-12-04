@@ -43,17 +43,6 @@
 
 package org.lgna.story.implementation.alice;
 
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
@@ -85,6 +74,17 @@ import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
 /**
@@ -181,8 +181,7 @@ public class AliceResourceUtilities {
   // The problem was observed specifically with the Baby Penguin model.
   private static void correctDimensions(TexturedAppearance ta) {
     Texture texture = ta.diffuseColorTexture.getValue();
-    if (texture instanceof BufferedImageTexture) {
-      BufferedImageTexture buffTexture = (BufferedImageTexture) texture;
+    if (texture instanceof BufferedImageTexture buffTexture) {
       buffTexture.setBufferedImage(ImageUtilities.stretchToPowersOfTwo(buffTexture.getBufferedImage()));
     }
   }
@@ -289,7 +288,7 @@ public class AliceResourceUtilities {
     StringBuilder sb = new StringBuilder();
     boolean isFirst = true;
     for (int i = start; i < end; i++) {
-      if (nameArray[i].length() > 0) {
+      if (!nameArray[i].isEmpty()) {
         if (isFirst) {
           isFirst = false;
         } else {
@@ -341,7 +340,7 @@ public class AliceResourceUtilities {
       found = true;
     } else {
       for (int i = 0; i < splitName.length; i++) {
-        if (splitName[i].length() > 0) {
+        if (!splitName[i].isEmpty()) {
           if (i != 0) {
             modelName.append("_");
           }
@@ -359,7 +358,7 @@ public class AliceResourceUtilities {
     if (!found) {
       modelName = new StringBuilder();
       for (int i = 0; i < splitName.length; i++) {
-        if (splitName[i].length() > 0) {
+        if (!splitName[i].isEmpty()) {
           if (i != 0) {
             modelName.append("_");
           }
@@ -464,7 +463,7 @@ public class AliceResourceUtilities {
         || modelName.equalsIgnoreCase(enumToCamelCase(textureName))
         || textureName.equalsIgnoreCase(makeEnumName(modelName))) {
       textureName = "";
-    } else if (textureName.length() > 0) {
+    } else if (!textureName.isEmpty()) {
       textureName = "_" + makeEnumName(textureName);
     }
     return (modelName != null ? modelName.toLowerCase(Locale.ENGLISH) : null) + textureName;
@@ -496,8 +495,8 @@ public class AliceResourceUtilities {
   }
 
   public static URL getTextureURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI textureURI = ((DynamicResource) resource).getTextureURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI textureURI = dynamicResource.getTextureURI();
       if (textureURI == null) {
         return null;
       }
@@ -516,8 +515,8 @@ public class AliceResourceUtilities {
   }
 
   private static URL getVisualURL(ModelResource resource) {
-    if (resource instanceof DynamicResource) {
-      final URI visualURI = ((DynamicResource) resource).getVisualURI();
+    if (resource instanceof DynamicResource dynamicResource) {
+      final URI visualURI = dynamicResource.getVisualURI();
       if (visualURI == null) {
         return null;
       }
@@ -538,7 +537,7 @@ public class AliceResourceUtilities {
     } else {
       SkeletonVisual visual = decodeVisual(resourceURL);
       List<Problem> problems = QualityAssuranceUtilities.inspect(visual);
-      if (problems.size() > 0) {
+      if (!problems.isEmpty()) {
         Logger.errln(resourceURL);
         for (Problem problem : problems) {
           Logger.errln(problem);
@@ -849,7 +848,7 @@ public class AliceResourceUtilities {
           finalTag.append(localizedTag);
         }
       }
-      if (finalTag.length() > 0) {
+      if (!finalTag.isEmpty()) {
         localizedTags.add(finalTag.toString());
       }
     }

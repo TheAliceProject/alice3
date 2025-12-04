@@ -51,13 +51,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -170,19 +164,13 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
       this.properties = new LinkedList<InstanceProperty<?>>();
       for (Field field : cls.getFields()) {
         int modifiers = field.getModifiers();
-        if (Modifier.isPublic(modifiers)) {
-          if (Modifier.isStatic(modifiers)) {
-            //pass
-          } else {
-            if (InstanceProperty.class.isAssignableFrom(field.getType())) {
-              InstanceProperty instanceProperty = (InstanceProperty) ReflectionUtilities.get(field, this);
-              assert instanceProperty.getOwner() == this;
-              this.properties.add(instanceProperty);
-            }
+        if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && InstanceProperty.class.isAssignableFrom(field.getType())) {
+            InstanceProperty instanceProperty = (InstanceProperty) ReflectionUtilities.get(field, this);
+            assert instanceProperty.getOwner() == this;
+            this.properties.add(instanceProperty);
           }
         }
       }
-    }
     return this.properties;
   }
 
@@ -191,14 +179,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     for (Field field : getClass().getFields()) {
       if (InstanceProperty.class.isAssignableFrom(field.getType())) {
         int modifiers = field.getModifiers();
-        if (Modifier.isPublic(modifiers)) {
-          if (Modifier.isStatic(modifiers)) {
-            //pass
-          } else {
-            if (ReflectionUtilities.get(field, this) == instanceProperty) {
-              return field.getName();
-            }
-          }
+        if (Modifier.isPublic(modifiers) && !Modifier.isStatic(modifiers) && ReflectionUtilities.get(field, this) == instanceProperty) {
+          return field.getName();
         }
       }
     }
@@ -224,8 +206,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     if ((this == other) || super.equals(other)) {
       return true;
     } else {
-      if (other instanceof AbstractInstancePropertyOwner) {
-        AbstractInstancePropertyOwner otherDIPO = (AbstractInstancePropertyOwner) other;
+      if (other instanceof AbstractInstancePropertyOwner otherDIPO) {
         int propertyCount = 0;
         for (InstanceProperty thisProperty : this.getProperties()) {
           String propertyName = thisProperty.getName();
@@ -234,16 +215,12 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
             if (otherProperty != null) {
               Object thisValue = thisProperty.getValue();
               Object otherValue = otherProperty.getValue();
-              if (thisValue instanceof AbstractInstancePropertyOwner) {
-                if (((AbstractInstancePropertyOwner) thisValue).isEquivalentTo(otherValue)) {
-                  //pass
-                } else {
+              if (thisValue instanceof AbstractInstancePropertyOwner owner) {
+                if (!owner.isEquivalentTo(otherValue)) {
                   return false;
                 }
               } else {
-                if (Objects.equals(thisValue, otherValue)) {
-                  //pass
-                } else {
+                if (!Objects.equals(thisValue, otherValue)) {
                   return false;
                 }
               }

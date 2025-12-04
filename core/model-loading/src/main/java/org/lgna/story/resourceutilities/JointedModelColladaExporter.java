@@ -42,32 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
@@ -92,6 +66,31 @@ import org.lgna.story.resourceutilities.exporterutils.collada.Image;
 import org.lgna.story.resourceutilities.exporterutils.collada.Mesh;
 import org.lgna.story.resourceutilities.exporterutils.collada.Skin.VertexWeights;
 import org.lgna.story.resourceutilities.exporterutils.collada.Source.TechniqueCommon;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 
 /**
@@ -184,8 +183,8 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     node.getLookatOrMatrixOrRotate().add(matrix);
 
     for (Component c : joint.getComponents()) {
-      if (c instanceof Joint) {
-        Node childNode = createNodeForJoint((Joint) c);
+      if (c instanceof Joint childJoint) {
+        Node childNode = createNodeForJoint(childJoint);
         node.getNode().add(childNode);
       }
     }
@@ -681,8 +680,8 @@ public class JointedModelColladaExporter implements JointedModelExporter {
   private void initializeMeshNameMap() {
     meshNameMap.clear();
     for (edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue()) {
-      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-        addMeshToNameMap((edu.cmu.cs.dennisc.scenegraph.Mesh) g);
+      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh mesh) {
+        addMeshToNameMap(mesh);
       }
     }
     for (WeightedMesh wm : visual.weightedMeshes.getValue()) {
@@ -936,8 +935,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     LibraryGeometries lg = factory.createLibraryGeometries();
     //Grab the static geometry and add them to the scene
     for (edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue()) {
-      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-        edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
+      if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
         addGeometriesForMesh(lg.getGeometry(), sgMesh);
         addVisualSceneNodesForMesh(visualScene.getNode(), sgMesh);
       }
@@ -1198,7 +1196,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     ModelResourceInfo modelInfo = AliceResourceUtilities.getModelResourceInfo(modelResource.getClass(), modelResource.toString());
     SkeletonVisual sgSkeletonVisual = loadAliceModel(modelResource);
     ModelManifest modelManifest = modelInfo.createModelManifest();
-    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);
+    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.getFirst(), modelManifest.description.name);
     return exportAliceModelToDir(exporter, rootDir);
   }
 }

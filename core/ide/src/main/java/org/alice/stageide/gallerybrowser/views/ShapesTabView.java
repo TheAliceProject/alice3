@@ -59,10 +59,7 @@ public class ShapesTabView extends GalleryTabView {
       panel.addComponent(new GalleryDragComponent(dragModel));
     }
 
-    panel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
-
     ScrollPane scrollPane = createGalleryScrollPane(panel);
     this.addCenterComponent(scrollPane);
-    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
   }
 }

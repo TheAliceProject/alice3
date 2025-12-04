@@ -45,12 +45,11 @@ package org.alice.netbeans.logging;
 
 import edu.cmu.cs.dennisc.java.util.logging.ConsoleFormatter;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
-import java.util.logging.Level;
-
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
+
+import java.util.logging.Level;
 
 /**
  * @author Dennis Cosgrove

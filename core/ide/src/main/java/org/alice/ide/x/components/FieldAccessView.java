@@ -85,9 +85,7 @@ public class FieldAccessView extends AbstractExpressionView<FieldAccess> {
 
       if (isExpressionDesired) {
         this.addComponent(factory.createExpressionPropertyPane(fieldAccess.expression));
-        if (FormatterState.isJava()) {
-          //pass
-        } else {
+        if (!FormatterState.isJava()) {
           this.addComponent(new Label("."));
         }
       }

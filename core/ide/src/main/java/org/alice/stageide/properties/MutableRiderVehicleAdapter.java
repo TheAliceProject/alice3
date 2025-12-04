@@ -43,24 +43,19 @@
 
 package org.alice.stageide.properties;
 
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SThing;
-
-import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 import org.lgna.story.implementation.EntityImp;
 
 import javax.swing.Icon;

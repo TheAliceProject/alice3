@@ -96,9 +96,7 @@ public abstract class DeclarationInfo<D extends Declaration> {
   }
 
   private void handleItemStateChanged(ItemEvent e) {
-    if (this.projectInfo.isInTheMidstOfChange()) {
-      //pass
-    } else {
+    if (!this.projectInfo.isInTheMidstOfChange()) {
       this.isDesired = e.getStateChange() == ItemEvent.SELECTED;
       this.projectInfo.update();
     }
@@ -120,9 +118,7 @@ public abstract class DeclarationInfo<D extends Declaration> {
   }
 
   public final void updateRequired(Set<DeclarationInfo<?>> visited) {
-    if (visited.contains(this)) {
-      //pass
-    } else {
+    if (!visited.contains(this)) {
       this.addRequired(visited);
     }
   }

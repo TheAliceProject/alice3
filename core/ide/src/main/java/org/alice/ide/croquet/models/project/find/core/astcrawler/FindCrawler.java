@@ -42,18 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core.astcrawler;
 
-import java.util.List;
-
-import org.alice.ide.croquet.models.project.find.core.SearchResult;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.MethodInvocation;
-
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.ide.croquet.models.project.find.core.SearchResult;
+import org.lgna.project.ast.*;
+
+import java.util.List;
 
 /**
  * @author Matt May
@@ -70,20 +65,17 @@ public class FindCrawler implements Crawler {
 
   @Override
   public void visit(Crawlable crawlable) {
-    if (crawlable instanceof MethodInvocation) {
-      MethodInvocation methodInv = (MethodInvocation) crawlable;
+    if (crawlable instanceof MethodInvocation methodInv) {
       SearchResult checkFind = checkFind(methodInv.method.getValue());
       if (referenceIsValid(methodInv, checkFind)) {
         checkFind.addReference(methodInv);
       }
-    } else if (crawlable instanceof FieldAccess) {
-      FieldAccess fieldAccess = (FieldAccess) crawlable;
+    } else if (crawlable instanceof FieldAccess fieldAccess) {
       SearchResult checkFind = checkFind(fieldAccess.field.getValue());
       if (referenceIsValid(fieldAccess, checkFind)) {
         checkFind.addReference(fieldAccess);
       }
-    } else if (crawlable instanceof LocalAccess) {
-      LocalAccess localAccess = (LocalAccess) crawlable;
+    } else if (crawlable instanceof LocalAccess localAccess) {
       SearchResult checkFind = checkFind(localAccess.local.getValue());
       if (referenceIsValid(localAccess, checkFind)) {
         checkFind.addReference(localAccess);

@@ -42,17 +42,15 @@
  */
 package org.lgna.ik.poser.jselection;
 
-import java.util.Map;
-import java.util.UUID;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Matt May

@@ -48,30 +48,16 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup;
 import org.lgna.croquet.data.MutableListData;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonModel;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
+ * TODO- items with knurls should be draggable.
  * @author Dennis Cosgrove
  */
 public abstract class MutableList<E> extends SwingComponentView<JPanel> {
@@ -123,13 +109,12 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
     }
   }
 
-  private static Color BASE_COLOR = new Color(221, 221, 255);
-  private static Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
+  private static final Color BASE_COLOR = UIManager.getColor("List.background");
+  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.knurlForeground");
+  private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.differentBackground");
+  private static final Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
 
-  private static Color SELECTED_BASE_COLOR = new Color(57, 105, 138);
-  private static Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
-
-  protected abstract class JItemAtIndexButton extends JToggleButton {
+  protected abstract static class JItemAtIndexButton extends JToggleButton {
     public JItemAtIndexButton() {
       this.setOpaque(false);
       this.setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
@@ -148,44 +133,30 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
     protected void paintComponent(Graphics g) {
       //super.paintComponent( g );
       ButtonModel model = this.getModel();
-      Paint paint;
       int width = this.getWidth() - 1;
       int height = this.getHeight() - 1;
-      if (model.isSelected()) {
-        if (model.isRollover()) {
-          paint = new GradientPaint(0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR);
-        } else {
-          paint = SELECTED_BASE_COLOR;
-        }
-      } else {
-        if (model.isRollover()) {
-          paint = new GradientPaint(0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR);
-        } else {
-          paint = BASE_COLOR;
-        }
-      }
       Graphics2D g2 = (Graphics2D) g;
-      if (paint != null) {
-        Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      Stroke prevStroke = g2.getStroke();
 
-        g2.setPaint(paint);
-        g2.fillRoundRect(0, 0, width, height, 8, 8);
-        g2.setPaint(Color.DARK_GRAY);
-        g2.drawRoundRect(0, 0, width, height, 8, 8);
-        if (model.isRollover()) {
-          paint = Color.LIGHT_GRAY;
-        } else {
-          paint = Color.GRAY;
-        }
-        g2.setPaint(paint);
-        KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
+      Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
+      g2.setPaint(BASE_COLOR);
+      g2.fillRoundRect(0, 0, width, height, 8, 8);
+
+      if (model.isSelected() || model.isRollover()) {
+        g2.setStroke(new BasicStroke(2.0f));
+        g2.setPaint(SELECTED_OUTLINE_COLOR);
       } else {
-        //          g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
-        //          g.clearRect( 0, 0, width, height );
+        g2.setPaint(OUTLINE_COLOR);
       }
+      g2.drawRoundRect(0, 0, width, height, 8, 8);
+
+      g2.setStroke(prevStroke);
+      g2.setPaint(KNURL_COLOR);
+      KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
+
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
     }
   }
 
@@ -263,25 +234,9 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   private static final KeyStroke KEYPAD_UP_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0);
   private static final KeyStroke DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
   private static final KeyStroke KEYPAD_DOWN_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0);
-  private final ActionListener removeSelectedListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("removeSelectedItem");
-      //MutableList.this.removeSelectedItem();
-    }
-  };
-  private final ActionListener moveSelectionUpListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("moveSelectionUp");
-    }
-  };
-  private final ActionListener moveSelectionDownListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("moveSelectionDown");
-    }
-  };
+  private final ActionListener removeSelectedListener = e -> System.out.println("removeSelectedItem");
+  private final ActionListener moveSelectionUpListener = e -> System.out.println("moveSelectionUp");
+  private final ActionListener moveSelectionDownListener = e -> System.out.println("moveSelectionDown");
 
   public void registerKeyboardActions() {
     this.registerKeyboardAction(this.removeSelectedListener, DELETE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);

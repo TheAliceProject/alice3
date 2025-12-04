@@ -44,17 +44,7 @@ package org.alice.stageide.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
-import org.alice.stageide.gallerybrowser.shapes.AxesDragModel;
-import org.alice.stageide.gallerybrowser.shapes.BillboardDragModel;
-import org.alice.stageide.gallerybrowser.shapes.BoxDragModel;
-import org.alice.stageide.gallerybrowser.shapes.ConeDragModel;
-import org.alice.stageide.gallerybrowser.shapes.CylinderDragModel;
-import org.alice.stageide.gallerybrowser.shapes.DiscDragModel;
-import org.alice.stageide.gallerybrowser.shapes.GroundDragModel;
-import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
-import org.alice.stageide.gallerybrowser.shapes.SphereDragModel;
-import org.alice.stageide.gallerybrowser.shapes.TextModelDragModel;
-import org.alice.stageide.gallerybrowser.shapes.TorusDragModel;
+import org.alice.stageide.gallerybrowser.shapes.*;
 import org.alice.stageide.gallerybrowser.views.ShapesTabView;
 
 import java.util.Collections;

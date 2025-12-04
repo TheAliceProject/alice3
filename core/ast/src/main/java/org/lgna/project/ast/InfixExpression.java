@@ -43,8 +43,8 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.EnumProperty;
-import org.lgna.project.code.SymbolicOperator;
 import org.lgna.project.code.PrecedentedOperation;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove

@@ -60,12 +60,7 @@ public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<AbstractMethod, FunctionInvocationDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static FunctionInvocationDragModel getInstance(AbstractMethod method) {
-    return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<AbstractMethod, FunctionInvocationDragModel>() {
-      @Override
-      public FunctionInvocationDragModel initialize(AbstractMethod method) {
-        return new FunctionInvocationDragModel(method);
-      }
-    });
+    return map.get(method, FunctionInvocationDragModel::new);
   }
 
   private final AbstractMethod method;

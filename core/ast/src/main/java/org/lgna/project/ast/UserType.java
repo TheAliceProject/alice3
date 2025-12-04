@@ -63,8 +63,7 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
       return true;
     } else {
       AbstractType<?, ?, ?> superType = this.superType.getValue();
-      if (superType instanceof UserType<?>) {
-        UserType<?> superUserType = (UserType<?>) superType;
+      if (superType instanceof UserType<?> superUserType) {
         return superUserType.isEqualToOrSubTypeOf(candidate);
       } else {
         return false;
@@ -77,8 +76,7 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
     if (other.isArray()) {
       return false;
     } else {
-      if (other instanceof UserType<?>) {
-        UserType<?> otherUserType = (UserType<?>) other;
+      if (other instanceof UserType<?> otherUserType) {
         return otherUserType.isEqualToOrSubTypeOf(this);
       } else {
         return false;

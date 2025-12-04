@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.serialization.tweedle.Encoder;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.project.code.IdentifiableTweedleNode;
+import org.lgna.project.code.InstantiableTweedleNode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -81,9 +81,7 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
   }
 
   public Field getPublicStaticFinalFld() {
-    if (this.fld != null) {
-      //pass
-    } else if (this.containingClass != null) {
+    if (this.fld == null && this.containingClass != null) {
       for (Field fld : this.containingClass.getFields()) {
         int modifiers = fld.getModifiers();
         if (Modifier.isPublic(modifiers)) {

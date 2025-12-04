@@ -141,7 +141,7 @@ public class Project {
   public void addResource(Resource resource) {
     if (!this.resources.contains(resource)) {
       this.resources.add(resource);
-      if (this.resourceListeners.size() > 0) {
+      if (!this.resourceListeners.isEmpty()) {
         ResourceEvent e = new ResourceEvent(this, resource);
         for (ResourceListener resourceListener : this.resourceListeners) {
           resourceListener.resourceAdded(e);
@@ -152,7 +152,7 @@ public class Project {
 
   public void removeResource(Resource resource) {
     this.resources.remove(resource);
-    if (this.resourceListeners.size() > 0) {
+    if (!this.resourceListeners.isEmpty()) {
       ResourceEvent e = new ResourceEvent(this, resource);
       for (ResourceListener resourceListener : this.resourceListeners) {
         resourceListener.resourceRemoved(e);

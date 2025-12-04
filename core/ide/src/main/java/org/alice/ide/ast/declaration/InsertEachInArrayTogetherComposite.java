@@ -61,12 +61,7 @@ public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayC
 
   public static synchronized InsertEachInArrayTogetherComposite getInstance(BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping) {
     InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
-      @Override
-      public InsertEachInArrayTogetherComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
-        return new InsertEachInArrayTogetherComposite(blockStatementIndexPair, isEnveloping);
-      }
-    });
+    return map.get(blockStatementIndexPair, pair -> new InsertEachInArrayTogetherComposite(pair, isEnveloping));
   }
 
   private InsertEachInArrayTogetherComposite(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {

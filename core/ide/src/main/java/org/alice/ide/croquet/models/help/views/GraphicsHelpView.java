@@ -62,13 +62,13 @@ import java.util.UUID;
  */
 public class GraphicsHelpView extends MigPanel {
   private static String getSystemInformation() {
-    return String.format(getLocalizedStringByKey("systemInfo"), System.getProperty("os.name"), System.getProperty("sun.arch.data.model"));
+    return getLocalizedStringByKey("systemInfo").formatted(System.getProperty("os.name"), System.getProperty("sun.arch.data.model"));
   }
 
   private static String getGraphicsInformation() {
     ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
 
-    return String.format(getLocalizedStringByKey("graphicsInfo"), sharedDetails != null ? sharedDetails.getRenderer() : getLocalizedStringByKey("unknownGraphics"));
+    return getLocalizedStringByKey("graphicsInfo").formatted(sharedDetails != null ? sharedDetails.getRenderer() : getLocalizedStringByKey("unknownGraphics"));
   }
 
   public GraphicsHelpView() {

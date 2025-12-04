@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import java.awt.Color;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
@@ -58,6 +56,8 @@ import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Color;
 
 /**
  * @author David Culyba
@@ -328,20 +328,14 @@ public class RotationRingHandle extends ManipulationHandle3D {
 
   @Override
   protected Color4f getDesiredColor(HandleRenderState renderState) {
-    switch (renderState) {
-    case NOT_VISIBLE:
-      return this.getBaseColor();
-    case VISIBLE_BUT_SIBLING_IS_ACTIVE:
-      return this.getMutedColor();
-    case VISIBLE_AND_ACTIVE:
-      return this.getActiveColor();
-    case VISIBLE_AND_ROLLOVER:
-      return this.getRolloverColor();
-    case JUST_VISIBLE:
-      return this.getBaseColor();
-    default:
-      return this.getBaseColor();
-    }
+    return switch (renderState) {
+    case NOT_VISIBLE -> this.getBaseColor();
+    case VISIBLE_BUT_SIBLING_IS_ACTIVE -> this.getMutedColor();
+    case VISIBLE_AND_ACTIVE -> this.getActiveColor();
+    case VISIBLE_AND_ROLLOVER -> this.getRolloverColor();
+    case JUST_VISIBLE -> this.getBaseColor();
+    default -> this.getBaseColor();
+    };
   }
 
   private void setSize(double size) {

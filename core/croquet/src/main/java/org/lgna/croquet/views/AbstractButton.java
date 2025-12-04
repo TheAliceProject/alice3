@@ -43,17 +43,13 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Model;
 
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import java.awt.Insets;
-import java.util.Enumeration;
 
 /**
  * @author Dennis Cosgrove
@@ -74,10 +70,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
     return this.isIconClobbered;
   }
 
-  public void setIconClobbered(boolean isIconClobbered) {
-    this.isIconClobbered = isIconClobbered;
-  }
-
   public Icon getClobberIcon() {
     return this.clobberIcon;
   }
@@ -85,10 +77,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   public void setClobberIcon(Icon clobberIcon) {
     this.clobberIcon = clobberIcon;
     this.isIconClobbered = true;
-  }
-
-  public int getIconTextGap() {
-    return this.getAwtComponent().getIconTextGap();
   }
 
   public void setIconTextGap(int iconTextGap) {
@@ -101,37 +89,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   public void tightenUpMargin(Insets margin) {
     this.checkEventDispatchThread();
     javax.swing.AbstractButton jButton = this.getAwtComponent();
-    if ("javax.swing.plaf.synth.SynthButtonUI".equals(jButton.getUI().getClass().getName())) {
-      if (this.uiDefaultsName != null) {
-        if (margin == null) {
-          int right;
-          String text = jButton.getText();
-          final int PAD = 4;
-          if ((text != null) && (text.length() > 0)) {
-            right = PAD + 4;
-          } else {
-            right = PAD;
-          }
-          margin = new Insets(PAD, PAD, PAD, right);
-        }
-        UIDefaults uiDefaults = new UIDefaults();
-        uiDefaults.put(this.uiDefaultsName + ".contentMargins", margin);
-        this.getAwtComponent().putClientProperty("Nimbus.Overrides", uiDefaults);
-      } else {
-        Enumeration<Object> enm = UIManager.getDefaults().keys();
-        while (enm.hasMoreElements()) {
-          Object key = enm.nextElement();
-          if (key != null) {
-            if (key.toString().endsWith(".contentMargins")) {
-              Logger.errln(key, UIManager.get(key));
-            }
-          }
-        }
-        Logger.severe("uiDefaultsName is null:", this);
-      }
-    } else {
-      this.setMargin(margin != null ? margin : ZERO_MARGIN);
-    }
+    this.setMargin(margin != null ? margin : ZERO_MARGIN);
   }
 
   public final void tightenUpMargin() {
@@ -178,10 +136,6 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
     this.checkEventDispatchThread();
     this.getAwtComponent().setVerticalAlignment(verticalAlignment.getInternal());
-  }
-
-  public Insets getMargin() {
-    return this.getAwtComponent().getMargin();
   }
 
   public void setMargin(Insets margin) {

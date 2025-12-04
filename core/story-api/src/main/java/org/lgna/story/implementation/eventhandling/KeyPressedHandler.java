@@ -43,6 +43,13 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.common.ComponentExecutor;
+import org.lgna.story.HeldKeyPolicy;
+import org.lgna.story.Key;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -50,19 +57,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
-
-import org.lgna.common.ComponentExecutor;
-import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.Key;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
 
 /**
  * @author Matt May
@@ -108,14 +102,11 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
   @Override
   protected void fire(Object listener, KeyEvent event) {
-    if (listener instanceof ArrowKeyPressListener) {
-      ArrowKeyPressListener arrowListener = (ArrowKeyPressListener) listener;
+    if (listener instanceof ArrowKeyPressListener arrowListener) {
       arrowListener.arrowKeyPressed(new ArrowKeyEvent(event));
-    } else if (listener instanceof NumberKeyPressListener) {
-      NumberKeyPressListener numberListener = (NumberKeyPressListener) listener;
+    } else if (listener instanceof NumberKeyPressListener numberListener) {
       numberListener.numberKeyPressed(new NumberKeyEvent(event));
-    } else if (listener instanceof KeyPressListener) {
-      KeyPressListener keyListener = (KeyPressListener) listener;
+    } else if (listener instanceof KeyPressListener keyListener) {
       keyListener.keyPressed(event);
     }
   }

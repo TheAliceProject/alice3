@@ -67,16 +67,7 @@ public class JavaMethod extends AbstractMethod {
   private static final InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
   public static JavaMethod getInstance(MethodReflectionProxy methodReflectionProxy) {
-    if (methodReflectionProxy != null) {
-      return mapReflectionProxyToInstance.getInitializingIfAbsent(methodReflectionProxy, new InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
-        @Override
-        public JavaMethod initialize(MethodReflectionProxy key) {
-          return new JavaMethod(key);
-        }
-      });
-    } else {
-      return null;
-    }
+    return methodReflectionProxy != null ? mapReflectionProxyToInstance.get(methodReflectionProxy, JavaMethod::new) : null;
   }
 
   public static JavaMethod getInstance(java.lang.reflect.Method mthd) {

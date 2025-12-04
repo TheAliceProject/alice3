@@ -101,8 +101,7 @@ public class PopupMenu extends ViewController<JPopupMenu, PopupPrepModel> implem
   @Override
   public AwtComponentView<?> getMenuComponent(int i) {
     MenuElement menuElement = this.getAwtComponent().getSubElements()[i];
-    if (menuElement instanceof Component) {
-      Component awtComponent = (Component) menuElement;
+    if (menuElement instanceof Component awtComponent) {
       return AwtComponentView.lookup(awtComponent);
     } else {
       return null;
@@ -128,6 +127,7 @@ public class PopupMenu extends ViewController<JPopupMenu, PopupPrepModel> implem
   public void addMenu(Menu menu) {
     this.checkEventDispatchThread();
     this.getAwtComponent().add(menu.getAwtComponent());
+    menu.setActivity(userActivity);
   }
 
   @Override

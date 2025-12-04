@@ -49,7 +49,6 @@ import org.alice.ide.x.MutableAstI18nFactory;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.DropDown;
 import org.lgna.project.ast.ArgumentListProperty;
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.JavaKeyedArgument;
 
 /**
@@ -69,16 +68,13 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<Java
   @Override
   protected void internalRefresh() {
     super.internalRefresh();
-    if (AstUtilities.isKeyedArgumentListPropertyComplete(this.getArgumentListProperty())) {
-      //pass
-    } else {
-      AstI18nFactory factory = this.getFactory();
-      if (factory instanceof MutableAstI18nFactory) {
-        MutableAstI18nFactory mutableAstI18nFactory = (MutableAstI18nFactory) factory;
-        if (mutableAstI18nFactory.isKeyedArgumentListMutable(this.getArgumentListProperty())) {
-          this.addComponent(BoxUtilities.createHorizontalSliver(8));
-          this.addComponent(new DropDown(KeyedMoreCascade.getInstance(this.getArgumentListProperty().getOwner()).getRoot().getPopupPrepModel()));
-        }
+    if (getArgumentListProperty().areAllOptionalArgumentsFilled()) {
+      return;
+    }
+    if (getFactory() instanceof MutableAstI18nFactory mutableAstI18nFactory) {
+      if (mutableAstI18nFactory.isKeyedArgumentListMutable(this.getArgumentListProperty())) {
+        this.addComponent(BoxUtilities.createHorizontalSliver(8));
+        this.addComponent(new DropDown<>(KeyedMoreCascade.getInstance(this.getArgumentListProperty().getOwner()).getRoot().getPopupPrepModel()));
       }
     }
   }

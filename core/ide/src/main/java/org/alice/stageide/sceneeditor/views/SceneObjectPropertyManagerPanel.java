@@ -43,18 +43,9 @@
 
 package org.alice.stageide.sceneeditor.views;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.common.FieldDeclarationPane;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState;
@@ -68,46 +59,31 @@ import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
-import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
-import org.alice.stageide.properties.GroundOpacityAdapter;
-import org.alice.stageide.properties.ModelOpacityAdapter;
-import org.alice.stageide.properties.ModelSizeAdapter;
-import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
-import org.alice.stageide.properties.MutableRiderVehicleAdapter;
-import org.alice.stageide.properties.PaintPropertyAdapter;
-import org.alice.stageide.properties.ResourcePropertyAdapter;
-import org.alice.stageide.properties.SelectedInstanceAdapter;
-import org.alice.stageide.properties.TextFontPropertyAdapter;
-import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.properties.*;
 import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.State;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.GridBagPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.MutableRider;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SModel;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThing;
+import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 import org.lgna.story.resources.JointedModelResource;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+/**
+ * These are specifically the object Properties on the SideView, between the one shots and the object/camera markers
+ */
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private InstanceFactory selectedInstance;
@@ -146,7 +122,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   public SceneObjectPropertyManagerPanel() {
     super();
     this.morePropertiesPanel = new GridBagPanel();
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
     this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
   }
 
@@ -172,6 +147,12 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   public void setBackgroundColor(Color color) {
     super.setBackgroundColor(color);
     this.morePropertiesPanel.setBackgroundColor(color);
+  }
+
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.morePropertiesPanel.setForegroundColor(color);
   }
 
   public void setSceneInstance(UserInstance sceneInstance) {
@@ -226,105 +207,108 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   }
 
   private AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(JavaMethod getter, JavaType declaringType, EntityImp entityImp, UserField field) {
-    if (entityImp != null) {
-      JavaMethod setter = AstUtilities.getSetterForGetter(getter, declaringType);
-      StandardExpressionState state = SceneEditorUpdatingPropertyState.getInstanceForSetter(field, setter);
-      boolean isVisible = (setter == null) || (setter.getVisibility() == null) || (setter.getVisibility() == Visibility.PRIME_TIME);
-      if ((setter != null) && isVisible) {
-        if (setter.getName().equalsIgnoreCase("setOpacity")) {
-          if (entityImp instanceof ModelImp) {
-            return new ModelOpacityAdapter((ModelImp) entityImp, state);
-          } else if (entityImp instanceof GroundImp) {
-            return new GroundOpacityAdapter((GroundImp) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setFogDensity")) {
-          if (entityImp instanceof SceneImp) {
-            return new SceneFogDensityAdapter((SceneImp) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setResource")) {
-          if (entityImp instanceof JointedModelImp<?, ?>) {
-            return new ResourcePropertyAdapter((JointedModelImp<?, ?>) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setPaint")) {
-          if (entityImp instanceof GroundImp) {
-            return new PaintPropertyAdapter<GroundImp>("Paint", (GroundImp) entityImp, ((GroundImp) entityImp).paint, state);
-          } else if (entityImp instanceof BillboardImp) {
-            return new BillboardFrontPaintPropertyAdapter((BillboardImp) entityImp, state);
-          } else if (entityImp instanceof ModelImp) {
-            return new PaintPropertyAdapter<ModelImp>("Paint", (ModelImp) entityImp, ((ModelImp) entityImp).paint, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setVehicle")) {
-          if (entityImp.getAbstraction() instanceof MutableRider) {
-            return new MutableRiderVehicleAdapter((MutableRider) entityImp.getAbstraction(), state, this.sceneInstance);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setFromAboveLightColor")) {
-          if (entityImp instanceof SceneImp) {
-            return new ColorPropertyAdapter<SceneImp>("Above Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromAboveLightColor, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setFromBelowLightColor")) {
-          if (entityImp instanceof SceneImp) {
-            return new ColorPropertyAdapter<SceneImp>("Below Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromBelowLightColor, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setAtmosphereColor")) {
-          if (entityImp instanceof SceneImp) {
-            return new ColorPropertyAdapter<SceneImp>("Atmosphere Color", (SceneImp) entityImp, ((SceneImp) entityImp).atmosphereColor, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setAmbientLightColor")) {
-          if (entityImp instanceof SceneImp) {
-            return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp) entityImp, ((SceneImp) entityImp).fromAboveLightColor, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setBackPaint")) {
-          if (entityImp instanceof BillboardImp) {
-            return new BillboardBackPaintPropertyAdapter((BillboardImp) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setFrontPaint")) {
-          if (entityImp instanceof BillboardImp) {
-            return new BillboardFrontPaintPropertyAdapter((BillboardImp) entityImp, state);
-          }
-        } else if (NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp) != null) {
-          return NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp);
-        } else if (setter.getName().equalsIgnoreCase("setFont")) {
-          if (entityImp instanceof TextModelImp) {
-            return new TextFontPropertyAdapter((TextModelImp) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setValue")) {
-          if (entityImp instanceof TextModelImp) {
-            return new TextValuePropertyAdapter((TextModelImp) entityImp, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setRadius")) {
-          if (entityImp instanceof CylinderImp) {
-            return new DoublePropertyAdapter<CylinderImp>("Radius", (CylinderImp) entityImp, ((CylinderImp) entityImp).radius, state);
-          } else if (entityImp instanceof SphereImp) {
-            return new DoublePropertyAdapter<SphereImp>("Radius", (SphereImp) entityImp, ((SphereImp) entityImp).radius, state);
-          } else if (entityImp instanceof DiscImp) {
-            return new DoublePropertyAdapter<DiscImp>("Radius", (DiscImp) entityImp, ((DiscImp) entityImp).outerRadius, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setBaseRadius")) {
-          if (entityImp instanceof ConeImp) {
-            return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp) entityImp, ((ConeImp) entityImp).baseRadius, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setInnerRadius")) {
-          if (entityImp instanceof TorusImp) {
-            return new DoublePropertyAdapter<TorusImp>("InnerRadius", (TorusImp) entityImp, ((TorusImp) entityImp).innerRadius, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setOuterRadius")) {
-          if (entityImp instanceof TorusImp) {
-            return new DoublePropertyAdapter<TorusImp>("OuterRadius", (TorusImp) entityImp, ((TorusImp) entityImp).outerRadius, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setLength")) {
-          if (entityImp instanceof CylinderImp) {
-            return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp) entityImp, ((CylinderImp) entityImp).length, state);
-          } else if (entityImp instanceof ConeImp) {
-            return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp) entityImp, ((ConeImp) entityImp).length, state);
-          }
-        } else if (setter.getName().equalsIgnoreCase("setScale")) {
-          if (entityImp instanceof VrUserImp) {
-            return new DoublePropertyAdapter<VrUserImp>("Scale", (VrUserImp) entityImp, ((VrUserImp) entityImp).scale, state);
-          }
-        } else {
-          System.out.println("Unknown setter: " + setter.getName());
-        }
+    if (entityImp == null) {
+      return null;
+    }
+    JavaMethod setter = AstUtilities.getSetterForGetter(getter, declaringType);
+    boolean isHidden = (setter == null)
+        || ((setter.getVisibility() != null) && (setter.getVisibility() != Visibility.PRIME_TIME));
+    if (isHidden) {
+      return null;
+    }
+    StandardExpressionState state = SceneEditorUpdatingPropertyState.getInstanceForSetter(field, setter);
+    if (setter.getName().equalsIgnoreCase("setOpacity")) {
+      if (entityImp instanceof ModelImp modelImp) {
+        return new ModelOpacityAdapter(modelImp, state);
+      } else if (entityImp instanceof GroundImp groundImp) {
+        return new GroundOpacityAdapter(groundImp, state);
       }
+    } else if (setter.getName().equalsIgnoreCase("setFogDensity")) {
+      if (entityImp instanceof SceneImp sceneImp) {
+        return new SceneFogDensityAdapter(sceneImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setResource")) {
+        if (entityImp instanceof JointedModelImp<?, ?> jointedModelImp) {
+        return new ResourcePropertyAdapter(jointedModelImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setPaint")) {
+      if (entityImp instanceof GroundImp groundImp) {
+        return new PaintPropertyAdapter<GroundImp>("Paint", groundImp, groundImp.paint, state);
+      } else if (entityImp instanceof BillboardImp billboardImp) {
+        return new BillboardFrontPaintPropertyAdapter(billboardImp, state);
+      } else if (entityImp instanceof ModelImp modelImp) {
+        return new PaintPropertyAdapter<ModelImp>("Paint", modelImp, modelImp.paint, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setVehicle")) {
+      if (entityImp.getAbstraction() instanceof MutableRider riderImp) {
+        return new MutableRiderVehicleAdapter(riderImp, state, this.sceneInstance);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setFromAboveLightColor")) {
+      if (entityImp instanceof SceneImp sceneImp) {
+        return new ColorPropertyAdapter<SceneImp>("Above Light Color", sceneImp, sceneImp.fromAboveLightColor, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setFromBelowLightColor")) {
+      if (entityImp instanceof SceneImp sceneImp) {
+        return new ColorPropertyAdapter<SceneImp>("Below Light Color", sceneImp, sceneImp.fromBelowLightColor, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setAtmosphereColor")) {
+      if (entityImp instanceof SceneImp sceneImp) {
+        return new ColorPropertyAdapter<SceneImp>("Atmosphere Color", sceneImp, sceneImp.atmosphereColor, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setAmbientLightColor")) {
+      if (entityImp instanceof SceneImp sceneImp) {
+        return new ColorPropertyAdapter<SceneImp>("Light Color", sceneImp, sceneImp.fromAboveLightColor, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setBackPaint")) {
+      if (entityImp instanceof BillboardImp billboardImp) {
+        return new BillboardBackPaintPropertyAdapter(billboardImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setFrontPaint")) {
+      if (entityImp instanceof BillboardImp billboardImp) {
+        return new BillboardFrontPaintPropertyAdapter(billboardImp, state);
+      }
+    } else if (NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp) != null) {
+      return NebulousIde.nonfree.getPropertyAdapterForGetter(setter, state, entityImp);
+    } else if (setter.getName().equalsIgnoreCase("setFont")) {
+      if (entityImp instanceof TextModelImp textModelImp) {
+        return new TextFontPropertyAdapter(textModelImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setValue")) {
+      if (entityImp instanceof TextModelImp textModelImp) {
+        return new TextValuePropertyAdapter(textModelImp, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setRadius")) {
+      if (entityImp instanceof CylinderImp cylinderImp) {
+        return new DoublePropertyAdapter<CylinderImp>("Radius", cylinderImp, cylinderImp.radius, state);
+      } else if (entityImp instanceof SphereImp sphereImp) {
+        return new DoublePropertyAdapter<SphereImp>("Radius", sphereImp, sphereImp.radius, state);
+      } else if (entityImp instanceof DiscImp discImp) {
+        return new DoublePropertyAdapter<DiscImp>("Radius", discImp, discImp.outerRadius, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setBaseRadius")) {
+      if (entityImp instanceof ConeImp coneImp) {
+        return new DoublePropertyAdapter<ConeImp>("Radius", coneImp, coneImp.baseRadius, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setInnerRadius")) {
+      if (entityImp instanceof TorusImp torusImp) {
+        return new DoublePropertyAdapter<TorusImp>("InnerRadius", torusImp, torusImp.innerRadius, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setOuterRadius")) {
+      if (entityImp instanceof TorusImp torusImp) {
+        return new DoublePropertyAdapter<TorusImp>("OuterRadius", torusImp, torusImp.outerRadius, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setLength")) {
+      if (entityImp instanceof CylinderImp cylinderImp) {
+        return new DoublePropertyAdapter<CylinderImp>("Length", cylinderImp, cylinderImp.length, state);
+      } else if (entityImp instanceof ConeImp coneImp) {
+        return new DoublePropertyAdapter<ConeImp>("Length", coneImp, coneImp.length, state);
+      }
+    } else if (setter.getName().equalsIgnoreCase("setScale")) {
+      if (entityImp instanceof VrUserImp vrUserImp) {
+        return new DoublePropertyAdapter<VrUserImp>("Scale", vrUserImp, vrUserImp.scale, state);
+      }
+    } else {
+      System.out.println("Unknown setter: " + setter.getName());
     }
     return null;
   }
@@ -345,25 +329,9 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
         boolean isScene = this.selectedImp instanceof SceneImp;
 
         UserField selectedField = null;
-        if ((this.selectedInstance instanceof ThisFieldAccessFactory)) {
-          ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory) this.selectedInstance;
+        if ((this.selectedInstance instanceof ThisFieldAccessFactory fieldAccessFactory)) {
           selectedField = fieldAccessFactory.getField();
         }
-
-        //propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
-
-        //        org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-        //        boolean isPerson = false;
-        //        if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-        //          JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-        //          if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-        //          {
-        //            isPerson = true;
-        //          }
-        //        }
-        //        if( ( fieldInitializerState != null ) && !isPerson ) {
-        //          propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-        //        }
 
         for (JavaMethod getter : getterMethods) {
           AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp, selectedField);
@@ -372,16 +340,16 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
           }
         }
 
-        if (this.selectedEntity instanceof SMovableTurnable) {
-          propertyAdapters.add(new MoveableTurnableTranslationAdapter((SMovableTurnable) this.selectedEntity, null));
+        if (this.selectedEntity instanceof SMovableTurnable turnable) {
+          propertyAdapters.add(new MoveableTurnableTranslationAdapter(turnable, null));
         }
-        if ((this.selectedEntity instanceof SModel) && (this.selectedImp instanceof ModelImp)) {
-          propertyAdapters.add(new ModelSizeAdapter((ModelImp) this.selectedImp, null));
+        if ((this.selectedEntity instanceof SModel) && (this.selectedImp instanceof ModelImp imp)) {
+          propertyAdapters.add(new ModelSizeAdapter(imp, null));
         }
 
         LabelValueControllerPair fieldNamePair = null;
 
-        if (propertyAdapters.size() != 0) {
+        if (!propertyAdapters.isEmpty()) {
           int mainPropertyCount = 0;
           int extraPropertyCount = 0;
           //Add all the extra properties to the extra panel and find the name property adapter
@@ -391,15 +359,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
             assert propertyController != null;
             LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getLocalizedRepr() + " = "), propertyController);
             assert matchingLabelController != null;
-            if (propertyAdapter instanceof SelectedInstanceAdapter) {
-              //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-              fieldNamePair = matchingLabelController;
-              //TODO: Localize this
-              fieldNamePair.label.setText(this.findLocalizedText("selected", "Selected:"));
-            } else {
-              this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
-              extraPropertyCount++;
-            }
+            this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+            extraPropertyCount++;
             this.activeControllers.add(matchingLabelController);
           }
 
@@ -418,7 +379,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
           if (selectedField != null) {
             SwingComponentView<?> initializerComponent = new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false);
-            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+            initializerComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, UIManager.getColor("Separator.foreground")));
 
             this.addComponent(initializerComponent, new GridBagConstraints(0, //gridX
                                                                            mainPropertyCount++, //gridY
@@ -450,7 +411,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
             );
           }
 
-          if ((this.selectedImp instanceof JointedModelImp) && (this.selectedInstance instanceof ThisFieldAccessFactory)) {
+          if ((this.selectedImp instanceof JointedModelImp) && (this.selectedInstance instanceof ThisFieldAccessFactory fieldAccessFactory)) {
             this.addComponent(BoxUtilities.createVerticalSliver(8), new GridBagConstraints(0, //gridX
                                                                                            mainPropertyCount++, //gridY
                                                                                            2, //gridWidth
@@ -463,8 +424,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
                                                                                            0, //ipadX
                                                                                            0) //ipadY
             );
-
-            ThisFieldAccessFactory fieldAccessFactory = (ThisFieldAccessFactory) this.selectedInstance;
             if (this.showJointsState != null) {
               this.showJointsState.removeValueListener(this.showJointsStateObserver);
             }
@@ -496,17 +455,13 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
     if (instance != null) {
       Expression expression = this.selectedInstance.createExpression();
-      if (expression instanceof LocalAccess) {
-        //pass
-      } else if (expression instanceof ParameterAccess) {
-        //pass
-      } else {
+      if (!(expression instanceof LocalAccess) && !(expression instanceof ParameterAccess)) {
         Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(this.selectedInstance.createExpression());
-        if (instanceInJava instanceof SThing) {
-          this.selectedEntity = (SThing) instanceInJava;
+        if (instanceInJava instanceof SThing thing) {
+          this.selectedEntity = thing;
           this.selectedImp = this.selectedEntity.getImplementation();
-        } else if (instanceInJava instanceof EntityImp) {
-          this.selectedImp = (EntityImp) instanceInJava;
+        } else if (instanceInJava instanceof EntityImp imp) {
+          this.selectedImp = imp;
           this.selectedEntity = this.selectedImp.getAbstraction();
         }
         for (LabelValueControllerPair activeController : this.activeControllers) {

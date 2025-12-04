@@ -45,19 +45,15 @@ package org.alice.ide.croquet.components.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.GoldenRatio;
-import org.alice.ide.DefaultTheme;
 import org.alice.ide.Theme;
 import org.alice.ide.croquet.components.KnurlDragComponent;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
-import org.alice.nonfree.NebulousIde;
+import org.alice.ide.icons.IconFactoryManager;
+import org.alice.ide.icons.PlusIconFactory;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel;
-import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.icons.PlusIconFactory;
 import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
@@ -65,31 +61,24 @@ import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.triggers.MouseEventTrigger;
-import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.VerticalAlignment;
-import org.lgna.croquet.views.VerticalTextPosition;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.List;
 
 /**
+ * Popup that appears when adding a model via a drag in from the gallery
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
-  private final Color baseColor;
-  private final Color highlightColor;
-  private final Color shadowColor;
-  private final Color activeHighlightColor;
-  private final Color activeShadowColor;
+  private Color baseColor = UIManager.getColor("Label.background");
 
   private final SingleSelectTreeState<ResourceNode> controller;
 
@@ -128,30 +117,16 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   public GalleryDragComponent(ResourceNode model, SingleSelectTreeState<ResourceNode> controller) {
     super(model, false);
     this.controller = controller;
-
     if (model.isUserDefinedModel()) {
-      this.baseColor = ColorUtilities.scaleHSB(DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR, 1.0, 2.0, 1.0);
-      this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-      this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-      this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-      this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
-    } else if (model.isInstanceCreator()) {
-      this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
-      this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-      this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-      this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-      this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
-    } else {
-      this.baseColor = ColorUtilities.createGray(191);
-      this.highlightColor = ColorUtilities.createGray(221);
-      this.shadowColor = ColorUtilities.createGray(171);
-      this.activeHighlightColor = ColorUtilities.createGray(255);
-      this.activeShadowColor = ColorUtilities.createGray(181);
+      this.baseColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 2.0, 1.0);
+    } else if (!model.isInstanceCreator() || model.getNodeChildren().size() > 1) {
+      // these are groups of items that we apply a folder color to
+      this.baseColor = UIManager.getColor("Alice.folderColor");
     }
+
     if (!model.isBreadcrumbButtonIconDesired()) {
       ResourceKey resourceKey = model.getResourceKey();
-      if (resourceKey instanceof InstanceCreatorKey) {
-        InstanceCreatorKey instanceCreatorKey = (InstanceCreatorKey) resourceKey;
+      if (resourceKey instanceof InstanceCreatorKey instanceCreatorKey) {
         addSuperclassIcon(instanceCreatorKey.getModelResourceCls());
       }
     }
@@ -161,12 +136,6 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   public GalleryDragComponent(UriGalleryDragModel model) {
     super(model, false);
     controller = null;
-
-    this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
-    this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-    this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-    this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-    this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
 
     Label label = new Label(PlusIconFactory.getInstance().getIconToFit(Theme.SMALL_SQUARE_ICON_SIZE));
     label.setToolTipText(model.getTypeSummaryToolTipText());
@@ -184,12 +153,6 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   public GalleryDragComponent(ShapeDragModel model) {
     super(model, false);
     controller = null;
-
-    this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
-    this.highlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 1.4);
-    this.shadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 0.9, 0.8);
-    this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
-    this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
 
     setupDisplay(model);
   }
@@ -233,9 +196,9 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   }
 
   private static class GalleryDragLayoutManager implements LayoutManager {
-    private static String BASE_CONSTRAINT = "TOP_LEFT_CONSTRAINT_BASE";
-    private static String TOP_LEFT_CONSTRAINT = "TOP_LEFT_CONSTRAINT";
-    private static String TOP_RIGHT_CONSTRAINT = "TOP_RIGHT_CONSTRAINT";
+    private static final String BASE_CONSTRAINT = "TOP_LEFT_CONSTRAINT_BASE";
+    private static final String TOP_LEFT_CONSTRAINT = "TOP_LEFT_CONSTRAINT";
+    private static final String TOP_RIGHT_CONSTRAINT = "TOP_RIGHT_CONSTRAINT";
 
     private final List<Component> topLeftComponents = Lists.newCopyOnWriteArrayList();
     private final List<Component> topRightComponents = Lists.newCopyOnWriteArrayList();
@@ -300,13 +263,11 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   @Override
   protected void handleLeftMouseButtonQuoteClickedUnquote(MouseEvent e) {
     super.handleLeftMouseButtonQuoteClickedUnquote(e);
-    switch (e.getClickCount()) {
-    case 1:
+    if (e.getClickCount() == 1) {
       Triggerable leftButtonClickModel = this.getModel().getLeftButtonClickOperation(controller);
       if (leftButtonClickModel != null) {
         leftButtonClickModel.fire(MouseEventTrigger.createUserActivity(this, e));
       }
-      break;
     }
   }
 
@@ -339,7 +300,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 
   @Override
   protected int getDockInsetLeft() {
-    return 0;
+    return 1;
   }
 
   @Override
@@ -360,29 +321,11 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
   @Override
   protected void paintPrologue(Graphics2D g2, int x, int y, int width, int height) {
     RoundRectangle2D.Float shape = this.createShape(x, y, width, height);
-    int y1 = y + height;
-    int yCenter = y + (height / 2);
-    int yA = y + (height / 3);
-    int yB = y1 - (height / 3);
-
-    Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
-    Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
-
-    GradientPaint paintTop = new GradientPaint(x, y, highlightColor, x, yA, shadowColor);
-    GradientPaint paintBottom = new GradientPaint(x, yB, shadowColor, x, y1, highlightColor);
-
     Paint prevPaint = g2.getPaint();
     Shape prevClip = g2.getClip();
 
     try {
-      Area topArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, y, width, yCenter - y));
-      g2.setClip(topArea);
-      g2.setPaint(paintTop);
-      g2.fill(shape);
-
-      Area bottomArea = AreaUtilities.createIntersection(prevClip, new Rectangle(x, yCenter, width, y1 - yCenter));
-      g2.setClip(bottomArea);
-      g2.setPaint(paintBottom);
+      g2.setPaint(this.baseColor);
       g2.fill(shape);
     } finally {
       g2.setClip(prevClip);
@@ -414,74 +357,39 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     super.paintEpilogue(g2, x, y, width, height);
 
     GalleryDragModel model = this.getModel();
-    if (model instanceof ResourceNode) {
-      ResourceNode resourceNode = (ResourceNode) model;
+    if (model instanceof ResourceNode resourceNode) {
 
-      ResourceKey resourceKey = resourceNode.getResourceKey();
-      if (NebulousIde.nonfree.isInstanceOfPersonResourceKey(resourceKey)) {
+      // this is how we paint the little folder icons with the counts inside
+      List<ResourceNode> nodeChildren = resourceNode.getNodeChildren();
+      if (nodeChildren.size() > 1) {
+        String s = Integer.toString(nodeChildren.size());
+        FontMetrics fm = g2.getFontMetrics();
 
-        final boolean IS_PERSON_EDITOR_ICON_DESIRED = false;
+        Rectangle2D actualTextBounds = fm.getStringBounds(s, g2);
+        Rectangle2D minimumTextBounds = fm.getStringBounds("00", g2);
 
-        if (IS_PERSON_EDITOR_ICON_DESIRED) {
-          final int PAD_X = 6;
-          final int PAD_Y = 4;
-          final int WIDTH = 24;
-          final int HEIGHT = GoldenRatio.getShorterSideLength(WIDTH);
-
-          final int X_OFFSET = (x + width) - WIDTH - PAD_X;
-          final int Y_OFFSET = y + PAD_Y;
-
-          final int TITLE_HEIGHT = 3;
-
-          g2.setPaint(Color.BLUE);
-          g2.fillRect(X_OFFSET, Y_OFFSET, WIDTH, TITLE_HEIGHT);
-
-          final int LEADING_WIDTH = (WIDTH * 2) / 5;
-
-          g2.setPaint(new Color(0x7f7fff));
-          g2.fillRect(X_OFFSET, Y_OFFSET + TITLE_HEIGHT, LEADING_WIDTH, HEIGHT - TITLE_HEIGHT);
-
-          g2.setPaint(new Color(0xada7d0));
-          g2.fillRect(X_OFFSET + LEADING_WIDTH, Y_OFFSET + TITLE_HEIGHT, WIDTH - LEADING_WIDTH, HEIGHT - TITLE_HEIGHT);
-
-          g2.setPaint(Color.DARK_GRAY);
-          g2.draw3DRect(X_OFFSET, Y_OFFSET, WIDTH, HEIGHT, true);
+        Rectangle2D textBounds;
+        if (actualTextBounds.getWidth() > minimumTextBounds.getWidth()) {
+          textBounds = actualTextBounds;
+        } else {
+          textBounds = minimumTextBounds;
         }
 
-      } else {
-        List<ResourceNode> nodeChildren = resourceNode.getNodeChildren();
-        if (nodeChildren.size() > 1) {
-          String s = Integer.toString(nodeChildren.size());
-          FontMetrics fm = g2.getFontMetrics();
+        Shape shape = createShapeAround(textBounds);
+        Rectangle2D shapeBounds = shape.getBounds();
 
-          Rectangle2D actualTextBounds = fm.getStringBounds(s, g2);
-          Rectangle2D minimumTextBounds = fm.getStringBounds("00", g2);
+        double xTranslate = (x + width) - shapeBounds.getWidth() - 4;
+        double yTranslate = y + shapeBounds.getHeight();
 
-          Rectangle2D textBounds;
-          if (actualTextBounds.getWidth() > minimumTextBounds.getWidth()) {
-            textBounds = actualTextBounds;
-          } else {
-            textBounds = minimumTextBounds;
-          }
+        g2.translate(xTranslate, yTranslate);
 
-          Shape shape = createShapeAround(textBounds);
-          Rectangle2D shapeBounds = shape.getBounds();
-
-          double xTranslate = (x + width) - shapeBounds.getWidth() - 4;
-          double yTranslate = y + shapeBounds.getHeight();
-
-          g2.translate(xTranslate, yTranslate);
-          try {
-            g2.setPaint(new Color(221, 221, 191));
-            g2.fill(shape);
-            g2.setPaint(Color.GRAY);
-            g2.draw(shape);
-
-            g2.setPaint(Color.BLACK);
-            GraphicsUtilities.drawCenteredText(g2, s, textBounds);
-          } finally {
-            g2.translate(-xTranslate, -yTranslate);
-          }
+        try {
+          g2.setPaint(Color.DARK_GRAY);
+          g2.draw(shape);
+          g2.setPaint(UIManager.getColor("Label.foreground"));
+          GraphicsUtilities.drawCenteredText(g2, s, textBounds);
+        } finally {
+          g2.translate(-xTranslate, -yTranslate);
         }
       }
     }

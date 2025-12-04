@@ -50,7 +50,7 @@ import org.alice.ide.custom.DoubleCustomExpressionCreatorComposite;
 import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.PortionCustomExpressionCreatorComposite;
 import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
-
+import org.apache.commons.lang.ArrayUtils;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.NumberValueDetails;
@@ -58,8 +58,6 @@ import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.annotation.PortionDetails;
 import org.lgna.story.annotation.VolumeLevelDetails;
-
-import org.apache.commons.lang.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,8 +67,8 @@ import java.util.List;
  */
 public class DoubleFillerInner extends AbstractNumberFillerInner {
   public static double[] getLiterals(ValueDetails<?> details) {
-    if (details instanceof NumberValueDetails) {
-      return ((NumberValueDetails) details).getLiterals();
+    if (details instanceof NumberValueDetails valueDetails) {
+      return valueDetails.getLiterals();
     } else {
       return new double[] {0, 0.25, 0.5, 1.0, 2.0, 10.0};
     }

@@ -43,20 +43,9 @@
 package org.alice.stageide.fontchooser;
 
 import org.lgna.story.Font;
-import org.lgna.story.fontattributes.FamilyAttribute;
-import org.lgna.story.fontattributes.FamilyConstant;
-import org.lgna.story.fontattributes.PostureAttribute;
-import org.lgna.story.fontattributes.PostureConstant;
-import org.lgna.story.fontattributes.SizeAttribute;
-import org.lgna.story.fontattributes.SizeValue;
-import org.lgna.story.fontattributes.WeightAttribute;
-import org.lgna.story.fontattributes.WeightConstant;
+import org.lgna.story.fontattributes.*;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.GridBagConstraints;
@@ -79,9 +68,7 @@ public class FontChooser extends JPanel {
       m_list.addListSelectionListener(new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-          if (e.getValueIsAdjusting()) {
-            //pass
-          } else {
+          if (!e.getValueIsAdjusting()) {
             FontChooser.this.updateSample();
           }
         }
@@ -183,8 +170,8 @@ public class FontChooser extends JPanel {
 
     public SizeAttribute getSizeAttribute() {
       Object value = m_list.getSelectedValue();
-      if (value instanceof String) {
-        return new SizeValue(Float.valueOf((String) value));
+      if (value instanceof String string) {
+        return new SizeValue(Float.valueOf(string));
       } else {
         return null;
       }

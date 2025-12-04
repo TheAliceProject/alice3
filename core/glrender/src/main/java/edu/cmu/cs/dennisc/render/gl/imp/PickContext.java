@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
@@ -55,6 +53,8 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 import java.util.Map;
+
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove

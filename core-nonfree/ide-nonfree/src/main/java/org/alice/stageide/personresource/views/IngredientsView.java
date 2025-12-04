@@ -43,43 +43,34 @@
 
 package org.alice.stageide.personresource.views;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.custom.ColorCustomExpressionCreatorComposite;
 import org.alice.stageide.personresource.IngredientsComposite;
 import org.alice.stageide.personresource.SkinColorState;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.FolderTabbedPane;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.ToggleButton;
+import org.lgna.croquet.views.*;
 import org.lgna.story.resources.sims2.LifeStage;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Insets;
 import java.util.concurrent.Callable;
 
 /**
  * @author Dennis Cosgrove
  */
 public class IngredientsView extends MigPanel {
-  public static final Insets COLOR_BUTTON_MARGIN = new Insets(1, -7, 1, -7); //todo
-  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
-  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
-  public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
-
   private final Label isLifeStageLockedLabel = new Label();
   private final HorizontalWrapList<LifeStage> lifeStageList;
 
-  private static final Icon LOCKED_ICON = IconUtilities.createImageIcon(IngredientsComposite.class.getResource("images/locked.png"));
+  private static final Icon LOCKED_ICON = new FlatSVGIcon(Icons.class.getResource("images/locked.svg"));
 
   public IngredientsView(final IngredientsComposite composite) {
     super(composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]");
@@ -105,7 +96,7 @@ public class IngredientsView extends MigPanel {
       itemSelectedState.setTextForBothTrueAndFalse("");
       itemSelectedState.setIconForBothTrueAndFalse(new ColorIcon(melaninShade));
       ToggleButton button = itemSelectedState.createToggleButton();
-      button.tightenUpMargin(COLOR_BUTTON_MARGIN);
+      button.setMinimumPreferredWidth(ColorIcon.DEFAULT_SIZE);
       this.addComponent(button, constraints);
       constraints = "gap 0";
     }
@@ -155,7 +146,7 @@ public class IngredientsView extends MigPanel {
 
     otherColorButton.getAwtComponent().setText("");
     otherColorButton.getAwtComponent().setIcon(new OtherColorIcon());
-    otherColorButton.tightenUpMargin(COLOR_BUTTON_MARGIN);
+    otherColorButton.setMinimumPreferredWidth(ColorIcon.DEFAULT_SIZE);
     this.addComponent(otherColorButton, "gap 8, split 2");
 
     //this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
@@ -174,9 +165,7 @@ public class IngredientsView extends MigPanel {
             break;
           }
         }
-        if (isColorMelaninShade) {
-          //pass
-        } else {
+        if (!isColorMelaninShade) {
           otherColorCallable.setValue(nextValue);
         }
         otherColorState.setEnabled(otherColorCallable.getValue() != null);
@@ -196,9 +185,11 @@ public class IngredientsView extends MigPanel {
     }, "skip 2, grow, gaptop 0, wrap");
 
     FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
-    tabbedPane.setBackgroundColor(BACKGROUND_COLOR);
     this.addComponent(tabbedPane, "span 4, grow");
-    this.setBackgroundColor(BACKGROUND_COLOR);
+
+    final Color c = UIManager.getColor("Alice.differentBackground");
+    tabbedPane.setBackgroundColor(c);
+    this.setBackgroundColor(c);
   }
 
   @Override

@@ -57,9 +57,7 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
   }
 
   private List<GalleryResourceTreeNode> getSortedChildren() {
-    if (this.isSorted) {
-      //pass
-    } else {
+    if (!this.isSorted) {
       Collections.sort(this.children);
       this.isSorted = true;
     }
@@ -92,7 +90,7 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
 
   @Override
   public boolean isLeaf() {
-    return this.children.size() == 0;
+    return this.children.isEmpty();
   }
 
   @Override

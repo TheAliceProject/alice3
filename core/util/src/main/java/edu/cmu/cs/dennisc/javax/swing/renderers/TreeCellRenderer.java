@@ -56,8 +56,8 @@ public abstract class TreeCellRenderer<E> extends DefaultTreeCellRenderer {
   @Override
   public final Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     Component rv = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-    if (rv instanceof JLabel) {
-      updateListCellRendererComponent((JLabel) rv, tree, (E) value, sel, expanded, leaf, row, hasFocus);
+    if (rv instanceof JLabel label) {
+      updateListCellRendererComponent(label, tree, (E) value, sel, expanded, leaf, row, hasFocus);
     } else {
       //todo
     }

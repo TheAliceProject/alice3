@@ -50,11 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.debug.pick.croquet.PickDebugFrame;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -95,9 +91,7 @@ public class PickDebugFrameView extends BorderPanel {
           for (PickResult pickResult : line) {
             Visual sgVisual = pickResult.getVisual();
             if (sgVisual != null) {
-              if (this.mapSgVisualToColorIcon.containsKey(sgVisual)) {
-                //pass
-              } else {
+              if (!this.mapSgVisualToColorIcon.containsKey(sgVisual)) {
                 this.listModel.addElement(sgVisual);
                 this.mapSgVisualToColorIcon.put(sgVisual, new ColorIcon(colors[colorIndex]));
                 colorIndex += 1;

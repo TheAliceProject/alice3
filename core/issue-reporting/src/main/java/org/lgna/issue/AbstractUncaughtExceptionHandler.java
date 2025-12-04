@@ -59,28 +59,22 @@ public abstract class AbstractUncaughtExceptionHandler implements Thread.Uncaugh
   @Override
   public final void uncaughtException(Thread thread, Throwable throwable) {
     throwable.printStackTrace();
-    if (isInTheMidstOfHandlingAThrowable) {
-      //pass
-    } else {
+    if (!isInTheMidstOfHandlingAThrowable) {
       this.isInTheMidstOfHandlingAThrowable = true;
       try {
         Throwable cause = throwable.getCause();
         Throwable originalThrowableOrTarget;
-        if (cause instanceof InvocationTargetException) {
-          InvocationTargetException invocationTargetException = (InvocationTargetException) cause;
+        if (cause instanceof InvocationTargetException invocationTargetException) {
           originalThrowableOrTarget = invocationTargetException.getTargetException();
         } else {
           originalThrowableOrTarget = throwable;
         }
 
         boolean isHandled = false;
-        if (originalThrowableOrTarget instanceof LgnaRuntimeException) {
-          LgnaRuntimeException lgnaRuntimeException = (LgnaRuntimeException) originalThrowableOrTarget;
+        if (originalThrowableOrTarget instanceof LgnaRuntimeException lgnaRuntimeException) {
           isHandled = this.handleUncaughtLgnaRuntimeException(thread, throwable, lgnaRuntimeException);
         }
-        if (isHandled) {
-          //pass
-        } else {
+        if (!isHandled) {
           this.handleUncaughtException(thread, throwable, originalThrowableOrTarget);
         }
       } catch (Throwable t) {

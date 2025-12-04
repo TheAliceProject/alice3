@@ -52,16 +52,9 @@ import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.ExpressionProperty;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import java.awt.Color;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -74,7 +67,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
   }
 
   @Override
-  public Paint getInvalidExpressionPaint(Paint paint, int x, int y, int width, int height) {
+  public Color getInvalidExpressionColor(Color color) {
     return Color.RED;
   }
 
@@ -111,9 +104,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 
   @Override
   public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
-    if (this.isDraggable(statement)) {
-      //pass
-    } else {
+    if (!this.isDraggable(statement)) {
       dragModel = null;
     }
     return super.createStatementPane(dragModel, statement, statementListProperty);
@@ -124,7 +115,7 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
     if (IS_FORMATTER_READY_FOR_PRIME_TIME) {
       Formatter formatter = FormatterState.getInstance().getValue();
       String headerText = formatter.getHeaderTextForCode(code);
-      if ((headerText != null) && (headerText.length() > 0)) {
+      if ((headerText != null) && !headerText.isEmpty()) {
         Page page = new Page(headerText);
         this.declarationNameFontScale = 1.8f;
         try {
@@ -136,11 +127,9 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
         return null;
       }
     } else {
-      if (code instanceof UserMethod) {
-        UserMethod userMethod = (UserMethod) code;
+      if (code instanceof UserMethod userMethod) {
         return new MethodHeaderPane(this, userMethod, false);
-      } else if (code instanceof NamedUserConstructor) {
-        NamedUserConstructor userConstructor = (NamedUserConstructor) code;
+      } else if (code instanceof NamedUserConstructor userConstructor) {
         return new ConstructorHeaderPane(userConstructor, false);
       } else {
         throw new RuntimeException();

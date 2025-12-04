@@ -104,8 +104,7 @@ public abstract class DifferentImplementationHelpComposite<M extends Member> ext
 
     String kindOfMemberText;
     M member = differentImplementation.getImportHub().getMember();
-    if (member instanceof UserMethod) {
-      UserMethod method = (UserMethod) member;
+    if (member instanceof UserMethod method) {
       kindOfMemberText = method.isProcedure() ? "procedure" : "function";
     } else {
       kindOfMemberText = "property";

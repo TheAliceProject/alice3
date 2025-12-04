@@ -55,16 +55,7 @@ import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.story.SProgram;
 
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JApplet;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -247,10 +238,6 @@ public abstract class ProgramImp {
     return this.isControlPanelDesired;
   }
 
-  public void setControlPanelDesired(boolean isControlPanelDesired) {
-    this.isControlPanelDesired = isControlPanelDesired;
-  }
-
   public SProgram getAbstraction() {
     return this.abstraction;
   }
@@ -292,6 +279,7 @@ public abstract class ProgramImp {
       GlrRenderFactory renderFactory = GlrRenderFactory.getInstance();
       renderFactory.decrementAutomaticDisplayCount();
       renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
+      renderFactory.releaseTarget(onscreenRenderTarget);
     } else {
       Logger.severe(this.isAnimatorStarted);
     }
@@ -332,7 +320,7 @@ public abstract class ProgramImp {
         this.awtContainer.add(controlPanel, BorderLayout.PAGE_START);
       }
       if (this.awtContainer instanceof JComponent) {
-        ((JComponent) this.awtContainer).revalidate();
+        this.awtContainer.revalidate();
       }
     }
   }
@@ -388,12 +376,9 @@ public abstract class ProgramImp {
     this.startAnimator();
   }
 
-  public void initializeInApplet(JApplet applet) {
-    this.addComponents(new DefaultAwtContainerInitializer(applet.getContentPane()));
-    this.startAnimator();
-  }
 
   public void shutDown() {
+    this.abstraction.setActiveScene(null);
     this.stopAnimator();
     this.isProgramClosedExceptionDesired = true;
   }

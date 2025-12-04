@@ -47,24 +47,8 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.ide.IDE;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.issue.UserProgramRunningStateUtilities;
-import org.alice.stageide.StageIDE;
 import org.alice.stageide.StoryApiConfigurationManager;
-import org.alice.stageide.apis.story.event.ArrowKeyAdapter;
-import org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter;
-import org.alice.stageide.apis.story.event.ComesOutOfViewEventAdapter;
-import org.alice.stageide.apis.story.event.EndCollisionAdapter;
-import org.alice.stageide.apis.story.event.EndOcclusionEventAdapter;
-import org.alice.stageide.apis.story.event.EnterProximityAdapter;
-import org.alice.stageide.apis.story.event.ExitProximityAdapter;
-import org.alice.stageide.apis.story.event.KeyAdapter;
-import org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter;
-import org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter;
-import org.alice.stageide.apis.story.event.NumberKeyAdapter;
-import org.alice.stageide.apis.story.event.SceneActivationAdapter;
-import org.alice.stageide.apis.story.event.StartCollisionAdapter;
-import org.alice.stageide.apis.story.event.StartOcclusionEventAdapter;
-import org.alice.stageide.apis.story.event.TimerEventAdapter;
-import org.alice.stageide.apis.story.event.TransformationEventAdapter;
+import org.alice.stageide.apis.story.event.*;
 import org.alice.stageide.ast.SceneAdapter;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.project.ast.NamedUserType;
@@ -74,36 +58,13 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.ProximityEnterListener;
-import org.lgna.story.event.ProximityExitListener;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.*;
 import org.lgna.story.implementation.ProgramImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ProgramContext {
-  protected static NamedUserType getUpToDateProgramTypeFromActiveIde() {
-    final StageIDE ide = StageIDE.getActiveInstance();
-    if (ide != null) {
-      return ide.getUpToDateProgramType();
-    } else {
-      return null;
-    }
-  }
 
   private final UserInstance programInstance;
   private final VirtualMachine vm;

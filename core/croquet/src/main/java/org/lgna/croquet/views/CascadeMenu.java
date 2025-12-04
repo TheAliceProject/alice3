@@ -60,9 +60,4 @@ public class CascadeMenu extends AbstractMenu<CascadeItem<?, ?>> {
     return null;
   }
 
-  @Override
-  protected boolean areIconsDisplayedInMenus() {
-    //note: much of the cascading menu system leverages icons
-    return true;
-  }
 }

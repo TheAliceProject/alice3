@@ -102,15 +102,6 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     return rv;
   }
 
-  public int getComponentZOrder(AwtComponentView<?> component) {
-    return this.getAwtComponent().getComponentZOrder(component.getAwtComponent());
-  }
-
-  public void setComponentZOrder(AwtComponentView<?> component, int index) {
-    this.checkEventDispatchThread();
-    this.getAwtComponent().setComponentZOrder(component.getAwtComponent(), index);
-  }
-
   public int getComponentCount() {
     return getAwtComponent().getComponentCount();
   }
@@ -145,8 +136,7 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     //    component.handleUndisplayable();
     //  }
     if (isReleaseDesired) {
-      if (component instanceof AwtContainerView<?>) {
-        AwtContainerView<?> container = (AwtContainerView<?>) component;
+      if (component instanceof AwtContainerView<?> container) {
         container.internalRemoveAllComponents(true);
       }
       component.release();
@@ -173,15 +163,7 @@ public abstract class AwtContainerView<J extends Container> extends AwtComponent
     this.internalRemoveAllComponents(false);
   }
 
-  protected void internalForgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalRemoveComponent(component, true);
-    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveComponent( this.getAwtComponent(), component.getAwtComponent(), forgetObserver );
-    //  this.repaint();
-  }
-
   protected void internalForgetAndRemoveAllComponents() {
     this.internalRemoveAllComponents(true);
-    //  edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this.getAwtComponent(), forgetObserver );
-    //  this.repaint();
   }
 }

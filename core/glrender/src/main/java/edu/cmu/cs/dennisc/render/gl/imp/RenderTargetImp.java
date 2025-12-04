@@ -42,37 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
-
-import com.jogamp.opengl.DebugGL2;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.*;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
 import edu.cmu.cs.dennisc.render.AsynchronousPicker;
 import edu.cmu.cs.dennisc.render.RenderTarget;
-import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
-import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.event.*;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
 
 /**
  * @author Dennis Cosgrove
@@ -130,7 +122,7 @@ public class RenderTargetImp {
   }
 
   public void clearSgCameras(GLAutoDrawable glAutoDrawable) {
-    if (this.sgCameras.size() > 0) {
+    if (!this.sgCameras.isEmpty()) {
       this.sgCameras.clear();
     }
     if (this.isListening()) {
@@ -498,9 +490,7 @@ public class RenderTargetImp {
       initialize(drawable);
       Logger.outln("note: initialize necessary from display");
     }
-    if ((this.drawableWidth > 0) && (this.drawableHeight > 0)) {
-      //pass
-    } else {
+    if (this.drawableWidth <= 0 || this.drawableHeight <= 0) {
       int nextWidth = GlDrawableUtils.getGlDrawableWidth(drawable);
       int nextHeight = GlDrawableUtils.getGlDrawableHeight(drawable);
       int nextScreenWidth = GlDrawableUtils.getGLJPanelWidth(drawable);

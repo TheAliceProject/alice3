@@ -43,14 +43,17 @@
 
 package org.alice.ide.croquet.models.ui.debug.components;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.alice.ide.icons.Icons;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTree;
 
 /**
  * @author Dennis Cosgrove
@@ -58,8 +61,8 @@ import javax.swing.*;
 public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
   @Override
   protected JLabel updateListCellRendererComponent(JLabel rv, JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    if (value instanceof UserActivity) {
-      updateFromActivity(rv, (UserActivity) value);
+    if (value instanceof UserActivity activity) {
+      updateFromActivity(rv, activity);
     }
     return rv;
   }
@@ -103,6 +106,6 @@ public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
         name = "canceled";
       }
     }
-    return IconUtilities.createImageIcon(TransactionHistoryCellRenderer.class.getResource("images/" + name + ".png"));
+    return new FlatSVGIcon(Icons.class.getResource("images/" + name + ".svg"));
   }
 }

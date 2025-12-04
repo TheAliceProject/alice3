@@ -45,25 +45,21 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
 import org.alice.math.immutable.AxisAlignedBox;
 import org.lgna.story.STurnable;
 
 public class BoundingBoxUtilities {
 
   private static AxisAlignedBox getSGTransformableBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {
-    AxisAlignedBox boundingBox = null;
-    if (sgTransformable != null) {
-      EntityImp entityImp = EntityImp.getInstance(sgTransformable);
-      if (entityImp instanceof JointedModelImp<?, ?>) {
-        boundingBox = ((JointedModelImp<?, ?>) entityImp).getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
-      } else if (entityImp instanceof ModelImp) {
-        boundingBox = ((ModelImp) entityImp).getAxisAlignedMinimumBoundingBox();
-      } else if (entityImp instanceof JointImp) {
-        boundingBox = ((JointImp) entityImp).getAxisAlignedMinimumBoundingBox();
-      }
+    if (sgTransformable == null) {
+      return null;
     }
-    return boundingBox;
+    return switch (EntityImp.getInstance(sgTransformable)) {
+      case JointedModelImp<?, ?> jointedModelImp -> jointedModelImp.getAxisAlignedMinimumBoundingBox(ignoreJointOrientations);
+      case ModelImp modelImp -> modelImp.getAxisAlignedMinimumBoundingBox();
+      case JointImp jointImp -> jointImp.getAxisAlignedMinimumBoundingBox();
+      case null, default -> null;
+    };
   }
 
   public static AxisAlignedBox getSGTransformableScaledBBox(AbstractTransformable sgTransformable, boolean ignoreJointOrientations) {

@@ -115,11 +115,9 @@ public class DeclarationMeta {
   }
 
   private static AbstractType<?, ?, ?> getType(AbstractDeclaration declaration) {
-    if (declaration instanceof Code) {
-      Code code = (Code) declaration;
+    if (declaration instanceof Code code) {
       return code.getDeclaringType();
-    } else if (declaration instanceof AbstractType<?, ?, ?>) {
-      AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+    } else if (declaration instanceof AbstractType<?, ?, ?> type) {
       return type;
     } else {
       return null;

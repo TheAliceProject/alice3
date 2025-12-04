@@ -43,20 +43,24 @@
 
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.Icons;
 import org.alice.interact.event.ManipulationEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
   private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-    Inactive("images/zoom.png"), Highlighted("images/zoomHighlight.png"), ZoomingIn("images/zoomIn.png"), ZoomingOut("images/zoomOut.png");
+    Inactive("images/handles/zoom.svg"),
+    Highlighted("images/handles/zoomHighlight.svg"),
+    ZoomingIn("images/handles/zoomIn.svg"),
+    ZoomingOut("images/handles/zoomOut.svg");
 
     private ControlState(String resourceString) {
       Icon icon;
       try {
-        icon = new ImageIcon(this.getClass().getResource(resourceString));
+        icon = new FlatSVGIcon(Icons.class.getResource(resourceString));
       } catch (Exception e) {
         Logger.errln("cannot load", resourceString, this);
         icon = null;
@@ -73,7 +77,7 @@ public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle
   }
 
   public ManipulationHandle2DCameraZoom() {
-    super("images/zoomMask.png");
+    super("images/handles/zoomMask.svg");
   }
 
   @Override

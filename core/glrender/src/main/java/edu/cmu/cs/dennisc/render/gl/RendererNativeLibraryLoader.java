@@ -61,9 +61,7 @@ public class RendererNativeLibraryLoader {
   private static boolean isInitializationAttempted;
 
   public static synchronized void initializeIfNecessary() {
-    if (isInitializationAttempted) {
-      //pass
-    } else {
+    if (!isInitializationAttempted) {
       try {
         JNILibLoaderBase.setLoadingAction(new JNILibLoaderBase.LoaderAction() {
           private final Set<String> loaded = Sets.newHashSet();
@@ -116,10 +114,7 @@ public class RendererNativeLibraryLoader {
           }
         });
 
-        //edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
-        //timer.start();
         GLProfile.initSingleton();
-        //timer.stopAndPrintResults();
       } finally {
         isInitializationAttempted = true;
       }

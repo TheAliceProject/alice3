@@ -61,12 +61,7 @@ public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayCo
 
   public static synchronized InsertForEachInArrayLoopComposite getInstance(BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping) {
     InitializingIfAbsentMap<BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertForEachInArrayLoopComposite>() {
-      @Override
-      public InsertForEachInArrayLoopComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
-        return new InsertForEachInArrayLoopComposite(blockStatementIndexPair, isEnveloping);
-      }
-    });
+    return map.get(blockStatementIndexPair, pair -> new InsertForEachInArrayLoopComposite(pair, isEnveloping));
   }
 
   private InsertForEachInArrayLoopComposite(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {

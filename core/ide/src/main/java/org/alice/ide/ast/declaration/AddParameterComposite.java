@@ -67,12 +67,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   private static InitializingIfAbsentMap<UserCode, AddParameterComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddParameterComposite getInstance(UserCode code) {
-    return map.getInitializingIfAbsent(code, new InitializingIfAbsentMap.Initializer<UserCode, AddParameterComposite>() {
-      @Override
-      public AddParameterComposite initialize(UserCode key) {
-        return new AddParameterComposite(key);
-      }
-    });
+    return map.get(code, AddParameterComposite::new);
   }
 
   private final BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState("isRequirementToUpdateInvocationsUnderstoodState", false);
@@ -97,8 +92,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
     super.localize();
     //todo
     String codeText;
-    if (code instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) code;
+    if (code instanceof AbstractMethod method) {
       if (method.isProcedure()) {
         codeText = "procedure";
       } else {
@@ -134,9 +128,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   protected Status getStatusPreRejectorCheck() {
     Status rv = super.getStatusPreRejectorCheck();
     if (rv == IS_GOOD_TO_GO_STATUS) {
-      if (this.isRequirementToUpdateInvocationsUnderstoodState.getValue()) {
-        //pass
-      } else {
+      if (!this.isRequirementToUpdateInvocationsUnderstoodState.getValue()) {
         return this.hasNotAgreedToUpdateInvocationsStatus;
       }
     }
@@ -156,7 +148,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
   @Override
   public void handlePreActivation() {
     List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists(code);
-    this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly(argumentLists.size() == 0);
+    this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly(argumentLists.isEmpty());
     super.handlePreActivation();
   }
 

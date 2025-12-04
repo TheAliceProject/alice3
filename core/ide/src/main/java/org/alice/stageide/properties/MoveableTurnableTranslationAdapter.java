@@ -44,12 +44,11 @@
 package org.alice.stageide.properties;
 
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Point3;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.AsSeenBy;

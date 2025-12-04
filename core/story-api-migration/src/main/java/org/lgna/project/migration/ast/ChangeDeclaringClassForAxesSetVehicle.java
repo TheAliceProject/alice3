@@ -44,11 +44,7 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Version;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.*;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SAxes;
 import org.lgna.story.SThing;
@@ -65,8 +61,7 @@ public class ChangeDeclaringClassForAxesSetVehicle extends MethodInvocationAstMi
   @Override
   protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
-    if (method instanceof JavaMethod) {
-      JavaMethod javaMethod = (JavaMethod) method;
+    if (method instanceof JavaMethod javaMethod) {
       if ((javaMethod.getDeclaringType() == JavaType.getInstance(SAxes.class)) && javaMethod.getName().equals("setVehicle")) {
         AbstractMethod replacementMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", SThing.class);
         methodInvocation.method.setValue(replacementMethod);

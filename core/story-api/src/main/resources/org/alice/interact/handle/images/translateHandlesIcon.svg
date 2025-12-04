@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="26"
+   height="26"
+   viewBox="0 0 26 26"
+   fill="none"
+   version="1.1"
+   id="svg878"
+   sodipodi:docname="translateHandlesIcon.svg"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview880"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="27"
+     inkscape:cx="6.7592593"
+     inkscape:cy="13"
+     inkscape:window-width="1296"
+     inkscape:window-height="924"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g871" />
+  <g
+     clip-path="url(#clip0_287_7448)"
+     id="g871">
+    <rect
+       x="0.5"
+       y="0.5"
+       width="25"
+       height="25"
+       rx="4.5"
+       fill="white"
+       stroke="#E6E6E6"
+       id="rect855" />
+    <path
+       d="M9.59616 11.4794C11.3768 11.4794 12.8257 10.0522 12.8256 8.29732C12.8256 6.54251 11.3768 5.11523 9.59617 5.11523C7.81555 5.11523 6.36676 6.54301 6.36676 8.29732C6.36674 10.0517 7.81554 11.4794 9.59616 11.4794ZM10.927 11.7858H8.50725C6.25863 11.7858 4.42969 13.5867 4.42969 15.8009V16.0392C4.42969 17.1967 6.22936 17.1967 8.50725 17.1967H10.927C13.1153 17.1967 15.0049 17.1967 15.0049 16.0392V15.8009C15.0049 13.5871 13.1757 11.7858 10.927 11.7858Z"
+       fill="#6B6B69"
+       id="path857" />
+    <line
+       x1="16.7197"
+       y1="17.6874"
+       x2="20.7937"
+       y2="17.6874"
+       stroke="#FF0000"
+       stroke-width="0.718928"
+       id="line859" />
+    <line
+       x1="14.0577"
+       y1="20.68"
+       x2="16.6937"
+       y2="17.8042"
+       stroke="#0006FF"
+       stroke-width="0.718928"
+       id="line861" />
+    <path
+       d="M17.7473 12.5342H15.4504L16.5989 10.3906L17.7473 12.5342Z"
+       fill="#12FF00"
+       stroke="#12FF00"
+       stroke-width="0.239643"
+       id="path863" />
+    <path
+       d="M13.3753 19.6332L14.9995 21.2573L12.6717 21.961L13.3753 19.6332Z"
+       fill="#0006FF"
+       stroke="#0006FF"
+       stroke-width="0.239643"
+       id="path865" />
+    <path
+       d="M20.5527 18.8369L20.5527 16.54L22.6963 17.6885L20.5527 18.8369Z"
+       fill="#FF0000"
+       stroke="#FF0000"
+       stroke-width="0.239643"
+       id="path867" />
+    <path
+       d="M16.5989 11.8154L16.5989 18.0461"
+       stroke="#12FF00"
+       stroke-width="0.718928"
+       id="path869" />
+  </g>
+  <defs
+     id="defs876">
+    <clipPath
+       id="clip0_287_7448">
+      <rect
+         width="26"
+         height="26"
+         fill="white"
+         id="rect873" />
+    </clipPath>
+  </defs>
+</svg>

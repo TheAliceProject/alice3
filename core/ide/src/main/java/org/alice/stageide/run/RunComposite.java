@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.alice.stageide.run.views.RunView;
 import org.alice.stageide.run.views.icons.RunIcon;
@@ -58,15 +59,12 @@ import org.lgna.croquet.views.AwtAdapter;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.FixedAspectRatioPanel;
 import org.lgna.croquet.views.Frame;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.ProgramImp;
 
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.UUID;
 
@@ -91,7 +89,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     this.getLaunchOperation().setButtonIcon(new RunIcon());
   }
 
-  private transient RunProgramContext programContext;
+  private transient volatile RunProgramContext programContext;
   private static final double IDE_WIDTH_TO_RUN_WIDTH_RATIO = 0.9;
   private Point location = null;
   private Dimension size = null;
@@ -117,7 +115,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
   private class ProgramRunnable implements Runnable {
     public ProgramRunnable(ProgramImp.AwtContainerInitializer awtContainerInitializer) {
-      RunComposite.this.programContext = new RunProgramContext();
+      RunComposite.this.programContext = new RunProgramContext(programType);
       RunComposite.this.programContext.getProgramImp().setRestartAction(RunComposite.this.restartAction);
       RunComposite.this.programContext.getProgramImp().setSpeedFormat(RunComposite.this.speedFormat.getText());
       RunComposite.this.programContext.initializeInContainer(awtContainerInitializer);
@@ -156,11 +154,14 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   private void stopProgram() {
-    if (this.programContext != null) {
-      this.programContext.cleanUpProgram();
-      this.programContext = null;
+    getView().forgetAndRemoveAllComponents();
+
+    final RunProgramContext oldContext = programContext;
+    programContext = null;
+    if (oldContext != null) {
+      new ComponentExecutor(oldContext::cleanUpProgram, "Clean up off of event dispatch thread").start();
     } else {
-      Logger.warning(this);
+      Logger.warning(this, "The programContext is null but should not be. Nothing to clean up.");
     }
     AdapterFactory.forgetAllElements();
   }
@@ -184,6 +185,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   @Override
   protected void handlePreShowWindow(Frame parentFrame, Frame frame) {
     super.handlePreShowWindow(parentFrame, frame);
+    programType = getUpToDateProgramTypeFromActiveIde();
     this.startProgram();
     if (this.size != null) {
       frame.setSize(this.size);
@@ -198,6 +200,11 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     } else {
       frame.setLocationRelativeTo(parentFrame);
     }
+  }
+
+  private static NamedUserType getUpToDateProgramTypeFromActiveIde() {
+    final StageIDE ide = StageIDE.getActiveInstance();
+    return ide != null ? ide.getUpToDateProgramType() : null;
   }
 
   @Override
@@ -234,5 +241,5 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   private FastForwardToStatementOperation fastForwardToStatementOperation;
-
+  private NamedUserType programType;
 }

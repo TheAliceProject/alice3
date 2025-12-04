@@ -43,7 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.UserField;
 

@@ -110,7 +110,7 @@ public class DeclarationCompositeHistory {
           }
         }
         this.index = 0;
-        this.history.add(0, declarationComposite);
+        this.history.addFirst(declarationComposite);
         this.update();
       }
     }
@@ -139,9 +139,7 @@ public class DeclarationCompositeHistory {
     ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
     while (iterator.hasNext()) {
       DeclarationComposite<?, ?> composite = iterator.next();
-      if (composite.isValid()) {
-        //pass
-      } else {
+      if (!composite.isValid()) {
         iterator.remove();
         isIndexUpdateRequired = true;
       }

@@ -131,8 +131,7 @@ public class Bone {
       if (o == this) {
         return true;
       }
-      if (o instanceof Axis) {
-        Axis ua = (Axis) o;
+      if (o instanceof Axis ua) {
         return (this.originalIndexInJoint == ua.originalIndexInJoint) && Objects.equals(this.bone.getA(), ua.bone.getA());
       } else {
         return false;
@@ -288,7 +287,7 @@ public class Bone {
     for (Axis axis : axesList) {
       sb.append(axis.originalIndexInJoint);
       sb.append(": ");
-      sb.append(String.format("%.2f", axis.desiredAngleSpeed));
+      sb.append("%.2f".formatted(axis.desiredAngleSpeed));
       if (count < (axesList.size() - 1)) {
         sb.append(", ");
       }

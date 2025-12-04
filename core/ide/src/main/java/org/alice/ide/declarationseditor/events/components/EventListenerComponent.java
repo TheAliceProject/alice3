@@ -42,12 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
-import javax.swing.BorderFactory;
-
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.common.BodyPane;
 import org.alice.ide.common.ThisPane;
@@ -57,18 +54,14 @@ import org.alice.ide.formatter.Formatter;
 import org.alice.ide.x.ProjectEditorAstI18nFactory;
 import org.alice.ide.x.components.KeyedArgumentListPropertyView;
 import org.alice.ide.x.components.StatementListPropertyView;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.LambdaExpression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SimpleArgumentListProperty;
-import org.lgna.project.ast.UserLambda;
+import org.lgna.croquet.views.*;
+import org.lgna.project.ast.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.GridLayout;
 
 /**
  * @author Matt May
@@ -80,7 +73,7 @@ public class EventListenerComponent extends BorderPanel {
     this.addPageStartComponent(createHeader(methodInvocation));
     if (methodInvocation.requiredArguments.size() > 0) {
       SimpleArgument argument0 = methodInvocation.requiredArguments.get(0);
-      AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
+      AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().getFirst();
       if (argument0.expression.getValue() instanceof LambdaExpression) {
         LambdaExpression lambdaExpression = (LambdaExpression) argument0.expression.getValue();
         if (lambdaExpression.value.getValue() instanceof UserLambda) {
@@ -91,11 +84,19 @@ public class EventListenerComponent extends BorderPanel {
 
           StatementListPropertyView putCodeHere = new StatementListPropertyView(ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements);
           BodyPane bodyPane = new BodyPane(putCodeHere);
+//          bodyPane.setBorder(BorderFactory.createLineBorder(Color.PINK, 3, true));
 
           BorderPanel codeContainer = new BorderPanel.Builder().pageStart(singleAbstractMethodHeader).center(bodyPane).build();
-          codeContainer.setBackgroundColor(ThemeUtilities.getActiveTheme().getEventBodyColor());
-          codeContainer.setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 4));
-          this.addCenterComponent(codeContainer);
+          Color c = UIManager.getColor("Alice.Event.color").darker();
+          codeContainer.setBackgroundColor(c);
+          codeContainer.setBorder(BorderFactory.createEmptyBorder(2, 6, 4, 6));
+
+          //Round the corners
+          JPanel codeContainerContainer = new JPanel(new GridLayout(1, 1));
+          codeContainerContainer.setBorder(BorderFactory.createLineBorder(c, 8, true));
+          codeContainerContainer.add(codeContainer.getAwtComponent());
+
+          this.addCenterComponent(AwtComponentView.lookup(codeContainerContainer));
           bottom = 8;
         }
       }

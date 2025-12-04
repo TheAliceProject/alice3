@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
@@ -50,11 +51,17 @@ import org.lgna.project.Project;
 import java.io.File;
 import java.net.URI;
 
+import static edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension;
+import static org.alice.ide.ProjectFileUtilities.BACKUP_EXTENSION;
+import static org.alice.ide.ProjectFileUtilities.DEFAULT_BACKUP_DIR;
+import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UriProjectLoader extends UriContentLoader<Project> {
   protected final boolean makeVrReady;
+
   public UriProjectLoader(boolean makeVrReady) {
     this.makeVrReady = makeVrReady;
   }
@@ -66,7 +73,7 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
       if ("file".equalsIgnoreCase(scheme)) {
         File file = UriUtilities.getFile(uri);
         return new FileProjectLoader(file, makeVrReady);
-      } else if ("starterfile".equalsIgnoreCase(scheme)) {
+      } else if (TemplateUriState.STARTER_SCHEME.equalsIgnoreCase(scheme)) {
         return new StarterProjectFileLoader(uri, makeVrReady);
       } else if (proj.hasValidUri()) {
         TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance(proj);
@@ -79,9 +86,51 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
     }
   }
 
+  public abstract boolean isNewProject();
+
   // If true the project expects to be saved but has not yet.
   // Defaults to false.
   public boolean shouldBeSaved() {
     return false;
+  }
+
+  public boolean shouldMakeVrReady() {
+    return makeVrReady;
+  }
+
+  public File getMainProjectFile() {
+    if (isNewProject() || isDefaultBackup()) {
+      return null;
+    }
+
+    File projectFile = new File(getUri());
+
+    if (!isBackup()) {
+      return projectFile;
+    }
+
+    File backupDir = projectFile.getParentFile();
+    String originalFileName = FileUtilities.getBaseName(backupDir) + "." + PROJECT_EXTENSION;
+
+    return projectFile.toPath().getParent().resolveSibling(originalFileName).toFile();
+  }
+
+  public boolean isBackup() {
+    String parentDirExtension = getParentDirExtension();
+    return BACKUP_EXTENSION.equals(parentDirExtension) || DEFAULT_BACKUP_DIR.equals(parentDirExtension);
+  }
+
+  public boolean isDefaultBackup() {
+    return DEFAULT_BACKUP_DIR.equals(getParentDirExtension());
+  }
+
+  protected String getParentDirExtension() {
+    if (isNewProject()) {
+      return "";
+    }
+
+    File parentDir = new File(getUri()).getParentFile();
+
+    return parentDir == null ? "" : getExtension(parentDir.getName());
   }
 }

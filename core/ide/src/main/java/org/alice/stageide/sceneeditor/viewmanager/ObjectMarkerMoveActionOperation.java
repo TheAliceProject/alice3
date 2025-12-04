@@ -42,28 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.text.MessageFormat;
-import java.util.UUID;
-
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Element;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.story.MoveAndOrientTo;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.SThingMarker;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.text.MessageFormat;
+import java.util.UUID;
 
 /**
  * @author dculyba
@@ -92,18 +86,18 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
   protected void setToMoveToField(UserField toMoveTo, Icon icon) {
     this.toMoveToField = toMoveTo;
     if (this.toMoveToField != null) {
-      this.imageIcon.setRightImage(icon);
+      this.imageIcon.setRightIcon(icon);
     } else {
-      this.imageIcon.setRightImage(null);
+      this.imageIcon.setRightIcon(null);
     }
   }
 
   protected void setToMoveField(UserField toMove, Icon icon) {
     this.toMoveField = toMove;
     if (this.toMoveField != null) {
-      this.imageIcon.setLeftImage(icon);
+      this.imageIcon.setLeftIcon(icon);
     } else {
-      this.imageIcon.setLeftImage(null);
+      this.imageIcon.setLeftIcon(null);
     }
   }
 
@@ -142,8 +136,8 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
   }
 
   public void setSelectedField(AbstractField field) {
-    if ((field instanceof UserField) && field.getValueType().isAssignableTo(SMovableTurnable.class)) {
-      this.selectedField = (UserField) field;
+    if ((field instanceof UserField userField) && field.getValueType().isAssignableTo(SMovableTurnable.class)) {
+      this.selectedField = userField;
     } else {
       this.selectedField = null;
     }

@@ -7,11 +7,7 @@ import org.lgna.project.ast.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 class Encoder {
 
@@ -51,8 +47,7 @@ class Encoder {
 
   private static Element encode(AbstractNode node, Document xmlDocument, Map<AbstractDeclaration, Integer> map) {
     Element rv = xmlDocument.createElement("node");
-    if (node instanceof AbstractDeclaration) {
-      AbstractDeclaration abstractDeclaration = (AbstractDeclaration) node;
+    if (node instanceof AbstractDeclaration abstractDeclaration) {
       boolean isDeclarationAlreadyEncoded = map.containsKey(abstractDeclaration);
       int key;
       if (isDeclarationAlreadyEncoded) {
@@ -67,11 +62,9 @@ class Encoder {
     }
     rv.setAttribute(CodecConstants.ID_ATTRIBUTE, node.getId().toString());
     rv.setAttribute(CodecConstants.TYPE_ATTRIBUTE, node.getClass().getName());
-    if (node instanceof JavaType) {
-      JavaType javaType = (JavaType) node;
+    if (node instanceof JavaType javaType) {
       rv.appendChild(encodeType(xmlDocument, "type", javaType.getClassReflectionProxy()));
-    } else if (node instanceof UserArrayType) {
-      UserArrayType userArrayType = (UserArrayType) node;
+    } else if (node instanceof UserArrayType userArrayType) {
 
       Element xmlLeafType = xmlDocument.createElement("leafType");
       xmlLeafType.appendChild(encodeValue(userArrayType.getLeafType(), xmlDocument, map));
@@ -81,42 +74,34 @@ class Encoder {
       xmlDimensionCount.appendChild(xmlDocument.createTextNode(Integer.toString(userArrayType.getDimensionCount())));
       rv.appendChild(xmlDimensionCount);
 
-    } else if (node instanceof JavaConstructor) {
-      JavaConstructor constructorDeclaredInJava = (JavaConstructor) node;
+    } else if (node instanceof JavaConstructor constructorDeclaredInJava) {
       rv.appendChild(encodeConstructor(xmlDocument, constructorDeclaredInJava.getConstructorReflectionProxy()));
-    } else if (node instanceof JavaMethod) {
-      JavaMethod methodDeclaredInJava = (JavaMethod) node;
+    } else if (node instanceof JavaMethod methodDeclaredInJava) {
       rv.appendChild(encodeMethod(xmlDocument, methodDeclaredInJava.getMethodReflectionProxy()));
-    } else if (node instanceof AbstractMethodContainedByUserField) {
-      AbstractMethodContainedByUserField getterOrSetter = (AbstractMethodContainedByUserField) node;
+    } else if (node instanceof AbstractMethodContainedByUserField getterOrSetter) {
       UserField field = getterOrSetter.getField();
       rv.appendChild(encodeValue(field, xmlDocument, map));
-    } else if (node instanceof JavaField) {
-      JavaField fieldDeclaredInJavaWithField = (JavaField) node;
+    } else if (node instanceof JavaField fieldDeclaredInJavaWithField) {
       rv.appendChild(encodeField(xmlDocument, fieldDeclaredInJavaWithField.getFieldReflectionProxy()));
-    } else if (node instanceof AnonymousUserConstructor) {
-      AnonymousUserConstructor anonymousConstructor = (AnonymousUserConstructor) node;
+    } else if (node instanceof AnonymousUserConstructor anonymousConstructor) {
       Element xmlType = xmlDocument.createElement("anonymousType");
       xmlType.appendChild(encodeValue(anonymousConstructor.getDeclaringType(), xmlDocument, map));
       rv.appendChild(xmlType);
-    } else if (node instanceof JavaConstructorParameter) {
-      JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter) node;
+    } else if (node instanceof JavaConstructorParameter parameterDeclaredInJavaConstructor) {
       JavaConstructor constructor = parameterDeclaredInJavaConstructor.getCode();
       rv.appendChild(encodeValue(constructor, xmlDocument, map));
 
       Element xmlIndex = xmlDocument.createElement("index");
       xmlIndex.appendChild(xmlDocument.createTextNode(Integer.toString(parameterDeclaredInJavaConstructor.getIndex())));
       rv.appendChild(xmlIndex);
-    } else if (node instanceof JavaMethodParameter) {
-      JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter) node;
+    } else if (node instanceof JavaMethodParameter parameterDeclaredInJavaMethod) {
       JavaMethod method = parameterDeclaredInJavaMethod.getCode();
       rv.appendChild(encodeValue(method, xmlDocument, map));
 
       Element xmlIndex = xmlDocument.createElement("index");
       xmlIndex.appendChild(xmlDocument.createTextNode(Integer.toString(parameterDeclaredInJavaMethod.getIndex())));
       rv.appendChild(xmlIndex);
-    } else if (node instanceof SetterParameter) {
-      SetterParameter setterParameter = (SetterParameter) node;
+    } else if (node instanceof SetterParameter setterParameter) {
       Setter setter = setterParameter.getCode();
       rv.appendChild(encodeValue(setter, xmlDocument, map));
     }
@@ -134,13 +119,11 @@ class Encoder {
 
   private static Element encodeValue(Object value, Document xmlDocument, Map<AbstractDeclaration, Integer> map) {
     Element rv;
-    if (value instanceof AbstractNode) {
-      AbstractNode node = (AbstractNode) value;
+    if (value instanceof AbstractNode node) {
       rv = encode(node, xmlDocument, map);
-    } else if (value instanceof Collection) {
+    } else if (value instanceof Collection<?> collection) {
       rv = xmlDocument.createElement("collection");
       rv.setAttribute(CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName());
-      Collection<?> collection = (Collection<?>) value;
       for (Object item : collection) {
         rv.appendChild(encodeValue(item, xmlDocument, map));
       }
@@ -149,8 +132,7 @@ class Encoder {
       if (value != null) {
         rv.setAttribute(CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName());
         String text;
-        if (value instanceof Resource) {
-          Resource resource = (Resource) value;
+        if (value instanceof Resource resource) {
           text = resource.getId().toString();
         } else {
           text = value.toString();

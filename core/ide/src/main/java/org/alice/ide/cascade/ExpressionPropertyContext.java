@@ -44,12 +44,7 @@ package org.alice.ide.cascade;
 
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionProperty;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove
@@ -69,8 +64,7 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
   @Override
   public BlockStatementIndexPair getBlockStatementIndexPair() {
     InstancePropertyOwner owner = this.expressionProperty.getOwner();
-    if (owner instanceof Node) {
-      Node node = (Node) owner;
+    if (owner instanceof Node node) {
       Statement statement = node.getFirstAncestorAssignableTo(Statement.class, true);
       if (statement != null) {
         if (statement instanceof ConstructorInvocationStatement) {
@@ -78,8 +72,7 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
           return null;
         } else {
           Node parent = statement.getParent();
-          if (parent instanceof BlockStatement) {
-            BlockStatement blockStatement = (BlockStatement) parent;
+          if (parent instanceof BlockStatement blockStatement) {
             int index = blockStatement.statements.indexOf(statement);
             return new BlockStatementIndexPair(blockStatement, index);
           }

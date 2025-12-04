@@ -42,13 +42,12 @@
  */
 package org.lgna.story;
 
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.List;
 
 /**
  * @author Matt May

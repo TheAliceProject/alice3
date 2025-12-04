@@ -59,6 +59,7 @@ import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -85,11 +86,11 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
       pageEndComponent = controlFlowComponent;
     }
 
+    // the pageEndComponent is the bit at the bottom that provides all the control statements
     if (pageEndComponent != null) {
       this.addPageEndComponent(pageEndComponent);
     }
-    this.setBackgroundColor(this.codePanelWithDropReceptor.getBackgroundColor());
-  }
+ }
 
   @Deprecated
   public final CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
@@ -97,9 +98,20 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
   }
 
   @Override
+  public void setBackgroundColor(Color color) {
+    super.setBackgroundColor(color);
+    this.codePanelWithDropReceptor.setBackgroundColor(color);
+  }
+
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.codePanelWithDropReceptor.setForegroundColor(color);
+  }
+
+  @Override
   public void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
-    if (dragModel instanceof CodeDragModel) {
-      CodeDragModel codeDragModel = (CodeDragModel) dragModel;
+    if (dragModel instanceof CodeDragModel codeDragModel) {
       final AbstractType<?, ?, ?> type = codeDragModel.getType();
       if (type != JavaType.VOID_TYPE) {
         var list = HierarchyUtilities.findAllMatches(

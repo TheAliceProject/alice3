@@ -44,15 +44,7 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.lang.ParameterAnnotation;
-import org.lgna.story.fontattributes.Attribute;
-import org.lgna.story.fontattributes.FamilyAttribute;
-import org.lgna.story.fontattributes.FamilyConstant;
-import org.lgna.story.fontattributes.PostureAttribute;
-import org.lgna.story.fontattributes.PostureConstant;
-import org.lgna.story.fontattributes.SizeAttribute;
-import org.lgna.story.fontattributes.SizeValue;
-import org.lgna.story.fontattributes.WeightAttribute;
-import org.lgna.story.fontattributes.WeightConstant;
+import org.lgna.story.fontattributes.*;
 
 import java.awt.font.TextAttribute;
 import java.util.HashMap;

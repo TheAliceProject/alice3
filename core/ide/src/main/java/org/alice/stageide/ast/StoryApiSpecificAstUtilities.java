@@ -117,19 +117,15 @@ public class StoryApiSpecificAstUtilities {
       UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
       if (initializeEventListenersMethod != null) {
         for (Statement statement : initializeEventListenersMethod.body.getValue().statements) {
-          if (statement instanceof ExpressionStatement) {
-            ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+          if (statement instanceof ExpressionStatement expressionStatement) {
             Expression expression = expressionStatement.expression.getValue();
-            if (expression instanceof MethodInvocation) {
-              MethodInvocation methodInvocation = (MethodInvocation) expression;
+            if (expression instanceof MethodInvocation methodInvocation) {
               if (methodInvocation.method.getValue() == EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD) {
                 SimpleArgument arg0 = methodInvocation.requiredArguments.get(0);
                 Expression arg0Expression = arg0.expression.getValue();
-                if (arg0Expression instanceof LambdaExpression) {
-                  LambdaExpression lambdaExpression = (LambdaExpression) arg0Expression;
+                if (arg0Expression instanceof LambdaExpression lambdaExpression) {
                   Lambda lambda = lambdaExpression.value.getValue();
-                  if (lambda instanceof UserLambda) {
-                    UserLambda userLambda = (UserLambda) lambda;
+                  if (lambda instanceof UserLambda userLambda) {
                     IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>(MethodInvocation.class) {
                       @Override
                       protected boolean isAcceptable(MethodInvocation methodInvocation) {
@@ -139,11 +135,8 @@ public class StoryApiSpecificAstUtilities {
                     userLambda.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
                     for (MethodInvocation mi : crawler.getList()) {
                       AbstractMethod m = mi.method.getValue();
-                      if (m instanceof UserMethod) {
-                        UserMethod um = (UserMethod) m;
-                        if (methods.contains(um)) {
-                          //pass
-                        } else {
+                      if (m instanceof UserMethod um) {
+                        if (!methods.contains(um)) {
                           methods.add(um);
                         }
                       }

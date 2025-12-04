@@ -82,7 +82,7 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
       composite.setClassResourceKey(classResourceKey);
       return composite.getValueCreator();
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey) prevSubStep.getProducedValue();
         return this.getAddResourceKeyManagedFieldCompositeOperation(enumConstantResourceKey);

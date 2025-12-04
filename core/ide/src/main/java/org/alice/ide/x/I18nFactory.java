@@ -43,11 +43,11 @@
 
 package org.alice.ide.x;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.i18n.Chunk;
@@ -57,15 +57,12 @@ import org.alice.ide.i18n.MethodInvocationChunk;
 import org.alice.ide.i18n.Page;
 import org.alice.ide.i18n.PropertyChunk;
 import org.alice.ide.i18n.TextChunk;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -78,42 +75,28 @@ public abstract class I18nFactory {
 
   protected abstract SwingComponentView<?> createPropertyComponent(InstanceProperty<?> property, int underscoreCount);
 
-  private SwingComponentView<?> createComponent(GetsChunk getsChunk, InstancePropertyOwner owner) {
-    return this.createGetsComponent(getsChunk.isTowardLeading());
-  }
-
-  private SwingComponentView<?> createComponent(TextChunk textChunk, InstancePropertyOwner owner) {
-    return new Label(textChunk.getText());
-  }
-
   private SwingComponentView<?> createComponent(PropertyChunk propertyChunk, InstancePropertyOwner owner) {
     int underscoreCount = propertyChunk.getUnderscoreCount();
     String propertyName = propertyChunk.getPropertyName();
     InstanceProperty<?> property = owner.getPropertyNamed(propertyName);
     if (property != null) {
       return createPropertyComponent(property, underscoreCount);
-    } else {
-      Logger.severe(propertyName, owner);
-      Label rv = new Label("TODO: " + propertyName);
-      rv.setBackgroundColor(Color.RED);
-      return rv;
     }
+    Logger.severe(propertyName, owner);
+    Label label = new Label("TODO: " + propertyName);
+    label.setBackgroundColor(UIManager.getColor("Alice.Alert.color"));
+    return label;
   }
 
   protected abstract SwingComponentView<?> createComponent(MethodInvocationChunk methodInvocationChunk, InstancePropertyOwner owner);
 
   private SwingComponentView<?> createComponent(Chunk chunk, InstancePropertyOwner owner) {
-    if (chunk instanceof TextChunk) {
-      return createComponent((TextChunk) chunk, owner);
-    } else if (chunk instanceof PropertyChunk) {
-      return createComponent((PropertyChunk) chunk, owner);
-    } else if (chunk instanceof MethodInvocationChunk) {
-      return createComponent((MethodInvocationChunk) chunk, owner);
-    } else if (chunk instanceof GetsChunk) {
-      return createComponent((GetsChunk) chunk, owner);
-    } else {
-      return new Label("unhandled: " + chunk.toString());
-    }
+    return switch (chunk) {
+      case TextChunk textChunk -> new Label(textChunk.getText());
+      case PropertyChunk propertyChunk -> createComponent(propertyChunk, owner);
+      case MethodInvocationChunk invocationChunk -> createComponent(invocationChunk, owner);
+      case GetsChunk getsChunk -> createGetsComponent(getsChunk.isTowardLeading());
+    };
   }
 
   private int getPixelsPerIndent() {
@@ -126,19 +109,20 @@ public abstract class I18nFactory {
     assert chunks.length > 0 : owner;
     if ((indentCount > 0) || (chunks.length > 1)) {
       LineAxisPanel rv = new LineAxisPanel();
+      rv.setBorder(Theme.BLOCK_BORDER);
       if (indentCount > 0) {
         rv.addComponent(BoxUtilities.createHorizontalSliver(indentCount * this.getPixelsPerIndent()));
       }
       for (Chunk chunk : chunks) {
         SwingComponentView<?> component = createComponent(chunk, owner);
         assert component != null : chunk.toString();
-        //        rv.setAlignmentY( 0.5f );
+//        rv.setAlignmentY(Component.CENTER_ALIGNMENT);
         rv.addComponent(component);
       }
       return rv;
     } else {
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping line" );
       SwingComponentView<?> rv = createComponent(chunks[0], owner);
+      rv.setBorder(Theme.BLOCK_BORDER);
       assert rv != null : chunks[0].toString();
       return rv;
     }
@@ -156,14 +140,14 @@ public abstract class I18nFactory {
           return new DefaultJPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+              // this is how we draw the arrows on our loop blocks
               Color prev = g.getColor();
               if (isLoop) {
                 int n = this.getComponentCount();
                 Component cFirst = this.getComponent(0);
                 Component cLast = this.getComponent(n - 1);
-                g.setColor(ColorUtilities.createGray(160));
-                int xB = I18nFactory.this.getPixelsPerIndent();
-                int xA = xB / 2;
+                int xA = I18nFactory.this.getPixelsPerIndent();
+                int xB = xA * 3 / 2;
                 int yTop = cFirst.getY() + cFirst.getHeight();
                 int yBottom = cLast.getY() + (cLast.getHeight() / 2);
                 g.drawLine(xA, yTop, xA, yBottom);
@@ -175,8 +159,10 @@ public abstract class I18nFactory {
                 g.drawLine(xC, yBottom, xD, yBottom);
                 g.drawLine(xD, yBottom, xD, cLast.getY());
 
-                final int HALF_TRIANGLE_WIDTH = 3;
-                GraphicsUtilities.fillTriangle(g, GraphicsUtilities.Heading.NORTH, xA - HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10);
+                final int HALF_TRIANGLE_WIDTH = 4;
+                GraphicsUtilities.fillTriangle(g, GraphicsUtilities.Heading.NORTH,
+                    xA - HALF_TRIANGLE_WIDTH, yTop - 3,
+                    HALF_TRIANGLE_WIDTH + 1 + HALF_TRIANGLE_WIDTH, 10);
               }
               g.setColor(prev);
               super.paintComponent(g);
@@ -204,8 +190,7 @@ public abstract class I18nFactory {
     SwingComponentView<?> rv;
     if (owner != null) {
       String value;
-      if (owner instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) owner;
+      if (owner instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
         String text = formatter.getNameForDeclaration(method);
         if (text.contains("</expression/>")) {

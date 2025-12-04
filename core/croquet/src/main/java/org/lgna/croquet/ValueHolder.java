@@ -70,9 +70,7 @@ public final class ValueHolder<T> {
   }
 
   public void setValue(T value) {
-    if (Objects.equals(this.value, value)) {
-      //pass
-    } else {
+    if (!Objects.equals(this.value, value)) {
       ValueEvent<T> e = ValueEvent.createInstance(this.value, value);
       this.value = value;
       for (ValueListener<T> listener : this.valueListeners) {

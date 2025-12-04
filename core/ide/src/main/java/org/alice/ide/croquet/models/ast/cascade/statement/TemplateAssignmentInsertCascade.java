@@ -90,16 +90,13 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
     if (selectedType != null) {
       List<UserField> nonFinalUserFields = Lists.newLinkedList();
       for (AbstractField field : selectedType.getDeclaredFields()) {
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
-          if (userField.isFinal()) {
-            //pass
-          } else {
+        if (field instanceof UserField userField) {
+          if (!userField.isFinal()) {
             nonFinalUserFields.add(userField);
           }
         }
       }
-      if (nonFinalUserFields.size() > 0) {
+      if (!nonFinalUserFields.isEmpty()) {
         rv.add(FieldsSeparatorModel.getInstance());
         for (UserField field : nonFinalUserFields) {
           rv.add(FieldAssignmentFillIn.getInstance(field));
@@ -112,14 +109,12 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
 
     List<UserLocal> nonFinalLocals = Lists.newLinkedList();
     for (UserLocal local : IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals(this.blockStatementIndexPair)) {
-      if (local.isFinal.getValue()) {
-        //pass
-      } else {
+      if (!local.isFinal.getValue()) {
         nonFinalLocals.add(local);
       }
     }
 
-    if (nonFinalLocals.size() > 0) {
+    if (!nonFinalLocals.isEmpty()) {
       rv.add(VariablesSeparatorModel.getInstance());
       for (UserLocal local : nonFinalLocals) {
         rv.add(LocalAssignmentFillIn.getInstance(local));
@@ -131,7 +126,7 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
     }
 
     //todo: check nonFinalUserFields and nonFinalLocals instead?
-    if (rv.size() == 0) {
+    if (rv.isEmpty()) {
       rv.add(NoVariablesOrFieldsAccessibleCancelFillIn.getInstance());
     }
 

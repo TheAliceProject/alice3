@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.ClippedZPlane;
 import org.alice.math.immutable.Matrix4x4;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
@@ -78,7 +78,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
     double y = bottom + ((top - bottom) * yPortion);
     double z = near;
 
-    return new Ray(new Point3(x, y, z), new Vector3(0, 0, -1));
+    return new Ray(new Point3(x, y, z), Vector3.NEGATIVE_Z_AXIS);
   }
 
   @Override

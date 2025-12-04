@@ -45,15 +45,7 @@ package org.alice.ide.croquet.models.help.views;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.croquet.models.help.AbstractIssueComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.FlowPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TextArea;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 

@@ -43,16 +43,8 @@
 package org.alice.stageide.personresource.views;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import org.alice.interact.DragAdapter;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementKey;
-import org.alice.interact.MovementType;
-import org.alice.interact.PickHint;
-import org.alice.interact.condition.KeyPressCondition;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.condition.PickCondition;
+import org.alice.interact.*;
+import org.alice.interact.condition.*;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
@@ -60,7 +52,6 @@ import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Vector3;
-
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -131,8 +122,8 @@ public class CreateAPersonDragAdapter extends DragAdapter {
     AxisAlignedBox cameraBounds = new AxisAlignedBox(cameraMin, cameraMax);
     for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
       AbstractManipulator manipulator = manipulatorConditionSet.getManipulator();
-      if (manipulator instanceof CameraTranslateKeyManipulator) {
-        ((CameraTranslateKeyManipulator) manipulator).setBounds(cameraBounds);
+      if (manipulator instanceof CameraTranslateKeyManipulator keyManipulator) {
+        keyManipulator.setBounds(cameraBounds);
       }
     }
   }

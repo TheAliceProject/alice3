@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.tree.nodes;
 
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
 
 /**
  * @author Matt May
@@ -72,7 +72,7 @@ public class SearchTreeNode {
   }
 
   public boolean getIsLeaf() {
-    return this.children.size() == 0;
+    return this.children.isEmpty();
   }
 
   public boolean childrenContains(Object reference) {

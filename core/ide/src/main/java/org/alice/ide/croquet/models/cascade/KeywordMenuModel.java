@@ -97,7 +97,7 @@ public class KeywordMenuModel extends CascadeMenuModel<Expression> {
 
   @Override
   protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
-    AbstractParameter parameter = this.method.getRequiredParameters().get(0);
+    AbstractParameter parameter = this.method.getRequiredParameters().getFirst();
     IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, parameter.getValueType(), parameter.getDetails());
   }
 }

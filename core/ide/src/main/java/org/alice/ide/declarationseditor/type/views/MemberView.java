@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import com.formdev.flatlaf.ui.FlatButtonBorder;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.PopupButton;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +57,11 @@ import javax.swing.BorderFactory;
 public class MemberView extends LineAxisPanel {
   public MemberView(MenuModel menuModel) {
     PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
-    popupButton.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+    popupButton.setForegroundColor(UIManager.getColor("Alice.differentBackground"));
+    popupButton.setBorder(BorderFactory.createCompoundBorder(
+        new FlatButtonBorder(),
+        BorderFactory.createEmptyBorder(2, 2, 2, 2)
+       ));
     this.addComponent(popupButton);
     this.addComponent(BoxUtilities.createHorizontalSliver(8));
   }

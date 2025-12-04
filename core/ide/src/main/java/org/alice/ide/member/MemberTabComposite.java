@@ -47,7 +47,6 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.member.views.MemberTabView;
 import org.alice.stageide.member.AddListenerProceduresComposite;
-
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -61,8 +60,8 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,6 +70,7 @@ import java.util.stream.Collectors;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+  // inert apparently means that you can't click on the headers to collapse/expand them
   public static boolean ARE_TOOL_PALETTES_INERT = true;
 
   static boolean getExpandedAccountingForInert(boolean isExpanded) {
@@ -87,13 +87,11 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   public static MethodsSubComposite SEPARATOR = null;
 
   protected static boolean isInclusionDesired(AbstractMember member) {
-    if (member instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) member;
+    if (member instanceof AbstractMethod method) {
       if (method.isStatic()) {
         return false;
       }
-    } else if (member instanceof AbstractField) {
-      AbstractField field = (AbstractField) member;
+    } else if (member instanceof AbstractField field) {
       if (field.isStatic()) {
         return false;
       }
@@ -231,8 +229,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     if (instanceFactory != null) {
       AbstractType<?, ?, ?> type = instanceFactory.getValueType();
       while (type != null) {
-        if (type instanceof NamedUserType) {
-          NamedUserType namedUserType = (NamedUserType) type;
+        if (type instanceof NamedUserType namedUserType) {
           UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
           subComposites.add(userMethodsSubComposite);
         } else if (type instanceof JavaType) {
@@ -264,8 +261,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   protected List<? extends AbstractMethod> getAcceptableMethodsForType(AbstractType<?, ?, ?> type) {
     List<AbstractMethod> methods = new LinkedList<>();
 
-    if (type instanceof NamedUserType) {
-      NamedUserType namedUserType = (NamedUserType) type;
+    if (type instanceof NamedUserType namedUserType) {
 
       UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
       for (AbstractMethod method : userMethodsSubComposite.getMethods()) {

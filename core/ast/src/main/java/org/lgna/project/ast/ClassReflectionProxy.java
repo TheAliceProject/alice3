@@ -122,9 +122,7 @@ public final class ClassReflectionProxy extends ReflectionProxy<Class<?>> {
     } else {
       if (this.name.charAt(0) == '[') {
         String s = this.name.substring(1);
-        if (s.charAt(0) == '[') {
-          //pass
-        } else {
+        if (s.charAt(0) != '[') {
           assert s.charAt(0) == 'L';
           assert s.charAt(s.length() - 1) == ';';
           s = s.substring(1, s.length() - 1);

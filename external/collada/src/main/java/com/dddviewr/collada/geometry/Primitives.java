@@ -1,10 +1,10 @@
 package com.dddviewr.collada.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dddviewr.collada.Base;
 import com.dddviewr.collada.Input;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Primitives extends Base {
 

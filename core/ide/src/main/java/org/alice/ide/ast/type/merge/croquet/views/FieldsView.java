@@ -42,15 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.FieldsToolPalette;
 import org.lgna.project.ast.UserField;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
  */
 public class FieldsView extends MembersView<UserField> {
   public FieldsView(FieldsToolPalette composite) {
-    super(composite, ThemeUtilities.getActiveTheme().getFieldColor());
+    super(composite, UIManager.getColor("Alice.Field.color"));
   }
 }

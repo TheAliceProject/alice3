@@ -89,7 +89,7 @@ public abstract class ColorState extends ItemState<Color> {
           activity = NullTrigger.createUserActivity();
         }
         changeValueFromSwing(value, activity);
-        if (this.changeListeners.size() > 0) {
+        if (!this.changeListeners.isEmpty()) {
           Object source = e != null ? e.getSource() : this;
           ChangeEvent changeEvent = new ChangeEvent(source);
           for (ChangeListener changeListener : this.changeListeners) {
@@ -140,7 +140,7 @@ public abstract class ColorState extends ItemState<Color> {
   @Override
   protected void setSwingValue(Color nextValue) {
     this.swingModel.value = nextValue;
-    if (this.swingModel.changeListeners.size() > 0) {
+    if (!this.swingModel.changeListeners.isEmpty()) {
       Object source = this;
       ChangeEvent changeEvent = new ChangeEvent(source);
       for (ChangeListener changeListener : this.swingModel.changeListeners) {

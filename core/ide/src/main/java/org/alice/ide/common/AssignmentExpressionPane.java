@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
@@ -49,17 +50,7 @@ import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.views.AxisPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.AssignmentExpression;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove
@@ -73,8 +64,7 @@ public class AssignmentExpressionPane extends LineAxisPanel {
 
     Expression expression;
     AxisPanel parent;
-    if (left instanceof ArrayAccess) {
-      ArrayAccess arrayAccess = (ArrayAccess) left;
+    if (left instanceof ArrayAccess arrayAccess) {
       parent = new LineAxisPanel();
       expression = arrayAccess.array.getValue();
       this.addComponent(parent);
@@ -85,8 +75,7 @@ public class AssignmentExpressionPane extends LineAxisPanel {
 
     boolean isSetter = false;
     if (expression != null) {
-      if (expression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) expression;
+      if (expression instanceof FieldAccess fieldAccess) {
         DeclarationNameLabel nameLabel = new DeclarationNameLabel(fieldAccess.field.getValue());
         //      nameLabel.setFontToScaledFont( 1.5f );
         AbstractField field = fieldAccess.field.getValue();
@@ -107,31 +96,26 @@ public class AssignmentExpressionPane extends LineAxisPanel {
             parent.addComponent(new Label("( "));
           }
         }
-      } else if (expression instanceof LocalAccess) {
-        LocalAccess localAccess = (LocalAccess) expression;
+      } else if (expression instanceof LocalAccess localAccess) {
         UserLocal local = localAccess.local.getValue();
         parent.addComponent(new LocalPane(local, factory.isLocalDraggableAndMutable(local)));
-      } else if (expression instanceof ParameterAccess) {
-        ParameterAccess parameterAccess = (ParameterAccess) expression;
+      } else if (expression instanceof ParameterAccess parameterAccess) {
         AbstractParameter parameter = parameterAccess.parameter.getValue();
         parent.addComponent(new ParameterPane(null, (UserParameter) parameter));
       } else {
         parent.addComponent(new Label("TODO"));
       }
     } else {
-      parent.addComponent(new Label("???"));
+      parent.addComponent(new Label("???", TextWeight.BOLD));
     }
 
-    if (left instanceof ArrayAccess) {
-      ArrayAccess arrayAccess = (ArrayAccess) left;
+    if (left instanceof ArrayAccess arrayAccess) {
       parent.addComponent(new Label("[ "));
       parent.addComponent(factory.createExpressionPropertyPane(arrayAccess.index));
       parent.addComponent(new Label(" ]"));
     }
 
-    if (isSetter) {
-      //pass
-    } else {
+    if (!isSetter) {
       if (FormatterState.isJava()) {
         parent.addComponent(new Label(" = "));
       } else {

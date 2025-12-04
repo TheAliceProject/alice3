@@ -1,10 +1,9 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.visualscene.InstanceController;
+import org.xml.sax.Attributes;
 
 public class skeleton extends State {
   public void init(String name, Attributes attrs, StateManager mngr) {

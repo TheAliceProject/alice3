@@ -42,29 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.core;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.ide.croquet.models.project.find.core.astcrawler.FindCrawler;
+import org.lgna.project.ast.*;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import org.alice.ide.croquet.models.project.find.core.astcrawler.FindCrawler;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
-import org.lgna.project.ast.UserType;
-
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
  * @author Matt May
@@ -137,8 +124,8 @@ public class FindContentManager {
       objectList.add(new SearchResult(parameter));
     }
     for (Statement statement : blockStatement.statements) {
-      if (statement instanceof LocalDeclarationStatement) {
-        UserLocal local = ((LocalDeclarationStatement) statement).local.getValue();
+      if (statement instanceof LocalDeclarationStatement declarationStatement) {
+        UserLocal local = declarationStatement.local.getValue();
         assert !checkContains(local);
         objectList.add(new SearchResult(local));
       }

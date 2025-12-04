@@ -46,17 +46,17 @@ package org.alice.ide.croquet.models.cascade;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.javax.swing.LabelUtilities;
-import edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.Dimension;
 import java.util.UUID;
 
 /**
@@ -90,7 +90,22 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
     } else {
       trailingLabel = null;
     }
-    JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
+
+    JComponent expressionPane;
+    // to procedure block in our dropdowns, make it look like a proper procedure block, but without the knurls
+    // (Found in the 'Add Event Listener' dropdown on the initializeEventListeners tab)
+    if (expression instanceof MethodInvocation invocation && invocation.method.getValue().isProcedure()) {
+      ProcedureInvocationTemplate block = new ProcedureInvocationTemplate(invocation.method.getValue()) {
+        @Override
+        public boolean isKnurlDesired() {
+          return false;
+        }
+      };
+      expressionPane = block.getAwtComponent();
+    } else {
+      expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
+    }
+
     if ((leadingIcon != null) || (trailingLabel != null)) {
       JLineAxisPane rv = new JLineAxisPane();
       if (leadingIcon != null) {
@@ -98,7 +113,9 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       }
       rv.add(expressionPane);
       if (trailingLabel != null) {
-        trailingLabel.setBorder(new EmptyBorder(0, 16, 0, 0));
+        // add some border because the oblique text runs over
+        trailingLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
+        rv.add(Box.createRigidArea(new Dimension(5, 0)));
         rv.add(trailingLabel);
       }
       return rv;
@@ -106,12 +123,4 @@ public abstract class ExpressionFillIn<F extends Expression, B> extends Immutabl
       return expressionPane;
     }
   }
-  //  @Override
-  //  public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemIcon( step );
-  //  }
-  //  @Override
-  //  public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-  //    return super.getMenuItemText( step );
-  //  }
 }

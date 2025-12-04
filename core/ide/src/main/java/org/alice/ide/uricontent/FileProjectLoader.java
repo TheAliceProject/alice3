@@ -65,6 +65,10 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
     return getSaveFile().toURI();
   }
 
+  @Override
+  protected void handleLoadException(File file, Exception e) {
+  }
+
   private File getSaveFile() {
     if (makeVrReady) {
       // Rename migrated worlds so they do not overwrite existing files
@@ -79,6 +83,11 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
   // If true the project expects to be saved but has not yet.
   public boolean shouldBeSaved() {
     return !getSaveFile().exists();
+  }
+
+  @Override
+  public boolean isNewProject() {
+    return false;
   }
 
   public static void main(String[] args) throws Exception {

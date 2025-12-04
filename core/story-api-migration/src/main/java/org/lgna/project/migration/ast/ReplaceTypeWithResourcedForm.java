@@ -43,14 +43,7 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.DeclarationProperty;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.story.resources.ModelResource;
 
@@ -74,14 +67,14 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
 
   @Override
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof UserField) {
-      migrateField((UserField) node, manager);
+    if (node instanceof UserField field) {
+      migrateField(field, manager);
     }
-    if (node instanceof UserLocal) {
-      migrateType(((UserLocal) node).valueType, manager);
+    if (node instanceof UserLocal local) {
+      migrateType(local.valueType, manager);
     }
-    if (node instanceof UserParameter) {
-      migrateType(((UserParameter) node).valueType, manager);
+    if (node instanceof UserParameter parameter) {
+      migrateType(parameter.valueType, manager);
     }
   }
 
@@ -91,8 +84,8 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
       return;
     }
     AbstractType<?, ?, ?> superType = oldFieldType.getSuperType();
-    if (superType instanceof NamedUserType) {
-      manager.cacheType((NamedUserType) superType);
+    if (superType instanceof NamedUserType type) {
+      manager.cacheType(type);
     }
     InstanceCreation instantiation = manager.createInstanceCreation(newResource);
     field.valueType.setValue(instantiation.getType());
@@ -100,12 +93,7 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
   }
 
   private boolean constructorsTakeNoArguments(List<? extends AbstractConstructor> constructors) {
-    for (AbstractConstructor constructor : constructors) {
-      if (constructor.getRequiredParameters().size() > 0) {
-        return false;
-      }
-    }
-    return true;
+    return constructors.stream().allMatch(constructor -> constructor.getRequiredParameters().isEmpty());
   }
 
   private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property, MigrationManager manager) {

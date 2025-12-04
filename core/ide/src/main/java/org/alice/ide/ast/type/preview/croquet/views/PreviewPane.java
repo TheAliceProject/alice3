@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.preview.croquet.views;
 
-import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.MemberHub;
 import org.alice.ide.ast.type.preview.croquet.PreviewPage;
@@ -55,6 +53,7 @@ import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 
+import javax.swing.UIManager;
 import java.util.List;
 
 /**
@@ -63,7 +62,7 @@ import java.util.List;
 public class PreviewPane extends MigPanel {
   public PreviewPane(PreviewPage page) {
     super(page, "fillx", "", "[grow 0][grow]");
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getTypeColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Type.color"));
   }
 
   @Override
@@ -75,25 +74,22 @@ public class PreviewPane extends MigPanel {
 
     MigPanel panel = new MigPanel(null, "fillx, insets 0");
 
-    Theme theme = ThemeUtilities.getActiveTheme();
-
     List<MemberHub<UserMethod>> procedureHubs = addMembersPage.getPreviewProcedureHubs();
-    if (procedureHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserMethod>("procedures", theme.getProcedureColor(), procedureHubs), "gap 8, grow, shrink, wrap");
+    if (!procedureHubs.isEmpty()) {
+      panel.addComponent(new MembersSubPane<UserMethod>("procedures", UIManager.getColor("Alice.Procedure.color"), procedureHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserMethod>> functionHubs = addMembersPage.getPreviewFunctionHubs();
-    if (functionHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserMethod>("functions", theme.getFunctionColor(), functionHubs), "gap 8, grow, shrink, wrap");
+    if (!functionHubs.isEmpty()) {
+      panel.addComponent(new MembersSubPane<UserMethod>("functions", UIManager.getColor("Alice.Function.color"), functionHubs), "gap 8, grow, shrink, wrap");
     }
 
     List<MemberHub<UserField>> fieldHubs = addMembersPage.getPreviewFieldHubs();
-    if (fieldHubs.size() > 0) {
-      panel.addComponent(new MembersSubPane<UserField>("properties", theme.getFieldColor(), fieldHubs), "gap 8, grow, shrink, wrap");
+    if (!fieldHubs.isEmpty()) {
+      panel.addComponent(new MembersSubPane<UserField>("properties", UIManager.getColor("Alice.Field.color"), fieldHubs), "gap 8, grow, shrink, wrap");
     }
 
     Label classLabel = new Label("class", TypeIcon.getInstance(addMembersPage.getDstType()));
-    //classLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
     classLabel.scaleFont(1.2f);
     classLabel.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
     this.addComponent(classLabel, "split 3, grow, shrink, push");

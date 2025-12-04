@@ -45,26 +45,15 @@ package org.alice.ide.ast.declaration;
 
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
+import org.alice.ide.icons.PlusIconFactory;
 import org.alice.ide.identifier.IdentifierNameGenerator;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState;
-import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AccessLevel;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.StaticAnalysisUtilities;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.awt.Dimension;
-import java.lang.reflect.Field;
 import java.util.UUID;
 
 /**
@@ -177,23 +166,13 @@ public abstract class AddFieldComposite extends FieldComposite {
     CustomItemState<Expression> initializerState = this.getInitializerState();
     if (initializerState != null) {
       Expression expression = initializerState.getValue();
-      if (expression instanceof InstanceCreation) {
-        return (InstanceCreation) expression;
+      if (expression instanceof InstanceCreation creation) {
+        return creation;
       }
     }
     return null;
   }
 
-  protected Field getFldFromInstanceCreationInitializer(InstanceCreation instanceCreation) {
-    if (instanceCreation != null) {
-      JavaField argumentField = ConstructorArgumentUtilities.getArgumentField(instanceCreation);
-      if (argumentField != null) {
-        Field fld = argumentField.getFieldReflectionProxy().getReification();
-        return fld;
-      }
-    }
-    return null;
-  }
 
   protected String generateName() {
     InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
@@ -217,11 +196,7 @@ public abstract class AddFieldComposite extends FieldComposite {
       if (IS_GENERATING_AVAILABLE_NAME_ENABLED) {
         boolean isSearchFrom2Desired;
         if (isNumberAppendedToNameOfFirstField || this.isNameAvailable(baseName)) {
-          if (this.isNameAvailable(baseName + 1)) {
-            isSearchFrom2Desired = false;
-          } else {
-            isSearchFrom2Desired = true;
-          }
+          isSearchFrom2Desired = !this.isNameAvailable(baseName + 1);
         } else {
           isSearchFrom2Desired = true;
         }

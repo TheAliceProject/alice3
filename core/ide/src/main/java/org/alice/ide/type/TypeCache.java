@@ -69,7 +69,7 @@ public class TypeCache {
     final int CONSTRUCTOR_COUNT = constructors.size();
     switch (CONSTRUCTOR_COUNT) {
     case 1:
-      NamedUserConstructor constructor0 = constructors.get(0);
+      NamedUserConstructor constructor0 = constructors.getFirst();
       List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
       final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
       switch (REQUIRED_PARAMETER_COUNT) {
@@ -81,9 +81,7 @@ public class TypeCache {
           return new ExtendsTypeKey(superType);
         case 1:
           Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
-          if (expression instanceof FieldAccess) {
-            //Cases like Alien() { super(AlienResource.DEFAULT); }
-            FieldAccess fieldAccess = (FieldAccess) expression;
+          if (expression instanceof FieldAccess fieldAccess) {
             return new ExtendsTypeWithSuperArgumentFieldKey(superType, fieldAccess.field.getValue());
           } else if (expression instanceof InstanceCreation) {
             //Cases like Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
@@ -97,7 +95,7 @@ public class TypeCache {
       case 1:
         //Cases like Alice(AliceResource resource) { super(resource); }
         //Cases like AdultPerson(AdultPersonResource resource) { super(resource); }
-        AbstractParameter parameter0 = requiredParameters.get(0);
+        AbstractParameter parameter0 = requiredParameters.getFirst();
         return new ExtendsTypeWithConstructorParameterTypeKey(superType, parameter0.getValueType());
       default:
         throw new AssertionError(type);

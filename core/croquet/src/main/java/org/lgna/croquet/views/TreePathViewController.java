@@ -48,30 +48,19 @@ import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleSelectTreeState;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
+import java.awt.*;
 
 /**
+ * this is the thing at the top of the gallery that lets us navigate up and down through classes of models
  * @author Dennis Cosgrove
  */
 public class TreePathViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
   private static class BreadcrumbLayout implements LayoutManager {
-    private static final int AMOUNT_TO_SCOOT = 4;
-    private static final String SYNTH_UI_CLASS_NAME = "javax.swing.plaf.synth.SynthToggleButtonUI";
-
     private Component centerComponent;
     private javax.swing.AbstractButton lineEndComponent;
 
@@ -114,9 +103,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
         Dimension size = this.lineEndComponent.getPreferredSize();
         rv.width += size.width;
         rv.height = Math.max(rv.height, size.height);
-        if (SYNTH_UI_CLASS_NAME.equals(this.lineEndComponent.getUI().getClass().getName())) {
-          rv.width -= AMOUNT_TO_SCOOT;
-        }
       }
       return rv;
     }
@@ -133,24 +119,14 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
       if (this.lineEndComponent != null) {
         int width = this.lineEndComponent.getPreferredSize().width;
         this.lineEndComponent.setBounds(x, 0, width, parentSize.height);
-        if (SYNTH_UI_CLASS_NAME.equals(this.lineEndComponent.getUI().getClass().getName())) {
-          Point p = this.lineEndComponent.getLocation();
-          this.lineEndComponent.setLocation(p.x - AMOUNT_TO_SCOOT, p.y);
-        }
       }
     }
   }
 
-  private static Insets MARGIN = new Insets(2, 2, 2, 0);
-
   private static class SelectDirectoryPanel<T> extends Panel {
     private SelectDirectoryPanel(SingleSelectTreeState<T> treeSelectionState, T treeNode, Color breadCrumbColor) {
       PopupButton selectChildButton = treeSelectionState.getCascadeFor(treeNode).getRoot().getPopupPrepModel().createPopupButton();
-      if (UIManager.getLookAndFeel().getName().contains("Nimbus")) {
-        selectChildButton.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
-      } else {
-        selectChildButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-      }
+
       Operation operation = treeSelectionState.getItemSelectionOperation(treeNode);
       operation.initializeIfNecessary();
       Button button = operation.createButton();
@@ -179,7 +155,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 
     public InternalPanel(Color breadCrumbColor) {
       this.breadCrumbColor = breadCrumbColor;
-      this.setBackgroundColor(null);
     }
 
     @Override
@@ -200,9 +175,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
             this.internalAddComponent(BoxUtilities.createHorizontalSliver(4));
           }
           T treeNode = (T) treePath.getPathComponent(i);
-          if (treeModel.isLeaf(treeNode)) {
-            //pass
-          } else {
+          if (!treeModel.isLeaf(treeNode)) {
             SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel(owner.getModel(), treeNode, this.breadCrumbColor);
             this.internalAddComponent(selectDirectoryPanel);
           }
@@ -221,7 +194,6 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 
   public TreePathViewController(SingleSelectTreeState<T> model, Color breadCrumbColor) {
     super(model, new InternalPanel<T>(breadCrumbColor));
-    this.setBackgroundColor(null);
     this.setSwingTreeSelectionModel(model.getSwingModel().getTreeSelectionModel());
   }
 

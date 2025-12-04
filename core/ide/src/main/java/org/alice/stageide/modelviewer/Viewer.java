@@ -107,9 +107,7 @@ abstract class Viewer extends BorderPanel {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.isInitialized) {
-      //pass
-    } else {
+    if (!this.isInitialized) {
       this.initialize();
       this.isInitialized = true;
     }

@@ -42,11 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
-import edu.cmu.cs.dennisc.render.ImageBuffer;
-import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
-import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
-import edu.cmu.cs.dennisc.render.RenderTask;
+import edu.cmu.cs.dennisc.render.*;
 
 import java.awt.Rectangle;
 

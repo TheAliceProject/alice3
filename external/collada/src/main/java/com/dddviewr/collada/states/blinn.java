@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.Blinn;
 import com.dddviewr.collada.effects.Effect;
 import com.dddviewr.collada.effects.EffectMaterial;
+import org.xml.sax.Attributes;
 
 public class blinn extends State {
   protected Blinn theBlinn;

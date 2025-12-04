@@ -44,11 +44,7 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.DragModel;
-import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.*;
 import org.lgna.croquet.triggers.DragTrigger;
 import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.views.AwtComponentView;
@@ -204,35 +200,20 @@ public class DragStep extends PrepStep<DragModel> {
     this.setLatestMouseEvent(e);
     DropReceptor nextDropReceptor = getDropReceptorUnder(e);
     if (this.currentDropReceptor != nextDropReceptor) {
-      if (this.currentPotentialDropSite != null) {
-        if (this.currentDropReceptor != null) {
-          //this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-        }
-      }
       if (this.currentDropReceptor != null) {
         this.getModel().handleDragExitedDropReceptor(this);
         this.currentDropReceptor.dragExited(this, false);
-        //this.addChild( new ExitedDropReceptorEvent( e, this.currentDropReceptor ) );
       }
       this.currentDropReceptor = nextDropReceptor;
       if (this.currentDropReceptor != null) {
         this.currentDropReceptor.dragEntered(this);
         this.getModel().handleDragEnteredDropReceptor(this);
-        //this.addChild( new EnteredDropReceptorEvent( e, this.currentDropReceptor ) );
       }
     }
     if (this.currentDropReceptor != null) {
       DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated(this);
-      if (Objects.equals(this.currentPotentialDropSite, nextPotentialDropSite)) {
-        //pass
-      } else {
-        if (this.currentPotentialDropSite != null) {
-          //this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-        }
+      if (!Objects.equals(this.currentPotentialDropSite, nextPotentialDropSite)) {
         this.currentPotentialDropSite = nextPotentialDropSite;
-        if (this.currentPotentialDropSite != null) {
-          //this.addChild( new EnteredPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-        }
       }
     }
 
@@ -254,14 +235,14 @@ public class DragStep extends PrepStep<DragModel> {
       if (dropOperation != null) {
         SwingComponentView<?> component = this.currentDropReceptor.getViewController();
         ViewController<?, ?> viewController;
-        if (component instanceof ViewController<?, ?>) {
-          viewController = (ViewController<?, ?>) component;
+        if (component instanceof ViewController<?, ?> controller) {
+          viewController = controller;
         } else {
           viewController = null;
         }
         try {
-          if (dropOperation instanceof JDropProxy.Hider) {
-            dropProxyHider = (JDropProxy.Hider) dropOperation;
+          if (dropOperation instanceof JDropProxy.Hider hider) {
+            dropProxyHider = hider;
             dropProxyHider.setDragSource(this.getDragSource());
           } else {
             Logger.outln("drop proxy hider:", dropOperation.getClass());

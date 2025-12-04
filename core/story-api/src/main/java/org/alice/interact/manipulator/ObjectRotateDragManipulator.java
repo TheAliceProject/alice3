@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import java.awt.Point;
-
-import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
+import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
@@ -58,13 +56,15 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
-import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Angle;
 import org.alice.math.immutable.AngleInRadians;
 import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
+
+import java.awt.Point;
 
 /**
  * @author David Culyba
@@ -82,7 +82,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   //  {
   //    SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
   //    sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
-  //    sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
+  //    sgFrontFacingAppearance.opacity.setValue(1.0);
   //
   //    this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
   //    this.sgSphereVisual.setParent( this.sphereTransformable );
@@ -203,8 +203,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   public boolean doStartManipulator(InputState startInput) {
     if (startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
       AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
-      if (clickedHandle instanceof RotationRingHandle) {
-        this.initManipulator((RotationRingHandle) clickedHandle, startInput);
+      if (clickedHandle instanceof RotationRingHandle handle) {
+        this.initManipulator(handle, startInput);
         return true;
       }
     }

@@ -44,13 +44,7 @@
 package org.alice.ide.name.validators;
 
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
   private final UserCode code;
@@ -69,26 +63,15 @@ public abstract class TransientNameValidator extends NodeNameValidator {
     if (this.code != null) {
       Node node = this.getNode();
       for (UserParameter parameter : this.code.getRequiredParamtersProperty()) {
-        if (parameter == node) {
-          //pass
-        } else {
-          if (name.equals(parameter.name.getValue())) {
+        if (parameter != node && name.equals(parameter.name.getValue())) {
             return false;
-          }
         }
       }
-      //      if( this.block != null ) {
-      //
-      //      }
       IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance(UserLocal.class);
       ((AbstractCode) this.code).crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
       for (UserLocal local : crawler.getList()) {
-        if (local == node) {
-          //pass
-        } else {
-          if (name.equals(local.name.getValue())) {
-            return false;
-          }
+        if (local != node && name.equals(local.name.getValue())) {
+          return false;
         }
       }
     }

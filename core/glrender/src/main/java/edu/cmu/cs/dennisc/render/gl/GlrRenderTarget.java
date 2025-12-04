@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
-import org.alice.math.immutable.FixedRectangle;
 import edu.cmu.cs.dennisc.pattern.AbstractReleasable;
 import edu.cmu.cs.dennisc.render.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
@@ -54,6 +53,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
 import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.FixedRectangle;
 import org.alice.math.immutable.Matrix4x4;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
@@ -259,8 +259,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   private  double getNear(AbstractCamera sgCamera) {
-    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera) {
-      return ((AbstractNearPlaneAndFarPlaneCamera) sgCamera).nearClippingPlaneDistance.getValue();
+    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera camera) {
+      return camera.nearClippingPlaneDistance.getValue();
     } else {
       //todo?
       return Double.NaN;
@@ -268,8 +268,8 @@ abstract class GlrRenderTarget extends AbstractReleasable implements RenderTarge
   }
 
   private  double getFar(AbstractCamera sgCamera) {
-    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera) {
-      return ((AbstractNearPlaneAndFarPlaneCamera) sgCamera).farClippingPlaneDistance.getValue();
+    if (sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera camera) {
+      return camera.farClippingPlaneDistance.getValue();
     } else {
       //todo?
       return Double.NaN;

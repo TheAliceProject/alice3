@@ -42,14 +42,11 @@
  */
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.PickHint.PickType;
-import org.alice.interact.condition.DragAndDropCondition;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MouseDragCondition;
-import org.alice.interact.condition.MousePressCondition;
-import org.alice.interact.condition.MouseWheelCondition;
-import org.alice.interact.condition.PickCondition;
+import org.alice.interact.condition.*;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
@@ -60,9 +57,6 @@ import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
 import org.lgna.story.SModel;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.awt.event.MouseEvent;
 

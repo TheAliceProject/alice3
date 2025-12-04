@@ -47,16 +47,16 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Point3 translatio
 
   public AffineMatrix4x4 invert() {
     Matrix4x4 invert = Matrix4x4.super.invert();
-    if (invert instanceof AffineMatrix4x4) {
-      return ((AffineMatrix4x4) invert);
+    if (invert instanceof AffineMatrix4x4 matrix4x4) {
+      return matrix4x4;
     }
     throw new RuntimeException("AffineMatrix4x4 " + this + " invert() returned non affine matrix " + invert);
   }
 
   public AffineMatrix4x4 times(AffineMatrix4x4 b) {
     Matrix4x4 product = Matrix4x4.super.times(b);
-    if (product instanceof AffineMatrix4x4) {
-      return ((AffineMatrix4x4) product);
+    if (product instanceof AffineMatrix4x4 matrix4x4) {
+      return matrix4x4;
     }
     throw new RuntimeException("AffineMatrix4x4 " + this + " times() returned non affine matrix " + product);
   }
@@ -317,11 +317,11 @@ public record AffineMatrix4x4(OrthogonalMatrix3x3 orientation, Point3 translatio
           0, 0, 1 / zScale);
 
     Matrix3x3 scaledOrientation = orientation.times(inverseScale);
-    if (scaledOrientation.isNormalized() && scaledOrientation instanceof OrthogonalMatrix3x3) {
-      return new AffineMatrix4x4((OrthogonalMatrix3x3) scaledOrientation, inverseScale.transform(translation));
+    if (scaledOrientation.isNormalized() && scaledOrientation instanceof OrthogonalMatrix3x3 matrix3x3) {
+      return new AffineMatrix4x4(matrix3x3, inverseScale.transform(translation));
     }
-
-    throw new UnsupportedOperationException("Cannot normalize orientation");
+    Logger.warning("Unable to normalize orientation. Using identity matrix to replace:\n" + orientation);
+    return new AffineMatrix4x4(OrthogonalMatrix3x3.IDENTITY, inverseScale.transform(translation));
   }
 
   @Override

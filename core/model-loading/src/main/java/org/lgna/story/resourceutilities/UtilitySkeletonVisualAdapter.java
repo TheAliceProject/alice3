@@ -43,12 +43,8 @@
 
 package org.lgna.story.resourceutilities;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -57,6 +53,10 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.AxisAlignedBox;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
   @Override
@@ -108,15 +108,15 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
       return;
     }
     AffineMatrix4x4 absoluteLocalTransform = parentTransform;
-    if (currentNode instanceof Transformable) {
-      absoluteLocalTransform = parentTransform.times(((Transformable) currentNode).localTransformation.getValue());
-      if (currentNode instanceof Joint) {
+    if (currentNode instanceof Transformable transformable) {
+      absoluteLocalTransform = parentTransform.times(transformable.localTransformation.getValue());
+      if (currentNode instanceof Joint joint) {
         AxisAlignedBox box = AxisAlignedBox.NaN;
         for (UtilityWeightedMeshControl control : this.getUtilityWeightedMeshControls()) {
-          AxisAlignedBox subBox = control.getBoundingBoxForJoint((Joint) currentNode);
+          AxisAlignedBox subBox = control.getBoundingBoxForJoint(joint);
           box = box.union(subBox);
         }
-        ((Joint) currentNode).boundingBox.setValue(box);
+        joint.boundingBox.setValue(box);
         //Now that the bounding boxes are set we can set the radii (they use the bounding box for their calculations)
         //                double boundingRadius = Double.NaN;
         //                for (WeightedMeshControl control : this.meshControls)
@@ -140,8 +140,8 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual {
       }
     }
     for (Component comp : currentNode.getComponents()) {
-      if (comp instanceof Composite) {
-        initializeJointBoundingBoxes((Composite) comp, absoluteLocalTransform);
+      if (comp instanceof Composite composite) {
+        initializeJointBoundingBoxes(composite, absoluteLocalTransform);
       }
     }
   }

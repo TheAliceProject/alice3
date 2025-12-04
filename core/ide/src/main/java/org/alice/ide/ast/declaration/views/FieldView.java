@@ -43,13 +43,12 @@
 package org.alice.ide.ast.declaration.views;
 
 import org.alice.ide.Theme;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddFieldComposite;
 import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
 import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState;
-import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.views.BorderPanel;
@@ -58,7 +57,10 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserField;
 
+import javax.swing.UIManager;
+
 /**
+ * adds a scene property (variable/constant)
  * @author Dennis Cosgrove
  */
 public abstract class FieldView extends DeclarationView<UserField> {
@@ -70,7 +72,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
 
   public FieldView(AddFieldComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 
   @Override
@@ -93,15 +95,6 @@ public abstract class FieldView extends DeclarationView<UserField> {
   protected boolean isPreviewDesired() {
     return IsPromptIncludingPreviewState.getInstance().getValue();
   }
-
-  //  @Override
-  //  public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
-  //    super.handleValueTypeChanged( nextType );
-  //
-  //    org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
-  //    this.typeIconView.setIcon( iconFactory.getIconToFit(org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-  //    this.typeIconView.revalidateAndRepaint();
-  //  }
 
   @Override
   public void handleInitializerChanged(Expression expression) {

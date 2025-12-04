@@ -42,14 +42,14 @@
  */
 package org.lgna.ik.poser.croquet;
 
-import java.util.UUID;
-
 import org.lgna.ik.poser.controllers.PoserControlComposite;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
+
+import java.util.UUID;
 
 /**
  * @author Matt May

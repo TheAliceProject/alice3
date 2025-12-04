@@ -100,9 +100,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
       isAutoCommitDesired = true;
       while (iterator.hasNext()) {
         WizardPageComposite<?, ?> page = iterator.next();
-        if (page.isAutoAdvanceDesired()) {
-          //pass
-        } else {
+        if (!page.isAutoAdvanceDesired()) {
           isAutoCommitDesired = false;
         }
       }

@@ -43,8 +43,9 @@
 package org.lgna.story.resources.sims2;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
-import edu.cmu.cs.dennisc.random.RandomUtilities;
+import org.lgna.common.RandomUtilities;
 import org.lgna.story.Color;
+import org.lgna.story.resources.ModelResource;
 
 import java.util.Locale;
 
@@ -57,25 +58,50 @@ public enum LifeStage implements LocalizedResource {
     public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
       return new ToddlerPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
     }
+
+    @Override
+    public Class<? extends ModelResource> getModelResourceClass() {
+      return ToddlerPersonResource.class;
+    }
   }, CHILD {
     @Override
     public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
       return new ChildPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+
+    @Override
+    public Class<? extends ModelResource> getModelResourceClass() {
+      return ChildPersonResource.class;
     }
   }, TEEN {
     @Override
     public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
       return new TeenPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
     }
+
+    @Override
+    public Class<? extends ModelResource> getModelResourceClass() {
+      return TeenPersonResource.class;
+    }
   }, ADULT {
     @Override
     public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
       return new AdultPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
     }
+
+    @Override
+    public Class<? extends ModelResource> getModelResourceClass() {
+      return AdultPersonResource.class;
+    }
   }, ELDER {
     @Override
     public PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
       return new ElderPersonResource(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+    }
+
+    @Override
+    public Class<? extends ModelResource> getModelResourceClass() {
+      return ElderPersonResource.class;
     }
   };
 
@@ -147,6 +173,8 @@ public enum LifeStage implements LocalizedResource {
   }
 
   public abstract PersonResource createResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face);
+
+  public abstract Class<? extends ModelResource> getModelResourceClass();
 
   public String getDisplayText() {
     StringBuilder sb = new StringBuilder();

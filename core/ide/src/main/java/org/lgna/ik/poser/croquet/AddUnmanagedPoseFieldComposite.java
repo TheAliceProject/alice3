@@ -50,12 +50,7 @@ import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
 import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
 import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 import org.lgna.story.Pose;
 
 import java.util.UUID;
@@ -67,12 +62,7 @@ public class AddUnmanagedPoseFieldComposite extends AddFieldComposite {
   private static InitializingIfAbsentMap<NamedUserType, AddUnmanagedPoseFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddUnmanagedPoseFieldComposite getInstance(NamedUserType declaringType) {
-    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, AddUnmanagedPoseFieldComposite>() {
-      @Override
-      public AddUnmanagedPoseFieldComposite initialize(NamedUserType declaringType) {
-        return new AddUnmanagedPoseFieldComposite(declaringType);
-      }
-    });
+    return map.get(declaringType, AddUnmanagedPoseFieldComposite::new);
   }
 
   private AddUnmanagedPoseFieldComposite(NamedUserType declaringType) {

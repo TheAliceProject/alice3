@@ -45,19 +45,13 @@ package org.alice.ide.ast.type.merge.help.croquet;
 import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
 import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.Element;
-import org.lgna.croquet.HtmlStringValue;
-import org.lgna.croquet.PlainStringValue;
-import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
-import org.lgna.croquet.StringValue;
+import org.lgna.croquet.*;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.project.ast.Member;
 
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.util.UUID;
 
@@ -78,7 +72,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<
     @Override
     public Color changeColorIfAppropriate(Color defaultColor) {
       if (isRetainBothSelected()) {
-        return areNamesIdentical() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+        return areNamesIdentical() ? UIManager.getColor("Alice.Alert.color") : defaultColor;
       } else {
         return defaultColor;
       }

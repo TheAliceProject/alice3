@@ -43,22 +43,17 @@
 
 package org.lgna.croquet.views;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import org.lgna.croquet.AbstractMenuModel;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public class Menu extends AbstractMenu<AbstractMenuModel> {
+  private UserActivity activity;
+
   public Menu(AbstractMenuModel model) {
     super(model);
-  }
-
-  @Override
-  protected boolean areIconsDisplayedInMenus() {
-    return SystemUtilities.areIconsDisplayedInMenus();
   }
 
   @Override
@@ -87,7 +82,10 @@ public class Menu extends AbstractMenu<AbstractMenuModel> {
 
   @Override
   public UserActivity getActivity() {
-    // TODO Build menus with the root application or project activity and hold onto it?
-    return Application.getActiveInstance().getOpenActivity();
+    return activity;
+  }
+
+  public void setActivity(UserActivity activity) {
+    this.activity = activity;
   }
 }

@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.animation.Animation;
 import com.dddviewr.collada.animation.Sampler;
+import org.xml.sax.Attributes;
 
 public class sampler extends State {
   protected Sampler theSampler;

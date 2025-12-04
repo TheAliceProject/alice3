@@ -43,9 +43,9 @@
 package org.alice.ide.ast.type.merge.croquet;
 
 import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
-import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 import org.lgna.project.ast.Member;
 
+import javax.swing.UIManager;
 import java.awt.Color;
 import java.net.URI;
 
@@ -56,7 +56,7 @@ public abstract class PotentialNameChanger<M extends Member> {
   private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
     @Override
     public Color changeColorIfAppropriate(Color defaultColor) {
-      return isRenameRequired() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+      return isRenameRequired() ? UIManager.getColor("Alice.Alert.color") : defaultColor;
     }
   };
   private final URI uriForDescriptionPurposesOnly;

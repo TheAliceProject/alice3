@@ -107,15 +107,14 @@ public final class Color implements Paint {
   }
 
   public static Color4f getColor4fOrWhite(Paint paint) {
-      return paint instanceof Color
-              ? ((Color) paint).toColor4f()
+      return paint instanceof Color c
+              ? c.toColor4f()
               : Color4f.WHITE;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Color) {
-      Color other = (Color) obj;
+    if (obj instanceof Color other) {
       return this.internal.equals(other.internal);
     } else {
       return false;

@@ -42,6 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.nonfree.NebulousStoryApi;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -51,23 +61,11 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.nonfree.NebulousStoryApi;
-import org.alice.tweedle.file.ManifestEncoderDecoder;
-import org.alice.tweedle.file.ModelManifest;
-import org.lgna.story.implementation.StoryApiDirectoryUtilities;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.lgna.story.resources.ModelResource;
-
-import javax.swing.JOptionPane;
 
 public enum StorytellingResources {
   INSTANCE;
@@ -462,7 +460,7 @@ public enum StorytellingResources {
 
   private ModelManifest manifestFor(File modelFile) {
     try {
-      String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+      String fileContent = new String(Files.readAllBytes(Path.of(modelFile.toURI())));
       ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
       modelManifest.setRootFile(modelFile.getParentFile());
       return modelManifest;
@@ -501,12 +499,12 @@ public enum StorytellingResources {
   List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
     if (this.installedAliceClassesLoaded == null) {
       List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
-      if (resourcePaths.size() == 0) {
+      if (resourcePaths.isEmpty()) {
         resourcePaths = findAliceResources();
       }
 
       this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
-      if (installedAliceClassesLoaded.size() == 0) {
+      if (installedAliceClassesLoaded.isEmpty()) {
         //Clear previously cached info
         clearAliceResourceInfo();
         File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -523,13 +521,13 @@ public enum StorytellingResources {
           this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
         }
       }
-      if (this.installedAliceClassesLoaded.size() == 0) {
+      if (this.installedAliceClassesLoaded.isEmpty()) {
         //No resources were found
         //Clear the cached data and display an error
         clearAliceResourceInfo();
         StringBuilder sb = new StringBuilder();
         sb.append("Cannot find the Alice gallery resources.");
-        if ((resourcePaths == null) || (resourcePaths.size() == 0)) {
+        if ((resourcePaths == null) || (resourcePaths.isEmpty())) {
           sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
         } else {
           sb.append("\nFailed to locate the resources in:");

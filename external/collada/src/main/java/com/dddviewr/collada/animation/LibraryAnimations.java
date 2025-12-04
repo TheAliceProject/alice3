@@ -1,10 +1,10 @@
 package com.dddviewr.collada.animation;
 
+import com.dddviewr.collada.Base;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
 
 public class LibraryAnimations extends Base {
   protected List<Animation> animations = new ArrayList<Animation>();

@@ -42,31 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-import java.awt.Font;
 import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public class UIManagerUtilities {
-  public static void setDefaultFontResource(FontUIResource fontUIResource) {
-    for (Object key : UIManager.getDefaults().keySet()) {
-      Object value = UIManager.get(key);
-      if (value instanceof FontUIResource) {
-        UIManager.put(key, fontUIResource);
-      }
-    }
-  }
-
-  public static void setDefaultFont(Font font) {
-    setDefaultFontResource(new FontUIResource(font));
-  }
 
   private static void scaleFontIfApplicable(UIDefaults uiDefaults, Object key, FontUIResource prevFontUIResource, double scale) {
     int prevSize = prevFontUIResource.getSize();
@@ -79,12 +65,11 @@ public class UIManagerUtilities {
 
   private static void scaleFontIfApplicable(UIDefaults uiDefaults, Map.Entry<Object, Object> entry, double scale) {
     Object value = entry.getValue();
-    if (value instanceof UIDefaults.ActiveValue) {
-      UIDefaults.ActiveValue activeValue = (UIDefaults.ActiveValue) value;
+    if (value instanceof UIDefaults.ActiveValue activeValue) {
       value = activeValue.createValue(uiDefaults);
     }
-    if (value instanceof FontUIResource) {
-      scaleFontIfApplicable(uiDefaults, entry.getKey(), (FontUIResource) value, scale);
+    if (value instanceof FontUIResource resource) {
+      scaleFontIfApplicable(uiDefaults, entry.getKey(), resource, scale);
     }
   }
 
@@ -111,8 +96,7 @@ public class UIManagerUtilities {
   public static int getDefaultFontSize() {
     UIDefaults uiDefaults = UIManager.getDefaults();
     Object value = uiDefaults.get("defaultFont");
-    if (value instanceof FontUIResource) {
-      FontUIResource fontUIResource = (FontUIResource) value;
+    if (value instanceof FontUIResource fontUIResource) {
       return fontUIResource.getSize();
     } else {
       //todo?
@@ -120,18 +104,4 @@ public class UIManagerUtilities {
     }
   }
 
-  public static boolean setLookAndFeel(String plafName) {
-    UIManager.LookAndFeelInfo lookAndFeelInfo = PlafUtilities.getInstalledLookAndFeelInfoNamed(plafName);
-    if (lookAndFeelInfo != null) {
-      try {
-        UIManager.setLookAndFeel(lookAndFeelInfo.getClassName());
-        return true;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
 }

@@ -42,23 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.icons.Icons;
 import org.alice.interact.event.ManipulationEvent;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * @author David Culyba
  */
 public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulationHandle2D {
   private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-    Inactive("images/tilt.png"), Highlighted("images/tiltHighlight.png"), TurningForward("images/tiltDown.png"), TurningBackward("images/tiltUp.png");
+    Inactive("images/handles/tilt.svg"),
+    Highlighted("images/handles/tiltHighlight.svg"),
+    TurningForward("images/handles/tiltDown.svg"),
+    TurningBackward("images/handles/tiltUp.svg");
 
     private ControlState(String resourceString) {
       Icon icon;
       try {
-        icon = new ImageIcon(this.getClass().getResource(resourceString));
+        icon = new FlatSVGIcon(Icons.class.getResource(resourceString));
       } catch (Exception e) {
         Logger.errln("cannot load", resourceString, this);
         icon = null;
@@ -75,7 +79,7 @@ public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulation
   }
 
   public ManipulationHandle2DCameraTurnUpDown() {
-    super("images/tiltMask.png");
+    super("images/handles/tiltMask.svg");
   }
 
   @Override

@@ -44,8 +44,8 @@
 package org.alice.ide.croquet.components;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.KnurlUtilities;
+import org.alice.ide.Theme;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.DragComponent;
@@ -54,18 +54,8 @@ import org.lgna.croquet.views.imp.JDragView;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.Stroke;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -78,19 +68,13 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     super(model, isAlphaDesiredWhenOverDropReceptor);
   }
 
-  protected Paint getForegroundPaint(int x, int y, int width, int height) {
-    return this.getForegroundColor();
-  }
-
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    return this.getBackgroundColor();
-  }
-
-  protected final boolean isKnurlDesired() {
+  protected boolean isKnurlDesired() {
     return this.getModel() != null;
   }
 
-  protected abstract int getInsetTop();
+  protected int getInsetTop() {
+    return Theme.BLOCK_MARGINS_HEIGHT * 2;
+  }
 
   protected abstract int getDockInsetLeft();
 
@@ -102,7 +86,9 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     }
   }
 
-  protected abstract int getInternalInsetLeft();
+  protected int getInternalInsetLeft() {
+    return Theme.BLOCK_MARGINS_WIDTH;
+  }
 
   protected final int getInsetLeft() {
     int rv = 0;
@@ -112,9 +98,13 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     return rv;
   }
 
-  protected abstract int getInsetBottom();
+  protected int getInsetBottom() {
+    return Theme.BLOCK_MARGINS_HEIGHT * 2;
+  }
 
-  protected abstract int getInsetRight();
+  protected int getInsetRight() {
+    return Theme.BLOCK_MARGINS_WIDTH;
+  }
 
   protected abstract LayoutManager createLayoutManager(JPanel jComponent);
 
@@ -158,6 +148,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
       @Override
       public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int x = 0;
         int y = 0;
         int width = this.getWidth();
@@ -166,7 +157,7 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
         Paint prevPaint;
         prevPaint = g2.getPaint();
         try {
-          g2.setPaint(KnurlDragComponent.this.getBackgroundPaint(x, y, width, height));
+          g2.setPaint(KnurlDragComponent.this.getBackgroundColor());
           KnurlDragComponent.this.paintPrologue(g2, x, y, width, height);
         } finally {
           g2.setPaint(prevPaint);
@@ -177,7 +168,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
         this.paintChildren(g);
 
         prevPaint = g2.getPaint();
-        g2.setPaint(KnurlDragComponent.this.getForegroundPaint(x, y, width, height));
         try {
           KnurlDragComponent.this.paintEpilogue(g2, x, y, width, height);
         } finally {
@@ -196,7 +186,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     rv.setLayout(layoutManager);
 
     rv.setOpaque(false);
-    rv.setBackground(null);
 
     rv.setAlignmentX(Component.LEFT_ALIGNMENT);
     rv.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -220,25 +209,24 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     return location;
   }
 
-  private static final Stroke ACTIVE_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  private static final Stroke ACTIVE_STROKE = new BasicStroke(2.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
   private static final Stroke PASSIVE_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-  private static final Color HIGHLIGHT_COLOR = new Color(255, 255, 255);
-  private static final Color SHADOW_COLOR = new Color(0, 0, 0);
 
-  protected Paint getPassiveOutlinePaint() {
-    return Color.GRAY;
+  protected Color getOutlineColor() {
+    return ColorUtilities.scaleHSB(getBackgroundColor(), 1, 4.8, .74);
   }
 
   protected void paintOutline(Graphics2D g2, Shape shape) {
     if (shape != null) {
       Stroke prevStroke = g2.getStroke();
       if (this.isActive()) {
-        GraphicsUtilities.draw3DishShape(g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE);
+        g2.setStroke(ACTIVE_STROKE);
+        g2.setPaint(getOutlineColor());
       } else {
-        g2.setPaint(this.getPassiveOutlinePaint());
+        g2.setPaint(getOutlineColor());
         g2.setStroke(PASSIVE_STROKE);
-        g2.draw(shape);
       }
+      g2.draw(shape);
       g2.setStroke(prevStroke);
     }
   }
@@ -250,13 +238,8 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     Shape shape = this.createShape(x, y, width, height);
     this.paintOutline(g2, shape);
     if (isKnurlDesired()) {
-      int grayscale;
-      if (this.isActive()) {
-        grayscale = 0;
-      } else {
-        grayscale = 127;
-      }
-      g2.setColor(ColorUtilities.createGray(grayscale));
+      Color c = this.isActive() ? getOutlineColor() : UIManager.getColor("Alice.Block.knurlForeground");
+      g2.setColor(c);
       KnurlUtilities.paintKnurl5(g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5);
     }
   }
@@ -267,10 +250,6 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
 
   public void addComponent(AwtComponentView<?> component, Object constraints) {
     this.internalAddComponent(component, constraints);
-  }
-
-  public void forgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalForgetAndRemoveComponent(component);
   }
 
   public void removeAllComponents() {

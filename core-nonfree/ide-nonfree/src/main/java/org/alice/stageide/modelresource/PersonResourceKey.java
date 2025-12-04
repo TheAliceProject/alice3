@@ -46,26 +46,20 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.icons.PersonResourceIconFactory;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedImageIconFactory;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.sims2.AdultPersonResource;
-import org.lgna.story.resources.sims2.ChildPersonResource;
-import org.lgna.story.resources.sims2.ElderPersonResource;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resources.sims2.TeenPersonResource;
-import org.lgna.story.resources.sims2.ToddlerPersonResource;
+import org.lgna.story.resources.sims2.*;
 
 import java.util.Set;
 
@@ -85,7 +79,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
   private static final IconFactory TEEN_ICON_FACTORY = createIconFactory("teen");
   private static final IconFactory CHILD_ICON_FACTORY = createIconFactory("child");
   private static final IconFactory TODDLER_ICON_FACTORY = createIconFactory("toddler");
-  private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
 
   private static class SingletonHolder {
     private static final PersonResourceKey elderInstance = new PersonResourceKey(LifeStage.ELDER);
@@ -93,7 +86,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
     private static final PersonResourceKey teenInstance = new PersonResourceKey(LifeStage.TEEN);
     private static final PersonResourceKey childInstance = new PersonResourceKey(LifeStage.CHILD);
     private static final PersonResourceKey toddlerInstance = new PersonResourceKey(LifeStage.TODDLER);
-    private static final PersonResourceKey personInstance = new PersonResourceKey(null);
   }
 
   public static PersonResourceKey getElderInstance() {
@@ -116,10 +108,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
     return SingletonHolder.toddlerInstance;
   }
 
-  private static PersonResourceKey getPersonInstance() {
-    return SingletonHolder.personInstance;
-  }
-
   public static PersonResourceKey getInstanceForResourceClass(Class<?> cls) {
     if (cls == ElderPersonResource.class) {
       return getElderInstance();
@@ -132,7 +120,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
     } else if (cls == ToddlerPersonResource.class) {
       return getToddlerInstance();
     } else {
-      return getPersonInstance();
+      return null;
     }
   }
 
@@ -148,19 +136,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   public Class<? extends ModelResource> getModelResourceCls() {
-    if (this.lifeStage == LifeStage.ELDER) {
-      return ElderPersonResource.class;
-    } else if (this.lifeStage == LifeStage.ADULT) {
-      return AdultPersonResource.class;
-    } else if (this.lifeStage == LifeStage.TEEN) {
-      return TeenPersonResource.class;
-    } else if (this.lifeStage == LifeStage.CHILD) {
-      return ChildPersonResource.class;
-    } else if (this.lifeStage == LifeStage.TODDLER) {
-      return ToddlerPersonResource.class;
-    } else {
-      return PersonResource.class;
-    }
+    return lifeStage.getModelResourceClass();
   }
 
   private ValueConverter<PersonResource, InstanceCreation> getPersonResourceValueCreator() {
@@ -185,7 +161,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   @Override
   public String getLocalizedCreationText() {
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), getLocalizedName(), "…");
+    return formatter.getNewFormat().formatted(getLocalizedName(), "…");
   }
 
   @Override
@@ -201,7 +177,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
     } else if (this.lifeStage == LifeStage.TODDLER) {
       return TODDLER_ICON_FACTORY;
     } else {
-      return PERSON_ICON_FACTORY;
+      return EmptyIconFactory.getInstance();
     }
   }
 

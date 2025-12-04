@@ -42,13 +42,7 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.BoundedDoubleState;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.SingleSelectListState;
-import org.lgna.croquet.State;
+import org.lgna.croquet.*;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
@@ -87,7 +81,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
     @Override
     public void currentTimeChanged(double currentTime, Pose pose) {
-      //      TimeLineModifierComposite.this.currentTime.setValueTransactionlessly( new Double( currentTime ) );
+      //      TimeLineModifierComposite.this.currentTime.setValueTransactionlessly(currentTime);
     }
 
     @Override

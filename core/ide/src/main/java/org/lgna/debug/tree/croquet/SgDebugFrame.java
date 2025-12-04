@@ -60,8 +60,7 @@ import java.util.UUID;
 public class SgDebugFrame extends DebugFrame<Component> {
   public static ZTreeNode.Builder<Component> createBuilder(Component sgComponent) {
     ZTreeNode.Builder<Component> rv = new ZTreeNode.Builder<Component>(sgComponent, sgComponent instanceof Leaf);
-    if (sgComponent instanceof Composite) {
-      Composite sgComposite = (Composite) sgComponent;
+    if (sgComponent instanceof Composite sgComposite) {
       for (Component sgChild : sgComposite.getComponents()) {
         rv.addChildBuilder(createBuilder(sgChild));
       }

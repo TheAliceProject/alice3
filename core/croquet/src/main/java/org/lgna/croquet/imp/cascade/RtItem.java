@@ -44,19 +44,13 @@
 package org.lgna.croquet.imp.cascade;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.AbstractCascadeMenuModel;
-import org.lgna.croquet.CascadeBlank;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeBlankOwner;
-import org.lgna.croquet.CascadeCancel;
-import org.lgna.croquet.CascadeFillIn;
-import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.CascadeSeparator;
+import org.lgna.croquet.*;
 import org.lgna.croquet.views.CascadeMenu;
 import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.ViewController;
 
+import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -168,17 +162,15 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
       RtItem<?, ?, ?, ?> rtItem = children[i];
       ViewController<?, ?> menuItem = rtItem.getMenuItem();
       if (menuItem != null) {
-        if (menuItem instanceof CascadeMenu) {
-          parent.addCascadeMenu((CascadeMenu) menuItem);
-        } else if (menuItem instanceof CascadeMenuItem) {
-          CascadeMenuItem cascadeMenuItem = (CascadeMenuItem) menuItem;
+        if (menuItem instanceof CascadeMenu menu) {
+          parent.addCascadeMenu(menu);
+        } else if (menuItem instanceof CascadeMenuItem cascadeMenuItem) {
           if (itemChildrenAndComboOffsetsPair.isComboOffset(i)) {
             i++;
             RtItem<?, ?, ?, ?> rtItem2 = children[i];
             ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
             if (menuItem2 != null) {
-              if (menuItem2 instanceof CascadeMenu) {
-                CascadeMenu cascadeMenu = (CascadeMenu) menuItem2;
+              if (menuItem2 instanceof CascadeMenu cascadeMenu) {
                 parent.addCascadeCombo(cascadeMenuItem, cascadeMenu);
               } else {
                 assert false : menuItem2;
@@ -243,17 +235,20 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
       rv = menu;
     }
     jMenuItem.setText(item.getMenuItemText());
-    jMenuItem.setIcon(item.getMenuItemIcon(this.getNode()));
+    // this is a bit of a hack because flatlaf just doesn't render the icon if it is disabled?
+    Icon icon = item.getMenuItemIcon(this.getNode());
+    jMenuItem.setDisabledIcon(icon);
+    jMenuItem.setIcon(icon);
     return rv;
   }
 
   private ViewController<?, ?> getMenuItem() {
     boolean isLast = this.isLast();
     if (this.menuItem != null && isLast) {
-      if (this.menuItem instanceof CascadeMenu) {
-        ((CascadeMenu) this.menuItem).getAwtComponent().removeMenuListener(this.menuListener);
-      } else if (this.menuItem instanceof CascadeMenuItem) {
-        ((CascadeMenuItem) this.menuItem).getAwtComponent().removeActionListener(this.actionListener);
+      if (this.menuItem instanceof CascadeMenu menu) {
+        menu.getAwtComponent().removeMenuListener(this.menuListener);
+      } else if (this.menuItem instanceof CascadeMenuItem item) {
+        item.getAwtComponent().removeActionListener(this.actionListener);
       } else {
         Logger.severe(this.menuItem);
       }

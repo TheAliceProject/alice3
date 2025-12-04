@@ -47,19 +47,16 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.IDE;
+import org.alice.ide.RecycleBin;
 import org.alice.ide.ast.delete.DeleteStatementOperation;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
+import org.alice.ide.icons.ClosedTrashIcon;
+import org.alice.ide.icons.OpenTrashIcon;
+import org.alice.ide.member.MemberOrControlFlowTabComposite;
 import org.alice.ide.members.MembersComposite;
-import org.alice.ide.recyclebin.RecycleBin;
-import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
-import org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon;
-import org.lgna.croquet.AbstractDropReceptor;
-import org.lgna.croquet.DragModel;
-import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.*;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FolderTabbedPane;
@@ -70,12 +67,8 @@ import org.lgna.project.ast.Statement;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -97,7 +90,7 @@ public class MembersView extends BorderPanel {
   private static final int SIZE = 32;
 
   private static enum DragReceptorState {
-    IDLE(null, null, null, 0), STARTED(Color.YELLOW, new Color(191, 191, 191, 0), null, SIZE), ENTERED(Color.YELLOW, new Color(127, 127, 127, 191), new ClosedTrashCanSymbolicStyleIcon(128, 128, Color.LIGHT_GRAY), SIZE), ENTERED_FAR_ENOUGH(new Color(0xCCFF99), new Color(127, 127, 127, 191), new OpenTrashCanSymbolicStyleIcon(128, 128, Color.WHITE), SIZE);
+    IDLE(null, null, null, 0), STARTED(Color.YELLOW, new Color(191, 191, 191, 0), null, SIZE), ENTERED(Color.YELLOW, new Color(127, 127, 127, 191), new ClosedTrashIcon(128, 128, Color.LIGHT_GRAY), SIZE), ENTERED_FAR_ENOUGH(new Color(0xCCFF99), new Color(127, 127, 127, 191), new OpenTrashIcon(128, 128, Color.WHITE), SIZE);
     private final Color colorA;
     private final Color colorB;
     private final Icon icon;
@@ -170,8 +163,7 @@ public class MembersView extends BorderPanel {
       DropSite dropSite = step.getCurrentPotentialDropSite();
       if (dropSite != null) {
         DragModel dragModel = step.getModel();
-        if (dragModel instanceof StatementDragModel) {
-          StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+        if (dragModel instanceof StatementDragModel statementDragModel) {
           Statement statement = statementDragModel.getStatement();
           return new DeleteStatementOperation(statement);
         } else {
@@ -242,15 +234,10 @@ public class MembersView extends BorderPanel {
   public MembersView(MembersComposite composite) {
     super(composite);
     InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
-    //    org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-    //    instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
-    //    instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-    //    instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
-    //
-    //    this.addPageStartComponent( instancePanel );
-    this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
     this.addPageStartComponent(instanceFactoryPopupButton);
-    this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
+    FolderTabbedPane<MemberOrControlFlowTabComposite<?>> tabs = composite.getTabState().createFolderTabbedPane();
+    tabs.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
+    this.addCenterComponent(tabs);
   }
 
   @Override
@@ -259,9 +246,7 @@ public class MembersView extends BorderPanel {
       @Override
       public void paint(Graphics g) {
         super.paint(g);
-        if (recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE) {
-          //pass
-        } else {
+        if (recycleBinDropReceptor.dragReceptorState != DragReceptorState.IDLE) {
           Graphics2D g2 = (Graphics2D) g;
           int width = this.getWidth();
           int height = this.getHeight();

@@ -99,9 +99,7 @@ public abstract class BubbleImp extends PropertyOwnerImp {
       double prevValue = bubble.portion.getValue();
       double nextValue = value.doubleValue();
       if (prevValue < CLOSE_ENOUGH_TO_ZERO) {
-        if (nextValue < CLOSE_ENOUGH_TO_ZERO) {
-          //pass
-        } else {
+        if (nextValue > CLOSE_ENOUGH_TO_ZERO) {
           this.getSgLayer().addGraphic(bubble);
         }
       } else {

@@ -46,8 +46,8 @@ import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.icons.Icons;
+import org.alice.ide.icons.PlusIconFactory;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.FileDialogValueCreator;
@@ -90,7 +90,7 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
     case 0:
       return new FileDialogValueCreator(null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION);
     case 1:
-      UserActivity prevSubStep = finishedSteps.get(0);
+      UserActivity prevSubStep = finishedSteps.getFirst();
       if (prevSubStep.getProducedValue() != null) {
         File file = (File) prevSubStep.getProducedValue();
         try {

@@ -43,27 +43,18 @@
 package org.alice.ide.ast.declaration.views;
 
 import org.alice.ide.IDE;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.declaration.AddParameterComposite;
 import org.alice.ide.codeeditor.TypedParameterPane;
 import org.alice.ide.x.PreviewAstI18nFactory;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.SimpleArgumentListProperty;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.croquet.views.*;
+import org.lgna.project.ast.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import java.util.List;
 
 /**
+ * Popup window for adding a Parameter to a function
  * @author Dennis Cosgrove
  */
 public class AddParameterView extends DeclarationView<UserParameter> {
@@ -85,7 +76,7 @@ public class AddParameterView extends DeclarationView<UserParameter> {
     this.warningPanel = new BorderPanel.Builder().hgap(32).lineStart(warningLabel).center(pane).build();
 
     this.warningPanel.setBorder(BorderFactory.createEmptyBorder(32, 8, 32, 8));
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getParameterColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Field.color"));
   }
 
   @Override
@@ -111,8 +102,7 @@ public class AddParameterView extends DeclarationView<UserParameter> {
     this.warningPanel.setVisible(N > 0);
     if (this.warningPanel.isVisible()) {
       String codeText;
-      if (code instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) code;
+      if (code instanceof AbstractMethod method) {
         if (method.isProcedure()) {
           codeText = "procedure";
         } else {

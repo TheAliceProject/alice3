@@ -42,13 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.IOException;
-
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -70,6 +63,13 @@ import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Ray;
 import org.alice.math.immutable.Vector3;
 import org.lgna.story.implementation.SceneImp;
+
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.IOException;
 
 /**
  * @author Dave Culyba
@@ -262,9 +262,7 @@ public abstract class AbstractThumbnailMaker {
       int newHeight = rv.getHeight() - topBorder - bottomBorder;
       int newWidth = rv.getWidth() - leftBorder - rightBorder;
 
-      if ((leftBorder < 0) || (topBorder < 0) || (newWidth < 0) || (newHeight < 0)) {
-        //pass
-      } else {
+      if (leftBorder >= 0 && topBorder >= 0  && newWidth >= 0 && newHeight >= 0) {
         rv = rv.getSubimage(leftBorder, topBorder, newWidth, newHeight);
       }
 
@@ -278,8 +276,8 @@ public abstract class AbstractThumbnailMaker {
       Color.RGBtoHSB(colorKey.getRed(), colorKey.getGreen(), colorKey.getBlue(), chromaHSB);
       Raster imageData = rv.getRaster();
       WritableRaster writableData = null;
-      if (imageData instanceof WritableRaster) {
-        writableData = (WritableRaster) imageData;
+      if (imageData instanceof WritableRaster raster) {
+        writableData = raster;
         for (int x = 0; x < writableData.getWidth(); x++) {
           for (int y = 0; y < writableData.getHeight(); y++) {
             try {
@@ -318,8 +316,8 @@ public abstract class AbstractThumbnailMaker {
     } else {
       returnImage = rv;
     }
-    if (returnImage instanceof BufferedImage) {
-      return (BufferedImage) returnImage;
+    if (returnImage instanceof BufferedImage image) {
+      return image;
     } else if (returnImage != null) {
       return ImageUtilities.createBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
     } else {

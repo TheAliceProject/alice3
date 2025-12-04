@@ -42,12 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.implementation.alice;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.apache.commons.lang3.ClassUtils;
@@ -55,6 +49,12 @@ import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.story.SModel;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.ModelResource;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author dculyba
@@ -165,7 +165,7 @@ public class AliceResourceClassUtilities {
       }
       sb.append(s.charAt(i));
     }
-    if (sb.length() > 0) {
+    if (!sb.isEmpty()) {
       split.add(sb.toString());
     }
     return split;
@@ -187,7 +187,7 @@ public class AliceResourceClassUtilities {
     for (String s : nameParts) {
       List<String> capitalSplit = splitOnCapitalsAndNumbers(s);
       for (String subS : capitalSplit) {
-        if (subS.length() > 0) {
+        if (!subS.isEmpty()) {
           strings.add(subS);
         }
       }

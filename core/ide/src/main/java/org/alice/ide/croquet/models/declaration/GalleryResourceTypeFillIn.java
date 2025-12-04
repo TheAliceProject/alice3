@@ -46,18 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
-import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.*;
 
 import javax.swing.Icon;
 import java.util.Map;
@@ -81,13 +72,14 @@ public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBla
   private final JavaType ancestorType;
 
   private GalleryResourceTypeFillIn(JavaType ancestorType) {
-    super(UUID.fromString("281ad60a-090e-4fd8-bb47-da03a2508a4a"), GalleryResourceBlank.getInstance(ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)));
+    super(UUID.fromString("281ad60a-090e-4fd8-bb47-da03a2508a4a"),
+        GalleryResourceBlank.getInstance(ancestorType.getFirstParameterType()));
     this.ancestorType = ancestorType;
   }
 
   @Override
   public String getMenuItemText() {
-    return ConstructorArgumentUtilities.getContructor0Parameter0Type(this.ancestorType).getName();
+    return this.ancestorType.getFirstParameterType().getName();
   }
 
   @Override
@@ -104,14 +96,12 @@ public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBla
   protected InstanceCreation createValue(Expression[] expressions) {
     if (expressions.length == 1) {
       Expression expression = expressions[0];
-      if (expression instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) expression;
+      if (expression instanceof FieldAccess fieldAccess) {
         AbstractField field = fieldAccess.field.getValue();
         if (field.isStatic()) {
-          if (field instanceof JavaField) {
-            JavaField argumentField = (JavaField) field;
+          if (field instanceof JavaField argumentField) {
             NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(this.ancestorType, argumentField);
-            NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+            NamedUserConstructor constructor = userType.getDeclaredConstructors().getFirst();
             Expression[] argumentExpressions;
             if (constructor.getRequiredParameters().size() == 1) {
               argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};

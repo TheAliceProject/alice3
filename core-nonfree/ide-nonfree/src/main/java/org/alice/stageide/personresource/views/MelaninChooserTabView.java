@@ -48,6 +48,7 @@ import org.alice.stageide.personresource.MelaninChooserTabComposite;
 import org.lgna.croquet.color.views.ColorChooserTabView;
 
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -71,7 +72,7 @@ public class MelaninChooserTabView extends ColorChooserTabView {
           MelaninChooserTabView.this.getAwtComponent().getColorSelectionModel().setSelectedColor(nextColor);
         }
       };
-      this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+      this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, UIManager.getColor("Separator.foreground")));
       jMelaninSlider.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
       this.setLayout(new MigLayout("fill, insets 0"));
       this.add(jMelaninSlider, "growx");

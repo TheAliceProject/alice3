@@ -45,7 +45,6 @@ package org.alice.ide.cascade.fillerinners;
 import org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn;
 import org.alice.ide.custom.ExpressionWithRecentValuesCreatorComposite;
 import org.alice.ide.custom.StringCustomExpressionCreatorComposite;
-
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.project.annotations.ValueDetails;

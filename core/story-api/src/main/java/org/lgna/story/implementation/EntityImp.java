@@ -51,12 +51,9 @@ import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Vector4;
+import edu.cmu.cs.dennisc.media.MediaFactory;
 import edu.cmu.cs.dennisc.media.Player;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
-import edu.cmu.cs.dennisc.media.MediaFactory;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -66,6 +63,9 @@ import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import edu.cmu.cs.dennisc.scenegraph.qa.Mender;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Vector4;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.story.AudioSource;
@@ -73,16 +73,7 @@ import org.lgna.story.SThing;
 import org.lgna.story.implementation.eventhandling.PolygonPrismHull;
 import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
@@ -445,9 +436,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 
       JLabel messageLabel = new JLabel(numberModel.message);
       //messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-      messageLabel.setAlignmentX(0.0f);
-      lineAxisPanel.setAlignmentX(0.0f);
-      gridBagPanel.setAlignmentX(0.0f);
+      messageLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+      lineAxisPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+      gridBagPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
       this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
       this.add(messageLabel);
@@ -769,8 +760,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
       @Override
       public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint) {
         EntityImp imp = EntityImp.getInstance(sgJoint);
-        if (imp instanceof JointImp) {
-          JointImp jointImp = (JointImp) imp;
+        if (imp instanceof JointImp jointImp) {
           return jointImp.getScaledOriginalTransformation();
         } else {
           return AffineMatrix4x4.IDENTITY;

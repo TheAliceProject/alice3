@@ -47,15 +47,10 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import org.alice.ide.IDE;
-import org.alice.ide.ast.declaration.AddFunctionComposite;
-import org.alice.ide.ast.declaration.AddProcedureComposite;
-import org.alice.ide.ast.declaration.AddUnmanagedFieldComposite;
-import org.alice.ide.ast.declaration.ManagedEditFieldComposite;
-import org.alice.ide.ast.declaration.UnmanagedEditFieldComposite;
+import org.alice.ide.ast.declaration.*;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
 import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
-import org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StandardMenuItemPrepModel;
@@ -63,11 +58,7 @@ import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.ViewController;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.*;
 
 import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
@@ -159,11 +150,11 @@ public class TypeMenu extends MenuModel {
       }
     }
 
-    if (procedureModels.size() > 0) {
-      procedureModels.add(0, ProceduresSeparator.getInstance());
+    if (!procedureModels.isEmpty()) {
+      procedureModels.addFirst(ProceduresSeparator.getInstance());
     }
-    if (functionModels.size() > 0) {
-      functionModels.add(0, FunctionsSeparator.getInstance());
+    if (!functionModels.isEmpty()) {
+      functionModels.addFirst(FunctionsSeparator.getInstance());
     }
 
     procedureModels.add(AddProcedureComposite.getInstance(this.type).getLaunchOperation().getMenuItemPrepModel());
@@ -197,25 +188,20 @@ public class TypeMenu extends MenuModel {
 
     if (IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields(type)) {
       models.add(SEPARATOR);
-      if (managedFieldModels.size() > 0) {
+      if (!managedFieldModels.isEmpty()) {
         models.add(ManagedFieldsSeparator.getInstance());
         models.addAll(managedFieldModels);
       }
-      final boolean IS_SHOW_ME_HOW_PREFERRED = false;
-      if (IS_SHOW_ME_HOW_PREFERRED) {
-        models.add(ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel());
-      } else {
-        models.add(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel());
-      }
+      // quite possibly our least used way to add an object into the scene!
+      models.add(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel());
     }
 
     models.add(SEPARATOR);
-    if ((unmanagedFieldModels.size() > 0) || (managedFieldModels.size() > 0)) {
-      if (managedFieldModels.size() > 0) {
-        models.add(UnmanagedFieldsSeparator.getInstance());
-      } else {
-        models.add(FieldsSeparator.getInstance());
-      }
+    if (!managedFieldModels.isEmpty()) {
+      models.add(UnmanagedFieldsSeparator.getInstance());
+      models.addAll(unmanagedFieldModels);
+    } else if (!unmanagedFieldModels.isEmpty()) {
+      models.add(FieldsSeparator.getInstance());
       models.addAll(unmanagedFieldModels);
     }
     models.add(AddUnmanagedFieldComposite.getInstance(type).getLaunchOperation().getMenuItemPrepModel());

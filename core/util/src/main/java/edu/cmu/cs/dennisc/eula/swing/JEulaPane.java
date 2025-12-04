@@ -45,22 +45,8 @@ package edu.cmu.cs.dennisc.eula.swing;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.BorderLayout;
@@ -111,14 +97,10 @@ public class JEulaPane extends JPanel {
 
     String okButtonText = UIManager.getString("OptionPane.okButtonText");
     String cancelButtonText = UIManager.getString("OptionPane.cancelButtonText");
-    if ((okButtonText != null) && (okButtonText.length() > 0)) {
-      //pass
-    } else {
+    if (okButtonText == null || okButtonText.isEmpty()) {
       okButtonText = "OK";
     }
-    if ((cancelButtonText != null) && (cancelButtonText.length() > 0)) {
-      //pass
-    } else {
+    if (cancelButtonText == null || cancelButtonText.isEmpty()) {
       cancelButtonText = "Cancel";
     }
 
@@ -196,7 +178,6 @@ public class JEulaPane extends JPanel {
         //        java.util.Locale.setDefault( locale );
         //        //javax.swing.JComponent.setDefaultLocale( locale );
         //        //javax.swing.JOptionPane.showConfirmDialog( null, "hello", "title", javax.swing.JOptionPane.OK_CANCEL_OPTION );
-        UIManagerUtilities.setLookAndFeel("Nimbus");
         JEulaPane eulaPane = new JEulaPane("eulaText");
         JDialog dialog = new JDialogBuilder().isModal(true).title("title").build();
         dialog.getContentPane().add(eulaPane, BorderLayout.CENTER);

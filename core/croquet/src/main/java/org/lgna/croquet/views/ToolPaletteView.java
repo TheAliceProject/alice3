@@ -49,12 +49,7 @@ import org.lgna.croquet.event.ValueListener;
 
 import javax.swing.ButtonModel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.*;
 
 class ToolPaletteLayout implements LayoutManager {
   private final ButtonModel buttonModel;
@@ -130,6 +125,10 @@ class ToolPaletteLayout implements LayoutManager {
 }
 
 /**
+ * This is many things:
+ * the list of procedures and functions
+ * all the groups on the scene tab
+ * many of the sections in the side panel of the scene editor
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {
@@ -180,9 +179,22 @@ public final class ToolPaletteView extends Panel {
 
   @Override
   public void setBackgroundColor(Color color) {
-    super.setBackgroundColor(null);
+    super.setBackgroundColor(null); // transparent
+
+    // only pass this color on to the children
     for (AwtComponentView<?> component : this.getComponents()) {
       component.setBackgroundColor(color);
     }
   }
+
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+
+    // also pass this color on to the children
+    for (AwtComponentView<?> component : this.getComponents()) {
+      component.setForegroundColor(color);
+    }
+  }
+
 }

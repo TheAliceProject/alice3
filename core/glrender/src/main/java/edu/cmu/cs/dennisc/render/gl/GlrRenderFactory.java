@@ -50,8 +50,8 @@ import edu.cmu.cs.dennisc.pattern.Releasable;
 import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
 import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
-import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
@@ -70,6 +70,11 @@ import java.util.concurrent.Semaphore;
 public class GlrRenderFactory implements RenderFactory {
   static {
     RendererNativeLibraryLoader.initializeIfNecessary();
+  }
+
+  public void releaseTarget(OnscreenRenderTarget onscreenRenderTarget) {
+    onscreenLookingGlasses.remove(onscreenRenderTarget);
+    onscreenRenderTarget.release();
   }
 
   private static class SingletonHolder {
@@ -105,8 +110,7 @@ public class GlrRenderFactory implements RenderFactory {
     Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
     synchronized (this.toBeReleased) {
       for (Releasable releasable : this.toBeReleased) {
-        if (releasable instanceof GlrOnscreenRenderTarget) {
-          GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget) releasable;
+        if (releasable instanceof GlrOnscreenRenderTarget onscreenLookingGlass) {
           this.onscreenLookingGlasses.remove(onscreenLookingGlass);
           //this.animator.remove(onscreenLookingGlass.getGLAutoDrawable() );
         } else if (releasable instanceof GlrOffscreenRenderTarget) {

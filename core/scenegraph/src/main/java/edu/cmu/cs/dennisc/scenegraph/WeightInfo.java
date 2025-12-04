@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.math.immutable.AffineMatrix4x4;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class WeightInfo implements BinaryEncodableAndDecodable {
   private Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs;

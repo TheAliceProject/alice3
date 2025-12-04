@@ -42,35 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import net.miginfocom.swing.MigLayout;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.declarationseditor.type.FieldMenuModel;
 import org.alice.stageide.sceneeditor.side.MarkersToolPalette;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.BooleanStateButton;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.FlowPanel;
-import org.lgna.croquet.views.HorizontalAlignment;
-import org.lgna.croquet.views.ItemSelectablePanel;
-import org.lgna.croquet.views.PopupButton;
+import org.lgna.croquet.views.*;
+import org.lgna.croquet.views.Button;
 import org.lgna.project.ast.UserField;
 
+import javax.swing.*;
 import javax.swing.AbstractButton;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
@@ -80,10 +67,6 @@ import java.util.Map;
  */
 public class MarkersView extends BorderPanel {
 
-  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
-  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
-  public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
-
   private static class MarkerView extends BooleanStateButton<AbstractButton> {
     public MarkerView(BooleanState model) {
       super(model);
@@ -91,20 +74,7 @@ public class MarkersView extends BorderPanel {
 
     @Override
     protected AbstractButton createAwtComponent() {
-      JToggleButton rv = new JToggleButton() {
-        @Override
-        public Color getBackground() {
-          if (this.isSelected()) {
-            return SELECTED_COLOR;
-          } else {
-            return UNSELECTED_COLOR;
-          }
-        }
-      };
-
-      //rv.setLayout( new java.awt.BorderLayout() );
-      //rv.add( new javax.swing.JLabel( "hello" ), java.awt.BorderLayout.LINE_END );
-      return rv;
+      return new JToggleButton();
     }
   }
 
@@ -129,31 +99,18 @@ public class MarkersView extends BorderPanel {
             Graphics2D g2 = (Graphics2D) g;
             boolean isAlphaDesired = isFieldSelected();
             Composite prevComposite = g2.getComposite();
-            if (isAlphaDesired) {
-              //pass
-            } else {
+            if (!isAlphaDesired) {
               g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
             }
             try {
               super.paint(g);
             } finally {
-              if (isAlphaDesired) {
-                //pass
-              } else {
+              if (!isAlphaDesired) {
                 g2.setComposite(prevComposite);
               }
             }
 
           }
-
-          //          @Override
-          //          public boolean contains( int x, int y ) {
-          //            if( isFieldSelected() ) {
-          //              return super.contains( x, y );
-          //            } else {
-          //              return false;
-          //            }
-          //          }
         };
       }
     }
@@ -240,10 +197,11 @@ public class MarkersView extends BorderPanel {
 
   public MarkersView(MarkersToolPalette composite) {
     super(composite);
-    this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
+    Button b1 = composite.getMoveToMarkerOperation().createButton();
+    Button b2 = composite.getMoveMarkerToOperation().createButton();
+    this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, b1, b2));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
     this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
   }
 
   private void unselectMarker() {

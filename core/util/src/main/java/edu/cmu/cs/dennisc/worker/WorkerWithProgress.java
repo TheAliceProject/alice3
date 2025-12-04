@@ -64,9 +64,7 @@ public abstract class WorkerWithProgress<T, V> extends AbstractWorker<T, V> {
     @Override
     protected void process(List<V> chunks) {
       super.process(chunks);
-      if (this.isCancelled()) {
-        //pass
-      } else {
+      if (!this.isCancelled()) {
         WorkerWithProgress.this.handleProcess_onEventDispatchThread(chunks);
       }
     }

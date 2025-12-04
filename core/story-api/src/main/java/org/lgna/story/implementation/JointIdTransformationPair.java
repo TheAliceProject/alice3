@@ -42,15 +42,14 @@
  */
 package org.lgna.story.implementation;
 
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.UnitQuaternion;
 import org.alice.serialization.tweedle.Encoder;
 import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
 import org.lgna.story.resources.JointId;
-
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author dculyba

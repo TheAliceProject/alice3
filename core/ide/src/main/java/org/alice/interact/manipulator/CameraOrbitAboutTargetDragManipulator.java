@@ -42,10 +42,9 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.math.immutable.Point3;
 import org.lgna.story.SModel;
 import org.lgna.story.implementation.EntityImp;
-
-import org.alice.math.immutable.Point3;
 
 /**
  * @author Matt May

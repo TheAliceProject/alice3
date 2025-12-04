@@ -81,11 +81,9 @@ public class MetaDeclarationFauxState {
   public AbstractType<?, ?, ?> getType() {
     AbstractDeclaration declaration = this.getValue();
     if (declaration != null) {
-      if (declaration instanceof AbstractType<?, ?, ?>) {
-        AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+      if (declaration instanceof AbstractType<?, ?, ?> type) {
         return type;
-      } else if (declaration instanceof AbstractMember) {
-        AbstractMember member = (AbstractMember) declaration;
+      } else if (declaration instanceof AbstractMember member) {
         return member.getDeclaringType();
       } else {
         Logger.severe(declaration);

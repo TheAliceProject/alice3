@@ -42,15 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.member.FunctionTabComposite;
 
+import javax.swing.UIManager;
+
 /**
+ * this is the tab that appears on the left with functions we can drag in
  * @author Dennis Cosgrove
  */
 public class FunctionTabView extends MemberTabView {
   public FunctionTabView(FunctionTabComposite composite) {
     super(composite);
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+    this.setBackgroundColor(UIManager.getColor("Alice.Function.color"));
   }
 }

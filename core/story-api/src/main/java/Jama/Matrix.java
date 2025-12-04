@@ -1,17 +1,14 @@
 package Jama;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.NumberFormat;
+import Jama.util.*;
+
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
-import java.io.StreamTokenizer;
 import java.util.Vector;
-
-import Jama.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  Jama = Java Matrix class.
@@ -883,7 +880,7 @@ public class Matrix implements Cloneable, Serializable {
     double[][] X = A.getArray();
     for (int i = 0; i < m; i++) {
       for (int j = 0; j < n; j++) {
-        X[i][j] = Math.random();
+        X[i][j] = ThreadLocalRandom.current().nextDouble();
       }
     }
     return A;
@@ -1054,5 +1051,5 @@ public class Matrix implements Cloneable, Serializable {
     }
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }

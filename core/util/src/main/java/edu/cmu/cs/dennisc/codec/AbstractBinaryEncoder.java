@@ -46,13 +46,7 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 
 import java.lang.reflect.Array;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ShortBuffer;
+import java.nio.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -212,9 +206,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
     if (value != null) {
       this.encode(value.getClass().getName());
       this.encode(value.hashCode());
-      if (map.containsKey(value)) {
-        //pass
-      } else {
+      if (!map.containsKey(value)) {
         map.put(value, value.hashCode());
         value.encode(this, map);
       }

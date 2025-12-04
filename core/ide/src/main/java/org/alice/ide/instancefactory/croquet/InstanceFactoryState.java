@@ -53,13 +53,7 @@ import org.alice.ide.ast.fieldtree.FieldTree;
 import org.alice.ide.ast.fieldtree.RootNode;
 import org.alice.ide.ast.fieldtree.TypeNode;
 import org.alice.ide.croquet.models.cascade.MethodNameSeparator;
-import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.LocalAccessFactory;
-import org.alice.ide.instancefactory.ParameterAccessFactory;
-import org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory;
-import org.alice.ide.instancefactory.ThisFieldAccessFactory;
-import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
-import org.alice.ide.instancefactory.ThisInstanceFactory;
+import org.alice.ide.instancefactory.*;
 import org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec;
 import org.alice.ide.meta.DeclarationMeta;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
@@ -97,15 +91,7 @@ import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SProp;
-import org.lgna.story.SQuadruped;
-import org.lgna.story.SShape;
-import org.lgna.story.SSlitherer;
-import org.lgna.story.SSwimmer;
-import org.lgna.story.SThing;
-import org.lgna.story.STransport;
+import org.lgna.story.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -126,8 +112,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
 
   private void handleDeclarationChanged(AbstractDeclaration prevValue, AbstractDeclaration nextValue) {
     if (this.ignoreCount == 0) {
-      if (nextValue instanceof AbstractMethod) {
-        AbstractMethod method = (AbstractMethod) nextValue;
+      if (nextValue instanceof AbstractMethod method) {
         if (method.isStatic()) {
           this.setValueTransactionlessly(null);
           return;
@@ -163,8 +148,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     if (edit instanceof StateEdit) {
       StateEdit<InstanceFactory> stateEdit = (StateEdit<InstanceFactory>) edit;
       InstanceFactory nextValue = stateEdit.getNextValue();
-      if (nextValue instanceof ThisFieldAccessMethodInvocationFactory) {
-        ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (ThisFieldAccessMethodInvocationFactory) nextValue;
+      if (nextValue instanceof ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory) {
         UserField field = thisFieldAccessMethodInvocationFactory.getField();
         IDE ide = IDE.getActiveInstance();
         ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
@@ -184,8 +168,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
     AbstractDeclaration declaration = DeclarationMeta.getDeclaration();
     boolean isStaticMethod;
-    if (declaration instanceof AbstractMethod) {
-      AbstractMethod method = (AbstractMethod) declaration;
+    if (declaration instanceof AbstractMethod method) {
       isStaticMethod = method.isStatic();
     } else {
       isStaticMethod = false;
@@ -195,8 +178,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     if (!isStaticMethod) {
       blankChildren.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ThisInstanceFactory.getInstance()), apiConfigurationManager.getInstanceFactorySubMenuForThis(type)));
     }
-    if (type instanceof NamedUserType) {
-      NamedUserType namedUserType = (NamedUserType) type;
+    if (type instanceof NamedUserType namedUserType) {
       if (!isStaticMethod) {
         List<UserField> fields = namedUserType.getDeclaredFields();
         List<UserField> filteredFields = Lists.newLinkedList();
@@ -224,13 +206,12 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
       }
 
       AbstractCode code = ide.getDocumentFrame().getFocusedCode();
-      if (code instanceof UserCode) {
+      if (code instanceof UserCode userCode) {
 
         List<CascadeBlankChild> parameters = Lists.newLinkedList();
         List<CascadeBlankChild> locals = Lists.newLinkedList();
         boolean containsVariable = false;
         boolean containsConstant = false;
-        UserCode userCode = (UserCode) code;
         for (UserParameter parameter : userCode.getRequiredParamtersProperty()) {
           if (apiConfigurationManager.isInstanceFactoryDesiredForType(parameter.getValueType())) {
             parameters.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ParameterAccessFactory.getInstance(parameter)), apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess(parameter)));
@@ -247,19 +228,19 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
             locals.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(LocalAccessFactory.getInstance(local)), apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess(local)));
           }
         }
-        if ((parameters.size() > 0) || (locals.size() > 0)) {
+        if (!parameters.isEmpty() || !locals.isEmpty()) {
           blankChildren.add(CascadeLineSeparator.getInstance());
           blankChildren.add(this.parametersVariablesConstantsSeparator);
           StringBuilder sb = new StringBuilder();
           NodeUtilities.safeAppendRepr(sb, code);
           sb.append(" ");
           String prefix = "";
-          if (parameters.size() > 0) {
+          if (!parameters.isEmpty()) {
             sb.append("parameters");
             blankChildren.addAll(parameters);
             prefix = ", ";
           }
-          if (locals.size() > 0) {
+          if (!locals.isEmpty()) {
             if (containsVariable) {
               sb.append(prefix);
               sb.append("variables");
@@ -275,24 +256,19 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
           this.parametersVariablesConstantsSeparator.setMenuItemText(sb.toString());
         }
 
-        if (userCode instanceof UserMethod) {
-          UserMethod userMethod = (UserMethod) userCode;
+        if (userCode instanceof UserMethod userMethod) {
           if (StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals(userMethod.getName())) {
             for (Statement statement : userMethod.body.getValue().statements) {
-              if (statement instanceof ExpressionStatement) {
-                ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+              if (statement instanceof ExpressionStatement expressionStatement) {
                 Expression expression = expressionStatement.expression.getValue();
-                if (expression instanceof MethodInvocation) {
-                  MethodInvocation methodInvocation = (MethodInvocation) expression;
+                if (expression instanceof MethodInvocation methodInvocation) {
                   List<CascadeBlankChild> methodInvocationBlankChildren = Lists.newLinkedList();
 
                   for (SimpleArgument argument : methodInvocation.requiredArguments) {
                     Expression argumentExpression = argument.expression.getValue();
-                    if (argumentExpression instanceof LambdaExpression) {
-                      LambdaExpression lambdaExpression = (LambdaExpression) argumentExpression;
+                    if (argumentExpression instanceof LambdaExpression lambdaExpression) {
                       Lambda lambda = lambdaExpression.value.getValue();
-                      if (lambda instanceof UserLambda) {
-                        UserLambda userLambda = (UserLambda) lambda;
+                      if (lambda instanceof UserLambda userLambda) {
                         for (UserParameter parameter : userLambda.getRequiredParameters()) {
                           AbstractType<?, ?, ?> parameterType = parameter.getValueType();
                           for (AbstractMethod parameterMethod : AstUtilities.getAllMethods(parameterType)) {
@@ -306,7 +282,7 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
                     }
                   }
 
-                  if (methodInvocationBlankChildren.size() > 0) {
+                  if (!methodInvocationBlankChildren.isEmpty()) {
                     AbstractMethod method = methodInvocation.method.getValue();
                     blankChildren.add(MethodNameSeparator.getInstance(method));
                     blankChildren.addAll(methodInvocationBlankChildren);

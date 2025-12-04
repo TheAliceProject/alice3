@@ -43,8 +43,6 @@
 
 package org.alice.interact.manipulator;
 
-import java.awt.Point;
-
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -53,13 +51,15 @@ import org.alice.interact.InputState;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Vector3;
 
+import java.awt.Point;
+
 public class CameraPanDragManipulator extends CameraManipulator {
 
   private static final double MOVEMENT_PER_PIXEL = .02d;
 
   @Override
   public String getUndoRedoDescription() {
-    return "Camera Move";
+    return "Camera Move (Pan)";
   }
 
   @Override

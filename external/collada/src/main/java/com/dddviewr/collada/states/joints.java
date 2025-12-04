@@ -1,12 +1,11 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Input;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.controller.Joints;
 import com.dddviewr.collada.controller.Skin;
+import org.xml.sax.Attributes;
 
 public class joints extends State {
   protected Joints theJoints;

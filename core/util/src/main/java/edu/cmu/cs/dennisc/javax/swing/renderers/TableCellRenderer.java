@@ -56,8 +56,8 @@ public abstract class TableCellRenderer<E> extends DefaultTableCellRenderer {
   @Override
   public final Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component rv = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (rv instanceof JLabel) {
-      initLabel((JLabel) rv, (E) value, isSelected, hasFocus);
+    if (rv instanceof JLabel label) {
+      initLabel(label, (E) value, isSelected, hasFocus);
     }
     return rv;
   }

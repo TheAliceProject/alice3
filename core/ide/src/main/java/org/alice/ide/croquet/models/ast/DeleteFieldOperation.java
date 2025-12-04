@@ -49,13 +49,7 @@ import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeleti
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 import java.util.Map;

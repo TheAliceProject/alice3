@@ -42,12 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.ide.icons.IconFactoryManager;
 import org.alice.ide.typemanager.TypeManager;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
-import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
@@ -114,7 +114,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
     Formatter formatter = FormatterState.getInstance().getValue();
-    return String.format(formatter.getNewFormat(), getLocalizedName(), params);
+    return formatter.getNewFormat().formatted(getLocalizedName(), params);
   }
 
   @Override
@@ -129,7 +129,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     JavaType abstractionType = getAbstractionTypeForResourceType(JavaType.getInstance(this.enumConstant.getClass()));
     if (abstractionType != null) {
       NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(abstractionType, argumentField, typeCache);
-      NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+      NamedUserConstructor constructor = userType.getDeclaredConstructors().getFirst();
       Expression[] argumentExpressions;
       if (constructor.getRequiredParameters().size() == 1) {
         argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};
@@ -188,8 +188,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
     if (this == o) {
       return true;
     }
-    if (o instanceof EnumConstantResourceKey) {
-      EnumConstantResourceKey other = (EnumConstantResourceKey) o;
+    if (o instanceof EnumConstantResourceKey other) {
       return this.enumConstant == other.enumConstant;
     } else {
       return false;

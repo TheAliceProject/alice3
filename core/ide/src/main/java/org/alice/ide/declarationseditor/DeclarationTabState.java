@@ -46,7 +46,6 @@ package org.alice.ide.declarationseditor;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.DefaultTheme;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec;
 import org.alice.ide.icons.TabIcon;
@@ -65,6 +64,7 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -93,9 +93,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   protected void setCurrentTruthAndBeautyValue(DeclarationComposite<?, ?> declarationComposite) {
     if (declarationComposite != null) {
       ListData<DeclarationComposite<?, ?>> data = this.getData();
-      if (data.contains(declarationComposite)) {
-        //pass
-      } else {
+      if (!data.contains(declarationComposite)) {
         class TypeListPair {
           private final NamedUserType type;
           private final List<DeclarationComposite<?, ?>> list = Lists.newLinkedList();
@@ -106,7 +104,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
 
           public void addDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
             if (declarationComposite instanceof TypeComposite) {
-              this.list.add(0, declarationComposite);
+              this.list.addFirst(declarationComposite);
             } else {
               this.list.add(declarationComposite);
             }
@@ -115,9 +113,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           public void update(List<DeclarationComposite<?, ?>> updatee, boolean isTypeRequired) {
             if (isTypeRequired) {
               TypeComposite typeComposite = TypeComposite.getInstance(this.type);
-              if (this.list.contains(typeComposite)) {
-                //pass
-              } else {
+              if (!this.list.contains(typeComposite)) {
                 updatee.add(typeComposite);
               }
             }
@@ -136,16 +132,9 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           if (item != null) {
             NamedUserType namedUserType = (NamedUserType) item.getType();
             if (namedUserType != null) {
-              TypeListPair typeListPair = map.getInitializingIfAbsent(namedUserType, new InitializingIfAbsentMap.Initializer<NamedUserType, TypeListPair>() {
-                @Override
-                public TypeListPair initialize(NamedUserType key) {
-                  return new TypeListPair(key);
-                }
-              });
+              TypeListPair typeListPair = map.get(namedUserType, TypeListPair::new);
               typeListPair.addDeclarationComposite(item);
-              if (typeListPairs.contains(typeListPair)) {
-                //pass
-              } else {
+              if (!typeListPairs.contains(typeListPair)) {
                 typeListPairs.add(typeListPair);
               }
             } else {
@@ -164,7 +153,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
           isSeparatorDesired = true;
         }
 
-        if (orphans.size() > 0) {
+        if (!orphans.isEmpty()) {
           nextItems.add(null);
           nextItems.addAll(orphans);
         }
@@ -175,19 +164,19 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   }
 
   private static final Dimension ICON_SIZE = new Dimension(16, 16);
-  private static final Icon TYPE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR);
-  private static final Icon FIELD_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_TYPE_COLOR) {
+  private static final Icon TYPE_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Type.color"));
+  private static final Icon FIELD_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Field.color")) {
     @Override
     protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
       super.paintIcon(c, g2, width, height, fillPaint, drawPaint);
-      g2.setPaint(DefaultTheme.DEFAULT_FIELD_COLOR);
+      g2.setPaint(UIManager.getColor("Alice.Field.color"));
       g2.fill(new Rectangle2D.Float(0.3f * width, 0.7f * height, 0.6f * width, 0.1f * height));
     }
   };
 
-  private static final Icon PROCEDURE_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_PROCEDURE_COLOR);
-  private static final Icon FUNCTION_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_FUNCTION_COLOR);
-  private static final Icon CONSTRUCTOR_ICON = new TabIcon(ICON_SIZE, DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR);
+  private static final Icon PROCEDURE_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Procedure.color"));
+  private static final Icon FUNCTION_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Function.color"));
+  private static final Icon CONSTRUCTOR_ICON = new TabIcon(ICON_SIZE, UIManager.getColor("Alice.Constructor.color"));
 
   public static Icon getProcedureIcon() {
     return PROCEDURE_ICON;
@@ -218,8 +207,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
     } else {
       rv.setSmallIcon(FUNCTION_ICON);
     }
-    if (method instanceof UserMethod) {
-      UserMethod userMethod = (UserMethod) method;
+    if (method instanceof UserMethod userMethod) {
       userMethod.name.addPropertyListener(e -> rv.setName((String) e.getValue()));
       //todo: release?
     }
@@ -233,10 +221,10 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
   }
 
   public Operation getItemSelectionOperationForCode(AbstractCode code) {
-    if (code instanceof AbstractMethod) {
-      return this.getItemSelectionOperationForMethod((AbstractMethod) code);
-    } else if (code instanceof AbstractConstructor) {
-      return this.getItemSelectionOperationForConstructor((AbstractConstructor) code);
+    if (code instanceof AbstractMethod method) {
+      return this.getItemSelectionOperationForMethod(method);
+    } else if (code instanceof AbstractConstructor constructor) {
+      return this.getItemSelectionOperationForConstructor(constructor);
     } else {
       return null;
     }
@@ -244,8 +232,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
 
   private void handleAstChangeThatCouldBeOfInterest() {
     DeclarationComposite<?, ?> declarationComposite = this.getValue();
-    if (declarationComposite instanceof CodeComposite) {
-      CodeComposite codeComposite = (CodeComposite) declarationComposite;
+    if (declarationComposite instanceof CodeComposite codeComposite) {
       codeComposite.handleAstChangeThatCouldBeOfInterest();
     }
   }
@@ -255,8 +242,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
     for (DeclarationComposite<?, ?> composite : this) {
       if (composite != null) {
         AbstractDeclaration declaration = composite.getDeclaration();
-        if (declaration instanceof UserCode) {
-          UserCode code = (UserCode) declaration;
+        if (declaration instanceof UserCode code) {
           UserType<?> declaringType = code.getDeclaringType();
           if (declaringType == null) {
             orphans.add(composite);

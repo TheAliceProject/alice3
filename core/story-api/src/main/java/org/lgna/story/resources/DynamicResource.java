@@ -15,11 +15,7 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class DynamicResource<I extends JointedModelImp, T extends SThing> implements ModelStructure<I, T> {
 
@@ -133,7 +129,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
     //Loop through a list of the joints and build new JointIds from them
     LinkedList<ModelManifest.Joint> jointsToProcess = new LinkedList<>(manifestJoints);
-    while (jointsToProcess.size() > 0) {
+    while (!jointsToProcess.isEmpty()) {
       ModelManifest.Joint currentJoint = jointsToProcess.pop();
       //If we already have a JointId for the parent or the parent is null, make a new JointId and add it to the newJoints list and the jointMap
       if (currentJoint.parent == null || jointMap.containsKey(currentJoint.parent)) {
@@ -160,8 +156,8 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     }
     if (manifestBBox != null) {
       return AxisAlignedBox.createAxisAlignedBox(
-          manifestBBox.min.get(0), manifestBBox.min.get(1), manifestBBox.min.get(2),
-          manifestBBox.max.get(0), manifestBBox.max.get(1), manifestBBox.max.get(2));
+          manifestBBox.min.getFirst(), manifestBBox.min.get(1), manifestBBox.min.get(2),
+          manifestBBox.max.getFirst(), manifestBBox.max.get(1), manifestBBox.max.get(2));
     }
     return AxisAlignedBox.NaN;
   }

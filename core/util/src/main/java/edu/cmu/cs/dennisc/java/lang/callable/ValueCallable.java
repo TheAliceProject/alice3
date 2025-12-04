@@ -61,8 +61,7 @@ public class ValueCallable<T> implements Callable<T> {
     if (this == obj) {
       return true;
     }
-    if (obj instanceof ValueCallable) {
-      ValueCallable other = (ValueCallable) obj;
+    if (obj instanceof ValueCallable other) {
       return Objects.equals(this.value, other.value);
     } else {
       return false;

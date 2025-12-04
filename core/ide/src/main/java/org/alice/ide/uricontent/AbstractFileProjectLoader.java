@@ -82,10 +82,12 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
     } catch (VersionNotSupportedException vnse) {
       ProjectApplication.getActiveInstance().handleVersionNotSupported(file, vnse);
     } catch (IOException ioe) {
-      Dialogs.showUnableToOpenFileDialog(file, "");
+      handleLoadException(file, ioe);
     }
     return null;
   }
+
+  protected abstract void handleLoadException(File file, Exception e);
 
   private boolean isAlice3ProjectFile() {
     if (!file.exists()) {

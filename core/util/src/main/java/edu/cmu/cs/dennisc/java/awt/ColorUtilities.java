@@ -52,10 +52,6 @@ import java.awt.Color;
 public class ColorUtilities {
   public static final Color GARISH_COLOR = Color.MAGENTA;
 
-  public static Color createGray(int grayscale) {
-    return new Color(grayscale, grayscale, grayscale);
-  }
-
   private static float[] s_hsbBuffer = new float[3];
 
   private static float[] s_aBuffer = new float[4];
@@ -73,17 +69,9 @@ public class ColorUtilities {
     }
   }
 
-  private static Color constructColor(int rgb, int alpha) {
-    Color c = new Color(rgb);
-    return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
-  }
-
   private static Color constructColor(float[] hsb, int alpha) {
-    return constructColor(Color.HSBtoRGB(bound(hsb[0]), bound(hsb[1]), bound(hsb[2])), alpha);
-  }
-
-  public static synchronized Color setAlpha(Color color, int alpha) {
-    return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+    Color c = new Color(Color.HSBtoRGB(bound(hsb[0]), bound(hsb[1]), bound(hsb[2])));
+    return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
   }
 
   private static float bound(float f) {
@@ -107,20 +95,6 @@ public class ColorUtilities {
       s_hsbBuffer[1] *= saturationScale;
       s_hsbBuffer[2] *= brightnessScale;
       return constructColor(s_hsbBuffer, color.getAlpha());
-    }
-  }
-
-  public static float getHue(Color color) {
-    synchronized (s_hsbBuffer) {
-      Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer);
-      return s_hsbBuffer[0];
-    }
-  }
-
-  public static float getSaturation(Color color) {
-    synchronized (s_hsbBuffer) {
-      Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), s_hsbBuffer);
-      return s_hsbBuffer[1];
     }
   }
 

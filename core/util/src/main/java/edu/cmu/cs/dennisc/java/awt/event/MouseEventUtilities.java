@@ -106,11 +106,9 @@ public class MouseEventUtilities {
     int modifiersEx = sourceEvent.getModifiersEx();
     int modifiersComplete = modifiers | modifiersEx;
     MouseEvent me = SwingUtilities.convertMouseEvent(source, sourceEvent, destination);
-    if (me instanceof MouseWheelEvent) {
-      MouseWheelEvent mwe = (MouseWheelEvent) me;
+    if (me instanceof MouseWheelEvent mwe) {
       return new MouseWheelEvent(me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mwe.getScrollType(), mwe.getScrollAmount(), mwe.getWheelRotation());
-    } else if (me instanceof MenuDragMouseEvent) {
-      MenuDragMouseEvent mdme = (MenuDragMouseEvent) me;
+    } else if (me instanceof MenuDragMouseEvent mdme) {
       return new MenuDragMouseEvent(me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mdme.getPath(), mdme.getMenuSelectionManager());
     } else {
       return new MouseEvent(me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger());

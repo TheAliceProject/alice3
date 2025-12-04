@@ -42,11 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
-import edu.cmu.cs.dennisc.issue.AbstractReport;
-import edu.cmu.cs.dennisc.issue.Issue;
-import edu.cmu.cs.dennisc.issue.IssueType;
-import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
-import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
+import edu.cmu.cs.dennisc.issue.*;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
@@ -59,14 +55,7 @@ import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.swing.SubmitReportAction;
 import org.lgna.project.ProjectVersion;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;

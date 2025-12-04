@@ -43,12 +43,7 @@
 
 package org.alice.stageide.ast;
 
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.JavaConstructorParameter;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.*;
 import org.lgna.story.resources.sims2.BottomPiece;
 import org.lgna.story.resources.sims2.Outfit;
 import org.lgna.story.resources.sims2.TopAndBottomOutfit;
@@ -63,16 +58,15 @@ public class SimsExpressionCreator extends ExpressionCreator {
 
   private Expression createOutfitExpression(Outfit outfit) throws CannotCreateExpressionException {
     if (outfit != null) {
-      if (outfit instanceof TopAndBottomOutfit<?, ?>) {
-        TopAndBottomOutfit<?, ?> topAndBottomOutfit = (TopAndBottomOutfit<?, ?>) outfit;
+      if (outfit instanceof TopAndBottomOutfit<?, ?> topAndBottomOutfit) {
         TopPiece topPiece = topAndBottomOutfit.getTopPiece();
         BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
 
         JavaType type = JavaType.getInstance(outfit.getClass());
-        JavaConstructor constructor = type.getDeclaredConstructors().get(0);
+        JavaConstructor constructor = type.getDeclaredConstructors().getFirst();
         List<JavaConstructorParameter> parameters = constructor.getRequiredParameters();
         if (parameters.size() == 2) {
-          if (parameters.get(0).getValueType().isAssignableFrom(topPiece.getClass())) {
+          if (parameters.getFirst().getValueType().isAssignableFrom(topPiece.getClass())) {
             if (parameters.get(1).getValueType().isAssignableFrom(bottomPiece.getClass())) {
               Expression topExpression = this.createExpression(topPiece);
               Expression bottomExpression = this.createExpression(bottomPiece);
@@ -95,8 +89,8 @@ public class SimsExpressionCreator extends ExpressionCreator {
 
   @Override
   protected Expression createCustomExpression(Object value) throws CannotCreateExpressionException {
-    if (value instanceof TopAndBottomOutfit<?, ?>) {
-      return this.createOutfitExpression((TopAndBottomOutfit<?, ?>) value);
+    if (value instanceof TopAndBottomOutfit<?, ?> outfit) {
+      return this.createOutfitExpression(outfit);
     } else {
       return super.createCustomExpression(value);
     }

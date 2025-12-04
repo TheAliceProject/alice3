@@ -48,10 +48,9 @@ import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane;
 import org.lgna.croquet.views.ScrollPane;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
 
 /**
  * @author Dennis Cosgrove
@@ -62,7 +61,6 @@ public abstract class GalleryTabView extends BorderPanel {
 
   public GalleryTabView(GalleryTab composite) {
     super(composite, 0, PAD);
-    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
     this.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
   }
 
@@ -71,9 +69,8 @@ public abstract class GalleryTabView extends BorderPanel {
   }
 
   protected static ScrollPane createGalleryScrollPane(AwtComponentView<?> view) {
-    ScrollPane rv = new HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane(view);
+    ScrollPane rv = new ScrollPane(view, null, ScrollPane.HorizontalScrollbarPolicy.ALWAYS);
     rv.setBothScrollBarIncrements(16, 160);
-    rv.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
     return rv;
   }
 

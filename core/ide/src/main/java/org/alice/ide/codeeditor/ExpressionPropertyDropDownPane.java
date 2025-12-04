@@ -93,8 +93,7 @@ public class ExpressionPropertyDropDownPane extends DropDown<CascadeRoot.Interna
     protected Triggerable dragDroppedPostRejectorCheck(DragStep dragStep) {
       DragModel dragModel = dragStep.getModel();
       Triggerable rv;
-      if (dragModel instanceof AbstractExpressionDragModel) {
-        AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel) dragModel;
+      if (dragModel instanceof AbstractExpressionDragModel expressionDragModel) {
         rv = expressionDragModel.getDropOperation(dragStep, new ExpressionPropertyDropSite(ExpressionPropertyDropDownPane.this.expressionProperty));
       } else {
         rv = null;

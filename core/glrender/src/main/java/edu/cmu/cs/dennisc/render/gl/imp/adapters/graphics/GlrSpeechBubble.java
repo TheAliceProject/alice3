@@ -120,9 +120,7 @@ public class GlrSpeechBubble extends GlrBubble<SpeechBubble> {
     g2.setColor(outlineColor);
     g2.draw(area);
 
-    if (portion < 1.0) {
-      //pass
-    } else {
+    if (portion >= 1.0) {
       g2.setColor(textColor);
       g2.setFont(font);
 

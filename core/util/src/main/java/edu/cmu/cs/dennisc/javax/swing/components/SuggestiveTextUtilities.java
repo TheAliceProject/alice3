@@ -42,17 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.FontUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -62,12 +58,10 @@ class SuggestiveTextUtilities {
   public static void drawBlankTextIfNecessary(JTextComponent textComponent, Graphics g, String textForBlankCondition) {
     if (textComponent.isEditable() && textComponent.isEnabled()) {
       String text = textComponent.getText();
-      if ((text.length() > 0) || (textForBlankCondition == null) || (textForBlankCondition.length() == 0)) {
-        //pass
-      } else {
+      if (text.isEmpty() && textForBlankCondition != null && !textForBlankCondition.isEmpty()) {
         Font font = FontUtilities.deriveFont(textComponent.getFont(), TextWeight.LIGHT, TextPosture.OBLIQUE);
         g.setFont(font);
-        g.setColor(ColorUtilities.createGray(191));
+        g.setColor(UIManager.getColor("Label.disabledForeground"));
         FontMetrics fm = g.getFontMetrics();
         Insets insets = textComponent.getInsets();
         ComponentOrientation componentOrientation = textComponent.getComponentOrientation();

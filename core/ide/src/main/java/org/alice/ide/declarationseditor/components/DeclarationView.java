@@ -64,7 +64,6 @@ public abstract class DeclarationView extends BorderPanel {
   public DeclarationView(DeclarationComposite composite) {
     super(composite);
     this.javaCodeView = new JavaCodeView(composite.getDeclaration());
-    this.sideBySideScrollPane.setBackgroundColor(this.getBackgroundColor());
     this.sideBySideScrollPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
   }
 
@@ -73,18 +72,14 @@ public abstract class DeclarationView extends BorderPanel {
   protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
     AwtComponentView<?> mainComponent = this.getMainComponent();
     if (value) {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(mainComponent);
       }
       this.sideBySideScrollPane.setLeadingView(mainComponent);
       this.sideBySideScrollPane.setTrailingView(this.javaCodeView);
       this.addCenterComponent(sideBySideScrollPane);
     } else {
-      if (isFirstTime) {
-        //pass
-      } else {
+      if (!isFirstTime) {
         this.removeComponent(this.sideBySideScrollPane);
       }
       this.sideBySideScrollPane.setLeadingView(null);

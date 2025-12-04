@@ -45,14 +45,14 @@ package org.lgna.story.implementation.alice;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.UnitQuaternion;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointArrayId;

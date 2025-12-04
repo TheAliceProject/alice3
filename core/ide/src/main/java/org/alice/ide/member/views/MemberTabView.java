@@ -45,22 +45,9 @@ package org.alice.ide.member.views;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.Theme;
-import org.alice.ide.member.AddMethodMenuModel;
-import org.alice.ide.member.FunctionsOfReturnTypeSubComposite;
-import org.alice.ide.member.MemberTabComposite;
-import org.alice.ide.member.MethodsSubComposite;
-import org.alice.ide.member.UserMethodsSubComposite;
-import org.alice.stageide.icons.PlusIconFactory;
-import org.lgna.croquet.views.ComboBox;
-import org.lgna.croquet.views.HorizontalTextPosition;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.PopupButton;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.ToolPaletteTitle;
-import org.lgna.croquet.views.ToolPaletteView;
+import org.alice.ide.icons.PlusIconFactory;
+import org.alice.ide.member.*;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ast.Member;
 
 import java.awt.Insets;
@@ -76,7 +63,7 @@ public abstract class MemberTabView extends MigPanel {
   private final ComboBox<String> comboBox;
 
   MemberTabView(MemberTabComposite<?> composite) {
-    super(composite, "insets 0, fill", "[]", "[grow 0][]");
+    super(composite, "insets 4, fill", "[]", "[grow 0][]");
     AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
     if (addMethodMenuModel != null) {
       this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
@@ -125,9 +112,12 @@ public abstract class MemberTabView extends MigPanel {
       this.addComponent(leftTopComponent, "align left");
       scrollPaneConstraints += ", span 2";
     }
+
     this.addComponent(this.comboBox, "align right, wrap");
 
     MigPanel scrollPaneView = new MigPanel(null, "insets 0", "[]", "[]0[]");
+    scrollPaneView.setBackgroundColor(composite.getView().getBackgroundColor());
+
     for (MethodsSubComposite subComposite : composite.getSubComposites()) {
       if (subComposite != MemberTabComposite.SEPARATOR) {
         if (subComposite.isShowingDesired()) {
@@ -138,12 +128,9 @@ public abstract class MemberTabView extends MigPanel {
           view.getTitle().changeFont(TextPosture.OBLIQUE);
           if (MemberTabComposite.ARE_TOOL_PALETTES_INERT) {
             view.getTitle().setInert(true);
-          } else {
-            view.getTitle().setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
           }
           view.setBackgroundColor(this.getBackgroundColor());
-          if (subComposite instanceof UserMethodsSubComposite) {
-            UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite) subComposite;
+          if (subComposite instanceof UserMethodsSubComposite userMethodsSubComposite) {
             view.getTitle().setSuppressed(!userMethodsSubComposite.isRelevant());
           }
           scrollPaneView.addComponent(view, "wrap");

@@ -68,8 +68,8 @@ public abstract class AddMethodMenuModel extends MenuModel {
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
     if (instanceFactory != null) {
       AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-      if (type instanceof NamedUserType) {
-        return (NamedUserType) type;
+      if (type instanceof NamedUserType userType) {
+        return userType;
       } else {
         return null;
       }
@@ -85,8 +85,7 @@ public abstract class AddMethodMenuModel extends MenuModel {
   protected abstract AddMethodComposite getAddMethodComposite(NamedUserType declaringType);
 
   private void appendMenuItemPrepModelsForType(List<StandardMenuItemPrepModel> models, AbstractType<?, ?, ?> type) {
-    if (type instanceof NamedUserType) {
-      NamedUserType namedUserType = (NamedUserType) type;
+    if (type instanceof NamedUserType namedUserType) {
       models.add(this.getAddMethodComposite(namedUserType).getLaunchOperation().getMenuItemPrepModel());
       appendMenuItemPrepModelsForType(models, namedUserType.superType.getValue());
     }

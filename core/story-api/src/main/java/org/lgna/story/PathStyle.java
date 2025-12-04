@@ -62,8 +62,7 @@ public enum PathStyle implements MoveTo.Detail, MoveAndOrientTo.Detail, SetPosit
 
   private static PathStyle getValue(Object[] details, PathStyle defaultValue) {
     for (Object detail : details) {
-      if (detail instanceof PathStyle) {
-        PathStyle pathStyle = (PathStyle) detail;
+      if (detail instanceof PathStyle pathStyle) {
         return pathStyle;
       }
     }

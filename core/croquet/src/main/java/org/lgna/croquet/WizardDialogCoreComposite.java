@@ -50,21 +50,14 @@ import edu.cmu.cs.dennisc.javax.swing.models.ListModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.WizardDialogContentComposite;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CardPanel;
-import org.lgna.croquet.views.Dialog;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -136,8 +129,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
     @Override
     public boolean isCardAccountedForInPreferredSizeCalculation(Composite<?> card) {
-      if (card instanceof WizardPageComposite) {
-        WizardPageComposite page = (WizardPageComposite) card;
+      if (card instanceof WizardPageComposite page) {
         return page.isAccountedForInPreferredSizeCalculation();
       } else {
         return super.isCardAccountedForInPreferredSizeCalculation(card);
@@ -166,8 +158,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       this.listSelectionModel.clearSelection();
     }
     String text;
-    if (card instanceof WizardPageComposite) {
-      WizardPageComposite wizardPageComposite = (WizardPageComposite) card;
+    if (card instanceof WizardPageComposite wizardPageComposite) {
       text = wizardPageComposite.getName();
     } else {
       text = null;
@@ -222,9 +213,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       sb.append(index + 1);
       sb.append(".    ");
       sb.append(value.getName());
-      if (isSelected) {
-        //pass
-      } else {
+      if (!isSelected) {
         //todo:
         final String PADDING_TO_ACCOUNT_FOR_SELECTED_TEXT_WEIGHT = "       ";
         sb.append(PADDING_TO_ACCOUNT_FOR_SELECTED_TEXT_WEIGHT);
@@ -301,7 +290,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
         }
       };
       list.setSelectionModel(this.listSelectionModel);
-      list.setAlignmentX(0.0f);
+      list.setAlignmentX(Component.LEFT_ALIGNMENT);
       //list.setEnabled( false );
       list.setCellRenderer(this.listCellRenderer);
 
@@ -323,8 +312,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   @Override
   protected final Status getStatusPreRejectorCheck() {
     Composite<?> page = this.cardComposite.getShowingCard();
-    if (page instanceof WizardPageComposite) {
-      return ((WizardPageComposite) page).getPageStatus();
+    if (page instanceof WizardPageComposite composite) {
+      return composite.getPageStatus();
     } else {
       Logger.todo(this, page);
       //todo
@@ -366,9 +355,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
       List<Composite<?>> cards = this.cardComposite.getCards();
       for (int i = this.index + 1; i < cards.size(); i++) {
         WizardPageComposite page = (WizardPageComposite) cards.get(i);
-        if (page.isClearToCommit()) {
-          //pass
-        } else {
+        if (!page.isClearToCommit()) {
           isCommitEnabled = false;
           break;
         }
@@ -399,8 +386,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   @Override
   protected void handlePreShowDialog(Dialog dialog) {
     for (Composite<?> subComposite : this.cardComposite.getCards()) {
-      if (subComposite instanceof WizardPageComposite<?, ?>) {
-        WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>) subComposite;
+      if (subComposite instanceof WizardPageComposite<?, ?> wizardPage) {
         wizardPage.handlePreShowDialog();
       }
     }
@@ -411,8 +397,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
   protected void handlePostHideDialog() {
     super.handlePostHideDialog();
     for (Composite<?> subComposite : this.cardComposite.getCards()) {
-      if (subComposite instanceof WizardPageComposite<?, ?>) {
-        WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>) subComposite;
+      if (subComposite instanceof WizardPageComposite<?, ?> wizardPage) {
         wizardPage.handlePostHideDialog();
       }
     }

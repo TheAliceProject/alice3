@@ -42,35 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formdev.flatlaf.FlatLaf;
 import edu.cmu.cs.dennisc.crash.CrashDetector;
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
-import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
-import org.alice.ide.story.AliceIde;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.lgna.project.ProjectVersion;
+import org.lgna.project.reflect.ClassInfo;
+import org.lgna.project.reflect.ClassInfoManager;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EntryPoint extends Application {
-  private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
   private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
   private static HeapWatchDog heapMonitor;
@@ -88,20 +86,23 @@ public class EntryPoint extends Application {
     String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
     System.out.println("version: " + text);
 
+    // This resources file is where all the theme colors are defined
+    FlatLaf.registerCustomDefaultsSource("org.alice.stageide.themes");
+
+    // TODO- create a setting somewhere? auto-determine from OS?
+    Boolean useDarkMode = false;
+    try {
+        javax.swing.UIManager.setLookAndFeel((useDarkMode ? new com.formdev.flatlaf.FlatDarkLaf() : new com.formdev.flatlaf.FlatLightLaf()));
+        com.formdev.flatlaf.FlatLaf.updateUI();
+      } catch (UnsupportedLookAndFeelException updateFlatLafThemeException) {
+      Logger.severe("Was unable to set look and feel theme: " + updateFlatLafThemeException.getMessage());
+      updateFlatLafThemeException.printStackTrace();
+    }
+
     // Initialize Swing here to do it on the correct thread, outside of JavaFX
     SwingUtilities.invokeLater(() -> {
-      if (PlafUtilities.isInstalledLookAndFeelNamed(NIMBUS_LOOK_AND_FEEL_NAME)) {
-        final Object macMenuBarUI;
-        if (SystemUtilities.isMac()) {
-          if (SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
-            macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
-          } else {
-            macMenuBarUI = null;
-          }
-        } else {
-          macMenuBarUI = null;
-        }
-        UIManagerUtilities.setLookAndFeel(NIMBUS_LOOK_AND_FEEL_NAME);
+      if (SystemUtilities.isMac()) { //&& SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
+        final Object macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
         if (macMenuBarUI != null) {
           UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
         }
@@ -112,10 +113,6 @@ public class EntryPoint extends Application {
       UIManager.put("ScrollBar.width", 13);
       UIManager.put("ScrollBar.incrementButtonGap", 0);
       UIManager.put("ScrollBar.decrementButtonGap", 0);
-      UIManager.put("ScrollBar.thumb", ColorUtilities.createGray(140));
-
-      //java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
-      //javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
       ConsistentMouseDragEventQueue.pushIfAppropriate();
 
@@ -130,15 +127,11 @@ public class EntryPoint extends Application {
       String localeString = null;
       int index = 0;
       if (args.length > 0) {
-        if ("null".equalsIgnoreCase(args[0])) {
-          //pass
-        } else {
-          if ("-l".equalsIgnoreCase(args[0])) {
-            index = 1;
-            if (args.length > 1) {
-              localeString = args[1];
-              index = 2;
-            }
+        if ("-l".equalsIgnoreCase(args[0])) {
+          index = 1;
+          if (args.length > 1) {
+            localeString = args[1];
+            index = 2;
           }
         }
         if (args.length > index) {
@@ -175,7 +168,8 @@ public class EntryPoint extends Application {
         System.out.println(localeTest);
       }
 
-      AliceIde ide = new AliceIde(crashDetector);
+      loadClassInfos();
+      StageIDE ide = new StageIDE(crashDetector);
       if (file != null) {
         if (file.exists()) {
           ide.setProjectFileToLoadOnWindowOpened(file);
@@ -191,6 +185,16 @@ public class EntryPoint extends Application {
 
     // Call to initialize JavaFX
     launch(args);
+  }
+
+  private static void loadClassInfos() {
+    String json = TextFileUtilities.read(EntryPoint.class.getResourceAsStream("classinfos.json"));
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      ClassInfoManager.addClassInfos(mapper.readValue(json, ClassInfo[].class));
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL.GL_POLYGON_OFFSET_FILL;
-import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
-
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -60,6 +57,9 @@ import org.alice.math.immutable.Vector3;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.jogamp.opengl.GL.GL_POLYGON_OFFSET_FILL;
+import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 
 /**
  * @author Dennis Cosgrove
@@ -87,7 +87,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
   @Override
   protected void handleReleased() {
     super.handleReleased();
-    if (this.renderContexts.size() > 0) {
+    if (!this.renderContexts.isEmpty()) {
       RenderContext[] renderContexts = new RenderContext[this.renderContexts.size()];
       this.renderContexts.toArray(renderContexts);
       for (RenderContext rc : renderContexts) {
@@ -157,22 +157,13 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
     pickGeometry(pc, isSubElementRequired);
   }
 
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, double px, double py, double pz, double nx, double ny, double nz) {
-    Point3 position = new Point3(px, py, pz);
-    Vector3 direction = new Vector3(nx, ny, nz);
-    position = m.transform(position);
-    direction = m.transform(direction);
-    Plane plane = Plane.createInstance(position, direction);
+  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, Point3 position, Vector3 direction) {
+    Plane plane = Plane.createInstance(m.transform(position), m.transform(direction));
     if (plane.isNaN()) {
       return Point3.NaN;
-    } else {
-      double t = plane.intersect(ray);
-      return ray.getPointAlong(t);
     }
-  }
-
-  protected static Point3 getIntersectionInSourceFromPlaneInLocal(Ray ray, Matrix4x4 m, Point3 planePosition, Vector3 planeDirection) {
-    return getIntersectionInSourceFromPlaneInLocal(ray, m, planePosition.x(), planePosition.y(), planePosition.x(), planeDirection.x(), planeDirection.y(), planeDirection.z());
+    double t = plane.intersect(ray);
+    return ray.getPointAlong(t);
   }
 
   public abstract Point3 getIntersectionInSource(Ray ray, Matrix4x4 m, int subElement);

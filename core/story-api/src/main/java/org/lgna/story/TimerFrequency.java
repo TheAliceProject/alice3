@@ -47,16 +47,16 @@ import org.lgna.story.AddTimeListener.Detail;
 public class TimerFrequency implements AddTimeListener.Detail {
 
   public static final TimerFrequency ASAP = new TimerFrequency(Double.doubleToLongBits(0));
-  private Double frequency;
+  private final Double frequency;
 
   public TimerFrequency(double frequency) {
-    this.frequency = new Double(frequency);
+    this.frequency = frequency;
   }
 
   public static TimerFrequency getValue(Detail[] details) {
     for (Detail detail : details) {
-      if (detail instanceof TimerFrequency) {
-        return (TimerFrequency) detail;
+      if (detail instanceof TimerFrequency timerFrequency) {
+        return timerFrequency;
       }
     }
     return ASAP;

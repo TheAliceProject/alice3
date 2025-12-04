@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+
+import java.io.File;
 import java.net.URI;
 
 /**
@@ -56,6 +59,16 @@ public class StarterProjectFileLoader extends AbstractFileProjectLoader {
   @Override
   public URI getUri() {
     return this.uri;
+  }
+
+  @Override
+  protected void handleLoadException(File file, Exception e) {
+    Dialogs.showUnableToOpenFileDialog(file, "");
+  }
+
+  @Override
+  public boolean isNewProject() {
+    return true;
   }
 
   private final URI uri;

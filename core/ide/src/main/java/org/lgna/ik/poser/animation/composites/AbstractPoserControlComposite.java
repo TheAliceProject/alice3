@@ -42,8 +42,6 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import java.util.UUID;
-
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -62,6 +60,8 @@ import org.lgna.ik.poser.jselection.JointSelectionSphereState;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
+
+import java.util.UUID;
 
 /**
  * @author Matt May

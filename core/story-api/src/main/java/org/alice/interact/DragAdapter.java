@@ -454,18 +454,18 @@ public abstract class DragAdapter {
       this.fireSelecting(new SelectionEvent(this, selected));
       if (this.selectedCameraMarker != null) {
         this.selectedCameraMarker.opacity.setValue(.3f);
-        if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp) {
-          ((PerspectiveCameraMarkerImp) this.selectedCameraMarker).setDetailedViewShowing(false);
+        if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp imp) {
+          imp.setDetailedViewShowing(false);
         }
       }
       this.selectedCameraMarker = selected;
       if (this.selectedCameraMarker != null) {
         this.selectedCameraMarker.opacity.setValue(1f);
-        if (this.hasSceneEditor() && (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp)) {
+        if (this.hasSceneEditor() && (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp imp)) {
           //TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
           //          boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
           //          if (!isNewSelectedActiveCameraMarker) {
-          ((PerspectiveCameraMarkerImp) this.selectedCameraMarker).setDetailedViewShowing(true);
+          imp.setDetailedViewShowing(true);
           //}
         }
       }
@@ -505,10 +505,10 @@ public abstract class DragAdapter {
           }
         }
       }
-      if (selected instanceof ObjectMarkerImp) {
-        setSelectedObjectMarker((ObjectMarkerImp) selected);
-      } else if (selected instanceof CameraMarkerImp) {
-        setSelectedCameraMarker((CameraMarkerImp) selected);
+      if (selected instanceof ObjectMarkerImp objectMarker) {
+        setSelectedObjectMarker(objectMarker);
+      } else if (selected instanceof CameraMarkerImp cameraMarker) {
+        setSelectedCameraMarker(cameraMarker);
       } else {
         setSelectedSceneObjectImplementation(selected);
       }
@@ -630,8 +630,8 @@ public abstract class DragAdapter {
     if (c == null) {
       return null;
     }
-    if (c instanceof ManipulationHandle) {
-      return (ManipulationHandle) c;
+    if (c instanceof ManipulationHandle handle) {
+      return handle;
     } else {
       return getHandleForComponent(c.getParent());
     }
@@ -976,7 +976,8 @@ public abstract class DragAdapter {
   private Component lookingGlassComponent = null;
   private Component currentRolloverComponent = null;
   private Animator animator;
-  protected final/*private*/ InputState currentInputState = new InputState();
+  // TODO make currentInputState private
+  protected final InputState currentInputState = new InputState();
   private final InputState previousInputState = new InputState();
   private boolean isInStageChange = false;
   private double mouseWheelTimeoutTime = 0;

@@ -52,16 +52,19 @@ package org.alice.media.audio;
  |<---            this code is formatted to fit into 80 columns             --->|
  */
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+/*
+ |<---            this code is formatted to fit into 80 columns             --->|
+ */
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 
 /**
  * Mixing of multiple AudioInputStreams to one AudioInputStream. This class

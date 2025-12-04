@@ -104,18 +104,14 @@ public class StatementContextMenu extends MenuModel {
   }
 
   private List<StandardMenuItemPrepModel> updatePopupOperations(List<StandardMenuItemPrepModel> rv, final Statement statement) {
-    if (statement instanceof Comment) {
-      //pass
-    } else {
+    if (!(statement instanceof Comment)) {
       rv.add(new FastForwardToStatementOperation(statement).getMenuItemPrepModel());
       rv.add(MenuModel.SEPARATOR);
       rv.add(IsStatementEnabledState.getInstance(statement).getMenuItemPrepModel());
     }
-    if (statement instanceof ExpressionStatement) {
-      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+    if (statement instanceof ExpressionStatement expressionStatement) {
       Expression expression = expressionStatement.expression.getValue();
-      if (expression instanceof MethodInvocation) {
-        MethodInvocation methodInvocation = (MethodInvocation) expression;
+      if (expression instanceof MethodInvocation methodInvocation) {
         AbstractMethod method = methodInvocation.method.getValue();
         if (method instanceof UserMethod) {
           rv.add(IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(method).getMenuItemPrepModel());
@@ -146,24 +142,18 @@ public class StatementContextMenu extends MenuModel {
       });
       //throw new org.lgna.croquet.CancelException();
     }
-    if (statement instanceof AbstractStatementWithBody) {
-      AbstractStatementWithBody statementWithBody = (AbstractStatementWithBody) statement;
+    if (statement instanceof AbstractStatementWithBody statementWithBody) {
       rv.add(DissolveStatementWithBodyOperation.getInstance(statementWithBody).getMenuItemPrepModel());
-      if (statementWithBody instanceof DoInOrder) {
-        DoInOrder doInOrder = (DoInOrder) statementWithBody;
+      if (statementWithBody instanceof DoInOrder doInOrder) {
         rv.add(ConvertDoInOrderToDoTogetherOperation.getInstance(doInOrder).getMenuItemPrepModel());
-      } else if (statementWithBody instanceof DoTogether) {
-        DoTogether doTogether = (DoTogether) statementWithBody;
+      } else if (statementWithBody instanceof DoTogether doTogether) {
         rv.add(ConvertDoTogetherToDoInOrderOperation.getInstance(doTogether).getMenuItemPrepModel());
       }
-    } else if (statement instanceof ConditionalStatement) {
-      ConditionalStatement conditionalStatement = (ConditionalStatement) statement;
+    } else if (statement instanceof ConditionalStatement conditionalStatement) {
       //todo: dissolve to if, dissolve to else
-    } else if (statement instanceof ExpressionStatement) {
-      ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+    } else if (statement instanceof ExpressionStatement expressionStatement) {
       Expression expression = expressionStatement.expression.getValue();
-      if (expression instanceof ArgumentOwner) {
-        ArgumentOwner argumentOwner = (ArgumentOwner) expression;
+      if (expression instanceof ArgumentOwner argumentOwner) {
         KeyedArgumentListProperty argumentListProperty = argumentOwner.getKeyedArgumentsProperty();
         for (JavaKeyedArgument argument : argumentListProperty) {
           rv.add(RemoveKeyedArgumentOperation.getInstance(argumentListProperty, argument).getMenuItemPrepModel());

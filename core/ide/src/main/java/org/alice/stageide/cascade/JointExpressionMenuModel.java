@@ -113,9 +113,7 @@ public class JointExpressionMenuModel extends CascadeMenuModel<Expression> {
             break;
           }
         }
-        if (isConsumed) {
-          //pass
-        } else {
+        if (!isConsumed) {
           blankChildren.add(fillIn);
         }
       } else {

@@ -60,12 +60,7 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
   private static InitializingIfAbsentMap<UserParameter, ParameterAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
   public static ParameterAccessDragModel getInstance(UserParameter parameter) {
-    return map.getInitializingIfAbsent(parameter, new InitializingIfAbsentMap.Initializer<UserParameter, ParameterAccessDragModel>() {
-      @Override
-      public ParameterAccessDragModel initialize(UserParameter parameter) {
-        return new ParameterAccessDragModel(parameter);
-      }
-    });
+    return map.get(parameter, ParameterAccessDragModel::new);
   }
 
   private final UserParameter parameter;

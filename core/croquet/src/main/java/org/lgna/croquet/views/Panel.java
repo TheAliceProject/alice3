@@ -59,7 +59,6 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
   protected class DefaultJPanel extends JPanel {
     public DefaultJPanel() {
       this.setOpaque(false);
-      this.setBackground(null);
       this.setAlignmentX(Component.LEFT_ALIGNMENT);
       this.setAlignmentY(Component.CENTER_ALIGNMENT);
     }
@@ -104,9 +103,7 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
     JPanel rv = this.createJPanel();
     LayoutManager prevLayoutManager = rv.getLayout();
     LayoutManager nextLayoutManager = this.createLayoutManager(rv);
-    if (prevLayoutManager instanceof FlowLayout) {
-      //pass
-    } else {
+    if (!(prevLayoutManager instanceof FlowLayout)) {
       StringBuilder sb = new StringBuilder();
       sb.append("\n********************************************************");
       sb.append("\n********************************************************");
@@ -140,16 +137,14 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
     this.internalRemoveComponent(component);
   }
 
-  public void forgetAndRemoveComponent(AwtComponentView<?> component) {
-    this.internalForgetAndRemoveComponent(component);
-  }
-
   public void removeAllComponents() {
     this.internalRemoveAllComponents();
   }
 
   public void forgetAndRemoveAllComponents() {
-    this.internalForgetAndRemoveAllComponents();
+    synchronized (this.getTreeLock()) {
+      this.internalForgetAndRemoveAllComponents();
+    }
   }
 
   private boolean isInTheMidstOfRefreshing = false;
@@ -160,9 +155,7 @@ public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
 
   protected void refreshIfNecessary() {
     if (this.isRefreshNecessary) {
-      if (this.isInTheMidstOfRefreshing) {
-        //pass
-      } else {
+      if (!this.isInTheMidstOfRefreshing) {
         this.isInTheMidstOfRefreshing = true;
         try {
           //this.forgetAndRemoveAllComponents();

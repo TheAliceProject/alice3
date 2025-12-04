@@ -72,8 +72,7 @@ public class OneShotUtilities {
     List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
     models.add(InstanceFactoryLabelSeparatorModel.getInstance(instanceFactory));
     models.add(ProceduresCascade.getInstance(instanceFactory).getMenuModel());
-    if (instanceFactory instanceof ThisFieldAccessFactory) {
-      ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+    if (instanceFactory instanceof ThisFieldAccessFactory thisFieldAccessFactory) {
       UserField field = thisFieldAccessFactory.getField();
       models.add(RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
       AbstractType<?, ?, ?> fieldType = field.getValueType();

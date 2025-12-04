@@ -1,8 +1,8 @@
 package com.dddviewr.collada.geometry;
 
-import java.io.PrintStream;
-
 import com.dddviewr.collada.Input;
+
+import java.io.PrintStream;
 
 public class Triangles extends Primitives {
   private int pos;

@@ -60,10 +60,10 @@ public class JDialogUtilities {
     } else {
       root = null;
     }
-    if (root instanceof Frame) {
-      rv = new JDialog((Frame) root);
-    } else if (root instanceof Dialog) {
-      rv = new JDialog((Dialog) root);
+    if (root instanceof Frame frame) {
+      rv = new JDialog(frame);
+    } else if (root instanceof Dialog dialog) {
+      rv = new JDialog(dialog);
     } else {
       rv = new JDialog();
     }

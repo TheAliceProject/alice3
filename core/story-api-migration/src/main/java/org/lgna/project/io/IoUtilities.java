@@ -65,7 +65,6 @@ public abstract class IoUtilities {
   public static final String EXPORT_EXTENSION = "a3w";
   public static final String PROJECT_EXTENSION = "a3p";
   public static final String TYPE_EXTENSION = "a3c";
-  public static final String BACKUP_EXTENSION = "bak";
 
   public static File[] listProjectFiles(File directory) {
     return FileUtilities.listFiles(directory, PROJECT_EXTENSION);

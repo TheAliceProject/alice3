@@ -42,7 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.history;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.alice.ide.icons.Icons;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.undo.UndoHistory;
 
@@ -54,7 +55,7 @@ import java.util.UUID;
 public class UndoOperation extends HistoryOperation {
   public UndoOperation(DocumentFrame documentFrame) {
     super(UUID.fromString("8580fdfd-6862-4aef-bf86-c7dad41e9ccb"), documentFrame);
-    this.setButtonIcon(IconUtilities.createImageIcon(UndoOperation.class.getResource("images/undo.png")));
+    this.setButtonIcon(new FlatSVGIcon(Icons.class.getResource("images/undo.svg")));
   }
 
   @Override

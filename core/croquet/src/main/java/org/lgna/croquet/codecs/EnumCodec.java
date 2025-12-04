@@ -69,13 +69,7 @@ public class EnumCodec<T extends Enum<T>> implements ItemCodec<T> {
   }
 
   public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance(Class<T> valueCls) {
-    EnumCodec<T> rv = map.getInitializingIfAbsent((Class) valueCls, new InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
-      @Override
-      public EnumCodec initialize(Class valueCls) {
-        return new EnumCodec(valueCls, null);
-      }
-    });
-    return rv;
+    return (EnumCodec<T>) map.get(valueCls, cls -> new EnumCodec<T>(cls, null));
   }
 
   private final Class<T> valueCls;

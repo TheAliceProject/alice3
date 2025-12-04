@@ -194,9 +194,7 @@ public class PreferenceManager {
     byte[] defaultEncoding = encodeItem(defaultValue, codec);
     String key = getKey(rv);
     byte[] encoding = userPreferences.getByteArray(key, defaultEncoding);
-    if (Arrays.equals(defaultEncoding, encoding)) {
-      //pass
-    } else {
+    if (!Arrays.equals(defaultEncoding, encoding)) {
       E value = decodeItem(encoding, codec);
       rv.setValueTransactionlessly(value);
     }
@@ -209,9 +207,7 @@ public class PreferenceManager {
     byte[] defaultEncoding = encodeArray(defaultValue, codec);
     String key = getKey(rv);
     byte[] encoding = userPreferences.getByteArray(key, defaultEncoding);
-    if (Arrays.equals(defaultEncoding, encoding)) {
-      //pass
-    } else {
+    if (!Arrays.equals(defaultEncoding, encoding)) {
       E[] value = decodeArray(encoding, codec);
       rv.setListData(-1, value);
     }

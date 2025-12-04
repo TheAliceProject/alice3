@@ -136,7 +136,7 @@ public class MenuBar extends CompositeView<JMenuBar, MenuBarComposite> implement
     //  edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.getAwtComponent().getLayout() );
     //  menuItem.setMaximumSizeClampedToPreferredSize( true );
     //  menuItem.setHorizontalAlignment( HorizontalAlignment.TRAILING );
-    //  menuItem.setAlignmentX( 1.0f );
+    //  menuItem.setAlignmentX(Component.RIGHT_ALIGNMENT);
     this.getAwtComponent().add(menuItem.getAwtComponent());
   }
 

@@ -190,7 +190,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
     @Override
     public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
-      AbstractParameter parameter = this.setter.getRequiredParameters().get(0);
+      AbstractParameter parameter = this.setter.getRequiredParameters().getFirst();
       AbstractType<?, ?, ?> valueType = parameter.getValueType();
       ValueDetails<?> valueDetails = parameter.getDetails();
 
@@ -199,7 +199,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
     public void appendDoStatements(EditCustomization editCustomization, UserField field, Expression expression) {
       MethodInvocation setterInvocation = SetUpMethodGenerator.createSetterInvocation(false, field, setter, expression);
-      if (setDimensionPolicyMethods.size() == 0) {
+      if (setDimensionPolicyMethods.isEmpty()) {
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setWidth", Number.class, SetWidth.Detail[].class));
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setHeight", Number.class, SetHeight.Detail[].class));
         setDimensionPolicyMethods.add(JavaMethod.getInstance(SModel.class, "setDepth", Number.class, SetDepth.Detail[].class));
@@ -221,8 +221,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
   protected EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv) {
     AffineMatrix4x4 initialTransform = null;
     DropSite dropSite = userActivity.findDropSite();
-    if (dropSite instanceof SceneDropSite) {
-      SceneDropSite sceneDropSite = (SceneDropSite) dropSite;
+    if (dropSite instanceof SceneDropSite sceneDropSite) {
       initialTransform = sceneDropSite.getTransform();
     } else {
       AbstractType<?, ?, ?> type = field.getValueType();

@@ -58,16 +58,7 @@ public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
   private static InitializingIfAbsentMap<UserMethod, ChangeAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
   public static ChangeAnimationProcedureDialog getInstance(UserMethod method) {
-    if (AnimatorComposite.isStrictlyAnimation(method)) {
-      return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<UserMethod, ChangeAnimationProcedureDialog>() {
-        @Override
-        public ChangeAnimationProcedureDialog initialize(UserMethod method) {
-          return new ChangeAnimationProcedureDialog(method);
-        }
-      });
-    } else {
-      return null;
-    }
+    return AnimatorComposite.isStrictlyAnimation(method) ? map.get(method, ChangeAnimationProcedureDialog::new) : null;
   }
 
   private ChangeAnimationProcedureDialog(UserMethod method) {

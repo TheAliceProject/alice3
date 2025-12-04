@@ -44,7 +44,7 @@
 package org.alice.ide.declarationseditor.components;
 
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ArrowIcon;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.common.TypeBorder;
 import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
@@ -57,27 +57,24 @@ import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+import javax.swing.UIManager;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-class DeclarationMenuIcon extends DropDownArrowIcon {
+/**
+ * This is the hexagonal menu button that shows up to the left of the scene tab
+ */
+
+class DeclarationMenuIcon extends ArrowIcon {
   private final TypeBorder border = TypeBorder.getSingletonForUserType();
   private final Font typeFont;
 
   private final int PAD = 4;
 
   public DeclarationMenuIcon() {
-    super(10, Color.DARK_GRAY);
-    this.typeFont = new Font(null, 0, 12);
+    super(10);
+    this.typeFont = new Font(null, Font.PLAIN, 12);
   }
 
   private static Rectangle2D getTextBounds(String text, Font font) {
@@ -159,7 +156,6 @@ class DeclarationMenuIcon extends DropDownArrowIcon {
  */
 public class TypeEditor extends BorderPanel {
   private final FolderTabbedPane<DeclarationComposite<?, ?>> tabbedPane;
-  private final AbstractPopupButton<?> startButton;
 
   public TypeEditor(DeclarationsEditorComposite composite) {
     super(composite);
@@ -171,43 +167,21 @@ public class TypeEditor extends BorderPanel {
 
     SwingComponentView<?> headerTrailingComponent = composite.getControlsComposite().getView();
 
-    //    final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
-    //    if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
-    //      headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
-    //    }
     headerTrailingComponent.setBorder(BorderFactory.createEmptyBorder(2, 2, 0, 2));
 
-    final boolean IS_CUSTOM_DRAWING_DESIRED = false;
-    if (IS_CUSTOM_DRAWING_DESIRED) {
-      this.tabbedPane = new FolderTabbedPane<DeclarationComposite<?, ?>>(composite.getTabState()) {
-        @Override
-        protected TitlesPanel createTitlesPanel() {
-          return new TitlesPanel() {
-            @Override
-            protected JPanel createJPanel() {
-              return new JTitlesPanel() {
-                @Override
-                public void paint(Graphics g) {
-                  super.paint(g);
-                  g.setColor(Color.RED);
-                  g.drawString("possibilities abound", 100, 10);
-                }
-              };
-            }
-          };
-        }
-      };
-    } else {
-      this.tabbedPane = composite.getTabState().createFolderTabbedPane();
-    }
+    this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+    this.tabbedPane.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
+    this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     this.tabbedPane.setHeaderTrailingComponent(headerTrailingComponent);
-    this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
 
-    this.startButton.setClobberIcon(new DeclarationMenuIcon());
+    AbstractPopupButton<?> startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+    startButton.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 7));
+    startButton.setClobberIcon(new DeclarationMenuIcon());
+
     this.addCenterComponent(tabbedPane);
     SwingComponentView<?> component;
     if (IsEmphasizingClassesState.getInstance().getValue()) {
-      component = this.startButton;
+      component = startButton;
     } else {
       component = null;
     }
@@ -219,8 +193,8 @@ public class TypeEditor extends BorderPanel {
     DeclarationComposite<?, ?> item = composite.getTabState().getValue();
     if (item != null) {
       SwingComponentView<?> component = this.tabbedPane.getMainComponentFor(item);
-      if (component instanceof CodeDeclarationView) {
-        return ((CodeDeclarationView) component).getCodePanelWithDropReceptor();
+      if (component instanceof CodeDeclarationView view) {
+        return view.getCodePanelWithDropReceptor();
       }
     }
     return null;

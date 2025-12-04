@@ -47,11 +47,7 @@ import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
@@ -77,8 +73,8 @@ public class RunIcon implements Icon {
 
   @Override
   public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (c instanceof AbstractButton) {
-      ButtonModel buttonModel = ((AbstractButton) c).getModel();
+    if (c instanceof AbstractButton button) {
+      ButtonModel buttonModel = button.getModel();
       Graphics2D g2 = (Graphics2D) g;
       Color prevColor = g2.getColor();
       Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);

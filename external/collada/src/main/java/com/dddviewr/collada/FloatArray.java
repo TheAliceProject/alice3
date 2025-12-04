@@ -1,8 +1,8 @@
 package com.dddviewr.collada;
 
-import java.io.PrintStream;
-
 import com.dddviewr.log.Log;
+
+import java.io.PrintStream;
 
 public class FloatArray extends Base {
   protected String id;

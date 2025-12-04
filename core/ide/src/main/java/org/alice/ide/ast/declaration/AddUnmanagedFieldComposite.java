@@ -63,12 +63,7 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
   private static InitializingIfAbsentMap<UserType<?>, AddUnmanagedFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
   public static AddUnmanagedFieldComposite getInstance(UserType<?> declaringType) {
-    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddUnmanagedFieldComposite>() {
-      @Override
-      public AddUnmanagedFieldComposite initialize(UserType<?> declaringType) {
-        return new AddUnmanagedFieldComposite(declaringType);
-      }
-    });
+    return map.get(declaringType, AddUnmanagedFieldComposite::new);
   }
 
   private final UserType<?> declaringType;

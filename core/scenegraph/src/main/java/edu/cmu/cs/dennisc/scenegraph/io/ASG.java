@@ -53,13 +53,12 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 import org.alice.math.immutable.AffineMatrix4x4;
 import org.alice.math.immutable.Matrix3x3;
-import org.alice.math.immutable.Tuple3f;
 import org.alice.math.immutable.Point3;
 import org.alice.math.immutable.Tuple3;
+import org.alice.math.immutable.Tuple3f;
 import org.alice.math.immutable.Vector2f;
 import org.alice.math.immutable.Vector3f;
 import org.alice.math.immutable.Vector4;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -78,19 +77,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.MemoryImageSource;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -98,12 +85,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
-import java.util.zip.CRC32;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import java.util.zip.*;
 
 //todo: handle Affector[] ?
 
@@ -830,8 +812,7 @@ public class ASG {
 
   private static Element encodeComponent(Component component, Document document, String s, HashMap<String, ByteArrayOutputStream> filenameToStreamMap, HashMap<String, edu.cmu.cs.dennisc.scenegraph.Element> keyToElementToBeEncodedMap, boolean isTextAlwaysDesired) {
     Element xmlComponent = encodeElement(component, document, s, filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired);
-    if (component instanceof Composite) {
-      Composite sgComposite = (Composite) component;
+    if (component instanceof Composite sgComposite) {
       for (Component sgComponent : sgComposite.getComponents()) {
         xmlComponent.appendChild(encodeComponent(sgComponent, document, "child", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired));
       }
@@ -875,8 +856,8 @@ public class ASG {
     encodeInternal(component, rootBAOS, filenameToStreamMap, false);
     filenameToStreamMap.put(ROOT_FILENAME, rootBAOS);
     ZipOutputStream zos;
-    if (os instanceof ZipOutputStream) {
-      zos = (ZipOutputStream) os;
+    if (os instanceof ZipOutputStream stream) {
+      zos = stream;
     } else {
       zos = new ZipOutputStream(os);
     }
@@ -928,9 +909,9 @@ public class ASG {
   private static Element getFirstChild(Node node, String tag) {
     Node childNode = node.getFirstChild();
     while (childNode != null) {
-      if (childNode instanceof Element) {
+      if (childNode instanceof Element element) {
         if (childNode.getNodeName().equals(tag)) {
-          return (Element) childNode;
+          return element;
         }
       }
       childNode = childNode.getNextSibling();
@@ -942,9 +923,9 @@ public class ASG {
     Vector<Element> vector = new Vector<Element>();
     Node childNode = node.getFirstChild();
     while (childNode != null) {
-      if (childNode instanceof Element) {
+      if (childNode instanceof Element element) {
         if (childNode.getNodeName().equals(tag)) {
-          vector.addElement((Element) childNode);
+          vector.addElement(element);
         }
       }
       childNode = childNode.getNextSibling();
@@ -1189,8 +1170,8 @@ public class ASG {
 
   public static Component decode(InputStream is, HashMap<String, InputStream> filenameToStreamMap) {
     BufferedInputStream bis;
-    if (is instanceof BufferedInputStream) {
-      bis = (BufferedInputStream) is;
+    if (is instanceof BufferedInputStream stream) {
+      bis = stream;
     } else {
       bis = new BufferedInputStream(is);
     }
@@ -1199,8 +1180,8 @@ public class ASG {
 
   public static Component decodeZip(InputStream is) {
     ZipInputStream zis;
-    if (is instanceof ZipInputStream) {
-      zis = (ZipInputStream) is;
+    if (is instanceof ZipInputStream stream) {
+      zis = stream;
     } else {
       zis = new ZipInputStream(is);
     }

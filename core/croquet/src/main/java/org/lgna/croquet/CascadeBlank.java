@@ -60,7 +60,7 @@ public abstract class CascadeBlank<B> {
   protected abstract void updateChildren(List<CascadeBlankChild> children, BlankNode<B> blankNode);
 
   private static boolean isEmptySeparator(CascadeBlankChild child) {
-    return (child instanceof CascadeLineSeparator) || ((child instanceof CascadeLabelSeparator) && (!((CascadeLabelSeparator) child).isValid()));
+    return (child instanceof CascadeLineSeparator) || ((child instanceof CascadeLabelSeparator cls) && (!cls.isValid()));
   }
 
   public final CascadeBlankChild[] getFilteredChildren(BlankNode<B> blankNode) {

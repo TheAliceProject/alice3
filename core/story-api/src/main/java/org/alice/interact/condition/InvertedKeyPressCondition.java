@@ -42,10 +42,10 @@
  *******************************************************************************/
 package org.alice.interact.condition;
 
-import java.awt.event.KeyEvent;
-
 import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author David Culyba

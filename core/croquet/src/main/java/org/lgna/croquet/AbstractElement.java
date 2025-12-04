@@ -166,9 +166,7 @@ public abstract class AbstractElement implements Element {
 
   private void handleNullLocalizedText(Class<? extends Element> clsUsedForLocalization, String actualSubKey) {
     if (ignoredLocalizationSubkeys != null) {
-      if (ignoredLocalizationSubkeys.contains(actualSubKey)) {
-        //pass
-      } else {
+      if (!ignoredLocalizationSubkeys.contains(actualSubKey)) {
         StringBuilder sb = new StringBuilder();
         sb.append("localization missing hachCode=0x");
         sb.append(Integer.toHexString(this.hashCode()));
@@ -214,8 +212,8 @@ public abstract class AbstractElement implements Element {
       try {
         Field field = cls.getField(fieldName);
         Object value = field.get(null);
-        if (value instanceof Integer) {
-          return (Integer) value;
+        if (value instanceof Integer integer) {
+          return integer;
         }
       } catch (NoSuchFieldException nsfe) {
         nsfe.printStackTrace();

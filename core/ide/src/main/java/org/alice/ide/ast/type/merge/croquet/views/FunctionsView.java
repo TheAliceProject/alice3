@@ -42,14 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.FunctionsToolPalette;
+
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsView extends MethodsView {
   public FunctionsView(FunctionsToolPalette composite) {
-    super(composite, ThemeUtilities.getActiveTheme().getFunctionColor());
+    super(composite, UIManager.getColor("Alice.Function.color"));
   }
 }

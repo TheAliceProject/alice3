@@ -93,9 +93,9 @@ public abstract class DurationBasedAnimation extends AbstractAnimation {
     }
     double tRemaining = m_duration - deltaSincePrologue;
     setPortion(portion);
-    if (animationObserver instanceof DurationBasedAnimationObserver) {
+    if (animationObserver instanceof DurationBasedAnimationObserver observer) {
       try {
-        ((DurationBasedAnimationObserver) animationObserver).updated(this, portion);
+        observer.updated(this, portion);
       } catch (BreakException be) {
         tRemaining = 0.0;
       }

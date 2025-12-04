@@ -92,8 +92,7 @@ public class StringCustomExpressionCreatorComposite extends ExpressionWithRecent
   @Override
   protected void initializeToPreviousExpression(Expression expression) {
     String value;
-    if (expression instanceof StringLiteral) {
-      StringLiteral stringLiteral = (StringLiteral) expression;
+    if (expression instanceof StringLiteral stringLiteral) {
       value = stringLiteral.value.getValue();
     } else {
       value = "";

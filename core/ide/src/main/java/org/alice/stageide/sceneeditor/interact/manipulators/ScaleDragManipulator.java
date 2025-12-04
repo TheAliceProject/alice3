@@ -44,6 +44,7 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -52,8 +53,6 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.LinearDragManipulator;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedScaleActionOperation;
-
-import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import org.lgna.croquet.Application;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SThing;

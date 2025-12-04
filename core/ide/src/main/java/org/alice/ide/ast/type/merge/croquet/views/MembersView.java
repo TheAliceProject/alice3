@@ -48,12 +48,7 @@ import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
-import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
-import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
-import org.alice.ide.ast.type.merge.croquet.Identical;
-import org.alice.ide.ast.type.merge.croquet.ImportOnly;
-import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
-import org.alice.ide.ast.type.merge.croquet.ProjectOnly;
+import org.alice.ide.ast.type.merge.croquet.*;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.AwtComponentView;
@@ -66,11 +61,7 @@ import org.lgna.project.ast.Member;
 import org.lgna.project.ast.UserMethod;
 
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.util.LinkedList;
 import java.util.List;
@@ -154,8 +145,6 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   public MembersView(MembersToolPalette<?, M> composite, Color backgroundColor) {
     super(composite, "fill, insets 8 12 4 4, gapy " + GAP_Y, COLUMN_0_CONSTRAINT + 16 + COLUMN_1_CONSTRAINT + SPACE + COLUMN_2_CONSTRAINT + "24[grow]");
 
-    //todo
-    backgroundColor = ColorUtilities.scaleHSB(backgroundColor, 1.0, 1.0, 1.1);
     this.setBackgroundColor(backgroundColor);
 
     String titleText = getTitleText(composite);
@@ -281,9 +270,7 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   @Override
   public void addComponent(AwtComponentView<?> component, String constraint) {
     super.addComponent(component, constraint);
-    if (constraint.contains("spany")) {
-      //pass
-    } else {
+    if (!constraint.contains("spany")) {
       this.addToRow(component);
     }
     if (constraint.contains("wrap")) {
@@ -292,7 +279,7 @@ public abstract class MembersView<M extends Member> extends MigPanel {
   }
 
   private static Rectangle getRowBounds(List<Component> row) {
-    if (row.size() > 0) {
+    if (!row.isEmpty()) {
       Rectangle rv = null;
       for (Component awtComponent : row) {
         Rectangle bounds = awtComponent.getBounds();

@@ -1,10 +1,10 @@
 package com.dddviewr.collada.materials;
 
+import com.dddviewr.collada.Base;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dddviewr.collada.Base;
 
 public class LibraryMaterials extends Base {
   List<Material> materials = new ArrayList<Material>();

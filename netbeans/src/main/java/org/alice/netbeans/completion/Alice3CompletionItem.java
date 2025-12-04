@@ -43,21 +43,21 @@
 
 package org.alice.netbeans.completion;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.StyledDocument;
-
 import org.netbeans.api.editor.completion.Completion;
 import org.netbeans.spi.editor.completion.CompletionItem;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.CompletionUtilities;
 import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
+
+import javax.swing.ImageIcon;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.StyledDocument;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
 /**
  * @author Dennis Cosgrove

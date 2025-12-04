@@ -43,9 +43,9 @@
 
 package org.alice.stageide;
 
-import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.icons.RoomIcon;
-import org.alice.stageide.icons.ShapeIconFactory;
+import org.alice.ide.icons.IconFactoryManager;
+import org.alice.ide.icons.RoomIcon;
+import org.alice.ide.icons.ShapeIconFactory;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
@@ -79,7 +79,7 @@ public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManag
   public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
     List<AbstractDeclaration> rv = super.getGalleryResourceChildrenFor(type);
     if (type == BIPED_RESOURCE_TYPE) {
-      rv.add(0, PERSON_RESOURCE_TYPE);
+      rv.addFirst(PERSON_RESOURCE_TYPE);
     }
     return rv;
   }

@@ -50,29 +50,14 @@ import org.alice.imageeditor.croquet.Tool;
 import org.alice.imageeditor.croquet.views.renderers.FilenameListCellRenderer;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.Separator;
 
-import javax.swing.ComboBoxEditor;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -87,8 +72,7 @@ public class ImageEditorPane extends MigPanel {
         public void run() {
           ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
           Component editorComponent = editor.getEditorComponent();
-          if (editorComponent instanceof JTextComponent) {
-            JTextComponent jTextComponent = (JTextComponent) editorComponent;
+          if (editorComponent instanceof JTextComponent jTextComponent) {
             String rootDirectoryPath = getComposite().getRootDirectoryState().getValue();
             String path = jTextComponent.getText();
             if (path.startsWith(rootDirectoryPath)) {
@@ -217,23 +201,18 @@ public class ImageEditorPane extends MigPanel {
     this.getAwtComponent().add(jComboBox, "growx, shrinkx, wrap");
     this.getAwtComponent().add(this.jPathLabel, "skip 1");
 
-    this.jPathLabel.setForeground(Color.DARK_GRAY);
-
     this.updatePathLabel(composite.getPathHolder().getValue());
   }
 
   private void updatePathLabel(String nextPath) {
-    if (FileUtilities.isValidPath(nextPath)) {
-      //pass
-    } else {
+    if (!FileUtilities.isValidPath(nextPath)) {
       Logger.outln("INVALID PATH:", nextPath);
     }
 
     this.jPathLabel.setText(nextPath);
     if (nextPath != null) {
       Component awtEditorComponent = this.getComposite().getJComboBox().getEditor().getEditorComponent();
-      if (awtEditorComponent instanceof JTextField) {
-        JTextField jTextField = (JTextField) awtEditorComponent;
+      if (awtEditorComponent instanceof JTextField jTextField) {
         boolean isEqual = jTextField.getText().contentEquals(nextPath);
         boolean isShowing = false == (isEqual || ImageEditorFrame.INVALID_PATH_NOT_A_DIRECTORY.contentEquals(nextPath) || ImageEditorFrame.INVALID_PATH_EMPTY_SUB_PATH.contentEquals(nextPath));
         this.jPathLabel.setShowing(isShowing);

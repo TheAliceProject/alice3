@@ -1,30 +1,22 @@
 package org.lgna.ik.core.enforcer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import Jama.Matrix;
 import Jama.SingularValueDecomposition;
+import org.alice.math.immutable.AxisRotation;
+import org.alice.math.immutable.OrthogonalMatrix3x3;
+import org.alice.math.immutable.Point3;
+import org.alice.math.immutable.Vector3;
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.solver.Bone;
-import org.lgna.ik.core.solver.Chain;
 import org.lgna.ik.core.solver.Bone.Axis;
+import org.lgna.ik.core.solver.Chain;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
-import Jama.Matrix;
-import org.alice.math.immutable.AxisRotation;
-import org.alice.math.immutable.OrthogonalMatrix3x3;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Vector3;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class TightPositionalIkEnforcer extends IkEnforcer {
 

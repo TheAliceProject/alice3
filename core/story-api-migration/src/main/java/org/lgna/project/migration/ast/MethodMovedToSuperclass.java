@@ -44,13 +44,7 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.ast.AbstractArgument;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaMethodParameter;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.*;
 import org.lgna.project.migration.MigrationManager;
 
 import java.util.ArrayList;
@@ -74,20 +68,19 @@ public class MethodMovedToSuperclass implements NodeMigration {
     this.methodName = methodName;
     replacementMethod = JavaMethod.getInstance(newClass, methodName, parameterTypes);
     if (!newClass.isAssignableFrom(oldClass)) {
-      Logger.severe(String.format("Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.", oldClass.getSimpleName(), newClass.getSimpleName()));
+      Logger.severe("Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.".formatted(oldClass.getSimpleName(), newClass.getSimpleName()));
     }
   }
 
   @Override
   public void migrateNode(Crawlable node, MigrationManager manager) {
-    if (node instanceof MethodInvocation) {
-      MethodInvocation invocation = (MethodInvocation) node;
+    if (node instanceof MethodInvocation invocation) {
       AbstractMethod method = invocation.method.getValue();
       if (isOldMethod(method)) {
         invocation.method.setValue(replacementMethod);
         replaceRequiredParamReferences(method, invocation);
         replaceKeyedParamReferences(method, invocation);
-        Logger.outln(String.format("Changed %s.%s call to %s.%s", oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
+        Logger.outln("Changed %s.%s call to %s.%s".formatted(oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
       }
     }
   }
@@ -108,8 +101,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
   private void replaceParamReferences(AbstractMethod oldMethod, ArrayList<? extends AbstractArgument> args, Function<JavaMethodParameter, AbstractParameter> filter) {
     for (AbstractArgument argument : args) {
       AbstractParameter param = argument.parameter.getValue();
-      if (param instanceof JavaMethodParameter) {
-        JavaMethodParameter javaParam = (JavaMethodParameter) param;
+      if (param instanceof JavaMethodParameter javaParam) {
         if (oldMethod == javaParam.getCode()) {
           argument.parameter.setValue(filter.apply(javaParam));
         }

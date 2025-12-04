@@ -86,8 +86,7 @@ public class Tuple2<A, B> {
     if (super.equals(other)) {
       return true;
     } else {
-      if (other instanceof Tuple2<?, ?>) {
-        Tuple2<?, ?> otherT = (Tuple2<?, ?>) other;
+      if (other instanceof Tuple2<?, ?> otherT) {
         return Objects.equals(this.a, otherT.a) && Objects.equals(this.b, otherT.b);
       } else {
         return false;

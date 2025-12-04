@@ -65,16 +65,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.BoxLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
@@ -111,8 +102,7 @@ public class StatementListPropertyView extends AbstractListPropertyPane<Statemen
     if (owningNode instanceof BooleanExpressionBodyPair) {
       ConditionalStatement conditionalStatement = (ConditionalStatement) owningNode.getParent();
       alternateListProperty = conditionalStatement.elseBody.getValue().statements;
-    } else if (owningNode instanceof ConditionalStatement) {
-      ConditionalStatement conditionalStatement = (ConditionalStatement) owningNode;
+    } else if (owningNode instanceof ConditionalStatement conditionalStatement) {
       alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get(0).body.getValue().statements;
     } else {
       alternateListProperty = null;
@@ -120,8 +110,7 @@ public class StatementListPropertyView extends AbstractListPropertyPane<Statemen
 
     boolean isMutable;
 
-    if (factory instanceof MutableAstI18nFactory) {
-      MutableAstI18nFactory mutableFactory = (MutableAstI18nFactory) factory;
+    if (factory instanceof MutableAstI18nFactory mutableFactory) {
       isMutable = mutableFactory.isStatementListPropertyMutable(property);
     } else {
       isMutable = false;
@@ -265,9 +254,7 @@ public class StatementListPropertyView extends AbstractListPropertyPane<Statemen
   public static boolean EPIC_HACK_ignoreDrawingDesired = false;
 
   public void setIsCurrentUnder(boolean isCurrentUnder) {
-    if (isCurrentUnder) {
-      //pass
-    } else {
+    if (!isCurrentUnder) {
       this.setCurrentPotentialDropIndexAndDragStep(-1, null);
     }
     this.statementListBorder.setDrawingDesired(isCurrentUnder == false);
@@ -319,8 +306,7 @@ public class StatementListPropertyView extends AbstractListPropertyPane<Statemen
 
   private Node getOwningBlockStatementOwningNode() {
     InstancePropertyOwner owner = this.getProperty().getOwner();
-    if (owner instanceof BlockStatement) {
-      BlockStatement blockStatement = (BlockStatement) owner;
+    if (owner instanceof BlockStatement blockStatement) {
       return blockStatement.getParent();
     } else {
       return null;

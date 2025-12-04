@@ -75,9 +75,7 @@ public abstract class GlrText<T extends Text> extends GlrGraphic<T> {
   protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera) {
     String text = this.owner.text.getValue();
     Font font = this.owner.font.getValue();
-    if (font == this.rememberedFont) {
-      //pass
-    } else {
+    if (font != this.rememberedFont) {
       this.forgetFontIfNecessary(g2);
       g2.remember(font);
       this.rememberedFont = font;

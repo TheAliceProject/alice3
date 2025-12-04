@@ -121,8 +121,8 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
   private void setSuperclass(ResourceNode nextValue) {
     if (nextValue != null) {
       final ResourceKey key = nextValue.getResourceKey();
-      if (key instanceof ClassResourceKey) {
-        parentJavaClass = ((ClassResourceKey) key).getModelResourceCls();
+      if (key instanceof ClassResourceKey resourceKey) {
+        parentJavaClass = resourceKey.getModelResourceCls();
         refreshStatus();
       }
     }
@@ -206,8 +206,8 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     if (sgJoint != null) {
       jointList.add(createJoint(sgJoint));
       for (Component c : sgJoint.getComponents()) {
-        if (c instanceof Joint) {
-          addJointsToList((Joint) c, jointList);
+        if (c instanceof Joint joint) {
+          addJointsToList(joint, jointList);
         }
       }
     }

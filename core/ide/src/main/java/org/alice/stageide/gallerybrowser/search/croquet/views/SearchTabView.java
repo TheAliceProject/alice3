@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.search.croquet.views;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
 import org.alice.stageide.gallerybrowser.views.GalleryTabView;
-import org.alice.stageide.gallerybrowser.views.GalleryView;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.TreeUtilities;
 import org.lgna.croquet.views.AbstractLabel;
@@ -62,7 +62,7 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SearchTabView extends GalleryTabView {
-  public static final Icon SEARCH_ICON = IconUtilities.createImageIcon(SearchTabView.class.getResource("images/system-search.png"));
+  public static final Icon SEARCH_ICON = new FlatSVGIcon(Icons.class.getResource("images/system-search.svg"));
   private final AbstractLabel noMatchesLabel;
   private final AbstractLabel noEntryLabel;
 
@@ -84,7 +84,6 @@ public class SearchTabView extends GalleryTabView {
     this.filterTextField.enableSelectAllWhenFocusGained();
 
     ScrollPane scrollPane = createGalleryScrollPane(this.filteredResourcesView);
-    this.filteredResourcesView.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
 
     this.addPageStartComponent(new LineAxisPanel(composite.getFilterState().getSidekickLabel().createLabel(), this.filterTextField));
     this.addCenterComponent(scrollPane);
@@ -95,11 +94,6 @@ public class SearchTabView extends GalleryTabView {
     super.handleCompositePreActivation();
     this.filterTextField.requestFocusLater();
   }
-
-  //@Override
-  //public void handleCompositePostDeactivation() {
-  //  super.handleCompositePostDeactivation();
-  //}
 
   public void removeAllGalleryDragComponents() {
     synchronized (this.getTreeLock()) {

@@ -44,9 +44,6 @@
 package org.lgna.story.implementation.visualization;
 
 import com.jogamp.opengl.GL2;
-import org.alice.math.immutable.AffineMatrix4x4;
-import org.alice.math.immutable.AxisAlignedBox;
-import org.alice.math.immutable.Point3;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
@@ -54,6 +51,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor;
+import org.alice.math.immutable.AffineMatrix4x4;
+import org.alice.math.immutable.AxisAlignedBox;
+import org.alice.math.immutable.Point3;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ReferenceFrame;
@@ -61,9 +61,7 @@ import org.lgna.story.resources.JointId;
 
 import java.nio.DoubleBuffer;
 
-import static com.jogamp.opengl.GL.GL_LINES;
-import static com.jogamp.opengl.GL.GL_LINE_LOOP;
-import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
+import static com.jogamp.opengl.GL.*;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**

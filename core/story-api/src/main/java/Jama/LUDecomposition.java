@@ -1,5 +1,6 @@
 package Jama;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /** LU Decomposition.
@@ -315,5 +316,5 @@ public class LUDecomposition implements Serializable {
     return Xmat;
   }
 
-  private static final long serialVersionUID = 1;
+  @Serial private static final long serialVersionUID = 1;
 }

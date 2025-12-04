@@ -172,9 +172,7 @@ public class CodeContextSplitComposite extends ImmutableSplitComposite {
   private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
     @Override
     public void propertyChange(PropertyChangeEvent e) {
-      if (ignoreDividerChangeCount > 0) {
-        //pass
-      } else {
+      if (ignoreDividerChangeCount <= 0) {
         SplitPane otherSplitPane = codePerspectiveComposite.getView();
         int prevValue = otherSplitPane.getDividerLocation();
         int nextValue = (int) ((Integer) e.getNewValue() * SymmetricPerspectiveCamera.DEFAULT_WIDTH_TO_HEIGHT_RATIO);

@@ -47,15 +47,11 @@ import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.Composite;
 
 import javax.swing.JPanel;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.awt.LayoutManager;
+import javax.swing.UIManager;
+import java.awt.*;
 
 /**
+ * this is part of the dialog for adding procedures/functions/properties from a class file
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
@@ -93,14 +89,14 @@ public class CardPanel extends Panel {
   public CardPanel(CardOwnerComposite composite, int hgap, int vgap) {
     super(composite);
     this.cardLayout = new CustomPreferredSizeCardLayout(hgap, vgap);
-    Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
+    Color color = UIManager.getColor("Alice.differentBackground");
     if (composite != null) {
       java.util.List<Composite<?>> cards = composite.getCards();
       for (Composite<?> card : cards) {
         this.addComposite(card);
       }
-      if (cards.size() > 0) {
-        color = cards.get(0).getView().getBackgroundColor();
+      if (!cards.isEmpty()) {
+        color = cards.getFirst().getView().getBackgroundColor();
       }
     }
     this.setBackgroundColor(color);
@@ -138,15 +134,9 @@ public class CardPanel extends Panel {
   }
 
   public void showComposite(Composite<?> composite) {
-    if (composite != null) {
-      //pass
-    } else {
-      if (this.nullLabel != null) {
-        //pass
-      } else {
+    if (composite == null && this.nullLabel == null) {
         this.nullLabel = new Label();
         this.internalAddComponent(this.nullLabel, NULL_KEY);
-      }
     }
     this.cardLayout.show(this.getAwtComponent(), getKey(composite));
   }

@@ -63,7 +63,6 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.highlight.IdeHighlightStencil;
-import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.perspectives.ProjectPerspective;
@@ -74,12 +73,7 @@ import org.alice.stageide.perspectives.CodePerspective;
 import org.alice.stageide.perspectives.PerspectiveState;
 import org.alice.stageide.perspectives.SetupScenePerspective;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemState;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.PerspectiveDocumentFrame;
-import org.lgna.croquet.State;
+import org.lgna.croquet.*;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
@@ -114,7 +108,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     this.metaDeclarationFauxState = new MetaDeclarationFauxState(this);
     this.instanceFactoryState = new InstanceFactoryState(this);
     this.findComposite = new FindComposite(this);
-    this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
   }
 
   private static final KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.SHIFT_MASK);
@@ -125,9 +118,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     ImageCaptureComposite imageCaptureComposite = ImageCaptureComposite.getInstance();
     window.getContentPane().registerKeyboardAction(imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW);
     window.getContentPane().registerKeyboardAction(imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW);
-    if (window == this.getFrame()) {
-      //pass
-    } else {
+    if (window != this.getFrame()) {
       window.getContentPane().registerKeyboardAction(imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW);
     }
   }
@@ -250,10 +241,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.typeMetaState;
   }
 
-  public IconFactoryManager getIconFactoryManager() {
-    return this.iconFactoryManager;
-  }
-
   public DeclarationsEditorComposite getDeclarationsEditorComposite() {
     return this.declarationsEditorComposite;
   }
@@ -263,7 +250,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   }
 
   public BooleanState getStatisticsFrameIsShowingState() {
-    return this.stasticsFrameIsShowingState;
+    return this.statisticsFrameIsShowingState;
   }
 
   private static final Integer HIGHLIGHT_STENCIL_LAYER = JLayeredPane.POPUP_LAYER - 2;
@@ -277,8 +264,8 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   public AbstractCode getFocusedCode() {
     AbstractDeclaration declaration = this.getMetaDeclarationFauxState().getValue();
-    if (declaration instanceof AbstractCode) {
-      return (AbstractCode) declaration;
+    if (declaration instanceof AbstractCode code) {
+      return code;
     } else {
       return null;
     }
@@ -349,8 +336,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   private final InstanceFactoryState instanceFactoryState;
 
-  private final IconFactoryManager iconFactoryManager;
-
   private final DeclarationsEditorComposite declarationsEditorComposite = new DeclarationsEditorComposite();
 
   private final Operation resourcesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createInstance(ResourceManagerComposite.class, new Lazy<ResourceManagerComposite>() {
@@ -360,7 +345,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     }
   }, Application.DOCUMENT_UI_GROUP).getLaunchOperation();
 
-  private final BooleanState stasticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<StatisticsFrameComposite>() {
+  private final BooleanState statisticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<StatisticsFrameComposite>() {
     @Override
     protected StatisticsFrameComposite create() {
       return new StatisticsFrameComposite(ProjectDocumentFrame.this);

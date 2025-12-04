@@ -68,7 +68,7 @@ public class CopyOperation extends InconsequentialActionOperation {
   protected void performInternal() {
     String modifierId = SystemUtilities.isMac() ? "alt" : "control";
     String modifier = findLocalizedText(modifierId);
-    String content = String.format(findLocalizedText("content"), modifier, modifier);
+    String content = findLocalizedText("content").formatted(modifier, modifier);
     Dialogs.showInfo(findLocalizedText("title"), content);
   }
 }

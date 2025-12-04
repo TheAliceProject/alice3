@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -59,25 +61,39 @@ public abstract class SJointedModel extends SModel {
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public abstract JointedModelImp getImplementation();
 
+  // Cache skeleton for easy access
+  private final InitializingIfAbsentMap<JointId, SJoint> jointsById =  Maps.newInitializingIfAbsentHashMap();
+  private final InitializingIfAbsentMap<String, SJoint> jointsByName = Maps.newInitializingIfAbsentHashMap();
+  private final InitializingIfAbsentMap<JointId[], SJoint[]> jointArrays = Maps.newInitializingIfAbsentHashMap();
+
   //todo: make protected
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint getJoint(JointId jointId) {
-    return SJoint.getJoint(this, jointId);
+    return jointsById.get(jointId, id -> getImplementation().getJointImplementation(id).getAbstraction());
   }
 
+  // String based lookup for DynamicJointIds
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint getJoint(String jointName) {
-    return SJoint.getJoint(this, jointName);
+    return jointsByName.get(jointName, name -> getImplementation().getJointImplementation(name).getAbstraction());
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint[] getJointArray(JointId[] jointIdArray) {
-    return SJoint.getJointArray(this, jointIdArray);
+    return jointArrays.get(jointIdArray, this::newJointArray);
+  }
+
+  private SJoint[] newJointArray(JointId[] idArray) {
+    SJoint[] jointArray = new SJoint[idArray.length];
+    for (int i = 0; i < idArray.length; i++) {
+      jointArray[i] = getJoint(idArray[i]);
+    }
+    return jointArray;
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
   public SJoint[] getJointArray(JointArrayId jointArrayId) {
-    return SJoint.getJointArray(this, jointArrayId);
+    return getJointArray(getImplementation().getJointIdArray(jointArrayId));
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)

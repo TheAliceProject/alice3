@@ -57,6 +57,6 @@ public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdap
 
   @Override
   public Double getValueCopyIfMutable() {
-    return new Double(this.getValue());
+    return getValue();
   }
 }

@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import org.alice.math.immutable.AxisAlignedBox;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author alice

@@ -49,17 +49,14 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
-import java.awt.*;
+import java.awt.GridBagConstraints;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TabContentPanel extends BorderPanel {
-  public static final Color DEFAULT_BACKGROUND_COLOR = new Color(191, 191, 255);
-
   public TabContentPanel(AbstractTabComposite<?> composite) {
     super(composite);
-    this.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     final int INSET = 8;
     this.setBorder(BorderFactory.createEmptyBorder(INSET, INSET, INSET, INSET));
   }

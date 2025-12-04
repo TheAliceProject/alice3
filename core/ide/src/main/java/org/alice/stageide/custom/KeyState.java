@@ -94,8 +94,7 @@ public final class KeyState extends SimpleItemState<Key> {
       text = null;
     }
     for (AwtComponentView<?> component : ComponentManager.getComponents(this)) {
-      if (component instanceof KeyViewController) {
-        KeyViewController keyViewController = (KeyViewController) component;
+      if (component instanceof KeyViewController keyViewController) {
         keyViewController.getAwtComponent().setText(text);
       }
     }

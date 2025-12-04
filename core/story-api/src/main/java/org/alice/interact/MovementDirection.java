@@ -43,7 +43,6 @@
 package org.alice.interact;
 
 import org.alice.interact.handle.HandleSet;
-
 import org.alice.math.immutable.Vector3;
 
 /**
@@ -72,8 +71,7 @@ public enum MovementDirection {
   RESIZE(-1.0d, 1.0d, 0.0d);
 
   private MovementDirection(double x, double y, double z) {
-    this.directionVector = new Vector3(x, y, z);
-    this.directionVector.normalized();
+    this.directionVector = (new Vector3(x, y, z).normalized());
   }
 
   public Vector3 getVector() {

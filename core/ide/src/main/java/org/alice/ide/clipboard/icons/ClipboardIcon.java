@@ -46,16 +46,7 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import org.alice.ide.clipboard.DragReceptorState;
 
 import javax.swing.Icon;
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -69,19 +60,6 @@ import java.lang.reflect.Constructor;
 public class ClipboardIcon implements Icon {
 
   private float origAlpha = 1.0f;
-
-  //  private static java.awt.Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
-  //    assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
-  //    assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
-  //    return new java.awt.LinearGradientPaint( start, end, fractions, colors, cycleMethod, colorSpace, gradientTransform );
-  //  }
-  //
-  //  private static java.awt.Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
-  //    assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
-  //    assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
-  //    return new java.awt.RadialGradientPaint( center, radius, focus, fractions, colors, cycleMethod, colorSpace, gradientTransform );
-  //  }
-
   private static Paint new_LinearGradientPaint(Point2D start, Point2D end, float[] fractions, Color[] colors, AffineTransform gradientTransform) {
     try {
       Class<?> cls = Class.forName("java.awt.LinearGradientPaint");
@@ -125,8 +103,7 @@ public class ClipboardIcon implements Icon {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     origAlpha = 1.0f;
     Composite origComposite = g.getComposite();
-    if (origComposite instanceof AlphaComposite) {
-      AlphaComposite origAlphaComposite = (AlphaComposite) origComposite;
+    if (origComposite instanceof AlphaComposite origAlphaComposite) {
       if (origAlphaComposite.getRule() == AlphaComposite.SRC_OVER) {
         origAlpha = origAlphaComposite.getAlpha();
       }

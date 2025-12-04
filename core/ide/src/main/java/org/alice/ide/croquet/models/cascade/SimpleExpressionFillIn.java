@@ -44,15 +44,11 @@
 package org.alice.ide.croquet.models.cascade;
 
 import org.alice.ide.Theme;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 import org.lgna.story.SThing;
 
 import javax.swing.Icon;
@@ -84,11 +80,9 @@ import java.util.UUID;
   @Override
   protected Icon getLeadingIcon(ItemNode<? super E, Void> step) {
     if (this.isLeadingIconDesired) {
-      if (this.transientValue instanceof FieldAccess) {
-        FieldAccess fieldAccess = (FieldAccess) this.transientValue;
+      if (this.transientValue instanceof FieldAccess fieldAccess) {
         AbstractField field = fieldAccess.field.getValue();
-        if (field instanceof UserField) {
-          UserField userField = (UserField) field;
+        if (field instanceof UserField userField) {
           AbstractType<?, ?, ?> type = userField.getValueType();
           if (type != null) {
             if (type.isAssignableTo(SThing.class)) {

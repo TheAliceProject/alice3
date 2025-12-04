@@ -65,20 +65,17 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
   private static InitializingIfAbsentMap<JavaMethod, MethodInvocationFillInWithInstance> map = Maps.newInitializingIfAbsentHashMap();
 
   public static MethodInvocationFillInWithInstance getInstance(JavaMethod code) {
-    return map.getInitializingIfAbsent(code, new InitializingIfAbsentMap.Initializer<JavaMethod, MethodInvocationFillInWithInstance>() {
-      @Override
-      public MethodInvocationFillInWithInstance initialize(JavaMethod key) {
-        AbstractType<?, ?, ?> type = key.getDeclaringType();
-        List<? extends AbstractParameter> parameters = key.getRequiredParameters();
-        CascadeBlank<Expression>[] blanks = new CascadeBlank[1 + parameters.size()];
-        blanks[0] = ExpressionBlank.getBlankForType(type);
-        int i = 1;
-        for (AbstractParameter parameter : parameters) {
-          blanks[i] = ParameterBlank.getInstance(parameter);
-          i++;
-        }
-        return new MethodInvocationFillInWithInstance(key, blanks);
+    return map.get(code, key -> {
+      AbstractType<?, ?, ?> type = key.getDeclaringType();
+      List<? extends AbstractParameter> parameters = key.getRequiredParameters();
+      CascadeBlank<Expression>[] blanks = new CascadeBlank[1 + parameters.size()];
+      blanks[0] = ExpressionBlank.getBlankForType(type);
+      int i = 1;
+      for (AbstractParameter parameter : parameters) {
+        blanks[i] = ParameterBlank.getInstance(parameter);
+        i++;
       }
+      return new MethodInvocationFillInWithInstance(key, blanks);
     });
   }
 

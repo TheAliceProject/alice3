@@ -73,17 +73,11 @@ public class FieldInitializerInstanceCreationArgument0State extends StandardExpr
   public static FieldInitializerInstanceCreationArgument0State getInstance(UserField field) {
     if (field != null) {
       Expression initializer = field.initializer.getValue();
-      if (initializer instanceof InstanceCreation) {
-        final InstanceCreation instanceCreation = (InstanceCreation) initializer;
+      if (initializer instanceof InstanceCreation instanceCreation) {
         AbstractConstructor constructor = instanceCreation.constructor.getValue();
         List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
-        if (requiredParameters.size() > 0) {
-          return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, FieldInitializerInstanceCreationArgument0State>() {
-            @Override
-            public FieldInitializerInstanceCreationArgument0State initialize(UserField field) {
-              return new FieldInitializerInstanceCreationArgument0State(field, instanceCreation);
-            }
-          });
+        if (!requiredParameters.isEmpty()) {
+          return map.get(field, f -> new FieldInitializerInstanceCreationArgument0State(f, instanceCreation));
         }
       }
     }
@@ -100,7 +94,7 @@ public class FieldInitializerInstanceCreationArgument0State extends StandardExpr
   }
 
   private AbstractParameter getRequiredParameter0() {
-    return this.instanceCreation.constructor.getValue().getRequiredParameters().get(0);
+    return this.instanceCreation.constructor.getValue().getRequiredParameters().getFirst();
   }
 
   @Override

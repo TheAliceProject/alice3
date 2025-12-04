@@ -42,14 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.awt.Rectangle;
-
 import org.alice.math.immutable.Vector4;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
+
+import java.awt.Rectangle;
 
 
 public class AabbOcclusionDetector {

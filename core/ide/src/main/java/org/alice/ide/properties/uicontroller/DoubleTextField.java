@@ -46,11 +46,10 @@ package org.alice.ide.properties.uicontroller;
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
-import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
-import javax.swing.JTextField;
 
 public class DoubleTextField extends JTextField {
   private static final NumberFormat CENTI_FORMAT = new DecimalFormat("0.00");
@@ -74,17 +73,17 @@ public class DoubleTextField extends JTextField {
 
   public void markValueTemporary() {
     if (isValueValid()) {
-      DoubleTextField.this.setForeground(Color.GRAY);
+      DoubleTextField.this.setForeground(UIManager.getColor("TextField.disabledForeground"));
     } else {
-      DoubleTextField.this.setForeground(Color.RED);
+      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.color"));
     }
   }
 
   public void markValueSet() {
     if (isValueValid()) {
-      DoubleTextField.this.setForeground(Color.BLACK);
+      DoubleTextField.this.setForeground(UIManager.getColor("TextField.foreground"));
     } else {
-      DoubleTextField.this.setForeground(Color.RED);
+      DoubleTextField.this.setForeground(UIManager.getColor("Alice.Alert.color"));
     }
   }
 

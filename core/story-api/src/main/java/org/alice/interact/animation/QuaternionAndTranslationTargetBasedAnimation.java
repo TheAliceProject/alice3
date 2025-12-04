@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.animation;
 
-import org.alice.math.immutable.UnitQuaternion;
 import org.alice.interact.QuaternionAndTranslation;
+import org.alice.math.immutable.UnitQuaternion;
 
 /**
  * @author David Culyba

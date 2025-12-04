@@ -124,7 +124,7 @@ public class AboutView extends BorderPanel {
     final Operation aliceSiteOperation = new BrowserOperation(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea"), BrowserOperation.ALICE_HOME_URI);
     otherPanel.addComponent(aliceSiteOperation.createHyperlink());
     otherPanel.addComponent(composite.getCreditsDialogLaunchOperation().createHyperlink());
-    otherPanel.addComponent(new HtmlMultiLineLabel(String.format(getLocalizedStringByKey("aboutVersion"), ProjectVersion.getCurrentVersionText())));
+    otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutVersion").formatted(ProjectVersion.getCurrentVersionText())));
     otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
     otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutDedication")));
 

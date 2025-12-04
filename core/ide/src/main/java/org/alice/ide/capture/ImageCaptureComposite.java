@@ -46,17 +46,9 @@ import edu.cmu.cs.dennisc.capture.ImageCaptureUtilities;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.capture.views.ImageCaptureRectangleStencilView;
 import org.alice.ide.capture.views.ImageCaptureView;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.BoundedIntegerState;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
-import org.lgna.croquet.Group;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.*;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
@@ -85,12 +77,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
   private static final int LAYER_ID = JLayeredPane.POPUP_LAYER + 1;
 
   private ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView(AbstractWindow<?> window) {
-    return mapWindowToStencilView.getInitializingIfAbsent(window, new InitializingIfAbsentMap.Initializer<AbstractWindow<?>, ImageCaptureRectangleStencilView>() {
-      @Override
-      public ImageCaptureRectangleStencilView initialize(AbstractWindow<?> key) {
-        return new ImageCaptureRectangleStencilView(key, LAYER_ID, ImageCaptureComposite.this);
-      }
-    });
+    return mapWindowToStencilView.get(window, key -> new ImageCaptureRectangleStencilView(key, LAYER_ID, ImageCaptureComposite.this));
   }
 
   private final Operation captureEntireWindowOperation = this.createActionOperation("captureEntireWindow", new Action() {
@@ -196,8 +183,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
   }
 
   public static void main(String[] args) throws Exception {
-    UIManagerUtilities.setLookAndFeel("Nimbus");
-    SimpleApplication app = new SimpleApplication();
+    new SimpleApplication();
     ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected(true);
   }
 

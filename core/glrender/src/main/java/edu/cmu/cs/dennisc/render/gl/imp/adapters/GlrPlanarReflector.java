@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
-
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -56,6 +54,8 @@ import org.alice.math.immutable.Plane;
 import org.alice.math.immutable.Vector3;
 
 import java.nio.DoubleBuffer;
+
+import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 
 /**
  * @author Dennis Cosgrove

@@ -55,24 +55,26 @@ import java.util.Set;
 public class StaticAnalysisUtilities {
 
   public static boolean isValidIdentifier(String identifier) {
-    if (identifier != null) {
-      final int N = identifier.length();
-      if (N > 0) {
-        char c0 = identifier.charAt(0);
-        if (Character.isLetter(c0) || (c0 == '_')) {
-          for (int i = 1; i < N; i++) {
-            char cI = identifier.charAt(i);
-            if (Character.isLetterOrDigit(cI) || (cI == '_')) {
-              //pass
-            } else {
-              return false;
-            }
-          }
-          return true;
-        }
+    if (identifier == null) {
+      return false;
+    }
+    final int N = identifier.length();
+    if (N <= 0) {
+      return false;
+    }
+    char c0 = identifier.charAt(0);
+    if (!Character.isLetter(c0) && (c0 != '_')) {
+      // Must start with letter or underscore
+      return false;
+    }
+    for (int i = 1; i < N; i++) {
+      char cI = identifier.charAt(i);
+      if (!Character.isLetterOrDigit(cI) && (cI != '_')) {
+        // Must contain only letters, numbers, or underscores
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   private static String getConventionalIdentifierName(String name, boolean cap) {
@@ -83,9 +85,7 @@ public class StaticAnalysisUtilities {
       char c = name.charAt(i);
       if (Character.isLetterOrDigit(c)) {
         if (Character.isDigit(c)) {
-          if (isAlphaEncountered) {
-            //pass
-          } else {
+          if (!isAlphaEncountered) {
             rv += "_";
             rv += c;
             isAlphaEncountered = true;
@@ -132,12 +132,8 @@ public class StaticAnalysisUtilities {
     if (declaringType != null) {
       for (UserField field : declaringType.fields) {
         assert field != null;
-        if (field == self) {
-          //pass
-        } else {
-          if (name.equals(field.name.getValue())) {
-            return false;
-          }
+        if (field != self && name.equals(field.name.getValue())) {
+          return false;
         }
       }
     } else {
@@ -157,12 +153,8 @@ public class StaticAnalysisUtilities {
   private static boolean isAvailableMethodName(String name, UserType<?> declaringType, UserMethod self) {
     if (declaringType != null) {
       for (UserMethod method : declaringType.methods) {
-        if (method == self) {
-          //pass
-        } else {
-          if (name.equals(method.name.getValue())) {
-            return false;
-          }
+        if (method != self && name.equals(method.name.getValue())) {
+          return false;
         }
       }
     } else {

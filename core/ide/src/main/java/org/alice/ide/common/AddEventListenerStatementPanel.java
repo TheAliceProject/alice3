@@ -42,18 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.croquet.models.ast.StatementContextMenu;
 import org.lgna.croquet.views.PaintUtilities;
 import org.lgna.project.ast.ExpressionStatement;
 
 import javax.swing.BoxLayout;
+import javax.swing.UIManager;
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 
 /**
  * @author Dennis Cosgrove
@@ -68,11 +65,8 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
   }
 
   @Override
-  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
-    Color color = ThemeUtilities.getActiveTheme().getEventColor();
-    Color colorA = ColorUtilities.scaleHSB(color, 1.0, 1.0, 1.15);
-    Color colorB = ColorUtilities.scaleHSB(color, 1.0, 0.9, 0.85);
-    return new GradientPaint(x, y, colorA, x, y + 150, colorB);
+  public Color getBackgroundColor() {
+    return UIManager.getColor("Alice.Event.color");
   }
 
   @Override
@@ -83,9 +77,7 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
   @Override
   protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
     super.paintEpilogue(g2, x, y, width, height);
-    if (this.statement.isEnabled.getValue()) {
-      //pass
-    } else {
+    if (!this.statement.isEnabled.getValue()) {
       g2.setPaint(PaintUtilities.getDisabledTexturePaint());
       this.fillBounds(g2);
     }

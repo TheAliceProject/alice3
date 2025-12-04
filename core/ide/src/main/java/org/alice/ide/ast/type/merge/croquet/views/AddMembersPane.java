@@ -43,19 +43,15 @@
 package org.alice.ide.ast.type.merge.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import org.alice.ide.ThemeUtilities;
 import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
 import org.alice.ide.common.TypeIcon;
-import org.lgna.croquet.views.HorizontalTextPosition;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.ToolPaletteView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 
 /**
+ *
  * @author Dennis Cosgrove
  */
 public class AddMembersPane extends MigPanel {
@@ -90,10 +86,6 @@ public class AddMembersPane extends MigPanel {
       this.addComponent(composite.getAcceptAllDifferentImplementationsOperation().createButton(), "split 2");
       this.addComponent(composite.getRejectAllDifferentImplementationsOperation().createButton());
     }
-
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getTypeColor());
-    panel.setBackgroundColor(this.getBackgroundColor());
-    scrollPane.setBackgroundColor(this.getBackgroundColor());
     this.setMinimumPreferredWidth(800);
   }
 }

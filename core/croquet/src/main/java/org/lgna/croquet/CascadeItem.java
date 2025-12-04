@@ -51,11 +51,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.*;
 import java.util.UUID;
 
 /**
@@ -113,16 +109,14 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 
   //todo:
   private static void setBoxLayoutComponentOrientationTree(Component c, ComponentOrientation componentOrientation) {
-    if (c instanceof JPanel) {
-      JPanel jPanel = (JPanel) c;
+    if (c instanceof JPanel jPanel) {
       LayoutManager layoutManager = jPanel.getLayout();
       if (layoutManager instanceof BoxLayout) {
         //javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
         c.setComponentOrientation(componentOrientation);
       }
     }
-    if (c instanceof Container) {
-      Container container = (Container) c;
+    if (c instanceof Container container) {
       for (Component component : container.getComponents()) {
         setBoxLayoutComponentOrientationTree(component, componentOrientation);
       }
@@ -139,24 +133,16 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
       if (component != null) {
         final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
         ComponentOrientation componentOrientation = component.getComponentOrientation();
-        if (componentOrientation.isLeftToRight()) {
-          //pass
-        } else {
-          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-            setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
-          }
+        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+          setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
         }
 
         ComponentUtilities.invalidateTree(component);
-        ComponentUtilities.doLayoutTree(component);
         ComponentUtilities.setSizeToPreferredSizeTree(component);
+        ComponentUtilities.doLayoutTree(component);
 
-        if (componentOrientation.isLeftToRight()) {
-          //pass
-        } else {
-          if (IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-            setBoxLayoutComponentOrientationTree(component, componentOrientation);
-          }
+        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+          setBoxLayoutComponentOrientationTree(component, componentOrientation);
         }
 
         Dimension size = component.getPreferredSize();

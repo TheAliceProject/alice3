@@ -42,16 +42,16 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Color;
-
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.math.immutable.Vector2;
 import org.alice.math.immutable.Vector3;
-import org.alice.interact.event.ManipulationEvent;
 import org.alice.stageide.sceneeditor.interact.handles.ImageBasedManipulationHandle2D;
+
+import java.awt.Color;
 
 
 /**

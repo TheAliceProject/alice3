@@ -64,15 +64,15 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.declarationseditor.TypeComposite;
 import org.alice.ide.frametitle.AliceIdeFrameTitleGenerator;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
+import org.alice.ide.icons.ColorIconFactory;
+import org.alice.ide.icons.IconFactoryManager;
+import org.alice.ide.icons.SceneIconFactory;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.ThisInstanceFactory;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.SceneAdapter;
 import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
-import org.alice.stageide.icons.ColorIconFactory;
-import org.alice.stageide.icons.IconFactoryManager;
-import org.alice.stageide.icons.SceneIconFactory;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.ThumbnailGenerator;
 import org.lgna.croquet.Operation;
@@ -115,6 +115,7 @@ import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
@@ -122,7 +123,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
-public abstract class StageIDE extends IDE {
+public class StageIDE extends IDE {
   public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
   public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
   private static final String MODEL_IMPORT_DIRECTORY_KEY = "modelImportDirectory";
@@ -238,8 +239,7 @@ public abstract class StageIDE extends IDE {
           return null;
         }
       } else if (declaringType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE) && valueType.isAssignableTo(JOINTED_MODEL_RESOURCE_TYPE)) {
-        if (field instanceof JavaField) {
-          JavaField javaField = (JavaField) field;
+        if (field instanceof JavaField javaField) {
           try {
             ModelResource modelResource = (ModelResource) javaField.getFieldReflectionProxy().getReification().get(null);
             IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceInstance(modelResource);
@@ -266,7 +266,7 @@ public abstract class StageIDE extends IDE {
       Label rv = new Label(icon);
       //      rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
       //      rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
-      rv.getAwtComponent().setAlignmentY(0.5f);
+      rv.getAwtComponent().setAlignmentY(Component.CENTER_ALIGNMENT);
       return rv;
     }
     return super.getPrefixPaneForFieldAccessIfAppropriate(fieldAccess);
@@ -296,8 +296,7 @@ public abstract class StageIDE extends IDE {
           return false;
         } else {
           Node parent = expression.getParent();
-          if (parent instanceof FieldAccess) {
-            FieldAccess fieldAccess = (FieldAccess) parent;
+          if (parent instanceof FieldAccess fieldAccess) {
             AbstractField field = fieldAccess.field.getValue();
             assert field != null;
             AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
@@ -306,19 +305,16 @@ public abstract class StageIDE extends IDE {
                 return false;
               }
             }
-          } else if (parent instanceof AbstractArgument) {
-            AbstractArgument argument = (AbstractArgument) parent;
+          } else if (parent instanceof AbstractArgument argument) {
             Node grandparent = argument.getParent();
-            if (grandparent instanceof InstanceCreation) {
-              InstanceCreation instanceCreation = (InstanceCreation) grandparent;
+            if (grandparent instanceof InstanceCreation instanceCreation) {
               AbstractConstructor constructor = instanceCreation.constructor.getValue();
               if (constructor != null) {
                 AbstractType<?, ?, ?> type = constructor.getDeclaringType();
                 return (COLOR_TYPE.isAssignableFrom(type) || NebulousIde.nonfree.isPersonResourceTypeAssingleFrom(type)) == false;
               }
             }
-          } else if (parent instanceof MethodInvocation) {
-            MethodInvocation methodInvocation = (MethodInvocation) parent;
+          } else if (parent instanceof MethodInvocation methodInvocation) {
             if (StoryApiConfigurationManager.getInstance().isBuildMethod(methodInvocation)) {
               return false;
             }

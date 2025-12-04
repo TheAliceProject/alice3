@@ -223,9 +223,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
             //pass
             Logger.outln("equal", worker.getRootDirectory(), file);
           } else {
-            if (worker.isDone()) {
-              //pass
-            } else {
+            if (!worker.isDone()) {
               Logger.outln("cancel");
               worker.cancel(true);
             }
@@ -411,8 +409,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
   private void updatePath() {
     String rootDirectoryPath = this.rootDirectoryState.getValue();
     Component awtComponent = this.jComboBox.getEditor().getEditorComponent();
-    if (awtComponent instanceof JTextField) {
-      JTextField jTextField = (JTextField) awtComponent;
+    if (awtComponent instanceof JTextField jTextField) {
       Document document = jTextField.getDocument();
       String text = DocumentUtilities.getText(document);
       if (text.length() > 0) {
@@ -468,8 +465,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
   public void handlePreActivation() {
     this.rootDirectoryState.addAndInvokeNewSchoolValueListener(this.rootDirectoryListener);
     Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
-    if (awtEditorComponent instanceof JTextField) {
-      JTextField jTextField = (JTextField) awtEditorComponent;
+    if (awtEditorComponent instanceof JTextField jTextField) {
       jTextField.getDocument().addDocumentListener(this.editorListener);
     }
     this.updatePath();
@@ -484,8 +480,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
     this.cropCommitHolder.removeValueListener(this.cropCommitListener);
     this.cropSelectHolder.removeValueListener(this.cropSelectListener);
     Component awtEditorComponent = this.getJComboBox().getEditor().getEditorComponent();
-    if (awtEditorComponent instanceof JTextField) {
-      JTextField jTextField = (JTextField) awtEditorComponent;
+    if (awtEditorComponent instanceof JTextField jTextField) {
       jTextField.getDocument().removeDocumentListener(this.editorListener);
     }
     this.rootDirectoryState.removeNewSchoolValueListener(this.rootDirectoryListener);

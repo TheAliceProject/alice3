@@ -42,9 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events;
 
-import java.util.List;
-import java.util.UUID;
-
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.stageide.StageIDE;
@@ -59,6 +56,9 @@ import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
+
+import java.util.List;
+import java.util.UUID;
 
 public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvocation> {
   private static class SingletonHolder {

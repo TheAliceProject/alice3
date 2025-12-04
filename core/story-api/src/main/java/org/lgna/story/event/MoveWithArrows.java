@@ -42,19 +42,11 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
-import java.util.Map;
-
-import org.lgna.story.AsSeenBy;
-import org.lgna.story.Duration;
-import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.MoveDirection;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SMovableTurnable;
-import org.lgna.story.SThingMarker;
-import org.lgna.story.TurnDirection;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.*;
 import org.lgna.story.implementation.eventhandling.KeyPressedHandler;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
+import java.util.Map;
 
 public class MoveWithArrows {
 

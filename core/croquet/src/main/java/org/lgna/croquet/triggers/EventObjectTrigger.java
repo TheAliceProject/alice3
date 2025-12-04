@@ -85,11 +85,10 @@ public abstract class EventObjectTrigger<E extends EventObject> extends Trigger 
       return this.viewController;
     } else {
       Object source = this.event != null ? this.event.getSource() : null;
-      if (source instanceof Component) {
-        Component awtComponent = (Component) source;
+      if (source instanceof Component awtComponent) {
         AwtComponentView<?> component = AwtComponentView.lookup(awtComponent);
-        if (component instanceof ViewController) {
-          return (ViewController<?, ?>) component;
+        if (component instanceof ViewController<?, ?> controller) {
+          return controller;
         } else {
           return null;
         }
@@ -104,8 +103,8 @@ public abstract class EventObjectTrigger<E extends EventObject> extends Trigger 
       return this.viewController.getAwtComponent();
     } else {
       Object source = this.event.getSource();
-      if (source instanceof Component) {
-        return (Component) source;
+      if (source instanceof Component component) {
+        return component;
       } else {
         return null;
       }

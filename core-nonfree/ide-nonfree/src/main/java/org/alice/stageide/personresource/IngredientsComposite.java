@@ -43,70 +43,23 @@
 
 package org.alice.stageide.personresource;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.map.MapToMap;
-import org.alice.stageide.personresource.data.HairColorName;
-import org.alice.stageide.personresource.data.HairColorNameHairCombo;
-import org.alice.stageide.personresource.data.HairHatStyle;
-import org.alice.stageide.personresource.data.HairHatStyleHairColorName;
-import org.alice.stageide.personresource.data.HairUtilities;
+import org.alice.ide.icons.Icons;
+import org.alice.stageide.personresource.data.*;
 import org.alice.stageide.personresource.edits.SetPersonResourceEdit;
 import org.alice.stageide.personresource.views.IngredientsView;
 import org.alice.stageide.personresource.views.OutfitTabView;
 import org.alice.stageide.personresource.views.PersonViewer;
-import org.lgna.croquet.BoundedDoubleState;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.ImmutableDataSingleSelectListState;
-import org.lgna.croquet.ImmutableDataTabState;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.RefreshableDataSingleSelectListState;
-import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.State;
+import org.lgna.croquet.*;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.Color;
-import org.lgna.story.resources.sims2.BaseEyeColor;
-import org.lgna.story.resources.sims2.BaseFace;
-import org.lgna.story.resources.sims2.BaseSkinTone;
-import org.lgna.story.resources.sims2.BottomPiece;
-import org.lgna.story.resources.sims2.EyeColor;
-import org.lgna.story.resources.sims2.FemaleAdultBottomPiece;
-import org.lgna.story.resources.sims2.FemaleAdultTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.FemaleAdultTopPiece;
-import org.lgna.story.resources.sims2.FemaleChildBottomPiece;
-import org.lgna.story.resources.sims2.FemaleChildTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.FemaleChildTopPiece;
-import org.lgna.story.resources.sims2.FemaleElderBottomPiece;
-import org.lgna.story.resources.sims2.FemaleElderTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.FemaleElderTopPiece;
-import org.lgna.story.resources.sims2.FemaleTeenBottomPiece;
-import org.lgna.story.resources.sims2.FemaleTeenTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.FemaleTeenTopPiece;
-import org.lgna.story.resources.sims2.FullBodyOutfit;
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Hair;
-import org.lgna.story.resources.sims2.LifeStage;
-import org.lgna.story.resources.sims2.MaleAdultBottomPiece;
-import org.lgna.story.resources.sims2.MaleAdultTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.MaleAdultTopPiece;
-import org.lgna.story.resources.sims2.MaleChildBottomPiece;
-import org.lgna.story.resources.sims2.MaleChildTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.MaleChildTopPiece;
-import org.lgna.story.resources.sims2.MaleElderBottomPiece;
-import org.lgna.story.resources.sims2.MaleElderTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.MaleElderTopPiece;
-import org.lgna.story.resources.sims2.MaleTeenBottomPiece;
-import org.lgna.story.resources.sims2.MaleTeenTopAndBottomOutfit;
-import org.lgna.story.resources.sims2.MaleTeenTopPiece;
-import org.lgna.story.resources.sims2.Outfit;
-import org.lgna.story.resources.sims2.PersonResource;
-import org.lgna.story.resources.sims2.TopAndBottomOutfit;
-import org.lgna.story.resources.sims2.TopPiece;
+import org.lgna.story.resources.sims2.*;
 
 import javax.swing.Icon;
 import java.util.List;
@@ -269,7 +222,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
     }
   };
 
-  private static final Icon RANDOM_ICON = IconUtilities.createImageIcon(IngredientsComposite.class.getResource("images/random.png"));
+  private static final Icon RANDOM_ICON = new FlatSVGIcon(Icons.class.getResource("images/random.svg"));
 
   private final List<HairColorName> hairColorNames = Lists.newLinkedList();
 
@@ -309,7 +262,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
       if (index != -1) {
         this.hairColorNames.remove(index);
       }
-      this.hairColorNames.add(0, hairColorName);
+      this.hairColorNames.addFirst(hairColorName);
     }
   }
 
@@ -324,8 +277,8 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
         }
       }
       List<HairColorNameHairCombo> hairColorNameHairCombos = hairHatStyle.getHairColorNameHairCombos();
-      if (hairColorNameHairCombos.size() > 0) {
-        HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.get(0);
+      if (!hairColorNameHairCombos.isEmpty()) {
+        HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.getFirst();
         if (hairColorNameHairCombo != null) {
           return hairColorNameHairCombo.getHair();
         }
@@ -668,10 +621,10 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
         outfit = previousPersonResource.getOutfit();
       }
     }
-    if (outfit instanceof FullBodyOutfit) {
-      fullBodyOutfit = (FullBodyOutfit) outfit;
-    } else if (outfit instanceof TopAndBottomOutfit<?, ?>) {
-      topAndBottomOutfit = (TopAndBottomOutfit<?, ?>) outfit;
+    if (outfit instanceof FullBodyOutfit bodyOutfit) {
+      fullBodyOutfit = bodyOutfit;
+    } else if (outfit instanceof TopAndBottomOutfit<?, ?> bottomOutfit) {
+      topAndBottomOutfit = bottomOutfit;
     }
     updateFullBodyOutfit(lifeStage, gender, fullBodyOutfit);
     updateTopAndBottomOutfit(lifeStage, gender, topAndBottomOutfit);

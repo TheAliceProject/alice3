@@ -44,6 +44,7 @@
 package org.lgna.croquet.views;
 
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.TabComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -58,5 +59,9 @@ public abstract class BooleanStateButton<J extends javax.swing.AbstractButton> e
 
   public BooleanStateButton(BooleanState model) {
     this(model, null);
+  }
+
+  // Work around for casting problem in FolderTabbedPane. Default is to do nothing.
+  public <E extends TabComposite<?>> void updateFor(E item) {
   }
 }

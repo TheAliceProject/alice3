@@ -104,17 +104,14 @@ public class POVRayUtilities {
   }
 
   private static void exportGeometry(PrintWriter pw, Geometry sgGeometry, Appearance sgAppearance, double reflection, AffineMatrix4x4 m) {
-    if (sgGeometry instanceof Sphere) {
-      Sphere sgSphere = (Sphere) sgGeometry;
+    if (sgGeometry instanceof Sphere sgSphere) {
       pw.println("sphere {");
       pw.println("<" + m.translation().x() + ", " + m.translation().y() + ", " + -m.translation().z() + ">, " + sgSphere.radius.getValue());
-    } else if (sgGeometry instanceof Torus) {
-      Torus sgTorus = (Torus) sgGeometry;
+    } else if (sgGeometry instanceof Torus sgTorus) {
       pw.println("torus {");
       pw.println(sgTorus.majorRadius.getValue() + ", " + sgTorus.minorRadius.getValue());
       pw.println(toString(m));
-    } else if (sgGeometry instanceof Cylinder) {
-      Cylinder sgCylinder = (Cylinder) sgGeometry;
+    } else if (sgGeometry instanceof Cylinder sgCylinder) {
       pw.println("cone {");
       Point3 base = sgCylinder.getCenterOfBottom();
       Point3 cap = sgCylinder.getCenterOfTop();
@@ -124,9 +121,7 @@ public class POVRayUtilities {
       pw.println(sgCylinder.getActualTopRadius());
 
       if (sgCylinder.hasTopCap.getValue()) {
-        if (sgCylinder.hasBottomCap.getValue()) {
-          //pass
-        } else {
+        if (!sgCylinder.hasBottomCap.getValue()) {
           Logger.todo("UNHANDLED CYLINDER CAP STATE: " + sgCylinder);
         }
       } else {
@@ -137,13 +132,11 @@ public class POVRayUtilities {
         }
       }
       pw.println(toString(m));
-    } else if (sgGeometry instanceof Disc) {
-      Disc sgDisc = (Disc) sgGeometry;
+    } else if (sgGeometry instanceof Disc sgDisc) {
       pw.println("disc {");
       pw.println("<0,0,0>, <0,0,-1>, " + sgDisc.outerRadius.getValue() + ", " + sgDisc.innerRadius.getValue());
       pw.println(toString(m));
-    } else if (sgGeometry instanceof Box) {
-      Box sgBox = (Box) sgGeometry;
+    } else if (sgGeometry instanceof Box sgBox) {
       Point3 minimum = sgBox.getMinimum();
       Point3 maximum = sgBox.getMaximum();
       pw.println("box {");
@@ -151,8 +144,7 @@ public class POVRayUtilities {
       pw.print(", ");
       pw.println(toString(maximum));
       pw.println(toString(m));
-    } else if (sgGeometry instanceof TriangleFan) {
-      TriangleFan sgTriangleFan = (TriangleFan) sgGeometry;
+    } else if (sgGeometry instanceof TriangleFan sgTriangleFan) {
       pw.println("polygon {");
       int n = sgTriangleFan.vertices.getLength();
       pw.println(n + ",");
@@ -176,8 +168,7 @@ public class POVRayUtilities {
     Color4f color = null;
     float opacity = Float.NaN;
     float specular = Float.NaN;
-    if (sgAppearance instanceof TexturedAppearance) {
-      TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
+    if (sgAppearance instanceof TexturedAppearance sgTexturedAppearance) {
       color = sgTexturedAppearance.diffuseColor.getValue();
       opacity = sgTexturedAppearance.opacity.getValue();
       specular = sgTexturedAppearance.specularHighlightExponent.getValue();
@@ -246,8 +237,7 @@ public class POVRayUtilities {
   public static void export(PrintWriter pw, AbstractCamera sgCamera) {
     //AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
     Composite sgRoot = sgCamera.getRoot();
-    if (sgRoot instanceof Scene) {
-      Scene sgScene = (Scene) sgRoot;
+    if (sgRoot instanceof Scene sgScene) {
       Background background = sgCamera.background.getValue();
       if (background == null) {
         background = sgScene.background.getValue();
@@ -257,8 +247,7 @@ public class POVRayUtilities {
       AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
       pw.println("camera {");
       pw.println(toString(m));
-      if (sgCamera instanceof SymmetricPerspectiveCamera) {
-        SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = (SymmetricPerspectiveCamera) sgCamera;
+      if (sgCamera instanceof SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
         Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
         double degrees;
         if (angle.isNaN()) {

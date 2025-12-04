@@ -43,7 +43,7 @@
 package org.alice.ide.ast.icons;
 
 import org.alice.ide.IDE;
-import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.ide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.ResolutionIndependentIconFactory;
 import org.lgna.project.ast.AbstractType;

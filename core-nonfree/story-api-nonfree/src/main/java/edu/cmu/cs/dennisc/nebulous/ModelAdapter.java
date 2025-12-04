@@ -46,11 +46,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
-import org.alice.math.immutable.Matrix4x4;
-import org.alice.math.immutable.Point3;
-import org.alice.math.immutable.Ray;
-import org.alice.math.immutable.Vector3;
-import org.alice.math.immutable.Vector4;
+import org.alice.math.immutable.*;
 
 /**
  * @author Dennis Cosgrove
@@ -91,8 +87,7 @@ public class ModelAdapter<T extends Model> extends GenericModelAdapter<T> {
     if (flatDirection.magnitudeSquared() == 0.0) {
       return Point3.NaN;
     } else {
-      Vector3 normalized = flatDirection.normalized();
-      return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, 0, 0, 0, normalized.x(), 0, normalized.z());
+      return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(ray, m, Point3.ORIGIN, flatDirection.normalized());
     }
   }
 }

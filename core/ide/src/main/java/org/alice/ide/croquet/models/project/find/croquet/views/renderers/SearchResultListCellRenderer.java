@@ -42,16 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.views.renderers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
-
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * @author Dennis Cosgrove

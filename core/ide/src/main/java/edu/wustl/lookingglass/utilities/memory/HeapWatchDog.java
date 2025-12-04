@@ -44,15 +44,14 @@
  *******************************************************************************/
 package edu.wustl.lookingglass.utilities.memory;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-
-import javax.swing.JOptionPane;
 
 /**
  * This shouldn't be necessary. But Looking Glass and Alice are not well behaved Java

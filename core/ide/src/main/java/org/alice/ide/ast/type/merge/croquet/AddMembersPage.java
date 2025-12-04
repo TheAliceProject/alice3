@@ -233,9 +233,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 
   private void addRenameIfNecessary(List<RenameMemberData> renames, MemberNameState<? extends Member> nameState, Member member) {
     String nextName = nameState.getValue();
-    if (nextName.contentEquals(member.getName())) {
-      //pass
-    } else {
+    if (!nextName.contentEquals(member.getName())) {
       renames.add(new RenameMemberData(member, nextName));
     }
   }
@@ -275,9 +273,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
           membersToRemove.add(differentImplementation.getProjectHub().getMember());
         }
       } else {
-        if (differentImplementation.getProjectHub().getIsDesiredState().getValue()) {
-          //pass
-        } else {
+        if (!differentImplementation.getProjectHub().getIsDesiredState().getValue()) {
           //should not happen
         }
       }
@@ -365,12 +361,11 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
     for (MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] {this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite}) {
       addMembersComposite.appendStatusPreRejectorCheck(sb);
     }
-    if (sb.length() > 0) {
-      this.actionItemsRemainingError.setText(sb.toString());
-      return this.actionItemsRemainingError;
-    } else {
+    if (sb.isEmpty()) {
       return IS_GOOD_TO_GO_STATUS;
     }
+    this.actionItemsRemainingError.setText(sb.toString());
+    return this.actionItemsRemainingError;
   }
 
   public PlainStringValue getDifferentImplementationsHeader() {
@@ -408,7 +403,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 
   public boolean isContainingDifferentImplementations() {
     for (MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] {this.getAddProceduresComposite(), this.getAddFunctionsComposite(), this.getAddFieldsComposite()}) {
-      if (addMembersComposite.getDifferentImplementations().size() > 0) {
+      if (!addMembersComposite.getDifferentImplementations().isEmpty()) {
         return true;
       }
     }

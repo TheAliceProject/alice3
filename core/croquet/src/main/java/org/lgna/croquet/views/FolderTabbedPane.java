@@ -44,65 +44,30 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JCloseButton;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.CardOwnerComposite;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.TabState;
+import org.lgna.croquet.*;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JToggleButton;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.util.UUID;
 
 /**
+ * The folder tabbed pane ecosystem (there are so many classes in just this one file!) appears to be some slightly
+ * modified version of the swing JTabbedPane.  It would be worth looking into if there is a simpler way to get whatever
+ * non-standard behavior we need (or at least document in a comment WHY we needed to reinvent this)
+ *
  * @author Dennis Cosgrove
  */
 public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbedPane<E> {
   private static final int TRAILING_TAB_PAD = 32;
-  public static final Color DEFAULT_BACKGROUND_COLOR = new Color(173, 167, 208).darker();
+  private static final int OUTLINE_THICKNESS = 1;
 
   private static class FolderTabTitleUI extends BasicToggleButtonUI {
     @Override
@@ -135,10 +100,8 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
       if (button.getComponentCount() > 0) {
         for (Component component : button.getComponents()) {
-          //if( component.isVisible() ) {
           size.width += 4;
           size.width += component.getPreferredSize().width;
-          //}
         }
       }
 
@@ -155,26 +118,21 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         String text = button.getText();
         Insets insets = button.getInsets();
         int x = insets.left;
-        if (button.getComponentOrientation().isLeftToRight()) {
-          //pass
-        } else {
+        if (!button.getComponentOrientation().isLeftToRight()) {
           for (Component component : button.getComponents()) {
             x += component.getPreferredSize().width;
             x += 4;
           }
         }
+        Color outlineColor = ColorUtilities.scaleHSB(button.getBackground(), 1, 4.8, .74);
+        g.setColor(button.isSelected() ? UIManager.getColor("TabbedPane.foreground") :  button.getModel().isRollover() ? UIManager.getColor("TabbedPane.disabledForeground") : outlineColor);
         g.drawString(text, x, button.getBaseline(c.getWidth(), c.getHeight()));
       }
     }
   }
 
   private static class JFolderTabTitle extends JToggleButton {
-    private ItemListener itemListener = new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        JFolderTabTitle.this.revalidate();
-      }
-    };
+    private final ItemListener itemListener = e -> JFolderTabTitle.this.revalidate();
 
     public JFolderTabTitle() {
       this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 8));
@@ -225,31 +183,26 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
       super(booleanState);
 
       if (item.isPotentiallyCloseable()) {
-        ActionListener closeButtonActionListener = new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement(item);
-          }
-        };
-        this.closeButton = new JCloseButton(true);
+        ActionListener closeButtonActionListener = e -> FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement(item);
+        this.closeButton = new JCloseButton();
         this.closeButton.addActionListener(closeButtonActionListener);
       } else {
         this.closeButton = null;
       }
     }
 
+    @Override
+    public <F extends TabComposite<?>> void updateFor(F item) {
+      setCloseable(item.isCloseable());
+    }
+
     public void setCloseable(boolean isCloseable) {
       if (this.closeButton != null) {
-        if (isCloseable != (this.closeButton.getParent() != null)) {
+        if (isCloseable == (this.closeButton.getParent() == null)) {
           javax.swing.AbstractButton awtButton = this.getAwtComponent();
           if (isCloseable) {
-            edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
-            if (this.getComponentOrientation().isLeftToRight()) {
-              horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
-            } else {
-              horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
-            }
-            edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add(awtButton, this.closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2);
+            SpringUtilities.Horizontal hOrientation = this.getComponentOrientation().isLeftToRight() ?  SpringUtilities.Horizontal.EAST : SpringUtilities.Horizontal.WEST;
+            SpringUtilities.add(awtButton, this.closeButton, hOrientation, -1, SpringUtilities.Vertical.NORTH, 5);
           } else {
             awtButton.remove(this.closeButton);
           }
@@ -261,28 +214,12 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
     @Override
     protected javax.swing.AbstractButton createAwtComponent() {
-      JFolderTabTitle rv = new JFolderTabTitle();
-      //    {
-      //      @Override
-      //      public void setComponentOrientation(java.awt.ComponentOrientation componentOrientation) {
-      //        super.setComponentOrientation(componentOrientation);
-      //        edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring based on ", componentOrientation );
-      //      }
-      //    };
-      return rv;
+      return new JFolderTabTitle();
     }
   }
 
-  private static Color SELECTED_BORDER_COLOR = ColorUtilities.createGray(221);
-  //private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
-  private static Color UNSELECTED_BORDER_COLOR = Color.DARK_GRAY;
-
   protected static class TitlesPanel extends LineAxisPanel {
     private static final int NORTH_AREA_PAD = 1;
-    // private static java.awt.Stroke SELECTED_STROKE = new
-    // java.awt.BasicStroke( 3.0f );
-    private static Stroke SELECTED_STROKE = new BasicStroke(1.0f);
-    private static Stroke UNSELECTED_STROKE = new BasicStroke(2.0f);
 
     protected static class JTitlesPanel extends JPanel {
       @Override
@@ -292,7 +229,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         return rv;
       }
 
-      private GeneralPath addToPath(GeneralPath rv, float x, float y, float width, float height, boolean isContinuation) {
+      private GeneralPath addToPath(GeneralPath rv, float x, float y, float width, float height) {
         float a = height * 0.25f;
 
         float xStart;
@@ -323,11 +260,8 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
         float yA = y + a;
 
-        if (isContinuation) {
-          rv.lineTo(xCurve1, y1);
-        } else {
-          rv.moveTo(xCurve1, y1);
-        }
+        rv.moveTo(xCurve1, y1);
+
         rv.lineTo(xCurve1, y1 - 1);
         rv.curveTo(cx1, cy1, cx0, cy0, xCurve0, y0);
         rv.lineTo(xA, y0);
@@ -337,51 +271,37 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         return rv;
       }
 
-      private void paintTabBorder(Graphics2D g2, javax.swing.AbstractButton button) {
-        int x = button.getX();
-        int y = button.getY();
-        int width = button.getWidth();
-        int height = button.getHeight();
-        GeneralPath path = this.addToPath(new GeneralPath(), x, y, width, height, false);
+      private void paintTab(Graphics2D g2, javax.swing.AbstractButton button) {
+        Color prevColor = g2.getColor();
         Shape prevClip = g2.getClip();
-        try {
-          if (button.getModel().isSelected()) {
-            Rectangle bounds = prevClip.getBounds();
-            bounds.height += 1;
-            //todo: investigate
-            //            java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
-            //            java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
-            //            g2.setClip( clip );
-            g2.setClip(bounds);
-          }
 
-          g2.draw(path);
-        } finally {
-          g2.setClip(prevClip);
-        }
-      }
-
-      private void paintTabBackground(Graphics2D g2, javax.swing.AbstractButton button) {
-        Color prev = g2.getColor();
         try {
           int x = button.getX();
           int y = button.getY();
           int width = button.getWidth();
           int height = button.getHeight();
-          boolean isSelected = button.isSelected();
-          boolean isRollover = button.getModel().isArmed();
+
           Color color = button.getBackground();
-          if (!isSelected) {
-            color = color.darker();
-            if (!isRollover) {
-              color = color.darker();
-            }
+          Color outlineColor = ColorUtilities.scaleHSB(color, 1, 4.8, .74);
+
+          if (button.isSelected()) {
+            // draw one more pixel down to connect with the panel outline
+            Rectangle bounds = prevClip.getBounds();
+            bounds.height += 1;
+            g2.setClip(bounds);
+          } else {
+            color = button.getModel().isRollover() ? color : ColorUtilities.scaleHSB(color, 1, .5, 1);
           }
           g2.setColor(color);
-          GeneralPath path = addToPath(new GeneralPath(), x, y, width, height, false);
+
+          GeneralPath path = addToPath(new GeneralPath(), x, y, width, height);
+
+          // draw the background before the outline
           g2.fill(path);
+          g2.setColor(outlineColor);
+          g2.draw(path);
         } finally {
-          g2.setColor(prev);
+          g2.setColor(prevColor);
         }
       }
 
@@ -395,23 +315,17 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         final int N = components.length;
         for (int i = 0; i < N; i++) {
           Component component = components[N - 1 - i];
-          if (component instanceof javax.swing.AbstractButton) {
-            javax.swing.AbstractButton button = (javax.swing.AbstractButton) component;
+          if (component instanceof javax.swing.AbstractButton button) {
             if (button.isSelected()) {
               selectedButton = button;
             } else {
-              g2.setColor(UNSELECTED_BORDER_COLOR);
-              g2.setStroke(UNSELECTED_STROKE);
-              this.paintTabBorder(g2, button);
-              this.paintTabBackground(g2, button);
+              this.paintTab(g2, button);
             }
           }
         }
+        // paint selected button last so that it shows up on top
         if (selectedButton != null) {
-          this.paintTabBackground(g2, selectedButton);
-          g2.setColor(SELECTED_BORDER_COLOR);
-          g2.setStroke(SELECTED_STROKE);
-          this.paintTabBorder(g2, selectedButton);
+          this.paintTab(g2, selectedButton);
         }
         super.paintChildren(g2);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
@@ -490,6 +404,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         }
 
         private boolean isNecessary() {
+          // have we opened so many tabs that we need this button to show up for selecting tabs that are out of view?
           Container parent = this.getParent();
           if (parent != null) {
             int width = parent.getWidth();
@@ -572,26 +487,21 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
     }
   }
 
-  private final ScrollListener scrollListener = new ScrollListener();
-
   public FolderTabbedPane(TabState<E, ?> model) {
     super(model);
     CardOwnerComposite cardOwner = this.getCardOwner();
-    cardOwner.getView().setBackgroundColor(null);
-    this.innerHeaderPanel.setBackgroundColor(null);
-    this.titlesPanel.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-    this.titlesScrollPane.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     this.titlesScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
     this.titlesScrollPane.setVerticalScrollbarPolicy(ScrollPane.VerticalScrollbarPolicy.NEVER);
 
-    this.titlesScrollPane.addMouseListener(this.scrollListener);
-    this.titlesScrollPane.addMouseMotionListener(this.scrollListener);
+    ScrollListener scrollListener = new ScrollListener();
+    this.titlesScrollPane.addMouseListener(scrollListener);
+    this.titlesScrollPane.addMouseMotionListener(scrollListener);
 
     this.titlesScrollPane.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
     cardOwner.getView().setBorder(new Border() {
       @Override
       public Insets getBorderInsets(Component c) {
-        return new Insets(1, 1, 0, 0);
+        return new Insets(OUTLINE_THICKNESS, OUTLINE_THICKNESS, OUTLINE_THICKNESS, OUTLINE_THICKNESS);
       }
 
       @Override
@@ -599,39 +509,38 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
         return true;
       }
 
+      // this is for the border around the area under the tabs
       @Override
       public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        if (titlesPanel.getComponentCount() > 0) {
-          g.setColor(SELECTED_BORDER_COLOR);
-          g.fillRect(x, y, width, 1);
-          g.fillRect(x, y, 1, height);
-          for (AwtComponentView<?> component : titlesPanel.getComponents()) {
-            if (component instanceof AbstractButton<?, ?>) {
-              AbstractButton<?, ?> button = (AbstractButton<?, ?>) component;
-              if (button.getAwtComponent().getModel().isSelected()) {
-                Rectangle bounds = button.getBounds(AwtContainerView.lookup(c));
-                g.setColor(button.getBackgroundColor());
-                int x0;
-                if (c.getComponentOrientation().isLeftToRight()) {
-                  x0 = bounds.x;
-                } else {
-                  x0 = bounds.x - TRAILING_TAB_PAD;
-                }
-                g.fillRect(x0, y, (bounds.width - 1) + TRAILING_TAB_PAD, 1);
-              }
-            }
+        if (titlesPanel.getComponentCount() <= 0) {
+          return;
+        }
+        for (AwtComponentView<?> component : titlesPanel.getComponents()) {
+          if (component instanceof AbstractButton<?, ?> button && button.getAwtComponent().getModel().isSelected()) {
+            Rectangle bounds = button.getBounds(AwtContainerView.lookup(c));
+            Color background = button.getBackgroundColor();
+            g.setColor(ColorUtilities.scaleHSB(background, 1, 4.8, .74));
+            // top
+            g.fillRect(x, y, width, OUTLINE_THICKNESS);
+            // bottom
+            g.fillRect(x, y + height - 1, width, OUTLINE_THICKNESS);
+            // right
+            g.fillRect(x + width - 1, y, OUTLINE_THICKNESS, height);
+            // left
+            g.fillRect(x, y, OUTLINE_THICKNESS, height);
+
+            // re-draw over the top of the border where the tab will be so it looks seamless
+            g.setColor(background);
+            int x0 = c.getComponentOrientation().isLeftToRight() ? bounds.x : bounds.x - TRAILING_TAB_PAD;
+            g.fillRect(x0, y, (bounds.width - 1) + TRAILING_TAB_PAD, OUTLINE_THICKNESS);
+            break;
           }
         }
       }
     });
-    this.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     PopupOperation popupOperation = new PopupOperation();
     this.setInnerHeaderTrailingComponent(new PopupButton(popupOperation));
 
-  }
-
-  public SwingComponentView<?> getHeaderLeadingComponent() {
-    return (SwingComponentView<?>) this.innerHeaderPanel.getLineStartComponent();
   }
 
   public void setHeaderLeadingComponent(SwingComponentView<?> component) {
@@ -649,9 +558,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
   private void setInnerHeaderTrailingComponent(SwingComponentView<?> component) {
     if (component != null) {
-      if (component.isOpaque()) {
-        //pass
-      } else {
+      if (!component.isOpaque()) {
         component.setBackgroundColor(this.getBackgroundColor());
       }
       component.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -667,9 +574,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
   public void setHeaderTrailingComponent(SwingComponentView<?> component) {
     if (component != null) {
-      if (component.isOpaque()) {
-        //pass
-      } else {
+      if (!component.isOpaque()) {
         component.setBackgroundColor(this.getBackgroundColor());
       }
       component.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -712,10 +617,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
   @Override
   protected void addItem(E item, BooleanStateButton<?> button) {
     super.addItem(item, button);
-    if (button instanceof FolderTabbedPane.FolderTabTitle) {
-      FolderTabTitle title = (FolderTabTitle) button;
-      title.setCloseable(item.isCloseable());
-    }
+    button.updateFor(item);
     this.titlesPanel.addComponent(button);
   }
 
@@ -730,5 +632,12 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
     super.setBackgroundColor(color);
     this.titlesPanel.setBackgroundColor(color);
     this.titlesScrollPane.setBackgroundColor(color);
+  }
+
+  @Override
+  public void setForegroundColor(Color color) {
+    super.setForegroundColor(color);
+    this.titlesPanel.setForegroundColor(color);
+    this.titlesScrollPane.setForegroundColor(color);
   }
 }

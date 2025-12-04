@@ -65,8 +65,7 @@ public class GalleryResourceUtilities {
   public static <B> void updateChildren(List<CascadeBlankChild> children, BlankNode<B> blankNode, AbstractType<?, ?, ?> type) {
     Iterable<AbstractDeclaration> declarations = IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor(type);
     for (AbstractDeclaration declaration : declarations) {
-      if (declaration instanceof AbstractType<?, ?, ?>) {
-        AbstractType<?, ?, ?> childType = (AbstractType<?, ?, ?>) declaration;
+      if (declaration instanceof AbstractType<?, ?, ?> childType) {
         if (NebulousIde.nonfree.isAssignableToPersonResource(childType)) {
           CascadeBlankChild personFillIn = NebulousIde.nonfree.getGalleryPersonResourceFillInInstance(childType);
           if (personFillIn != null) {
@@ -76,8 +75,7 @@ public class GalleryResourceUtilities {
         } else {
           children.add(GalleryResourceMenu.getInstance(childType));
         }
-      } else if (declaration instanceof AbstractField) {
-        AbstractField childField = (AbstractField) declaration;
+      } else if (declaration instanceof AbstractField childField) {
         children.add(GalleryResourceFieldFillIn.getInstance(childField));
       } else {
         throw new AssertionError();

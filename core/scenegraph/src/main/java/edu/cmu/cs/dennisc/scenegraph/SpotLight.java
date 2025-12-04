@@ -43,9 +43,9 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.math.immutable.AngleInRadians;
 import edu.cmu.cs.dennisc.math.property.AngleProperty;
 import edu.cmu.cs.dennisc.property.DoubleProperty;
+import org.alice.math.immutable.AngleInRadians;
 
 /**
  * a spot light emits a cone of light; behaving like a point light within its

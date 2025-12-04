@@ -16,7 +16,7 @@ public class ManifestDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 
   @Override
   ResourceKey createResourceKey() {
-    return new DynamicResourceKey(DynamicResource.createDynamicResource(modelManifest, modelManifest.models.get(0)));
+    return new DynamicResourceKey(DynamicResource.createDynamicResource(modelManifest, modelManifest.models.getFirst()));
   }
 
   @Override

@@ -48,7 +48,7 @@ public class ConvexPolygon {
         lastEdgeIncluded = false;
       }
     }
-    if (vertices.get(0).equals(startOfEdgesToRemove) && lastEdgeIncluded) {
+    if (vertices.getFirst().equals(startOfEdgesToRemove) && lastEdgeIncluded) {
       verticesToRemove.add(endOfEdgesToRemove);
     }
     for (Point2 vert : verticesToRemove) {

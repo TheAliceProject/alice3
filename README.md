@@ -4,7 +4,7 @@
 
 ### Latest Released Build:
 
-[![](https://img.shields.io/badge/3.9.0.2-green.svg)](https://www.alice.org/get-alice/alice-3/)
+[![](https://img.shields.io/badge/3.9.1.0-green.svg)](https://www.alice.org/get-alice/alice-3/)
 
 ## Building Alice 3 from the source
 
@@ -35,13 +35,15 @@ To ensure the lfs files are available locally:
 
 Compile the code, build the jars, and install them in the local mvn repository.
 
-    mvn -Dinstall4j.skip compile install
+    mvn compile install
 
 The install step will also build the NetBeans plugin in `{alice3}/netbeans/target/`
 
-If you want to use Install4J to build the installers drop the skip flag:
+If you want to use Install4J to build the installers add a flag to use the buildInstaller profile:
 
-        mvn install
+    mvn -DbuildInstaller=true install
+
+More information about configuring Install4j can be found [here](https://www.ej-technologies.com/resources/install4j/help/doc/cli/maven.html)
 
 ## Executing and testing
 

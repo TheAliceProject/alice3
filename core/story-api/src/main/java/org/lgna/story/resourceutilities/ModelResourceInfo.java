@@ -42,25 +42,23 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.time.Year;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.lgna.project.ProjectVersion;
-
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.alice.math.immutable.AxisAlignedBox;
 import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
+import org.lgna.project.ProjectVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.math.immutable.AxisAlignedBox;
-import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import java.time.Year;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author dculyba
@@ -198,8 +196,8 @@ public class ModelResourceInfo {
     NodeList children = node.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
       Node child = children.item(i);
-      if ((child instanceof Element) && child.getNodeName().equals(tagName)) {
-        elements.add((Element) child);
+      if ((child instanceof Element element) && child.getNodeName().equals(tagName)) {
+        elements.add(element);
       }
     }
     return elements;
@@ -214,7 +212,7 @@ public class ModelResourceInfo {
     List<Element> bboxNodeList = getImmediateChildElementsByTagName(modelElement, "BoundingBox");
     this.boundingBox = bboxNodeList.isEmpty()
         ? AxisAlignedBox.Empty
-        : getBoundingBoxFromXML(bboxNodeList.get(0));
+        : getBoundingBoxFromXML(bboxNodeList.getFirst());
     this.modelName = modelElement.getAttribute("name");
     this.creator = modelElement.getAttribute("creator");
     int creationYearTemp = -1;

@@ -75,7 +75,7 @@ public class ComponentManager {
   public static void addComponent(Model model, SwingComponentView<?> component) {
     synchronized (map) {
       Queue<SwingComponentView<?>> components = getComponents(model);
-      if (components.size() == 0) {
+      if (components.isEmpty()) {
         Manager.registerModel(model);
       }
       components.add(component);
@@ -88,7 +88,7 @@ public class ComponentManager {
     synchronized (map) {
       Queue<SwingComponentView<?>> components = getComponents(model);
       components.remove(component);
-      if (components.size() == 0) {
+      if (components.isEmpty()) {
         Manager.unregisterModel(model);
       }
     }

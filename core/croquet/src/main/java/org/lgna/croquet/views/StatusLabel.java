@@ -48,13 +48,7 @@ import org.lgna.croquet.AbstractSeverityStatusComposite;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
@@ -83,9 +77,7 @@ public class StatusLabel extends SwingComponentView<JLabel> {
     JLabel rv = new JLabel(TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
       @Override
       protected void paintComponent(Graphics g) {
-        if (this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
-          //pass
-        } else {
+        if (this.getText() != TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
           super.paintComponent(g);
         }
       }

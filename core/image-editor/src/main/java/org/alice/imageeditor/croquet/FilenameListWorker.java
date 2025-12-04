@@ -73,9 +73,7 @@ import java.util.List;
   }
 
   private void appendDescendants(List<File> descendants, File dir) {
-    if (this.isCancelled()) {
-      //pass
-    } else {
+    if (!this.isCancelled()) {
       File[] files = dir.listFiles(PNG_FILE_FILTER);
       if ((files != null) && (files.length > 0)) {
         Collections.addAll(descendants, files);

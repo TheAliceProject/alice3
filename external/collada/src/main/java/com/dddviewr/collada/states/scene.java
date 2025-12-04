@@ -1,11 +1,10 @@
 package com.dddviewr.collada.states;
 
-import org.xml.sax.Attributes;
-
 import com.dddviewr.collada.Collada;
 import com.dddviewr.collada.State;
 import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.scene.Scene;
+import org.xml.sax.Attributes;
 
 public class scene extends State {
   protected Scene theScene;

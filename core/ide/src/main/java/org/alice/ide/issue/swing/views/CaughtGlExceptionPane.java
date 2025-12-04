@@ -60,8 +60,7 @@ public class CaughtGlExceptionPane extends AbstractCaughtExceptionPane {
 
   @Override
   public void setThreadAndThrowable(Thread thread, Throwable throwable) {
-    if (throwable instanceof GLException) {
-      GLException glException = (GLException) throwable;
+    if (throwable instanceof GLException glException) {
       this.add(new GlExceptionComposite(glException).getView().getAwtComponent(), BorderLayout.NORTH);
     }
     super.setThreadAndThrowable(thread, throwable);

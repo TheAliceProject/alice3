@@ -89,7 +89,13 @@ public class UserLocal extends AbstractTransient {
 
   @Override
   public final String getValidName() {
-    return getName() != null ? getName() : generateName();
+    String currentName = getName();
+    if (currentName != null) {
+      return currentName;
+    }
+    String defaultName =  generateName();
+    name.setValue(defaultName);
+    return defaultName;
   }
 
   public final StringProperty name = new StringProperty(this, null) {

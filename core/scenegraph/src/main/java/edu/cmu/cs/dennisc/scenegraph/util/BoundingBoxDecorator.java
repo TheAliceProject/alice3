@@ -43,13 +43,13 @@
 package edu.cmu.cs.dennisc.scenegraph.util;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import org.alice.math.immutable.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 import edu.cmu.cs.dennisc.scenegraph.FillingStyle;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.alice.math.immutable.AxisAlignedBox;
 
 /**
  * @author Dennis Cosgrove

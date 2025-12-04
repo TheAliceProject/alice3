@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
-import java.util.List;
-
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
+import java.util.List;
 
 /**
  * @author Matt May

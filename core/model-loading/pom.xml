@@ -17,7 +17,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
-    <version>9.0.2</version>
+    <version>9.1.0</version>
   </parent>
   <dependencies>
     <dependency>
@@ -51,6 +51,10 @@
     <dependency>
       <groupId>de.javagl</groupId>
       <artifactId>jgltf-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
   </dependencies>
 </project>

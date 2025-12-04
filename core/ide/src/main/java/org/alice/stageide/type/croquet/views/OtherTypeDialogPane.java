@@ -44,24 +44,16 @@ package org.alice.stageide.type.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import org.alice.ide.ThemeUtilities;
 import org.alice.stageide.type.croquet.OtherTypeDialog;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.FolderTabbedPane;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.Tree;
-import org.lgna.croquet.views.VerticalAlignment;
-import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -105,7 +97,7 @@ public class OtherTypeDialogPane extends MigPanel {
     FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
     this.addComponent(tabbedPane, "grow");
 
-    ScrollPane treeScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.treeView);
+    ScrollPane treeScrollPane = new ScrollPane(treeView, ScrollPane.VerticalScrollbarPolicy.ALWAYS, null);
     this.addComponent(treeScrollPane, "grow");
 
     this.descriptionLabel = composite.getDescriptionText().createLabel();
@@ -116,7 +108,7 @@ public class OtherTypeDialogPane extends MigPanel {
     descriptionScrollPane.setBackgroundColor(Color.WHITE);
     this.addComponent(descriptionScrollPane, "grow");
 
-    Color color = ThemeUtilities.getActiveTheme().getTypeColor();
+    Color color = UIManager.getColor("Alice.Type.color");
     color = ColorUtilities.scaleHSB(color, 1.0, 0.9, 1.1);
     this.setBackgroundColor(color);
     tabbedPane.setBackgroundColor(color);

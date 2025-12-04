@@ -183,8 +183,7 @@ public class ExtravagantAxes extends Transformable {
 
   public void setIsShowing(boolean isShowing) {
     for (Component child : this.getComponents()) {
-      if (child instanceof Arrow) {
-        Arrow a = (Arrow) child;
+      if (child instanceof Arrow a) {
         for (Visual v : a.getVisuals()) {
           v.isShowing.setValue(isShowing);
         }

@@ -1,20 +1,5 @@
 package com.dddviewr.collada;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
-
 import com.dddviewr.collada.animation.LibraryAnimations;
 import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.LibraryControllers;
@@ -33,6 +18,19 @@ import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.scene.Scene;
 import com.dddviewr.collada.visualscene.LibraryVisualScenes;
 import com.dddviewr.log.Log;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import javax.xml.parsers.SAXParserFactory;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Collada extends Base {
   protected LibraryGeometries libraryGeometries;
@@ -210,7 +208,7 @@ public class Collada extends Base {
     if (reader == null) {
       try {
         SAXParserFactory factory;
-        factory = (SAXParserFactory) Class.forName("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").newInstance();
+        factory = (SAXParserFactory) Class.forName("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").getDeclaredConstructor().newInstance();
         //factory = SAXParserFactory.newInstance();
         Log.log("SAXParserFactory: " + factory);
         //factory.setNamespaceAware(true);

@@ -96,11 +96,9 @@ import java.util.concurrent.CyclicBarrier;
         throw new RuntimeException(bbe);
       }
       synchronized (runtimeExceptions) {
-        if (runtimeExceptions.isEmpty()) {
-          //pass
-        } else {
+        if (!runtimeExceptions.isEmpty()) {
           //todo:
-          throw runtimeExceptions.get(0);
+          throw runtimeExceptions.getFirst();
         }
       }
     }

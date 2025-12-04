@@ -54,7 +54,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.math.immutable.Point3;
-
 import org.lgna.story.implementation.AxesImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ModelImp;
@@ -152,12 +151,10 @@ public class HandleManager implements ManipulationListener {
     } else if (handle instanceof RotationRingHandle) {
       boolean doJointsMatch = objectPickHint.intersects(PickHint.PickType.JOINT.pickHint()) == handle.isMemberOf(HandleSet.HandleGroup.JOINT);
       return doJointsMatch && objectPickHint.intersects(PickHint.PickType.TURNABLE.pickHint());
-    } else if (handle instanceof LinearScaleHandle) {
-      LinearScaleHandle scaleHandle = (LinearScaleHandle) handle;
+    } else if (handle instanceof LinearScaleHandle scaleHandle) {
       if (objectPickHint.intersects(PickHint.PickType.RESIZABLE.pickHint())) {
         EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject(selectedObject);
-        if (entityImp instanceof ModelImp) {
-          ModelImp modelImp = (ModelImp) entityImp;
+        if (entityImp instanceof ModelImp modelImp) {
           Resizer[] resizers = modelImp.getResizers();
           for (Resizer r : resizers) {
             if (r == scaleHandle.getResizer()) {
@@ -197,10 +194,10 @@ public class HandleManager implements ManipulationListener {
   }
 
   public AbstractTransformable getSelectedObject() {
-    if (this.handles.size() == 0) {
+    if (this.handles.isEmpty()) {
       return null;
     } else {
-      AbstractTransformable selected = this.handles.get(0).getManipulatedObject();
+      AbstractTransformable selected = this.handles.getFirst().getManipulatedObject();
       for (ManipulationHandle handle : this.handles) {
         if ((handle.getManipulatedObject() != selected) && !(handle instanceof ManipulationHandle2D)) {
           PrintUtilities.println("Handle " + handle + " selected (" + handle.getManipulatedObject() + ", does not equal " + selected);
