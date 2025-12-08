@@ -23,6 +23,8 @@ jobs:
         checkout-fetch-depth: 0
         java-version: 21
         maven-version: 3.9.9
+    - name: Compile with Maven
+      run: mvn compile
     - name: Run Checkstyle with Maven
       run: mvn -B verify checkstyle:checkstyle -Dcheckstyle.config.location=checkstyle.xml
     - uses: jwgmeligmeyling/checkstyle-github-action@master
