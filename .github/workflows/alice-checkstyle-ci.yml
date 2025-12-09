@@ -27,8 +27,6 @@ jobs:
       run: |
         git submodule init
         git submodule update
-    - name: Compile code with Maven
-      run: mvn compile
     - name: Run Checkstyle with Maven
       run: mvn -B checkstyle:checkstyle -Dcheckstyle.config.location=checkstyle.xml
     - uses: jwgmeligmeyling/checkstyle-github-action@master
