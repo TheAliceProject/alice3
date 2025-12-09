@@ -27,8 +27,8 @@ jobs:
       run: |
         git submodule init
         git submodule update
-    - name: Run Antlr with Maven
-      run: mvn -f core/tweedle/pom.xml antlr4:antlr4
+    - name: Compile code with Maven
+      run: mvn compile
     - name: Run Checkstyle with Maven
       run: mvn -B verify checkstyle:checkstyle -Dcheckstyle.config.location=checkstyle.xml
     - uses: jwgmeligmeyling/checkstyle-github-action@master
