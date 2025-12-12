@@ -103,30 +103,16 @@ public class TypeIcon implements Icon {
   }
 
   private String getBonusText() {
-    if (isIndentForDepthAndMemberCountTextDesired) {
-      if (this.type instanceof NamedUserType userType) {
-        int count = 0;
-        for (UserMethod method : userType.methods) {
-          if (method.getManagementLevel() == ManagementLevel.NONE) {
-            count += 1;
-          }
-        }
-        count += userType.fields.size();
-        if (count > 0) {
-          StringBuilder sb = new StringBuilder();
-          sb.append("(");
-          sb.append(count);
-          sb.append(")");
-          return sb.toString();
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    } else {
+    if (!isIndentForDepthAndMemberCountTextDesired || !(this.type instanceof NamedUserType userType)) {
       return null;
     }
+    int count = userType.fields.size();
+    for (UserMethod method : userType.methods) {
+      if (method.getManagementLevel() == ManagementLevel.NONE) {
+        count += 1;
+      }
+    }
+    return count > 0 ? "(%d)".formatted(count) : null;
   }
 
   private static Rectangle2D getTextBounds(String text, Font font) {
@@ -140,7 +126,7 @@ public class TypeIcon implements Icon {
       }
       return fm.getStringBounds(text, g);
     } else {
-      return new Rectangle2D.Float(0, 0, 0, 0);
+      return new Rectangle2D.Float();
     }
   }
 
@@ -166,19 +152,19 @@ public class TypeIcon implements Icon {
 
   @Override
   public int getIconWidth() {
-    int rv = this.getBorderWidth();
-    if (this.isIndentForDepthAndMemberCountTextDesired) {
-      int depth = StaticAnalysisUtilities.getUserTypeDepth(type);
-      if (depth > 0) {
-        rv += (depth * INDENT_PER_DEPTH);
-      }
+    return getBorderWidth() + getExtraWidth();
+  }
+
+  private int getExtraWidth() {
+    if (!isIndentForDepthAndMemberCountTextDesired) {
+      return 0;
     }
-    if (this.isIndentForDepthAndMemberCountTextDesired) {
-      rv += BONUS_GAP;
-      Rectangle2D bonusTextBounds = this.getBonusTextBounds();
-      rv += (int) bonusTextBounds.getWidth();
+    int extra = BONUS_GAP + (int) getBonusTextBounds().getWidth();
+    int depth = StaticAnalysisUtilities.getUserTypeDepth(type);
+    if (depth > 0) {
+      extra += (depth * INDENT_PER_DEPTH);
     }
-    return rv;
+    return extra;
   }
 
   @Override
@@ -193,10 +179,7 @@ public class TypeIcon implements Icon {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     AffineTransform prevTransform = g2.getTransform();
 
-    //g.setColor( java.awt.Color.BLUE );
-    //g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-
-    int typePlusBonusWidth = this.getIconWidth();
+    int typePlusBonusWidth = getBorderWidth() + getExtraWidth();
     if (this.isIndentForDepthAndMemberCountTextDesired) {
       int depth = StaticAnalysisUtilities.getUserTypeDepth(type);
       if (depth > 0) {
@@ -210,11 +193,6 @@ public class TypeIcon implements Icon {
     int w = this.getBorderWidth();
     int h = this.getBorderHeight();
 
-    //g.setColor( java.awt.Color.GREEN );
-    //g.fillRect( x, y, typePlusBonusWidth, this.getIconHeight() );
-
-    //g.setColor( java.awt.Color.RED );
-    //g.fillRect( x, y, w, h );
     this.border.paintBorder(c, g, x, y, w, h);
     g.setColor(this.getTextColor(c));
 
@@ -222,11 +200,9 @@ public class TypeIcon implements Icon {
     g.setFont(this.getTypeFont());
     GraphicsUtilities.drawCenteredText(g, this.getTypeText(), x, y, w, h);
 
-    if (this.isIndentForDepthAndMemberCountTextDesired) {
-      if (this.bonusFont != null) {
-        g.setFont(this.bonusFont);
-        GraphicsUtilities.drawCenteredText(g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h);
-      }
+    if (isIndentForDepthAndMemberCountTextDesired && bonusFont != null) {
+      g.setFont(bonusFont);
+      GraphicsUtilities.drawCenteredText(g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h);
     }
     g.setFont(prevFont);
     g2.setTransform(prevTransform);
