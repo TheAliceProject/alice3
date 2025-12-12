@@ -189,7 +189,7 @@ public class ChangeHandler {
       handleOrBufferEvent(e);
     }
   };
-  private static final PropertyListener propertyListener = e -> handleOrBufferEvent(e);
+  private static final PropertyListener propertyListener = ChangeHandler::handleOrBufferEvent;
 
   private static final ComponentsListener componentsListener = new ComponentsListener() {
     @Override
@@ -213,22 +213,7 @@ public class ChangeHandler {
       handleOrBufferEvent(e);
     }
   };
-  private static final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
-    @Override
-    public void absoluteTransformationChanged(AbsoluteTransformationEvent e) {
-      handleOrBufferEvent(e);
-    }
-  };
-  private static final HierarchyListener hierarchyListener = new HierarchyListener() {
-    @Override
-    public void hierarchyChanged(HierarchyEvent e) {
-      handleOrBufferEvent(e);
-    }
-  };
-  private static final TextureListener textureListener = new TextureListener() {
-    @Override
-    public void textureChanged(TextureEvent e) {
-      handleOrBufferEvent(e);
-    }
-  };
+  private static final AbsoluteTransformationListener absoluteTransformationListener = ChangeHandler::handleOrBufferEvent;
+  private static final HierarchyListener hierarchyListener = ChangeHandler::handleOrBufferEvent;
+  private static final TextureListener textureListener = ChangeHandler::handleOrBufferEvent;
 }
