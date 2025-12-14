@@ -44,8 +44,10 @@
 package org.alice.ide.instancefactory.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ValueTracker;
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
 import org.alice.ide.instancefactory.InstanceFactory;
@@ -63,6 +65,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.UUID;
 
@@ -71,6 +74,7 @@ import java.util.UUID;
  */
 public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactory, Void> {
   private static final Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
+  private static final ValueTracker menuWidthTracker = new ValueTracker.MaximumTracker();
 
   public static InstanceFactoryFillIn getInstance(InstanceFactory value) {
     synchronized (map) {
@@ -134,7 +138,12 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
     rv.add(expressionPane);
     rv.setOpaque(false);
     return rv;
+  }
 
+  @Override
+  protected Icon scaledImageIcon(BufferedImage image, Dimension size) {
+    // Use a shared tracker so children will report the width of the largest sibling.
+    return new ScaledImageIcon(image, size, menuWidthTracker);
   }
 
   @Override

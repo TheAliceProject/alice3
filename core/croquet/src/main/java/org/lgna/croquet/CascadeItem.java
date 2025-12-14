@@ -43,8 +43,11 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import javax.swing.BoxLayout;
@@ -52,6 +55,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 /**
@@ -128,35 +132,61 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
       this.icon = null;
       this.menuProxy = null;
     }
-    if (this.icon == null) {
-      JComponent component = this.getMenuProxy(node);
-      if (component != null) {
-        final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
-        ComponentOrientation componentOrientation = component.getComponentOrientation();
-        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-          setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
-        }
-
-        ComponentUtilities.invalidateTree(component);
-        ComponentUtilities.setSizeToPreferredSizeTree(component);
-        ComponentUtilities.doLayoutTree(component);
-
-        if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
-          setBoxLayoutComponentOrientationTree(component, componentOrientation);
-        }
-
-        Dimension size = component.getPreferredSize();
-        if ((size.width > 0) && (size.height > 0)) {
-          this.icon = IconUtilities.createIcon(component);
-        } else {
-          this.icon = null;
-        }
-      } else {
-        this.icon = null;
-      }
-      this.markClean();
+    if (this.icon != null) {
+      return this.icon;
     }
+    JComponent component = this.getMenuProxy(node);
+    if (component != null) {
+      final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
+      ComponentOrientation componentOrientation = component.getComponentOrientation();
+      if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+        setBoxLayoutComponentOrientationTree(component, ComponentOrientation.LEFT_TO_RIGHT);
+      }
+
+      ComponentUtilities.invalidateTree(component);
+      ComponentUtilities.setSizeToPreferredSizeTree(component);
+      ComponentUtilities.doLayoutTree(component);
+
+      if (!componentOrientation.isLeftToRight() && IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK) {
+        setBoxLayoutComponentOrientationTree(component, componentOrientation);
+      }
+      this.icon = componentIcon(component);
+    }
+    this.markClean();
     return this.icon;
+  }
+
+  private Icon componentIcon(JComponent component) {
+    Dimension size = component.getPreferredSize();
+    if ((size.width <= 0) || (size.height <= 0)) {
+      return null;
+    }
+    BufferedImage scaledImage = getScaledImage(size, component);
+    int sourceWidth = ImageUtilities.getWidth(scaledImage);
+    int sourceHeight = ImageUtilities.getHeight(scaledImage);
+    if (sourceWidth > 0 && sourceHeight > 0) {
+      return scaledImageIcon(scaledImage, size);
+    }
+
+    Logger.severe("source image size is", sourceWidth, ",", sourceHeight);
+    return new ColorIcon(Color.RED, size);
+  }
+
+  protected Icon scaledImageIcon(BufferedImage image, Dimension size) {
+    return new ScaledImageIcon(image, size);
+  }
+
+  // We render our components as images to put them in our dropdown menus as icons
+  // Here is where that happens
+  private static BufferedImage getScaledImage(Dimension size, JComponent component) {
+    // render things big and then scale down, so they don't look terrible
+    int SCALE_FOR_BEAUTY = 2;
+    BufferedImage image = new BufferedImage(size.width * SCALE_FOR_BEAUTY, size.height * SCALE_FOR_BEAUTY, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g = (Graphics2D) image.getGraphics();
+    g.scale(SCALE_FOR_BEAUTY, SCALE_FOR_BEAUTY);
+    component.print(g);
+    g.dispose();
+    return image;
   }
 
   public String getMenuItemText() {
