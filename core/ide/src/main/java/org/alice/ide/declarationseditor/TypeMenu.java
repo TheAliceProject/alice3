@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
+import org.alice.ValueTracker;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.declaration.*;
 import org.alice.ide.common.TypeIcon;
@@ -72,6 +73,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeMenu extends MenuModel {
+  private static final ValueTracker iconMaxWidth = new ValueTracker.MaximumTracker();
   private static final Font TYPE_FONT;
   private static final Font BONUS_FONT;
 
@@ -105,7 +107,12 @@ public class TypeMenu extends MenuModel {
   @Override
   protected void localize() {
     super.localize();
-    this.setSmallIcon(new TypeIcon(this.type, true, TYPE_FONT, BONUS_FONT));
+    this.setSmallIcon(new TypeIcon(this.type, true, TYPE_FONT, BONUS_FONT) {
+      @Override
+      public int getIconWidth() {
+        return iconMaxWidth.check(super.getIconWidth());
+      }
+    });
   }
 
   @Override
