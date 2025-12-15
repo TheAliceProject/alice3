@@ -115,6 +115,8 @@ public class TypeMenu extends MenuModel {
     this.setSmallIcon(new TypeIcon(this.type, true, TYPE_FONT, BONUS_FONT) {
       @Override
       public int getIconWidth() {
+        // Having all Type Icons in the menu return the width of the widest one allows
+        // them to be left justified instead of centered and show the hierarchy in the menu.
         return iconMaxWidth.check(super.getIconWidth());
       }
     });
