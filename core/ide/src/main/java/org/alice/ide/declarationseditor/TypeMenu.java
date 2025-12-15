@@ -97,6 +97,11 @@ public class TypeMenu extends MenuModel {
     return rv;
   }
 
+  public static void reset() {
+    map.clear();
+    iconMaxWidth.reset();
+  }
+
   private final NamedUserType type;
 
   private TypeMenu(NamedUserType type) {

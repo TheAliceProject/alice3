@@ -108,6 +108,11 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
     }
   }
 
+  public static void reset() {
+    map.clear();
+    menuWidthTracker.reset();
+  }
+
   @Override
   protected final JComponent createMenuItemIconProxy(ItemNode<? super InstanceFactory, Void> step) {
     Expression expression = this.value.createTransientExpression();
