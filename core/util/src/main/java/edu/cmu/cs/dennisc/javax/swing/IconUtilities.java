@@ -42,13 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 /**
@@ -58,43 +55,6 @@ import java.net.URL;
 public class IconUtilities {
   private IconUtilities() {
     throw new AssertionError();
-  }
-
-  private static final Container privateContainer = new Container();
-
-  // We have taken the approach of rendering our components as images to put them in our dropdown menus as icons
-  // here is where that happens.
-  public static Icon createIcon(Component component) {
-    Icon rv;
-    Dimension size = component.getPreferredSize();
-
-    if ((size.width > 0) && (size.height > 0)) {
-      // render things big and then scale down, so they don't look terrible
-      int SCALE_FOR_BEAUTY = 2;
-      BufferedImage image = new BufferedImage(size.width * SCALE_FOR_BEAUTY, size.height * SCALE_FOR_BEAUTY, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g = (Graphics2D) image.getGraphics();
-      g.scale(SCALE_FOR_BEAUTY, SCALE_FOR_BEAUTY);
-      component.print(g);
-      g.dispose();
-      rv = ScaledImageIcon.createSafeInstanceInPixels(image, size.width, size.height);
-    } else {
-      rv = new Icon() {
-        @Override
-        public int getIconWidth() {
-          return 24;
-        }
-
-        @Override
-        public int getIconHeight() {
-          return 12;
-        }
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-        }
-      };
-    }
-    return rv;
   }
 
   public static ImageIcon createImageIcon(URL url) {
