@@ -637,6 +637,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       getProjectHistory().removeHistoryListener(projectHistoryListener);
     }
     setProject(project);
+    getProjectHistory().addHistoryListener(projectHistoryListener);
+    updateInterface();
+  }
+
+  private void updateInterface() {
     // Normally, the menu bar sub-menus are populated when the user is about to open one. However,
     // the popupMenuWillBecomeVisible/popupMenuWillBecomeInvisible events don't fire on Mac specifically
     // for the top-level menu bar. As a workaround, all submenus are initialized at launch on Mac,
@@ -644,7 +649,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     if (SystemUtilities.isMac()) {
       getDocumentFrame().getFrame().rebuildMenuBar();
     }
-    getProjectHistory().addHistoryListener(projectHistoryListener);
     URI uri = getUri();
     File file = UriUtilities.getFile(uri);
     try {
@@ -679,7 +683,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     projectFileUtilities.saveProjectTo(file, uriProjectLoader.isBackup());
 
     if (savingNewProject) {
-      updateInterface(getUpToDateProject());
+      updateInterface();
     }
 
     //    long endTime = System.currentTimeMillis();
