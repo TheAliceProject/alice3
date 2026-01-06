@@ -23,6 +23,10 @@ jobs:
         checkout-fetch-depth: 0
         java-version: 21
         maven-version: 3.9.9
+    - name: Get submodules
+      run: |
+        git submodule init
+        git submodule update
     - name: Compile code with Maven
       run: mvn compile -Dcheckstyle.skip
     - name: Run Checkstyle with Maven
