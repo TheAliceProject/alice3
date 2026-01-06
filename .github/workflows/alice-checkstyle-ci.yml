@@ -20,7 +20,6 @@ jobs:
     - name: Set up correct Maven version
       uses: s4u/setup-maven-action@v1.7.0
       with:
-        checkout-fetch-depth: 0
         java-version: 21
         maven-version: 3.9.9
     - name: Get submodules
