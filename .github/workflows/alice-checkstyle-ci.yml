@@ -28,7 +28,6 @@ jobs:
         git submodule init
         git submodule update
     - name: Run Checkstyle with Maven
-      continue-on-error: true
       run: mvn compile checkstyle:checkstyle -Dcheckstyle.config.location=checkstyle.xml
     - uses: jwgmeligmeyling/checkstyle-github-action@master
       with:
