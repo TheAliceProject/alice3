@@ -53,7 +53,8 @@ public abstract class MenuItemPrepModel extends AbstractModel implements PrepMod
     super(id);
   }
 
+  // By default all menu items will show scroll arrows.
   public boolean showScrollArrows() {
-    return false;
+    return true;
   }
 }
