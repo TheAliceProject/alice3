@@ -968,6 +968,9 @@
   <mediaSets>
     <windows name="Windows 64 Offline" id="101" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="${compiler:sys.fullName}" downloadURL="http://www.alice.org/downloads/installerDataTest" architecture="64">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-linux-x86_64.so" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
@@ -980,6 +983,8 @@
         <bean refId="142" />
       </excludedBeans>
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-linux-x86_64.so" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
@@ -989,6 +994,9 @@
     </macos>
     <unixInstaller name="Unix Installer Offline" id="111" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice3" downloadURL="http://www.alice.org/downloads/installerOnlineData">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/macosx" />
         <entry location="platform/win64" />
       </exclude>
@@ -996,6 +1004,8 @@
     </unixInstaller>
     <macosArchive name="Mac OS X Archive" id="195" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" architecture="universal" launcherId="24">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-linux-x86_64.so" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-i586" />
@@ -1006,6 +1016,9 @@
     </macosArchive>
     <windowsArchive name="Windows Archive" id="891" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" architecture="64">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-linux-x86_64.so" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
@@ -1014,6 +1027,9 @@
     </windowsArchive>
     <linuxDeb name="Linux Deb Archive" id="1294" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/macosx" />
         <entry location="platform/win64" />
       </exclude>
@@ -1024,6 +1040,9 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     </linuxDeb>
     <unixArchive name="Unix Archive" id="1295" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/macosx" />
         <entry location="platform/win64" />
       </exclude>
@@ -1031,6 +1050,9 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     </unixArchive>
     <linuxRPM name="Linux RPM" id="1296" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
+        <entry location="lib/flatlaf-3.6.2-macos-arm64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-macos-x86_64.dylib" />
+        <entry location="lib/flatlaf-3.6.2-windows-x86_64.dll" />
         <entry location="platform/macosx" />
         <entry location="platform/win64" />
       </exclude>
