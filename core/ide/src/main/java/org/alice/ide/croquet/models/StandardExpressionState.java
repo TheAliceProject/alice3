@@ -54,7 +54,6 @@ import org.lgna.project.ast.Expression;
 
 import java.util.List;
 import java.util.UUID;
-import javax.swing.CellEditor;
 
 /**
  * @author Dennis Cosgrove
