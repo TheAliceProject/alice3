@@ -23,13 +23,5 @@ jobs:
         checkout-fetch-depth: 0
         java-version: 21
         maven-version: 3.9.9
-    - name: Get submodules
-      run: |
-        git submodule init
-        git submodule update
     - name: Run Checkstyle with Maven
-      continue-on-error: true
-      run: mvn compile checkstyle:checkstyle -Dcheckstyle.config.location=checkstyle.xml
-    - uses: jwgmeligmeyling/checkstyle-github-action@master
-      with:
-        path: '**/checkstyle-result.xml'
+      run: mvn checkstyle:check -Dcheckstyle.config.location=checkstyle.xml
