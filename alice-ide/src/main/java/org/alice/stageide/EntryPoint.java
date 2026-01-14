@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
-import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
+import edu.cmu.cs.dennisc.render.gl.RendererNativeLibraryLoader;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -98,6 +98,9 @@ public class EntryPoint extends Application {
       Logger.severe("Was unable to set look and feel theme: " + updateFlatLafThemeException.getMessage());
       updateFlatLafThemeException.printStackTrace();
     }
+
+    // Initialize this on the main thread, before Swing or JavaFX, and before opening a project in args.
+    RendererNativeLibraryLoader.initializeIfNecessary();
 
     // Initialize Swing here to do it on the correct thread, outside of JavaFX
     SwingUtilities.invokeLater(() -> {
@@ -181,8 +184,6 @@ public class EntryPoint extends Application {
       ide.getDocumentFrame().getFrame().setVisible(true);
       heapMonitor = new HeapWatchDog();
     });
-    GlrRenderFactory.getInstance();
-
     // Call to initialize JavaFX
     launch(args);
   }
