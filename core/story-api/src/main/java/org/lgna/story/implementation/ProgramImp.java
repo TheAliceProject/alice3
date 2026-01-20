@@ -378,8 +378,8 @@ public abstract class ProgramImp {
 
 
   public void shutDown() {
-    this.abstraction.setActiveScene(null);
     this.stopAnimator();
+    this.abstraction.setActiveScene(null);
     this.isProgramClosedExceptionDesired = true;
   }
 

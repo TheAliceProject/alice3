@@ -86,4 +86,8 @@ public abstract class StaticMenuModel extends MenuModel {
     this.updateMenuItemContainer(popupMenu);
   }
 
+  // Only some static models will hide scroll arrows
+  public boolean showScrollArrows() {
+    return false;
+  }
 }

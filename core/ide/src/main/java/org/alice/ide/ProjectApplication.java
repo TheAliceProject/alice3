@@ -52,7 +52,9 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.croquet.models.projecturi.BackupProjectOperation;
+import org.alice.ide.declarationseditor.TypeMenu;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
@@ -374,6 +376,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     this.uriProjectLoader = uriProjectLoader;
     if (uriProjectLoader != null) {
       showWaitCursor();
+      cleanupForNextProject();
       uriProjectLoader.deliverContentOnEventDispatchThread(proj -> {
         try {
           projectLoaded(activity, proj, isLoadingBackups, isMainProjectCorrupted, unloadableFiles);
@@ -384,6 +387,14 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         }
       });
     }
+  }
+
+  // Clear any values or caches that should be before creating or opening another project.
+  // TODO expand this method to release all the things
+  private void cleanupForNextProject() {
+    // Reset menu widths
+    TypeMenu.reset();
+    InstanceFactoryFillIn.reset();
   }
 
   protected boolean loadNewProjectBackup() {
@@ -626,6 +637,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       getProjectHistory().removeHistoryListener(projectHistoryListener);
     }
     setProject(project);
+    getProjectHistory().addHistoryListener(projectHistoryListener);
+    updateInterface();
+  }
+
+  private void updateInterface() {
     // Normally, the menu bar sub-menus are populated when the user is about to open one. However,
     // the popupMenuWillBecomeVisible/popupMenuWillBecomeInvisible events don't fire on Mac specifically
     // for the top-level menu bar. As a workaround, all submenus are initialized at launch on Mac,
@@ -633,7 +649,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     if (SystemUtilities.isMac()) {
       getDocumentFrame().getFrame().rebuildMenuBar();
     }
-    getProjectHistory().addHistoryListener(projectHistoryListener);
     URI uri = getUri();
     File file = UriUtilities.getFile(uri);
     try {
@@ -668,7 +683,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     projectFileUtilities.saveProjectTo(file, uriProjectLoader.isBackup());
 
     if (savingNewProject) {
-      updateInterface(getUpToDateProject());
+      updateInterface();
     }
 
     //    long endTime = System.currentTimeMillis();

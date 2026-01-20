@@ -42,8 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ValueTracker;
 
 import javax.swing.Icon;
 import java.awt.*;
@@ -53,35 +52,29 @@ import java.awt.*;
  */
 public class ScaledImageIcon implements Icon {
   private final Image sourceImage;
-  private int width;
-  private int height;
+  private final ValueTracker maxWidthTracker;
+  private final int width;
+  private final int height;
 
-  public static Icon createSafeInstanceInPixels(Image sourceImage, int width, int height) {
-    if (sourceImage != null) {
-      int sourceWidth = ImageUtilities.getWidth(sourceImage);
-      int sourceHeight = ImageUtilities.getWidth(sourceImage);
-      if ((sourceWidth > 0) && (sourceHeight > 0)) {
-        return new ScaledImageIcon(sourceImage, width, height);
-      } else {
-        Logger.severe("source image size is", sourceWidth, ",", sourceHeight);
-        return new ColorIcon(Color.RED, width, height);
-      }
-    } else {
-      Logger.severe("source image is null");
-      return new ColorIcon(Color.RED, width, height);
-    }
+  public ScaledImageIcon(Image image, Dimension size) {
+    this(image, size, ValueTracker.PASS_THROUGH);
   }
 
-  private ScaledImageIcon(Image sourceImage, int width, int height) {
+  public ScaledImageIcon(Image image, Dimension size, ValueTracker widthTracker) {
+    this(image, size.width, size.height, widthTracker);
+  }
+
+  private ScaledImageIcon(Image sourceImage, int width, int height, ValueTracker maxWidthTracker) {
     assert sourceImage != null : this;
     this.sourceImage = sourceImage;
     this.width = width;
     this.height = height;
+    this.maxWidthTracker = maxWidthTracker;
   }
 
   @Override
   public int getIconWidth() {
-    return this.width;
+    return maxWidthTracker.check(width);
   }
 
   @Override
