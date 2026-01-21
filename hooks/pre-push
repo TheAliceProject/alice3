@@ -12,7 +12,7 @@ if [ "$?" -ne 0 ]; then
 	# the first grep keeps everything before and including the "Reactor Summary" line,
 	# i.e., removes everything after the list of errors
 	# the last grep removes the Reactor Summary line itself
-	echo -e "$checkstyle" | awk '/ checkstyle/{y=1}y' | grep -B1000 "Reactor Summary" | grep -vE 'Reactor Summary|^--$'
+	echo "$checkstyle" | awk '/ checkstyle/{y=1}y' | grep -B1000 "Reactor Summary" | grep -vE 'Reactor Summary|^--$'
 	exit 1
 else
 	exit 0
