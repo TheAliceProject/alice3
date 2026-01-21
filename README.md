@@ -57,6 +57,14 @@ Run unit tests
     cd ${alice3}
     mvn test
 
+## Installing Git Hooks
+
+The hooks directory contains Git hooks, that should be placed in .git/hooks
+
+Here's an example command to copy the pre-push hook:
+
+    cp hooks/pre-push .git/hooks/pre-push
+
 ## IDE
 **IntelliJ IDEA** is suggested for coding/building Alice 3. There is a free community edition
 or JetBrains offers a product pack for students using an edu email address [here](https://www.jetbrains.com/community/education/#students
