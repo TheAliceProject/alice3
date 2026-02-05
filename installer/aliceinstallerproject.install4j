@@ -127,7 +127,7 @@
     </components>
   </files>
   <launchers>
-    <launcher name="${compiler:sys.fullName}" id="24">
+    <launcher name="${compiler:sys.fullName}" id="24" icnsFile="installerFiles/Alice3.icns">
       <executable name="${compiler:sys.fullName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
@@ -170,7 +170,7 @@
   </launchers>
   <installerGui addOnAppId="${compiler:sys.applicationId}" autoUpdateDescriptorUrl="http://www.alice.org/downloads/installers/updates.xml">
     <applications>
-      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" styleId="401" launchInNewProcess="false">
+      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" styleId="401" customIcnsFile="installerFiles/Installer.icns" launchInNewProcess="false">
         <serializedBean>
           <property name="customIconImageFiles">
             <add>
