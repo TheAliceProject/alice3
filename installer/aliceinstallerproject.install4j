@@ -127,7 +127,7 @@
     </components>
   </files>
   <launchers>
-    <launcher name="${compiler:sys.fullName}" id="24" icnsFile="installerFiles/macIcon_flat.icns">
+    <launcher name="${compiler:sys.fullName}" id="24" icnsFile="installerFiles/Alice3.icns">
       <executable name="${compiler:sys.fullName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
@@ -162,12 +162,15 @@
         <file path="installerFiles/desktopIcon48.png" />
         <file path="installerFiles/desktopIcon64.png" />
         <file path="installerFiles/desktopIcon128.png" />
+        <file path="./installerFiles/desktopIcon256.png" />
+        <file path="./installerFiles/desktopIcon512.png" />
+        <file path="./installerFiles/desktopIcon1024.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
   <installerGui addOnAppId="${compiler:sys.applicationId}" autoUpdateDescriptorUrl="http://www.alice.org/downloads/installers/updates.xml">
     <applications>
-      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" styleId="401" customIcnsFile="installerFiles/macInstallIcon.icns" launchInNewProcess="false">
+      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" styleId="401" customIcnsFile="installerFiles/Installer.icns" launchInNewProcess="false">
         <serializedBean>
           <property name="customIconImageFiles">
             <add>
@@ -193,6 +196,21 @@
             <add>
               <object class="com.install4j.api.beans.ExternalFile">
                 <string>installerFiles/aliceInstallerIcon128.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon256.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon512.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon1024.png</string>
               </object>
             </add>
           </property>
@@ -597,7 +615,7 @@
             </add>
             <add>
               <object class="com.install4j.api.beans.ExternalFile">
-                <string>installerFiles/aliceInstallerIcon16.png</string>
+                <string>installerFiles/aliceInstallerIcon32.png</string>
               </object>
             </add>
             <add>
@@ -613,6 +631,21 @@
             <add>
               <object class="com.install4j.api.beans.ExternalFile">
                 <string>installerFiles/aliceInstallerIcon128.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon256.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon512.png</string>
+              </object>
+            </add>
+            <add>
+              <object class="com.install4j.api.beans.ExternalFile">
+                <string>./installerFiles/aliceInstallerIcon1024.png</string>
               </object>
             </add>
           </property>
