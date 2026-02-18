@@ -94,6 +94,7 @@ public class ScaledImageIcon implements Icon {
       int imageHeight = this.sourceImage.getHeight(c);
       if ((imageWidth > 0) && (imageHeight > 0)) {
         g2.translate(x, y);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         g2.drawImage(this.sourceImage, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c);
         g2.translate(-x, -y);
       }
