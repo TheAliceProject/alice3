@@ -146,4 +146,9 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
     //    this.removeAllComponents();
     super.handleUndisplayable();
   }
+
+  @Override
+  protected int getInsetRight() {
+    return 6;
+  }
 }
