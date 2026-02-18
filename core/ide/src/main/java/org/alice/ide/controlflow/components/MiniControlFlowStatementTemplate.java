@@ -56,6 +56,7 @@ import org.lgna.project.ast.Comment;
 import org.lgna.project.ast.Statement;
 
 import javax.swing.UIManager;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
@@ -150,5 +151,12 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
   @Override
   protected int getInsetRight() {
     return 6;
+  }
+
+  protected Color getKnurlColor() {
+    if (getModel() instanceof ExpressionStatementTemplateDragModel) {
+      return super.getKnurlColor();
+    }
+    return this.isActive() ? UIManager.getColor("Alice.ControlFlow.knurlActive") : UIManager.getColor("Alice.ControlFlow.knurlInactive");
   }
 }

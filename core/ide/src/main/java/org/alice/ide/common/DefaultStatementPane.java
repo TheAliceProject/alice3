@@ -54,6 +54,7 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import java.awt.*;
 
 /**
@@ -73,6 +74,10 @@ public class DefaultStatementPane extends AbstractStatementPane {
 
   public void setMaxYForIfBlock(int maxYForIfBlock) {
     this.maxYForIfBlock = maxYForIfBlock;
+  }
+
+  protected Color getKnurlColor() {
+    return isActive() ? UIManager.getColor("Alice.ControlFlow.knurlActive") : UIManager.getColor("Alice.ControlFlow.knurlInactive");
   }
 
   @Override
