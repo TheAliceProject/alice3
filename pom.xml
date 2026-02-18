@@ -456,7 +456,7 @@
             <configuration>
               <rules>
               <requireMavenVersion>
-                <version>[3.9.9,4]</version>
+                <version>[3.9.9,4)</version>
                 <message>The build requires maven version 3.9.9.
   If you want to try another use:
            mvn -Denforcer.skip</message>
