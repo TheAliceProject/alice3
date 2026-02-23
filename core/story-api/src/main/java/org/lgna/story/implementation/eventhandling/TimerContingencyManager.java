@@ -92,75 +92,35 @@ public class TimerContingencyManager {
   }
 
   private ViewExitListener newExitViewAdapter(final WhileInViewListener listener) {
-    return new ViewExitListener() {
-      @Override
-      public void viewExited(ExitViewEvent e) {
-        timer.deactivate(listener);
-      }
-    };
+    return e -> timer.deactivate(listener);
   }
 
   private ViewEnterListener newEnterViewAdapter(final WhileInViewListener listener) {
-    return new ViewEnterListener() {
-      @Override
-      public void viewEntered(EnterViewEvent e) {
-        timer.activate(listener);
-      }
-    };
+    return e -> timer.activate(listener);
   }
 
   private OcclusionStartListener newEnterOcclusionAdapter(final WhileOcclusionListener listener) {
-    return new OcclusionStartListener() {
-      @Override
-      public void occlusionStarted(StartOcclusionEvent e) {
-        timer.activate(listener);
-      }
-    };
+    return e -> timer.activate(listener);
   }
 
   private OcclusionEndListener newExitOcclusionAdapter(final WhileOcclusionListener listener) {
-    return new OcclusionEndListener() {
-      @Override
-      public void occlusionEnded(EndOcclusionEvent e) {
-        timer.deactivate(listener);
-      }
-    };
+    return e -> timer.deactivate(listener);
   }
 
   private ProximityEnterListener newEnterProximityAdapter(final WhileProximityListener listener) {
-    return new ProximityEnterListener() {
-      @Override
-      public void proximityEntered(EnterProximityEvent e) {
-        timer.activate(listener);
-      }
-    };
+    return e -> timer.activate(listener);
   }
 
   private ProximityExitListener newExitProximityAdapter(final WhileProximityListener listener) {
-    return new ProximityExitListener() {
-      @Override
-      public void proximityExited(ExitProximityEvent e) {
-        timer.deactivate(listener);
-      }
-    };
+    return e -> timer.deactivate(listener);
   }
 
   private CollisionEndListener newEndCollisionAdapter(final WhileCollisionListener listener) {
-    return new CollisionEndListener() {
-      @Override
-      public void collisionEnded(EndCollisionEvent e) {
-        timer.deactivate(listener);
-      }
-    };
+    return e -> timer.deactivate(listener);
   }
 
   private CollisionStartListener newStartCollisionAdapter(final WhileCollisionListener listener) {
-    return new CollisionStartListener() {
-      @Override
-      public void collisionStarted(StartCollisionEvent e) {
-        timer.activate(listener);
-      }
-    };
+    return e -> timer.activate(listener);
   }
 
   private SThing[] toArray(List<? extends SThing> arr) {
