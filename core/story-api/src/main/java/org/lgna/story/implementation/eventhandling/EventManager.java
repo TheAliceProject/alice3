@@ -163,6 +163,8 @@ public class EventManager {
     component.removeMouseMotionListener(this.mouseAdapter);
     component.removeKeyListener(this.keyAdapter);
     component.removeFocusListener(this.focusAdapter);
+
+    timer.disable();
   }
 
   public void silenceAllListeners() {
