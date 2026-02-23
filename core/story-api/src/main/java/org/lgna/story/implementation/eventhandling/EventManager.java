@@ -56,6 +56,7 @@ import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.Visual;
 import org.lgna.story.event.*;
+import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
 import java.awt.*;
@@ -237,12 +238,14 @@ public class EventManager {
   public void addDragAdapter(Visual[] visuals) {
     if (this.dragAdapter == null) {
       this.dragAdapter = new RuntimeDragAdapter(visuals);
-      OnscreenRenderTarget renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
-      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
-      this.dragAdapter.setOnscreenRenderTarget(renderTarget);
-      this.dragAdapter.addCameraView(CameraView.MAIN, camera);
-      this.dragAdapter.makeCameraActive(camera);
-      this.dragAdapter.setAnimator(this.scene.getProgram().getAnimator());
+      ProgramImp program = scene.getProgram();
+      if (program != null) {
+        SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
+        this.dragAdapter.setOnscreenRenderTarget(program.getOnscreenRenderTarget());
+        this.dragAdapter.addCameraView(CameraView.MAIN, camera);
+        this.dragAdapter.makeCameraActive(camera);
+        this.dragAdapter.setAnimator(program.getAnimator());
+      }
     } else {
       dragAdapter.addTargets(visuals);
     }

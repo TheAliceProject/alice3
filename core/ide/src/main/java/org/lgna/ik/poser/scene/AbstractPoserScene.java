@@ -66,6 +66,7 @@ import org.lgna.story.SScene;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.resources.JointId;
 
 import java.awt.event.MouseEvent;
@@ -180,7 +181,8 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
   }
 
   private OnscreenRenderTarget getOnscreenRenderTarget() {
-    return getImplementation().getProgram().getOnscreenRenderTarget();
+    ProgramImp program = getImplementation().getProgram();
+    return program == null ? null : program.getOnscreenRenderTarget();
   }
 
   public void jointSelected(JointSelectionSphere sphere, MouseEvent e) {
@@ -195,7 +197,10 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
   public void addCustomDragAdapter() {
     synchronized (dragListeners) {
       poserAnimatorDragAdapter = new PoserAnimatorDragAdapter(this);
-      poserAnimatorDragAdapter.setAnimator(getImplementation().getProgram().getAnimator());
+      ProgramImp program = getImplementation().getProgram();
+      if (program != null) {
+        poserAnimatorDragAdapter.setAnimator(program.getAnimator());
+      }
       poserAnimatorDragAdapter.setInteractionState(HandleStyle.ROTATION);
       poserAnimatorDragAdapter.setTarget(model);
       poserAnimatorDragAdapter.setOnscreenRenderTarget(getOnscreenRenderTarget());

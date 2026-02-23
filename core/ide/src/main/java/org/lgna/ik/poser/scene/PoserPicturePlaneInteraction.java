@@ -61,6 +61,7 @@ import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SSphere;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
 import javax.swing.SwingUtilities;
@@ -244,14 +245,16 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
   }
 
   private ManipulationHandle3D checkIfHandleSelected(MouseEvent e) {
-    SceneImp implementation = scene.getImplementation();
-    RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
-    PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
-    if ((pickResult != null) && (pickResult.getVisual() != null)) {
-      Composite composite = pickResult.getVisual().getParent();
-      if (composite != null) {
-        if (composite.getParent() instanceof ManipulationHandle3D) {
-          return (ManipulationHandle3D) composite.getParent();
+    ProgramImp program = scene.getImplementation().getProgram();
+    if (program != null) {
+      RenderTarget rt = program.getOnscreenRenderTarget();
+      PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
+      if ((pickResult != null) && (pickResult.getVisual() != null)) {
+        Composite composite = pickResult.getVisual().getParent();
+        if (composite != null) {
+          if (composite.getParent() instanceof ManipulationHandle3D) {
+            return (ManipulationHandle3D) composite.getParent();
+          }
         }
       }
     }

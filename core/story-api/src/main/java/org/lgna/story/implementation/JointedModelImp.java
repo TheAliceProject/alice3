@@ -938,7 +938,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   public void strikePose(Pose<A> pose, double duration, Style style) {
-    this.getProgram().perform(new PoseAnimation(duration, style, this, pose), null);
+    ProgramImp program = getProgram();
+    if (program == null) {
+      return;
+    }
+    program.perform(new PoseAnimation(duration, style, this, pose), null);
   }
 
   private final A abstraction;
