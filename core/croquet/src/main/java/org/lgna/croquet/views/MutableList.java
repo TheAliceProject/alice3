@@ -110,7 +110,7 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
   }
 
   private static final Color BASE_COLOR = UIManager.getColor("List.background");
-  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.knurlForeground");
+  private static final Color KNURL_COLOR = UIManager.getColor("Alice.Block.darkKnurlForeground");
   private static final Color OUTLINE_COLOR = UIManager.getColor("Alice.differentBackground");
   private static final Color SELECTED_OUTLINE_COLOR = UIManager.getColor("List.selectionBackground");
 
@@ -153,7 +153,7 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
       g2.drawRoundRect(0, 0, width, height, 8, 8);
 
       g2.setStroke(prevStroke);
-      g2.setPaint(KNURL_COLOR);
+       g2.setPaint(KNURL_COLOR);
       KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
 
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);

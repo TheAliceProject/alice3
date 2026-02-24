@@ -53,6 +53,21 @@ import java.awt.Color;
  */
 public class DefaultTheme implements Theme {
 
+  // Closer to zero the darker it is. This threshold is arbitrary and may need adjustment.
+  private static final int DARK_THRESHOLD = 600;
+
+  @Override
+  public Color getKnurlColorFor(Color backgroundColor) {
+    return isDark(backgroundColor)
+        ? UIManager.getColor("Alice.Block.lightKnurlForeground")
+        : UIManager.getColor("Alice.Block.darkKnurlForeground");
+  }
+
+  private static boolean isDark(Color color) {
+    int brightness = color.getRed() + color.getGreen() + color.getBlue();
+    return brightness < DARK_THRESHOLD;
+  }
+
   @Override
   public Color getColorFor(Class<? extends Node> cls) {
     if (Statement.class.isAssignableFrom(cls)) {

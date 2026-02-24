@@ -68,6 +68,8 @@ public interface Theme {
   public static final int BLOCK_MARGINS_HEIGHT = 1;
   public static final Border BLOCK_BORDER = BorderFactory.createEmptyBorder(BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH, BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH);
 
+  Color getKnurlColorFor(Color backgroundColor);
+
   public Color getColorFor(Class<? extends Node> cls);
 
   public Color getColorFor(Node node);

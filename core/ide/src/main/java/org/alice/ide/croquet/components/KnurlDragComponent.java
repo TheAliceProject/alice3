@@ -46,6 +46,7 @@ package org.alice.ide.croquet.components;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.awt.KnurlUtilities;
 import org.alice.ide.Theme;
+import org.alice.ide.ThemeUtilities;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.DragComponent;
@@ -54,7 +55,6 @@ import org.lgna.croquet.views.imp.JDragView;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JToolTip;
-import javax.swing.UIManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -238,10 +238,13 @@ public abstract class KnurlDragComponent<M extends DragModel> extends DragCompon
     Shape shape = this.createShape(x, y, width, height);
     this.paintOutline(g2, shape);
     if (isKnurlDesired()) {
-      Color c = this.isActive() ? getOutlineColor() : UIManager.getColor("Alice.Block.knurlForeground");
-      g2.setColor(c);
+      g2.setColor(getKnurlColor());
       KnurlUtilities.paintKnurl5(g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5);
     }
+  }
+
+  protected Color getKnurlColor() {
+    return this.isActive() ? getOutlineColor() : ThemeUtilities.getActiveTheme().getKnurlColorFor(getBackgroundColor());
   }
 
   public void addComponent(AwtComponentView<?> component) {
