@@ -246,17 +246,17 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
   private ManipulationHandle3D checkIfHandleSelected(MouseEvent e) {
     ProgramImp program = scene.getImplementation().getProgram();
-    if (program != null) {
-      RenderTarget rt = program.getOnscreenRenderTarget();
-      PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
-      if ((pickResult != null) && (pickResult.getVisual() != null)) {
-        Composite composite = pickResult.getVisual().getParent();
-        if (composite != null) {
-          if (composite.getParent() instanceof ManipulationHandle3D) {
-            return (ManipulationHandle3D) composite.getParent();
-          }
-        }
-      }
+    if (program == null) {
+      return null;
+    }
+    RenderTarget rt = program.getOnscreenRenderTarget();
+    PickResult pickResult = rt.getSynchronousPicker().pickFrontMost(e.getPoint(), PickSubElementPolicy.NOT_REQUIRED);
+    if ((pickResult == null) || (pickResult.getVisual() == null)) {
+      return null;
+    }
+    Composite composite = pickResult.getVisual().getParent();
+    if (composite != null && composite.getParent() instanceof ManipulationHandle3D) {
+      return (ManipulationHandle3D) composite.getParent();
     }
     return null;
   }

@@ -239,13 +239,14 @@ public class EventManager {
     if (this.dragAdapter == null) {
       this.dragAdapter = new RuntimeDragAdapter(visuals);
       ProgramImp program = scene.getProgram();
-      if (program != null) {
-        SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
-        this.dragAdapter.setOnscreenRenderTarget(program.getOnscreenRenderTarget());
-        this.dragAdapter.addCameraView(CameraView.MAIN, camera);
-        this.dragAdapter.makeCameraActive(camera);
-        this.dragAdapter.setAnimator(program.getAnimator());
+      if (program == null) {
+        return;
       }
+      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
+      this.dragAdapter.setOnscreenRenderTarget(program.getOnscreenRenderTarget());
+      this.dragAdapter.addCameraView(CameraView.MAIN, camera);
+      this.dragAdapter.makeCameraActive(camera);
+      this.dragAdapter.setAnimator(program.getAnimator());
     } else {
       dragAdapter.addTargets(visuals);
     }
