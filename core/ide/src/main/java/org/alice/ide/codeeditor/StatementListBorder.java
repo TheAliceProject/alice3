@@ -58,10 +58,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public class StatementListBorder implements Border {
-  private static final String TEXT = "drop statement here";
-  private static final String[] TEXTS = {null, null};
-  private static final int LONGER_INDEX = 1;
-  private static final Stroke SOLID_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  private static String TEXT;
 
   private static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {9.0f, 3.0f}, 0);
 
@@ -69,8 +66,6 @@ public class StatementListBorder implements Border {
   private static final int EMPTY_INSET_BOTTOM = 16;
   private static final int EMPTY_INSET_LEADING = 12;
   private static final int EMPTY_INSET_TRAILING = 64;
-
-  //private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
 
   private static Insets createEmptyInsets(ComponentOrientation componentOrientation) {
     if (componentOrientation.isLeftToRight()) {
@@ -96,19 +91,16 @@ public class StatementListBorder implements Border {
   }
 
   private static void initializeTextIfNecessary() {
-    if (TEXTS[0] == null) {
-      String localizedText = ResourceBundleUtilities.getStringForKey("dropStatementHere", "org.alice.ide.codeeditor.CodeEditor");
-      for (int i = 0; i < TEXTS.length; i++) {
-        TEXTS[i] = localizedText;
-      }
+    if (TEXT == null) {
+      TEXT = ResourceBundleUtilities.getStringForKey("dropStatementHere", "org.alice.ide.codeeditor.CodeEditor");
     }
   }
 
-  private static Rectangle2D getStringBounds(Component c, Graphics g, int index) {
+  private static Rectangle2D getStringBounds(Component c, Graphics g) {
     FontMetrics fontMetrics = c.getFontMetrics(c.getFont());
     if (fontMetrics != null) {
       initializeTextIfNecessary();
-      return fontMetrics.getStringBounds(TEXTS[index], g);
+      return fontMetrics.getStringBounds(TEXT, g);
     } else {
       return null;
     }
@@ -119,7 +111,7 @@ public class StatementListBorder implements Border {
     Container container = (Container) c;
     if (this.isVirtuallyEmpty(container)) {
       Graphics g = c.getGraphics();
-      Rectangle2D bounds = getStringBounds(c, g, LONGER_INDEX);
+      Rectangle2D bounds = getStringBounds(c, g);
       if (g != null) {
         g.dispose();
       }
@@ -162,70 +154,71 @@ public class StatementListBorder implements Border {
   }
 
   private boolean isDashed() {
-    return (alternateListProperty != null) && (alternateListProperty.size() > 0);
+    return (alternateListProperty != null) && !alternateListProperty.isEmpty();
   }
 
   @Override
   public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
     Container container = (Container) c;
-    if (this.isVirtuallyEmpty(container)) {
-      if (this.isDrawingDesired()) {
-        int textIndex = container.getComponentCount();
-        Rectangle2D bounds = getStringBounds(c, g, textIndex);
-
-        Insets EMPTY_INSETS = createEmptyInsets(container.getComponentOrientation());
-        final int PADDING = 24;
-        int width = (EMPTY_INSET_LEADING + (int) bounds.getWidth()) + PADDING;
-        int height = (EMPTY_INSET_BOTTOM + (int) bounds.getHeight()) - 4;
-        int dx;
-        if (c.getComponentOrientation().isLeftToRight()) {
-          dx = x + EMPTY_INSET_LEADING;
-        } else {
-          dx = w - EMPTY_INSET_LEADING - (int) Math.ceil(bounds.getWidth()) - PADDING - 12;
-        }
-        int dy;
-        if (container.getComponentCount() == 0) {
-          dy = y + EMPTY_INSETS.top + 2;
-        } else {
-          dy = (y + h) - height - 2;
-        }
-        g.translate(dx, dy);
-        Graphics2D g2 = (Graphics2D) g;
-        if (this.isMutable) {
-          if (this.isDashed()) {
-            g2.setColor(Color.GRAY);
-            g2.setStroke(DASHED_STROKE);
-            RoundRectangle2D.Float rr = new RoundRectangle2D.Float(1, 1, width - 3, height - 3, 8, 8);
-            g2.draw(rr);
-          } else {
-
-            RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-            g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
-            g2.fill(rr);
-          }
-          g.setColor(Color.BLACK);
-          Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-          int xText = 6;
-          if (!c.getComponentOrientation().isLeftToRight()) {
-            xText += PADDING;
-          }
-          initializeTextIfNecessary();
-          GraphicsUtilities.drawCenteredText(g, TEXTS[textIndex], xText, 0, (int) bounds.getWidth(), height);
-          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
-        } else {
-          RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
-          g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
-          g2.fill(rr);
-        }
-        g.translate(-dx, -dy);
-      }
+    if (!this.isVirtuallyEmpty(container) || !this.isDrawingDesired()) {
+      return;
     }
+    Rectangle2D bounds = getStringBounds(c, g);
+    if (bounds == null) {
+      return;
+    }
+
+    Insets EMPTY_INSETS = createEmptyInsets(container.getComponentOrientation());
+    final int PADDING = 24;
+    int width = (EMPTY_INSET_LEADING + (int) bounds.getWidth()) + PADDING;
+    int height = (EMPTY_INSET_BOTTOM + (int) bounds.getHeight()) - 4;
+    int dx;
+    if (c.getComponentOrientation().isLeftToRight()) {
+      dx = x + EMPTY_INSET_LEADING;
+    } else {
+      dx = w - EMPTY_INSET_LEADING - (int) Math.ceil(bounds.getWidth()) - PADDING - 12;
+    }
+    int dy;
+    if (container.getComponentCount() == 0) {
+      dy = y + EMPTY_INSETS.top + 2;
+    } else {
+      dy = (y + h) - height - 2;
+    }
+    g.translate(dx, dy);
+    Graphics2D g2 = (Graphics2D) g;
+    if (this.isMutable) {
+      if (this.isDashed()) {
+        g2.setColor(Color.GRAY);
+        g2.setStroke(DASHED_STROKE);
+        RoundRectangle2D.Float rr = new RoundRectangle2D.Float(1, 1, width - 3, height - 3, 8, 8);
+        g2.draw(rr);
+      } else {
+
+        RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
+        g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
+        g2.fill(rr);
+      }
+      g.setColor(Color.BLACK);
+      Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+      int xText = 6;
+      if (!c.getComponentOrientation().isLeftToRight()) {
+        xText += PADDING;
+      }
+      initializeTextIfNecessary();
+      GraphicsUtilities.drawCenteredText(g, TEXT, xText, 0, (int) bounds.getWidth(), height);
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
+    } else {
+      RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
+      g2.setPaint(UIManager.getColor("Alice.Procedure.color"));
+      g2.fill(rr);
+    }
+    g.translate(-dx, -dy);
   }
 
   public boolean isDrawingDesired() {
-    return this.isDrawingDesired && (StatementInsertCascade.EPIC_HACK_isActive() == false);
+    return this.isDrawingDesired && !StatementInsertCascade.EPIC_HACK_isActive();
   }
 
   public void setDrawingDesired(boolean isDrawingDesired) {
