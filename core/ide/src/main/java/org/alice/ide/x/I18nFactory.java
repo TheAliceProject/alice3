@@ -122,7 +122,6 @@ public abstract class I18nFactory {
       return rv;
     } else {
       SwingComponentView<?> rv = createComponent(chunks[0], owner);
-      rv.setBorder(Theme.BLOCK_BORDER);
       assert rv != null : chunks[0].toString();
       return rv;
     }
