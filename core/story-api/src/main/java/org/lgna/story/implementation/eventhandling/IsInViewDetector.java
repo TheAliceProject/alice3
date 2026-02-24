@@ -48,6 +48,7 @@ import org.alice.math.immutable.Vector4;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ProgramImp;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -65,12 +66,14 @@ public class IsInViewDetector {
     for (int i = 0; i < points.length; ++i) {
       awtPoints[i] = implementation.transformToAwt(points[i], camera);
     }
-    camera.getScene().getProgram().getOnscreenRenderTarget();
-    return isInView(camera, awtPoints, relativeToCamera);
+    ProgramImp program = camera.getScene().getProgram();
+    if (program == null) {
+      return false;
+    }
+    return isInView(program.getOnscreenRenderTarget().getSurfaceSize(), awtPoints, relativeToCamera);
   }
 
-  private static boolean isInView(CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera) {
-    Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
+  private static boolean isInView(Dimension surfaceSize, Point[] awtPoints, Point3[] relativeToCamera) {
     boolean leftOf = false;
     boolean rightOf = false;
     boolean above = false;

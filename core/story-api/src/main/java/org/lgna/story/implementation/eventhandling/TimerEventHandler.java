@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.*;
+import org.lgna.story.implementation.ProgramImp;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,11 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
   private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
     @Override
     public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
-      currentTime = scene.getProgram().getAnimator().getCurrentTime();
+      ProgramImp program = scene.getProgram();
+      if (program == null) {
+        return;
+      }
+      currentTime = program.getAnimator().getCurrentTime();
       update();
     }
   };
