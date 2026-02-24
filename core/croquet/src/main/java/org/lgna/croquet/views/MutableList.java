@@ -153,7 +153,7 @@ public abstract class MutableList<E> extends SwingComponentView<JPanel> {
       g2.drawRoundRect(0, 0, width, height, 8, 8);
 
       g2.setStroke(prevStroke);
-       g2.setPaint(KNURL_COLOR);
+      g2.setPaint(KNURL_COLOR);
       KnurlUtilities.paintKnurl5(g, 2, 2, 6, height - 5);
 
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
