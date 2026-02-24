@@ -70,7 +70,7 @@ import org.lgna.story.implementation.eventhandling.EventManager;
  * @author Dennis Cosgrove
  */
 public class SceneImp extends EntityImp {
-  private static final Transformable createDirectionalLightTransformable(DirectionalLight sgDirectionalLight, Angle yaw, Angle pitch, float brightness) {
+  private static Transformable createDirectionalLightTransformable(DirectionalLight sgDirectionalLight, Angle yaw, Angle pitch, float brightness) {
     Transformable rv = new Transformable();
     rv.applyRotationAboutYAxis(yaw);
     rv.applyRotationAboutXAxis(pitch);
@@ -128,24 +128,17 @@ public class SceneImp extends EntityImp {
     this.eventManager.sceneActivated();
   }
 
-  private void changeActiveStatus(ProgramImp programImp, boolean isActive, int activationCount) {
-    double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
-    program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
-    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-      this.getAbstraction().handleActiveChanged(isActive, activationCount);
+  private void changeActiveStatus(boolean isActive) {
+    double prevSimulationSpeedFactor = 0;
+    if (program != null) {
+      prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
+      program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
     }
-    program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
-    if (isActive) {
-      //This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
-      //All this info is critical to a scene running
-      AdapterFactory.getAdapterFor(this.sgScene);
-
-      this.addCamerasTo(programImp);
-      if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
-        this.fireSceneActivationListeners();
-      }
-    } else {
-      this.removeCamerasFrom(programImp);
+    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
+      this.getAbstraction().handleActiveChanged(isActive, activeCount);
+    }
+    if (program != null) {
+      program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
     }
   }
 
@@ -156,20 +149,49 @@ public class SceneImp extends EntityImp {
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.setGlobalBrightness(0.0f);
     }
-    this.changeActiveStatus(program, true, activeCount);
+    this.changeActiveStatus(true);
+    initializeScene();
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.animateGlobalBrightness(1.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
   }
 
-  public void deactivate(ProgramImp programImp) {
+  private void setProgram(ProgramImp newImp) {
+    if (newImp.equals(this.program)) {
+      //no change
+      return;
+    }
+    if (program != null) {
+      eventManager.removeListenersFrom(program.getOnscreenRenderTarget());
+    }
+    this.program = newImp;
+    eventManager.addListenersTo(program.getOnscreenRenderTarget());
+  }
+
+  private void initializeScene() {
+    //This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
+    //All this info is critical to a scene running
+    AdapterFactory.getAdapterFor(this.sgScene);
+
+    this.addCamerasTo(program);
+    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
+      this.fireSceneActivationListeners();
+    }
+  }
+
+  public void deactivate() {
     deactiveCount++;
     assert deactiveCount == activeCount;
     if (this.isGlobalLightBrightnessAnimationDesired) {
       this.animateGlobalBrightness(0.0f, 0.25, TraditionalStyle.BEGIN_AND_END_GENTLY);
     }
-    this.changeActiveStatus(programImp, false, activeCount);
-    this.setProgram(null);
+    this.changeActiveStatus(false);
+    if (program == null) {
+      return;
+    }
+    this.removeCamerasFrom(program);
+    eventManager.removeListenersFrom(program.getOnscreenRenderTarget());
+    program = null;
   }
 
   @Override
@@ -192,41 +214,6 @@ public class SceneImp extends EntityImp {
     return this.program;
   }
 
-  public void setProgram(ProgramImp program) {
-    if (this.program != program) {
-      if (this.program != null) {
-        this.eventManager.removeListenersFrom(this.program.getOnscreenRenderTarget());
-      }
-      this.program = program;
-      if (program != null) {
-        this.eventManager.addListenersTo(program.getOnscreenRenderTarget());
-      }
-    }
-    this.program = program;
-  }
-
-  //todo
-  //  private static class Capsule {
-  //    private final TransformableImp transformable;
-  //    private EntityImp vehicle;
-  //    private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
-  //
-  //    public Capsule( TransformableImp transformable ) {
-  //      this.transformable = transformable;
-  //    }
-  //
-  //    public void preserve() {
-  //      this.vehicle = this.transformable.getVehicle();
-  //      this.localTransformation = this.transformable.getSgComposite().getLocalTransformation();
-  //    }
-  //
-  //    public void restore() {
-  //      this.transformable.setVehicle( this.vehicle );
-  //      this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
-  //    }
-  //  }
-  //  private final java.util.List<Capsule> capsules = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
   public void preserveStateAndEventListeners() {
     this.eventManager.silenceAllListeners();
     //todo: preserve state
@@ -237,7 +224,7 @@ public class SceneImp extends EntityImp {
     this.eventManager.restoreAllListeners();
   }
 
-  public void addCamerasTo(ProgramImp program) {
+  private void addCamerasTo(ProgramImp program) {
     for (AbstractCamera sgCamera : VisitUtilities.getAll(this.sgScene, AbstractCamera.class)) {
       EntityImp entityImp = EntityImp.getInstance(sgCamera);
       if (entityImp instanceof CameraImp cameraImp) {
@@ -246,7 +233,7 @@ public class SceneImp extends EntityImp {
     }
   }
 
-  public void removeCamerasFrom(ProgramImp program) {
+  private void removeCamerasFrom(ProgramImp program) {
     for (AbstractCamera sgCamera : VisitUtilities.getAll(this.sgScene, AbstractCamera.class)) {
       EntityImp entityImp = EntityImp.getInstance(sgCamera);
       if (entityImp instanceof CameraImp cameraImp) {
@@ -260,11 +247,11 @@ public class SceneImp extends EntityImp {
     return (CameraImp) EntityImp.getInstance(sgCamera);
   }
 
-  public void setGlobalBrightness(float globalBrightness) {
+  private void setGlobalBrightness(float globalBrightness) {
     this.sgScene.globalBrightness.setValue(globalBrightness);
   }
 
-  public void animateGlobalBrightness(float globalBrightness, double duration, Style style) {
+  private void animateGlobalBrightness(float globalBrightness, double duration, Style style) {
     duration = adjustDurationIfNecessary(duration);
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       this.setGlobalBrightness(globalBrightness);
@@ -296,7 +283,7 @@ public class SceneImp extends EntityImp {
   private int activeCount;
   private int deactiveCount;
 
-  private boolean isGlobalLightBrightnessAnimationDesired = true;
+  private final boolean isGlobalLightBrightnessAnimationDesired = true;
 
   private final Scene sgScene = new Scene();
   private final Background sgBackground = new Background();
@@ -344,17 +331,6 @@ public class SceneImp extends EntityImp {
     @Override
     protected void handleSetValue(Color value) {
       SceneImp.this.sgFromBelowDirectionalLight.color.setValue(value.toColor4f());
-    }
-  };
-  public final FloatProperty globalLightBrightness = new FloatProperty(SceneImp.this) {
-    @Override
-    public Float getValue() {
-      return SceneImp.this.sgScene.globalBrightness.getValue();
-    }
-
-    @Override
-    protected void handleSetValue(Float value) {
-      SceneImp.this.sgScene.globalBrightness.setValue(value);
     }
   };
 
