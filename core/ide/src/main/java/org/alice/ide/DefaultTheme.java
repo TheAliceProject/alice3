@@ -83,7 +83,7 @@ public class DefaultTheme implements Theme {
   private static Color getStatementColor(Class<? extends Node> cls) {
     if (Comment.class.isAssignableFrom(cls)) {
       return UIManager.getColor("Alice.Comment.background");
-    } else if (org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom(cls)) {
+    } else if (LocalDeclarationStatement.class.isAssignableFrom(cls)) {
       // aka variable creation
       return UIManager.getColor("Alice.Block.background");
     } else if (ClassUtilities.isAssignableToAtLeastOne(cls, AbstractStatementWithBody.class, ConditionalStatement.class)) {
