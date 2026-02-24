@@ -17,12 +17,12 @@ public class NotAvailableIcon implements Icon {
 
   @Override
   public int getIconWidth() {
-    return 160;
+    return SnapshotIcon.WIDTH;
   }
 
   @Override
   public int getIconHeight() {
-    return 120;
+    return SnapshotIcon.HEIGHT;
   }
 
   protected String getText() {
