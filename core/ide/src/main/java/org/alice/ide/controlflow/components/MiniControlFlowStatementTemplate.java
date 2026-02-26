@@ -45,6 +45,7 @@ package org.alice.ide.controlflow.components;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel;
 import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
 import org.alice.ide.templates.StatementTemplate;
@@ -136,6 +137,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
         this.label.setForegroundColor(UIManager.getColor("Alice.Comment.foreground"));
       }
       //this.label.setFontToScaledFont( 1.2f );
+      this.label.setBorder(Theme.BLOCK_BORDER);
       this.addComponent(this.label);
       this.setToolTipText("");
     }

@@ -1,0 +1,19 @@
+#!/bin/sh
+command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
+git lfs pre-push "$@"
+
+# style.color is included to make the output a bit nicer to read.
+# Otherwise, it would be in black-and-white
+checkstyle=$(mvn -Dstyle.color=always checkstyle:check -Dcheckstyle.config.location=checkstyle.xml)
+
+# $? is the exit code of the last command, which would be mvn checkstyle:check in this case
+if [ "$?" -ne 0 ]; then
+	# the awk removes the output after the list of errors
+	# the first grep keeps everything before and including the "Reactor Summary" line,
+	# i.e., removes everything after the list of errors
+	# the last grep removes the Reactor Summary line itself
+	echo "$checkstyle" | awk '/ checkstyle/{y=1}y' | grep -B1000 "Reactor Summary" | grep -vE 'Reactor Summary|^--$'
+	exit 1
+else
+	exit 0
+fi

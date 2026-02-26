@@ -72,7 +72,7 @@ import javax.swing.WindowConstants;
 
   public void setActiveScene(SScene scene) {
     if (this.activeScene != null) {
-      this.activeScene.getImplementation().deactivate(this.getImplementation());
+      this.activeScene.getImplementation().deactivate();
     }
     this.activeScene = scene;
     if (this.activeScene != null) {

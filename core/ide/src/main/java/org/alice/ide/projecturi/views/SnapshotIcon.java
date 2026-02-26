@@ -51,8 +51,8 @@ import java.awt.Image;
  * @author Dennis Cosgrove
  */
 public class SnapshotIcon implements Icon {
-  private static final int WIDTH = 160;
-  private static final int HEIGHT = (WIDTH * 9) / 16;
+  public static final int WIDTH = 160;
+  public static final int HEIGHT = (WIDTH * 9) / 16;
   private final Image image;
 
   public SnapshotIcon(Image image) {

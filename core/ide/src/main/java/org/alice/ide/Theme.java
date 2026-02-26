@@ -54,24 +54,26 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public interface Theme {
-  public static final Dimension EXTRA_SMALL_RECT_ICON_SIZE = new Dimension(24, 18);
-  public static final Dimension SMALL_RECT_ICON_SIZE = new Dimension(32, 24);
-  public static final Dimension MEDIUM_RECT_ICON_SIZE = new Dimension(40, 30);
-  public static final Dimension LARGE_RECT_ICON_SIZE = new Dimension(120, 90);
+  Dimension EXTRA_SMALL_RECT_ICON_SIZE = new Dimension(24, 18);
+  Dimension SMALL_RECT_ICON_SIZE = new Dimension(32, 24);
+  Dimension MEDIUM_RECT_ICON_SIZE = new Dimension(40, 30);
+  Dimension LARGE_RECT_ICON_SIZE = new Dimension(120, 90);
 
-  public static final Dimension EXTRA_SMALL_SQUARE_ICON_SIZE = new Dimension(16, 16);
-  public static final Dimension SMALL_SQUARE_ICON_SIZE = new Dimension(22, 22);
-  public static final Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
-  public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
+  Dimension EXTRA_SMALL_SQUARE_ICON_SIZE = new Dimension(16, 16);
+  Dimension SMALL_SQUARE_ICON_SIZE = new Dimension(22, 22);
+  Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
+  Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
 
-  public static final int BLOCK_MARGINS_WIDTH = 2;
-  public static final int BLOCK_MARGINS_HEIGHT = 1;
-  public static final Border BLOCK_BORDER = BorderFactory.createEmptyBorder(BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH, BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH);
+  int BLOCK_MARGINS_WIDTH = 2;
+  int BLOCK_MARGINS_HEIGHT = 1;
+  Border BLOCK_BORDER = BorderFactory.createEmptyBorder(BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH, BLOCK_MARGINS_HEIGHT, BLOCK_MARGINS_WIDTH);
 
-  public Color getColorFor(Class<? extends Node> cls);
+  Color getKnurlColorFor(Color backgroundColor);
 
-  public Color getColorFor(Node node);
+  Color getColorFor(Class<? extends Node> cls);
 
-  public Color getCodeColor(Code code);
+  Color getColorFor(Node node);
+
+  Color getCodeColor(Code code);
 
 }

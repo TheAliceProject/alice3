@@ -67,7 +67,7 @@ public class ControlFlowPanel extends Panel {
         this.internalAddComponent(BoxUtilities.createHorizontalSliver(8));
       }
     }
-    this.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+    this.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 0));
   }
 
   @Override

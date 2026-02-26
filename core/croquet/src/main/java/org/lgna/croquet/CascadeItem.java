@@ -179,7 +179,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
   // We render our components as images to put them in our dropdown menus as icons
   // Here is where that happens
   private static BufferedImage getScaledImage(Dimension size, JComponent component) {
-    // render things big and then scale down, so they don't look terrible
+    // render things big and then scale down (inside ScaledImageIcon), so they don't look terrible
     int SCALE_FOR_BEAUTY = 2;
     BufferedImage image = new BufferedImage(size.width * SCALE_FOR_BEAUTY, size.height * SCALE_FOR_BEAUTY, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g = (Graphics2D) image.getGraphics();

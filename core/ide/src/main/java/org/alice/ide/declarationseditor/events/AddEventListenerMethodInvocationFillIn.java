@@ -43,17 +43,23 @@
 package org.alice.ide.declarationseditor.events;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
+import org.alice.ValueTracker;
 import org.alice.ide.croquet.models.cascade.MethodInvocationFillIn;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ThisExpression;
 
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.UUID;
 
 //todo: consolidate w/ similar class
 public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFillIn {
-  private static Map<AbstractMethod, AddEventListenerMethodInvocationFillIn> map = Maps.newHashMap();
+  private static final Map<AbstractMethod, AddEventListenerMethodInvocationFillIn> map = Maps.newHashMap();
+  private static final ValueTracker menuWidthTracker = new ValueTracker.MaximumTracker();
 
   public static synchronized AddEventListenerMethodInvocationFillIn getInstance(AbstractMethod method) {
     AddEventListenerMethodInvocationFillIn rv = map.get(method);
@@ -71,5 +77,11 @@ public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFill
   @Override
   protected Expression createExpression(Expression transientValueExpression) {
     return new ThisExpression();
+  }
+
+  @Override
+  protected Icon scaledImageIcon(BufferedImage image, Dimension size) {
+    // Use a shared tracker so children will report the width of the largest sibling and render left justified.
+    return new ScaledImageIcon(image, size, menuWidthTracker);
   }
 }
