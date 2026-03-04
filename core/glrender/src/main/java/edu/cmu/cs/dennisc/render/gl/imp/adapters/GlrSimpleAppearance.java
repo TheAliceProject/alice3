@@ -90,7 +90,7 @@ public class GlrSimpleAppearance<T extends SimpleAppearance> extends GlrAppearan
       }
     }
     rc.setColor(this.diffuse, this.opacity);
-    rc.gl.glPolygonMode(face, this.polygonMode);
+    rc.gl.glPolygonMode(GL_FRONT_AND_BACK, this.polygonMode);
     //todo
     if (this.isEthereal) {
       rc.gl.glDepthFunc(GL_LEQUAL);
