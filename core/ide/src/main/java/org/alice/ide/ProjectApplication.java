@@ -83,6 +83,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -450,7 +451,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadError(File projectFile, UserActivity activity, boolean isBackup,
                                       boolean isLoadingBackups, boolean isMainProjectCorrupted,
                                       Set<String> unloadableFiles) {
-    File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile).toFile();
+    Path backupPath = projectFileUtilities.appropriateBackupDirectory(projectFile);
+    File backupDir = backupPath != null
+            ? backupPath.toFile()
+            : null;
+
     boolean makeVrReady = uriProjectLoader.shouldMakeVrReady();
     boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
 
@@ -510,7 +515,12 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     } else if (unloadableFiles.isEmpty() && !uriProjectLoader.isNewProject()) {
       // check for backups newer than the project
 
-      File backupDir = projectFileUtilities.appropriateBackupDirectory(projectFile).toFile();
+      Path backupPath = projectFileUtilities.appropriateBackupDirectory(projectFile);
+      if (backupPath == null) {
+        return;
+      }
+
+      File backupDir = backupPath.toFile();
 
       LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
 
