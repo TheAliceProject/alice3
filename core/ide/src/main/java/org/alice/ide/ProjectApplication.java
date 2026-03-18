@@ -399,36 +399,40 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   protected boolean loadNewProjectBackup() {
-    File backupDir = projectFileUtilities.defaultBackupDirectory().toFile();
-    File backup = getNextBackup(null, backupDir, false, new HashSet<>());
-
-    if (backup != null) {
-      YesNoCancelResult result = backupProjectOperation.showUnsavedBackupProjectOpenedDialog();
-
-      return switch (result) {
-        case YES -> {
-          // load a backup
-          loadProject(newProjectActivity(), new FileProjectLoader(backup, false), true, true, new HashSet<>());
-
-          yield true;
-        }
-        case NO -> {
-          // discard the backups
-          try {
-            FileUtils.deleteDirectory(backupDir);
-          } catch (IOException e) {
-            Logger.throwable(e, "Unable to delete default backup directory.");
-          }
-
-          yield false;
-        }
-        case CANCEL ->
-          // unreachable path
-          false;
-      };
+    Path backupPath = projectFileUtilities.defaultBackupDirectory();
+    if (backupPath == null) {
+      return false;
     }
 
-    return false;
+    File backupDir = backupPath.toFile();
+    File backup = getNextBackup(null, backupDir, false, new HashSet<>());
+    if (backup == null) {
+      return false;
+    }
+
+    YesNoCancelResult result = backupProjectOperation.showUnsavedBackupProjectOpenedDialog();
+
+    return switch (result) {
+      case YES -> {
+        // load a backup
+        loadProject(newProjectActivity(), new FileProjectLoader(backup, false), true, true, new HashSet<>());
+
+        yield true;
+      }
+      case NO -> {
+        // discard the backups
+        try {
+          FileUtils.deleteDirectory(backupDir);
+        } catch (IOException e) {
+          Logger.throwable(e, "Unable to delete default backup directory.");
+        }
+
+        yield false;
+      }
+      case CANCEL ->
+        // unreachable path
+        false;
+    };
   }
 
   private void projectLoaded(UserActivity activity, Project project, boolean isLoadingBackups,
@@ -516,21 +520,19 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       // check for backups newer than the project
 
       Path backupPath = projectFileUtilities.appropriateBackupDirectory(projectFile);
-      if (backupPath == null) {
-        return;
-      }
+      if (backupPath != null) {
+        File backupDir = backupPath.toFile();
 
-      File backupDir = backupPath.toFile();
+        LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
 
-      LocalDateTime projectModifiedTime = FileUtilities.getModifiedDateTime(projectFile);
+        File backup = getNextBackup(projectModifiedTime, backupDir, false, unloadableFiles);
 
-      File backup = getNextBackup(projectModifiedTime, backupDir, false, unloadableFiles);
+        if (backup != null && backupProjectOperation.showMoreRecentBackupsDialog()) {
+          // restart load with backup
+          loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, isMainProjectCorrupted, unloadableFiles);
 
-      if (backup != null && backupProjectOperation.showMoreRecentBackupsDialog()) {
-        // restart load with backup
-        loadProject(newProjectActivity(), new FileProjectLoader(backup, uriProjectLoader.shouldMakeVrReady()), true, isMainProjectCorrupted, unloadableFiles);
-
-        return;
+          return;
+        }
       }
     }
 
