@@ -234,9 +234,14 @@ public class ProjectFileUtilities {
 
   private Path createAndGetBackupDirectory(Path backupDir) {
     if (Files.notExists(backupDir)) {
+      if (prevBackupFailed) {
+        return null;
+      }
+
       try {
         Files.createDirectory(backupDir);
       } catch (IOException e) {
+        prevBackupFailed = true;
         Dialogs.showWarning("Unable to Save Backups", "Backup directory `" + backupDir + "` could not be created.");
         return null;
       }
