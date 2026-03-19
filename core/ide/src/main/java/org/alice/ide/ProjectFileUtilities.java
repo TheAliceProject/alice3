@@ -46,6 +46,7 @@ public class ProjectFileUtilities {
 
   private final ScheduledExecutorService savingService;
   private ScheduledFuture<?> saveFuture;
+  private boolean prevBackupFailed = false;
 
   ProjectFileUtilities(ProjectApplication app) {
     projectApp = app;
@@ -83,6 +84,8 @@ public class ProjectFileUtilities {
   }
 
   final void startAutoSaving() {
+    prevBackupFailed = false;
+
     if (saveFuture != null) {
       saveFuture.cancel(false);
     }
@@ -171,6 +174,11 @@ public class ProjectFileUtilities {
       return;
     }
 
+    // Don't try saving again if previous backup failed
+    if (prevBackupFailed) {
+      return;
+    }
+
     File saved = UriUtilities.getFile(projectApp.getUri());
     Path backupDir = appropriateBackupDirectory(saved);
 
@@ -179,7 +187,12 @@ public class ProjectFileUtilities {
     }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
-    projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
+    try {
+      projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
+    } catch (IOException e) {
+      prevBackupFailed = true;
+      throw e;
+    }
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }
