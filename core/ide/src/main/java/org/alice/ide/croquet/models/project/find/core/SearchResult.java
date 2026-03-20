@@ -92,23 +92,17 @@ public class SearchResult {
   }
 
   public Icon getIcon() {
-    if (this.declaration instanceof AbstractMethod method) {
-      if (method.isProcedure()) {
-        return DeclarationTabState.getProcedureIcon();
-      } else {
-        return DeclarationTabState.getFunctionIcon();
-      }
-    } else if (this.declaration instanceof AbstractField) {
-      return DeclarationTabState.getFieldIcon();
-    } else if (this.declaration instanceof AbstractConstructor) {
-      return DeclarationTabState.getConstructorIcon();
-    } else if (this.declaration instanceof AbstractParameter) {
-      //todo?
-      return null;
-    } else {
-      Logger.severe(this.declaration);
-      return null;
+    //TODO Add icon for AbstractParameter and UserLocal?
+    return switch (declaration) {
+      case AbstractMethod method ->
+          method.isProcedure() ? DeclarationTabState.getProcedureIcon() : DeclarationTabState.getFunctionIcon();
+      case AbstractField ignored -> DeclarationTabState.getFieldIcon();
+      case AbstractConstructor ignored -> DeclarationTabState.getConstructorIcon();
+      default -> {
+        Logger.info("No icon set for declaration type: ", declaration.getClass().getSimpleName());
+        yield null;
     }
+    };
   }
 
   public void stencilHighlightForReference(Expression reference) {
