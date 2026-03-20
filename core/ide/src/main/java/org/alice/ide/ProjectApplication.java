@@ -514,6 +514,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   private void handleProjectLoadSuccess(Project project, File projectFile, UserActivity activity, boolean isBackup,
                                         boolean isLoadingBackups, boolean isMainProjectCorrupted,
                                         Set<String> unloadableFiles) {
+    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
+
+    updateInterface(project);
+
     if (isBackup && !isLoadingBackups) {
       // User manually opened a backup, don't do anything special
     } else if (unloadableFiles.isEmpty() && !uriProjectLoader.isNewProject()) {
@@ -535,10 +539,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         }
       }
     }
-
-    boolean isDefaultBackup = uriProjectLoader.isDefaultBackup();
-
-    updateInterface(project);
 
     // If a backup of a saved project was successfully loaded, prompt the user for what to do next
     if (isLoadingBackups && !isDefaultBackup) {
@@ -674,6 +674,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     updateHistoryIndexFileSync();
     updateUndoRedoEnabled();
 
+    projectFileUtilities.resetBackups();
     projectFileUtilities.startAutoSaving();
   }
 

@@ -83,9 +83,11 @@ public class ProjectFileUtilities {
     }
   }
 
-  final void startAutoSaving() {
+  void resetBackups() {
     prevBackupFailed = false;
+  }
 
+  final void startAutoSaving() {
     if (saveFuture != null) {
       saveFuture.cancel(false);
     }
@@ -191,6 +193,7 @@ public class ProjectFileUtilities {
       projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
     } catch (IOException e) {
       prevBackupFailed = true;
+      Dialogs.showWarning("Unable to Save Backups", "Backup file `" + backupFile + "` could not be created.");
       throw e;
     }
 
