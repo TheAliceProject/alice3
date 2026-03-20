@@ -239,7 +239,6 @@ public abstract class AbstractSceneEditor extends BorderPanel {
   }
 
   public void setSelectedField(UserType<?> declaringType, UserField field) {
-    assert (declaringType == this.getActiveSceneType()) || (field == this.getActiveSceneField());
     this.selectedField = field;
   }
 
