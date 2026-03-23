@@ -101,28 +101,34 @@ public class SearchResult {
       default -> {
         Logger.info("No icon set for declaration type: ", declaration.getClass().getSimpleName());
         yield null;
-    }
+      }
     };
   }
 
   public void stencilHighlightForReference(Expression reference) {
     assert reference != null;
-    if (declaration instanceof AbstractField) {
-      assert reference instanceof FieldAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
-    } else if (declaration instanceof AbstractMethod) {
-      assert reference instanceof MethodInvocation;
-      Statement statement = reference.getFirstAncestorAssignableTo(Statement.class);
-      assert statement != null;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement(statement);
-    } else if (declaration instanceof UserParameter) {
-      assert reference instanceof ParameterAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
-    } else if (declaration instanceof UserLocal) {
-      assert reference instanceof LocalAccess;
-      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
-    } else {
-      assert false : declaration.getClass();
+    switch (declaration) {
+      case AbstractField ignored -> {
+        assert reference instanceof FieldAccess;
+        IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
+      }
+      case AbstractMethod ignored -> {
+        assert reference instanceof MethodInvocation;
+        Statement statement = reference.getFirstAncestorAssignableTo(Statement.class);
+        assert statement != null;
+        IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement(statement);
+      }
+      case UserParameter ignored -> {
+        assert reference instanceof ParameterAccess;
+        IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
+      }
+      case UserLocal ignored -> {
+        assert reference instanceof LocalAccess;
+        IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference);
+      }
+      default -> {
+        assert false : declaration.getClass();
+      }
     }
   }
 }
