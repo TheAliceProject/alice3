@@ -46,6 +46,7 @@ public class ProjectFileUtilities {
 
   private final ScheduledExecutorService savingService;
   private ScheduledFuture<?> saveFuture;
+  private boolean prevBackupFailed = false;
 
   ProjectFileUtilities(ProjectApplication app) {
     projectApp = app;
@@ -80,6 +81,10 @@ public class ProjectFileUtilities {
     } catch (SecurityException | IOException e) {
       Logger.throwable(e, "Unable to copy backup directory for new project to " + namedBackupDir);
     }
+  }
+
+  void clearBackupFails() {
+    prevBackupFailed = false;
   }
 
   final void startAutoSaving() {
@@ -171,6 +176,11 @@ public class ProjectFileUtilities {
       return;
     }
 
+    // Don't try saving again if previous backup failed
+    if (prevBackupFailed) {
+      return;
+    }
+
     File saved = UriUtilities.getFile(projectApp.getUri());
     Path backupDir = appropriateBackupDirectory(saved);
 
@@ -179,7 +189,13 @@ public class ProjectFileUtilities {
     }
     File backupFile = backupFile(BACKUP_AUTO, backupDir);
 
-    projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
+    try {
+      projectApp.updateBackupIndexAndSaveProjectTo(backupFile);
+    } catch (IOException e) {
+      prevBackupFailed = true;
+      Dialogs.showWarning("Unable to Save Backups", "Backup file `" + backupFile + "` could not be created.");
+      throw e;
+    }
 
     removeExtraBackups(BACKUP_AUTO, backupDir);
   }
@@ -221,9 +237,14 @@ public class ProjectFileUtilities {
 
   private Path createAndGetBackupDirectory(Path backupDir) {
     if (Files.notExists(backupDir)) {
+      if (prevBackupFailed) {
+        return null;
+      }
+
       try {
         Files.createDirectory(backupDir);
       } catch (IOException e) {
+        prevBackupFailed = true;
         Dialogs.showWarning("Unable to Save Backups", "Backup directory `" + backupDir + "` could not be created.");
         return null;
       }
