@@ -674,7 +674,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     updateHistoryIndexFileSync();
     updateUndoRedoEnabled();
 
-    projectFileUtilities.resetBackups();
+    projectFileUtilities.clearBackupFails();
     projectFileUtilities.startAutoSaving();
   }
 

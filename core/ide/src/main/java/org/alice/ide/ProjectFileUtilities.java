@@ -83,7 +83,7 @@ public class ProjectFileUtilities {
     }
   }
 
-  void resetBackups() {
+  void clearBackupFails() {
     prevBackupFailed = false;
   }
 
