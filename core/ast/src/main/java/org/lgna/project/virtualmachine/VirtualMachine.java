@@ -399,13 +399,13 @@ public abstract class VirtualMachine {
   }
 
   public void setItemAtIndex(AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value) {
-    value = UserInstance.getJavaInstanceIfNecessary(value);
     assert arrayType != null;
     assert arrayType.isArray() : arrayType;
     if (array instanceof UserArrayInstance userArrayInstance) {
       this.checkIndex(index, userArrayInstance.getLength());
       userArrayInstance.set(index, value);
     } else {
+      value = UserInstance.getJavaInstanceIfNecessary(value);
       this.checkIndex(index, Array.getLength(array));
       Array.set(array, index, value);
     }
