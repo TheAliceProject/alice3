@@ -44,7 +44,6 @@ package org.alice.ide.issue;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
 import net.miginfocom.swing.MigLayout;
 import org.lgna.issue.ApplicationIssueConfiguration;
@@ -111,7 +110,7 @@ public class JStandardHeaderPane extends JPanel {
     browserView.getHtmlDocument().getStyleSheet().addRule("A {color:" + ColorUtilities.toHashText(linkColor) + "}");
     browserView.setBorder(BorderFactory.createEmptyBorder());
     this.setLayout(new MigLayout("fill, insets 16 8 0 8"));
-    this.add(new JLabel(IconUtilities.getErrorIcon()), "aligny top, spany 2");
+    this.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")), "aligny top, spany 2");
     this.add(headerLabel);
     this.add(logoLabel, "spany 2, wrap");
     this.add(browserView, "aligny bottom, gap bottom 8");

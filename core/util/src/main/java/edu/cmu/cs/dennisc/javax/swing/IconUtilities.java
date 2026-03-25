@@ -42,10 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import java.awt.*;
+import java.awt.Image;
 import java.net.URL;
 
 /**
@@ -73,19 +71,4 @@ public class IconUtilities {
     }
   }
 
-  public static Icon getInformationIcon() {
-    return UIManager.getIcon("OptionPane.informationIcon");
-  }
-
-  public static Icon getQuestionIcon() {
-    return UIManager.getIcon("OptionPane.questionIcon");
-  }
-
-  public static Icon getWarningIcon() {
-    return UIManager.getIcon("OptionPane.warningIcon");
-  }
-
-  public static Icon getErrorIcon() {
-    return UIManager.getIcon("OptionPane.errorIcon");
-  }
 }
