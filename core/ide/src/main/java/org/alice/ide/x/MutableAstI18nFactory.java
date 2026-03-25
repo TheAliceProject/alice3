@@ -95,11 +95,6 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
     }
   }
 
-  @Override
-  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-    return null;
-  }
-
   public boolean isStatementListPropertyMutable(StatementListProperty statementListProperty) {
     return true;
   }

@@ -80,8 +80,6 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class AstI18nFactory extends I18nFactory {
-  protected abstract AbstractType<?, ?, ?> getFallBackTypeForThisExpression();
-
   protected SwingComponentView<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent(SwingComponentView<?> component) {
     return component;
   }

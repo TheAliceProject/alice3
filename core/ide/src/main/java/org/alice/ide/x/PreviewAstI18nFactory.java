@@ -45,7 +45,6 @@ package org.alice.ide.x;
 
 import org.alice.ide.common.AbstractStatementPane;
 import org.lgna.croquet.DragModel;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 
@@ -62,11 +61,6 @@ public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
   }
 
   private PreviewAstI18nFactory() {
-  }
-
-  @Override
-  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-    return null;
   }
 
   @Override
