@@ -44,10 +44,11 @@
 package org.alice.ide.icons;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
@@ -57,6 +58,10 @@ public class Icons {
     throw new AssertionError();
   }
 
+  private static Icon createImageIcon(String path) {
+    return new ImageIcon(Objects.requireNonNull(Icons.class.getResource(path)));
+  }
+
   public static final int SMALL_WIDTH = 24;
   public static final int SMALL_HEIGHT = 24;
 
@@ -64,10 +69,12 @@ public class Icons {
   public static final Icon FOLDER_ICON_SMALL = new FlatSVGIcon(Icons.class.getResource("images/folder.svg")).derive(SMALL_WIDTH, SMALL_HEIGHT);
 
   // these are used in the defunct toolbar and the model import dialog
-  public static final Icon NEXT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-next.png"));
-  public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/go-previous.png"));
+  public static final Icon NEXT_SMALL = createImageIcon("images/go-next.png");
+  public static final Icon PREVIOUS_SMALL = createImageIcon("images/go-previous.png");
 
   // TODO- these are only used in the defunct toolbar, is that ever coming back?
-  public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-open.png"));
-  public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/document-save.png"));
+  public static final Icon OPEN_DOCUMENT_SMALL = createImageIcon("images/document-open.png");
+  public static final Icon SAVE_DOCUMENT_SMALL = createImageIcon("images/document-save.png");
+
+
 }

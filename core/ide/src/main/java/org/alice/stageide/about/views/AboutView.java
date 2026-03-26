@@ -44,17 +44,11 @@
 package org.alice.stageide.about.views;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.browser.BrowserOperation;
+import org.alice.ide.icons.Icons;
 import org.alice.stageide.about.AboutComposite;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.FormPanel;
-import org.lgna.croquet.views.HtmlMultiLineLabel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LabeledFormRow;
-import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ProjectVersion;
 
 import javax.swing.BorderFactory;
@@ -64,13 +58,14 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AboutView extends BorderPanel {
-  private static final ImageIcon ICON = IconUtilities.createImageIcon(AboutView.class.getResource("images/about.png"));
+  private static final ImageIcon ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/about.png")));
 
   private static class IconBorder extends AbstractBorder {
     @Override

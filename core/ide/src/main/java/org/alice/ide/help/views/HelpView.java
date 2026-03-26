@@ -44,6 +44,7 @@ package org.alice.ide.help.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.help.HelpComposite;
+import org.alice.ide.icons.Icons;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
@@ -57,7 +58,7 @@ public class HelpView extends BorderPanel {
   public HelpView(HelpComposite composite) {
     super(composite);
     Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
-    Label iconLabel = new Label(new ImageIcon(HelpView.class.getResource("images/help.png")));
+    Label iconLabel = new Label(new ImageIcon(Icons.class.getResource("images/dialogs/help.png")));
     AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
 
     textLabel.scaleFont(2.0f);

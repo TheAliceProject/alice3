@@ -44,8 +44,8 @@ package org.alice.ide.issue.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.croquet.models.help.views.GraphicsHelpView;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.issue.croquet.GlExceptionComposite;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
@@ -53,13 +53,15 @@ import org.lgna.croquet.views.MigPanel;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlExceptionView extends MigPanel {
-  public static final Icon ICON = IconUtilities.createImageIcon(GlExceptionView.class.getResource("images/paintingTheRoses.png"));
+  public static final Icon ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/paintingTheRoses.png")));
 
   public GlExceptionView(GlExceptionComposite composite) {
     super(composite, "", "", "[top][top]");

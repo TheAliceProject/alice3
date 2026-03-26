@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
 import net.miginfocom.swing.MigLayout;
+import org.alice.ide.icons.Icons;
 import org.lgna.issue.ApplicationIssueConfiguration;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ import java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class JStandardHeaderPane extends JPanel {
-  private static final ImageIcon LOGO_ICON = new ImageIcon(Objects.requireNonNull(JStandardHeaderPane.class.getResource("/org/alice/ide/issue/swing/views/images/meanQueen.png")));
+  private static final ImageIcon LOGO_ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/meanQueen.png")));
 
   public JStandardHeaderPane(ApplicationIssueConfiguration config) {
     StringBuilder sbHeader = new StringBuilder();

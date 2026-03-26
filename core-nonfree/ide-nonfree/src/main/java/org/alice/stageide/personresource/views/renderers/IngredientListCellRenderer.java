@@ -114,7 +114,7 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
       map.put(urlForIcon, rv);
     }
     return rv;
-    //return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+    //return new ImageIcon(Objects.requireNonNull(urlForIcon));
   }
 
   private Border border = BorderFactory.createEmptyBorder(2, 2, 2, 2);

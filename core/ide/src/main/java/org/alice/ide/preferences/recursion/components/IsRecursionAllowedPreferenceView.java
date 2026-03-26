@@ -43,31 +43,23 @@
 package org.alice.ide.preferences.recursion.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.browser.BrowserOperation;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.BoxUtilities;
-import org.lgna.croquet.views.Button;
-import org.lgna.croquet.views.CheckBox;
-import org.lgna.croquet.views.Hyperlink;
-import org.lgna.croquet.views.ImmutableTextArea;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.croquet.views.PaintUtilities;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -164,7 +156,7 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
     pageAxisPanel.addComponent(new RecursionAccessPanel(composite));
     pageAxisPanel.addComponent(BoxUtilities.createVerticalGlue());
 
-    this.addLineStartComponent(new Label(IconUtilities.createImageIcon(IsRecursionAllowedPreferenceView.class.getResource("images/AliceWithKeyAtDoor.png"))));
+    this.addLineStartComponent(new Label(new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/AliceWithKeyAtDoor.png")))));
     this.addCenterComponent(pageAxisPanel);
 
     this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
