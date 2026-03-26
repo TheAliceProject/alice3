@@ -56,7 +56,7 @@ public final class GlExceptionComposite extends SimpleOperationUnadornedDialogCo
   private final GLException glException;
 
   public GlExceptionComposite(GLException glException) {
-    super(UUID.fromString("430294d2-f4e4-4a69-93af-93fc2f7a89ba"), Application.INFORMATION_GROUP);
+    super(UUID.fromString("430294d2-f4e4-4a69-93af-93fc2f5a89ba"), Application.INFORMATION_GROUP);
     this.glException = glException;
   }
 
