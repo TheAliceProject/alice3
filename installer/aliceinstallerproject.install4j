@@ -34,7 +34,7 @@
       <variable name="included_jre_version" value="21" />
     </variables>
     <codeSigning windowsEnabled="true" windowsPkcs12File="../../The Alice Project.p12" />
-    <jreBundles jdkProviderId="Liberica" release="21/21.0.7+9">
+    <jreBundles jdkProviderId="Liberica" release="21/21.0.10+10">
       <modules>
         <defaultModules set="all" />
       </modules>
