@@ -44,7 +44,6 @@ package org.alice.ide.declarationseditor.components;
 
 import org.alice.ide.clipboard.Clipboard;
 import org.alice.ide.declarationseditor.*;
-import org.alice.ide.preferences.IsToolBarShowing;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.MigPanel;
@@ -87,9 +86,7 @@ public class BackwardForwardView extends MigPanel {
       }
     }
 
-    if (!IsToolBarShowing.getValue()) {
-      this.addComponent(Clipboard.SINGLETON.getDragComponent(), "gap 8");
-    }
+    this.addComponent(Clipboard.SINGLETON.getDragComponent(), "gap 8");
 
     this.setMaximumSizeClampedToPreferredSize(true);
   }

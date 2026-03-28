@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.icons.Icons;
-
 import java.util.UUID;
 
 /**
@@ -57,6 +55,5 @@ public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingO
   @Override
   protected void localize() {
     super.localize();
-    this.setButtonIcon(Icons.OPEN_DOCUMENT_SMALL);
   }
 }

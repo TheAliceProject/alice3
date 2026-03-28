@@ -68,13 +68,7 @@ public class Icons {
   public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon(0, SMALL_HEIGHT);
   public static final Icon FOLDER_ICON_SMALL = new FlatSVGIcon(Icons.class.getResource("images/folder.svg")).derive(SMALL_WIDTH, SMALL_HEIGHT);
 
-  // these are used in the defunct toolbar and the model import dialog
+  // these are used in the model import dialog
   public static final Icon NEXT_SMALL = createImageIcon("images/go-next.png");
   public static final Icon PREVIOUS_SMALL = createImageIcon("images/go-previous.png");
-
-  // TODO- these are only used in the defunct toolbar, is that ever coming back?
-  public static final Icon OPEN_DOCUMENT_SMALL = createImageIcon("images/document-open.png");
-  public static final Icon SAVE_DOCUMENT_SMALL = createImageIcon("images/document-save.png");
-
-
 }

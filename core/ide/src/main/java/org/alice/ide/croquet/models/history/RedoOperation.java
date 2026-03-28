@@ -63,8 +63,4 @@ public class RedoOperation extends HistoryOperation {
     historyManager.performRedo();
   }
 
-  @Override
-  public boolean isToolBarTextClobbered() {
-    return true;
-  }
 }

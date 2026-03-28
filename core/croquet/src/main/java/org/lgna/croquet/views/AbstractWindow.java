@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.MenuBarComposite;
-import org.lgna.croquet.ToolBarComposite;
 
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
@@ -333,28 +332,10 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
   }
 
   private MenuBarComposite menuBarComposite;
-  private ToolBarComposite toolBarComposite;
   private Composite<?> mainComposite;
 
   public Composite<?> getMainComposite() {
     return this.mainComposite;
-  }
-
-  public void setToolBarComposite(ToolBarComposite toolBarComposite) {
-    if (this.toolBarComposite != toolBarComposite) {
-      synchronized (this.getAwtComponent().getTreeLock()) {
-        if (this.toolBarComposite != null) {
-          this.getContentPane().removeComponent(this.toolBarComposite.getView());
-          this.toolBarComposite.handlePostDeactivation();
-        }
-        this.toolBarComposite = toolBarComposite;
-        if (this.toolBarComposite != null) {
-          this.toolBarComposite.handlePreActivation();
-          this.getContentPane().addPageStartComponent(this.toolBarComposite.getView());
-        }
-      }
-      this.getContentPane().revalidateAndRepaint();
-    }
   }
 
   public void setMainComposite(Composite<?> mainComposite) {

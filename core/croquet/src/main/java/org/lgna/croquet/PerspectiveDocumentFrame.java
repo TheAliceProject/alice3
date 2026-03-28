@@ -58,20 +58,16 @@ public abstract class PerspectiveDocumentFrame extends DocumentFrame {
     if (this.perspective != perspective) {
       this.perspective = perspective;
       MenuBarComposite menuBarComposite;
-      ToolBarComposite toolBarComposite;
       Composite<?> mainComposite;
       if (this.perspective != null) {
         menuBarComposite = this.perspective.getMenuBarComposite();
-        toolBarComposite = this.perspective.getToolBarComposite();
         mainComposite = this.perspective.getMainComposite();
       } else {
         menuBarComposite = null;
-        toolBarComposite = null;
         mainComposite = null;
       }
       Frame frame = this.getFrame();
       frame.setMenuBarComposite(menuBarComposite);
-      frame.setToolBarComposite(toolBarComposite);
       frame.setMainComposite(mainComposite);
     }
   }

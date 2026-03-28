@@ -45,12 +45,9 @@ package org.alice.stageide.perspectives;
 
 import edu.cmu.cs.dennisc.pattern.Lazy;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.stageide.perspectives.code.CodePerspectiveComposite;
-import org.alice.stageide.perspectives.code.CodeToolBarComposite;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.MenuBarComposite;
-import org.lgna.croquet.ToolBarComposite;
 
 import java.util.UUID;
 
@@ -67,21 +64,6 @@ public class CodePerspective extends AbstractCodePerspective {
     return this.mainCompositeLazy.get();
   }
 
-  @Override
-  public ToolBarComposite getToolBarComposite() {
-    if (IsToolBarShowing.getValue()) {
-      return this.toolBarLazy.get();
-    } else {
-      return null;
-    }
-  }
-
-  private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
-    @Override
-    protected ToolBarComposite create() {
-      return new CodeToolBarComposite(getProjectDocumentFrame());
-    }
-  };
   private final Lazy<Composite<?>> mainCompositeLazy = new Lazy<Composite<?>>() {
     @Override
     protected Composite<?> create() {

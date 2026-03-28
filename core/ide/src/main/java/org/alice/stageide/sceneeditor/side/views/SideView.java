@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
-import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.alice.stageide.sceneeditor.side.SideComposite;
@@ -69,13 +68,12 @@ public class SideView extends BorderPanel {
 
   public SideView(SideComposite composite) {
     super(composite);
-    if (!IsToolBarShowing.getValue()) {
-      ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-      FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 
-      undoRedoPanel.setBorder(createSeparatorBorder(0, 1));
-      this.addPageStartComponent(undoRedoPanel);
-    }
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
+
+    undoRedoPanel.setBorder(createSeparatorBorder(0, 1));
+    this.addPageStartComponent(undoRedoPanel);
 
     MigPanel migPanel = new MigPanel(null, "fill, insets 0, aligny top", "", "");
     migPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
