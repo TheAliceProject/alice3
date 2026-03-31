@@ -64,11 +64,6 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
   }
 
   @Override
-  protected void localize() {
-    super.localize();
-  }
-
-  @Override
   protected void save(ProjectApplication application, File file) throws IOException {
     application.exportProjectTo(file);
   }

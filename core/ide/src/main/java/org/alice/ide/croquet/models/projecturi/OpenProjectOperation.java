@@ -51,9 +51,4 @@ public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingO
   public OpenProjectOperation() {
     super(UUID.fromString("89b65a9c-f36a-44ba-8aed-c2922d40f297"), false);
   }
-
-  @Override
-  protected void localize() {
-    super.localize();
-  }
 }

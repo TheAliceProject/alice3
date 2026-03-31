@@ -65,10 +65,4 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
   protected boolean isPromptNecessary(File file) {
     return ((file != null) && file.canWrite()) == false;
   }
-
-  @Override
-  protected void localize() {
-    super.localize();
-  }
-
 }
