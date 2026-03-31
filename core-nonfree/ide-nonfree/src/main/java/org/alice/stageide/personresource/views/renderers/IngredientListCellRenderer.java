@@ -87,20 +87,11 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
       File file = new File(IMAGE_ROOT, path);
       if (file.exists()) {
         try {
-          urlForIcon = file.toURL();
+          urlForIcon = file.toURI().toURL();
         } catch (MalformedURLException murle) {
           Logger.throwable(murle, file);
-          urlForIcon = null;
         }
-      } else {
-        //edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
-        urlForIcon = null;
       }
-      //      if( urlForIcon != null ) {
-      //        //pass
-      //      } else {
-      //        edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
-      //      }
       pathMap.put(path, urlForIcon);
     }
     return urlForIcon;
@@ -114,10 +105,9 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
       map.put(urlForIcon, rv);
     }
     return rv;
-    //return new ImageIcon(Objects.requireNonNull(urlForIcon));
   }
 
-  private Border border = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+  private final Border border = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 
   public IngredientListCellRenderer(int width, int height) {
     this.width = width;
@@ -141,16 +131,14 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
   }
 
   private String getIngredientResourceName(String skinToneString, String clsName, String enumConstantName) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(this.getSubPath());
-    sb.append("/");
-    sb.append(skinToneString);
-    sb.append("/");
-    sb.append(clsName);
-    sb.append(".");
-    sb.append(enumConstantName);
-    sb.append(".png");
-    return sb.toString();
+    return this.getSubPath()
+        + "/"
+        + skinToneString
+        + "/"
+        + clsName
+        + "."
+        + enumConstantName
+        + ".png";
   }
 
   private String getIngredientResourceName(SkinTone skinTone, String clsName, String enumConstantName) {
