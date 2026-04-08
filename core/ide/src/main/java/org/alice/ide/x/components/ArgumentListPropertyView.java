@@ -49,11 +49,8 @@ import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
-import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.ArgumentListProperty;
-
-import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -84,6 +81,11 @@ public abstract class ArgumentListPropertyView<N extends AbstractArgument> exten
   }
 
   @Override
+  protected int getBoxLayoutPad() {
+    return 4;
+  }
+
+  @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
     this.argumentListProperty.addListPropertyListener(this.listPropertyAdapter);
@@ -106,11 +108,7 @@ public abstract class ArgumentListPropertyView<N extends AbstractArgument> exten
       if (prefix != null) {
         this.addComponent(new Label(prefix));
       }
-
-      // an unfortunate hack to deal with the fact that I haven't figured out how to change the foreground color of these
-      SwingComponentView<?> argPane = this.factory.createArgumentPane(argument, null);
-      argPane.setBackgroundColor(UIManager.getColor("Alice.Event.color").darker());
-      this.addComponent(argPane);
+      this.addComponent(this.factory.createArgumentPane(argument, null));
       prefix = SEPARATOR;
     }
   }
