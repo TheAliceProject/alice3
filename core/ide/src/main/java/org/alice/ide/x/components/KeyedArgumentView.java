@@ -52,6 +52,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import java.awt.Component;
+import java.awt.Container;
 
 /**
  * @author Dennis Cosgrove
@@ -76,15 +77,21 @@ public class KeyedArgumentView extends ArgumentView<JavaKeyedArgument> {
     // procedures and functions (their color is set to Alice.Block.foreground). This won't work for our events
     // (which afaict is the only thing that creates this particular view) so this code digs out the appropriate
     // JLabel so that we can make it a readable color.
-    if (this.getAwtComponent() != null
-        && this.getAwtComponent().getComponentCount() > 0 && this.getAwtComponent().getComponent(0) instanceof JPanel panel
-        && panel.getComponentCount() > 0 && panel.getComponent(0) instanceof JDragView dragComponent
-        && dragComponent.getComponentCount() > 0 && dragComponent.getComponent(0) instanceof JPanel panel2) {
+    if (getFirstChildOf(getAwtComponent()) instanceof JPanel panel
+        && getFirstChildOf(panel) instanceof JDragView dragComponent
+        && getFirstChildOf(dragComponent) instanceof  JPanel panel2) {
       for (Component x : panel2.getComponents()) {
-        if (x instanceof JPanel panel3 && panel3.getComponentCount() > 0 && panel3.getComponent(0) instanceof JLabel thatLabel) {
+        if (x instanceof JPanel panel3 && getFirstChildOf(panel3) instanceof JLabel thatLabel) {
           thatLabel.setForeground(UIManager.getColor("Alice.differentForeground"));
         }
       }
     }
+  }
+
+  private Component getFirstChildOf(Container container) {
+    if (container == null || container.getComponentCount() <= 0) {
+      return null;
+    }
+    return container.getComponent(0);
   }
 }
