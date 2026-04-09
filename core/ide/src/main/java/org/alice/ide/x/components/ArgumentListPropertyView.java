@@ -81,6 +81,11 @@ public abstract class ArgumentListPropertyView<N extends AbstractArgument> exten
   }
 
   @Override
+  protected int getBoxLayoutPad() {
+    return 4;
+  }
+
+  @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
     this.argumentListProperty.addListPropertyListener(this.listPropertyAdapter);
@@ -99,6 +104,7 @@ public abstract class ArgumentListPropertyView<N extends AbstractArgument> exten
     this.forgetAndRemoveAllComponents();
     String prefix = this.getInitialPrefix();
     for (N argument : this.argumentListProperty) {
+      // aka the commas
       if (prefix != null) {
         this.addComponent(new Label(prefix));
       }

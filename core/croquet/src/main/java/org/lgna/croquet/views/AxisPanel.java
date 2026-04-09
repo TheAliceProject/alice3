@@ -72,7 +72,7 @@ public abstract class AxisPanel extends Panel {
   protected final LayoutManager createLayoutManager(JPanel jPanel) {
     int pad = this.getBoxLayoutPad();
     if (pad > 0) {
-      return new PaddedBoxLayout(jPanel, BoxLayout.PAGE_AXIS, pad);
+      return new PaddedBoxLayout(jPanel, this.axis, pad);
     } else {
       return new BoxLayout(jPanel, this.axis);
     }
