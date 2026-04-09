@@ -43,8 +43,16 @@
 
 package org.alice.ide.x.components;
 
+import com.formdev.flatlaf.ui.FlatRoundBorder;
 import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.imp.JDragView;
 import org.lgna.project.ast.JavaKeyedArgument;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import java.awt.Component;
+import java.awt.Container;
 
 /**
  * @author Dennis Cosgrove
@@ -58,5 +66,32 @@ public class KeyedArgumentView extends ArgumentView<JavaKeyedArgument> {
   protected String getName() {
     //return this.getArgument().keyMethod.getValue().getName();
     return null;
+  }
+
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    setBorder(new FlatRoundBorder());
+
+    // the code that sets the names of arguments is the same code that sets the names on our draggable
+    // procedures and functions (their color is set to Alice.Block.foreground). This won't work for our events
+    // (which afaict is the only thing that creates this particular view) so this code digs out the appropriate
+    // JLabel so that we can make it a readable color.
+    if (getFirstChildOf(getAwtComponent()) instanceof JPanel panel
+        && getFirstChildOf(panel) instanceof JDragView dragComponent
+        && getFirstChildOf(dragComponent) instanceof  JPanel panel2) {
+      for (Component x : panel2.getComponents()) {
+        if (x instanceof JPanel panel3 && getFirstChildOf(panel3) instanceof JLabel thatLabel) {
+          thatLabel.setForeground(UIManager.getColor("Alice.differentForeground"));
+        }
+      }
+    }
+  }
+
+  private Component getFirstChildOf(Container container) {
+    if (container == null || container.getComponentCount() <= 0) {
+      return null;
+    }
+    return container.getComponent(0);
   }
 }
