@@ -51,7 +51,5 @@ public interface Perspective extends Element {
 
   public MenuBarComposite getMenuBarComposite();
 
-  public ToolBarComposite getToolBarComposite();
-
   public Composite<?> getMainComposite();
 }

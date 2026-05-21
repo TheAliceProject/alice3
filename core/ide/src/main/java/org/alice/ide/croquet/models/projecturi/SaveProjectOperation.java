@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.icons.Icons;
-
 import java.io.File;
 import java.util.UUID;
 
@@ -66,16 +64,5 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
   @Override
   protected boolean isPromptNecessary(File file) {
     return ((file != null) && file.canWrite()) == false;
-  }
-
-  @Override
-  protected void localize() {
-    super.localize();
-    this.setButtonIcon(Icons.SAVE_DOCUMENT_SMALL);
-  }
-
-  @Override
-  public boolean isToolBarTextClobbered() {
-    return true;
   }
 }

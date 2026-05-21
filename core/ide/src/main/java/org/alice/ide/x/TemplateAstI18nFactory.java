@@ -43,11 +43,9 @@
 
 package org.alice.ide.x;
 
-import org.alice.ide.IDE;
 import org.alice.ide.members.components.ArgumentListPropertyPane;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.KeyedArgumentListProperty;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 
@@ -64,11 +62,6 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
   }
 
   private TemplateAstI18nFactory() {
-  }
-
-  @Override
-  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-    return IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
   }
 
   @Override

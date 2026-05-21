@@ -42,13 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.icons;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.worker.Worker;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -124,7 +125,7 @@ public class UrlAsynchronousIcon extends AsynchronousIcon {
   }
 
   protected Icon do_onBackgroundThread() throws Exception {
-    return IconUtilities.createImageIcon(this.url);
+    return new ImageIcon(Objects.requireNonNull(this.url));
   }
 
   private void handleDone_onEventDispatchThread(Icon value) {

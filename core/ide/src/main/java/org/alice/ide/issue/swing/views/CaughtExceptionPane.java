@@ -44,12 +44,12 @@ package org.alice.ide.issue.swing.views;
 
 import edu.cmu.cs.dennisc.issue.AbstractReport;
 import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JMigPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane;
 import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.UserProgramRunningStateUtilities;
@@ -59,6 +59,7 @@ import org.lgna.project.ProjectVersion;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.Objects;
 
 /**
  * This is the red queen dialog. Currently does whatever she wants and ignores our light/dark theme
@@ -72,7 +73,7 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
   static {
     Icon icon = null;
     try {
-      icon = IconUtilities.createImageIcon(CaughtExceptionPane.class.getResource("images/meanQueen.png"));
+      icon = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/meanQueen.png")));
     } catch (Throwable t) {
       t.printStackTrace();
     }

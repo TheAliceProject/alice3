@@ -43,19 +43,19 @@
 
 package org.alice.stageide.openprojectpane.models;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.project.codecs.ProjectSnapshotCodec;
 import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.ide.projecturi.views.SnapshotIcon;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.openprojectpane.components.TemplatesTabContentPane;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.story.Color;
 import org.lgna.story.Paint;
 import org.lgna.story.SGround;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -197,7 +197,7 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<Project
         String fragment = this.name();
         URI uri = new URI(BLANK_SCHEME, schemeSpecificPart, path, fragment);
         String text = TemplateUriState.getLocalizedName(fragment);
-        ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + fragment + ".png"));
+        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/templates/" + fragment + ".png")));
         Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;
         return new ProjectSnapshot(uri, text, icon);
       } catch (URISyntaxException urise) {

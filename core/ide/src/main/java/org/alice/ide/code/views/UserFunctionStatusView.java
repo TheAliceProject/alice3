@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.code.views;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.code.UserFunctionStatusComposite;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Label;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
+import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove
@@ -56,8 +55,7 @@ import javax.swing.Icon;
 public class UserFunctionStatusView extends BorderPanel {
   public UserFunctionStatusView(UserFunctionStatusComposite composite) {
     super(composite, 8, 0);
-    Icon errorIcon = IconUtilities.getErrorIcon();
-    this.addLineStartComponent(new Label(errorIcon));
+    this.addLineStartComponent(new Label(UIManager.getIcon("OptionPane.errorIcon")));
     this.addCenterComponent(composite.getMetaStringValue().createLabel());
     this.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
   }

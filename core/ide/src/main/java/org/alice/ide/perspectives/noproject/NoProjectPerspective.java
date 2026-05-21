@@ -46,7 +46,6 @@ import org.alice.ide.IdeApp;
 import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.AbstractPerspective;
 import org.lgna.croquet.Composite;
-import org.lgna.croquet.ToolBarComposite;
 
 import java.util.UUID;
 
@@ -67,11 +66,6 @@ public class NoProjectPerspective extends AbstractPerspective {
   @Override
   public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
     return this.menuBarComposite;
-  }
-
-  @Override
-  public ToolBarComposite getToolBarComposite() {
-    return null;
   }
 
   @Override

@@ -42,22 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.issue.SubmitReportUtilities;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-  private static final Icon headerIcon = IconUtilities.createImageIcon(ReportIssueView.class.getResource("/org/alice/ide/issue/swing/views/images/logo.png"));
+  private static final Icon headerIcon = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/bugsLogo.png")));
 
   public ReportIssueView(final ReportIssueComposite composite) {
     super(composite);

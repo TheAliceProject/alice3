@@ -43,7 +43,7 @@
 package org.alice.ide.issue.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.issue.croquet.LgnaExceptionComposite;
 import org.lgna.common.LgnaRuntimeException;
 import org.lgna.croquet.views.Label;
@@ -53,13 +53,15 @@ import org.lgna.croquet.views.VerticalTextPosition;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
  */
 public class LgnaExceptionView extends MigPanel {
-  private static final Icon ICON = IconUtilities.createImageIcon(GlExceptionView.class.getResource("images/alice.png"));
+  private static final Icon ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/alice.png")));
 
   public LgnaExceptionView(LgnaExceptionComposite composite) {
     super(composite, "", "", "[top][top]");

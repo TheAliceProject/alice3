@@ -44,8 +44,8 @@ package org.alice.ide.issue.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.croquet.models.help.views.GraphicsHelpView;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.issue.croquet.GlExceptionComposite;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
@@ -53,21 +53,27 @@ import org.lgna.croquet.views.MigPanel;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlExceptionView extends MigPanel {
-  public static final Icon ICON = IconUtilities.createImageIcon(GlExceptionView.class.getResource("images/paintingTheRoses.png"));
+  public static final Icon ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/paintingTheRoses.png")));
 
   public GlExceptionView(GlExceptionComposite composite) {
     super(composite, "", "", "[top][top]");
 
     this.addComponent(new Label(ICON), "span 1 2");
-    this.addComponent(new Label("Alice has encountered a graphics problem", UIManager.getIcon("OptionPane.errorIcon"), 2.0f, TextWeight.BOLD), "wrap");
+    this.addComponent(new Label("Alice has encountered a graphics problem", UIManager.getIcon("OptionPane.errorIcon"), 2.0f, TextWeight.BOLD),
+        "wrap");
     this.addComponent(new GraphicsHelpView(), "wrap");
-    this.addComponent(new LineAxisPanel(new Label("If you have updated your video drivers and the problem still persists please "), new Label("submit a bug report", TextPosture.OBLIQUE), new Label(".")), "wrap, span 2");
+    this.addComponent(new LineAxisPanel(
+        new Label("If you have updated your video drivers and the problem still persists please "),
+        new Label("submit a bug report", TextPosture.OBLIQUE), new Label(".")),
+        "wrap, span 2");
 
     this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
   }

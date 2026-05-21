@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
@@ -62,11 +61,11 @@ public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactor
   }
 
   public TrimmedImageIconFactory(URL resource, int width, int height) {
-    this(IconUtilities.createImageIcon(resource), width, height);
+    this(new ImageIcon(Objects.requireNonNull(resource)), width, height);
   }
 
   public TrimmedImageIconFactory(Image image, int width, int height) {
-    this(IconUtilities.createImageIcon(image), width, height);
+    this(new ImageIcon(Objects.requireNonNull(image)), width, height);
   }
 
   @Override

@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.information;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RestartRequiredOperation extends InconsequentialActionOperation {
-  public static final Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = IconUtilities.createImageIcon(RestartRequiredOperation.class.getResource("images/restartRequired.png"));
+  public static final Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = new ImageIcon(Objects.requireNonNull(Icons.class.getResource("images/dialogs/restartRequired.png")));
 
   private static class SingletonHolder {
     private static RestartRequiredOperation instance = new RestartRequiredOperation();

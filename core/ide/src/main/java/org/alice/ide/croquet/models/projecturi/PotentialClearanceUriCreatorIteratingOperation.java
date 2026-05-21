@@ -73,8 +73,4 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
     return subSteps.isEmpty() ? null : (UriProjectLoader) subSteps.getLast().getProducedValue();
   }
 
-  @Override
-  public boolean isToolBarTextClobbered() {
-    return true;
-  }
 }

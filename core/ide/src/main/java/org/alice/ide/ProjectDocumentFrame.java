@@ -74,7 +74,6 @@ import org.alice.stageide.perspectives.PerspectiveState;
 import org.alice.stageide.perspectives.SetupScenePerspective;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.*;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
 import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
@@ -195,10 +194,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.perspectiveState;
   }
 
-  public boolean isInCodePerspective() {
-    return this.getPerspectiveState().getValue() == this.getCodePerspective();
-  }
-
   public boolean isInSetupScenePerspective() {
     return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
   }
@@ -211,14 +206,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.getPerspectiveState().getItemSelectionOperation(this.getSetupScenePerspective());
   }
 
-  public void setToCodePerspectiveTransactionlessly() {
-    this.getPerspectiveState().setValueTransactionlessly(this.getCodePerspective());
-  }
-
-  public void setToSetupScenePerspectiveTransactionlessly() {
-    this.getPerspectiveState().setValueTransactionlessly(this.getSetupScenePerspective());
-  }
-
   public FindComposite getFindComposite() {
     return this.findComposite;
   }
@@ -226,7 +213,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   public MetaState<NamedUserType> getTypeMetaState() {
     if (this.typeMetaState == null) {
       DeclarationTabState declarationTabState = this.declarationsEditorComposite.getTabState();
-      this.typeMetaState = new StateTrackingMetaState<NamedUserType, DeclarationComposite<?, ?>>(declarationTabState) {
+      this.typeMetaState = new StateTrackingMetaState<>(declarationTabState) {
         @Override
         protected NamedUserType getValue(State<DeclarationComposite<?, ?>> state) {
           DeclarationComposite<?, ?> declarationComposite = state.getValue();
@@ -271,37 +258,11 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     }
   }
 
-  public void setFocusedCode(AbstractCode nextFocusedCode) {
-    this.selectDeclaration(nextFocusedCode);
-  }
-
-  public void selectDeclarationComposite(DeclarationComposite declarationComposite) {
+  public void selectDeclarationComposite(DeclarationComposite<?, ?> declarationComposite) {
     if (declarationComposite != null) {
-      AbstractDeclaration declaration = declarationComposite.getDeclaration();
-      //      org.lgna.project.ast.AbstractType<?, ?, ?> type;
-      //      if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-      //        type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-      //      } else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-      //        org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-      //        type = code.getDeclaringType();
-      //      } else {
-      //        type = null;
-      //      }
-      //      if( type instanceof org.lgna.project.ast.NamedUserType ) {
-      //        org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
-      //      }
       DeclarationTabState tabState = this.getDeclarationsEditorComposite().getTabState();
-      //      if( tabState.containsItem( declarationComposite ) ) {
-      //        //pass
-      //      } else {
-      //        tabState.addItem( declarationComposite );
-      //      }
       tabState.setValueTransactionlessly(declarationComposite);
     }
-  }
-
-  private void selectDeclaration(AbstractDeclaration declaration) {
-    this.selectDeclarationComposite(DeclarationComposite.getInstance(declaration));
   }
 
   public Operation getNewProjectOperation() {
@@ -338,14 +299,14 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   private final DeclarationsEditorComposite declarationsEditorComposite = new DeclarationsEditorComposite();
 
-  private final Operation resourcesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createInstance(ResourceManagerComposite.class, new Lazy<ResourceManagerComposite>() {
+  private final Operation resourcesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createInstance(ResourceManagerComposite.class, new Lazy<>() {
     @Override
     protected ResourceManagerComposite create() {
       return new ResourceManagerComposite(ProjectDocumentFrame.this);
     }
   }, Application.DOCUMENT_UI_GROUP).getLaunchOperation();
 
-  private final BooleanState statisticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<StatisticsFrameComposite>() {
+  private final BooleanState statisticsFrameIsShowingState = LazyIsFrameShowingState.createInstance(Application.INFORMATION_GROUP, StatisticsFrameComposite.class, new Lazy<>() {
     @Override
     protected StatisticsFrameComposite create() {
       return new StatisticsFrameComposite(ProjectDocumentFrame.this);
@@ -354,25 +315,17 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   private final DStack<ReasonToDisableSomeAmountOfRendering> stack = Stacks.newStack();
 
   private final Map<AbstractCode, InstanceFactory> mapCodeToInstanceFactory = Maps.newHashMap();
-  private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
-    @Override
-    public void valueChanged(ValueEvent<InstanceFactory> e) {
-      InstanceFactory nextValue = e.getNextValue();
-      if (nextValue != null) {
-        AbstractCode code = getFocusedCode();
-        if (code != null) {
-          mapCodeToInstanceFactory.put(code, nextValue);
-        }
+  private final ValueListener<InstanceFactory> instanceFactoryListener = e -> {
+    InstanceFactory nextValue = e.getNextValue();
+    if (nextValue != null) {
+      AbstractCode code = getFocusedCode();
+      if (code != null) {
+        mapCodeToInstanceFactory.put(code, nextValue);
       }
     }
   };
 
-  private final ValueListener<Formatter> formatterListener = new ValueListener<Formatter>() {
-    @Override
-    public void valueChanged(ValueEvent<Formatter> e) {
-      ComponentUtilities.revalidateTree(getFrame().getAwtComponent());
-    }
-  };
+  private final ValueListener<Formatter> formatterListener = e -> ComponentUtilities.revalidateTree(getFrame().getAwtComponent());
 
   private IdeHighlightStencil highlightStencil;
 

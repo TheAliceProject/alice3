@@ -125,10 +125,6 @@ public abstract class Operation implements Triggerable, Element, CompletionModel
     }
   }
 
-  public boolean isToolBarTextClobbered() {
-    return false;
-  }
-
   @Override
   public boolean isEnabled() {
     return this.imp.getSwingModel().getAction().isEnabled();

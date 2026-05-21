@@ -43,18 +43,14 @@
 
 package org.alice.stageide.perspectives;
 
-import edu.cmu.cs.dennisc.pattern.Lazy;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.croquet.models.IdeDragModel;
 import org.alice.ide.perspectives.ProjectPerspective;
-import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-import org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.MenuBarComposite;
-import org.lgna.croquet.ToolBarComposite;
 import org.lgna.croquet.views.TrackableShape;
 
 import java.util.List;
@@ -74,15 +70,6 @@ public class SetupScenePerspective extends ProjectPerspective {
   }
 
   @Override
-  public ToolBarComposite getToolBarComposite() {
-    if (IsToolBarShowing.getValue()) {
-      return this.toolBarLazy.get();
-    } else {
-      return null;
-    }
-  }
-
-  @Override
   public TrackableShape getRenderWindow() {
     return StorytellingSceneEditor.getInstance();
   }
@@ -95,11 +82,4 @@ public class SetupScenePerspective extends ProjectPerspective {
   @Override
   protected void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
   }
-
-  private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
-    @Override
-    protected ToolBarComposite create() {
-      return new SetupSceneToolBarComposite(getProjectDocumentFrame());
-    }
-  };
 }

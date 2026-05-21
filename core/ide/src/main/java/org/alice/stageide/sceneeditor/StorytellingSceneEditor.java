@@ -66,7 +66,6 @@ import org.alice.ide.icons.Icons;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
-import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
@@ -306,7 +305,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private Button contractButton;
   private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-  private final Button runButton = IsToolBarShowing.getValue() ? null : RunComposite.getInstance().getLaunchOperation().createButton();
+  private final Button runButton = RunComposite.getInstance().getLaunchOperation().createButton();
 
   private OrthographicCameraImp orthographicCameraImp = null;
   private final SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp(null);

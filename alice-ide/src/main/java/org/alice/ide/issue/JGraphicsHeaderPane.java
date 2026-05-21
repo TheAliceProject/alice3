@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import net.miginfocom.swing.MigLayout;
@@ -53,6 +52,7 @@ import org.lgna.issue.ApplicationIssueConfiguration;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import java.awt.Color;
 
 /**
@@ -125,7 +125,7 @@ public class JGraphicsHeaderPane extends JPanel {
     sb.append("</html>");
 
     this.setLayout(new MigLayout("fill", "[grow 0][grow 0][grow]"));
-    this.add(new JLabel(IconUtilities.getErrorIcon()), "aligny top");
+    this.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")), "aligny top");
     this.add(new JBrowserHtmlView(sb.toString()), "grow");
     this.add(new JLabel(GlExceptionView.ICON), "wrap");
 

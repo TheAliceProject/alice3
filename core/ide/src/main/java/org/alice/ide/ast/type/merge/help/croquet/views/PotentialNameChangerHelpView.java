@@ -43,7 +43,6 @@
 package org.alice.ide.ast.type.merge.help.croquet.views;
 
 import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
 import org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane;
 import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
@@ -65,7 +64,7 @@ public class PotentialNameChangerHelpView extends BorderPanel {
   public PotentialNameChangerHelpView(PotentialNameChangerHelpComposite<?, ?, ?> composite) {
     super(composite);
     AbstractLabel label = composite.getHeader().createLabel();
-    label.setIcon(IconUtilities.getQuestionIcon());
+    label.setIcon(UIManager.getIcon("OptionPane.questionIcon"));
     label.setOpaque(true);
     label.setBackgroundColor(UIManager.getColor("Alice.differentBackground"));
     label.setVerticalTextPosition(VerticalTextPosition.TOP);

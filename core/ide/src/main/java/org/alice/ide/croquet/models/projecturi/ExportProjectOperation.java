@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.projecturi;
 
 import org.alice.ide.ProjectApplication;
-import org.alice.ide.icons.Icons;
 import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
@@ -61,17 +60,6 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
 
   @Override
   protected boolean isPromptNecessary(File file) {
-    return true;
-  }
-
-  @Override
-  protected void localize() {
-    super.localize();
-    this.setButtonIcon(Icons.SAVE_DOCUMENT_SMALL);
-  }
-
-  @Override
-  public boolean isToolBarTextClobbered() {
     return true;
   }
 
